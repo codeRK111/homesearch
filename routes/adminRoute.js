@@ -4,12 +4,10 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.post('/signup', authController.signup);
-router.post('/login', authController.login);
-router.post('/googleLogin', authController.googleLogIn);
+router.post('/login', authController.adminLogin);
+router.post('/filter-user', authController.filterUsers);
 
 // router.post('/forgotPassword', authController.forgotPassword);
-// router.patch('/resetPassword/:token', authController.resetPassword);
 
 // router.patch(
 //   '/updateMyPassword',
@@ -20,10 +18,12 @@ router.post('/googleLogin', authController.googleLogIn);
 // router.patch('/updateMe', authController.protect, userController.updateMe);
 // router.delete('/deleteMe', authController.protect, userController.deleteMe);
 
-// router
-//   .route('/')
-//   .get(userController.getAllUsers)
-//   .post(userController.createUser);
+router.route('/').get(authController.getAllUsers).post(authController.addUser);
+router
+	.route('/:id')
+	.get(authController.getUser)
+	.patch(authController.updateUser)
+	.delete(authController.deleteUser);
 
 // router
 //   .route('/:id')

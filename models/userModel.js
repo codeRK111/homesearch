@@ -11,6 +11,13 @@ const userSchema = new Schema(
 			required: [true, 'A name must be required'],
 			maxlength: [25, 'Max 25 chars allowed'],
 		},
+		serialNumber: {
+			type: Number,
+			required: [true, 'A serialNumber must be required'],
+			index: {
+				unique: true,
+			},
+		},
 		number: {
 			type: String,
 			maxlength: [10, 'Max 10 chars allowed'],
@@ -36,16 +43,39 @@ const userSchema = new Schema(
 			},
 			default: null,
 		},
+		city: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'City',
+			required: [true, 'User must have a city'],
+		},
 		photo: {
 			type: String,
+		},
+		photoStatus: {
+			type: String,
+			enum: {
+				values: ['uploaded', 'not-uploaded'],
+				message:
+					'gender must be between <uploaded> | <not-uploaded> | <other>',
+			},
+			default: 'not-uploaded',
+		},
+		gender: {
+			type: String,
+			enum: {
+				values: ['male', 'female', 'other'],
+				message: 'gender must be between <male> | <female> | <other>',
+			},
+			required: true,
 		},
 		role: {
 			type: String,
 			enum: {
-				values: ['user', 'admin'],
-				message: 'role must be between <user> | <admin>',
+				values: ['builder', 'agent', 'owner', 'tenant'],
+				message:
+					'role must be between <builder> | <agent> | <owner> | <tenant>',
 			},
-			default: 'user',
+			required: true,
 		},
 		password: {
 			type: String,
@@ -54,26 +84,75 @@ const userSchema = new Schema(
 			default: null,
 			select: false,
 		},
-
-		active: {
-			type: Boolean,
-			default: true,
+		otp: {
+			type: String,
+			maxlength: [4, 'Minimum 12 characters required'],
+			default: null,
 			select: false,
 		},
-		number_verified: {
+		createdAt: {
+			type: Date,
+			default: Date.now(),
+		},
+		status: {
+			type: String,
+			enum: {
+				values: ['active', 'inactive'],
+				message: 'role must be between <active> | <inactive>',
+			},
+			default: 'active',
+		},
+		mobileStatus: {
+			type: String,
+			enum: {
+				values: ['semi-private', 'private'],
+				message: 'role must be between <semi-private> | <private>',
+			},
+			required: true,
+		},
+		registerThrough: {
+			type: String,
+			enum: {
+				values: ['google', 'facebook', 'site login', 'admin', 'staff'],
+				message:
+					'role must be between <google> | <facebook> | <site-login>',
+			},
+			required: true,
+		},
+		registerVia: {
+			type: String,
+			required: [true, 'Register via required'],
+		},
+		paymentStatus: {
+			type: String,
+			enum: {
+				values: ['paid', 'unpaid'],
+			},
+			default: 'unpaid',
+		},
+		numberVerified: {
 			type: Boolean,
 			default: false,
 		},
 		passwordChangedAt: Date,
-		passwordResetToken: String,
-		passwordResetTokenExipersAt: Date,
+		// passwordResetToken: String,
+		// passwordResetTokenExipersAt: Date,
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+userSchema.index({
+	name: 1,
+});
+
 // QUERY MIDDLEWARE
 userSchema.pre(/^find/, function (next) {
 	this.find({ active: { $ne: false } });
+	next();
+});
+
+userSchema.pre(/^find/, function (next) {
+	this.populate('city');
 	next();
 });
 
@@ -89,9 +168,24 @@ userSchema.pre('save', function (next) {
 	next();
 });
 
+userSchema.pre('save', function (next) {
+	if (
+		!this.isModified(this.password) ||
+		this.isNew ||
+		this.number_verified == false
+	)
+		return next();
+	this.otp = null;
+	next();
+});
+
 // INSTANCE METHODS
 userSchema.methods.correctPassword = async function (userPassword, dbPassword) {
 	return await bcrypt.compare(userPassword, dbPassword);
+};
+
+userSchema.methods.correctOtp = async function (otp) {
+	return otp == this.otp;
 };
 
 userSchema.methods.passwordChanged = function (jwtCreated) {
@@ -104,18 +198,6 @@ userSchema.methods.passwordChanged = function (jwtCreated) {
 	}
 
 	return false;
-};
-
-userSchema.methods.setToken = function () {
-	// TOKEN FOR USER
-	const token = crypto.randomBytes(32).toString('hex');
-	// ENCRYPTED TOKEN FOR DB
-	const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-	this.passwordResetToken = hashedToken;
-	this.passwordResetTokenExipersAt = Date.now() + 10 * 60 * 1000;
-	console.log({ token });
-	console.log({ hashedToken });
-	return token;
 };
 
 const UserModel = model('User', userSchema);

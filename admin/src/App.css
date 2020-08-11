@@ -1,0 +1,12 @@
+html,
+body {
+	background-color: #ededed;
+}
+
+.tranform-none {
+	text-transform: none !important;
+}
+
+.bgColor {
+	background-color: #ededed !important;
+}

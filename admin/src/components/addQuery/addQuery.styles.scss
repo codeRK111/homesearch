@@ -1,0 +1,21 @@
+.input-wrapper {
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	width: 800px;
+}
+
+.test {
+	width: 900px;
+}
+
+.flex-wrapper {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+
+	& > * {
+		display: flex;
+		flex: 1;
+	}
+}
