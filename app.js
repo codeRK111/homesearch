@@ -21,6 +21,11 @@ const basicAuth = require('express-basic-auth');
 
 const app = express();
 
+// app.use(function(req, res, next) {
+//     res.setHeader("Content-Security-Policy", "script-src 'self' ");
+//     return next();
+// });
+
 app.use(cors());
 
 // enable files upload
