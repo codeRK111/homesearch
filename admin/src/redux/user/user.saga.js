@@ -11,7 +11,7 @@ function* signUp({ payload: { email, password, showSnackbar } }) {
 			password,
 		});
 
-		const url = `${process.env.REACT_APP_BASE_URL}/users/admin/login`;
+		const url = `/users/admin/login`;
 		console.log(url);
 		const response = yield axios({
 			method: 'post',

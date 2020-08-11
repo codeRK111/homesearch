@@ -134,7 +134,7 @@ function Home(props) {
 				]}
 				data={(query) =>
 					new Promise((resolve, reject) => {
-						let url = `${process.env.REACT_APP_BASE_URL}/get_queries.php`;
+						let url = `/get_queries.php`;
 						fetch(url)
 							.then((response) => response.json())
 							.then((result) => {

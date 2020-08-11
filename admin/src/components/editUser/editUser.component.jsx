@@ -54,7 +54,7 @@ const EditUser = ({
 	React.useEffect(() => {
 		if (userInfo.state) {
 			setCityLoading(true);
-			const url = `${process.env.REACT_APP_BASE_URL}/cities/states/${userInfo.state}`;
+			const url = `/cities/states/${userInfo.state}`;
 			axios
 				.get(url)
 				.then((resp) => {
@@ -80,7 +80,7 @@ const EditUser = ({
 		fetchStatesStart();
 		if (match.params.id) {
 			setuserLoading(true);
-			const url = `${process.env.REACT_APP_BASE_URL}/admin/users/${match.params.id}`;
+			const url = `/admin/users/${match.params.id}`;
 			axios
 				.get(url)
 				.then((resp) => {

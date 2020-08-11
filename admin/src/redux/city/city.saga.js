@@ -6,7 +6,7 @@ import { setAllStates, setError, toggleLoading } from './city.actions';
 function* getAllStates() {
 	try {
 		yield put(toggleLoading());
-		let url = `${process.env.REACT_APP_BASE_URL}/cities/states`;
+		let url = `/cities/states`;
 		const response = yield axios.get(url);
 		const responseData = response.data;
 		if (responseData.status === 'fail') {

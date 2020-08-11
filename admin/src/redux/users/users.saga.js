@@ -23,7 +23,7 @@ function* getAllUsers() {
 	try {
 		yield put(toggleLoading());
 
-		let url = `${process.env.REACT_APP_BASE_URL}/admin/users?sort=serialNumber&fields=number,googleId,photoStatus,createdAt,status,paymentStatus,numberVerified,name,email,serialNumber,gender,role,mobileStatus,registerThrough,registerVia,photo`;
+		let url = `/admin/users?sort=serialNumber&fields=number,googleId,photoStatus,createdAt,status,paymentStatus,numberVerified,name,email,serialNumber,gender,role,mobileStatus,registerThrough,registerVia,photo`;
 
 		const response = yield axios(url);
 		const responseData = response.data;
@@ -48,7 +48,7 @@ function* filterUsers({ payload: { filterObj } }) {
 		yield put(toggleLoading());
 		let data = JSON.stringify(filterObj);
 
-		const url = `${process.env.REACT_APP_BASE_URL}/admin/users/filter-user`;
+		const url = `/admin/users/filter-user`;
 		console.log(url);
 		const response = yield axios({
 			method: 'post',
@@ -77,7 +77,7 @@ function* updateUser({ payload: { user, userId, callback } }) {
 		console.log({ user, userId, callback });
 		yield put(toggleLoading());
 		let data = JSON.stringify(user);
-		let url = `${process.env.REACT_APP_BASE_URL}/admin/users/${userId}`;
+		let url = `/admin/users/${userId}`;
 
 		const response = yield axios({
 			method: 'patch',
@@ -95,7 +95,7 @@ function* updateUser({ payload: { user, userId, callback } }) {
 				formData.append('image', user.image);
 				console.log(responseData);
 				const imageResponse = yield axios.patch(
-					`${process.env.REACT_APP_BASE_URL}/users/profile-picture/${responseData.data.user.id}`,
+					`/users/profile-picture/${responseData.data.user.id}`,
 					formData,
 					{
 						headers: {
@@ -121,7 +121,7 @@ function* updateUser({ payload: { user, userId, callback } }) {
 function* removeUser({ payload: { userId, callback } }) {
 	try {
 		yield put(toggleLoading());
-		let url = `${process.env.REACT_APP_BASE_URL}/admin/users/${userId}`;
+		let url = `/admin/users/${userId}`;
 
 		const response = yield axios.delete(url);
 		const responseData = response.data;
@@ -147,7 +147,7 @@ function* addUser({ payload: { user, callback } }) {
 		console.log('object');
 		yield put(toggleAddUserLoading());
 		let data = JSON.stringify(user);
-		let url = `${process.env.REACT_APP_BASE_URL}/admin/users`;
+		let url = `/admin/users`;
 
 		const response = yield axios({
 			method: 'post',
@@ -166,7 +166,7 @@ function* addUser({ payload: { user, callback } }) {
 				formData.append('image', user.image);
 				console.log(responseData);
 				const imageResponse = yield axios.post(
-					`${process.env.REACT_APP_BASE_URL}/users/profile-picture/${responseData.data.user.id}`,
+					`/users/profile-picture/${responseData.data.user.id}`,
 					formData,
 					{
 						headers: {

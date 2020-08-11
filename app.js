@@ -87,6 +87,7 @@ app.use(
 	'/profile',
 	express.static(path.join(__dirname, 'images', 'profile_images'))
 );
+app.use(express.static(path.join(__dirname, 'admin', 'build')));
 
 // // 3) ROUTES
 // app.use('/api/v1/tours', tourRouter);
@@ -103,18 +104,6 @@ app.use('/api/v1/cities', cityRouter);
 // 	})
 // );
 
-app.use(function (req, res, next) {
-	res.setHeader(
-		'Content-Security-Policy',
-		"script-src 'self' http://127.0.0.1:5000"
-	);
-	return next();
-});
-app.use('/admin', express.static(path.join(__dirname, 'admin', 'build')));
-app.get('/admint', function (req, res) {
-	res.header('Content-Security-Policy', 'img-src self');
-	res.sendFile(__dirname + '/admin/' + 'index.html');
-});
 app.all('*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));
 });
