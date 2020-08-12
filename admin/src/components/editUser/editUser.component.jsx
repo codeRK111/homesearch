@@ -54,7 +54,7 @@ const EditUser = ({
 	React.useEffect(() => {
 		if (userInfo.state) {
 			setCityLoading(true);
-			const url = `/cities/states/${userInfo.state}`;
+			const url = `/api/v1/cities/states/${userInfo.state}`;
 			axios
 				.get(url)
 				.then((resp) => {
@@ -80,7 +80,7 @@ const EditUser = ({
 		fetchStatesStart();
 		if (match.params.id) {
 			setuserLoading(true);
-			const url = `/admin/users/${match.params.id}`;
+			const url = `/api/v1/admin/users/${match.params.id}`;
 			axios
 				.get(url)
 				.then((resp) => {
@@ -89,9 +89,7 @@ const EditUser = ({
 					console.log(respData);
 					setUserInfo(respData.data.user);
 					if (respData.data.user) {
-						setFile(
-							`http://127.0.0.1:5000/profile/${respData.data.user.photo}`
-						);
+						setFile(`/profile/${respData.data.user.photo}`);
 					}
 				})
 				.catch((error) => {

@@ -29,7 +29,6 @@ class APIFeatures {
 		}
 
 		const withReg = { ...qs, ...reg };
-		console.log(withReg);
 		// 🔥 BUILD QUERY OBJECT 🔥
 		this.queryForDocument.find(withReg);
 		return this;

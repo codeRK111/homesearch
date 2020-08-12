@@ -4,7 +4,6 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.post('/login', authController.adminLogin);
 router.post('/filter-user', authController.filterUsers);
 
 // router.post('/forgotPassword', authController.forgotPassword);

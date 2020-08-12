@@ -4,13 +4,17 @@ const authController = require('../controllers/adminController');
 
 const router = express.Router();
 
+router.post('/login', authController.login);
 router.post('/admin-profile-photo/:id', authController.addProfilePicture);
 
 router
 	.route('/')
 	.get(authController.getAllAdmins)
 	.post(authController.addAdmin);
-router.route('/:id').patch(authController.updateAdmin);
+router
+	.route('/:id')
+	.patch(authController.updateAdmin)
+	.delete(authController.deleteAdmin);
 
 // router
 //   .route('/:id')

@@ -1,11 +1,69 @@
 const jwt = require('jsonwebtoken');
 const Admin = require('./../models/adminModel');
+const Feature = require('./../models/featuresModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
-const sendOtpMessage = require('../utils/sendOtp');
 const ApiFeatures = require('../utils/apiFeatures');
 const path = require('path');
 var fs = require('fs');
+
+const signToken = (id) => {
+	return jwt.sign({ id }, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_EXPIRES_IN,
+	});
+};
+
+const createSendToken = (user, statusCode, res) => {
+	const token = signToken(user._id);
+	const cookieOptions = {
+		expires: new Date(
+			Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+		),
+		httpOnly: true,
+	};
+	if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+
+	res.cookie('jwt', token, cookieOptions);
+
+	// Remove password from output
+	user.password = undefined;
+
+	res.status(statusCode).json({
+		status: 'success',
+		token,
+		data: {
+			user,
+		},
+	});
+};
+
+exports.login = catchAsync(async (req, res, next) => {
+	const { username, password, otp } = req.body;
+
+	// 1) Check if email and password exist
+	if (!username || !password || !otp) {
+		return next(
+			new AppError('Please provide username,password and otp!', 400)
+		);
+	}
+	let docList = await Feature.find().sort({ _id: 1 }).limit(1);
+	if (docList.length == 0) {
+		return next(new AppError('auth number not found', 400));
+	}
+	const lastDoc = await Feature.findById(docList[0]._id);
+	if (!lastDoc.correctOtp(otp)) {
+		return next(new AppError('otp not matched', 401));
+	}
+	// 2) Check if user exists && password is correct
+	const admin = await Admin.findOne({ username }).select('+password');
+
+	if (!admin || !(await admin.correctPassword(password, admin.password))) {
+		return next(new AppError('Incorrect email or password', 401));
+	}
+
+	// 3) If everything ok, send token to client
+	createSendToken(admin, 200, res);
+});
 
 exports.addAdmin = catchAsync(async (req, res, next) => {
 	const lastDoc = await Admin.find().sort({ _id: -1 }).limit(1);
@@ -44,6 +102,7 @@ exports.getAllAdmins = catchAsync(async (req, res, next) => {
 	const doc = await features.queryForDocument;
 	res.status(200).json({
 		status: 'success',
+		count: doc.length,
 		data: {
 			admins: doc,
 		},
@@ -117,6 +176,16 @@ exports.updateAdmin = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			admin: doc,
+		},
+	});
+});
+
+exports.deleteAdmin = catchAsync(async (req, res, next) => {
+	const deleteAdmin = await Admin.deleteOne({ _id: req.params.id });
+	res.status(202).json({
+		status: 'success',
+		data: {
+			user: deleteAdmin,
 		},
 	});
 });

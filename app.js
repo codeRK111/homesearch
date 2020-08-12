@@ -13,6 +13,7 @@ const adminUserRoute = require('./routes/adminUsersRoute');
 const userRouter = require('./routes/userRoute');
 const adminRoute = require('./routes/adminRoute');
 const cityRouter = require('./routes/cityRoute');
+const featureRouter = require('./routes/siteFeaturesRoute');
 // const reviewRouter = require('./routes/reviewRoute');
 const AppError = require('./utils/appError');
 const cors = require('cors');
@@ -98,6 +99,7 @@ app.use(express.static(path.join(__dirname, 'admin', 'build')));
 // // 3) ROUTES
 // app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/admin/users', adminUserRoute);
+app.use('/api/v1/admin/features', featureRouter);
 app.use('/api/v1/admins', adminRoute);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/cities', cityRouter);

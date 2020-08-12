@@ -74,7 +74,7 @@ const AddUser = ({
 	React.useEffect(() => {
 		if (form.state) {
 			setCityLoading(true);
-			const url = `/cities/states/${form.state}`;
+			const url = `/api/v1/cities/states/${form.state}`;
 			axios
 				.get(url)
 				.then((resp) => {

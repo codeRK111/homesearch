@@ -483,7 +483,6 @@ exports.filterUsers = catchAsync(async (req, res, next) => {
 
 exports.deleteUser = catchAsync(async (req, res, next) => {
 	const deleteUser = await User.deleteOne({ _id: req.params.id });
-
 	res.status(202).json({
 		status: 'success',
 		data: {
