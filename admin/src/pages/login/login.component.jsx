@@ -342,7 +342,7 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 									autoComplete="current-password"
 								/>
 								<ReCAPTCHA
-									sitekey="6LfY-b0ZAAAAAAPNFkKbcle6H4APdJYNzJycvV-O"
+									sitekey="6LcK_b0ZAAAAAKH_Ze3nUOw5u200KWzoC22DKFso"
 									onChange={onvalidate}
 								/>
 								,
