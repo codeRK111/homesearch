@@ -342,7 +342,7 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 									autoComplete="current-password"
 								/>
 								<ReCAPTCHA
-									sitekey={`${process.env.REACT_APP_CAPTCHA_SITEKEY}`}
+									sitekey="6LfY-b0ZAAAAAAPNFkKbcle6H4APdJYNzJycvV-O"
 									onChange={onvalidate}
 								/>
 								,
