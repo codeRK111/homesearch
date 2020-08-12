@@ -1,29 +1,16 @@
 const express = require('express');
 // const userController = require('./../controllers/userController');
-const authController = require('../controllers/authController');
+const authController = require('../controllers/adminController');
 
 const router = express.Router();
 
-router.post('/login', authController.adminLogin);
-router.post('/filter-user', authController.filterUsers);
+router.post('/admin-profile-photo/:id', authController.addProfilePicture);
 
-// router.post('/forgotPassword', authController.forgotPassword);
-
-// router.patch(
-//   '/updateMyPassword',
-//   authController.protect,
-//   authController.updatePassword
-// );
-
-// router.patch('/updateMe', authController.protect, userController.updateMe);
-// router.delete('/deleteMe', authController.protect, userController.deleteMe);
-
-router.route('/').get(authController.getAllUsers).post(authController.addUser);
 router
-	.route('/:id')
-	.get(authController.getUser)
-	.patch(authController.updateUser)
-	.delete(authController.deleteUser);
+	.route('/')
+	.get(authController.getAllAdmins)
+	.post(authController.addAdmin);
+router.route('/:id').patch(authController.updateAdmin);
 
 // router
 //   .route('/:id')
