@@ -95,14 +95,13 @@ app.use(
 	express.static(path.join(__dirname, 'images', 'profile_images'))
 );
 app.use(
-	'/admin',
 	basicAuth({
 		users: { admin: 'admin@123' },
 		challenge: true,
 		realm: 'Imb4T3st4pp',
 	})
 );
-app.use('/admin', express.static(path.join(__dirname, 'admin', 'build')));
+app.use(express.static(path.join(__dirname, 'admin', 'build')));
 
 // // 3) ROUTES
 // app.use('/api/v1/tours', tourRouter);
