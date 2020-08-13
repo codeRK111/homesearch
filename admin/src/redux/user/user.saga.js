@@ -3,15 +3,16 @@ import { UserActionTypes as types } from './user.types';
 import axios from 'axios';
 import { signInSuccess, toggleUserLoading, logout } from './user.actions';
 
-function* signUp({ payload: { email, password, showSnackbar } }) {
+function* signUp({ payload: { username, password, showSnackbar, otp } }) {
 	try {
 		yield put(toggleUserLoading());
 		let data = JSON.stringify({
-			email,
+			username,
 			password,
+			otp,
 		});
 
-		const url = `/users/admin/login`;
+		const url = `/api/v1/admins/login`;
 		console.log(url);
 		const response = yield axios({
 			method: 'post',

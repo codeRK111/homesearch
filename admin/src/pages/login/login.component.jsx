@@ -188,6 +188,8 @@ import {
 	selectLoading,
 } from '../../redux/user/user.selector';
 import ReCAPTCHA from 'react-google-recaptcha';
+import axios from 'axios';
+import OTPAlert from '../../components/otpAlert/otpAlert.component';
 
 function Alert(props) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -215,15 +217,19 @@ const useStyles = makeStyles((theme) => ({
 function SignIn({ signInStart, isAuthenticated, loading }) {
 	const classes = useStyles();
 	const [errorMessage, setErrorMessage] = React.useState('');
+	const [otpLoading, setOtpLoading] = React.useState(false);
+	const [otpOpen, setOtpOpen] = React.useState(false);
 	const [buttonDisable, setButtonDisable] = React.useState(true);
 	const [validationError, setValidationError] = React.useState({
 		email: '',
 		password: '',
+		otp: '',
 	});
 	const [open, setOpen] = React.useState(false);
 	const [values, setValues] = React.useState({
 		password: '',
 		email: '',
+		otp: '',
 	});
 
 	const onvalidate = (value) => {
@@ -245,6 +251,20 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 		}
 
 		setOpen(false);
+	};
+
+	const focusOut = (e) => {
+		axios
+			.get('/api/v1/admin/features/send-otp')
+			.then()
+			.catch((error) => {
+				handleClick('somethink goes wrong');
+			});
+		setOtpOpen(true);
+	};
+
+	const closeOtpModal = () => {
+		setOtpOpen(false);
 	};
 
 	const onSubmit = (e) => {
@@ -273,13 +293,26 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 			}));
 		}
 
+		if (!values.otp) {
+			setValidationError((prevState) => ({
+				...prevState,
+				otp: 'Please enter otp',
+			}));
+		} else {
+			setValidationError((prevState) => ({
+				...prevState,
+				otp: '',
+			}));
+		}
+
 		if (!values.email || !values.password) return;
-		signInStart(values.email, values.password, handleClick);
+		signInStart(values.email, values.password, values.otp, handleClick);
 	};
 
 	return (
 		<Container component="main" maxWidth="xs">
 			{isAuthenticated && <Redirect to="/users" />}
+			<OTPAlert open={otpOpen} handleClose={closeOtpModal} />
 			<Snackbar
 				open={open}
 				autoHideDuration={6000}
@@ -316,7 +349,7 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 									label={
 										validationError.email
 											? 'Error'
-											: 'Email Address'
+											: 'Username'
 									}
 									helperText={validationError.email}
 									name="email"
@@ -335,6 +368,25 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 										validationError.password
 											? 'Error'
 											: 'Password'
+									}
+									helperText={validationError.password}
+									type="password"
+									id="password"
+									autoComplete="current-password"
+									onBlur={focusOut}
+								/>
+								<TextField
+									error={!!validationError.otp}
+									variant="outlined"
+									margin="normal"
+									required
+									fullWidth
+									name="otp"
+									onChange={handleChange('otp')}
+									label={
+										validationError.password
+											? 'Error'
+											: 'OTP'
 									}
 									helperText={validationError.password}
 									type="password"
@@ -359,7 +411,7 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 										classes={{
 											label: 'tranform-none',
 										}}
-										disabled={buttonDisable}
+										disabled={false}
 										className={classes.submit}
 									>
 										Sign In
@@ -380,8 +432,10 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	signInStart: (email, password, handleClick) =>
-		dispatch(signInStart({ email, password, showSnackbar: handleClick })),
+	signInStart: (username, password, otp, handleClick) =>
+		dispatch(
+			signInStart({ username, password, otp, showSnackbar: handleClick })
+		),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn));

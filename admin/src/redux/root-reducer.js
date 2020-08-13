@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import userReducer from './user/user.reducer';
 import usersReducer from './users/users.reducer';
 import cityReducer from './city/city.reducer';
+import adminReducer from './admins/admins.reducer';
 
 // const persistConfig = {
 //     key: "root",
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
 	user: userReducer,
 	users: usersReducer,
 	city: cityReducer,
+	admins: adminReducer,
 });
 
 // export default persistReducer(persistConfig, rootReducer);

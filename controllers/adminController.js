@@ -70,13 +70,14 @@ exports.addAdmin = catchAsync(async (req, res, next) => {
 	const lastDocSerialNumber =
 		lastDoc.length === 0 ? 0 : lastDoc[0].serialNumber;
 
+	// name username email serialNumber password cities gender  status ableToSee type
 	const newAdmin = await Admin.create({
 		name: req.body.name,
 		username: req.body.username,
 		email: req.body.email,
 		serialNumber: lastDocSerialNumber + 1,
 		password: req.body.password,
-		cities: req.body.city,
+		cities: req.body.cities,
 		gender: req.body.gender,
 		role: req.body.role,
 		status: req.body.status,
@@ -160,6 +161,19 @@ exports.addProfilePicture = catchAsync(async (req, res, next) => {
 			},
 		});
 	}
+});
+
+exports.getAdmin = catchAsync(async (req, res, next) => {
+	const admin = await Admin.findById(req.params.id).select(
+		'name username email serialNumber password cities gender  status ableToSee type photo'
+	);
+
+	res.status(201).json({
+		status: 'success',
+		data: {
+			admin,
+		},
+	});
 });
 
 exports.updateAdmin = catchAsync(async (req, res, next) => {

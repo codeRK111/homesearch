@@ -50,3 +50,18 @@ exports.setAndSendOtp = catchAsync(async (req, res, next) => {
 		return next(new AppError('Unable to send otp', 500));
 	}
 });
+
+exports.getAuthNumber = catchAsync(async (req, res, next) => {
+	let docList = await Feature.find().sort({ _id: 1 }).limit(1);
+
+	if (docList.length == 0) {
+		return next(new AppError('auth number not found', 400));
+	}
+	lastDoc = await Feature.findById(docList[0]._id);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			authNumber: lastDoc.adminNumber,
+		},
+	});
+});

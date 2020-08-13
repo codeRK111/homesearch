@@ -13,6 +13,7 @@ router
 	.post(authController.addAdmin);
 router
 	.route('/:id')
+	.get(authController.getAdmin)
 	.patch(authController.updateAdmin)
 	.delete(authController.deleteAdmin);
 

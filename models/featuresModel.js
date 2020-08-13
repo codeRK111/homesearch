@@ -17,8 +17,6 @@ const featureSchema = new Schema(
 );
 
 featureSchema.methods.correctOtp = function (otp) {
-	console.log(this.otp);
-	console.log(otp);
 	return otp == this.otp;
 };
 

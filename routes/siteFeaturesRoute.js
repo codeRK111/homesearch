@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/send-otp', featureController.setAndSendOtp);
 
+router.route('/auth-number').get(featureController.getAuthNumber);
 router
 	.route('/set-auth-number/:number')
 	.get(featureController.setAuthenticationNumber);
