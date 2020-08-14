@@ -101,7 +101,7 @@ app.use(
 		realm: 'Imb4T3st4pp',
 	})
 );
-app.use(express.static(path.join(__dirname, 'admin', 'build')));
+app.use('/admin', express.static(path.join(__dirname, 'admin', 'build')));
 
 // // 3) ROUTES
 // app.use('/api/v1/tours', tourRouter);
