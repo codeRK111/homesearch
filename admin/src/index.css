@@ -15,3 +15,11 @@ code {
 .color-red {
 	color: red;
 }
+
+.pointer {
+	cursor: pointer;
+}
+
+.MuiTableCell-root {
+	padding: 8px !important;
+}

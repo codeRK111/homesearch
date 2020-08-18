@@ -10,6 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import SnackBar from '../snackbar/snackbar.component';
+import { useHistory } from 'react-router-dom';
 import useForm from '../../hooks/useForm';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { connect } from 'react-redux';
@@ -23,7 +24,8 @@ import {
 } from '../../redux/users/users.selector';
 import axios from 'axios';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import ImagePicker from '../imagePicker/imagePicker.component';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import IconButton from '@material-ui/core/IconButton';
 
 const AddUser = ({
 	allSTates,
@@ -33,6 +35,7 @@ const AddUser = ({
 	addUserLoading,
 	addUserError,
 }) => {
+	const history = useHistory();
 	const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 	const [cities, setCities] = React.useState([]);
 	const [cityLoading, setCityLoading] = React.useState(false);
@@ -48,10 +51,11 @@ const AddUser = ({
 		numberVerified: true,
 		role: 'tenant',
 		registerThrough: 'admin',
-		registerVia: 'Admin User',
+		registerVia: 'Web',
 		mobileStatus: 'semi-private',
 		paymentStatus: 'unpaid',
 		status: 'active',
+		createdBy: 'Armaan',
 	});
 
 	const [file, setFile] = React.useState('');
@@ -119,23 +123,23 @@ const AddUser = ({
 	};
 
 	const fetchStates = (e) => {
-		console.log('fired');
-		console.log(allSTates);
 		if (allSTates.length === 0) {
 			fetchStatesStart();
 		}
 	};
 
-	const printMessage = (msg) => {
-		console.error(msg);
+	const printMessage = (status, msg = null) => {
+		if (status == 'success') {
+			// history.push('/users');
+		} else {
+			console.error(msg);
+		}
 	};
 
 	const buttonClick = () => {
 		console.log(form);
 		if (validateForm()) return;
 		console.log(formError);
-		// handleSnackbar(true)();
-		console.log('-------------------');
 		var imagefile = document.querySelector('#file');
 		addUserRequest({ ...form, image: imagefile.files[0] }, printMessage);
 	};
@@ -155,6 +159,12 @@ const AddUser = ({
 	};
 	return (
 		<Box m="2rem">
+			<IconButton
+				aria-label="back"
+				onClick={() => history.push('/users')}
+			>
+				<ArrowBackIcon />
+			</IconButton>
 			<Box m="1rem">
 				<h3>Add user</h3>
 			</Box>
@@ -439,6 +449,7 @@ const AddUser = ({
 								<MenuItem value={'semi-private'}>
 									Semiprivate
 								</MenuItem>
+								<MenuItem value={'public'}>Public</MenuItem>
 							</Select>
 						</FormControl>
 					</Grid>

@@ -415,6 +415,7 @@ exports.addUser = catchAsync(async (req, res, next) => {
 		role: req.body.role,
 		status: req.body.status,
 		mobileStatus: req.body.mobileStatus,
+		createdBy: req.body.createdBy,
 		registerThrough: req.body.registerThrough,
 		registerVia: req.body.registerVia,
 		paymentStatus: req.body.paymentStatus,
@@ -456,8 +457,8 @@ exports.filterUsers = catchAsync(async (req, res, next) => {
 	if (req.body.city) {
 		filterObj['city'] = req.body.city;
 	}
-	if (req.body.paymentStatus) {
-		filterObj['paymentStatus'] = req.body.paymentStatus;
+	if (req.body.status) {
+		filterObj['status'] = req.body.status;
 	}
 	if (req.body.paymentStatus) {
 		filterObj['paymentStatus'] = req.body.paymentStatus;

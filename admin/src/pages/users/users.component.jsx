@@ -8,12 +8,13 @@ import UserTable from '../../components/userTable/userTable.component';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import Filter from '../../components/filter/filter.component';
+import AddIcon from '@material-ui/icons/Add';
 
 // import './home.styles.scss';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
-		paddingTop: theme.spacing(4),
+		// paddingTop: theme.spacing(4),
 		paddingBottom: theme.spacing(4),
 	},
 }));
@@ -36,16 +37,20 @@ function Dashboard() {
 					{/* Chart */}
 
 					<Grid item xs={12}>
-						<Button
-							color="primary"
-							variant="contained"
-							classes={{
-								label: 'tranform-none',
-							}}
-							onClick={buttonClick}
-						>
-							Add User
-						</Button>
+						<Box display="flex" justifyContent="flex-end">
+							<Button
+								variant="contained"
+								color="default"
+								classes={{
+									label: 'tranform-none',
+								}}
+								startIcon={<AddIcon />}
+								size="small"
+								onClick={buttonClick}
+							>
+								Add User
+							</Button>
+						</Box>
 					</Grid>
 					{/* Recent Deposits */}
 

@@ -14,7 +14,10 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectAllStates, selectLoading } from '../../redux/city/city.selector';
+import {
+	selectAllStates,
+	selectLoading as stateLoading,
+} from '../../redux/city/city.selector';
 import { fetchAllStatesStart } from '../../redux/city/city.actions';
 import {
 	addAdmin,
@@ -27,6 +30,9 @@ import {
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useHistory } from 'react-router-dom';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -35,9 +41,18 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const EditUser = ({ addLoading, addError, addAdmin, resetAddAdminError }) => {
+const EditUser = ({
+	addLoading,
+	addError,
+	addAdmin,
+	resetAddAdminError,
+	stateLoading,
+	fetchStatesStart,
+	allStates,
+}) => {
 	const history = useHistory();
 	const classes = useStyles();
+	const [state, selectState] = React.useState('');
 	const [isPasswordChanged, setIspasswordChanged] = React.useState(false);
 	const [checkAll, setCheckAll] = React.useState(false);
 	const [userInfo, setUserInfo] = React.useState({
@@ -64,27 +79,25 @@ const EditUser = ({ addLoading, addError, addAdmin, resetAddAdminError }) => {
 	}, []);
 
 	React.useEffect(() => {
-		setCityLoading(true);
-		const url = `/api/v1/cities/states/Odisha`;
-		axios
-			.get(url)
-			.then((resp) => {
-				setCityLoading(false);
-				const respData = resp.data;
-				console.log(respData);
+		if (state) {
+			setCityLoading(true);
+			const url = `/api/v1/cities/states/${state}`;
+			axios
+				.get(url)
+				.then((resp) => {
+					setCityLoading(false);
+					const respData = resp.data;
+					console.log(respData);
 
-				setCities(respData.data.cities);
-			})
-			.catch((error) => {
-				setCityLoading(false);
-				console.log(error);
-				const errorResponse = error.response.data;
-				// setuserInfoError((prevState) => ({
-				// 	...prevState,
-				// 	city: errorResponse.message,
-				// }));
-			});
-	}, []);
+					setCities(respData.data.cities);
+				})
+				.catch((error) => {
+					setCityLoading(false);
+					const errorResponse = error.response.data;
+					console.log(errorResponse);
+				});
+		}
+	}, [state]);
 
 	const redirectToAdmins = () => history.push('/admins');
 
@@ -154,8 +167,18 @@ const EditUser = ({ addLoading, addError, addAdmin, resetAddAdminError }) => {
 		}
 	};
 
+	const fetchStates = () => {
+		fetchStatesStart();
+	};
+
 	return (
 		<Box p="1rem">
+			<IconButton
+				aria-label="back"
+				onClick={() => history.push('/admins')}
+			>
+				<ArrowBackIcon />
+			</IconButton>
 			<div>
 				<h3>Add admin / staff</h3>
 				<p className="color-red">{addError}</p>
@@ -359,7 +382,48 @@ const EditUser = ({ addLoading, addError, addAdmin, resetAddAdminError }) => {
 							label="Google Users"
 						/>
 					</Grid>
-					<Box>
+					<Grid item xs={12}>
+						<Box mt="1rem" mb="1rem">
+							<FormControl
+								variant="outlined"
+								fullWidth
+								size="small"
+							>
+								<InputLabel htmlFor="outlined-age-native-simple">
+									State
+								</InputLabel>
+								<Select
+									labelId="demo-simple-select-outlined-label"
+									id="demo-simple-select-outlined"
+									onOpen={fetchStates}
+									value={state}
+									name="state"
+									onChange={(e) =>
+										selectState(e.target.value)
+									}
+									label="State"
+									variant="outlined"
+									fullWidth
+									size="small"
+								>
+									{stateLoading && (
+										<MenuItem value="" disabled>
+											<em>Loading...</em>
+										</MenuItem>
+									)}
+									{allStates.map((c, i) => (
+										<MenuItem key={i} value={c}>
+											{c}
+										</MenuItem>
+									))}
+								</Select>
+								<FormHelperText>
+									Select state to view cities
+								</FormHelperText>
+							</FormControl>
+						</Box>
+					</Grid>
+					<Grid item xs={12}>
 						<Box display="flex" justifyContent="space-between">
 							<p>Cities</p>
 							<FormControlLabel
@@ -374,40 +438,40 @@ const EditUser = ({ addLoading, addError, addAdmin, resetAddAdminError }) => {
 								label="Select all"
 							/>
 						</Box>
-						<Grid container spacing={1}>
-							{cities.map((c) => (
-								<Grid item xs={12} lg={2} key={c.id}>
-									<FormControlLabel
-										control={
-											<Checkbox
-												checked={userInfo.cities.includes(
-													c.id
-												)}
-												onChange={handleCityCheckbox(
-													c.id
-												)}
-												name="checkedB"
-												color="primary"
-											/>
-										}
-										label={c.name}
-									/>
-								</Grid>
-							))}
-						</Grid>
-					</Box>
-					<Box mt="10px">
-						<Button
-							color="primary"
-							variant="contained"
-							classes={{
-								label: 'tranform-none',
-							}}
-							onClick={buttonClick}
-						>
-							Add
-						</Button>
-					</Box>
+					</Grid>
+					<Grid container spacing={1}>
+						{cities.map((c) => (
+							<Grid item xs={12} lg={2} key={c.id}>
+								<FormControlLabel
+									control={
+										<Checkbox
+											checked={userInfo.cities.includes(
+												c.id
+											)}
+											onChange={handleCityCheckbox(c.id)}
+											name="checkedB"
+											color="primary"
+										/>
+									}
+									label={c.name}
+								/>
+							</Grid>
+						))}
+					</Grid>
+					<Grid item xs={12}>
+						<Box mt="10px">
+							<Button
+								color="primary"
+								variant="contained"
+								classes={{
+									label: 'tranform-none',
+								}}
+								onClick={buttonClick}
+							>
+								Add
+							</Button>
+						</Box>
+					</Grid>
 				</Grid>
 			</div>
 		</Box>
@@ -415,9 +479,10 @@ const EditUser = ({ addLoading, addError, addAdmin, resetAddAdminError }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	allSTates: selectAllStates,
+	allStates: selectAllStates,
 	addLoading: selectAddAdminLoading,
 	addError: selectAddAdminError,
+	stateLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -43,6 +43,10 @@ export const setError = (error) => ({
 export const toggleLoading = () => ({
 	type: UserActionTypes.TOGGLE_LOADING,
 });
+export const toggleUserInfo = (status) => ({
+	type: UserActionTypes.TOGGLE_USER_STATUS,
+	payload: status,
+});
 export const toggleAddUserLoading = () => ({
 	type: UserActionTypes.TOGGLE_ADD_USER_LOADING,
 });

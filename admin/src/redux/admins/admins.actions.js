@@ -39,6 +39,10 @@ export const setAddAdminError = (error) => ({
 export const toggleAddAdminLoading = () => ({
 	type: AdminActionTypes.TOGGLE_ADD_ADMIN_LOADING,
 });
+export const toggleAdminInfo = (status) => ({
+	type: AdminActionTypes.TOGGLE_ADMIN_STATUS,
+	payload: status,
+});
 export const resetAddAdminError = () => ({
 	type: AdminActionTypes.RESET_ADD_ADMIN_ERROR,
 });

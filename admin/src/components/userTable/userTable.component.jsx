@@ -21,10 +21,12 @@ import {
 import {
 	fetchAllUsersSTart,
 	removeUser,
+	toggleUserInfo,
 } from '../../redux/users/users.actions';
 import Box from '@material-ui/core/Box';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
+import CustomSelect from './select.component';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -48,7 +50,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function Orders({ loading, allUsers, fetchUsersStart, removeUser }) {
+function Orders({
+	loading,
+	allUsers,
+	fetchUsersStart,
+	removeUser,
+	toggleUserInfo,
+}) {
 	const history = useHistory();
 	React.useEffect(() => {
 		fetchUsersStart();
@@ -59,10 +67,22 @@ function Orders({ loading, allUsers, fetchUsersStart, removeUser }) {
 	const [alertOpen, setAlertOpen] = React.useState(false);
 	const [open, setOpen] = React.useState(false);
 	const [userId, setUserId] = React.useState(null);
+	const [errorMessage, setErrorMessage] = React.useState('');
 
-	const handleClickOpen = (id) => {
-		setUserId(id);
-		setOpen(true);
+	const setError = (msg) => {
+		console.log(msg);
+		setErrorMessage(msg);
+	};
+
+	const handleMobileStatus = (event) => {};
+	const toggleStatus = (id, status) => (event) => {
+		let futureStatus;
+		if (status === 'active') {
+			futureStatus = 'inactive';
+		} else {
+			futureStatus = 'active';
+		}
+		toggleUserInfo(futureStatus, id, setError);
 	};
 	const handleClose = () => {
 		setOpen(false);
@@ -92,6 +112,7 @@ function Orders({ loading, allUsers, fetchUsersStart, removeUser }) {
 				<h3>Users</h3>
 				{loading && <CircularProgress size={20} />}
 			</div>
+			<p className="color-red">{errorMessage}</p>
 			<div className={classes.tableWrapper}>
 				<Table size="medium">
 					<TableHead>
@@ -113,7 +134,7 @@ function Orders({ loading, allUsers, fetchUsersStart, removeUser }) {
 								Image
 							</TableCell>
 							<TableCell colSpan={3} style={{ color: '#ffffff' }}>
-								Email/Mobile
+								Info
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
 								Mobile Status
@@ -170,14 +191,51 @@ function Orders({ loading, allUsers, fetchUsersStart, removeUser }) {
 									<br />
 									<b>CreatedAt:</b>
 									{moment(row.createdAt).format('YYYY-MM-DD')}
+									<br />
+									{row.createdBy && (
+										<span>
+											<b>CreatedBy:</b>
+											{row.createdBy}
+										</span>
+									)}
 								</TableCell>
 								<TableCell width="6%">
-									{row.mobileStatus}
+									<CustomSelect
+										value={row.mobileStatus}
+										userId={row.id}
+										items={[
+											{
+												label: 'Public',
+												value: 'public',
+											},
+											{
+												label: 'Private',
+												value: 'private',
+											},
+											{
+												label: 'Semi Private',
+												value: 'semi-private',
+											},
+										]}
+									/>
 								</TableCell>
 								<TableCell width="6%">
 									{row.photoStatus}
 								</TableCell>
-								<TableCell width="6%">{row.status}</TableCell>
+								<TableCell
+									width="6%"
+									className="pointer"
+									onClick={toggleStatus(row.id, row.status)}
+								>
+									<div>
+										<Tooltip
+											title="Toggle"
+											placement="left-start"
+										>
+											<Box>{row.status}</Box>
+										</Tooltip>
+									</div>
+								</TableCell>
 								<TableCell width="6%">
 									{row.paymentStatus}
 								</TableCell>
@@ -211,7 +269,7 @@ function Orders({ loading, allUsers, fetchUsersStart, removeUser }) {
 												/>
 											</Tooltip>
 										</div>
-										<div className={classes.iconButton}>
+										{/* <div className={classes.iconButton}>
 											<Tooltip
 												title="Delete"
 												placement="left-start"
@@ -223,7 +281,7 @@ function Orders({ loading, allUsers, fetchUsersStart, removeUser }) {
 													)}
 												/>
 											</Tooltip>
-										</div>
+										</div> */}
 									</Box>
 								</TableCell>
 							</TableRow>
@@ -249,6 +307,8 @@ const mapDispatchToProps = (dispatch) => ({
 	fetchUsersStart: () => dispatch(fetchAllUsersSTart()),
 	removeUser: (userId, callback) =>
 		dispatch(removeUser({ userId, callback })),
+	toggleUserInfo: (status, userId, callback) =>
+		dispatch(toggleUserInfo({ user: { status }, userId, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Orders);

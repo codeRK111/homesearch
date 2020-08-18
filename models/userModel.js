@@ -105,7 +105,7 @@ const userSchema = new Schema(
 		mobileStatus: {
 			type: String,
 			enum: {
-				values: ['semi-private', 'private'],
+				values: ['semi-private', 'private', 'public'],
 				message: 'role must be between <semi-private> | <private>',
 			},
 			required: true,
@@ -118,6 +118,9 @@ const userSchema = new Schema(
 					'role must be between <google> | <facebook> | <site-login>',
 			},
 			required: true,
+		},
+		createdBy: {
+			type: String,
 		},
 		registerVia: {
 			type: String,

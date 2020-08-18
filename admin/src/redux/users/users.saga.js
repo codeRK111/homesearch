@@ -23,7 +23,7 @@ function* getAllUsers() {
 	try {
 		yield put(toggleLoading());
 
-		let url = `/api/v1/admin/users?sort=serialNumber&fields=number,googleId,photoStatus,createdAt,status,paymentStatus,numberVerified,name,email,serialNumber,gender,role,mobileStatus,registerThrough,registerVia,photo`;
+		let url = `/api/v1/admin/users?sort=serialNumber&fields=number,googleId,photoStatus,createdAt,status,paymentStatus,numberVerified,name,email,serialNumber,gender,role,mobileStatus,registerThrough,registerVia,photo,createdBy`;
 
 		const response = yield axios(url);
 		const responseData = response.data;
@@ -118,6 +118,33 @@ function* updateUser({ payload: { user, userId, callback } }) {
 	}
 }
 
+function* toggleStatus({ payload: { user, userId, callback } }) {
+	try {
+		yield put(toggleLoading());
+		let data = JSON.stringify(user);
+		let url = `/api/v1/admin/users/${userId}`;
+
+		const response = yield axios({
+			method: 'patch',
+			headers: { 'Content-Type': 'application/json' },
+			url,
+			data,
+		});
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(toggleLoading());
+		} else {
+			callback('');
+			yield put(toggleLoading());
+			yield put(fetchAllUsersSTart());
+		}
+	} catch (error) {
+		yield put(toggleLoading());
+		const errorResponse = error.response.data;
+		callback(errorResponse.message);
+	}
+}
+
 function* removeUser({ payload: { userId, callback } }) {
 	try {
 		yield put(toggleLoading());
@@ -180,12 +207,13 @@ function* addUser({ payload: { user, callback } }) {
 
 			yield put(toggleAddUserLoading());
 			yield put(fetchAllUsersSTart());
+			callback('success');
 		}
 	} catch (error) {
 		yield put(toggleAddUserLoading());
 		const errorResponse = error.response.data;
 		yield put(addUserFailed(errorResponse.message));
-		callback();
+		callback('fail', errorResponse.message);
 		console.log(errorResponse.message);
 	}
 }
@@ -207,8 +235,11 @@ export function* onAddUser() {
 }
 
 export function* onFilterUsers() {
-	console.log('inside saga');
 	yield takeEvery(types.FILTER_USERS, filterUsers);
+}
+
+export function* onToggleUserStatus() {
+	yield takeEvery(types.TOGGLE_USER_STATUS, toggleStatus);
 }
 
 export function* usersSagas() {
@@ -218,5 +249,6 @@ export function* usersSagas() {
 		call(onRemoveUser),
 		call(onAddUser),
 		call(onFilterUsers),
+		call(onToggleUserStatus),
 	]);
 }

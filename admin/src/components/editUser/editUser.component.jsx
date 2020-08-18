@@ -17,6 +17,9 @@ import { fetchAllStatesStart } from '../../redux/city/city.actions';
 import { updateUser } from '../../redux/users/users.actions';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { selectLoading as editUserLoading } from '../../redux/users/users.selector';
+import IconButton from '@material-ui/core/IconButton';
+import { useHistory } from 'react-router-dom';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const EditUser = ({
 	match,
@@ -26,6 +29,7 @@ const EditUser = ({
 	editUserLoading,
 	updateUser,
 }) => {
+	const history = useHistory();
 	const [userLoading, setuserLoading] = React.useState(false);
 	const [isPasswordChanged, setIspasswordChanged] = React.useState(false);
 	const [userInfo, setUserInfo] = React.useState({
@@ -153,6 +157,12 @@ const EditUser = ({
 
 	return (
 		<Box p="1rem">
+			<IconButton
+				aria-label="back"
+				onClick={() => history.push('/users')}
+			>
+				<ArrowBackIcon />
+			</IconButton>
 			<div>
 				<h3>Edit user</h3>
 				{userLoading ? (

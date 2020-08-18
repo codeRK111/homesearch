@@ -125,6 +125,33 @@ function* updateAdmin({ payload: { admin, adminId, callback } }) {
 	}
 }
 
+function* toggleAdminStatus({ payload: { admin, adminId, callback } }) {
+	try {
+		yield put(toggleUpdateAdminLoading());
+		let data = JSON.stringify(admin);
+		let url = `/api/v1/admins/${adminId}`;
+
+		const response = yield axios({
+			method: 'patch',
+			headers: { 'Content-Type': 'application/json' },
+			url,
+			data,
+		});
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(toggleUpdateAdminLoading());
+		} else {
+			callback('');
+			yield put(toggleUpdateAdminLoading());
+			yield put(fetchAllAdminsStart());
+		}
+	} catch (error) {
+		yield put(toggleUpdateAdminLoading());
+		const errorResponse = error.response.data;
+		callback(errorResponse.message);
+	}
+}
+
 function* removeAdmin({ payload: { adminId, callback } }) {
 	try {
 		let url = `/api/v1/admins/${adminId}`;
@@ -160,11 +187,16 @@ export function* onRemoveAdmin() {
 	yield takeLatest(types.REMOVE_ADMIN, removeAdmin);
 }
 
+export function* onToggleAdminStatus() {
+	yield takeEvery(types.TOGGLE_ADMIN_STATUS, toggleAdminStatus);
+}
+
 export function* adminsSagas() {
 	yield all([
 		call(onGetAllAdmins),
 		call(onUpdateAdmin),
 		call(onAddAdmin),
 		call(onRemoveAdmin),
+		call(onToggleAdminStatus),
 	]);
 }

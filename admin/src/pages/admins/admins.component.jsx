@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import AdminTable from '../../components/adminTable/adminTable.component';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
+import AddIcon from '@material-ui/icons/Add';
 
 const Admin = () => {
 	const history = useHistory();
@@ -13,9 +14,12 @@ const Admin = () => {
 				<Box display="flex" justifyContent="flex-end" mb="1rem">
 					<Button
 						variant="contained"
+						color="default"
+						classes={{
+							label: 'tranform-none',
+						}}
+						startIcon={<AddIcon />}
 						size="small"
-						color="primary"
-						className="tranform-none"
 						onClick={() => history.push('/admins/add')}
 					>
 						Add Admin / Staff

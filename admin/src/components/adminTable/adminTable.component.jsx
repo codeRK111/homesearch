@@ -23,9 +23,11 @@ import {
 import {
 	fetchAllAdminsStart,
 	removeAdmin,
+	toggleAdminInfo,
 } from '../../redux/admins/admins.actions';
 import Box from '@material-ui/core/Box';
 import { useHistory } from 'react-router-dom';
+import CustomSelect from './select.component';
 // import moment from 'moment';
 
 function preventDefault(event) {
@@ -63,6 +65,7 @@ function Orders({
 	fetchAllAdminsStart,
 	error,
 	removeAdmin,
+	toggleAdminInfo,
 }) {
 	const history = useHistory();
 	React.useEffect(() => {
@@ -95,11 +98,21 @@ function Orders({
 		console.log('object');
 		removeAdmin(userId, handleAlertClose);
 	};
+
+	const toggleStatus = (id, status) => (event) => {
+		let futureStatus;
+		if (status === 'active') {
+			futureStatus = 'inactive';
+		} else {
+			futureStatus = 'active';
+		}
+		toggleAdminInfo({ status: futureStatus }, id, console.log);
+	};
 	return (
 		<React.Fragment>
 			<Backdrop
 				className={classes.backdrop}
-				open={loading}
+				open={allAdmins.length === 0 && loading}
 				// onClick={handleClose}
 			>
 				<CircularProgress color="inherit" />
@@ -151,8 +164,37 @@ function Orders({
 								<TableCell>{row.username}</TableCell>
 								<TableCell>{row.name}</TableCell>
 
-								<TableCell>{row.type}</TableCell>
-								<TableCell>{row.status}</TableCell>
+								<TableCell>
+									<CustomSelect
+										value={row.type}
+										userId={row.id}
+										items={[
+											{
+												label: 'Admin',
+												value: 'admin',
+											},
+											{
+												label: 'Staff',
+												value: 'staff',
+											},
+											{
+												label: 'Super Admin',
+												value: 'super-admin',
+											},
+										]}
+									/>
+								</TableCell>
+								<TableCell
+									className="pointer"
+									onClick={toggleStatus(row.id, row.status)}
+								>
+									<Tooltip
+										title="Toggle"
+										placement="left-start"
+									>
+										<Box>{row.status}</Box>
+									</Tooltip>
+								</TableCell>
 
 								<TableCell align="right">
 									<Box
@@ -167,6 +209,7 @@ function Orders({
 												<EditIcon
 													style={{
 														color: green[500],
+														marginRight: '0.5rem',
 													}}
 													onClick={() =>
 														history.push(
@@ -215,6 +258,8 @@ const mapDispatchToProps = (dispatch) => ({
 	fetchAllAdminsStart: () => dispatch(fetchAllAdminsStart()),
 	removeAdmin: (adminId, callback) =>
 		dispatch(removeAdmin({ adminId, callback })),
+	toggleAdminInfo: (admin, adminId, callback) =>
+		dispatch(toggleAdminInfo({ admin, adminId, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Orders);
