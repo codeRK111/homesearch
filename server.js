@@ -11,6 +11,7 @@ process.on('uncaughtException', (error) => {
 dotenv.config({ path: './config.env' });
 
 const db = process.env.REMOTE_DATABASE_URL;
+console.log(process.env.NODE_ENV);
 
 mongoose
 	.connect(db, {

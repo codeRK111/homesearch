@@ -177,7 +177,7 @@ function Orders({
 								<TableCell width="6%">{row.name}</TableCell>
 								<TableCell width="6%">
 									<img
-										src={`http://127.0.0.1:5000/profile/${row.photo}`}
+										src={`/profile/${row.photo}`}
 										alt="user"
 										height="100px"
 										width="100px"
