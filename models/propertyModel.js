@@ -1,13 +1,29 @@
 const mongoose = require('mongoose');
 
 const { Schema, model } = mongoose;
-const flatSchema = new Schema(
+const propertySchema = new Schema(
 	{
 		for: {
 			type: String,
 			enum: {
 				values: ['rent', 'resale'],
 				message: 'for must be between <rent> | <resale> ',
+			},
+			required: true,
+		},
+		type: {
+			type: String,
+			enum: {
+				values: [
+					'flat',
+					'independenthouse',
+					'hostel',
+					'pg',
+					'guesthouse',
+					'serviceapartment',
+				],
+				message:
+					'type must be between <flat> | <independenthouse> | <hostel> |<pg> |<guesthouse> |<serviceapartment>',
 			},
 			required: true,
 		},
@@ -23,9 +39,21 @@ const flatSchema = new Schema(
 		},
 		numberOfBedRooms: {
 			type: Number,
-			required: [true, 'Please specify number of bed rooms'],
 		},
-		toilets: [
+		numberOfOccupants: {
+			type: Number,
+		},
+		numberOfRoomMates: {
+			type: Number,
+		},
+		typeOfToilets: {
+			type: String,
+			enum: {
+				values: ['attached', 'common'],
+				message: 'for must be between <attached> | <common> ',
+			},
+		},
+		toiletTypes: [
 			{
 				toiletType: {
 					type: String,
@@ -44,7 +72,30 @@ const flatSchema = new Schema(
 		],
 		numberOfBalconies: {
 			type: Number,
-			required: [true, 'Please specify number of balconies'],
+		},
+		superBuiltupArea: {
+			type: Number,
+		},
+		carpetArea: {
+			type: Number,
+		},
+		rent: {
+			type: Number,
+		},
+		area: {
+			type: Number,
+		},
+		securityDeposit: {
+			type: Number,
+		},
+		floor: {
+			type: String,
+		},
+		noOfFloors: {
+			type: Number,
+		},
+		isBalcony: {
+			type: Boolean,
 		},
 		furnished: {
 			type: String,
@@ -53,12 +104,45 @@ const flatSchema = new Schema(
 				message:
 					'furnished must be between <unfurnished> | <furnished> | <semifurnished> ',
 			},
-			required: true,
 		},
 		furnishes: [
 			{
 				type: mongoose.Schema.ObjectId,
 				ref: 'Furnish',
+			},
+		],
+		kitchen: [
+			{
+				type: mongoose.Schema.ObjectId,
+				ref: 'Furnish',
+			},
+		],
+		fooding: [
+			{
+				type: String,
+				enum: {
+					values: ['veg', 'nonveg', 'none'],
+				},
+			},
+		],
+		foodSchedule: [
+			{
+				type: String,
+				enum: {
+					values: [
+						'bedtea',
+						'breakfast',
+						'lunch',
+						'evngsnacks',
+						'dinner',
+					],
+				},
+			},
+		],
+		otherAmenties: [
+			{
+				type: mongoose.Schema.ObjectId,
+				ref: 'Amenity',
 			},
 		],
 		externalAmenities: [
@@ -67,6 +151,12 @@ const flatSchema = new Schema(
 				ref: 'Amenity',
 			},
 		],
+		noticePeriod: {
+			type: String,
+		},
+		restrictions: {
+			type: String,
+		},
 		distanceSchool: {
 			type: Number,
 		},
@@ -113,6 +203,7 @@ const flatSchema = new Schema(
 		userId: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
+			required: true,
 		},
 		description: {
 			type: String,
@@ -125,9 +216,22 @@ const flatSchema = new Schema(
 				type: String,
 			},
 		],
+		status: {
+			type: String,
+			enum: {
+				values: ['active', 'inactive'],
+			},
+			default: 'inactive',
+		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-const FlatModel = model('Flat', flatSchema);
-module.exports = FlatModel;
+propertySchema.index({
+	status: 1,
+	city: 1,
+	type: 1,
+});
+
+const PropertyModel = model('Property', propertySchema);
+module.exports = PropertyModel;

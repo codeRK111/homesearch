@@ -1,17 +1,18 @@
 const express = require('express');
-// const userController = require('./../controllers/userController');
-const cityController = require('../controllers/cityController');
+const propertyController = require('../controllers/propertyController');
 
 const router = express.Router();
 
-router.route('/').get(cityController.getAllCities).post(cityController.addCity);
-router.route('/states').get(cityController.getAllStates);
-router.route('/states/:name').get(cityController.getCitiesOfAState);
+router.route('/').post(propertyController.addProperty);
 
-// router
-//   .route('/:id')
-//   .get(userController.getUser)
-//   .patch(userController.updateUser)
-//   .delete(userController.deleteUser);
+router
+	.route('/furnishes')
+	.get(propertyController.getFurnishes)
+	.post(propertyController.addFurnish);
+
+router
+	.route('/amenities')
+	.get(propertyController.getAmenities)
+	.post(propertyController.addAmenity);
 
 module.exports = router;

@@ -6,6 +6,14 @@ const amenitiesSchema = new Schema(
 		name: {
 			type: String,
 			required: [true, 'A name must be required'],
+			unique: true,
+		},
+		type: {
+			type: String,
+			enum: {
+				values: ['internal', 'external'],
+			},
+			default: 'external',
 		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }

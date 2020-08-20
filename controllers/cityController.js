@@ -2,6 +2,7 @@
 // const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const City = require('./../models/cityModel');
+const Location = require('./../models/locationModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const sendOtpMessage = require('../utils/sendOtp');
@@ -64,4 +65,31 @@ exports.addCity = catchAsync(async (req, res, next) => {
 	});
 
 	res.status(201).json(newCity);
+});
+
+exports.addLocation = catchAsync(async (req, res, next) => {
+	const location = await Location.create({
+		name: req.body.name,
+		city: req.body.city,
+	});
+
+	res.status(201).json({
+		status: 'success',
+		data: {
+			location,
+		},
+	});
+});
+
+exports.getLocations = catchAsync(async (req, res, next) => {
+	const locations = await Location.find({
+		city: req.params.cityId,
+	});
+
+	res.status(201).json({
+		status: 'success',
+		data: {
+			locations,
+		},
+	});
 });
