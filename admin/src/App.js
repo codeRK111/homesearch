@@ -12,6 +12,8 @@ import EditAdmin from './components/editAdmin/editAdmin.component';
 import AddAdmin from './components/addAdmin/addAdmin.component';
 import AdminPage from './pages/admins/admins.component';
 import Authentication from './pages/authpage/authentication.component';
+import AddProperty from './pages/addProperty/addProperty.component';
+import ActiveProperties from './pages/properties/properties.component';
 // components
 import Drawer from './components/drawer/drawer.component';
 // import Authenticated from './components/protected/protected.component';
@@ -24,6 +26,8 @@ const EditAdminsPageWithDrawer = Drawer(EditAdmin);
 const AdminPageWithDrawer = Drawer(AdminPage);
 const AddAdminPageWithDrawer = Drawer(AddAdmin);
 const AuthenticationPageWithDrawer = Drawer(Authentication);
+const AddPropertyWithDrawer = Drawer(AddProperty);
+const ActivePropertiesWithDrawer = Drawer(ActiveProperties);
 
 // import { Switch, Route, Redirect } from "react-router-dom";
 // import { connect } from "react-redux";
@@ -74,6 +78,16 @@ function App(props) {
 					exact
 					path="/authentication"
 					render={() => <AuthenticationPageWithDrawer {...props} />}
+				/>
+				<Route
+					exact
+					path="/addProperty"
+					render={() => <AddPropertyWithDrawer {...props} />}
+				/>
+				<Route
+					exact
+					path="/activeProperties"
+					render={() => <ActivePropertiesWithDrawer {...props} />}
 				/>
 			</Switch>
 		</div>

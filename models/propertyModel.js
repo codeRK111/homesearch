@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const moment = require('moment');
 const { Schema, model } = mongoose;
 const propertySchema = new Schema(
 	{
@@ -9,6 +9,10 @@ const propertySchema = new Schema(
 				values: ['rent', 'resale'],
 				message: 'for must be between <rent> | <resale> ',
 			},
+			required: true,
+		},
+		title: {
+			type: String,
 			required: true,
 		},
 		type: {
@@ -200,10 +204,24 @@ const propertySchema = new Schema(
 			type: Date,
 			default: Date.now(),
 		},
+		expiresAt: {
+			type: Date,
+		},
+		createdBy: {
+			type: String,
+			enum: {
+				values: ['admin', 'user'],
+				message: 'Missing createdBy should be between <admin> | <user>',
+			},
+			required: true,
+		},
 		userId: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
-			required: true,
+		},
+		adminId: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Admin',
 		},
 		description: {
 			type: String,
@@ -219,9 +237,9 @@ const propertySchema = new Schema(
 		status: {
 			type: String,
 			enum: {
-				values: ['active', 'inactive'],
+				values: ['active', 'expired', 'underScreening'],
 			},
-			default: 'inactive',
+			default: 'active',
 		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
@@ -231,6 +249,36 @@ propertySchema.index({
 	status: 1,
 	city: 1,
 	type: 1,
+});
+
+propertySchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'furnishes',
+		select: 'id name type',
+	})
+		.populate({
+			path: 'externalAmenities',
+			select: 'id name type',
+		})
+		.populate({
+			path: 'otherAmenities',
+			select: 'id name type',
+		})
+		.populate('location')
+		.populate({
+			path: 'userId',
+			select:
+				'-city -googleId -photoStatus -createdAt -paymentStatus -email -serialNumber -gender -createdBy -registerThrough -registerVia -passwordChangedAt -__v -photo',
+		})
+		.populate('city');
+	next();
+});
+
+propertySchema.pre('save', function (next) {
+	if (this.status === 'active') {
+		this.expiresAt = moment().add(60, 'days');
+	}
+	next();
 });
 
 const PropertyModel = model('Property', propertySchema);

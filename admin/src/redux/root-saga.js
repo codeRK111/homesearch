@@ -3,6 +3,7 @@ import { userSagas } from './user/user.saga';
 import { usersSagas } from './users/users.saga';
 import { citySagas } from './city/city.saga';
 import { adminsSagas } from './admins/admins.saga';
+import { propertySagas } from './property/property.saga';
 
 export default function* () {
 	yield all([
@@ -10,5 +11,6 @@ export default function* () {
 		call(usersSagas),
 		call(citySagas),
 		call(adminsSagas),
+		call(propertySagas),
 	]);
 }

@@ -1,5 +1,8 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const Agenda = require('agenda');
+const Property = require('./models/propertyModel');
+const moment = require('moment');
 
 // HANDLE GLOBAL UNHANDLED EXCEPTION
 process.on('uncaughtException', (error) => {
@@ -10,11 +13,11 @@ process.on('uncaughtException', (error) => {
 
 dotenv.config({ path: './config.env' });
 
-const db = process.env.REMOTE_DATABASE_URL;
-console.log(process.env.NODE_ENV);
+const dbString = process.env.REMOTE_DATABASE_URL;
+const agenda = new Agenda({ db: { address: dbString } });
 
 mongoose
-	.connect(db, {
+	.connect(dbString, {
 		useCreateIndex: true,
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
@@ -24,6 +27,20 @@ mongoose
 		console.log('DB connected');
 	})
 	.catch((err) => console.log(err));
+
+agenda.define('handleExpired', async (job) => {
+	await Property.updateMany(
+		{
+			expiresAt: { $lte: moment() },
+		},
+		{ status: 'expired' }
+	);
+});
+
+(async function () {
+	await agenda.start();
+	await agenda.every('24 hours', 'handleExpired');
+})();
 
 const app = require('./app');
 

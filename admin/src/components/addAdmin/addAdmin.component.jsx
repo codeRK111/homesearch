@@ -66,8 +66,8 @@ const EditUser = ({
 		ableToSee: [],
 		type: '',
 	});
-	const [cityLoading, setCityLoading] = React.useState(false);
 	const [fetchAdminError, setFetchAdminError] = React.useState(null);
+	const [cityLoading, setCityLoading] = React.useState(false);
 	const [cities, setCities] = React.useState([]);
 	const [file, setFile] = React.useState('');
 	const handleFileChange = (event) => {
@@ -480,9 +480,9 @@ const EditUser = ({
 
 const mapStateToProps = createStructuredSelector({
 	allStates: selectAllStates,
+	stateLoading,
 	addLoading: selectAddAdminLoading,
 	addError: selectAddAdminError,
-	stateLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
