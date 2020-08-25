@@ -3,6 +3,7 @@ import { PropertyActionTypes } from './property.types';
 const INITIAL_STATE = {
 	furnishes: [],
 	amenities: [],
+	properties: [],
 	loading: false,
 };
 
@@ -12,6 +13,11 @@ const cityReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				furnishes: action.payload,
+			};
+		case PropertyActionTypes.SET_PROPERTIES:
+			return {
+				...state,
+				properties: action.payload,
 			};
 		case PropertyActionTypes.SET_AMENITIES:
 			return {

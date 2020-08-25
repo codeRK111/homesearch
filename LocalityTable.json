@@ -1,0 +1,362 @@
+[
+	{ "LocalityID": "1", "LocalityName": "Anugul Town", "City": "Anugul" },
+	{ "LocalityID": "2", "LocalityName": "Gopalpur", "City": "Anugul" },
+	{ "LocalityID": "3", "LocalityName": "Talcher", "City": "Anugul" },
+	{ "LocalityID": "4", "LocalityName": "Balasore", "City": "Balasore" },
+	{ "LocalityID": "5", "LocalityName": "Chandipur", "City": "Balasore" },
+	{
+		"LocalityID": "6",
+		"LocalityName": "Bargarh District",
+		"City": "Bargarh"
+	},
+	{ "LocalityID": "7", "LocalityName": "Baripada Dist.", "City": "Baripada" },
+	{ "LocalityID": "8", "LocalityName": "Baripada Town", "City": "Baripada" },
+	{ "LocalityID": "9", "LocalityName": "Amba Market", "City": "Berhampur" },
+	{ "LocalityID": "10", "LocalityName": "Bara Bazaar", "City": "Berhampur" },
+	{
+		"LocalityID": "11",
+		"LocalityName": "Chinna Bazaar",
+		"City": "Berhampur"
+	},
+	{ "LocalityID": "12", "LocalityName": "Courtpeta", "City": "Berhampur" },
+	{
+		"LocalityID": "13",
+		"LocalityName": "Engineering School",
+		"City": "Berhampur"
+	},
+	{ "LocalityID": "14", "LocalityName": "Gandhinagar", "City": "Berhampur" },
+	{ "LocalityID": "15", "LocalityName": "Giri Market", "City": "Berhampur" },
+	{ "LocalityID": "16", "LocalityName": "Haladiapadar", "City": "Berhampur" },
+	{
+		"LocalityID": "17",
+		"LocalityName": "Hanuman Bazaar",
+		"City": "Berhampur"
+	},
+	{ "LocalityID": "18", "LocalityName": "Hilpatna", "City": "Berhampur" },
+	{
+		"LocalityID": "19",
+		"LocalityName": "Kalinga Nagar",
+		"City": "Berhampur"
+	},
+	{
+		"LocalityID": "20",
+		"LocalityName": "Khallikote College Junction",
+		"City": "Berhampur"
+	},
+	{ "LocalityID": "21", "LocalityName": "Komapalli", "City": "Berhampur" },
+	{
+		"LocalityID": "22",
+		"LocalityName": "Medical College",
+		"City": "Berhampur"
+	},
+	{
+		"LocalityID": "23",
+		"LocalityName": "Old Bus Stand",
+		"City": "Berhampur"
+	},
+	{ "LocalityID": "24", "LocalityName": "Prem Nagar", "City": "Berhampur" },
+	{
+		"LocalityID": "25",
+		"LocalityName": "Somnath Nagar",
+		"City": "Berhampur"
+	},
+	{ "LocalityID": "26", "LocalityName": "Bhadrakh Town", "City": "Bhadrakh" },
+	{ "LocalityID": "27", "LocalityName": "Mangalpur", "City": "Bhadrakh" },
+	{
+		"LocalityID": "28",
+		"LocalityName": "Bhawanipatna Town",
+		"City": "Bhawanipatna"
+	},
+	{
+		"LocalityID": "29",
+		"LocalityName": "Kalahandi Dist",
+		"City": "Bhawanipatna"
+	},
+	{
+		"LocalityID": "30",
+		"LocalityName": "Ashok Nagar",
+		"City": "Bhubaneswar"
+	},
+	{
+		"LocalityID": "31",
+		"LocalityName": "Bapuji Nagar",
+		"City": "Bhubaneswar"
+	},
+	{ "LocalityID": "32", "LocalityName": "Baramunda", "City": "Bhubaneswar" },
+	{
+		"LocalityID": "33",
+		"LocalityName": "Bhima Tangi",
+		"City": "Bhubaneswar"
+	},
+	{ "LocalityID": "34", "LocalityName": "C.S.Pur", "City": "Bhubaneswar" },
+	{ "LocalityID": "35", "LocalityName": "Chandaka", "City": "Bhubaneswar" },
+	{
+		"LocalityID": "36",
+		"LocalityName": "Cuttack Road",
+		"City": "Bhubaneswar"
+	},
+	{
+		"LocalityID": "37",
+		"LocalityName": "Forest Park",
+		"City": "Bhubaneswar"
+	},
+	{
+		"LocalityID": "38",
+		"LocalityName": "IRC Village",
+		"City": "Bhubaneswar"
+	},
+	{ "LocalityID": "39", "LocalityName": "Jagmara", "City": "Bhubaneswar" },
+	{ "LocalityID": "40", "LocalityName": "Janpath", "City": "Bhubaneswar" },
+	{
+		"LocalityID": "41",
+		"LocalityName": "Jaydev Vihar",
+		"City": "Bhubaneswar"
+	},
+	{
+		"LocalityID": "42",
+		"LocalityName": "Kalpana Square",
+		"City": "Bhubaneswar"
+	},
+	{
+		"LocalityID": "43",
+		"LocalityName": "Khandagiri Square",
+		"City": "Bhubaneswar"
+	},
+	{
+		"LocalityID": "44",
+		"LocalityName": "Kharvel Nagar",
+		"City": "Bhubaneswar"
+	},
+	{ "LocalityID": "45", "LocalityName": "Lewis Road", "City": "Bhubaneswar" },
+	{ "LocalityID": "46", "LocalityName": "Nayapalli", "City": "Bhubaneswar" },
+	{ "LocalityID": "47", "LocalityName": "Pahala", "City": "Bhubaneswar" },
+	{ "LocalityID": "48", "LocalityName": "Palasuni", "City": "Bhubaneswar" },
+	{
+		"LocalityID": "49",
+		"LocalityName": "Pallaspalli",
+		"City": "Bhubaneswar"
+	},
+	{ "LocalityID": "50", "LocalityName": "Patia", "City": "Bhubaneswar" },
+	{ "LocalityID": "51", "LocalityName": "Pokhariput", "City": "Bhubaneswar" },
+	{
+		"LocalityID": "52",
+		"LocalityName": "Rasulgarh Square",
+		"City": "Bhubaneswar"
+	},
+	{
+		"LocalityID": "53",
+		"LocalityName": "Sahid Nagar",
+		"City": "Bhubaneswar"
+	},
+	{
+		"LocalityID": "54",
+		"LocalityName": "Sailashree Vihar",
+		"City": "Bhubaneswar"
+	},
+	{
+		"LocalityID": "55",
+		"LocalityName": "Samantrapur",
+		"City": "Bhubaneswar"
+	},
+	{
+		"LocalityID": "56",
+		"LocalityName": "Satya Nagar",
+		"City": "Bhubaneswar"
+	},
+	{
+		"LocalityID": "57",
+		"LocalityName": "Surya Nagar",
+		"City": "Bhubaneswar"
+	},
+	{ "LocalityID": "58", "LocalityName": "Tamando", "City": "Bhubaneswar" },
+	{ "LocalityID": "59", "LocalityName": "Tankapani", "City": "Bhubaneswar" },
+	{ "LocalityID": "60", "LocalityName": "Unit-8", "City": "Bhubaneswar" },
+	{ "LocalityID": "61", "LocalityName": "Unit-4", "City": "Bhubaneswar" },
+	{ "LocalityID": "62", "LocalityName": "(other)", "City": "Bhubaneswar" },
+	{
+		"LocalityID": "63",
+		"LocalityName": "Bolangir District",
+		"City": "Bolangir"
+	},
+	{ "LocalityID": "64", "LocalityName": "Bolangir Town", "City": "Bolangir" },
+	{ "LocalityID": "65", "LocalityName": "Badambadi", "City": "Cuttack" },
+	{ "LocalityID": "66", "LocalityName": "Bailish Mouza", "City": "Cuttack" },
+	{
+		"LocalityID": "67",
+		"LocalityName": "Bajrakbati Road",
+		"City": "Cuttack"
+	},
+	{ "LocalityID": "68", "LocalityName": "Balu Bazaar", "City": "Cuttack" },
+	{ "LocalityID": "69", "LocalityName": "Bidanasi", "City": "Cuttack" },
+	{ "LocalityID": "70", "LocalityName": "Bidyadharpur", "City": "Cuttack" },
+	{ "LocalityID": "71", "LocalityName": "Buxi Bazaar", "City": "Cuttack" },
+	{
+		"LocalityID": "72",
+		"LocalityName": "Cantonment Road",
+		"City": "Cuttack"
+	},
+	{ "LocalityID": "73", "LocalityName": "Chandikhol", "City": "Cuttack" },
+	{ "LocalityID": "74", "LocalityName": "Choudwar", "City": "Cuttack" },
+	{
+		"LocalityID": "75",
+		"LocalityName": "Chowdhury Bazaar",
+		"City": "Cuttack"
+	},
+	{ "LocalityID": "76", "LocalityName": "Daragha Bazaar", "City": "Cuttack" },
+	{ "LocalityID": "77", "LocalityName": "Dewlasahi", "City": "Cuttack" },
+	{ "LocalityID": "78", "LocalityName": "Dhenkanal", "City": "Cuttack" },
+	{ "LocalityID": "79", "LocalityName": "Gandarpur", "City": "Cuttack" },
+	{ "LocalityID": "80", "LocalityName": "Gopalpur", "City": "Cuttack" },
+	{ "LocalityID": "81", "LocalityName": "Jagatpur", "City": "Cuttack" },
+	{ "LocalityID": "82", "LocalityName": "JOBRA", "City": "Cuttack" },
+	{ "LocalityID": "83", "LocalityName": "Khan Nagar", "City": "Cuttack" },
+	{ "LocalityID": "84", "LocalityName": "Link Road", "City": "Cuttack" },
+	{ "LocalityID": "85", "LocalityName": "Madhupatna", "City": "Cuttack" },
+	{ "LocalityID": "86", "LocalityName": "Mahatab Road", "City": "Cuttack" },
+	{ "LocalityID": "87", "LocalityName": "Mangalabag", "City": "Cuttack" },
+	{ "LocalityID": "88", "LocalityName": "Maya Bazaar", "City": "Cuttack" },
+	{
+		"LocalityID": "89",
+		"LocalityName": "Mohanmadia Bazaar",
+		"City": "Cuttack"
+	},
+	{ "LocalityID": "90", "LocalityName": "Naya Bazaar", "City": "Cuttack" },
+	{ "LocalityID": "91", "LocalityName": "OMP Line", "City": "Cuttack" },
+	{ "LocalityID": "92", "LocalityName": "Rajendra Nagar", "City": "Cuttack" },
+	{ "LocalityID": "93", "LocalityName": "Ranihat", "City": "Cuttack" },
+	{ "LocalityID": "94", "LocalityName": "Salepur", "City": "Cuttack" },
+	{ "LocalityID": "95", "LocalityName": "Shikharpur", "City": "Cuttack" },
+	{ "LocalityID": "96", "LocalityName": "Sutahat", "City": "Cuttack" },
+	{ "LocalityID": "97", "LocalityName": "Telenga Bazaar", "City": "Cuttack" },
+	{
+		"LocalityID": "98",
+		"LocalityName": "Tinikonia Bagicha",
+		"City": "Cuttack"
+	},
+	{ "LocalityID": "99", "LocalityName": "Tulsipur", "City": "Cuttack" },
+	{
+		"LocalityID": "100",
+		"LocalityName": "Dhenkanal District",
+		"City": "Dhenkanal"
+	},
+	{
+		"LocalityID": "101",
+		"LocalityName": "Dhenkanal Town",
+		"City": "Dhenkanal"
+	},
+	{
+		"LocalityID": "102",
+		"LocalityName": "Jajpur District",
+		"City": "Jajpur"
+	},
+	{ "LocalityID": "103", "LocalityName": "Jajpur Town", "City": "Jajpur" },
+	{ "LocalityID": "104", "LocalityName": "Jeypur Town", "City": "Jeypur" },
+	{
+		"LocalityID": "105",
+		"LocalityName": "Koraput District",
+		"City": "Jeypur"
+	},
+	{
+		"LocalityID": "106",
+		"LocalityName": "Jharsuguda District",
+		"City": "Jharsuguda"
+	},
+	{
+		"LocalityID": "107",
+		"LocalityName": "Kendrapara District",
+		"City": "Kendrapara"
+	},
+	{
+		"LocalityID": "108",
+		"LocalityName": "Kendrapara Town",
+		"City": "Kendrapara"
+	},
+	{
+		"LocalityID": "109",
+		"LocalityName": "Keonjhar District",
+		"City": "Keonjhar"
+	},
+	{
+		"LocalityID": "110",
+		"LocalityName": "Keonjhar Town",
+		"City": "Keonjhar"
+	},
+	{
+		"LocalityID": "111",
+		"LocalityName": "Khudha District",
+		"City": "Khudha"
+	},
+	{ "LocalityID": "112", "LocalityName": "Khudha Town", "City": "Khudha" },
+	{ "LocalityID": "113", "LocalityName": "Mayurbhanj", "City": "Mayurbhanj" },
+	{ "LocalityID": "114", "LocalityName": "Phulwani", "City": "Mayurbhanj" },
+	{
+		"LocalityID": "115",
+		"LocalityName": "Nabarangpur District",
+		"City": "Nabarangpur"
+	},
+	{
+		"LocalityID": "116",
+		"LocalityName": "Nayagarh District",
+		"City": "Nayagarh"
+	},
+	{
+		"LocalityID": "117",
+		"LocalityName": "Jagatsinghpur",
+		"City": "Paradeep"
+	},
+	{ "LocalityID": "118", "LocalityName": "Paradeep", "City": "Paradeep" },
+	{
+		"LocalityID": "119",
+		"LocalityName": "Chakra Tirtha Road",
+		"City": "Puri"
+	},
+	{ "LocalityID": "120", "LocalityName": "Konark", "City": "Puri" },
+	{ "LocalityID": "121", "LocalityName": "Nimapura", "City": "Puri" },
+	{ "LocalityID": "122", "LocalityName": "Pipli", "City": "Puri" },
+	{ "LocalityID": "123", "LocalityName": "Puri Town", "City": "Puri" },
+	{ "LocalityID": "124", "LocalityName": "Sakhigopal", "City": "Puri" },
+	{ "LocalityID": "125", "LocalityName": "Sarbodaya Road", "City": "Puri" },
+	{ "LocalityID": "126", "LocalityName": "Sea Beach", "City": "Puri" },
+	{
+		"LocalityID": "127",
+		"LocalityName": "Rayagada District",
+		"City": "Rayagada"
+	},
+	{
+		"LocalityID": "128",
+		"LocalityName": "Rourkela Town",
+		"City": "Rourkela"
+	},
+	{
+		"LocalityID": "129",
+		"LocalityName": "Sundargarh District",
+		"City": "Rourkela"
+	},
+	{
+		"LocalityID": "130",
+		"LocalityName": "Sambalpur District",
+		"City": "Sambalpur"
+	},
+	{
+		"LocalityID": "131",
+		"LocalityName": "Sambalpur Town",
+		"City": "Sambalpur"
+	},
+	{ "LocalityID": "132", "LocalityName": "Bargarh Town", "City": "Bargarh" },
+	{
+		"LocalityID": "133",
+		"LocalityName": "Jharsuguda Town",
+		"City": "Jharsuguda"
+	},
+	{
+		"LocalityID": "134",
+		"LocalityName": "Nabarangpur Town",
+		"City": "Nabarangpur"
+	},
+	{
+		"LocalityID": "135",
+		"LocalityName": "Nayagarh Town",
+		"City": "Nayagarh"
+	},
+	{ "LocalityID": "136", "LocalityName": "Rayagada Town", "City": "Rayagada" }
+]

@@ -1,11 +1,8 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import AdminTable from '../../components/adminTable/adminTable.component';
-import ProductTable from '../../components/productTable/productTable.component';
-import Button from '@material-ui/core/Button';
+import CityTable from '../../components/cityTable/cityTable.component';
 import { useHistory } from 'react-router-dom';
-import AddIcon from '@material-ui/icons/Add';
 
 const Admin = () => {
 	const history = useHistory();
@@ -28,8 +25,8 @@ const Admin = () => {
 				</Box>
 				<Paper>
 					<Box p="1rem">
-						<h3>Active properties</h3>
-						<ProductTable />
+						<h3>Cities</h3>
+						<CityTable />
 					</Box>
 				</Paper>
 			</Box>

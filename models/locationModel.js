@@ -16,5 +16,10 @@ const locationSchema = new Schema(
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+locationSchema.pre(/^find/, function (next) {
+	this.populate('city');
+	next();
+});
+
 const LocationModel = model('Location', locationSchema);
 module.exports = LocationModel;

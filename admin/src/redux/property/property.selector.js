@@ -10,6 +10,10 @@ export const selectAmenities = createSelector(
 	[selectProperty],
 	(c) => c.amenities
 );
+export const selectProperties = createSelector(
+	[selectProperty],
+	(c) => c.properties
+);
 export const selectLoading = createSelector([selectProperty], (c) => c.loading);
 
 // export const selectLoading = createSelector(

@@ -36,7 +36,7 @@ exports.getAllStates = catchAsync(async (req, res, next) => {
 });
 
 exports.getCitiesOfAState = catchAsync(async (req, res, next) => {
-	const cities = await City.find({ state: req.params.name });
+	const cities = await City.find({ state: req.params.name }).sort('name');
 	res.status(200).json({
 		status: 'success',
 		count: cities.length,
@@ -84,7 +84,7 @@ exports.addLocation = catchAsync(async (req, res, next) => {
 exports.getLocations = catchAsync(async (req, res, next) => {
 	const locations = await Location.find({
 		city: req.params.cityId,
-	});
+	}).sort('name');
 
 	res.status(201).json({
 		status: 'success',

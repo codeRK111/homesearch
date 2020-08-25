@@ -5,24 +5,24 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { green, red } from '@material-ui/core/colors';
-import Tooltip from '@material-ui/core/Tooltip';
-import AlertDialogue from '../alertDialogue/alertDialogue.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
-	selectProperties,
-	selectLoading,
-} from '../../redux/property/property.selector';
-import { fetchProperties } from '../../redux/property/property.actions';
+	selectCityLoading as cityLoading,
+	selectLoading as stateLoading,
+	selectAllStates as allStates,
+} from '../../redux/city/city.selector';
+import {
+	fetchAllStatesStart as fetchStates,
+	fetchCitiesStart as fetchCities,
+} from '../../redux/city/city.actions';
 import Box from '@material-ui/core/Box';
 import { useHistory, Link } from 'react-router-dom';
-import CustomSelect from './select.component';
 import moment from 'moment';
+import Select from '../select/select.component';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -53,28 +53,79 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function Orders({ fetchProperties, allProperties, loading }) {
+function Orders({
+	cityLoading,
+	stateLoading,
+	allStates,
+	fetchStates,
+	fetchCities,
+}) {
 	const history = useHistory();
-	const hnadleProperties = (status, data = null) => {
-		console.log(status);
-		console.log(data);
+	const [state, selectState] = React.useState('');
+	const [cities, setCities] = React.useState([]);
+	const [asyncError, setAsyncError] = React.useState('');
+	const responseHandler = (type, data) => {
+		if (type === 'success') {
+			console.log(data);
+			setCities(data.cities);
+			setAsyncError('');
+		} else {
+			setAsyncError(data);
+		}
 	};
 	React.useEffect(() => {
-		fetchProperties(hnadleProperties);
+		fetchStates();
 	}, []);
+	React.useEffect(() => {
+		if (state) {
+			fetchCities(state, responseHandler);
+		}
+	}, [state]);
 
 	const classes = useStyles();
+
+	const handleState = (e) => {
+		selectState(e.target.value);
+	};
 
 	return (
 		<React.Fragment>
 			<Backdrop
 				className={classes.backdrop}
-				open={allProperties.length === 0 && loading}
+				open={cityLoading}
 				// onClick={handleClose}
 			>
-				loading...
+				loading cities...
 			</Backdrop>
-
+			<Backdrop
+				className={classes.backdrop}
+				open={allStates.length === 0 && stateLoading}
+				// onClick={handleClose}
+			>
+				loading states...
+			</Backdrop>
+			<p className="color-red">{asyncError}</p>
+			<Grid container>
+				<Grid item xs={12} md={12} lg={6}>
+					<Grid container spacing={1}>
+						<Grid item xs={12} md={12} lg={6}>
+							<Box mb="1rem">
+								<Select
+									label="State"
+									helperText="Select a state to view cities"
+									name="state"
+									value={state}
+									onChange={handleState}
+									menuItems={allStates.map((c) => ({
+										value: c,
+										label: c,
+									}))}
+								/>
+							</Box>
+						</Grid>
+					</Grid>
+				</Grid>
+			</Grid>
 			<div className={classes.tableWrapper}>
 				{/* <p className={classes.colorRed}>{error}</p> */}
 				<Table size="medium">
@@ -88,30 +139,12 @@ function Orders({ fetchProperties, allProperties, loading }) {
 								SL no
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
-								Title
+								Name
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
-								For
-							</TableCell>
-							<TableCell style={{ color: '#ffffff' }}>
-								Type
-							</TableCell>
-							<TableCell style={{ color: '#ffffff' }}>
-								City
+								State
 							</TableCell>
 
-							<TableCell style={{ color: '#ffffff' }}>
-								Location
-							</TableCell>
-							<TableCell style={{ color: '#ffffff' }}>
-								Status
-							</TableCell>
-							<TableCell style={{ color: '#ffffff' }}>
-								User
-							</TableCell>
-							<TableCell style={{ color: '#ffffff' }}>
-								Posted on
-							</TableCell>
 							<TableCell
 								align="right"
 								style={{ color: '#ffffff' }}
@@ -121,48 +154,33 @@ function Orders({ fetchProperties, allProperties, loading }) {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{allProperties.map((c, i) => (
+						{cities.map((c, i) => (
 							<TableRow key={i}>
 								<TableCell>{i + 1}</TableCell>
-								<TableCell>{c.title}</TableCell>
-								<TableCell>{c.for}</TableCell>
-								<TableCell>{c.type}</TableCell>
-								<TableCell>{c.city.name}</TableCell>
-
-								<TableCell>{c.location.name}</TableCell>
-								<TableCell>{c.status}</TableCell>
-								<TableCell>{c.userId.name}</TableCell>
-								<TableCell>
-									{`${moment(c.createdAt, 'YYYY-MM-DD')}`}
-								</TableCell>
+								<TableCell>{c.name}</TableCell>
+								<TableCell>{c.state}</TableCell>
 								<TableCell align="right">
-									<Link
-										to={`/properties/editProperties/${c.id}`}
-									>
-										Edit
-									</Link>
+									<Link to={`/cities`}>Edit</Link>
 								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
 				</Table>
 			</div>
-			<div className={classes.seeMore}>
-				<Link color="primary" href="#" onClick={preventDefault}>
-					{/* See more orders */}
-				</Link>
-			</div>
 		</React.Fragment>
 	);
 }
 
 const mapStateToProps = createStructuredSelector({
-	allProperties: selectProperties,
-	loading: selectLoading,
+	cityLoading,
+	stateLoading,
+	allStates,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchProperties: (callback) => dispatch(fetchProperties({ callback })),
+	fetchStates: () => dispatch(fetchStates()),
+	fetchCities: (state, callback) =>
+		dispatch(fetchCities({ state, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Orders);

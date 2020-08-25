@@ -21,7 +21,7 @@ router
 	.get(propertyController.getAmenities)
 	.post(propertyController.addAmenity);
 
-router.patch('/upload-images/:id', propertyController.addPropertyImage);
+router.post('/upload-images/:id', propertyController.addPropertyImage);
 router.get('/get-property-resources', propertyController.getPropertyResources);
 
 module.exports = router;

@@ -5,6 +5,7 @@ import {
 	setAllAmenities,
 	setAllFurnishes,
 	toggleLoading,
+	setAllProperties,
 } from './property.actions';
 
 function* getPropertyResources({ payload: { callback } }) {
@@ -48,6 +49,25 @@ function* addProperty({ payload: { property, callback } }) {
 			yield put(toggleLoading(false));
 			console.log(responseData);
 		} else {
+			if (property.image) {
+				console.log(property.image);
+				var formData = new FormData();
+				for (let index = 0; index < property.image.length; index++) {
+					formData.append('image', property.image[index]);
+				}
+				console.log(responseData);
+				const imageResponse = yield axios.post(
+					`/api/v1/properties/upload-images/${responseData.data.property.id}`,
+					formData,
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					}
+				);
+
+				console.log(imageResponse.data);
+			}
 			yield put(toggleLoading(false));
 			callback('success');
 		}
@@ -57,6 +77,28 @@ function* addProperty({ payload: { property, callback } }) {
 		callback('fail', errorResponse);
 	}
 	// console.log({ email, password });
+}
+
+export function* getProperties({ payload: { callback } }) {
+	try {
+		yield put(toggleLoading(true));
+		let url = `/api/v1/properties`;
+		const response = yield axios.get(url);
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(toggleLoading(false));
+			console.log(responseData);
+		} else {
+			yield put(toggleLoading(false));
+			yield put(setAllProperties(responseData.data.properties));
+			callback('success');
+		}
+	} catch (error) {
+		yield put(toggleLoading(false));
+		const errorResponse = error.response.data;
+		callback(errorResponse);
+		callback('fail', errorResponse);
+	}
 }
 
 export function* onGetPropertyResources() {
@@ -70,6 +112,14 @@ export function* onAddProperty() {
 	yield takeLatest(types.ADD_PROPERTY, addProperty);
 }
 
+export function* onFetchProperties() {
+	yield takeLatest(types.FETCH_PROPERTIES_START, getProperties);
+}
+
 export function* propertySagas() {
-	yield all([call(onGetPropertyResources), call(onAddProperty)]);
+	yield all([
+		call(onGetPropertyResources),
+		call(onAddProperty),
+		call(onFetchProperties),
+	]);
 }

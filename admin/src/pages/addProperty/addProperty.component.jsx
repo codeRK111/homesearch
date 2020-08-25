@@ -60,6 +60,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+const defaultimageNumber = 3;
+
 const AddProperty = ({
 	furnishes,
 	amenities,
@@ -112,9 +114,13 @@ const AddProperty = ({
 		type: '',
 		message: '',
 	});
+	const [numberOfImages, setNumberOfImages] = React.useState(
+		defaultimageNumber
+	);
 	const [cityLoading, setCityLoading] = React.useState(false);
 	const [cities, setCities] = React.useState([]);
 	const [locations, setLocations] = React.useState([]);
+	const [file, setFile] = React.useState([]);
 
 	const handleDateChange = (date) => {
 		setSelectedDate(date);
@@ -246,8 +252,33 @@ const AddProperty = ({
 		if (properties.availability === 'specificdate') {
 			propObj['availableDate'] = selectedDate;
 		}
+		if (file.length > 0) {
+			propObj['image'] = file;
+		}
 		console.log(propObj);
 		addProperty(propObj, handleResult);
+	};
+
+	const handleFileChange = (event) => {
+		const b = event.target;
+		setFile((prevState) => [...prevState, b.files[0]]);
+	};
+
+	const imageInput = (number) => {
+		const images = [];
+		for (let index = 0; index < number; index++) {
+			images.push(
+				<Box m="0.3rem" key={index}>
+					<input
+						type="file"
+						name=""
+						id=""
+						onChange={handleFileChange}
+					/>
+				</Box>
+			);
+		}
+		return images;
 	};
 
 	return (
@@ -603,14 +634,39 @@ const AddProperty = ({
 										</Grid>
 									</Grid>
 								</Box>
-								{(properties.type == 'independenthouse' ||
-									properties.type == 'guesthouse') && (
-									<Box p="0.8rem">
-										<Grid container>
-											<Grid item xs={12} md={12} lg={6}>
-												Floor *
-											</Grid>
-											<Grid item xs={12} md={12} lg={6}>
+
+								<Box p="0.8rem">
+									<Grid container>
+										<Grid item xs={12} md={12} lg={6}>
+											Number of floors *
+										</Grid>
+										<Grid item xs={12} md={12} lg={6}>
+											<TextField
+												id="outlined-basic"
+												label="floors"
+												variant="outlined"
+												name="numberOfBedRooms"
+												value={
+													properties.numberOfBedRooms
+												}
+												onChange={handleChange}
+												fullWidth
+												size="small"
+												type="number"
+											/>
+										</Grid>
+									</Grid>
+								</Box>
+
+								<Box p="0.8rem">
+									<Grid container>
+										<Grid item xs={12} md={12} lg={6}>
+											Property on Floor *
+										</Grid>
+										<Grid item xs={12} md={12} lg={6}>
+											{properties.type ==
+												'independenthouse' ||
+											properties.type == 'guesthouse' ? (
 												<FormControl
 													variant="outlined"
 													fullWidth
@@ -662,32 +718,22 @@ const AddProperty = ({
 														</MenuItem>
 													</Select>
 												</FormControl>
-											</Grid>
-										</Grid>
-									</Box>
-								)}
-								<Box p="0.8rem">
-									<Grid container>
-										<Grid item xs={12} md={12} lg={6}>
-											Number of floors *
-										</Grid>
-										<Grid item xs={12} md={12} lg={6}>
-											<TextField
-												id="outlined-basic"
-												label="floors"
-												variant="outlined"
-												name="numberOfBedRooms"
-												value={
-													properties.numberOfBedRooms
-												}
-												onChange={handleChange}
-												fullWidth
-												size="small"
-												type="number"
-											/>
+											) : (
+												<TextField
+													id="outlined-basic"
+													label="floor"
+													variant="outlined"
+													name="floor"
+													value={properties.floor}
+													onChange={handleChange}
+													fullWidth
+													size="small"
+												/>
+											)}
 										</Grid>
 									</Grid>
 								</Box>
+
 								<Box p="0.8rem">
 									<Grid container>
 										<Grid item xs={12} md={12} lg={6}>
@@ -1227,27 +1273,7 @@ const AddProperty = ({
 											Image
 										</Grid>
 										<Grid item xs={12} md={12} lg={6}>
-											<Box m="0.3rem">
-												<input
-													type="file"
-													name=""
-													id=""
-												/>
-											</Box>
-											<Box m="0.3rem">
-												<input
-													type="file"
-													name=""
-													id=""
-												/>
-											</Box>
-											<Box m="0.3rem">
-												<input
-													type="file"
-													name=""
-													id=""
-												/>
-											</Box>
+											{imageInput(numberOfImages)}
 										</Grid>
 									</Grid>
 								</Box>

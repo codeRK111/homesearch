@@ -15,6 +15,7 @@ import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
 
 const useStyles = makeStyles((theme) => ({
 	nested: {
@@ -33,6 +34,11 @@ const MainListItems = () => {
 
 	const handleClick = () => {
 		setOpen(!open);
+	};
+	const [openCity, setOpenCity] = React.useState(false);
+
+	const handleCityClick = () => {
+		setOpenCity(!openCity);
 	};
 	return (
 		<div>
@@ -85,6 +91,57 @@ const MainListItems = () => {
 							<ApartmentIcon className={classes.whiteColor} />
 						</ListItemIcon>
 						<ListItemText primary="Active properties" />
+					</ListItem>
+				</List>
+			</Collapse>
+			<ListItem button onClick={handleCityClick}>
+				<ListItemIcon>
+					<LocationCityIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Cities And Locations" />
+				{openCity ? <ExpandLess /> : <ExpandMore />}
+			</ListItem>
+			<Collapse in={openCity} timeout="auto" unmountOnExit>
+				<List component="div" disablePadding>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/addCity')}
+					>
+						<ListItemIcon>
+							<AddBoxIcon className={classes.whiteColor} />
+						</ListItemIcon>
+						<ListItemText primary="Add City" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/addLocation')}
+					>
+						<ListItemIcon>
+							<AddBoxIcon className={classes.whiteColor} />
+						</ListItemIcon>
+						<ListItemText primary="Add Location" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/cities')}
+					>
+						<ListItemIcon>
+							<ApartmentIcon className={classes.whiteColor} />
+						</ListItemIcon>
+						<ListItemText primary="All Cities" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/locations')}
+					>
+						<ListItemIcon>
+							<ApartmentIcon className={classes.whiteColor} />
+						</ListItemIcon>
+						<ListItemText primary="All Locations" />
 					</ListItem>
 				</List>
 			</Collapse>

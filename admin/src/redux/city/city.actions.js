@@ -28,3 +28,43 @@ export const setError = (error) => ({
 export const toggleLoading = () => ({
 	type: CityActionTypes.TOGGLE_LOADING,
 });
+
+export const cityLoading = (status) => ({
+	type: CityActionTypes.CITY_LOADING,
+	payload: status,
+});
+
+export const addCity = (city) => ({
+	type: CityActionTypes.ADD_CITY,
+	payload: city,
+});
+
+export const locationLoading = (status) => ({
+	type: CityActionTypes.LOCATION_LOADING,
+	payload: status,
+});
+
+export const addLocation = (location) => ({
+	type: CityActionTypes.ADD_LOCATION,
+	payload: location,
+});
+
+export const fetchCitiesLoading = (status) => ({
+	type: CityActionTypes.FETCH_CITIES_LOADING,
+	payload: status,
+});
+
+export const fetchCitiesStart = (callback) => ({
+	type: CityActionTypes.FETCH_CITIES,
+	payload: callback,
+});
+
+export const fetchLocationLoading = (status) => ({
+	type: CityActionTypes.FETCH_LOCATIOS_LOADING,
+	payload: status,
+});
+
+export const fetchLocationssStart = (callback) => ({
+	type: CityActionTypes.FETCH_LOCATIOS,
+	payload: callback,
+});

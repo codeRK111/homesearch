@@ -433,15 +433,15 @@ exports.getProperties = catchAsync(async (req, res, next) => {
 });
 
 exports.addPropertyImage = catchAsync(async (req, res, next) => {
+	console.log(req.files);
 	if (!req.files) {
 		return next(new AppError('No image found', 400));
 	} else {
-		let image = req.files['image[]'];
-		console.log('----->', image);
+		let image = req.files['image'];
 		let property = await Property.findById(req.params.id);
 		const photos = [];
 		if (!property) {
-			return next(new AppError('Admin not found', 404));
+			return next(new AppError('property not found', 404));
 		}
 		for (let i = 0; i < image.length; i++) {
 			let imageName = property.id + '-' + image[i].name;
