@@ -19,6 +19,8 @@ import AddCityPage from './pages/addCity/addCity.component';
 import ViewCitiesPage from './pages/getCities/getCities.componet';
 import AddLocationPage from './pages/addLocation/addLocation.component';
 import LocationsPage from './pages/getLocations/getLocations.componet';
+import EditCityPage from './pages/editCity/editCity.component';
+import DeleteCityPage from './pages/deleteCity/deleteCity.component';
 // components
 import Drawer from './components/drawer/drawer.component';
 // import Authenticated from './components/protected/protected.component';
@@ -38,6 +40,8 @@ const AddCityPageWithDrawer = Drawer(AddCityPage);
 const ViewCitiesPageWithDrawer = Drawer(ViewCitiesPage);
 const AddLocationPageWithDrawer = Drawer(AddLocationPage);
 const LocationsPageWithDrawer = Drawer(LocationsPage);
+const EditCityPageWithDrawer = Drawer(EditCityPage);
+const DeleteCityPageWithDrawer = Drawer(DeleteCityPage);
 
 // import { Switch, Route, Redirect } from "react-router-dom";
 // import { connect } from "react-redux";
@@ -111,7 +115,17 @@ function App(props) {
 				/>
 				<Route
 					exact
-					path="/cities"
+					path="/cities/:action/:id"
+					render={(props) =>
+						props.match.params.action === 'edit' ? (
+							<EditCityPageWithDrawer {...props} />
+						) : (
+							<DeleteCityPageWithDrawer {...props} />
+						)
+					}
+				/>
+				<Route
+					path="/cities/:state"
 					render={() => <ViewCitiesPageWithDrawer {...props} />}
 				/>
 				<Route

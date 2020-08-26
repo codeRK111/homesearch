@@ -9,12 +9,16 @@ import {
 	locationLoading,
 	fetchCitiesLoading,
 	fetchLocationLoading,
+	updateCityLoading,
+	fetchCityDetailsLoading,
+	fetchCityDependenciesLoading,
+	deleteCityLoading,
 } from './city.actions';
 
 function* getAllStates() {
 	try {
 		yield put(toggleLoading());
-		let url = `/api/v1/cities/states`;
+		let url = `/api/v1/cities/states/all`;
 		const response = yield axios.get(url);
 		const responseData = response.data;
 		if (responseData.status === 'fail') {
@@ -128,6 +132,94 @@ export function* fetchLocations({ payload: { city, callback } }) {
 	}
 }
 
+export function* updateCity({ payload: { cityId, city, callback } }) {
+	try {
+		yield put(updateCityLoading(true));
+		let url = `/api/v1/cities/${cityId}`;
+		let data = JSON.stringify(city);
+		const response = yield axios({
+			method: 'patch',
+			headers: { 'Content-Type': 'application/json' },
+			url,
+			data,
+		});
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(updateCityLoading(false));
+		} else {
+			yield put(updateCityLoading(false));
+			callback('success', responseData.data);
+		}
+	} catch (error) {
+		const errorResponse = error.response.data;
+		yield put(updateCityLoading(false));
+		callback('fail', errorResponse.message);
+	}
+}
+
+export function* fetchCityDetails({ payload: { cityId, callback } }) {
+	try {
+		yield put(fetchCityDetailsLoading(true));
+		let url = `/api/v1/cities/${cityId}`;
+
+		const response = yield axios.get(url);
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(fetchCityDetailsLoading(false));
+			console.log(responseData);
+		} else {
+			yield put(fetchCityDetailsLoading(false));
+			callback('success', responseData.data);
+		}
+	} catch (error) {
+		const errorResponse = error.response.data;
+		yield put(fetchCityDetailsLoading(false));
+		callback('fail', errorResponse.message);
+	}
+}
+
+export function* fetchCityDependencies({ payload: { cityId, callback } }) {
+	try {
+		yield put(fetchCityDependenciesLoading(true));
+		let url = `/api/v1/cities/${cityId}/check-dependencies`;
+
+		const response = yield axios.get(url);
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(fetchCityDependenciesLoading(false));
+			console.log(responseData);
+		} else {
+			yield put(fetchCityDependenciesLoading(false));
+			callback('success', responseData.data);
+		}
+	} catch (error) {
+		const errorResponse = error.response.data;
+		yield put(fetchCityDependenciesLoading(false));
+		callback('fail', errorResponse.message);
+	}
+}
+
+export function* deleteCity({ payload: { cityId, callback } }) {
+	try {
+		yield put(deleteCityLoading(true));
+
+		let url = `/api/v1/cities/${cityId}`;
+		const response = yield axios.delete(url);
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(deleteCityLoading(false));
+			console.log(responseData);
+		} else {
+			yield put(deleteCityLoading(false));
+			callback('success', null);
+		}
+	} catch (error) {
+		const errorResponse = error.response.data;
+		yield put(deleteCityLoading(false));
+		callback('fail', errorResponse.message);
+	}
+}
+
 export function* ongetAllStates() {
 	yield takeLatest(types.FETCH_ALL_STATES_START, getAllStates);
 }
@@ -147,6 +239,23 @@ export function* onFetchLocations() {
 	yield takeLatest(types.FETCH_LOCATIOS, fetchLocations);
 }
 
+export function* onUpdateCity() {
+	yield takeLatest(types.UPDATE_CITY, updateCity);
+}
+export function* onFetchCityDetails() {
+	yield takeLatest(types.FETCH_CITY_DETAILS_START, fetchCityDetails);
+}
+export function* onFetchCityDependenciesStart() {
+	yield takeLatest(
+		types.CHECK_CITY_DEPENDENCIES_START,
+		fetchCityDependencies
+	);
+}
+
+export function* onDeleteCity() {
+	yield takeLatest(types.DELETE_CITY_START, deleteCity);
+}
+
 export function* citySagas() {
 	yield all([
 		call(ongetAllStates),
@@ -154,5 +263,9 @@ export function* citySagas() {
 		call(onFetchCities),
 		call(onAddLocation),
 		call(onFetchLocations),
+		call(onUpdateCity),
+		call(onFetchCityDetails),
+		call(onFetchCityDependenciesStart),
+		call(onDeleteCity),
 	]);
 }

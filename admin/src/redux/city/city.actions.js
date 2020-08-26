@@ -68,3 +68,39 @@ export const fetchLocationssStart = (callback) => ({
 	type: CityActionTypes.FETCH_LOCATIOS,
 	payload: callback,
 });
+
+export const updateCityStart = (city) => ({
+	type: CityActionTypes.UPDATE_CITY,
+	payload: city,
+});
+export const updateCityLoading = (status) => ({
+	type: CityActionTypes.UPDATE_CITY_LOADING,
+	payload: status,
+});
+
+export const fetchCityDetailsStart = (callback) => ({
+	type: CityActionTypes.FETCH_CITY_DETAILS_START,
+	payload: callback,
+});
+export const fetchCityDetailsLoading = (status) => ({
+	type: CityActionTypes.FETCH_CITY_DETAILS_LOADING,
+	payload: status,
+});
+
+export const fetchCityDependenciesStart = (callback) => ({
+	type: CityActionTypes.CHECK_CITY_DEPENDENCIES_START,
+	payload: callback,
+});
+export const fetchCityDependenciesLoading = (status) => ({
+	type: CityActionTypes.CHECK_CITY_DEPENDENCIES_LOADING,
+	payload: status,
+});
+
+export const deleteCityStart = (callback) => ({
+	type: CityActionTypes.DELETE_CITY_START,
+	payload: callback,
+});
+export const deleteCityLoading = (status) => ({
+	type: CityActionTypes.DELETE_CITY_LOADING,
+	payload: status,
+});

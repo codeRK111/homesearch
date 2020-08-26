@@ -8,6 +8,10 @@ const INITIAL_STATE = {
 	cityLoading: false,
 	locationLoading: false,
 	fetchLocationLoading: false,
+	updateCityLoading: false,
+	fetchCityDetailsLoading: false,
+	cityDependenciesLoading: false,
+	deleteCityLoading: false,
 };
 
 const cityReducer = (state = INITIAL_STATE, action) => {
@@ -48,6 +52,27 @@ const cityReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				fetchLocationLoading: action.payload,
 			};
+		case CityActionTypes.UPDATE_CITY_LOADING:
+			return {
+				...state,
+				updateCityLoading: action.payload,
+			};
+		case CityActionTypes.FETCH_CITY_DETAILS_LOADING:
+			return {
+				...state,
+				fetchCityDetailsLoading: action.payload,
+			};
+		case CityActionTypes.CHECK_CITY_DEPENDENCIES_LOADING:
+			return {
+				...state,
+				cityDependenciesLoading: action.payload,
+			};
+		case CityActionTypes.DELETE_CITY_LOADING:
+			return {
+				...state,
+				deleteCityLoading: action.payload,
+			};
+
 		default:
 			return state;
 	}

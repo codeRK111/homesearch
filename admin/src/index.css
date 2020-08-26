@@ -16,6 +16,10 @@ code {
 	color: red;
 }
 
+.color-green {
+	color: green;
+}
+
 .pointer {
 	cursor: pointer;
 }

@@ -126,7 +126,7 @@ const MainListItems = () => {
 					<ListItem
 						button
 						className={classes.nested}
-						onClick={onUsersClick('/cities')}
+						onClick={onUsersClick('/cities/Odisha')}
 					>
 						<ListItemIcon>
 							<ApartmentIcon className={classes.whiteColor} />

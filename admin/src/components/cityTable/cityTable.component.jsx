@@ -18,7 +18,7 @@ import {
 	fetchCitiesStart as fetchCities,
 } from '../../redux/city/city.actions';
 import Box from '@material-ui/core/Box';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, withRouter } from 'react-router-dom';
 import moment from 'moment';
 import Select from '../select/select.component';
 import Button from '@material-ui/core/Button';
@@ -59,9 +59,10 @@ function Orders({
 	allStates,
 	fetchStates,
 	fetchCities,
+	match: { params },
 }) {
 	const history = useHistory();
-	const [state, selectState] = React.useState('');
+	const [state, selectState] = React.useState(params.state);
 	const [cities, setCities] = React.useState([]);
 	const [asyncError, setAsyncError] = React.useState('');
 	const responseHandler = (type, data) => {
@@ -77,15 +78,15 @@ function Orders({
 		fetchStates();
 	}, []);
 	React.useEffect(() => {
-		if (state) {
-			fetchCities(state, responseHandler);
+		if (params.state) {
+			fetchCities(params.state, responseHandler);
 		}
-	}, [state]);
+	}, [params.state]);
 
 	const classes = useStyles();
 
 	const handleState = (e) => {
-		selectState(e.target.value);
+		history.push(`/cities/${e.target.value}`);
 	};
 
 	return (
@@ -114,7 +115,7 @@ function Orders({
 									label="State"
 									helperText="Select a state to view cities"
 									name="state"
-									value={state}
+									value={params.state}
 									onChange={handleState}
 									menuItems={allStates.map((c) => ({
 										value: c,
@@ -160,7 +161,19 @@ function Orders({
 								<TableCell>{c.name}</TableCell>
 								<TableCell>{c.state}</TableCell>
 								<TableCell align="right">
-									<Link to={`/cities`}>Edit</Link>
+									<Box
+										display="flex"
+										justifyContent="flex-end"
+									>
+										<Link to={`/cities/edit/${c.id}`}>
+											Edit
+										</Link>
+										<Box ml="0.5rem">
+											<Link to={`/cities/delete/${c.id}`}>
+												Delete
+											</Link>
+										</Box>
+									</Box>
 								</TableCell>
 							</TableRow>
 						))}
@@ -183,4 +196,4 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(fetchCities({ state, callback })),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Orders);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Orders));

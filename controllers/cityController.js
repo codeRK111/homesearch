@@ -2,6 +2,7 @@
 // const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const City = require('./../models/cityModel');
+const Property = require('../models/propertyModel');
 const Location = require('./../models/locationModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
@@ -67,7 +68,99 @@ exports.addCity = catchAsync(async (req, res, next) => {
 	res.status(201).json(newCity);
 });
 
+exports.getCity = catchAsync(async (req, res, next) => {
+	const city = await City.findById(req.params.id);
+
+	res.status(200).json({
+		status: 'success',
+		data: { city },
+	});
+});
+
+exports.updateCity = catchAsync(async (req, res, next) => {
+	if (!req.body.name || !req.body.state) {
+		return next(new AppError('name and state required'), 400);
+	}
+
+	const cityExist = await City.findOne({
+		name: req.body.name,
+		state: req.body.state,
+	});
+	if (cityExist) {
+		return next(new AppError('City already exists'), 400);
+	}
+
+	const city = await City.findByIdAndUpdate(
+		req.params.id,
+		{
+			name: req.body.name,
+			state: req.body.state,
+		},
+		{
+			runValidators: true,
+			new: true,
+		}
+	);
+	if (!city) return next(new AppError('city not found', 404));
+	res.status(200).json({
+		status: 'success',
+		data: {
+			city,
+		},
+	});
+});
+
+exports.deleteCity = catchAsync(async (req, res, next) => {
+	const property = await Property.findOne({ city: req.params.id });
+	if (property) {
+		return next(
+			new AppError('Cannot delete as it is used in some properties'),
+			400
+		);
+	}
+
+	const locationIsExist = await Location.findOne({ city: req.params.id });
+	if (locationIsExist) {
+		return next(
+			new AppError('Cannot delete as it is used in some locations'),
+			400
+		);
+	}
+
+	const city = await City.findByIdAndDelete(req.params.id);
+	res.status(202).json({
+		status: 'success',
+		data: {
+			city,
+		},
+	});
+});
+
+exports.cityDependencies = catchAsync(async (req, res, next) => {
+	const propertiesCount = await Property.count({ city: req.params.id });
+
+	const locationsCount = await Location.count({ city: req.params.id });
+
+	res.status(202).json({
+		status: 'success',
+		data: {
+			propertiesCount,
+			locationsCount,
+			secureDelete: !propertiesCount && !locationsCount,
+		},
+	});
+});
+
 exports.addLocation = catchAsync(async (req, res, next) => {
+	const existingLocation = await Location.findOne({
+		name: req.body.name,
+		city: req.body.city,
+	});
+
+	if (existingLocation) {
+		return next(new AppError('Already exists'), 400);
+	}
+
 	const location = await Location.create({
 		name: req.body.name,
 		city: req.body.city,
@@ -90,6 +183,57 @@ exports.getLocations = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			locations,
+		},
+	});
+});
+
+exports.updateLocation = catchAsync(async (req, res, next) => {
+	if (!req.body.name || !req.body.city) {
+		return next(new AppError('name and city required'), 400);
+	}
+	const locationIsExist = await Location.findOne({
+		name: req.body.name,
+		city: req.body.city,
+	});
+	if (locationIsExist) {
+		return next(new AppError('Location already exists'), 400);
+	}
+
+	const location = await Location.findByIdAndUpdate(
+		req.params.id,
+		{
+			name: req.body.name,
+			city: req.body.city,
+		},
+		{
+			runValidators: true,
+			new: true,
+		}
+	);
+
+	if (!location) return next(new AppError('location not found', 404));
+	res.status(200).json({
+		status: 'success',
+		data: {
+			location,
+		},
+	});
+});
+
+exports.deleteLocation = catchAsync(async (req, res, next) => {
+	const property = await Property.find({ location: req.params.id });
+	if (property.length > 0) {
+		return next(
+			new AppError('Cannot delete as it is used in some properties'),
+			400
+		);
+	}
+
+	const location = await Location.deleteOne({ id: req.params.id });
+	res.status(202).json({
+		status: 'success',
+		data: {
+			location,
 		},
 	});
 });

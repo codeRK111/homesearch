@@ -21,13 +21,19 @@ export const selectFetchLocationLoading = createSelector(
 	[selectCitiy],
 	(c) => c.fetchLocationLoading
 );
-
-// export const selectLoading = createSelector(
-// 	[selectUser],
-// 	(user) => user.loading
-// );
-
-// export const loading = createSelector(
-//   [selectUser],
-//   user => user.loading
-// );
+export const selectUpdateCityLoading = createSelector(
+	[selectCitiy],
+	(c) => c.updateCityLoading
+);
+export const selectFetchCityDetailsLoading = createSelector(
+	[selectCitiy],
+	(c) => c.fetchCityDetailsLoading
+);
+export const selectFetchCityDependenciesLoading = createSelector(
+	[selectCitiy],
+	(c) => c.cityDependenciesLoading
+);
+export const selectDeleteCityLoading = createSelector(
+	[selectCitiy],
+	(c) => c.deleteCityLoading
+);
