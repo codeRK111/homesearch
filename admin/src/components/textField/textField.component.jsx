@@ -1,7 +1,15 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
-const CTextField = ({ value, onChange, name, label, error, helperText }) => {
+const CTextField = ({
+	value,
+	onChange,
+	name,
+	label,
+	error,
+	helperText,
+	...otherProps
+}) => {
 	const memoValue = React.useMemo(() => value, [value]);
 	const handleChange = React.useCallback(onChange, []);
 	return (
@@ -16,6 +24,7 @@ const CTextField = ({ value, onChange, name, label, error, helperText }) => {
 			fullWidth
 			helperText={helperText}
 			size="small"
+			{...otherProps}
 		/>
 	);
 };

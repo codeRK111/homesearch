@@ -11,10 +11,14 @@ router
 	.patch(cityController.updateCity)
 	.delete(cityController.deleteCity);
 router.route('/:id/check-dependencies').get(cityController.cityDependencies);
+router
+	.route('/locations/:id/check-dependencies')
+	.get(cityController.locationDependencies);
 
 router.route('/states/all').get(cityController.getAllStates);
 router.route('/states/:name').get(cityController.getCitiesOfAState);
 router.route('/locations').post(cityController.addLocation);
+router.route('/locations/fetch/:id').get(cityController.getLocation);
 router
 	.route('/locations/manage/:id')
 	.patch(cityController.updateLocation)

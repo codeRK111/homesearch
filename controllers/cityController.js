@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const City = require('./../models/cityModel');
 const Property = require('../models/propertyModel');
 const Location = require('./../models/locationModel');
+const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const sendOtpMessage = require('../utils/sendOtp');
@@ -141,12 +142,15 @@ exports.cityDependencies = catchAsync(async (req, res, next) => {
 
 	const locationsCount = await Location.count({ city: req.params.id });
 
+	const usersCount = await User.count({ city: req.params.id });
+
 	res.status(202).json({
 		status: 'success',
 		data: {
 			propertiesCount,
 			locationsCount,
-			secureDelete: !propertiesCount && !locationsCount,
+			usersCount,
+			secureDelete: !propertiesCount && !locationsCount && !usersCount,
 		},
 	});
 });
@@ -174,6 +178,16 @@ exports.addLocation = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.getLocation = catchAsync(async (req, res, next) => {
+	const location = await Location.findById(req.params.id);
+	if (!location) return next(new AppError('Location not found', 404));
+
+	res.status(200).json({
+		status: 'success',
+		data: { location },
+	});
+});
+
 exports.getLocations = catchAsync(async (req, res, next) => {
 	const locations = await Location.find({
 		city: req.params.cityId,
@@ -183,6 +197,18 @@ exports.getLocations = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			locations,
+		},
+	});
+});
+
+exports.locationDependencies = catchAsync(async (req, res, next) => {
+	const propertiesCount = await Property.count({ location: req.params.id });
+
+	res.status(202).json({
+		status: 'success',
+		data: {
+			propertiesCount,
+			secureDelete: !propertiesCount,
 		},
 	});
 });
@@ -229,7 +255,7 @@ exports.deleteLocation = catchAsync(async (req, res, next) => {
 		);
 	}
 
-	const location = await Location.deleteOne({ id: req.params.id });
+	const location = await Location.findByIdAndDelete(req.params.id);
 	res.status(202).json({
 		status: 'success',
 		data: {

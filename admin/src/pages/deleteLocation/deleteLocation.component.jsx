@@ -4,17 +4,18 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Backdrop from '@material-ui/core/Backdrop';
+
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
-	selectFetchCityDependenciesLoading as cityDependenciesLoading,
-	selectDeleteCityLoading as deleteLoading,
+	selectFetchLocationDependenciesLoading as locationDependenciesLoading,
+	selectDeleteLocationLoading as deleteLoading,
 } from '../../redux/city/city.selector';
 import {
-	fetchCityDependenciesStart as cityDependencies,
-	deleteCityStart as cityDelete,
+	fetchLocationDependenciesStart as locationDependencies,
+	deleteLocationStart as locationDelete,
 } from '../../redux/city/city.actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,37 +27,36 @@ const useStyles = makeStyles((theme) => ({
 
 const initialState = {
 	propertiesCount: 'Calculating',
-	locationsCount: 'Calculating',
-	usersCount: 'Calculating',
 	secureDelete: false,
 };
 
 const EditComponent = ({
-	cityDependenciesLoading,
-	fetchCityDependencies,
+	locationDependenciesLoading,
+	fetchLocationDependencies,
 	deleteLoading,
-	cityDelete,
+	locationDelete,
 	match: {
 		params: { id },
 	},
 }) => {
+	console.log(id);
 	const history = useHistory();
 	const classes = useStyles();
 	const [asyncError, setAsyncError] = React.useState('');
-	const [cityDependencies, setCityDependencies] = React.useState(
+	const [locationDependencies, setLocationDependencies] = React.useState(
 		initialState
 	);
-	const handleCityDependencies = (type, data) => {
+	const handleLocationDependencies = (type, data) => {
 		if (type === 'success') {
 			console.log(data);
-			setCityDependencies(data);
+			setLocationDependencies(data);
 			setAsyncError('');
 		} else {
 			setAsyncError(data);
 		}
 	};
 
-	const handleCityDelete = (type, data) => {
+	const handleLocationDelete = (type, data) => {
 		if (type === 'success') {
 			history.goBack();
 			setAsyncError('');
@@ -67,45 +67,31 @@ const EditComponent = ({
 
 	React.useEffect(() => {
 		if (id) {
-			fetchCityDependencies(id, handleCityDependencies);
+			fetchLocationDependencies(id, handleLocationDependencies);
 		}
 	}, [id]);
 
-	const deleteCityClick = () => {
-		cityDelete(id, handleCityDelete);
+	const deleteLocationClick = () => {
+		locationDelete(id, handleLocationDelete);
 	};
 
 	return (
 		<Box p="1rem">
 			<Backdrop
 				className={classes.backdrop}
-				open={cityDependenciesLoading}
+				open={locationDependenciesLoading}
 			>
-				fetching city dependencies ...
+				fetching location dependencies ...
 			</Backdrop>
 			<Backdrop className={classes.backdrop} open={deleteLoading}>
 				deleting ...
 			</Backdrop>
-			<h3>Delete City</h3>
+			<h3>Delete Location</h3>
 			<p className="color-red">{asyncError}</p>
 			<Paper>
 				<Box p="0.5rem">
 					<Grid container>
 						<Grid item xs={12} md={12} lg={8}>
-							<Grid container>
-								<Grid item xs={12} md={12} lg={4}>
-									<Box p="0.5rem">User Dependencies :</Box>
-								</Grid>
-
-								<Grid item xs={12} md={12} lg={8}>
-									<Box p="0.5rem">
-										<b>
-											{cityDependencies.usersCount}{' '}
-											dependencies
-										</b>
-									</Box>
-								</Grid>
-							</Grid>
 							<Grid container>
 								<Grid item xs={12} md={12} lg={4}>
 									<Box p="0.5rem">
@@ -116,27 +102,15 @@ const EditComponent = ({
 								<Grid item xs={12} md={12} lg={8}>
 									<Box p="0.5rem">
 										<b>
-											{cityDependencies.propertiesCount}{' '}
+											{
+												locationDependencies.propertiesCount
+											}{' '}
 											dependencies
 										</b>
 									</Box>
 								</Grid>
 							</Grid>
-							<Grid container>
-								<Grid item xs={12} md={12} lg={4}>
-									<Box p="0.5rem">
-										Location Dependencies :{' '}
-									</Box>
-								</Grid>
-								<Grid item xs={12} md={12} lg={8}>
-									<Box p="0.5rem">
-										<b>
-											{cityDependencies.locationsCount}{' '}
-											dependencies
-										</b>
-									</Box>
-								</Grid>
-							</Grid>
+
 							<Grid container>
 								<Grid item xs={12} md={12} lg={4}>
 									<Box p="0.5rem">Secure Delete : </Box>
@@ -144,7 +118,7 @@ const EditComponent = ({
 								<Grid item xs={12} md={12} lg={8}>
 									<Box p="0.5rem">
 										<b>
-											{cityDependencies.secureDelete ? (
+											{locationDependencies.secureDelete ? (
 												<span className="color-green">
 													Yes
 												</span>
@@ -164,9 +138,9 @@ const EditComponent = ({
 											className="tarnsform-none"
 											color="primary"
 											variant="contained"
-											onClick={deleteCityClick}
+											onClick={deleteLocationClick}
 											disabled={
-												!cityDependencies.secureDelete
+												!locationDependencies.secureDelete
 											}
 										>
 											Delete
@@ -183,15 +157,15 @@ const EditComponent = ({
 };
 
 const mapStateToProps = createStructuredSelector({
-	cityDependenciesLoading,
+	locationDependenciesLoading,
 	deleteLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchCityDependencies: (cityId, callback) =>
-		dispatch(cityDependencies({ cityId, callback })),
-	cityDelete: (cityId, callback) =>
-		dispatch(cityDelete({ cityId, callback })),
+	fetchLocationDependencies: (locationId, callback) =>
+		dispatch(locationDependencies({ locationId, callback })),
+	locationDelete: (locationId, callback) =>
+		dispatch(locationDelete({ locationId, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditComponent);

@@ -21,6 +21,8 @@ import AddLocationPage from './pages/addLocation/addLocation.component';
 import LocationsPage from './pages/getLocations/getLocations.componet';
 import EditCityPage from './pages/editCity/editCity.component';
 import DeleteCityPage from './pages/deleteCity/deleteCity.component';
+import EditLocationPage from './pages/editLocation/editLocation.component';
+import DeleteLocationPage from './pages/deleteLocation/deleteLocation.component';
 // components
 import Drawer from './components/drawer/drawer.component';
 // import Authenticated from './components/protected/protected.component';
@@ -42,6 +44,8 @@ const AddLocationPageWithDrawer = Drawer(AddLocationPage);
 const LocationsPageWithDrawer = Drawer(LocationsPage);
 const EditCityPageWithDrawer = Drawer(EditCityPage);
 const DeleteCityPageWithDrawer = Drawer(DeleteCityPage);
+const EditLocationPageWithDrawer = Drawer(EditLocationPage);
+const DeleteLocationPageWithDrawer = Drawer(DeleteLocationPage);
 
 // import { Switch, Route, Redirect } from "react-router-dom";
 // import { connect } from "react-redux";
@@ -51,6 +55,11 @@ function App(props) {
 	return (
 		<div>
 			<Switch>
+				<Route
+					exact
+					path="/locations/:state/:city?/"
+					render={() => <LocationsPageWithDrawer {...props} />}
+				/>
 				<Route exact path="/" render={() => <LogIn />} />
 				<Route exact path="/dashboard" render={() => <HomePage />} />
 				<Route
@@ -125,6 +134,17 @@ function App(props) {
 					}
 				/>
 				<Route
+					exact
+					path="/locations/manage/:action/:id"
+					render={(props) =>
+						props.match.params.action === 'edit' ? (
+							<EditLocationPageWithDrawer {...props} />
+						) : (
+							<DeleteLocationPageWithDrawer {...props} />
+						)
+					}
+				/>
+				<Route
 					path="/cities/:state"
 					render={() => <ViewCitiesPageWithDrawer {...props} />}
 				/>
@@ -132,11 +152,6 @@ function App(props) {
 					exact
 					path="/addLocation"
 					render={() => <AddLocationPageWithDrawer {...props} />}
-				/>
-				<Route
-					exact
-					path="/locations"
-					render={() => <LocationsPageWithDrawer {...props} />}
 				/>
 			</Switch>
 		</div>

@@ -602,8 +602,10 @@ const AddProperty = ({
 												id="outlined-basic"
 												label="bedroom"
 												variant="outlined"
-												name="noOfFloors"
-												value={properties.noOfFloors}
+												name="numberOfBedRooms"
+												value={
+													properties.numberOfBedRooms
+												}
 												onChange={handleChange}
 												fullWidth
 												size="small"
@@ -645,10 +647,8 @@ const AddProperty = ({
 												id="outlined-basic"
 												label="floors"
 												variant="outlined"
-												name="numberOfBedRooms"
-												value={
-													properties.numberOfBedRooms
-												}
+												name="noOfFloors"
+												value={properties.noOfFloors}
 												onChange={handleChange}
 												fullWidth
 												size="small"

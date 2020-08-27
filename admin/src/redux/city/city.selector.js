@@ -25,9 +25,17 @@ export const selectUpdateCityLoading = createSelector(
 	[selectCitiy],
 	(c) => c.updateCityLoading
 );
+export const selectUpdateLocationLoading = createSelector(
+	[selectCitiy],
+	(c) => c.updateLocationLoading
+);
 export const selectFetchCityDetailsLoading = createSelector(
 	[selectCitiy],
 	(c) => c.fetchCityDetailsLoading
+);
+export const selectFetchLocationDetailsLoading = createSelector(
+	[selectCitiy],
+	(c) => c.fetchLocationDetailsLoading
 );
 export const selectFetchCityDependenciesLoading = createSelector(
 	[selectCitiy],
@@ -36,4 +44,13 @@ export const selectFetchCityDependenciesLoading = createSelector(
 export const selectDeleteCityLoading = createSelector(
 	[selectCitiy],
 	(c) => c.deleteCityLoading
+);
+
+export const selectFetchLocationDependenciesLoading = createSelector(
+	[selectCitiy],
+	(c) => c.locationDependenciesLoading
+);
+export const selectDeleteLocationLoading = createSelector(
+	[selectCitiy],
+	(c) => c.deleteLocationLoading
 );

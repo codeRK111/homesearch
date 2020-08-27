@@ -108,7 +108,6 @@ const useStyles = makeStyles((theme) => {
 
 function DrawerComponent(Component) {
 	const D = (props) => {
-		console.log(props);
 		const classes = useStyles();
 		const [open, setOpen] = React.useState(true);
 		const handleDrawerOpen = () => {

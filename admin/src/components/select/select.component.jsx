@@ -15,8 +15,6 @@ const CSelectField = ({
 	error,
 	helperText,
 }) => {
-	const memoValue = React.useMemo(() => value, [value]);
-	const handleChange = React.useCallback(onChange, []);
 	return (
 		<FormControl variant="outlined" fullWidth size="small" error={error}>
 			<InputLabel id="demo-simple-select-outlined-label">
@@ -25,8 +23,8 @@ const CSelectField = ({
 			<Select
 				labelId="demo-simple-select-outlined-label"
 				id="demo-simple-select-outlined"
-				value={memoValue}
-				onChange={handleChange}
+				value={value}
+				onChange={onChange}
 				name={name}
 				label="type"
 			>

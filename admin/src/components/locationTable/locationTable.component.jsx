@@ -20,7 +20,7 @@ import {
 	fetchLocationssStart as fetchLocations,
 } from '../../redux/city/city.actions';
 import Box from '@material-ui/core/Box';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, withRouter } from 'react-router-dom';
 import moment from 'moment';
 import Select from '../select/select.component';
 import Button from '@material-ui/core/Button';
@@ -63,9 +63,11 @@ function Orders({
 	fetchCities,
 	locationLoading,
 	fetchLocations,
+	match: { params },
 }) {
 	const history = useHistory();
-	const [state, selectState] = React.useState('');
+	const [state, selectState] = React.useState(params.state);
+	let bd = params.state;
 	const [cities, setCities] = React.useState([]);
 	const [locations, setLocations] = React.useState([]);
 	const [city, setCity] = React.useState('');
@@ -97,18 +99,26 @@ function Orders({
 		}
 	}, [state]);
 	React.useEffect(() => {
-		if (city) {
-			fetchLocations(city, locationResponseHandler);
+		if (params.city) {
+			fetchLocations(params.city, locationResponseHandler);
 		}
-	}, [city]);
+	}, [params.city]);
 
 	const classes = useStyles();
 
 	const handleState = (e) => {
 		selectState(e.target.value);
+		history.push(`/locations/${e.target.value}`);
 	};
-	const handleCity = (e) => {
-		setCity(e.target.value);
+	const handleCity = (st) => (e) => {
+		console.log(params.state);
+		console.log(bd);
+		history.push(`/locations/${st}/${e.target.value}`);
+	};
+
+	const test = () => {
+		console.log(params.state);
+		// history.push(`/locations/${params.state}/djkhskfj`);
 	};
 
 	return (
@@ -144,7 +154,7 @@ function Orders({
 									label="State"
 									helperText="Select a state to view cities"
 									name="state"
-									value={state}
+									value={params.state}
 									onChange={handleState}
 									menuItems={allStates.map((c) => ({
 										value: c,
@@ -159,8 +169,8 @@ function Orders({
 									label="City"
 									helperText="Select a city to view locations"
 									name="city"
-									value={city}
-									onChange={handleCity}
+									value={params.city}
+									onChange={handleCity(params.state)}
 									menuItems={cities.map((c) => ({
 										value: c.id,
 										label: c.name,
@@ -209,7 +219,23 @@ function Orders({
 								<TableCell>{c.city.name}</TableCell>
 								<TableCell>{c.city.state}</TableCell>
 								<TableCell align="right">
-									<Link to={`/locations`}>Edit</Link>
+									<Box
+										display="flex"
+										justifyContent="flex-end"
+									>
+										<Link
+											to={`/locations/manage/edit/${c.id}`}
+										>
+											Edit
+										</Link>
+										<Box ml="0.5rem">
+											<Link
+												to={`/locations/manage/delete/${c.id}`}
+											>
+												Delete
+											</Link>
+										</Box>
+									</Box>
 								</TableCell>
 							</TableRow>
 						))}
@@ -235,4 +261,4 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(fetchLocations({ city, callback })),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Orders);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Orders));
