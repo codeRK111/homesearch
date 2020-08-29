@@ -95,14 +95,11 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				'furnished',
 				'externalAmenities',
 				'distanceSchool',
-				'distanceCollege',
 				'distanceRailwayStation',
 				'distanceAirport',
-				'distanceMetroStation',
 				'distanceBusStop',
 				'distanceHospital',
-				'distanceShoppingMall',
-				'distanceBank',
+				'availableFor',
 				'availability',
 			];
 			const missingFields = [];
@@ -119,25 +116,25 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 					)
 				);
 			}
-			if (type == 'independenthouse' || type == 'guesthouse') {
-				const floorPossibleValues = [
-					'Entire Building',
-					'Ground floor',
-					'1st floor',
-					'2nd floor',
-					'3rd floor',
-				];
-				if (!floorPossibleValues.includes(req.body.floor)) {
-					return next(
-						new AppError(
-							`floor should be one of these values <${floorPossibleValues.join(
-								','
-							)}>`,
-							400
-						)
-					);
-				}
-			}
+			// if (type == 'independenthouse' || type == 'guesthouse') {
+			// 	const floorPossibleValues = [
+			// 		'Entire Building',
+			// 		'Ground floor',
+			// 		'1st floor',
+			// 		'2nd floor',
+			// 		'3rd floor',
+			// 	];
+			// 	if (!floorPossibleValues.includes(req.body.floor)) {
+			// 		return next(
+			// 			new AppError(
+			// 				`floor should be one of these values <${floorPossibleValues.join(
+			// 					','
+			// 				)}>`,
+			// 				400
+			// 			)
+			// 		);
+			// 	}
+			// }
 			let propertyValue = {
 				for: req.body.for,
 				type: req.body.type,
@@ -156,19 +153,16 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				furnished: req.body.furnished,
 				externalAmenities: req.body.externalAmenities,
 				distanceSchool: req.body.distanceSchool,
-				distanceCollege: req.body.distanceCollege,
 				distanceRailwayStation: req.body.distanceRailwayStation,
 				distanceAirport: req.body.distanceAirport,
-				distanceMetroStation: req.body.distanceMetroStation,
 				distanceBusStop: req.body.distanceBusStop,
 				distanceHospital: req.body.distanceHospital,
-				distanceShoppingMall: req.body.distanceShoppingMall,
-				distanceBank: req.body.distanceBank,
 				availability: req.body.availability,
 				description: req.body.description,
 				adminId: req.user.id,
 				createdBy: 'admin',
 				userId: req.body.userId,
+				availableFor: req.body.availableFor,
 			};
 
 			if (req.body.furnished !== 'unfurnished') {
@@ -210,6 +204,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				'typeOfToilets',
 				'toiletTypes',
 				'rent',
+				'availableFor',
 				'securityDeposit',
 				'noticePeriod',
 				'furnished',
@@ -218,14 +213,10 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				'otherAmenties',
 				'externalAmenities',
 				'distanceSchool',
-				'distanceCollege',
 				'distanceRailwayStation',
 				'distanceAirport',
-				'distanceMetroStation',
 				'distanceBusStop',
 				'distanceHospital',
-				'distanceShoppingMall',
-				'distanceBank',
 				'availability',
 			];
 			const missingHostelFields = [];
@@ -247,6 +238,9 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				type: req.body.type,
 				title: req.body.title,
 				city: req.body.city,
+				availableFor: req.body.availableFor,
+				floor: req.body.floor,
+				noOfFloors: req.body.noOfFloors,
 				location: req.body.location,
 				numberOfRoomMates: req.body.numberOfRoomMates,
 				typeOfToilets: req.body.typeOfToilets,
@@ -260,19 +254,16 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				otherAmenties: req.body.otherAmenties,
 				externalAmenities: req.body.externalAmenities,
 				distanceSchool: req.body.distanceSchool,
-				distanceCollege: req.body.distanceCollege,
 				distanceRailwayStation: req.body.distanceRailwayStation,
 				distanceAirport: req.body.distanceAirport,
-				distanceMetroStation: req.body.distanceMetroStation,
 				distanceBusStop: req.body.distanceBusStop,
 				distanceHospital: req.body.distanceHospital,
-				distanceShoppingMall: req.body.distanceShoppingMall,
-				distanceBank: req.body.distanceBank,
 				availability: req.body.availability,
 				description: req.body.description,
 				adminId: req.user,
 				restrictions: req.body.restrictions,
 				createdBy: 'admin',
+				userId: req.body.userId,
 			};
 			if (req.body.furnished !== 'unfurnished') {
 				if (!req.body.furnishes) {
@@ -367,14 +358,10 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				otherAmenties: req.body.otherAmenties,
 				externalAmenities: req.body.externalAmenities,
 				distanceSchool: req.body.distanceSchool,
-				distanceCollege: req.body.distanceCollege,
 				distanceRailwayStation: req.body.distanceRailwayStation,
 				distanceAirport: req.body.distanceAirport,
-				distanceMetroStation: req.body.distanceMetroStation,
 				distanceBusStop: req.body.distanceBusStop,
 				distanceHospital: req.body.distanceHospital,
-				distanceShoppingMall: req.body.distanceShoppingMall,
-				distanceBank: req.body.distanceBank,
 				availability: req.body.availability,
 				description: req.body.description,
 				adminId: req.user,

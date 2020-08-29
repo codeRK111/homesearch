@@ -2,10 +2,8 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import TextField from '../../components/textField/textField.component';
-import Select from '../../components/select/select.component';
-import RowSelect from './rowSelect.component';
-import RowTextField from './rowTextField.component';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import RowTextField from '../../components/rowTextField/rowTextField.component';
 
 const forMenuItems = [
 	{

@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import Select from '../../components/select/select.component';
+import TextField from '../textField/textField.component';
 
 const RowSelect = ({ heading, ...otherProps }) => {
 	return (
@@ -12,7 +12,7 @@ const RowSelect = ({ heading, ...otherProps }) => {
 				</Grid>
 				<Grid item xs={12} md={12} lg={8}>
 					<Box p="0.3rem">
-						<Select {...otherProps} />
+						<TextField {...otherProps} />
 					</Box>
 				</Grid>
 			</Grid>

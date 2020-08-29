@@ -26,7 +26,7 @@ export const setError = (error) => ({
 });
 
 export const toggleLoading = () => ({
-	type: CityActionTypes.TOGGLE_LOADING,
+	type: CityActionTypes.TOGGLE_STATE_LOADING,
 });
 
 export const cityLoading = (status) => ({

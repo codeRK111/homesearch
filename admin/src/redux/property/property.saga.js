@@ -21,11 +21,13 @@ function* getPropertyResources({ payload: { callback } }) {
 			yield put(toggleLoading(false));
 			yield put(setAllAmenities(responseData.data.amenities));
 			yield put(setAllFurnishes(responseData.data.furnishes));
+			callback('success', responseData.data);
 		}
 	} catch (error) {
 		yield put(toggleLoading(false));
 		const errorResponse = error.response.data;
 		callback(errorResponse);
+		callback('fail', errorResponse.message);
 	}
 	// console.log({ email, password });
 }
@@ -74,7 +76,7 @@ function* addProperty({ payload: { property, callback } }) {
 	} catch (error) {
 		yield put(toggleLoading(false));
 		const errorResponse = error.response.data;
-		callback('fail', errorResponse);
+		callback('fail', errorResponse.message);
 	}
 	// console.log({ email, password });
 }

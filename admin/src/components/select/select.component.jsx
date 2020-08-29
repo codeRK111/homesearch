@@ -10,10 +10,11 @@ const CSelectField = ({
 	onChange,
 	name,
 	label,
-	hint,
 	menuItems,
 	error,
 	helperText,
+	loading = false,
+	...otherProps
 }) => {
 	return (
 		<FormControl variant="outlined" fullWidth size="small" error={error}>
@@ -27,12 +28,19 @@ const CSelectField = ({
 				onChange={onChange}
 				name={name}
 				label="type"
+				{...otherProps}
 			>
-				{menuItems.map((c, i) => (
-					<MenuItem key={i} value={c.value}>
-						<em>{c.label}</em>
+				{loading ? (
+					<MenuItem value={''}>
+						<em>{'loading...'}</em>
 					</MenuItem>
-				))}
+				) : (
+					menuItems.map((c, i) => (
+						<MenuItem key={i} value={c.value}>
+							<em>{c.label}</em>
+						</MenuItem>
+					))
+				)}
 			</Select>
 			<FormHelperText>{helperText}</FormHelperText>
 		</FormControl>

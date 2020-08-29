@@ -31,6 +31,9 @@ const propertySchema = new Schema(
 			},
 			required: true,
 		},
+		availableFor: [{
+					type: String,
+				}],
 		city: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'City',
@@ -125,7 +128,7 @@ const propertySchema = new Schema(
 			{
 				type: String,
 				enum: {
-					values: ['veg', 'nonveg', 'none'],
+					values: ['veg', 'nonveg', 'none','both'],
 				},
 			},
 		],
@@ -164,30 +167,21 @@ const propertySchema = new Schema(
 		distanceSchool: {
 			type: Number,
 		},
-		distanceCollege: {
-			type: Number,
-		},
+		
 		distanceRailwayStation: {
 			type: Number,
 		},
 		distanceAirport: {
-			type: Number,
+			type: Number, 
 		},
-		distanceMetroStation: {
-			type: Number,
-		},
+		
 		distanceBusStop: {
 			type: Number,
 		},
 		distanceHospital: {
 			type: Number,
 		},
-		distanceShoppingMall: {
-			type: Number,
-		},
-		distanceBank: {
-			type: Number,
-		},
+		
 		availability: {
 			type: String,
 			enum: {

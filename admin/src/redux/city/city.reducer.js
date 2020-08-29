@@ -31,7 +31,7 @@ const cityReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				error: action.payload,
 			};
-		case CityActionTypes.TOGGLE_LOADING:
+		case CityActionTypes.TOGGLE_STATE_LOADING:
 			return {
 				...state,
 				loading: !state.loading,
