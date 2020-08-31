@@ -37,7 +37,7 @@ const initialState = {
 	distanceHospital: '',
 	availability: '',
 	availableDate: new Date(),
-	restriction: '',
+	restrictions: '',
 	description: '',
 };
 
@@ -376,7 +376,7 @@ const Flat = ({ onClick, furnishes = [], amenities = [] }) => {
 					},
 				]}
 			/>
-			{flat.furnished !== 'semifurnished' && (
+			{flat.furnished !== 'unfurnished' && (
 				<RowChildren heading={'Furnishes'}>
 					{furnishes.map((c) => (
 						<Grid item xs={12} lg={6} key={c.id}>
@@ -466,9 +466,9 @@ const Flat = ({ onClick, furnishes = [], amenities = [] }) => {
 			/>
 			<RowTextField
 				heading="Restrictions ( If any )"
-				name="restriction"
+				name="restrictions"
 				label="Restrictions"
-				value={flat.restriction}
+				value={flat.restrictions}
 				onChange={handleChange}
 			/>
 			<RowSelect

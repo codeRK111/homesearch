@@ -6,12 +6,14 @@ import {
 	setAllFurnishes,
 	toggleLoading,
 	setAllProperties,
+	fetchPropertyDetailsLoading,
+	updatePropertyLoading,
 } from './property.actions';
 
 function* getPropertyResources({ payload: { callback } }) {
 	try {
 		yield put(toggleLoading(true));
-		let url = `/api/v1/properties/get-property-resources`;
+		let url = `/api/v1/properties/resources/get-property-resources`;
 		const response = yield axios.get(url);
 		const responseData = response.data;
 		if (responseData.status === 'fail') {
@@ -103,6 +105,58 @@ export function* getProperties({ payload: { callback } }) {
 	}
 }
 
+export function* getPropertyDetails({ payload: { propertyId, callback } }) {
+	try {
+		yield put(fetchPropertyDetailsLoading(true));
+		let url = `/api/v1/properties/${propertyId}`;
+		const response = yield axios.get(url);
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(fetchPropertyDetailsLoading(false));
+			console.log(responseData);
+		} else {
+			yield put(fetchPropertyDetailsLoading(false));
+			yield put(setAllProperties(responseData.data.properties));
+			callback('success', responseData.data);
+		}
+	} catch (error) {
+		yield put(fetchPropertyDetailsLoading(false));
+		const errorResponse = error.response.data;
+		callback(errorResponse);
+		callback('fail', errorResponse.message);
+	}
+}
+
+export function* updateProperty({
+	payload: { propertyId, property, callback },
+}) {
+	try {
+		yield put(updatePropertyLoading(true));
+		let url = `/api/v1/properties/${propertyId}`;
+		let data = JSON.stringify(property);
+		const response = yield axios({
+			method: 'patch',
+			headers: { 'Content-Type': 'application/json' },
+			url,
+			data,
+		});
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(updatePropertyLoading(false));
+			console.log(responseData);
+		} else {
+			yield put(updatePropertyLoading(false));
+			yield put(setAllProperties(responseData.data.properties));
+			callback('success', responseData.data);
+		}
+	} catch (error) {
+		yield put(updatePropertyLoading(false));
+		const errorResponse = error.response.data;
+		callback(errorResponse);
+		callback('fail', errorResponse.message);
+	}
+}
+
 export function* onGetPropertyResources() {
 	yield takeLatest(
 		types.FETCH_PROPERTIES_RESOURCES_START,
@@ -118,10 +172,20 @@ export function* onFetchProperties() {
 	yield takeLatest(types.FETCH_PROPERTIES_START, getProperties);
 }
 
+export function* onFetchPropertyDetails() {
+	yield takeLatest(types.FETCH_PROPERTY_DETAILS_START, getPropertyDetails);
+}
+
+export function* onUpdateProperty() {
+	yield takeLatest(types.UPDATE_PROPERTY_START, updateProperty);
+}
+
 export function* propertySagas() {
 	yield all([
 		call(onGetPropertyResources),
 		call(onAddProperty),
 		call(onFetchProperties),
+		call(onFetchPropertyDetails),
+		call(onUpdateProperty),
 	]);
 }

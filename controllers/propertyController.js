@@ -135,6 +135,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 			// 		);
 			// 	}
 			// }
+			console.log(req.body);
 			let propertyValue = {
 				for: req.body.for,
 				type: req.body.type,
@@ -143,6 +144,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				location: req.body.location,
 				numberOfBedRooms: req.body.numberOfBedRooms,
 				toiletTypes: req.body.toiletTypes,
+				typeOfToilets: req.body.typeOfToilets,
 				numberOfBalconies: req.body.numberOfBalconies,
 				superBuiltupArea: req.body.superBuiltupArea,
 				carpetArea: req.body.carpetArea,
@@ -163,6 +165,8 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				createdBy: 'admin',
 				userId: req.body.userId,
 				availableFor: req.body.availableFor,
+				noticePeriod: req.body.noticePeriod,
+				restrictions: req.body.restrictions,
 			};
 
 			if (req.body.furnished !== 'unfurnished') {
@@ -478,6 +482,17 @@ exports.getPropertyResources = catchAsync(async (req, res, next) => {
 		data: {
 			furnishes,
 			amenities,
+		},
+	});
+});
+
+exports.getPropertyDetails = catchAsync(async (req, res, next) => {
+	const property = await Property.findById(req.params.id);
+	if (!property) return next(new AppError('property not found', 404));
+	res.status(200).json({
+		status: 'success',
+		data: {
+			property,
 		},
 	});
 });

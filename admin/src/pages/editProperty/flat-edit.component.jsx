@@ -13,20 +13,22 @@ const initialState = {
 	city: '',
 	location: '',
 	title: '',
-	numberOfRoomMates: '',
+	availableFor: [],
+	numberOfBedRooms: 1,
+	numberOfBalconies: 0,
+	noOfFloors: 1,
+	floor: '',
 	typeOfToilets: '',
 	toiletTypes: '',
 	toiletIndian: '',
 	toiletWestern: '',
+	superBuiltupArea: '',
+	carpetArea: '',
 	rent: '',
-	floor: '',
 	securityDeposit: '',
 	noticePeriod: '',
 	furnished: 'furnished',
 	furnishes: [],
-	fooding: '',
-	foodSchedule: '',
-	otherAmenties: [],
 	externalAmenities: [],
 	distanceSchool: '',
 	distanceRailwayStation: '',
@@ -35,8 +37,8 @@ const initialState = {
 	distanceHospital: '',
 	availability: '',
 	availableDate: new Date(),
-	description: '',
 	restrictions: '',
+	description: '',
 };
 
 const filter = (a) => {
@@ -62,13 +64,19 @@ const toiletMenuItems = [
 	},
 ];
 
-const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
+const Flat = ({
+	onClick,
+	state,
+	furnishes = [],
+	amenities = [],
+	loading = false,
+}) => {
 	console.log(amenities);
-	const [hostel, setHostel] = React.useState(initialState);
+	const [flat, setFlat] = React.useState(initialState);
 	const [file, setFile] = React.useState([]);
 	const handleChange = (event) => {
 		const { name, value } = event.target;
-		setHostel((prevState) => ({
+		setFlat((prevState) => ({
 			...prevState,
 			[name]: value,
 		}));
@@ -78,6 +86,30 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 		const b = event.target;
 		setFile((prevState) => [...prevState, b.files[0]]);
 	};
+
+	React.useEffect(() => {
+		if (!loading) {
+			let s = { ...state };
+
+			if (state.toiletTypes) {
+				console.log(
+					state.toiletTypes.find((c) => c.toiletType === 'indian')
+				);
+				s['toiletIndian'] = state.toiletTypes.find(
+					(c) => c.toiletType === 'indian'
+				)['numbers'];
+				s['toiletWestern'] = state.toiletTypes.find(
+					(c) => c.toiletType === 'western'
+				)['numbers'];
+			}
+			console.log(s);
+			s['externalAmenities'] = state['externalAmenities'].map(
+				(c) => c.id
+			);
+			s['furnishes'] = state['furnishes'].map((c) => c.id);
+			setFlat(s);
+		}
+	}, [loading, state]);
 
 	const imageInput = (number) => {
 		const images = [];
@@ -97,43 +129,41 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 	};
 
 	const handleCheckbox = (id, name) => (event) => {
-		if (event.target.checked == true) {
-			setHostel((prevState) => ({
+		if (event.target.checked === true) {
+			setFlat((prevState) => ({
 				...prevState,
 				[name]: [...prevState[name], id],
 			}));
 		} else {
-			setHostel((prevState) => ({
+			setFlat((prevState) => ({
 				...prevState,
 				[name]: prevState[name].filter((b) => b !== id),
 			}));
 		}
 	};
 
+	const handleDatePicker = (date) => {
+		setFlat((prevState) => ({
+			...prevState,
+			availableDate: date,
+		}));
+	};
+
 	const buttonClick = () => {
-		let propertyDetails = filter(hostel);
-		if (file.length > 0) {
-			propertyDetails['image'] = file;
-		}
+		let propertyDetails = filter(flat);
+
 		propertyDetails['toiletTypes'] = [
 			{
 				toiletType: 'indian',
-				numbers: hostel.toiletIndian,
+				numbers: flat.toiletIndian,
 			},
 			{
 				toiletType: 'western',
-				numbers: hostel.toiletWestern,
+				numbers: flat.toiletWestern,
 			},
 		];
 
 		onClick(propertyDetails);
-	};
-
-	const handleDatePicker = (date) => {
-		setHostel((prevState) => ({
-			...prevState,
-			availableDate: date,
-		}));
 	};
 
 	return (
@@ -142,31 +172,158 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Title"
 				name="title"
 				label="Title"
-				value={hostel.title}
+				value={flat.title}
 				onChange={handleChange}
 			/>
 			<RowTextField
 				heading="Description"
 				name="description"
 				label="Description"
-				value={hostel.description}
+				value={flat.description}
 				onChange={handleChange}
 				multiline={true}
 				rows={5}
 			/>
+
+			<RowChildren heading={'Available for'}>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={flat.availableFor.includes(
+									'bachelors'
+								)}
+								onChange={handleCheckbox(
+									'bachelors',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Bachelors'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={flat.availableFor.includes('men')}
+								onChange={handleCheckbox('men', 'availableFor')}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Men'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={flat.availableFor.includes('women')}
+								onChange={handleCheckbox(
+									'women',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Women'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={flat.availableFor.includes(
+									'workingmen'
+								)}
+								onChange={handleCheckbox(
+									'workingmen',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Working men'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={flat.availableFor.includes(
+									'workingwomwn'
+								)}
+								onChange={handleCheckbox(
+									'workingwomwn',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Working womwn'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={flat.availableFor.includes('family')}
+								onChange={handleCheckbox(
+									'family',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Family'}
+					/>
+				</Grid>
+			</RowChildren>
 			<RowTextField
-				heading="Number of roommates"
-				name="numberOfRoomMates"
-				label="Roommates"
-				value={hostel.numberOfRoomMates}
+				heading="Number of bedrooms"
+				name="numberOfBedRooms"
+				label="Bedrooms"
+				value={flat.numberOfBedRooms}
 				onChange={handleChange}
 				type="number"
 			/>
+			<RowTextField
+				heading="Number of balconies"
+				name="numberOfBalconies"
+				label="Balconies"
+				value={flat.numberOfBalconies}
+				onChange={handleChange}
+				type="number"
+			/>
+			<RowTextField
+				heading="Number of floors"
+				name="noOfFloors"
+				label="Floors"
+				value={flat.noOfFloors}
+				onChange={handleChange}
+				type="number"
+			/>
+			<RowTextField
+				heading="Property on floor"
+				name="floor"
+				label="Property on"
+				value={flat.floor}
+				onChange={handleChange}
+				type="number"
+			/>
+
 			<RowSelect
 				heading="Type of Toilets"
 				name="typeOfToilets"
 				label="Select"
-				value={hostel.typeOfToilets}
+				value={flat.typeOfToilets}
 				onChange={handleChange}
 				menuItems={toiletMenuItems}
 			/>
@@ -174,7 +331,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Number of indian toilet"
 				name="toiletIndian"
 				label="Toilet"
-				value={hostel.toiletIndian}
+				value={flat.toiletIndian}
 				onChange={handleChange}
 				type="number"
 			/>
@@ -182,7 +339,23 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Number of western toilet"
 				name="toiletWestern"
 				label="Toommates"
-				value={hostel.toiletWestern}
+				value={flat.toiletWestern}
+				onChange={handleChange}
+				type="number"
+			/>
+			<RowTextField
+				heading="Super buildup area"
+				name="superBuiltupArea"
+				label="buildup area"
+				value={flat.superBuiltupArea}
+				onChange={handleChange}
+				type="number"
+			/>
+			<RowTextField
+				heading="Carpet area"
+				name="carpetArea"
+				label="carpet area"
+				value={flat.carpetArea}
 				onChange={handleChange}
 				type="number"
 			/>
@@ -190,7 +363,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Security Deposit"
 				name="securityDeposit"
 				label="rs"
-				value={hostel.securityDeposit}
+				value={flat.securityDeposit}
 				onChange={handleChange}
 				type="number"
 			/>
@@ -198,7 +371,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Rent"
 				name="rent"
 				label="rs"
-				value={hostel.rent}
+				value={flat.rent}
 				onChange={handleChange}
 				type="number"
 			/>
@@ -206,7 +379,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Notice Period"
 				name="noticePeriod"
 				label="days"
-				value={hostel.noticePeriod}
+				value={flat.noticePeriod}
 				onChange={handleChange}
 				type="number"
 			/>
@@ -214,7 +387,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Furnished"
 				name="furnished"
 				label="Select"
-				value={hostel.furnished}
+				value={flat.furnished}
 				onChange={handleChange}
 				menuItems={[
 					{
@@ -231,16 +404,14 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 					},
 				]}
 			/>
-			{hostel.furnished !== 'unfurnished' && (
+			{flat.furnished !== 'unfurnished' && (
 				<RowChildren heading={'Furnishes'}>
 					{furnishes.map((c) => (
 						<Grid item xs={12} lg={6} key={c.id}>
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={hostel.furnishes.includes(
-											c.id
-										)}
+										checked={flat.furnishes.includes(c.id)}
 										onChange={handleCheckbox(
 											c.id,
 											'furnishes'
@@ -255,93 +426,17 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 					))}
 				</RowChildren>
 			)}
-			<RowSelect
-				heading="Fooding"
-				name="fooding"
-				label="Select"
-				value={hostel.fooding}
-				onChange={handleChange}
-				menuItems={[
-					{
-						label: 'Veg',
-						value: 'veg',
-					},
-					{
-						label: 'Non veg',
-						value: 'nonveg',
-					},
-					{
-						label: 'Both',
-						value: 'both',
-					},
-					{
-						label: 'None',
-						value: 'none',
-					},
-				]}
-			/>
-			<RowSelect
-				heading="Food Schedule"
-				name="foodSchedule"
-				label="Select"
-				value={hostel.foodSchedule}
-				onChange={handleChange}
-				menuItems={[
-					{
-						label: 'Bed Tea',
-						value: 'bedtea',
-					},
-					{
-						label: 'Breakfast',
-						value: 'breakfast',
-					},
-					{
-						label: 'Lunch',
-						value: 'lunch',
-					},
-					{
-						label: 'Evening Snacks',
-						value: 'evngsnacks',
-					},
-					{
-						label: 'Dinner',
-						value: 'dinner',
-					},
-				]}
-			/>
-			<RowChildren heading={'Other Amenities'}>
-				{amenities
-					.filter((b) => b.type === 'internal')
-					.map((c) => (
-						<Grid item xs={12} lg={6} key={c.id}>
-							<FormControlLabel
-								control={
-									<Checkbox
-										checked={hostel.otherAmenties.includes(
-											c.id
-										)}
-										onChange={handleCheckbox(
-											c.id,
-											'otherAmenties'
-										)}
-										name="checkedB"
-										color="primary"
-									/>
-								}
-								label={c.name}
-							/>
-						</Grid>
-					))}
-			</RowChildren>
+
 			<RowChildren heading={'External Amenities'}>
 				{amenities
 					.filter((b) => b.type === 'external')
 					.map((c) => (
 						<Grid item xs={12} lg={6} key={c.id}>
+							{/* {`${c.name}`} */}
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={hostel.externalAmenities.includes(
+										checked={flat.externalAmenities.includes(
 											c.id
 										)}
 										onChange={handleCheckbox(
@@ -362,7 +457,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Distance from school"
 				name="distanceSchool"
 				label="km"
-				value={hostel.distanceSchool}
+				value={flat.distanceSchool}
 				onChange={handleChange}
 				type="number"
 			/>
@@ -370,7 +465,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Distance from Railway Stattion"
 				name="distanceRailwayStation"
 				label="km"
-				value={hostel.distanceRailwayStation}
+				value={flat.distanceRailwayStation}
 				onChange={handleChange}
 				type="number"
 			/>
@@ -378,7 +473,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Distance from Airport"
 				name="distanceAirport"
 				label="km"
-				value={hostel.distanceAirport}
+				value={flat.distanceAirport}
 				onChange={handleChange}
 				type="number"
 			/>
@@ -386,7 +481,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Distance from bus stop"
 				name="distanceBusStop"
 				label="km"
-				value={hostel.distanceBusStop}
+				value={flat.distanceBusStop}
 				onChange={handleChange}
 				type="number"
 			/>
@@ -394,7 +489,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Distance from hospital"
 				name="distanceHospital"
 				label="km"
-				value={hostel.distanceHospital}
+				value={flat.distanceHospital}
 				onChange={handleChange}
 				type="number"
 			/>
@@ -402,14 +497,14 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				heading="Restrictions ( If any )"
 				name="restrictions"
 				label="Restrictions"
-				value={hostel.restrictions}
+				value={flat.restrictions}
 				onChange={handleChange}
 			/>
 			<RowSelect
 				heading="Availability"
 				name="availability"
 				label="Select"
-				value={hostel.availability}
+				value={flat.availability}
 				onChange={handleChange}
 				menuItems={[
 					{
@@ -422,12 +517,12 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 					},
 				]}
 			/>
-			{hostel.availability === 'specificdate' && (
+			{flat.availability === 'specificdate' && (
 				<RowDatePicker
 					heading="Select date"
 					name="availableDate"
 					label="Choose Date"
-					value={hostel.availableDate}
+					value={flat.availableDate}
 					onChange={handleDatePicker}
 				/>
 			)}
@@ -437,7 +532,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 						Image
 					</Grid>
 					<Grid item xs={12} md={12} lg={6}>
-						{imageInput(3)}
+						{/* {imageInput(3)} */}
 					</Grid>
 				</Grid>
 			</Box>
@@ -450,11 +545,11 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 					}}
 					onClick={buttonClick}
 				>
-					Add
+					Update
 				</Button>
 			</Box>
 		</>
 	);
 };
 
-export default Hostel;
+export default Flat;

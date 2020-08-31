@@ -15,6 +15,14 @@ export const selectProperties = createSelector(
 	(c) => c.properties
 );
 export const selectLoading = createSelector([selectProperty], (c) => c.loading);
+export const selectPropertyDetailsLoading = createSelector(
+	[selectProperty],
+	(c) => c.propertyDetailsLoading
+);
+export const selectUpdatePropertyLoading = createSelector(
+	[selectProperty],
+	(c) => c.updatePropertyLoading
+);
 
 // export const selectLoading = createSelector(
 // 	[selectUser],

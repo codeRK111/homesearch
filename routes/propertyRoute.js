@@ -9,7 +9,10 @@ router
 	.get(propertyController.getProperties)
 	.post(adminController.protect, propertyController.addProperty);
 
-router.route('/:id').patch(propertyController.updateProperty);
+router
+	.route('/:id')
+	.get(propertyController.getPropertyDetails)
+	.patch(propertyController.updateProperty);
 
 router
 	.route('/furnishes')
@@ -22,6 +25,6 @@ router
 	.post(propertyController.addAmenity);
 
 router.post('/upload-images/:id', propertyController.addPropertyImage);
-router.get('/get-property-resources', propertyController.getPropertyResources);
+router.get('/resources/get-property-resources', propertyController.getPropertyResources);
 
 module.exports = router;

@@ -5,13 +5,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { green, red } from '@material-ui/core/colors';
-import Tooltip from '@material-ui/core/Tooltip';
-import AlertDialogue from '../alertDialogue/alertDialogue.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
@@ -19,10 +13,9 @@ import {
 	selectLoading,
 } from '../../redux/property/property.selector';
 import { fetchProperties } from '../../redux/property/property.actions';
-import Box from '@material-ui/core/Box';
-import { useHistory, Link } from 'react-router-dom';
-import CustomSelect from './select.component';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -53,15 +46,15 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function Orders({ fetchProperties, allProperties, loading }) {
-	const history = useHistory();
+function Orders({ fetchProperties, allProperties = [], loading }) {
+	console.log(allProperties);
 	const hnadleProperties = (status, data = null) => {
 		console.log(status);
 		console.log(data);
 	};
 	React.useEffect(() => {
 		fetchProperties(hnadleProperties);
-	}, []);
+	}, [fetchProperties]);
 
 	const classes = useStyles();
 
@@ -69,7 +62,7 @@ function Orders({ fetchProperties, allProperties, loading }) {
 		<React.Fragment>
 			<Backdrop
 				className={classes.backdrop}
-				open={allProperties.length === 0 && loading}
+				open={loading}
 				// onClick={handleClose}
 			>
 				loading...
@@ -165,4 +158,4 @@ const mapDispatchToProps = (dispatch) => ({
 	fetchProperties: (callback) => dispatch(fetchProperties({ callback })),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Orders);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Orders));

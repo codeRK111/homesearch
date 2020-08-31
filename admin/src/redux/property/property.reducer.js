@@ -5,6 +5,8 @@ const INITIAL_STATE = {
 	amenities: [],
 	properties: [],
 	loading: false,
+	propertyDetailsLoading: false,
+	updatePropertyLoading: false,
 };
 
 const cityReducer = (state = INITIAL_STATE, action) => {
@@ -28,6 +30,16 @@ const cityReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				loading: action.payload,
+			};
+		case PropertyActionTypes.PROPERTY_DETAILS_LOADING:
+			return {
+				...state,
+				propertyDetailsLoading: action.payload,
+			};
+		case PropertyActionTypes.UPDATE_PROPERTY_LOADING:
+			return {
+				...state,
+				updatePropertyLoading: action.payload,
 			};
 		default:
 			return state;

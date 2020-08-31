@@ -2,81 +2,31 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import RowTextField from '../../components/rowTextField/rowTextField.component';
+import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import {
+	selectAmenities,
+	selectFurnishes,
+	selectLoading as resourcesLoading,
+	selectPropertyDetailsLoading as propertyDetailsLoading,
+	selectUpdatePropertyLoading as updateLoading,
+} from '../../redux/property/property.selector';
+import {
+	fetchPropertyDetails,
+	fetchAllPropertyResourcesStart,
+	updateProperty,
+} from '../../redux/property/property.actions';
+import FlatEdit from './flat-edit.component';
+import { useHistory } from 'react-router-dom';
+import Backdrop from '@material-ui/core/Backdrop';
 
-const forMenuItems = [
-	{
-		value: 'rent',
-		label: 'Rent',
+const useStyles = makeStyles((theme) => ({
+	backdrop: {
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#fff',
 	},
-];
-
-const typeMenuItems = [
-	{
-		value: 'flat',
-		label: 'Flat',
-	},
-	{
-		value: 'independenthouse',
-		label: 'Independent House',
-	},
-	{
-		value: 'guesthouse',
-		label: 'Guest House',
-	},
-];
-
-const userMenuItems = [
-	{
-		value: '',
-		label: 'None',
-	},
-];
-
-const stateMenuItems = [
-	{
-		value: '',
-		label: 'None',
-	},
-];
-
-const cityMenuItems = [
-	{
-		value: '',
-		label: 'None',
-	},
-];
-
-const locationMenuItems = [
-	{
-		value: '',
-		label: 'None',
-	},
-];
-
-const floorMenuItems = [
-	{
-		value: 'Entire Building',
-		label: 'Entire Building',
-	},
-	{
-		value: 'Ground floor',
-		label: 'Ground floor',
-	},
-	{
-		value: '1st floor',
-		label: '1st floor',
-	},
-	{
-		value: '2nd floor',
-		label: '2nd floor',
-	},
-	{
-		value: '3rd floor',
-		label: '3rd floor',
-	},
-];
+}));
 
 const initialState = {
 	for: 'rent',
@@ -109,125 +59,119 @@ const initialState = {
 	availability: '',
 	externalAmenities: [],
 	furnishes: [],
+	availableFor: [],
 	floor: '',
 };
 
-const EditProperty = () => {
+const EditProperty = ({
+	propertyDetailsLoading,
+	fetchPropertyDetails,
+	amenities,
+	furnishes,
+	fetchResourcesStart,
+	updateLoading,
+	updateProperty,
+	match: {
+		params: { id },
+	},
+}) => {
+	const history = useHistory();
+	const classes = useStyles();
 	const [property, setProperty] = React.useState(initialState);
+	const [asyncError, setAsyncError] = React.useState('');
+	const [loading, setLoading] = React.useState(false);
 
-	const handlePropertyChange = (e) => {
-		e.persist();
-		setProperty((prevState) => ({
-			...prevState,
-			[e.target.name]: e.target.value,
-		}));
+	React.useEffect(() => {
+		const handleFetchResources = (type, data) => {
+			if (type === 'success') {
+				fetchPropertyDetails(id, handleFetchPropertyDetails);
+				console.log(data);
+				setAsyncError('');
+			} else {
+				setLoading(false);
+				setAsyncError(data);
+			}
+		};
+		setLoading(true);
+		fetchResourcesStart(handleFetchResources);
+	}, [fetchResourcesStart, fetchPropertyDetails, id]);
+
+	const handleFetchPropertyDetails = (status, data) => {
+		if (status === 'success') {
+			console.log(data);
+			setProperty(data.property);
+			setLoading(false);
+			setAsyncError('');
+		} else {
+			setLoading(false);
+			console.log(data);
+			setAsyncError(data);
+		}
 	};
+
+	const handleEditProperty = (type, data) => {
+		if (type === 'success') {
+			setAsyncError('');
+			history.push('/activeProperties');
+		} else {
+			setAsyncError(data);
+		}
+	};
+
+	const onSubmit = (propertyDetails) => {
+		console.log('propertyDetails--->', propertyDetails);
+		delete propertyDetails['city'];
+		delete propertyDetails['type'];
+		delete propertyDetails['for'];
+		delete propertyDetails['location'];
+		delete propertyDetails['userId'];
+		updateProperty(id, propertyDetails, handleEditProperty);
+	};
+
 	return (
 		<Box p="1rem">
+			<Backdrop
+				className={classes.backdrop}
+				open={loading}
+				// onClick={handleClose}
+			>
+				Loading ...
+			</Backdrop>
 			<h3>Edit Property</h3>
+			<p className="color-red">{asyncError}</p>
 			<Paper>
 				<Box p="0.5rem">
-					<Grid container>
-						<Grid item xs={12} md={12} lg={9}>
-							<RowSelect
-								heading="For *"
-								name="for"
-								value={property.for}
-								onChange={handlePropertyChange}
-								label={'Select'}
-								menuItems={forMenuItems}
-							/>
-							<RowSelect
-								heading="Type *"
-								name="type"
-								value={property.type}
-								onChange={handlePropertyChange}
-								label={'Type'}
-								menuItems={typeMenuItems}
-							/>
-							<RowSelect
-								heading="User *"
-								name="userId"
-								value={property.userId}
-								onChange={handlePropertyChange}
-								label={'User'}
-								menuItems={userMenuItems}
-							/>
-							<RowSelect
-								heading="State *"
-								name="state"
-								value={property.state}
-								onChange={handlePropertyChange}
-								label={'State'}
-								menuItems={stateMenuItems}
-							/>
-							<RowSelect
-								heading="City *"
-								name="city"
-								value={property.city}
-								onChange={handlePropertyChange}
-								label={'City'}
-								menuItems={cityMenuItems}
-							/>
-							<RowSelect
-								heading="Location *"
-								name="location"
-								value={property.location}
-								onChange={handlePropertyChange}
-								label={'Location'}
-								menuItems={locationMenuItems}
-							/>
-							<RowTextField
-								heading="Title *"
-								name="title"
-								value={property.title}
-								onChange={handlePropertyChange}
-								label={'Title'}
-							/>
-							<RowTextField
-								heading="Description *"
-								name="description"
-								value={property.description}
-								onChange={handlePropertyChange}
-								label={'Description'}
-								multiline
-								rows={4}
-							/>
-							<RowTextField
-								heading="Number of bed rooms *"
-								name="numberOfBedRooms"
-								value={property.numberOfBedRooms}
-								onChange={handlePropertyChange}
-								label={'Description'}
-							/>
-							<RowTextField
-								heading="Number of balconies *"
-								name="numberOfBalconies"
-								value={property.numberOfBalconies}
-								onChange={handlePropertyChange}
-								label={'Balconies'}
-							/>
-							<RowTextField
-								heading="Number of Floors *"
-								name="noOfFloors"
-								value={property.noOfFloors}
-								onChange={handlePropertyChange}
-								label={'floors'}
-							/>
-							<RowSelect
-								heading="Property on Floor *"
-								name="floor"
-								value={property.floor}
-								onChange={handlePropertyChange}
-								label={'Floor'}
-								menuItems={floorMenuItems}
-							/>
-						</Grid>
-					</Grid>
+					<Grid container></Grid>
+					{!loading && (
+						<FlatEdit
+							onClick={onSubmit}
+							state={property}
+							furnishes={furnishes}
+							amenities={amenities}
+							loading={propertyDetailsLoading}
+						/>
+					)}
 				</Box>
 			</Paper>
 		</Box>
 	);
 };
 
-export default EditProperty;
+const mapStateToProps = createStructuredSelector({
+	resourcesLoading,
+	propertyDetailsLoading,
+	amenities: selectAmenities,
+	furnishes: selectFurnishes,
+	updateLoading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	fetchPropertyDetails: (propertyId, callback) =>
+		dispatch(fetchPropertyDetails({ propertyId, callback })),
+	fetchResourcesStart: (callback) =>
+		dispatch(fetchAllPropertyResourcesStart({ callback })),
+	updateProperty: (propertyId, property, callback) =>
+		dispatch(updateProperty({ propertyId, property, callback })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProperty);

@@ -10,6 +10,11 @@ export const fetchProperties = (callback) => ({
 	payload: callback,
 });
 
+export const fetchPropertyDetails = (callback) => ({
+	type: PropertyActionTypes.FETCH_PROPERTY_DETAILS_START,
+	payload: callback,
+});
+
 export const addProperty = (property) => ({
 	type: PropertyActionTypes.ADD_PROPERTY,
 	payload: property,
@@ -30,7 +35,22 @@ export const setAllProperties = (properties) => ({
 	payload: properties,
 });
 
+export const updateProperty = (property) => ({
+	type: PropertyActionTypes.UPDATE_PROPERTY_START,
+	payload: property,
+});
+
 export const toggleLoading = (loadingState) => ({
 	type: PropertyActionTypes.TOGGLE_LOADING,
+	payload: loadingState,
+});
+
+export const fetchPropertyDetailsLoading = (loadingState) => ({
+	type: PropertyActionTypes.PROPERTY_DETAILS_LOADING,
+	payload: loadingState,
+});
+
+export const updatePropertyLoading = (loadingState) => ({
+	type: PropertyActionTypes.UPDATE_PROPERTY_LOADING,
 	payload: loadingState,
 });
