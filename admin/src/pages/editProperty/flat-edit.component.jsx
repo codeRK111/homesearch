@@ -73,18 +73,12 @@ const Flat = ({
 }) => {
 	console.log(amenities);
 	const [flat, setFlat] = React.useState(initialState);
-	const [file, setFile] = React.useState([]);
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		setFlat((prevState) => ({
 			...prevState,
 			[name]: value,
 		}));
-	};
-
-	const handleFileChange = (event) => {
-		const b = event.target;
-		setFile((prevState) => [...prevState, b.files[0]]);
 	};
 
 	React.useEffect(() => {
@@ -110,23 +104,6 @@ const Flat = ({
 			setFlat(s);
 		}
 	}, [loading, state]);
-
-	const imageInput = (number) => {
-		const images = [];
-		for (let index = 0; index < number; index++) {
-			images.push(
-				<Box m="0.3rem" key={index}>
-					<input
-						type="file"
-						name=""
-						id=""
-						onChange={handleFileChange}
-					/>
-				</Box>
-			);
-		}
-		return images;
-	};
 
 	const handleCheckbox = (id, name) => (event) => {
 		if (event.target.checked === true) {
@@ -338,7 +315,7 @@ const Flat = ({
 			<RowTextField
 				heading="Number of western toilet"
 				name="toiletWestern"
-				label="Toommates"
+				label="Toilet"
 				value={flat.toiletWestern}
 				onChange={handleChange}
 				type="number"
@@ -526,16 +503,16 @@ const Flat = ({
 					onChange={handleDatePicker}
 				/>
 			)}
-			<Box p="0.8rem">
+			{/* <Box p="0.8rem">
 				<Grid container>
 					<Grid item xs={12} md={12} lg={6}>
 						Image
 					</Grid>
 					<Grid item xs={12} md={12} lg={6}>
-						{/* {imageInput(3)} */}
+						 {imageInput(3)} 
 					</Grid>
 				</Grid>
-			</Box>
+			</Box> */}
 			<Box>
 				<Button
 					color="primary"

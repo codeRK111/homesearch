@@ -14,7 +14,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 // import NotificationsIcon from '@material-ui/icons/Notifications';
 import MainListItem from './listitem.component';
 import { withRouter } from 'react-router-dom';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useHistory } from 'react-router-dom';
 
 // import './home.styles.scss';
 
@@ -103,12 +103,16 @@ const useStyles = makeStyles((theme) => {
 		fixedHeight: {
 			height: 240,
 		},
+		pointer: {
+			cursor: 'pointer',
+		},
 	};
 });
 
 function DrawerComponent(Component) {
 	const D = (props) => {
 		const classes = useStyles();
+		const history = useHistory();
 		const [open, setOpen] = React.useState(true);
 		const handleDrawerOpen = () => {
 			setOpen(true);
@@ -143,15 +147,20 @@ function DrawerComponent(Component) {
 						>
 							<MenuIcon />
 						</IconButton>
-						<Typography
-							component="h1"
-							variant="h6"
-							color="inherit"
-							noWrap
-							className={classes.title}
+						<div
+							className={classes.pointer}
+							onClick={() => history.push('/dashboard')}
 						>
-							Homesearch18
-						</Typography>
+							<Typography
+								component="h1"
+								variant="h6"
+								color="inherit"
+								noWrap
+								className={classes.title}
+							>
+								Homesearch18
+							</Typography>
+						</div>
 						{/* <IconButton color="inherit">
 							<Badge badgeContent={4} color="secondary">
 								<NotificationsIcon />

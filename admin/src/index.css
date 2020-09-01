@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+
 body {
 	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
@@ -26,4 +28,13 @@ code {
 
 .MuiTableCell-root {
 	padding: 8px !important;
+}
+
+h3 {
+	font-family: 'Abel', sans-serif;
+	font-weight: 700;
+}
+
+.font-secondary {
+	font-family: 'Abel', sans-serif !important;
 }

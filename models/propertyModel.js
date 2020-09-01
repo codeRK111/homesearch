@@ -255,7 +255,7 @@ propertySchema.pre(/^find/, function (next) {
 			select: 'id name type',
 		})
 		.populate({
-			path: 'otherAmenities',
+			path: 'otherAmenties',
 			select: 'id name type',
 		})
 		.populate('location')

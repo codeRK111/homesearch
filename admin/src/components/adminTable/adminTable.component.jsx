@@ -75,16 +75,8 @@ function Orders({
 	const classes = useStyles();
 
 	const [alertOpen, setAlertOpen] = React.useState(false);
-	const [open, setOpen] = React.useState(false);
 	const [userId, setUserId] = React.useState(null);
 
-	const handleClickOpen = (id) => {
-		setUserId(id);
-		setOpen(true);
-	};
-	const handleClose = () => {
-		setOpen(false);
-	};
 	const handleClickAlertOpen = (id) => () => {
 		setUserId(id);
 		setAlertOpen(true);

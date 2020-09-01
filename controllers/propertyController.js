@@ -413,8 +413,8 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 });
 
 exports.getProperties = catchAsync(async (req, res, next) => {
-	const properties = await Property.find({ status: 'active' });
-	res.status(200).json({
+	const properties = await Property.find(req.query);
+	res.status(200).json({ 
 		status: 'success',
 		count: properties.length,
 		data: {

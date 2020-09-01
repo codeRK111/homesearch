@@ -15,20 +15,20 @@ const initialState = {
 	title: '',
 	availableFor: [],
 	numberOfRoomMates: '',
+	numberOfBedRooms: 1,
+	numberOfBalconies: 0,
+	noOfFloors: 1,
 	typeOfToilets: '',
 	toiletTypes: '',
 	toiletIndian: '',
 	toiletWestern: '',
 	rent: '',
-	floor: '',
 	securityDeposit: '',
 	noticePeriod: '',
 	furnished: 'furnished',
 	furnishes: [],
-	fooding: '',
-	foodSchedule: '',
-	otherAmenties: [],
 	externalAmenities: [],
+	otherAmenties: [],
 	distanceSchool: '',
 	distanceRailwayStation: '',
 	distanceAirport: '',
@@ -36,14 +36,14 @@ const initialState = {
 	distanceHospital: '',
 	availability: '',
 	availableDate: new Date(),
-	description: '',
 	restrictions: '',
+	description: '',
 };
 
 const filter = (a) => {
 	let state = { ...a };
 	if (state.furnished === 'unfurnished') {
-		delete state['furnishes'];
+		delete state['furnished'];
 	}
 	if (state.availability !== 'specificdate') {
 		delete state['availableDate'];
@@ -63,7 +63,13 @@ const toiletMenuItems = [
 	},
 ];
 
-const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
+const Flat = ({
+	onClick,
+	state,
+	furnishes = [],
+	amenities = [],
+	loading = false,
+}) => {
 	console.log(amenities);
 	const [hostel, setHostel] = React.useState(initialState);
 	const [file, setFile] = React.useState([]);
@@ -79,6 +85,31 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 		const b = event.target;
 		setFile((prevState) => [...prevState, b.files[0]]);
 	};
+
+	React.useEffect(() => {
+		if (!loading) {
+			let s = { ...state };
+
+			if (state.toiletTypes) {
+				console.log(
+					state.toiletTypes.find((c) => c.toiletType === 'indian')
+				);
+				s['toiletIndian'] = state.toiletTypes.find(
+					(c) => c.toiletType === 'indian'
+				)['numbers'];
+				s['toiletWestern'] = state.toiletTypes.find(
+					(c) => c.toiletType === 'western'
+				)['numbers'];
+			}
+			console.log(s);
+			s['externalAmenities'] = state['externalAmenities'].map(
+				(c) => c.id
+			);
+			s['otherAmenties'] = state['otherAmenties'].map((c) => c.id);
+			s['furnishes'] = state['furnishes'].map((c) => c.id);
+			setHostel(s);
+		}
+	}, [loading, state]);
 
 	const imageInput = (number) => {
 		const images = [];
@@ -98,7 +129,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 	};
 
 	const handleCheckbox = (id, name) => (event) => {
-		if (event.target.checked == true) {
+		if (event.target.checked === true) {
 			setHostel((prevState) => ({
 				...prevState,
 				[name]: [...prevState[name], id],
@@ -111,11 +142,16 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 		}
 	};
 
+	const handleDatePicker = (date) => {
+		setHostel((prevState) => ({
+			...prevState,
+			availableDate: date,
+		}));
+	};
+
 	const buttonClick = () => {
 		let propertyDetails = filter(hostel);
-		if (file.length > 0) {
-			propertyDetails['image'] = file;
-		}
+
 		propertyDetails['toiletTypes'] = [
 			{
 				toiletType: 'indian',
@@ -128,13 +164,6 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 		];
 
 		onClick(propertyDetails);
-	};
-
-	const handleDatePicker = (date) => {
-		setHostel((prevState) => ({
-			...prevState,
-			availableDate: date,
-		}));
 	};
 
 	return (
@@ -155,6 +184,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				multiline={true}
 				rows={5}
 			/>
+
 			<RowChildren heading={'Available for'}>
 				<Grid item xs={12} lg={6}>
 					<FormControlLabel
@@ -264,6 +294,23 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				onChange={handleChange}
 				type="number"
 			/>
+			<RowTextField
+				heading="Number of bedrooms"
+				name="numberOfBedRooms"
+				label="Bedrooms"
+				value={hostel.numberOfBedRooms}
+				onChange={handleChange}
+				type="number"
+			/>
+			<RowTextField
+				heading="Number of balconies"
+				name="numberOfBalconies"
+				label="Balconies"
+				value={hostel.numberOfBalconies}
+				onChange={handleChange}
+				type="number"
+			/>
+
 			<RowSelect
 				heading="Type of Toilets"
 				name="typeOfToilets"
@@ -288,6 +335,7 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				onChange={handleChange}
 				type="number"
 			/>
+
 			<RowTextField
 				heading="Security Deposit"
 				name="securityDeposit"
@@ -357,65 +405,13 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 					))}
 				</RowChildren>
 			)}
-			<RowSelect
-				heading="Fooding"
-				name="fooding"
-				label="Select"
-				value={hostel.fooding}
-				onChange={handleChange}
-				menuItems={[
-					{
-						label: 'Veg',
-						value: 'veg',
-					},
-					{
-						label: 'Non veg',
-						value: 'nonveg',
-					},
-					{
-						label: 'Both',
-						value: 'both',
-					},
-					{
-						label: 'None',
-						value: 'none',
-					},
-				]}
-			/>
-			<RowSelect
-				heading="Food Schedule"
-				name="foodSchedule"
-				label="Select"
-				value={hostel.foodSchedule}
-				onChange={handleChange}
-				menuItems={[
-					{
-						label: 'Bed Tea',
-						value: 'bedtea',
-					},
-					{
-						label: 'Breakfast',
-						value: 'breakfast',
-					},
-					{
-						label: 'Lunch',
-						value: 'lunch',
-					},
-					{
-						label: 'Evening Snacks',
-						value: 'evngsnacks',
-					},
-					{
-						label: 'Dinner',
-						value: 'dinner',
-					},
-				]}
-			/>
+
 			<RowChildren heading={'Other Amenities'}>
 				{amenities
 					.filter((b) => b.type === 'internal')
 					.map((c) => (
 						<Grid item xs={12} lg={6} key={c.id}>
+							{/* {`${c.name}`} */}
 							<FormControlLabel
 								control={
 									<Checkbox
@@ -435,11 +431,13 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 						</Grid>
 					))}
 			</RowChildren>
+
 			<RowChildren heading={'External Amenities'}>
 				{amenities
 					.filter((b) => b.type === 'external')
 					.map((c) => (
 						<Grid item xs={12} lg={6} key={c.id}>
+							{/* {`${c.name}`} */}
 							<FormControlLabel
 								control={
 									<Checkbox
@@ -533,16 +531,16 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 					onChange={handleDatePicker}
 				/>
 			)}
-			<Box p="0.8rem">
+			{/* <Box p="0.8rem">
 				<Grid container>
 					<Grid item xs={12} md={12} lg={6}>
 						Image
 					</Grid>
 					<Grid item xs={12} md={12} lg={6}>
-						{imageInput(3)}
+						 {imageInput(3)} 
 					</Grid>
 				</Grid>
-			</Box>
+			</Box> */}
 			<Box>
 				<Button
 					color="primary"
@@ -552,11 +550,11 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 					}}
 					onClick={buttonClick}
 				>
-					Add
+					Update
 				</Button>
 			</Box>
 		</>
 	);
 };
 
-export default Hostel;
+export default Flat;

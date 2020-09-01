@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Backdrop from '@material-ui/core/Backdrop';
+import CustomSelect from './select.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
@@ -46,15 +47,22 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function Orders({ fetchProperties, allProperties = [], loading }) {
+function Orders({
+	fetchProperties,
+	loading,
+	match: {
+		params: { status },
+	},
+	allProperties = [],
+}) {
 	console.log(allProperties);
 	const hnadleProperties = (status, data = null) => {
 		console.log(status);
 		console.log(data);
 	};
 	React.useEffect(() => {
-		fetchProperties(hnadleProperties);
-	}, [fetchProperties]);
+		fetchProperties(hnadleProperties, status);
+	}, [fetchProperties, status]);
 
 	const classes = useStyles();
 
@@ -105,6 +113,9 @@ function Orders({ fetchProperties, allProperties = [], loading }) {
 							<TableCell style={{ color: '#ffffff' }}>
 								Posted on
 							</TableCell>
+							<TableCell style={{ color: '#ffffff' }}>
+								Status
+							</TableCell>
 							<TableCell
 								align="right"
 								style={{ color: '#ffffff' }}
@@ -127,6 +138,26 @@ function Orders({ fetchProperties, allProperties = [], loading }) {
 								<TableCell>{c.userId.name}</TableCell>
 								<TableCell>
 									{`${moment(c.createdAt, 'YYYY-MM-DD')}`}
+								</TableCell>
+								<TableCell>
+									<CustomSelect
+										value={c.status}
+										propertyId={c.id}
+										items={[
+											{
+												label: 'active',
+												value: 'active',
+											},
+											{
+												label: 'expired',
+												value: 'expired',
+											},
+											{
+												label: 'underScreening',
+												value: 'underScreening',
+											},
+										]}
+									/>
 								</TableCell>
 								<TableCell align="right">
 									<Link
@@ -155,7 +186,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchProperties: (callback) => dispatch(fetchProperties({ callback })),
+	fetchProperties: (callback, status) =>
+		dispatch(fetchProperties({ callback, status })),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Orders));

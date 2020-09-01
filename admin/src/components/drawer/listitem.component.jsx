@@ -9,7 +9,7 @@ import LockIcon from '@material-ui/icons/Lock';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import { useHistory } from 'react-router-dom';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,6 +42,12 @@ const MainListItems = () => {
 	};
 	return (
 		<div>
+			<ListItem button onClick={onUsersClick('/dashboard')}>
+				<ListItemIcon>
+					<DashboardIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Dashboard" />
+			</ListItem>
 			<ListItem button onClick={onUsersClick('/users')}>
 				<ListItemIcon>
 					<PeopleAltIcon color="secondary" />
@@ -85,12 +91,32 @@ const MainListItems = () => {
 					<ListItem
 						button
 						className={classes.nested}
-						onClick={onUsersClick('/activeProperties')}
+						onClick={onUsersClick('/all-properties/active')}
 					>
 						<ListItemIcon>
 							<ApartmentIcon className={classes.whiteColor} />
 						</ListItemIcon>
 						<ListItemText primary="Active properties" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/all-properties/underScreening')}
+					>
+						<ListItemIcon>
+							<ApartmentIcon className={classes.whiteColor} />
+						</ListItemIcon>
+						<ListItemText primary="Under screening properties" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/all-properties/expired')}
+					>
+						<ListItemIcon>
+							<ApartmentIcon className={classes.whiteColor} />
+						</ListItemIcon>
+						<ListItemText primary="Expired properties" />
 					</ListItem>
 				</List>
 			</Collapse>

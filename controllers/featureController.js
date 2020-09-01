@@ -1,5 +1,10 @@
 const jwt = require('jsonwebtoken');
 const Feature = require('./../models/featuresModel');
+const Admin = require('./../models/adminModel');
+const City = require('./../models/cityModel');
+const Location = require('./../models/locationModel');
+const Property = require('./../models/propertyModel');
+const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const sendOtpMessage = require('../utils/sendOtp');
@@ -65,3 +70,26 @@ exports.getAuthNumber = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+
+exports.getCount = catchAsync(async (req,res,next) => {
+	const admins = await Admin.count();
+	const cities = await City.count();
+	const locations = await Location.count();
+	const activeProperties = await Property.count({status: 'active'});
+	const underScreeningProperties = await Property.count({status: 'underScreening'});
+	const expiredProperties = await Property.count({status: 'expired'});
+	const users = await User.count();
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			admins,
+			users,
+			cities,
+			locations,
+			activeProperties,
+			underScreeningProperties,
+			expiredProperties,
+		}
+	})
+})

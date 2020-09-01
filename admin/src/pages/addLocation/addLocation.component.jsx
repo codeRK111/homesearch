@@ -62,24 +62,23 @@ const AddLocation = ({
 		}));
 	};
 
-	const cityResponseHandler = (type, data) => {
-		if (type === 'success') {
-			console.log(data);
-			setCities(data.cities);
-			setAsyncError('');
-		} else {
-			setAsyncError(data);
-		}
-	};
-
 	React.useEffect(() => {
 		fetchStatesStart();
-	}, []);
+	}, [fetchStatesStart]);
 	React.useEffect(() => {
 		if (city.state) {
+			const cityResponseHandler = (type, data) => {
+				if (type === 'success') {
+					console.log(data);
+					setCities(data.cities);
+					setAsyncError('');
+				} else {
+					setAsyncError(data);
+				}
+			};
 			fetchCities(city.state, cityResponseHandler);
 		}
-	}, [city.state]);
+	}, [city.state, fetchCities]);
 
 	const checkError = (state) => {
 		if (!city.state) {
@@ -213,7 +212,7 @@ const AddLocation = ({
 											}}
 											onClick={buttonClick}
 										>
-											Add City
+											Add Location
 										</Button>
 									</Box>
 								</Grid>

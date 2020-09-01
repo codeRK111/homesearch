@@ -6,6 +6,8 @@ import Paper from '@material-ui/core/Paper';
 import RowSelect from '../../components/rowSelect/rowSelect.component';
 import Hostel from './hostel.component';
 import Flat from './flat.component';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import {
@@ -70,6 +72,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+function Alert(props) {
+	return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const AddProperty = ({
 	allStates,
 	furnishes,
@@ -131,8 +137,9 @@ const AddProperty = ({
 	const handleAddProperty = (type, data) => {
 		if (type === 'success') {
 			setAsyncError('');
-			history.push('/activeProperties');
+			history.push('/all-properties/active');
 		} else {
+			window.scrollTo(0, 0);
 			setAsyncError(data);
 		}
 	};
@@ -165,11 +172,23 @@ const AddProperty = ({
 		propertyDetails['userId'] = selectedUser;
 		addProperty(propertyDetails, handleAddProperty);
 	};
+
+	const closeSnackbar = () => setAsyncError('');
 	return (
 		<Box p="1rem">
 			<Backdrop className={classes.backdrop} open={resourcesLoading}>
 				loading resources...
 			</Backdrop>
+			<Snackbar
+				anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+				open={!!asyncError}
+				onClose={closeSnackbar}
+				message={asyncError}
+			>
+				<Alert severity="error" onClose={closeSnackbar}>
+					{asyncError}
+				</Alert>
+			</Snackbar>
 			<h3>Add Property</h3>
 			<p className="color-red">{asyncError}</p>
 			<Box>

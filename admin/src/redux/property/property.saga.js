@@ -83,10 +83,10 @@ function* addProperty({ payload: { property, callback } }) {
 	// console.log({ email, password });
 }
 
-export function* getProperties({ payload: { callback } }) {
+export function* getProperties({ payload: { callback, status = '' } }) {
 	try {
 		yield put(toggleLoading(true));
-		let url = `/api/v1/properties`;
+		let url = `/api/v1/properties${status && `?status=${status}`}`;
 		const response = yield axios.get(url);
 		const responseData = response.data;
 		if (responseData.status === 'fail') {
@@ -101,7 +101,7 @@ export function* getProperties({ payload: { callback } }) {
 		yield put(toggleLoading(false));
 		const errorResponse = error.response.data;
 		callback(errorResponse);
-		callback('fail', errorResponse);
+		callback('fail', errorResponse.message);
 	}
 }
 

@@ -3,13 +3,30 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux';
-import { toggleAdminInfo } from '../../redux/admins/admins.actions';
+import {
+	updateProperty,
+	fetchProperties,
+} from '../../redux/property/property.actions';
+import { withRouter } from 'react-router-dom';
 
-const CustomSelect = ({ value, toggleAdminInfo, userId, items = [] }) => {
-	const [change, setChange] = React.useState(value);
+const CustomSelect = ({
+	value,
+	updateProperty,
+	fetchProperties,
+	propertyId,
+	match: {
+		params: { status },
+	},
+	items = [],
+}) => {
+	const callBack = (type) => {
+		if (type === 'success') {
+			fetchProperties(console.log, status);
+		}
+	};
 	const handleMobileStatus = (e) => {
-		setChange(e.target.value);
-		toggleAdminInfo({ type: e.target.value }, userId, console.log);
+		console.log(propertyId);
+		updateProperty(propertyId, { status: e.target.value }, callBack);
 	};
 
 	return (
@@ -17,7 +34,7 @@ const CustomSelect = ({ value, toggleAdminInfo, userId, items = [] }) => {
 			<Select
 				labelId="demo-simple-select-label"
 				id="demo-simple-select"
-				value={change}
+				value={value}
 				onChange={handleMobileStatus}
 			>
 				{items.map((m, i) => (
@@ -31,8 +48,10 @@ const CustomSelect = ({ value, toggleAdminInfo, userId, items = [] }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	toggleAdminInfo: (admin, adminId, callback) =>
-		dispatch(toggleAdminInfo({ admin, adminId, callback })),
+	updateProperty: (propertyId, property, callback) =>
+		dispatch(updateProperty({ propertyId, property, callback })),
+	fetchProperties: (callback, status) =>
+		dispatch(fetchProperties({ callback, status })),
 });
 
-export default connect(null, mapDispatchToProps)(CustomSelect);
+export default withRouter(connect(null, mapDispatchToProps)(CustomSelect));

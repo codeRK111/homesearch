@@ -1,11 +1,4 @@
-import {
-	takeLatest,
-	put,
-	call,
-	all,
-	takeEvery,
-	take,
-} from 'redux-saga/effects';
+import { takeLatest, put, call, all, takeEvery } from 'redux-saga/effects';
 import { UserActionTypes as types } from './users.types';
 import axios from 'axios';
 import {

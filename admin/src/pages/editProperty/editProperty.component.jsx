@@ -18,6 +18,7 @@ import {
 	updateProperty,
 } from '../../redux/property/property.actions';
 import FlatEdit from './flat-edit.component';
+import HostelEdit from './hostel-edit.component';
 import { useHistory } from 'react-router-dom';
 import Backdrop from '@material-ui/core/Backdrop';
 
@@ -112,7 +113,7 @@ const EditProperty = ({
 	const handleEditProperty = (type, data) => {
 		if (type === 'success') {
 			setAsyncError('');
-			history.push('/activeProperties');
+			history.push(`/all-properties/${property.status}`);
 		} else {
 			setAsyncError(data);
 		}
@@ -142,15 +143,36 @@ const EditProperty = ({
 			<Paper>
 				<Box p="0.5rem">
 					<Grid container></Grid>
-					{!loading && (
-						<FlatEdit
-							onClick={onSubmit}
-							state={property}
-							furnishes={furnishes}
-							amenities={amenities}
-							loading={propertyDetailsLoading}
-						/>
-					)}
+					{(() => {
+						switch (property.type) {
+							case 'hostel':
+							case 'pg':
+								return (
+									<HostelEdit
+										onClick={onSubmit}
+										state={property}
+										furnishes={furnishes}
+										amenities={amenities}
+										loading={propertyDetailsLoading}
+									/>
+								);
+							case 'flat':
+							case 'independenthouse':
+							case 'guesthouse':
+								return (
+									<FlatEdit
+										onClick={onSubmit}
+										state={property}
+										furnishes={furnishes}
+										amenities={amenities}
+										loading={propertyDetailsLoading}
+									/>
+								);
+
+							default:
+								break;
+						}
+					})()}
 				</Box>
 			</Paper>
 		</Box>

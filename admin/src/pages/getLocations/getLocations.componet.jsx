@@ -2,10 +2,10 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import LocationTable from '../../components/locationTable/locationTable.component';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 const Admin = () => {
-	const history = useHistory();
+	// const history = useHistory();
 	return (
 		<div>
 			<Box p="1rem">
