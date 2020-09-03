@@ -4,8 +4,8 @@ import Box from '@material-ui/core/Box';
 import Backdrop from '@material-ui/core/Backdrop';
 import Paper from '@material-ui/core/Paper';
 import RowSelect from '../../components/rowSelect/rowSelect.component';
-import Hostel from './hostel.component';
-import Flat from './flat.component';
+import FormHeader from '../../components/formHeader/formHeader.component';
+import FlatSale from './addPropertySale.component';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { createStructuredSelector } from 'reselect';
@@ -39,40 +39,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 
 const initialState = {
-	type: 'hostel',
+	type: 'flat',
 };
 
 const typeMenuItems = [
 	{
 		value: 'flat',
 		label: 'Flat',
-	},
-	{
-		value: 'independenthouse',
-		label: 'Independent House',
-	},
-	{
-		value: 'guesthouse',
-		label: 'Guest House',
-	},
-	{
-		value: 'hostel',
-		label: 'Hostel',
-	},
-	{
-		value: 'pg',
-		label: 'Pg',
-	},
-];
-
-const forMenuItems = [
-	{
-		value: 'rent',
-		label: 'Rent',
-	},
-	{
-		value: 'sale',
-		label: 'Sale',
 	},
 ];
 
@@ -102,7 +75,6 @@ const AddProperty = ({
 	selectAllUsers,
 	fetchAllUsersStart,
 	fetchResourcesStart,
-	addProperty,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -145,15 +117,7 @@ const AddProperty = ({
 			setAsyncError(data);
 		}
 	};
-	const handleAddProperty = (type, data) => {
-		if (type === 'success') {
-			setAsyncError('');
-			history.push('/all-properties/active');
-		} else {
-			window.scrollTo(0, 0);
-			setAsyncError(data);
-		}
-	};
+
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		setProperty((prevState) => ({
@@ -175,12 +139,7 @@ const AddProperty = ({
 	};
 
 	const onSubmit = (propertyDetails) => {
-		console.log('propertyDetails--->', propertyDetails);
-		propertyDetails['city'] = selectedCity;
-		propertyDetails['type'] = property.type;
-		propertyDetails['location'] = selectedLocation;
-		propertyDetails['userId'] = selectedUser;
-		addProperty(propertyDetails, handleAddProperty);
+		setAsyncError('Not connected with api');
 	};
 
 	const closeSnackbar = () => setAsyncError('');
@@ -200,19 +159,19 @@ const AddProperty = ({
 				</Alert>
 			</Snackbar>
 			<h3>Add Property</h3>
-			<p className="color-red">{asyncError}</p>
+			{/* <p className="color-red">{asyncError}</p> */}
 			<Box>
 				<Paper>
 					<Box p="0.5rem">
 						<Grid container>
-							<Grid item xs={12} md={12} lg={9}>
+							<Grid item xs={12} md={12} lg={12}>
+								<FormHeader text="Location And User Info" />
 								<RowSelect
 									heading="Type *"
 									name="type"
 									value={property.type}
 									onChange={handleChange}
 									label="For"
-									helperText="Select property for to see more"
 									menuItems={typeMenuItems}
 								/>
 								<RowSelect
@@ -275,32 +234,11 @@ const AddProperty = ({
 										value: c.id,
 									}))}
 								/>
-								{(() => {
-									switch (property.type) {
-										case 'hostel':
-										case 'pg':
-											return (
-												<Hostel
-													furnishes={furnishes}
-													amenities={amenities}
-													onClick={onSubmit}
-												/>
-											);
-										case 'flat':
-										case 'independenthouse':
-										case 'guesthouse':
-											return (
-												<Flat
-													furnishes={furnishes}
-													amenities={amenities}
-													onClick={onSubmit}
-												/>
-											);
-
-										default:
-											break;
-									}
-								})()}
+								<FlatSale
+									furnishes={furnishes}
+									amenities={amenities}
+									onSubmit={onSubmit}
+								/>
 							</Grid>
 						</Grid>
 					</Box>
@@ -331,8 +269,6 @@ const mapDispatchToProps = (dispatch) => ({
 	fetchAllUsersStart: () => dispatch(fetchAllUsersSTart()),
 	fetchResourcesStart: (callback) =>
 		dispatch(fetchAllPropertyResourcesStart({ callback })),
-	addProperty: (property, callback) =>
-		dispatch(addProperty({ property, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddProperty);

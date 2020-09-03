@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
+import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
 	nested: {
@@ -81,12 +82,22 @@ const MainListItems = () => {
 					<ListItem
 						button
 						className={classes.nested}
-						onClick={onUsersClick('/addProperty')}
+						onClick={onUsersClick('/addProperty/rent')}
 					>
 						<ListItemIcon>
-							<AddBoxIcon className={classes.whiteColor} />
+							<AddBoxIcon style={{ color: green[500] }} />
 						</ListItemIcon>
-						<ListItemText primary="Add Property" />
+						<ListItemText primary="Add Property for rent" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/addProperty/sale')}
+					>
+						<ListItemIcon>
+							<AddBoxIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Add Property for sale" />
 					</ListItem>
 					<ListItem
 						button
@@ -94,7 +105,7 @@ const MainListItems = () => {
 						onClick={onUsersClick('/all-properties/active')}
 					>
 						<ListItemIcon>
-							<ApartmentIcon className={classes.whiteColor} />
+							<ApartmentIcon style={{ color: green[500] }} />
 						</ListItemIcon>
 						<ListItemText primary="Active properties" />
 					</ListItem>
@@ -104,7 +115,7 @@ const MainListItems = () => {
 						onClick={onUsersClick('/all-properties/underScreening')}
 					>
 						<ListItemIcon>
-							<ApartmentIcon className={classes.whiteColor} />
+							<ApartmentIcon style={{ color: green[500] }} />
 						</ListItemIcon>
 						<ListItemText primary="Under screening properties" />
 					</ListItem>
@@ -114,7 +125,7 @@ const MainListItems = () => {
 						onClick={onUsersClick('/all-properties/expired')}
 					>
 						<ListItemIcon>
-							<ApartmentIcon className={classes.whiteColor} />
+							<ApartmentIcon style={{ color: green[500] }} />
 						</ListItemIcon>
 						<ListItemText primary="Expired properties" />
 					</ListItem>
@@ -135,7 +146,7 @@ const MainListItems = () => {
 						onClick={onUsersClick('/addCity')}
 					>
 						<ListItemIcon>
-							<AddBoxIcon className={classes.whiteColor} />
+							<AddBoxIcon style={{ color: green[500] }} />
 						</ListItemIcon>
 						<ListItemText primary="Add City" />
 					</ListItem>
@@ -145,7 +156,7 @@ const MainListItems = () => {
 						onClick={onUsersClick('/addLocation')}
 					>
 						<ListItemIcon>
-							<AddBoxIcon className={classes.whiteColor} />
+							<AddBoxIcon style={{ color: green[500] }} />
 						</ListItemIcon>
 						<ListItemText primary="Add Location" />
 					</ListItem>
@@ -155,7 +166,7 @@ const MainListItems = () => {
 						onClick={onUsersClick('/cities/Odisha')}
 					>
 						<ListItemIcon>
-							<ApartmentIcon className={classes.whiteColor} />
+							<ApartmentIcon style={{ color: green[500] }} />
 						</ListItemIcon>
 						<ListItemText primary="All Cities" />
 					</ListItem>
@@ -165,7 +176,7 @@ const MainListItems = () => {
 						onClick={onUsersClick('/locations/Odisha')}
 					>
 						<ListItemIcon>
-							<ApartmentIcon className={classes.whiteColor} />
+							<ApartmentIcon style={{ color: green[500] }} />
 						</ListItemIcon>
 						<ListItemText primary="All Locations" />
 					</ListItem>

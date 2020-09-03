@@ -1,168 +1,3 @@
-// import React from 'react';
-// import { withRouter } from 'react-router-dom';
-// import { connect } from 'react-redux';
-// import { makeStyles } from '@material-ui/core/styles';
-// import TextField from '@material-ui/core/TextField';
-// import Card from '@material-ui/core/Card';
-// import FormControl from '@material-ui/core/FormControl';
-// import InputLabel from '@material-ui/core/InputLabel';
-// import Input from '@material-ui/core/Input';
-// import Visibility from '@material-ui/icons/Visibility';
-// import InputAdornment from '@material-ui/core/InputAdornment';
-// import IconButton from '@material-ui/core/IconButton';
-// import VisibilityOff from '@material-ui/icons/VisibilityOff';
-// import Button from '@material-ui/core/Button';
-// import Snackbar from '@material-ui/core/Snackbar';
-// import MuiAlert from '@material-ui/lab/Alert';
-// import CircularProgress from '@material-ui/core/CircularProgress';
-
-// import { signInStart } from '../../redux/user/user.actions';
-// import { Redirect } from 'react-router-dom';
-// import { createStructuredSelector } from 'reselect';
-// import {
-// 	selectIsAuthenticated,
-// 	selectLoading,
-// } from '../../redux/user/user.selector';
-
-// import './login.styles.scss';
-
-// function Alert(props) {
-// 	return <MuiAlert elevation={6} variant="filled" {...props} />;
-// }
-// const useStyles = makeStyles((theme) => ({
-// 	root: {
-// 		marginTop: '200px',
-// 		marginLeft: 'auto',
-// 		marginRight: 'auto',
-// 		width: '100%',
-// 	},
-// 	flex: {
-// 		// display: 'flex',
-// 		// flexDirection: 'column',
-// 	},
-// 	card: {
-// 		padding: '20px',
-// 		width: '500px',
-// 	},
-// 	fullwidth: {
-// 		width: '100%',
-// 		marginTop: '20px',
-// 	},
-// }));
-
-// function LogIn({ signInStart, isAuthenticated, loading }) {
-// 	const classes = useStyles();
-// const [values, setValues] = React.useState({
-// 	password: '',
-// 	showPassword: false,
-// 	email: '',
-// });
-
-// const [errorMessage, setErrorMessage] = React.useState('');
-// const [open, setOpen] = React.useState(false);
-
-// const handleClick = (msg) => {
-// 	setErrorMessage(msg);
-// 	setOpen(true);
-// };
-
-// const handleClose = (event, reason) => {
-// 	if (reason === 'clickaway') {
-// 		return;
-// 	}
-
-// 	setOpen(false);
-// };
-// const handleChange = (prop) => (event) => {
-// 	setValues({ ...values, [prop]: event.target.value });
-// };
-// 	const handleClickShowPassword = () => {
-// 		setValues({ ...values, showPassword: !values.showPassword });
-// 	};
-
-// 	const login = () => {
-// 		if (!values.email || !values.password) {
-// 			return handleClick('email and password cannot be empty');
-// 		}
-// 		signInStart(values.email, values.password, handleClick);
-// 	};
-
-// 	return (
-// 		<Card className={[classes.card, classes.flex, classes.root].join(' ')}>
-// 			{isAuthenticated && <Redirect to="/dashboard" />}
-// <Snackbar
-// 	open={open}
-// 	autoHideDuration={6000}
-// 	onClose={handleClose}
-// 	anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-// >
-// 	<Alert onClose={handleClose} severity="error">
-// 		{errorMessage}
-// 	</Alert>
-// </Snackbar>
-// 			<TextField
-// 				id="standard-basic"
-// 				label="Email"
-// 				fullWidth
-// 				value={values.email}
-// 				onChange={handleChange('email')}
-// 			/>
-// 			<FormControl className={classes.fullwidth}>
-// 				<InputLabel htmlFor="standard-adornment-password">
-// 					Password
-// 				</InputLabel>
-// 				<Input
-// 					id="standard-adornment-password"
-// 					type={values.showPassword ? 'text' : 'password'}
-// 					value={values.password}
-// 					onChange={handleChange('password')}
-// 					fullWidth
-// 					endAdornment={
-// 						<InputAdornment position="end">
-// 							<IconButton
-// 								aria-label="toggle password visibility"
-// 								onClick={handleClickShowPassword}
-// 							>
-// 								{values.showPassword ? (
-// 									<Visibility />
-// 								) : (
-// 									<VisibilityOff />
-// 								)}
-// 							</IconButton>
-// 						</InputAdornment>
-// 					}
-// 				/>
-// 			</FormControl>
-// 			{loading ? (
-// 				<div className="loading-wrapper">
-// 					<CircularProgress />
-// 				</div>
-// 			) : (
-// 				<Button
-// 					variant="contained"
-// 					color="primary"
-// 					className={classes.fullwidth}
-// 					onClick={login}
-// 				>
-// 					Log in
-// 				</Button>
-// 			)}
-// 		</Card>
-// 	);
-// }
-
-// const mapStateToProps = createStructuredSelector({
-// 	isAuthenticated: selectIsAuthenticated,
-// 	loading: selectLoading,
-// });
-
-// const mapDispatchToProps = (dispatch) => ({
-// 	signInStart: (email, password, handleClick) =>
-// 		dispatch(signInStart({ email, password, showSnackbar: handleClick })),
-// });
-
-// export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LogIn));
-
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -187,7 +22,7 @@ import {
 	selectIsAuthenticated,
 	selectLoading,
 } from '../../redux/user/user.selector';
-import ReCAPTCHA from 'react-google-recaptcha';
+// import ReCAPTCHA from 'react-google-recaptcha';
 import axios from 'axios';
 import OTPAlert from '../../components/otpAlert/otpAlert.component';
 
@@ -311,7 +146,7 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 
 	return (
 		<Container component="main" maxWidth="xs">
-			{isAuthenticated && <Redirect to="/users" />}
+			{isAuthenticated && <Redirect to="/dashboard" />}
 			<OTPAlert open={otpOpen} handleClose={closeOtpModal} />
 			<Snackbar
 				open={open}

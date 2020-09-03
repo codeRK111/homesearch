@@ -28,6 +28,10 @@ const useStyle = makeStyles((theme) => ({
 		zIndex: theme.zIndex.drawer + 1,
 		color: '#fff',
 	},
+	grayBackground: {
+		backgroundColor: '#34495e',
+		borderRadius: '5px',
+	},
 }));
 
 const initialState = {
@@ -64,9 +68,10 @@ const Dashboard = () => {
 									justifyContent="center"
 									alignItems="center"
 									width={'30%'}
+									className={classes.grayBackground}
 								>
 									<PeopleIcon
-										color="primary"
+										color="secondary"
 										fontSize="large"
 									/>
 								</Box>
@@ -99,9 +104,10 @@ const Dashboard = () => {
 									justifyContent="center"
 									alignItems="center"
 									width={'30%'}
+									className={classes.grayBackground}
 								>
 									<SupervisorAccountIcon
-										color="primary"
+										color="secondary"
 										fontSize="large"
 									/>
 								</Box>
@@ -134,9 +140,10 @@ const Dashboard = () => {
 									justifyContent="center"
 									alignItems="center"
 									width={'30%'}
+									className={classes.grayBackground}
 								>
 									<ApartmentIcon
-										color="primary"
+										color="secondary"
 										fontSize="large"
 									/>
 								</Box>
@@ -169,9 +176,10 @@ const Dashboard = () => {
 									justifyContent="center"
 									alignItems="center"
 									width={'30%'}
+									className={classes.grayBackground}
 								>
 									<BusinessIcon
-										color="primary"
+										color="secondary"
 										fontSize="large"
 									/>
 								</Box>
@@ -204,9 +212,10 @@ const Dashboard = () => {
 									justifyContent="center"
 									alignItems="center"
 									width={'30%'}
+									className={classes.grayBackground}
 								>
 									<DomainDisabledIcon
-										color="primary"
+										color="secondary"
 										fontSize="large"
 									/>
 								</Box>
@@ -239,9 +248,10 @@ const Dashboard = () => {
 									justifyContent="center"
 									alignItems="center"
 									width={'30%'}
+									className={classes.grayBackground}
 								>
 									<EmojiTransportationIcon
-										color="primary"
+										color="secondary"
 										fontSize="large"
 									/>
 								</Box>
@@ -274,9 +284,10 @@ const Dashboard = () => {
 									justifyContent="center"
 									alignItems="center"
 									width={'30%'}
+									className={classes.grayBackground}
 								>
 									<LocationCityIcon
-										color="primary"
+										color="secondary"
 										fontSize="large"
 									/>
 								</Box>
@@ -309,9 +320,10 @@ const Dashboard = () => {
 									justifyContent="center"
 									alignItems="center"
 									width={'30%'}
+									className={classes.grayBackground}
 								>
 									<HomeWorkIcon
-										color="primary"
+										color="secondary"
 										fontSize="large"
 									/>
 								</Box>
