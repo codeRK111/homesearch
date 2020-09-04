@@ -6,8 +6,8 @@ const propertySchema = new Schema(
 		for: {
 			type: String,
 			enum: {
-				values: ['rent', 'resale'],
-				message: 'for must be between <rent> | <resale> ',
+				values: ['rent', 'sale'],
+				message: 'for must be between <rent> | <sale> ',
 			},
 			required: true,
 		},
@@ -15,6 +15,94 @@ const propertySchema = new Schema(
 			type: String,
 			required: true,
 		},
+		sale_type: {
+			type: String,
+			enum: {
+				values: ['flat', 'land'],
+				message: 'type must be between <flat> | <land>',
+			},
+			required: requireSaleType,
+		},
+		propertyOwnerShip: {
+			type: String,
+			enum: {
+				values: ['freehold', 'leashed'],
+				message: 'type must be between <freehold> | <leashed>',
+			},
+			required: requireSaleType,
+		},
+		salePriceOver: {
+			type: String,
+			enum: {
+				values: ['superBuildUpArea', 'carpetArea'],
+				message:
+					'type must be between <superBuildUpArea> | <carpetArea>',
+			},
+			required: requireSaleType,
+		},
+		postedBy: {
+			type: String,
+			enum: {
+				values: ['owner', 'broker', 'builder', 'tenant'],
+				message: 'type must be between <owner> | <broker> | <builder>',
+			},
+			required: requireSaleType,
+		},
+		transactionType: {
+			type: String,
+			enum: {
+				values: ['newbooking', 'resale'],
+				message: 'type must be between <newbooking> | <resale> ',
+			},
+			required: requireSaleType,
+		},
+		salePrice: {
+			type: Number,
+			required: requireSaleType,
+		},
+		verified: {
+			type: Boolean,
+			required: requireSaleType,
+		},
+		amenities: {
+			type: [
+				{
+					type: mongoose.Schema.ObjectId,
+					ref: 'Amenity',
+				},
+			],
+			validate: (v) => Array.isArray(v) && v.length > 0,
+		},
+		legalClearance: [
+			{
+				name: {
+					type: String,
+					enum: {
+						values: [
+							'approvalOfBuilding',
+							'nocFromFireDepts',
+							'electricityConnUse',
+							'StructuralStatbilityCertificate',
+							'nocFromPollutionDepts',
+							'functionalCertificate',
+							'holdingTax',
+							'completionCertificate',
+							'reraapproved',
+						],
+						message:
+							'type must be between <approvalOfBuilding> | <nocFromFireDepts> | <electricityConnUse> |<StructuralStatbilityCertificate> |<nocFromPollutionDepts> |<functionalCertificate> | <holdingTax> | <completionCertificate> | <reraapproved>',
+					},
+				},
+				label: String,
+				details: {
+					type: String,
+					default: null,
+				},
+				value: {
+					type: Boolean,
+				},
+			},
+		],
 		type: {
 			type: String,
 			enum: {
@@ -29,11 +117,13 @@ const propertySchema = new Schema(
 				message:
 					'type must be between <flat> | <independenthouse> | <hostel> |<pg> |<guesthouse> |<serviceapartment>',
 			},
-			required: true,
+			required: requireRentType,
 		},
-		availableFor: [{
-					type: String,
-				}],
+		availableFor: [
+			{
+				type: String,
+			},
+		],
 		city: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'City',
@@ -128,7 +218,7 @@ const propertySchema = new Schema(
 			{
 				type: String,
 				enum: {
-					values: ['veg', 'nonveg', 'none','both'],
+					values: ['veg', 'nonveg', 'none', 'both'],
 				},
 			},
 		],
@@ -167,21 +257,21 @@ const propertySchema = new Schema(
 		distanceSchool: {
 			type: Number,
 		},
-		
+
 		distanceRailwayStation: {
 			type: Number,
 		},
 		distanceAirport: {
-			type: Number, 
+			type: Number,
 		},
-		
+
 		distanceBusStop: {
 			type: Number,
 		},
 		distanceHospital: {
 			type: Number,
 		},
-		
+
 		availability: {
 			type: String,
 			enum: {
@@ -267,6 +357,22 @@ propertySchema.pre(/^find/, function (next) {
 		.populate('city');
 	next();
 });
+
+function requireSaleType() {
+	if (this.type === 'sale') {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function requireRentType() {
+	if (this.type === 'rent') {
+		return true;
+	} else {
+		return false;
+	}
+}
 
 propertySchema.pre('save', function (next) {
 	if (this.status === 'active') {

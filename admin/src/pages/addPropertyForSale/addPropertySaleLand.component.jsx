@@ -18,81 +18,43 @@ import {
 
 const legalClearance = [
 	{
-		name: 'approvalOfBuilding',
+		name: 'numberOfOwner',
 		value: false,
-		label: 'Approval of building',
+		label: 'Number of owner',
 	},
 	{
-		name: 'nocFromFireDepts',
+		name: 'withinBlockArea',
 		value: false,
-		label: 'NOC from Fire depts',
+		label: 'Within Block Area',
 	},
 	{
-		name: 'electricityConnUse',
+		name: 'approvedByDevelopmentAutority',
 		value: false,
-		label: 'Electricity Connection use',
+		label: 'Approved by Development Authority',
 	},
 	{
-		name: 'StructuralStatbilityCertificate',
+		name: 'withinAreaOfDevelopmentAuthrity',
 		value: false,
-		label: 'Structural stability certificate',
-	},
-	{
-		name: 'nocFromPollutionDepts',
-		value: false,
-		label: 'NOC from Pollution deptt',
-	},
-	{
-		name: 'functionalCertificate',
-		value: false,
-		label: 'Occupation / functional certificate',
-	},
-	{
-		name: 'holdingTax',
-		value: false,
-		label: 'Municipal /Holding Tax',
-	},
-	{
-		name: 'completionCertificate',
-		value: false,
-		label: 'Completion Certificate',
-	},
-	{
-		name: 'reraapproved',
-		value: false,
-		label: 'RERA Approved',
+		label: 'Within Area of Development Authority',
 	},
 ];
 
-const furnishMenuItems = [
+const facingMenuItems = [
 	{
-		label: 'Furnished',
-		value: 'furnished',
+		label: 'East',
+		value: 'east',
 	},
 	{
-		label: 'Unfurnished',
-		value: 'unfurnished',
-	},
-];
-const ownershipMenuItems = [
-	{
-		label: 'Freehold',
-		value: 'freehold',
+		label: 'West',
+		value: 'west',
 	},
 	{
-		label: 'Leased',
-		value: 'leashed',
-	},
-];
-
-const availabilityMenuItems = [
-	{
-		label: 'Ready to Move',
-		value: 'immediately',
+		label: 'North',
+		value: 'north',
 	},
 	{
-		label: 'Procession From',
-		value: 'specificdate',
+		label: 'South',
+		value: 'south',
 	},
 ];
 
@@ -104,6 +66,45 @@ const verifiedMenuItems = [
 	{
 		label: 'No',
 		value: false,
+	},
+];
+
+const constructionDoneMenuItems = [
+	{
+		label: 'Yes',
+		value: true,
+	},
+	{
+		label: 'No',
+		value: false,
+	},
+];
+
+const boundaryWallMadeMenuItems = [
+	{
+		label: 'Yes',
+		value: true,
+	},
+	{
+		label: 'No',
+		value: false,
+	},
+];
+
+const gatedCommunityMadeMenuItems = [
+	{
+		label: 'Yes',
+		value: true,
+	},
+	{
+		label: 'No',
+		value: false,
+	},
+];
+const landUsingZoningMenuItems = [
+	{
+		label: 'Yellow Zone',
+		value: 'yellow',
 	},
 ];
 
@@ -137,33 +138,30 @@ const validate = (state) => {
 	if (!state.description) {
 		errors.description = 'Description required';
 	}
-	if (!state.superBuildUpArea) {
-		errors.superBuildUpArea = 'Super build up area required';
+	if (!state.length) {
+		errors.length = 'Length required';
 	}
-	if (!state.carpetArea) {
-		errors.carpetArea = 'Carpet area required';
+	if (!state.width) {
+		errors.width = 'Width required';
 	}
-	if (state.carpetArea > state.superBuildUpArea) {
-		errors.carpetArea =
-			'Carpet area cannot be greater than super build up area';
+	if (!state.plotFrontage) {
+		errors.plotFrontage = 'Plot frontage required';
 	}
-	if (!state.numberOfFloors) {
-		errors.numberOfFloors = 'Number of floors required';
+	if (!state.plotArea) {
+		errors.plotArea = 'Plot area required';
 	}
-	if (!state.floor) {
-		errors.floor = 'Property on floor required';
+	if (!state.widthOfRoad) {
+		errors.widthOfRoad = 'Width of road required';
 	}
-	if (!state.numberOfFloors) {
-		errors.numberOfFloors = 'Number of floors required';
+	if (!state.govermentValuation) {
+		errors.govermentValuation = 'Goverment valuation required';
 	}
-	if (!state.toiletIndian) {
-		errors.toiletIndian = ' required';
-	}
-	if (!state.toiletWestern) {
-		errors.toiletWestern = ' required';
-	}
+
 	if (!state.salePrice) {
-		errors.salePrice = ' required';
+		errors.salePrice = 'Sale price required';
+	}
+	if (!state.pricePerSqFt) {
+		errors.pricePerSqFt = 'Price per SqFt required';
 	}
 	if (!state.distanceSchool) {
 		errors.distanceSchool = ' required';
@@ -179,12 +177,6 @@ const validate = (state) => {
 	}
 	if (!state.distanceHospital) {
 		errors.distanceHospital = ' required';
-	}
-	if (
-		state.legalClearance.find((c) => c.name === 'reraapproved')['value'] &&
-		!state.reraapproveId
-	) {
-		errors.reraapproveId = 'required';
 	}
 
 	return errors;
@@ -223,26 +215,22 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 	const [initialValues, setInitialValues] = React.useState({
 		title: '',
 		description: '',
+		length: '',
+		width: '',
+		plotFrontage: '',
+		plotArea: '',
+		widthOfRoad: '',
+		facing: 'east', //dropdown,
+		constructionDone: false, //drop,
+		boundaryWallMade: false, //drop
+		gatedCommunity: false, //drop,
+		landUsingZoning: 'yellow', //drop
+		govermentValuation: '',
 		salePrice: '',
 		pricePerSqFt: '',
-		carParking: 'open',
-		salePriceOver: 'superBuildUpArea',
 		legalClearance,
-		superBuildUpArea: '',
-		carpetArea: '',
-		numberOfFloors: '',
-		floor: '',
-		toiletIndian: '',
-		toiletWestern: '',
-		furnished: 'unfurnished',
-		furnishes: [],
-		amenities: [],
-		propertyOwnerShip: 'freehold',
-		availability: 'immediately',
-		availableDate: Date.now(),
 		verified: true,
 		transactionType: 'newbooking',
-		reraapproveId: '',
 		distanceSchool: '',
 		distanceRailwayStation: '',
 		distanceAirport: '',
@@ -341,70 +329,65 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 						rows={6}
 					/>
 					<RowTextField
-						heading="Super build up area"
-						name="superBuildUpArea"
+						heading="Length"
+						name="length"
 						type="number"
-						label="in sqFt"
+						label="SqFt"
 					/>
 					<RowTextField
-						heading="Carpet area"
-						name="carpetArea"
+						heading="Width"
+						name="width"
 						type="number"
-						label="in sqFt"
+						label="SqFt"
 					/>
 					<RowTextField
-						heading="Number of floors"
-						name="numberOfFloors"
+						heading="Plot frontage"
+						name="plotFrontage"
 						type="number"
-						label="Enter number"
+						label="SqFt"
 					/>
 					<RowTextField
-						heading="Property on floor"
-						name="floor"
+						heading="Plot area"
+						name="plotArea"
 						type="number"
-						label="Enter number"
-					/>
-
-					<RowTextField
-						heading="Number of indian toilet"
-						name="toiletIndian"
-						type="number"
-						label="Enter number"
+						label="SqFt"
 					/>
 					<RowTextField
-						heading="Number of western toilet"
-						name="toiletWestern"
+						heading="Width of road"
+						name="widthOfRoad"
 						type="number"
-						label="Enter number"
-					/>
-
-					<RowSelect
-						heading="Property ownership"
-						name="propertyOwnerShip"
-						type="number"
-						label="Choose"
-						menuItems={ownershipMenuItems}
+						label="SqFt"
 					/>
 					<RowSelect
-						heading="Property Availability"
-						name="availability"
-						type="number"
+						heading="Facing"
+						name="facing"
 						label="Choose"
-						menuItems={availabilityMenuItems}
+						menuItems={facingMenuItems}
 					/>
-
-					{values.availability === 'specificdate' && (
-						<RowDatePicker
-							heading="Select date"
-							name="availableDate"
-							label="Choose Date"
-							value={values.availableDate}
-							onChange={(value) =>
-								setFieldValue('availableDate', value)
-							}
-						/>
-					)}
-
+					<RowSelect
+						heading="Is construction done"
+						name="constructionDone"
+						label="Choose"
+						menuItems={constructionDoneMenuItems}
+					/>
+					<RowSelect
+						heading="Is boundary wall made"
+						name="boundaryWallMade"
+						label="Choose"
+						menuItems={boundaryWallMadeMenuItems}
+					/>
+					<RowSelect
+						heading="Is in a gated community"
+						name="gatedCommunity"
+						label="Choose"
+						menuItems={gatedCommunityMadeMenuItems}
+					/>
+					<RowSelect
+						heading="Land use zoning"
+						name="landUsingZoning"
+						label="Choose"
+						menuItems={landUsingZoningMenuItems}
+					/>
 					<RowSelect
 						heading="Verified"
 						name="verified"
@@ -420,97 +403,28 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 						label="Choose"
 						menuItems={transactionTypeMenuItems}
 					/>
-					<RowSelect
-						heading="Car parking"
-						name="carParking"
-						label="Choose"
-						menuItems={carParkingMenuItems}
+
+					<RowTextField
+						heading="Government Valuation"
+						name="govermentValuation"
+						type="number"
+						label="Enter price"
 					/>
+
 					<RowTextField
 						heading="Sale price"
 						name="salePrice"
 						type="number"
 						label="Enter price"
 					/>
+
 					<RowTextField
 						heading="Price per sqFt"
 						name="pricePerSqFt"
 						type="number"
 						label="Enter sale price"
 					/>
-					<RowHOC heading="Sale price over">
-						<FormControl component="fieldset">
-							<RadioGroup
-								aria-label="salePriceOver"
-								name="salePriceOver"
-								value={values.salePriceOver}
-								onChange={handleChange}
-							>
-								<Box display="flex">
-									<FormControlLabel
-										value="superBuildUpArea"
-										control={<Radio />}
-										label="Super buildup area"
-									/>
-									<FormControlLabel
-										value="carpetArea"
-										control={<Radio />}
-										label="Carpet area"
-									/>
-								</Box>
-							</RadioGroup>
-						</FormControl>
-					</RowHOC>
-					<FormHeader text="Furnishes And Amenities" />
-					<RowSelect
-						heading="Furnishing"
-						name="furnished"
-						type="number"
-						label="Choose"
-						menuItems={furnishMenuItems}
-					/>
-					{values.furnished !== 'unfurnished' && (
-						<RowHOC heading="Furnishes">
-							<FieldArray name="legalClearance">
-								{(arrayHelpers) => (
-									<Grid container>
-										{values.furnishes.map((c, i) => {
-											return (
-												<Grid item lg={6}>
-													<Checkbox
-														key={i}
-														heading="test"
-														name={`furnishes.${i}.value`}
-														label={c.name}
-													/>
-												</Grid>
-											);
-										})}
-									</Grid>
-								)}
-							</FieldArray>
-						</RowHOC>
-					)}
-					<RowHOC heading="Amenities">
-						<FieldArray name="legalClearance">
-							{(arrayHelpers) => (
-								<Grid container>
-									{values.amenities.map((c, i) => {
-										return (
-											<Grid item lg={6}>
-												<Checkbox
-													key={i}
-													heading="test"
-													name={`amenities.${i}.value`}
-													label={c.name}
-												/>
-											</Grid>
-										);
-									})}
-								</Grid>
-							)}
-						</FieldArray>
-					</RowHOC>
+
 					<FormHeader text="Legal Clearance" />
 
 					<RowHOC heading="Legal clearance">
@@ -533,15 +447,6 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 							)}
 						</FieldArray>
 					</RowHOC>
-					{values.legalClearance.find(
-						(c) => c.name === 'reraapproved'
-					)['value'] && (
-						<RowTextField
-							heading="RERA approve Id"
-							name="reraapproveId"
-							label="Enter ID"
-						/>
-					)}
 
 					<FormHeader text="Nearby Places" />
 					<RowTextField
@@ -587,6 +492,7 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 					<Box>
 						<Button
 							type="submit"
+							disabled={true}
 							color="primary"
 							variant="contained"
 							classes={{

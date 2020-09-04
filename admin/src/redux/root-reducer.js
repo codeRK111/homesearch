@@ -7,6 +7,7 @@ import usersReducer from './users/users.reducer';
 import cityReducer from './city/city.reducer';
 import adminReducer from './admins/admins.reducer';
 import propertyReducer from './property/property.reducer';
+import sidebarReducer from './sidebar/sidebar.reducer';
 
 // const persistConfig = {
 //     key: "root",
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
 	city: cityReducer,
 	admins: adminReducer,
 	property: propertyReducer,
+	sidebar: sidebarReducer,
 });
 
 // export default persistReducer(persistConfig, rootReducer);

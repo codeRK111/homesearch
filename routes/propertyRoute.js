@@ -25,6 +25,14 @@ router
 	.post(propertyController.addAmenity);
 
 router.post('/upload-images/:id', propertyController.addPropertyImage);
-router.get('/resources/get-property-resources', propertyController.getPropertyResources);
+router.post(
+	'/add-property/sale',
+	adminController.protect,
+	propertyController.addPropertyForSale
+);
+router.get(
+	'/resources/get-property-resources',
+	propertyController.getPropertyResources
+);
 
 module.exports = router;

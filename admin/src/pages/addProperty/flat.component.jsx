@@ -99,7 +99,7 @@ const Flat = ({ onClick, furnishes = [], amenities = [] }) => {
 	};
 
 	const handleCheckbox = (id, name) => (event) => {
-		if (event.target.checked == true) {
+		if (event.target.checked === true) {
 			setFlat((prevState) => ({
 				...prevState,
 				[name]: [...prevState[name], id],

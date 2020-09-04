@@ -1,5 +1,6 @@
 const Furnish = require('./../models/furnishingModel');
 const Amenity = require('./../models/amenityModel');
+const User = require('./../models/userModel');
 const Property = require('./../models/propertyModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
@@ -412,9 +413,141 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 	}
 });
 
+exports.addPropertyForSale = catchAsync(async (req, res, next) => {
+	if (!req.body.for) {
+		return next(new AppError('parameter <for> is missing', 400));
+	}
+	if (!req.body.sale_type) {
+		return next(new AppError('parameter <sale_type> is missing', 400));
+	}
+
+	if (!req.body.userId) {
+		return next(new AppError('parameter <userId> is missing', 400));
+	}
+
+	const user = await User.findById(req.body.userId);
+
+	if (!user) {
+		return next(new AppError('Invalid user', 400));
+	}
+
+	let sale_type = req.body.sale_type;
+
+	switch (sale_type) {
+		case 'flat':
+			const requiredFields = [
+				'city',
+				'location',
+				'title',
+				'description',
+				'toiletTypes',
+				'superBuildUpArea',
+				'carpetArea',
+				'numberOfFloors',
+				'floor',
+				'verified',
+				'transactionType',
+				'salePrice',
+				'furnished',
+				'amenities',
+				'legalClearance',
+				'distanceSchool',
+				'distanceRailwayStation',
+				'distanceAirport',
+				'distanceBusStop',
+				'distanceHospital',
+				'availability',
+				'salePriceOver',
+			];
+			const missingFields = [];
+			requiredFields.forEach((f) => {
+				if (req.body[f] == null || req.body[f] == undefined) {
+					missingFields.push(f);
+				}
+			});
+			if (missingFields.length > 0) {
+				return next(
+					new AppError(
+						`Missing parameter <${missingFields.join(',')}>`,
+						400
+					)
+				);
+			}
+
+			let pFlat = {
+				for: req.body.for,
+				sale_type: req.body.sale_type,
+				city: req.body.city,
+				title: req.body.title,
+				description: req.body.description,
+				location: req.body.location,
+				toiletTypes: req.body.toiletTypes,
+				superBuiltupArea: req.body.superBuildUpArea,
+				carpetArea: req.body.carpetArea,
+				floor: req.body.floor,
+				noOfFloors: req.body.numberOfFloors,
+				furnished: req.body.furnished,
+				verified: req.body.verified,
+				postedBy: user.role,
+				transactionType: req.body.transactionType,
+				salePrice: req.body.salePrice,
+				amenities: req.body.amenities,
+				legalClearance: req.body.legalClearance,
+				distanceSchool: req.body.distanceSchool,
+				distanceRailwayStation: req.body.distanceRailwayStation,
+				distanceAirport: req.body.distanceAirport,
+				distanceBusStop: req.body.distanceBusStop,
+				distanceHospital: req.body.distanceHospital,
+				availability: req.body.availability,
+				adminId: req.user.id,
+				createdBy: 'admin',
+				userId: req.body.userId,
+				salePriceOver: req.body.salePriceOver,
+			};
+
+			if (req.body.furnished !== 'unfurnished') {
+				if (!req.body.furnishes) {
+					return next(
+						new AppError('parameter <furnishes> is missing', 400)
+					);
+				}
+				pFlat['furnishes'] = req.body.furnishes;
+			}
+
+			if (req.body.availability === 'specificdate') {
+				if (!req.body.availableDate) {
+					return next(
+						new AppError(
+							'parameter <availableDate> is missing',
+							400
+						)
+					);
+				}
+				pFlat['availableDate'] = req.body.availableDate;
+			}
+
+			let flat = await Property.create(pFlat);
+			res.status(201).json({
+				status: 'success',
+				data: {
+					property: flat,
+				},
+			});
+			break;
+
+		default:
+			res.status(400).json({
+				status: 'fail',
+				message: 'Not ready yet',
+			});
+			break;
+			break;
+	}
+});
+
 exports.getProperties = catchAsync(async (req, res, next) => {
 	const properties = await Property.find(req.query);
-	res.status(200).json({ 
+	res.status(200).json({
 		status: 'success',
 		count: properties.length,
 		data: {

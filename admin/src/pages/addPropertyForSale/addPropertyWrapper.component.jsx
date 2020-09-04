@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import RowSelect from '../../components/rowSelect/rowSelect.component';
 import FormHeader from '../../components/formHeader/formHeader.component';
 import FlatSale from './addPropertySale.component';
+import LandSale from './addPropertySaleLand.component';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { createStructuredSelector } from 'reselect';
@@ -25,10 +26,11 @@ import {
 	selectAmenities,
 	selectFurnishes,
 	selectLoading as resourcesLoading,
+	selectAddPropertySaleLoading as addPropertyLoading,
 } from '../../redux/property/property.selector';
 import {
 	fetchAllPropertyResourcesStart,
-	addProperty,
+	addPropertySale,
 } from '../../redux/property/property.actions';
 import {
 	selectAllUsers,
@@ -46,6 +48,10 @@ const typeMenuItems = [
 	{
 		value: 'flat',
 		label: 'Flat',
+	},
+	{
+		value: 'land',
+		label: 'Land',
 	},
 ];
 
@@ -75,6 +81,8 @@ const AddProperty = ({
 	selectAllUsers,
 	fetchAllUsersStart,
 	fetchResourcesStart,
+	addPropertyLoading,
+	addProperty,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -138,8 +146,24 @@ const AddProperty = ({
 		fetchAllUsersStart();
 	};
 
+	const handleAddProperty = (type, data) => {
+		if (type === 'success') {
+			setAsyncError('');
+			history.push('/all-properties/active');
+		} else {
+			window.scrollTo(0, 0);
+			setAsyncError(data);
+		}
+	};
+
 	const onSubmit = (propertyDetails) => {
-		setAsyncError('Not connected with api');
+		propertyDetails['city'] = selectedCity;
+		propertyDetails['for'] = 'sale';
+		propertyDetails['sale_type'] = property.type;
+		propertyDetails['location'] = selectedLocation;
+		propertyDetails['userId'] = selectedUser;
+		console.log(propertyDetails);
+		addProperty(propertyDetails, handleAddProperty);
 	};
 
 	const closeSnackbar = () => setAsyncError('');
@@ -147,6 +171,9 @@ const AddProperty = ({
 		<Box p="1rem">
 			<Backdrop className={classes.backdrop} open={resourcesLoading}>
 				loading resources...
+			</Backdrop>
+			<Backdrop className={classes.backdrop} open={addPropertyLoading}>
+				Submiting data...
 			</Backdrop>
 			<Snackbar
 				anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -234,11 +261,19 @@ const AddProperty = ({
 										value: c.id,
 									}))}
 								/>
-								<FlatSale
-									furnishes={furnishes}
-									amenities={amenities}
-									onSubmit={onSubmit}
-								/>
+								{property.type === 'flat' ? (
+									<FlatSale
+										furnishes={furnishes}
+										amenities={amenities}
+										onSubmit={onSubmit}
+									/>
+								) : (
+									<LandSale
+										furnishes={furnishes}
+										amenities={amenities}
+										onSubmit={onSubmit}
+									/>
+								)}
 							</Grid>
 						</Grid>
 					</Box>
@@ -258,6 +293,7 @@ const mapStateToProps = createStructuredSelector({
 	locationLoading,
 	selectAllUsers,
 	userLoading,
+	addPropertyLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -269,6 +305,8 @@ const mapDispatchToProps = (dispatch) => ({
 	fetchAllUsersStart: () => dispatch(fetchAllUsersSTart()),
 	fetchResourcesStart: (callback) =>
 		dispatch(fetchAllPropertyResourcesStart({ callback })),
+	addProperty: (property, callback) =>
+		dispatch(addPropertySale({ property, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddProperty);

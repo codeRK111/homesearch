@@ -25,6 +25,7 @@ import DeleteCityPage from './pages/deleteCity/deleteCity.component';
 import EditLocationPage from './pages/editLocation/editLocation.component';
 import DeleteLocationPage from './pages/deleteLocation/deleteLocation.component';
 import DashboardPage from './pages/dashboard/dashboatd.component';
+import PropertySale from './pages/properties/propertiesSale.component';
 // components
 import Drawer from './components/drawer/drawer.component';
 // import Authenticated from './components/protected/protected.component';
@@ -50,6 +51,7 @@ const DeleteCityPageWithDrawer = Drawer(DeleteCityPage);
 const EditLocationPageWithDrawer = Drawer(EditLocationPage);
 const DeleteLocationPageWithDrawer = Drawer(DeleteLocationPage);
 const DashboardPageWithDrawer = Drawer(DashboardPage);
+const PropertySalePageWithDrawer = Drawer(PropertySale);
 
 // import { Switch, Route, Redirect } from "react-router-dom";
 // import { connect } from "react-redux";
@@ -125,6 +127,11 @@ function App(props) {
 					exact
 					path="/all-properties/:status"
 					render={() => <ActivePropertiesWithDrawer {...props} />}
+				/>
+				<Route
+					exact
+					path="/all-properties-sale/:status/:for"
+					render={() => <PropertySalePageWithDrawer {...props} />}
 				/>
 				<Route
 					exact

@@ -17,6 +17,18 @@ import ApartmentIcon from '@material-ui/icons/Apartment';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import { green } from '@material-ui/core/colors';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import {
+	selectPropertyRent,
+	selectPropertySale,
+	selectLocation,
+} from '../../redux/sidebar/sidebar.selector';
+import {
+	togglePropertyRent,
+	togglePropertySale,
+	toggleLocation,
+} from '../../redux/sidebar/sidebar.actions';
 
 const useStyles = makeStyles((theme) => ({
 	nested: {
@@ -27,7 +39,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const MainListItems = () => {
+const MainListItems = ({
+	propertyRentOpen,
+	propertySaleOpen,
+	locationOpen,
+	togglePropertyRent,
+	togglePropertySale,
+	toggleLocation,
+}) => {
 	const classes = useStyles();
 	const history = useHistory();
 	const onUsersClick = (route) => () => history.push(route);
@@ -40,6 +59,11 @@ const MainListItems = () => {
 
 	const handleCityClick = () => {
 		setOpenCity(!openCity);
+	};
+	const [openSaleProperty, setOpenSaleProperty] = React.useState(false);
+
+	const handleSalePropertyClick = () => {
+		setOpenSaleProperty(!openSaleProperty);
 	};
 	return (
 		<div>
@@ -70,14 +94,14 @@ const MainListItems = () => {
 				<ListItemText primary="Authentication" />
 			</ListItem>
 			<Divider color="#fff" />
-			<ListItem button onClick={handleClick}>
+			<ListItem button onClick={togglePropertyRent}>
 				<ListItemIcon>
 					<ApartmentIcon color="secondary" />
 				</ListItemIcon>
-				<ListItemText primary="Properties" />
-				{open ? <ExpandLess /> : <ExpandMore />}
+				<ListItemText primary="Properties for rent" />
+				{propertyRentOpen ? <ExpandLess /> : <ExpandMore />}
 			</ListItem>
-			<Collapse in={open} timeout="auto" unmountOnExit>
+			<Collapse in={propertyRentOpen} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
 					<ListItem
 						button
@@ -87,18 +111,9 @@ const MainListItems = () => {
 						<ListItemIcon>
 							<AddBoxIcon style={{ color: green[500] }} />
 						</ListItemIcon>
-						<ListItemText primary="Add Property for rent" />
+						<ListItemText primary="Add Property" />
 					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/addProperty/sale')}
-					>
-						<ListItemIcon>
-							<AddBoxIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Add Property for sale" />
-					</ListItem>
+
 					<ListItem
 						button
 						className={classes.nested}
@@ -131,14 +146,71 @@ const MainListItems = () => {
 					</ListItem>
 				</List>
 			</Collapse>
-			<ListItem button onClick={handleCityClick}>
+			<ListItem button onClick={togglePropertySale}>
+				<ListItemIcon>
+					<ApartmentIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Properties for sale" />
+				{propertySaleOpen ? <ExpandLess /> : <ExpandMore />}
+			</ListItem>
+			<Collapse in={propertySaleOpen} timeout="auto" unmountOnExit>
+				<List component="div" disablePadding>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/addProperty/sale')}
+					>
+						<ListItemIcon>
+							<AddBoxIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Add Property" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick(
+							'/all-properties-sale/active/sale'
+						)}
+					>
+						<ListItemIcon>
+							<ApartmentIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Active properties" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick(
+							'/all-properties-sale/underScreening/sale'
+						)}
+					>
+						<ListItemIcon>
+							<ApartmentIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Under screening properties" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick(
+							'/all-properties-sale/expired/sale'
+						)}
+					>
+						<ListItemIcon>
+							<ApartmentIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Expired properties" />
+					</ListItem>
+				</List>
+			</Collapse>
+			<ListItem button onClick={toggleLocation}>
 				<ListItemIcon>
 					<LocationCityIcon color="secondary" />
 				</ListItemIcon>
 				<ListItemText primary="Cities And Locations" />
-				{openCity ? <ExpandLess /> : <ExpandMore />}
+				{locationOpen ? <ExpandLess /> : <ExpandMore />}
 			</ListItem>
-			<Collapse in={openCity} timeout="auto" unmountOnExit>
+			<Collapse in={locationOpen} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
 					<ListItem
 						button
@@ -186,4 +258,16 @@ const MainListItems = () => {
 	);
 };
 
-export default MainListItems;
+const mapStateToProps = createStructuredSelector({
+	propertyRentOpen: selectPropertyRent,
+	propertySaleOpen: selectPropertySale,
+	locationOpen: selectLocation,
+});
+
+const dispatchStateToProps = (dispatch) => ({
+	togglePropertyRent: () => dispatch(togglePropertyRent()),
+	togglePropertySale: () => dispatch(togglePropertySale()),
+	toggleLocation: () => dispatch(toggleLocation()),
+});
+
+export default connect(mapStateToProps, dispatchStateToProps)(MainListItems);

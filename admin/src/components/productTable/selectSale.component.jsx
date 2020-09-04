@@ -51,7 +51,7 @@ const mapDispatchToProps = (dispatch) => ({
 	updateProperty: (propertyId, property, callback) =>
 		dispatch(updateProperty({ propertyId, property, callback })),
 	fetchProperties: (callback, status) =>
-		dispatch(fetchProperties({ callback, param: { status, for: 'rent' } })),
+		dispatch(fetchProperties({ callback, param: { status, for: 'sale' } })),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(CustomSelect));

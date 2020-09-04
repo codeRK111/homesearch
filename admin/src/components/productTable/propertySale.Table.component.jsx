@@ -6,7 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Backdrop from '@material-ui/core/Backdrop';
-import CustomSelect from './select.component';
+import CustomSelect from './selectSale.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
@@ -50,9 +50,7 @@ const useStyles = makeStyles((theme) => ({
 function Orders({
 	fetchProperties,
 	loading,
-	match: {
-		params: { status },
-	},
+	match: { params },
 	allProperties = [],
 }) {
 	console.log(allProperties);
@@ -61,8 +59,8 @@ function Orders({
 		console.log(data);
 	};
 	React.useEffect(() => {
-		fetchProperties(hnadleProperties, status);
-	}, [fetchProperties, status]);
+		fetchProperties(hnadleProperties, params.status, params.for);
+	}, [fetchProperties, params.status, params.for]);
 
 	const classes = useStyles();
 
@@ -160,11 +158,11 @@ function Orders({
 									/>
 								</TableCell>
 								<TableCell align="right">
-									<Link
+									{/* <Link
 										to={`/properties/editProperties/${c.id}`}
 									>
 										Edit
-									</Link>
+									</Link> */}
 								</TableCell>
 							</TableRow>
 						))}
@@ -186,8 +184,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchProperties: (callback, status) =>
-		dispatch(fetchProperties({ callback, param: { status, for: 'rent' } })),
+	fetchProperties: (callback, status, param) =>
+		dispatch(fetchProperties({ callback, param: { status, for: param } })),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Orders));

@@ -19,6 +19,10 @@ export const addProperty = (property) => ({
 	type: PropertyActionTypes.ADD_PROPERTY,
 	payload: property,
 });
+export const addPropertySale = (property) => ({
+	type: PropertyActionTypes.ADD_PROPERTY_SALE,
+	payload: property,
+});
 
 export const setAllFurnishes = (furnishes) => ({
 	type: PropertyActionTypes.SET_FURNISHES,
@@ -42,6 +46,11 @@ export const updateProperty = (property) => ({
 
 export const toggleLoading = (loadingState) => ({
 	type: PropertyActionTypes.TOGGLE_LOADING,
+	payload: loadingState,
+});
+
+export const toggleAddPropertySaleLoading = (loadingState) => ({
+	type: PropertyActionTypes.ADD_PROPERTY_SALE_LOADING,
 	payload: loadingState,
 });
 

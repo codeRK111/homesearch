@@ -7,6 +7,7 @@ const INITIAL_STATE = {
 	loading: false,
 	propertyDetailsLoading: false,
 	updatePropertyLoading: false,
+	addPropertySaleLoading: false,
 };
 
 const cityReducer = (state = INITIAL_STATE, action) => {
@@ -40,6 +41,11 @@ const cityReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				updatePropertyLoading: action.payload,
+			};
+		case PropertyActionTypes.ADD_PROPERTY_SALE_LOADING:
+			return {
+				...state,
+				addPropertySaleLoading: action.payload,
 			};
 		default:
 			return state;

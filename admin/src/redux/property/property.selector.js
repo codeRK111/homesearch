@@ -23,6 +23,10 @@ export const selectUpdatePropertyLoading = createSelector(
 	[selectProperty],
 	(c) => c.updatePropertyLoading
 );
+export const selectAddPropertySaleLoading = createSelector(
+	[selectProperty],
+	(c) => c.addPropertySaleLoading
+);
 
 // export const selectLoading = createSelector(
 // 	[selectUser],
