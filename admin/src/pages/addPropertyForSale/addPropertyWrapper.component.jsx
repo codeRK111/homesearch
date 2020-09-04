@@ -149,7 +149,7 @@ const AddProperty = ({
 	const handleAddProperty = (type, data) => {
 		if (type === 'success') {
 			setAsyncError('');
-			history.push('/all-properties/active');
+			history.push('/all-properties-sale/active/sale');
 		} else {
 			window.scrollTo(0, 0);
 			setAsyncError(data);
