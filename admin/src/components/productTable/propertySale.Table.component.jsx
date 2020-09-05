@@ -128,7 +128,7 @@ function Orders({
 								<TableCell>{i + 1}</TableCell>
 								<TableCell>{c.title}</TableCell>
 								<TableCell>{c.for}</TableCell>
-								<TableCell>{c.type}</TableCell>
+								<TableCell>{c.sale_type}</TableCell>
 								<TableCell>{c.city.name}</TableCell>
 
 								<TableCell>{c.location.name}</TableCell>

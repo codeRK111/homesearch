@@ -88,7 +88,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				'numberOfBedRooms',
 				'toiletTypes',
 				'numberOfBalconies',
-				'superBuiltupArea',
+				'width',
 				'carpetArea',
 				'rent',
 				'securityDeposit',
@@ -531,6 +531,92 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				status: 'success',
 				data: {
 					property: flat,
+				},
+			});
+			break;
+
+		case 'land':
+			const requiredFieldsForLand = [
+				'city',
+				'location',
+				'title',
+				'description',
+				'length',
+				'width',
+				'plotFrontage',
+				'plotArea',
+				'widthOfRoad',
+				'facing',
+				'constructionDone',
+				'boundaryWallMade',
+				'gatedCommunity',
+				'landUsingZoning',
+				'govermentValuation',
+				'pricePerSqFt',
+				'verified',
+				'transactionType',
+				'salePrice',
+				'legalClearance',
+				'distanceSchool',
+				'distanceRailwayStation',
+				'distanceAirport',
+				'distanceBusStop',
+				'distanceHospital',
+			];
+			const missingFieldsForLand = [];
+			requiredFieldsForLand.forEach((f) => {
+				if (req.body[f] == null || req.body[f] == undefined) {
+					missingFieldsForLand.push(f);
+				}
+			});
+			if (missingFieldsForLand.length > 0) {
+				return next(
+					new AppError(
+						`Missing parameter <${missingFieldsForLand.join(',')}>`,
+						400
+					)
+				);
+			}
+
+			let pLand = {
+				for: req.body.for,
+				sale_type: req.body.sale_type,
+				city: req.body.city,
+				title: req.body.title,
+				description: req.body.description,
+				location: req.body.location,
+				length: req.body.length,
+				width: req.body.width,
+				plotFrontage: req.body.plotFrontage,
+				plotArea: req.body.plotArea,
+				widthOfRoad: req.body.widthOfRoad,
+				facing: req.body.facing,
+				constructionDone: req.body.constructionDone,
+				boundaryWallMade: req.body.boundaryWallMade,
+				gatedCommunity: req.body.gatedCommunity,
+				landUsingZoning: req.body.landUsingZoning,
+				govermentValuation: req.body.govermentValuation,
+				pricePerSqFt: req.body.pricePerSqFt,
+				verified: req.body.verified,
+				postedBy: user.role,
+				transactionType: req.body.transactionType,
+				salePrice: req.body.salePrice,
+				legalClearance: req.body.legalClearance,
+				distanceSchool: req.body.distanceSchool,
+				distanceRailwayStation: req.body.distanceRailwayStation,
+				distanceAirport: req.body.distanceAirport,
+				distanceBusStop: req.body.distanceBusStop,
+				distanceHospital: req.body.distanceHospital,
+				adminId: req.user.id,
+				createdBy: 'admin',
+				userId: req.body.userId,
+			};
+
+			let land = await Property.create(pLand);
+			res.status(201).json({
+				status: 'success',
+				data: {
+					property: land,
 				},
 			});
 			break;

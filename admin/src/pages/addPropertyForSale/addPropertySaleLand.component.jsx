@@ -153,6 +153,9 @@ const validate = (state) => {
 	if (!state.widthOfRoad) {
 		errors.widthOfRoad = 'Width of road required';
 	}
+	if (typeof state.widthOfRoad !== 'number') {
+		errors.widthOfRoad = 'Only number allowed';
+	}
 	if (!state.govermentValuation) {
 		errors.govermentValuation = 'Goverment valuation required';
 	}
@@ -184,25 +187,11 @@ const validate = (state) => {
 
 const filter = (a) => {
 	let state = { ...a };
-	if (state.furnished === 'unfurnished') {
-		delete state['furnishes'];
-	} else {
-		state['furnishes'] = state.furnishes
-			.filter((c) => c.value === true)
-			.map((c) => c.id);
-	}
 
-	state.amenities = state.amenities
-		.filter((c) => c.value === true)
-		.map((c) => c.id);
-	if (state.availability !== 'specificdate') {
-		delete state['availableDate'];
-	}
-
-	if (state.reraapproveId) {
+	if (state.ownerNumber) {
 		state.legalClearance = state.legalClearance.map((c) => {
-			if (c.name === 'reraapproved') {
-				c.details = state.reraapproveId;
+			if (c.name === 'numberOfOwner') {
+				c.details = state.ownerNumber;
 			}
 			return c;
 		});
@@ -229,6 +218,7 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 		salePrice: '',
 		pricePerSqFt: '',
 		legalClearance,
+		ownerNumber: '',
 		verified: true,
 		transactionType: 'newbooking',
 		distanceSchool: '',
@@ -261,35 +251,13 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 		return images;
 	};
 
-	React.useEffect(() => {
-		setInitialValues((prevState) => ({
-			...prevState,
-			amenities: amenities.map((c) => ({ ...c, value: false })),
-		}));
-	}, [amenities]);
-	React.useEffect(() => {
-		setInitialValues((prevState) => ({
-			...prevState,
-			furnishes: furnishes.map((c) => ({ ...c, value: false })),
-		}));
-	}, [furnishes]);
-
 	const onSubmitForm = (data, { setSubmitting }) => {
 		setSubmitting(true);
 		let propertyDetails = filter(data);
 		if (file.length > 0) {
 			propertyDetails['image'] = file;
 		}
-		propertyDetails['toiletTypes'] = [
-			{
-				toiletType: 'indian',
-				numbers: data.toiletIndian,
-			},
-			{
-				toiletType: 'western',
-				numbers: data.toiletWestern,
-			},
-		];
+
 		onSubmit(propertyDetails);
 		setSubmitting(false);
 	};
@@ -297,8 +265,8 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 		<Formik
 			validate={validate}
 			enableReinitialize={true}
-			validateOnChange={false}
-			validateOnBlur={false}
+			// validateOnChange={false}
+			// validateOnBlur={false}
 			initialValues={initialValues}
 			onSubmit={onSubmitForm}
 		>
@@ -355,9 +323,19 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 					<RowTextField
 						heading="Width of road"
 						name="widthOfRoad"
-						type="number"
+						// type="number"
 						label="SqFt"
+						onChange={(event) => {
+							if (isFinite(event.target.value)) {
+								// UPDATE YOUR STATE (i am using formik)
+								setFieldValue(
+									'widthOfRoad',
+									event.target.value
+								);
+							}
+						}}
 					/>
+
 					<RowSelect
 						heading="Facing"
 						name="facing"
@@ -447,7 +425,16 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 							)}
 						</FieldArray>
 					</RowHOC>
-
+					{values.legalClearance.find(
+						(c) => c.name === 'numberOfOwner'
+					)['value'] && (
+						<RowTextField
+							heading="Owner mobile number"
+							name="ownerNumber"
+							type="number"
+							label="Enter number"
+						/>
+					)}
 					<FormHeader text="Nearby Places" />
 					<RowTextField
 						heading="Distance from school"
@@ -492,7 +479,7 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 					<Box>
 						<Button
 							type="submit"
-							disabled={true}
+							// disabled={true}
 							color="primary"
 							variant="contained"
 							classes={{

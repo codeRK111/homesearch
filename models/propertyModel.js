@@ -71,7 +71,7 @@ const propertySchema = new Schema(
 					ref: 'Amenity',
 				},
 			],
-			validate: (v) => Array.isArray(v) && v.length > 0,
+			required: requireRentType,
 		},
 		legalClearance: [
 			{
@@ -88,9 +88,13 @@ const propertySchema = new Schema(
 							'holdingTax',
 							'completionCertificate',
 							'reraapproved',
+							'numberOfOwner',
+							'withinBlockArea',
+							'approvedByDevelopmentAutority',
+							'withinAreaOfDevelopmentAuthrity',
 						],
 						message:
-							'type must be between <approvalOfBuilding> | <nocFromFireDepts> | <electricityConnUse> |<StructuralStatbilityCertificate> |<nocFromPollutionDepts> |<functionalCertificate> | <holdingTax> | <completionCertificate> | <reraapproved>',
+							'type must be between <approvalOfBuilding> | <nocFromFireDepts> | <electricityConnUse> |<StructuralStatbilityCertificate> |<nocFromPollutionDepts> |<functionalCertificate> | <holdingTax> | <completionCertificate> | <reraapproved> <numberOfOwner> | <withinBlockArea> | <approvedByDevelopmentAutority> | <withinAreaOfDevelopmentAuthrity>',
 					},
 				},
 				label: String,
@@ -103,6 +107,64 @@ const propertySchema = new Schema(
 				},
 			},
 		],
+		length: {
+			type: Number,
+			required: requireSaleLand,
+		},
+		width: {
+			type: Number,
+			required: requireSaleLand,
+		},
+		plotFrontage: {
+			type: Number,
+			required: requireSaleLand,
+		},
+		plotArea: {
+			type: Number,
+			required: requireSaleLand,
+		},
+		widthOfRoad: {
+			type: Number,
+			required: requireSaleLand,
+		},
+		facing: {
+			type: String,
+			enum: {
+				values: ['east', 'west', 'north', 'south'],
+				message:
+					'facing must be between <east> | <west> | <north> |<south> ',
+			},
+			required: requireSaleLand,
+		},
+		landUsingZoning: {
+			type: String,
+			enum: {
+				values: ['yellow'],
+				message: 'landUsingZoning must be between <yellow>  ',
+			},
+			required: requireSaleLand,
+		},
+
+		constructionDone: {
+			type: Boolean,
+			required: requireSaleLand,
+		},
+		boundaryWallMade: {
+			type: Boolean,
+			required: requireSaleLand,
+		},
+		gatedCommunity: {
+			type: Boolean,
+			required: requireSaleLand,
+		},
+		govermentValuation: {
+			type: Number,
+			required: requireSaleLand,
+		},
+		pricePerSqFt: {
+			type: Number,
+			required: requireSaleLand,
+		},
 		type: {
 			type: String,
 			enum: {
@@ -279,7 +341,7 @@ const propertySchema = new Schema(
 				message:
 					'availability must be between <immediately> | <specificdate>  ',
 			},
-			required: true,
+			required: requireRentType,
 		},
 		availableDate: {
 			type: Date,
@@ -360,6 +422,22 @@ propertySchema.pre(/^find/, function (next) {
 
 function requireSaleType() {
 	if (this.type === 'sale') {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function requireRentType() {
+	if (this.type === 'rent') {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function requireSaleLand() {
+	if (this.type === 'sale' && this.sale_type === 'land') {
 		return true;
 	} else {
 		return false;
