@@ -206,6 +206,25 @@ export function* updateProperty({
 			yield put(updatePropertyLoading(false));
 			console.log(responseData);
 		} else {
+			if (property.image) {
+				console.log(property.image);
+				var formData = new FormData();
+				for (let index = 0; index < property.image.length; index++) {
+					formData.append('image', property.image[index]);
+				}
+				console.log(responseData);
+				const imageResponse = yield axios.post(
+					`/api/v1/properties/upload-images/${responseData.data.property.id}`,
+					formData,
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					}
+				);
+
+				console.log(imageResponse.data);
+			}
 			yield put(updatePropertyLoading(false));
 			yield put(setAllProperties(responseData.data.properties));
 			callback('success', responseData.data);

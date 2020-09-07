@@ -31,6 +31,14 @@ const propertySchema = new Schema(
 			},
 			required: requireSaleType,
 		},
+		carParking: {
+			type: String,
+			enum: {
+				values: ['open', 'covered'],
+				message: 'carParking must be between <open> | <covered>',
+			},
+			required: requireSaleFlat,
+		},
 		salePriceOver: {
 			type: String,
 			enum: {
@@ -162,7 +170,7 @@ const propertySchema = new Schema(
 			required: requireSaleLand,
 		},
 		pricePerSqFt: {
-			type: Number,
+			type: Number, 
 			required: requireSaleLand,
 		},
 		type: {
@@ -438,6 +446,13 @@ function requireRentType() {
 
 function requireSaleLand() {
 	if (this.type === 'sale' && this.sale_type === 'land') {
+		return true;
+	} else {
+		return false;
+	}
+}
+function requireSaleFlat() {
+	if (this.type === 'sale' && this.sale_type === 'flat') {
 		return true;
 	} else {
 		return false;

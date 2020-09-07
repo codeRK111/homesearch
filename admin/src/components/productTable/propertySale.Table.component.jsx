@@ -158,11 +158,11 @@ function Orders({
 									/>
 								</TableCell>
 								<TableCell align="right">
-									{/* <Link
-										to={`/properties/editProperties/${c.id}`}
+									<Link
+										to={`/properties/editPropertiesSale/${c.id}`}
 									>
 										Edit
-									</Link> */}
+									</Link>
 								</TableCell>
 							</TableRow>
 						))}

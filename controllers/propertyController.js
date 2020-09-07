@@ -437,8 +437,10 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 		case 'flat':
 			const requiredFields = [
 				'city',
+				'propertyOwnerShip',
 				'location',
 				'title',
+				'pricePerSqFt',
 				'description',
 				'toiletTypes',
 				'superBuildUpArea',
@@ -458,6 +460,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				'distanceHospital',
 				'availability',
 				'salePriceOver',
+				'carParking',
 			];
 			const missingFields = [];
 			requiredFields.forEach((f) => {
@@ -477,6 +480,9 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 			let pFlat = {
 				for: req.body.for,
 				sale_type: req.body.sale_type,
+				pricePerSqFt: req.body.pricePerSqFt,
+				carParking: req.body.carParking,
+				propertyOwnerShip: req.body.propertyOwnerShip,
 				city: req.body.city,
 				title: req.body.title,
 				description: req.body.description,
