@@ -541,6 +541,111 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 			});
 			break;
 
+		case 'independenthouse':
+			const requiredIndependentHouseFields = [
+				'city',
+				'propertyOwnerShip',
+				'location',
+				'title',
+				'pricePerSqFt',
+				'description',
+				'toiletTypes',
+				'superBuildUpArea',
+				'carpetArea',
+				'verified',
+				'transactionType',
+				'salePrice',
+				'furnished',
+				'amenities',
+				'legalClearance',
+				'distanceSchool',
+				'distanceRailwayStation',
+				'distanceAirport',
+				'distanceBusStop',
+				'distanceHospital',
+				'availability',
+				'salePriceOver',
+				'carParking',
+			];
+			const missingIndependentHouseFields = [];
+			requiredIndependentHouseFields.forEach((f) => {
+				if (req.body[f] == null || req.body[f] == undefined) {
+					missingIndependentHouseFields.push(f);
+				}
+			});
+			if (missingIndependentHouseFields.length > 0) {
+				return next(
+					new AppError(
+						`Missing parameter <${missingIndependentHouseFields.join(
+							','
+						)}>`,
+						400
+					)
+				);
+			}
+
+			let pIndependenyHouse = {
+				for: req.body.for,
+				sale_type: req.body.sale_type,
+				pricePerSqFt: req.body.pricePerSqFt,
+				carParking: req.body.carParking,
+				propertyOwnerShip: req.body.propertyOwnerShip,
+				city: req.body.city,
+				title: req.body.title,
+				description: req.body.description,
+				location: req.body.location,
+				toiletTypes: req.body.toiletTypes,
+				superBuiltupArea: req.body.superBuildUpArea,
+				carpetArea: req.body.carpetArea,
+				furnished: req.body.furnished,
+				verified: req.body.verified,
+				postedBy: user.role,
+				transactionType: req.body.transactionType,
+				salePrice: req.body.salePrice,
+				amenities: req.body.amenities,
+				legalClearance: req.body.legalClearance,
+				distanceSchool: req.body.distanceSchool,
+				distanceRailwayStation: req.body.distanceRailwayStation,
+				distanceAirport: req.body.distanceAirport,
+				distanceBusStop: req.body.distanceBusStop,
+				distanceHospital: req.body.distanceHospital,
+				availability: req.body.availability,
+				adminId: req.user.id,
+				createdBy: 'admin',
+				userId: req.body.userId,
+				salePriceOver: req.body.salePriceOver,
+			};
+
+			if (req.body.furnished !== 'unfurnished') {
+				if (!req.body.furnishes) {
+					return next(
+						new AppError('parameter <furnishes> is missing', 400)
+					);
+				}
+				pIndependenyHouse['furnishes'] = req.body.furnishes;
+			}
+
+			if (req.body.availability === 'specificdate') {
+				if (!req.body.availableDate) {
+					return next(
+						new AppError(
+							'parameter <availableDate> is missing',
+							400
+						)
+					);
+				}
+				pIndependenyHouse['availableDate'] = req.body.availableDate;
+			}
+
+			let independentHouse = await Property.create(pIndependenyHouse);
+			res.status(201).json({
+				status: 'success',
+				data: {
+					property: independentHouse,
+				},
+			});
+			break;
+
 		case 'land':
 			const requiredFieldsForLand = [
 				'city',
@@ -638,10 +743,20 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 });
 
 exports.getProperties = catchAsync(async (req, res, next) => {
-	const properties = await Property.find(req.query);
+	let query = { ...req.query };
+	const page = query.page * 1 || 1;
+	const limit = query.limit * 1 || 100;
+	const excludeFields = ['page', 'limit'];
+	excludeFields.forEach((field) => delete query[field]);
+	const skip = (page - 1) * limit;
+	const count = await Property.countDocuments(query);
+	const properties = await Property.find(query)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
 	res.status(200).json({
 		status: 'success',
-		count: properties.length,
+		count,
 		data: {
 			properties,
 		},

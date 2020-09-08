@@ -17,6 +17,8 @@ import { fetchProperties } from '../../redux/property/property.actions';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
+import TablePagination from '@material-ui/core/TablePagination';
+import Box from '@material-ui/core/Box';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -56,13 +58,31 @@ function Orders({
 	allProperties = [],
 }) {
 	console.log(allProperties);
+	const [page, setPage] = React.useState(0);
+	const [count, setCount] = React.useState(0);
+	const [rowsPerPage, setRowsPerPage] = React.useState(20);
+
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (event) => {
+		setRowsPerPage(parseInt(event.target.value, 10));
+		setPage(0);
+	};
 	const hnadleProperties = (status, data = null) => {
-		console.log(status);
-		console.log(data);
+		if (status === 'success') {
+			setCount(data);
+		}
 	};
 	React.useEffect(() => {
-		fetchProperties(hnadleProperties, status);
-	}, [fetchProperties, status]);
+		fetchProperties(hnadleProperties, {
+			status,
+			for: 'rent',
+			page: page + 1,
+			limit: rowsPerPage,
+		});
+	}, [fetchProperties, status, page, rowsPerPage]);
 
 	const classes = useStyles();
 
@@ -78,6 +98,21 @@ function Orders({
 
 			<div className={classes.tableWrapper}>
 				{/* <p className={classes.colorRed}>{error}</p> */}
+				<Box mb="1rem">
+					<TablePagination
+						component="div"
+						count={count}
+						page={page}
+						rowsPerPageOptions={[2, 5, 10, 20, 40, 50]}
+						labelRowsPerPage={'Properties per page'}
+						onChangePage={handleChangePage}
+						rowsPerPage={rowsPerPage}
+						onChangeRowsPerPage={handleChangeRowsPerPage}
+					/>
+				</Box>
+				<Box mb="0.5rem">
+					{count ? <b>{count} results found</b> : ''}
+				</Box>
 				<Table size="medium">
 					<TableHead>
 						<TableRow
@@ -137,7 +172,11 @@ function Orders({
 								<TableCell>{c.status}</TableCell>
 								<TableCell>{c.userId.name}</TableCell>
 								<TableCell>
-									{`${moment(c.createdAt, 'YYYY-MM-DD')}`}
+									<span>
+										{moment(c.createdAt).format(
+											'YYYY-MM-DD'
+										)}
+									</span>
 								</TableCell>
 								<TableCell>
 									<CustomSelect
@@ -186,8 +225,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchProperties: (callback, status) =>
-		dispatch(fetchProperties({ callback, param: { status, for: 'rent' } })),
+	fetchProperties: (callback, param) =>
+		dispatch(fetchProperties({ callback, param })),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Orders));

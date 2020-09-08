@@ -7,6 +7,7 @@ import RowSelect from '../../components/rowSelect/rowSelect.component';
 import FormHeader from '../../components/formHeader/formHeader.component';
 import FlatSale from './addPropertySale.component';
 import LandSale from './addPropertySaleLand.component';
+import IndependentHouseSale from './addPropertySaleIndependentHouse.component';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { createStructuredSelector } from 'reselect';
@@ -41,7 +42,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 
 const initialState = {
-	type: 'flat',
+	type: 'independenthouse',
 };
 
 const typeMenuItems = [
@@ -52,6 +53,10 @@ const typeMenuItems = [
 	{
 		value: 'land',
 		label: 'Land',
+	},
+	{
+		value: 'independenthouse',
+		label: 'Independent House',
 	},
 ];
 
@@ -166,6 +171,38 @@ const AddProperty = ({
 		addProperty(propertyDetails, handleAddProperty);
 	};
 
+	const renderChild = (type) => {
+		switch (type) {
+			case 'flat':
+				return (
+					<FlatSale
+						furnishes={furnishes}
+						amenities={amenities}
+						onSubmit={onSubmit}
+					/>
+				);
+			case 'land':
+				return (
+					<LandSale
+						furnishes={furnishes}
+						amenities={amenities}
+						onSubmit={onSubmit}
+					/>
+				);
+			case 'independenthouse':
+				return (
+					<IndependentHouseSale
+						furnishes={furnishes}
+						amenities={amenities}
+						onSubmit={onSubmit}
+					/>
+				);
+
+			default:
+				break;
+		}
+	};
+
 	const closeSnackbar = () => setAsyncError('');
 	return (
 		<Box p="1rem">
@@ -261,19 +298,7 @@ const AddProperty = ({
 										value: c.id,
 									}))}
 								/>
-								{property.type === 'flat' ? (
-									<FlatSale
-										furnishes={furnishes}
-										amenities={amenities}
-										onSubmit={onSubmit}
-									/>
-								) : (
-									<LandSale
-										furnishes={furnishes}
-										amenities={amenities}
-										onSubmit={onSubmit}
-									/>
-								)}
+								{renderChild(property.type)}
 							</Grid>
 						</Grid>
 					</Box>

@@ -13,11 +13,17 @@ const CSelectField = ({
 	menuItems,
 	error,
 	helperText,
+	variant,
 	loading = false,
 	...otherProps
 }) => {
 	return (
-		<FormControl variant="outlined" fullWidth size="small" error={error}>
+		<FormControl
+			variant={variant ? variant : 'outlined'}
+			fullWidth
+			size="small"
+			error={error}
+		>
 			<InputLabel id="demo-simple-select-outlined-label">
 				{label}
 			</InputLabel>

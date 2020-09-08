@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Backdrop from '@material-ui/core/Backdrop';
+import Box from '@material-ui/core/Box';
 import CustomSelect from './selectSale.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -17,6 +18,8 @@ import { fetchProperties } from '../../redux/property/property.actions';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
+import CSelect from '../select/select.component';
+import TablePagination from '@material-ui/core/TablePagination';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -45,7 +48,28 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: theme.zIndex.drawer + 1,
 		color: '#fff',
 	},
+	noSpace: {
+		padding: 0,
+		margin: 0,
+	},
 }));
+
+const types = {
+	flat: 'Flat',
+	land: 'Land',
+	independenthouse: 'Independent House',
+};
+
+const menuItems = [
+	{
+		label: '2',
+		value: 2,
+	},
+	{
+		label: '3',
+		value: 3,
+	},
+];
 
 function Orders({
 	fetchProperties,
@@ -54,13 +78,33 @@ function Orders({
 	allProperties = [],
 }) {
 	console.log(allProperties);
+	const [page, setPage] = React.useState(0);
+	const [count, setCount] = React.useState(0);
+	const [rowsPerPage, setRowsPerPage] = React.useState(20);
+
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (event) => {
+		setRowsPerPage(parseInt(event.target.value, 10));
+		setPage(0);
+	};
 	const hnadleProperties = (status, data = null) => {
 		console.log(status);
 		console.log(data);
+		if (status === 'success') {
+			setCount(data);
+		}
 	};
 	React.useEffect(() => {
-		fetchProperties(hnadleProperties, params.status, params.for);
-	}, [fetchProperties, params.status, params.for]);
+		fetchProperties(hnadleProperties, {
+			status: params.status,
+			for: params.for,
+			page: page + 1,
+			limit: rowsPerPage,
+		});
+	}, [fetchProperties, params.status, params.for, page, rowsPerPage]);
 
 	const classes = useStyles();
 
@@ -76,6 +120,24 @@ function Orders({
 
 			<div className={classes.tableWrapper}>
 				{/* <p className={classes.colorRed}>{error}</p> */}
+				<Box mb="1rem">
+					<TablePagination
+						component="div"
+						count={count}
+						page={page}
+						rowsPerPageOptions={[2, 5, 10, 20, 40, 50]}
+						labelRowsPerPage={'Properties per page'}
+						onChangePage={handleChangePage}
+						rowsPerPage={rowsPerPage}
+						onChangeRowsPerPage={handleChangeRowsPerPage}
+						classes={{
+							root: classes.noSpace,
+						}}
+					/>
+				</Box>
+				<Box mb="0.5rem">
+					{count ? <b>{count} results found</b> : ''}
+				</Box>
 				<Table size="medium">
 					<TableHead>
 						<TableRow
@@ -102,9 +164,7 @@ function Orders({
 							<TableCell style={{ color: '#ffffff' }}>
 								Location
 							</TableCell>
-							<TableCell style={{ color: '#ffffff' }}>
-								Status
-							</TableCell>
+
 							<TableCell style={{ color: '#ffffff' }}>
 								User
 							</TableCell>
@@ -128,14 +188,17 @@ function Orders({
 								<TableCell>{i + 1}</TableCell>
 								<TableCell>{c.title}</TableCell>
 								<TableCell>{c.for}</TableCell>
-								<TableCell>{c.sale_type}</TableCell>
+								<TableCell>{types[c.sale_type]}</TableCell>
 								<TableCell>{c.city.name}</TableCell>
 
 								<TableCell>{c.location.name}</TableCell>
-								<TableCell>{c.status}</TableCell>
 								<TableCell>{c.userId.name}</TableCell>
 								<TableCell>
-									{`${moment(c.createdAt, 'YYYY-MM-DD')}`}
+									<span>
+										{moment(c.createdAt).format(
+											'YYYY-MM-DD'
+										)}
+									</span>
 								</TableCell>
 								<TableCell>
 									<CustomSelect
@@ -184,8 +247,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchProperties: (callback, status, param) =>
-		dispatch(fetchProperties({ callback, param: { status, for: param } })),
+	fetchProperties: (callback, param) =>
+		dispatch(fetchProperties({ callback, param })),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Orders));

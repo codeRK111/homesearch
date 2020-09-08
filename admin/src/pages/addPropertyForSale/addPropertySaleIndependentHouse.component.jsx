@@ -151,15 +151,15 @@ const validate = (state) => {
 		errors.carpetArea =
 			'Carpet area cannot be greater than super build up area';
 	}
-	if (!state.numberOfFloors) {
-		errors.numberOfFloors = 'Number of floors required';
-	}
-	if (!state.floor) {
-		errors.floor = 'Property on floor required';
-	}
-	if (!state.numberOfFloors) {
-		errors.numberOfFloors = 'Number of floors required';
-	}
+	// if (!state.numberOfFloors) {
+	// 	errors.numberOfFloors = 'Number of floors required';
+	// }
+	// if (!state.floor) {
+	// 	errors.floor = 'Property on floor required';
+	// }
+	// if (!state.numberOfFloors) {
+	// 	errors.numberOfFloors = 'Number of floors required';
+	// }
 	if (!state.toiletIndian) {
 		errors.toiletIndian = ' required';
 	}
@@ -234,8 +234,6 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 		legalClearance,
 		superBuildUpArea: '',
 		carpetArea: '',
-		numberOfFloors: '',
-		floor: '',
 		toiletIndian: '',
 		toiletWestern: '',
 		furnished: 'unfurnished',
@@ -356,18 +354,6 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 						type="number"
 						label="in sqFt"
 					/>
-					<RowTextField
-						heading="Number of floors"
-						name="numberOfFloors"
-						type="number"
-						label="Enter number"
-					/>
-					<RowTextField
-						heading="Property on floor"
-						name="floor"
-						type="number"
-						label="Enter number"
-					/>
 
 					<RowTextField
 						heading="Number of indian toilet"
@@ -448,6 +434,7 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 							disabled={true}
 						/>
 					)}
+
 					<RowHOC heading="Sale price over">
 						<FormControl component="fieldset">
 							<RadioGroup

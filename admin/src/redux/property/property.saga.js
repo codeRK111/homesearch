@@ -156,7 +156,7 @@ export function* getProperties({ payload: { callback, param = {} } }) {
 		} else {
 			yield put(toggleLoading(false));
 			yield put(setAllProperties(responseData.data.properties));
-			callback('success');
+			callback('success', responseData.count);
 		}
 	} catch (error) {
 		yield put(toggleLoading(false));

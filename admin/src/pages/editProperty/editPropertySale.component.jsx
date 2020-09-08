@@ -19,6 +19,7 @@ import {
 } from '../../redux/property/property.actions';
 import PropertySaleLand from './editPropertySaleLand.component';
 import PropertySaleFlat from './editPropertySaleFlat.component';
+import PropertySaleIndependentHouse from './editPropertySaleIndependentHouse.component';
 import { useHistory } from 'react-router-dom';
 import Backdrop from '@material-ui/core/Backdrop';
 
@@ -157,6 +158,15 @@ const EditProperty = ({
 							case 'land':
 								return (
 									<PropertySaleLand
+										onSubmit={onSubmit}
+										state={property}
+									/>
+								);
+							case 'independenthouse':
+								return (
+									<PropertySaleIndependentHouse
+										amenities={amenities}
+										furnishes={furnishes}
 										onSubmit={onSubmit}
 										state={property}
 									/>

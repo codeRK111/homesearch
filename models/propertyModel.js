@@ -18,8 +18,9 @@ const propertySchema = new Schema(
 		sale_type: {
 			type: String,
 			enum: {
-				values: ['flat', 'land'],
-				message: 'type must be between <flat> | <land>',
+				values: ['flat', 'land', 'independenthouse'],
+				message:
+					'type must be between <flat> | <land> | <independenthouse>',
 			},
 			required: requireSaleType,
 		},
@@ -170,7 +171,7 @@ const propertySchema = new Schema(
 			required: requireSaleLand,
 		},
 		pricePerSqFt: {
-			type: Number, 
+			type: Number,
 			required: requireSaleLand,
 		},
 		type: {

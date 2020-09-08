@@ -151,15 +151,7 @@ const validate = (state) => {
 		errors.carpetArea =
 			'Carpet area cannot be greater than super build up area';
 	}
-	if (!state.numberOfFloors) {
-		errors.numberOfFloors = 'Number of floors required';
-	}
-	if (!state.floor) {
-		errors.floor = 'Property on floor required';
-	}
-	if (!state.numberOfFloors) {
-		errors.numberOfFloors = 'Number of floors required';
-	}
+
 	if (!state.toiletIndian) {
 		errors.toiletIndian = ' required';
 	}
@@ -220,10 +212,19 @@ const filter = (a) => {
 		});
 	}
 
+	if (!state.legalClearance.find((c) => c.name === 'reraapproved')['value']) {
+		state.legalClearance = state.legalClearance.map((c) => {
+			if (c.name === 'reraapproved') {
+				c.details = null;
+			}
+			return c;
+		});
+	}
+
 	return state;
 };
 
-const PropertySale = ({ furnishes, amenities, onSubmit }) => {
+const PropertySale = ({ state, furnishes, amenities, onSubmit }) => {
 	const [initialValues, setInitialValues] = React.useState({
 		title: '',
 		description: '',
@@ -234,8 +235,6 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 		legalClearance,
 		superBuildUpArea: '',
 		carpetArea: '',
-		numberOfFloors: '',
-		floor: '',
 		toiletIndian: '',
 		toiletWestern: '',
 		furnished: 'unfurnished',
@@ -260,6 +259,43 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 		setFile((prevState) => [...prevState, b.files[0]]);
 	};
 
+	React.useEffect(() => {
+		setInitialValues((prevState) => {
+			if (
+				state.legalClearance.find((c) => c.name === 'reraapproved')[
+					'details'
+				]
+			) {
+				return {
+					...state,
+					superBuildUpArea: state.superBuiltupArea,
+					numberOfFloors: state.noOfFloors,
+					toiletIndian: state.toiletTypes.find(
+						(c) => c.toiletType === 'indian'
+					)['numbers'],
+					toiletWestern: state.toiletTypes.find(
+						(c) => c.toiletType === 'western'
+					)['numbers'],
+					reraapproveId: state.legalClearance.find(
+						(c) => c.name === 'reraapproved'
+					)['details'],
+				};
+			} else {
+				return {
+					...state,
+					superBuildUpArea: state.superBuiltupArea,
+					numberOfFloors: state.noOfFloors,
+					toiletIndian: state.toiletTypes.find(
+						(c) => c.toiletType === 'indian'
+					)['numbers'],
+					toiletWestern: state.toiletTypes.find(
+						(c) => c.toiletType === 'western'
+					)['numbers'],
+				};
+			}
+		});
+	}, [state]);
+
 	const imageInput = (number) => {
 		const images = [];
 		for (let index = 0; index < number; index++) {
@@ -278,24 +314,50 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 	};
 
 	React.useEffect(() => {
-		setInitialValues((prevState) => ({
-			...prevState,
-			amenities: amenities.map((c) => ({ ...c, value: false })),
-		}));
-	}, [amenities]);
+		if (state.amenities.length > 0) {
+			setInitialValues((prevState) => ({
+				...prevState,
+				amenities: amenities.map((c) => ({
+					...c,
+					value: state.amenities.includes(c.id) ? true : false,
+				})),
+			}));
+		} else {
+			setInitialValues((prevState) => ({
+				...prevState,
+				amenities: amenities.map((c) => ({ ...c, value: false })),
+			}));
+		}
+	}, [amenities, state.amenities.length]);
 	React.useEffect(() => {
-		setInitialValues((prevState) => ({
-			...prevState,
-			furnishes: furnishes.map((c) => ({ ...c, value: false })),
-		}));
-	}, [furnishes]);
+		if (state.furnishes.length > 0) {
+			setInitialValues((prevState) => ({
+				...prevState,
+				furnishes: furnishes.map((c) => ({
+					...c,
+					value: state.furnishes.find((b) => b.id === c.id)
+						? true
+						: false,
+				})),
+			}));
+		} else {
+			setInitialValues((prevState) => ({
+				...prevState,
+				furnishes: furnishes.map((c) => ({ ...c, value: false })),
+			}));
+		}
+	}, [furnishes, state.furnishes.length]);
 
 	const onSubmitForm = (data, { setSubmitting }) => {
 		setSubmitting(true);
 		let propertyDetails = filter(data);
 		if (file.length > 0) {
+			console.log('--------Img--------');
 			propertyDetails['image'] = file;
 		}
+
+		console.log('------orop', propertyDetails);
+
 		propertyDetails['toiletTypes'] = [
 			{
 				toiletType: 'indian',
@@ -329,6 +391,7 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 				isValidating,
 			}) => (
 				<Form>
+					{/* <div>{JSON.stringify(values.amenities, null, '\t')}</div> */}
 					{/* <div>{JSON.stringify(values.amenities, null, '\t')}</div>
 					<div>{JSON.stringify(errors, null, '\t')}</div> */}
 					<FormHeader text="Property Info" />
@@ -355,18 +418,6 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 						name="carpetArea"
 						type="number"
 						label="in sqFt"
-					/>
-					<RowTextField
-						heading="Number of floors"
-						name="numberOfFloors"
-						type="number"
-						label="Enter number"
-					/>
-					<RowTextField
-						heading="Property on floor"
-						name="floor"
-						type="number"
-						label="Enter number"
 					/>
 
 					<RowTextField
@@ -489,6 +540,7 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 												<Grid item lg={6}>
 													<Checkbox
 														key={i}
+														type="checkbox"
 														heading="test"
 														name={`furnishes.${i}.value`}
 														label={c.name}
@@ -510,6 +562,7 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 											<Grid item lg={6}>
 												<Checkbox
 													key={i}
+													type="checkbox"
 													heading="test"
 													name={`amenities.${i}.value`}
 													label={c.name}
@@ -533,6 +586,7 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 												<Checkbox
 													key={i}
 													heading="test"
+													type="checkbox"
 													name={`legalClearance.${i}.value`}
 													label={c.label}
 												/>
@@ -603,7 +657,7 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 								label: 'tranform-none',
 							}}
 						>
-							Add Property
+							Edit Property
 						</Button>
 					</Box>
 				</Form>

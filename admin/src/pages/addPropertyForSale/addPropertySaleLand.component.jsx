@@ -396,12 +396,18 @@ const PropertySale = ({ furnishes, amenities, onSubmit }) => {
 						label="Enter price"
 					/>
 
-					<RowTextField
-						heading="Price per sqFt"
-						name="pricePerSqFt"
-						type="number"
-						label="Enter sale price"
-					/>
+					{values.plotArea && values.salePrice && (
+						<RowTextField
+							heading="Price per sqFt"
+							name="pricePerSqFt"
+							type="number"
+							value={(values.salePrice / values.plotArea).toFixed(
+								2
+							)}
+							label="Price per SqFt"
+							disabled={true}
+						/>
+					)}
 
 					<FormHeader text="Legal Clearance" />
 
