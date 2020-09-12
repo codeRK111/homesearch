@@ -14,3 +14,4 @@ export const selectLocation = createSelector(
 	[selectSidebar],
 	(u) => u.location
 );
+export const selectProject = createSelector([selectSidebar], (u) => u.project);

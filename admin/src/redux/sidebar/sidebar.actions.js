@@ -11,3 +11,6 @@ export const togglePropertySale = () => ({
 export const toggleLocation = () => ({
 	type: SidebarActionTypes.TOGGLE_LOCATION,
 });
+export const toggleProject = () => ({
+	type: SidebarActionTypes.TOGGLE_PROJECT,
+});

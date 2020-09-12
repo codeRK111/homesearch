@@ -1,7 +1,8 @@
 import { UserActionTypes } from './users.types';
 
-export const fetchAllUsersSTart = () => ({
+export const fetchAllUsersSTart = (payload) => ({
 	type: UserActionTypes.FETCH_ALL_USERS_START,
+	payload,
 });
 
 export const setAllUsers = (users) => ({

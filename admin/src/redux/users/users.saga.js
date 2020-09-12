@@ -12,11 +12,13 @@ import {
 	toggleAddUserLoading,
 } from './users.actions';
 
-function* getAllUsers() {
+function* getAllUsers({ payload = null }) {
 	try {
 		yield put(toggleLoading());
 
-		let url = `/api/v1/admin/users?sort=serialNumber&fields=number,googleId,photoStatus,createdAt,status,paymentStatus,numberVerified,name,email,serialNumber,gender,role,mobileStatus,registerThrough,registerVia,photo,createdBy`;
+		let url = `/api/v1/admin/users?sort=serialNumber&fields=number,googleId,photoStatus,createdAt,status,paymentStatus,numberVerified,name,email,serialNumber,gender,role,mobileStatus,registerThrough,registerVia,photo,createdBy${
+			payload && '&role=' + payload
+		}`;
 
 		const response = yield axios(url);
 		const responseData = response.data;

@@ -23,11 +23,13 @@ import {
 	selectPropertyRent,
 	selectPropertySale,
 	selectLocation,
+	selectProject,
 } from '../../redux/sidebar/sidebar.selector';
 import {
 	togglePropertyRent,
 	togglePropertySale,
 	toggleLocation,
+	toggleProject,
 } from '../../redux/sidebar/sidebar.actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,6 +48,8 @@ const MainListItems = ({
 	togglePropertyRent,
 	togglePropertySale,
 	toggleLocation,
+	selectProject,
+	toggleProject,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -203,6 +207,27 @@ const MainListItems = ({
 					</ListItem>
 				</List>
 			</Collapse>
+			<ListItem button onClick={toggleProject}>
+				<ListItemIcon>
+					<ApartmentIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Projects" />
+				{selectProject ? <ExpandLess /> : <ExpandMore />}
+			</ListItem>
+			<Collapse in={selectProject} timeout="auto" unmountOnExit>
+				<List component="div" disablePadding>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/addProject')}
+					>
+						<ListItemIcon>
+							<AddBoxIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Add Project" />
+					</ListItem>
+				</List>
+			</Collapse>
 			<ListItem button onClick={toggleLocation}>
 				<ListItemIcon>
 					<LocationCityIcon color="secondary" />
@@ -262,12 +287,14 @@ const mapStateToProps = createStructuredSelector({
 	propertyRentOpen: selectPropertyRent,
 	propertySaleOpen: selectPropertySale,
 	locationOpen: selectLocation,
+	selectProject: selectProject,
 });
 
 const dispatchStateToProps = (dispatch) => ({
 	togglePropertyRent: () => dispatch(togglePropertyRent()),
 	togglePropertySale: () => dispatch(togglePropertySale()),
 	toggleLocation: () => dispatch(toggleLocation()),
+	toggleProject: () => dispatch(toggleProject()),
 });
 
 export default connect(mapStateToProps, dispatchStateToProps)(MainListItems);

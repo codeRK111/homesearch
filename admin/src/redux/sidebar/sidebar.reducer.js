@@ -4,6 +4,7 @@ const INITIAL_STATE = {
 	propertyRent: false,
 	propertySale: false,
 	location: false,
+	project: false,
 };
 
 const sidebarReducer = (state = INITIAL_STATE, action) => {
@@ -22,6 +23,11 @@ const sidebarReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				location: !state.location,
+			};
+		case SidebarActionTypes.TOGGLE_PROJECT:
+			return {
+				...state,
+				project: !state.project,
 			};
 
 		default:

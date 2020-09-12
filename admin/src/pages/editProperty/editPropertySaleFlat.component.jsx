@@ -156,6 +156,9 @@ const validate = (state) => {
 	if (!state.numberOfFloors) {
 		errors.numberOfFloors = 'Number of floors required';
 	}
+	if (!state.numberOfBedRooms) {
+		errors.numberOfBedRooms = 'required';
+	}
 	if (!state.toiletIndian) {
 		errors.toiletIndian = ' required';
 	}
@@ -241,6 +244,7 @@ const PropertySale = ({ state, furnishes, amenities, onSubmit }) => {
 		carpetArea: '',
 		numberOfFloors: '',
 		floor: '',
+		numberOfBedRooms: '',
 		toiletIndian: '',
 		toiletWestern: '',
 		furnished: 'unfurnished',
@@ -434,6 +438,12 @@ const PropertySale = ({ state, furnishes, amenities, onSubmit }) => {
 					<RowTextField
 						heading="Property on floor"
 						name="floor"
+						type="number"
+						label="Enter number"
+					/>
+					<RowTextField
+						heading="Number of bed rooms"
+						name="numberOfBedRooms"
 						type="number"
 						label="Enter number"
 					/>
