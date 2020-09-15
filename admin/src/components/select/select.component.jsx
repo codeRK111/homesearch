@@ -43,7 +43,7 @@ const CSelectField = ({
 				) : (
 					menuItems.map((c, i) => (
 						<MenuItem key={i} value={c.value}>
-							<em>{c.label}</em>
+							{c.label}
 						</MenuItem>
 					))
 				)}

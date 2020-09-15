@@ -244,7 +244,7 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 										variant="contained"
 										color="primary"
 										classes={{
-											label: 'tranform-none',
+											label: 'transform-none',
 										}}
 										// disabled={buttonDisable}
 										className={classes.submit}

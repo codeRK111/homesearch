@@ -14,6 +14,7 @@ const adminRoute = require('./routes/adminRoute');
 const propertyRoute = require('./routes/propertyRoute');
 const cityRouter = require('./routes/cityRoute');
 const featureRouter = require('./routes/siteFeaturesRoute');
+const builderRouter = require('./routes/builderRoute');
 const AppError = require('./utils/appError');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
@@ -85,6 +86,10 @@ app.use(
 	'/profile',
 	express.static(path.join(__dirname, 'images', 'profile_images'))
 );
+app.use(
+	'/assets/builders',
+	express.static(path.join(__dirname, 'images', 'builder_images'))
+);
 // app.use(
 // 	basicAuth({
 // 		users: { admin: 'admin@123' },
@@ -101,6 +106,7 @@ app.use('/api/v1/admins', adminRoute);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/cities', cityRouter);
 app.use('/api/v1/properties', propertyRoute);
+app.use('/api/v1/builders', builderRouter);
 
 app.all('*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));

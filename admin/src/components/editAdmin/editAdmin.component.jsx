@@ -499,7 +499,7 @@ const EditUser = ({
 								color="primary"
 								variant="contained"
 								classes={{
-									label: 'tranform-none',
+									label: 'transform-none',
 								}}
 								onClick={buttonClick}
 							>

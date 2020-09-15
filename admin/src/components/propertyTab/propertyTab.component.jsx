@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function PropertyTabs() {
+export default function PropertyTabs(props) {
 	const classes = useStyles();
 	const theme = useTheme();
 	const [value, setValue] = React.useState(0);
@@ -89,13 +89,15 @@ export default function PropertyTabs() {
 				onChangeIndex={handleChangeIndex}
 			>
 				<TabPanel value={value} index={0} dir={theme.direction}>
-					<PropertyOneBHK />
+					<Box>
+						<PropertyOneBHK bhk={1} {...props} />
+					</Box>
 				</TabPanel>
 				<TabPanel value={value} index={1} dir={theme.direction}>
-					<PropertyOneBHK />
+					<PropertyOneBHK bhk={2} {...props} />
 				</TabPanel>
 				<TabPanel value={value} index={2} dir={theme.direction}>
-					<PropertyOneBHK />
+					<PropertyOneBHK bhk={3} {...props} />
 				</TabPanel>
 			</SwipeableViews>
 		</div>

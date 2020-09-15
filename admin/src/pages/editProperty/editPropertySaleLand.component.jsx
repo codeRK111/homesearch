@@ -495,7 +495,7 @@ const PropertySale = ({ state, onSubmit }) => {
 							color="primary"
 							variant="contained"
 							classes={{
-								label: 'tranform-none',
+								label: 'transform-none',
 							}}
 						>
 							Edit Property

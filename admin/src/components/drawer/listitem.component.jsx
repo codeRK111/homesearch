@@ -24,12 +24,14 @@ import {
 	selectPropertySale,
 	selectLocation,
 	selectProject,
+	selectBuilder,
 } from '../../redux/sidebar/sidebar.selector';
 import {
 	togglePropertyRent,
 	togglePropertySale,
 	toggleLocation,
 	toggleProject,
+	toggleBuilder,
 } from '../../redux/sidebar/sidebar.actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -50,6 +52,8 @@ const MainListItems = ({
 	toggleLocation,
 	selectProject,
 	toggleProject,
+	selectBuilder,
+	toggleBuilder,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -207,6 +211,48 @@ const MainListItems = ({
 					</ListItem>
 				</List>
 			</Collapse>
+			<ListItem button onClick={toggleBuilder}>
+				<ListItemIcon>
+					<PeopleAltIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Builders" />
+				{selectBuilder ? <ExpandLess /> : <ExpandMore />}
+			</ListItem>
+			<Collapse in={selectBuilder} timeout="auto" unmountOnExit>
+				<List component="div" disablePadding>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/addBuilder')}
+					>
+						<ListItemIcon>
+							<AddBoxIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Add builder" />
+					</ListItem>
+
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/builders/active')}
+					>
+						<ListItemIcon>
+							<PeopleAltIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Active builders" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/builders/inactive')}
+					>
+						<ListItemIcon>
+							<PeopleAltIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Inactive builders" />
+					</ListItem>
+				</List>
+			</Collapse>
 			<ListItem button onClick={toggleProject}>
 				<ListItemIcon>
 					<ApartmentIcon color="secondary" />
@@ -288,6 +334,7 @@ const mapStateToProps = createStructuredSelector({
 	propertySaleOpen: selectPropertySale,
 	locationOpen: selectLocation,
 	selectProject: selectProject,
+	selectBuilder,
 });
 
 const dispatchStateToProps = (dispatch) => ({
@@ -295,6 +342,7 @@ const dispatchStateToProps = (dispatch) => ({
 	togglePropertySale: () => dispatch(togglePropertySale()),
 	toggleLocation: () => dispatch(toggleLocation()),
 	toggleProject: () => dispatch(toggleProject()),
+	toggleBuilder: () => dispatch(toggleBuilder()),
 });
 
 export default connect(mapStateToProps, dispatchStateToProps)(MainListItems);

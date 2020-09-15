@@ -1287,7 +1287,7 @@ const AddProperty = ({
 							variant="contained"
 							size="large"
 							classes={{
-								label: 'tranform-none',
+								label: 'transform-none',
 							}}
 							onClick={postProperty}
 						>

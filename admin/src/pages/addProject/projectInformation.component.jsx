@@ -17,6 +17,11 @@ import {
 	selectCityLoading as cityLoading,
 	selectFetchLocationLoading as locationLoading,
 } from '../../redux/city/city.selector';
+import { fetchBuilders } from '../../redux/builder/builder.action';
+import {
+	selectFetchBuildersLoading as fetchBuilderLoading,
+	selectBuilders,
+} from '../../redux/builder/builder.selector';
 import {
 	fetchAllStatesStart,
 	fetchCitiesStart as fetchCities,
@@ -60,6 +65,21 @@ const typeMenuItems = [
 	// 	value: 'independenthouse',
 	// 	label: 'Independent House',
 	// },
+];
+
+const statusMenuItems = [
+	{
+		value: 'upcoming',
+		label: 'Upcoming',
+	},
+	{
+		value: 'ongoing',
+		label: 'Ongoing',
+	},
+	{
+		value: 'completed',
+		label: 'Completed',
+	},
 ];
 
 const legalClearanceInitialValue = [
@@ -113,6 +133,7 @@ const legalClearanceInitialValue = [
 const initialState = {
 	type: 'flat',
 	title: '',
+	status: '',
 	description: '',
 	distanceSchool: '',
 	distanceRailwayStation: '',
@@ -120,6 +141,17 @@ const initialState = {
 	distanceBusStop: '',
 	distanceHospital: '',
 	reraId: '',
+};
+
+const filter = (state, ...excludeFields) => {
+	let clone = { ...state };
+	excludeFields.forEach((c) => {
+		if (clone[c] === '') {
+			delete clone[c];
+		}
+	});
+
+	return clone;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -144,6 +176,9 @@ const ProjectInformation = ({
 	selectAllUsers,
 	fetchAllUsersStart,
 	fetchResourcesStart,
+	fetchBuilders,
+	selectBuilders,
+	fetchBuilderLoading,
 	addPropertyLoading,
 	addProperty,
 	next,
@@ -154,6 +189,7 @@ const ProjectInformation = ({
 	const [editorState, setEditorState] = React.useState(() =>
 		EditorState.createEmpty()
 	);
+
 	const [state, setState] = React.useState('');
 	const [selectedCity, setselectedCity] = React.useState('');
 	const [selectedLocation, setselectedLocation] = React.useState('');
@@ -210,7 +246,7 @@ const ProjectInformation = ({
 		fetchLocations(selectedCity, handleFetchLocation);
 	};
 	const fetchUser = () => {
-		fetchAllUsersStart();
+		fetchBuilders(console.log);
 	};
 
 	const handleAmenities = (id) => (e) => {
@@ -235,6 +271,28 @@ const ProjectInformation = ({
 		});
 	};
 
+	const onNext = () => {
+		let propertyToSubmit = filter(property);
+		propertyToSubmit['state'] = state;
+		propertyToSubmit['city'] = selectedCity;
+		propertyToSubmit['location'] = selectedLocation;
+		propertyToSubmit['user'] = selectedUser;
+		if (sAmenities.filter((c) => c.value).length > 0) {
+			propertyToSubmit['amenities'] = sAmenities;
+		}
+		if (legalClearance.filter((c) => c.value).length > 0) {
+			propertyToSubmit['legalClearance'] = legalClearance;
+			if (
+				legalClearance.find((c) => c.name === 'reraapproved')['value']
+			) {
+				propertyToSubmit['legalClearance'].find(
+					(c) => c.name === 'reraapproved'
+				)['details'] = property.reraId;
+			}
+		}
+		next(propertyToSubmit);
+	};
+
 	React.useEffect(() => {
 		fetchResourcesStart(handleFetchResources);
 	}, []);
@@ -253,8 +311,16 @@ const ProjectInformation = ({
 				name="type"
 				value={property.type}
 				onChange={handleChange}
-				label="For"
+				label="Choose"
 				menuItems={typeMenuItems}
+			/>
+			<RowSelect
+				heading="Status *"
+				name="type"
+				value={property.status}
+				onChange={handleChange}
+				label="Choose"
+				menuItems={statusMenuItems}
 			/>
 			<RowSelect
 				heading="State *"
@@ -298,15 +364,15 @@ const ProjectInformation = ({
 				}))}
 			/>
 			<RowSelect
-				heading="User *"
-				loading={userLoading}
-				name="type"
+				heading="Builder *"
+				loading={fetchBuilderLoading}
+				name="builder"
 				value={selectedUser}
 				onChange={(e) => setselectedUser(e.target.value)}
-				label="User"
+				label="Builder"
 				onOpen={fetchUser}
-				menuItems={selectAllUsers.map((c) => ({
-					label: c.name,
+				menuItems={selectBuilders.map((c) => ({
+					label: c.title,
 					value: c.id,
 				}))}
 			/>
@@ -414,7 +480,10 @@ const ProjectInformation = ({
 				<Button
 					variant="contained"
 					color="primary"
-					onClick={next}
+					onClick={onNext}
+					classes={{
+						label: 'transform-none',
+					}}
 					disabled={
 						!(
 							property.title &&
@@ -444,6 +513,8 @@ const mapStateToProps = createStructuredSelector({
 	selectAllUsers,
 	userLoading,
 	addPropertyLoading,
+	fetchBuilderLoading,
+	selectBuilders,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -453,6 +524,8 @@ const mapDispatchToProps = (dispatch) => ({
 	fetchLocations: (city, callback) =>
 		dispatch(fetchLocations({ city, callback })),
 	fetchAllUsersStart: () => dispatch(fetchAllUsersSTart('builder')),
+	fetchBuilders: (callback) =>
+		dispatch(fetchBuilders({ callback, param: { status: 'active' } })),
 	fetchResourcesStart: (callback) =>
 		dispatch(fetchAllPropertyResourcesStart({ callback })),
 	addProperty: (property, callback) =>

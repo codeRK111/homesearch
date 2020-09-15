@@ -17,7 +17,7 @@ const Admin = () => {
 						variant="contained"
 						color="default"
 						classes={{
-							label: 'tranform-none',
+							label: 'transform-none',
 						}}
 						startIcon={<AddIcon />}
 						size="small"

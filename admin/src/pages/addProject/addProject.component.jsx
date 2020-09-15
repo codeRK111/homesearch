@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import ApartmentIcon from '@material-ui/icons/Apartment';
-import PropertyTab from '../../components/propertyTab/propertyTab.component';
+import PropertyTab from '../../components/projectWrapper/projectWrapper.component';
 import ProjectInformation from './projectInformation.component';
 import './addProject.style.scss';
 
@@ -25,6 +25,13 @@ const AddProject = () => {
 	const [projectInfoCompleted, setProjectInfoCompleted] = React.useState(
 		false
 	);
+	const [project, setProject] = React.useState({});
+	const [secureAdd, setSecureAdd] = React.useState(false);
+
+	const setProjectState = (state) => {
+		setProject((prevState) => ({ ...prevState, ...state }));
+		setSecureAdd(true);
+	};
 
 	const toggleExpand = (section) => (e) => {
 		setExpand((prevState) => ({
@@ -33,9 +40,10 @@ const AddProject = () => {
 		}));
 	};
 
-	const next = () => {
+	const next = (state) => {
 		setExpand((prevState) => ({ ...prevState, projectInfo: false }));
 		setProjectInfoCompleted(true);
+		setProject((prevState) => ({ ...prevState, ...state }));
 	};
 
 	React.useEffect(() => {
@@ -51,6 +59,14 @@ const AddProject = () => {
 				propertyInfo: !prevState.propertyInfo,
 			}));
 		}
+		// setExpand((prevState) => ({
+		// 	...prevState,
+		// 	propertyInfo: !prevState.propertyInfo,
+		// }));
+	};
+
+	const addProject = () => {
+		console.log(project);
 	};
 
 	const heading = (name) => <b className="header">{name}</b>;
@@ -90,17 +106,18 @@ const AddProject = () => {
 						/>
 						{expand.propertyInfo ? <ExpandLess /> : <ExpandMore />}
 					</ListItem>
-					<Collapse
-						in={expand.propertyInfo}
-						timeout="auto"
-						unmountOnExit
-					>
+					<Collapse in={expand.propertyInfo} timeout="auto">
 						<Box maxWidth mt="1rem">
-							<PropertyTab />
+							<PropertyTab setProject={setProjectState} />
 						</Box>
 					</Collapse>
 					<Box mt="1rem">
-						<Button color="primary" variant="contained" disabled>
+						<Button
+							color="primary"
+							variant="contained"
+							onClick={addProject}
+							disabled={!secureAdd}
+						>
 							Add Project
 						</Button>
 					</Box>

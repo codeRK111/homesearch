@@ -279,7 +279,7 @@ const FilterData = ({
 									color="primary"
 									variant="contained"
 									classes={{
-										label: 'tranform-none',
+										label: 'transform-none',
 									}}
 									onClick={filter}
 								>
@@ -292,7 +292,7 @@ const FilterData = ({
 									color="secondary"
 									variant="contained"
 									classes={{
-										label: 'tranform-none',
+										label: 'transform-none',
 									}}
 									onClick={() => onChangeForm(defaultState)}
 								>

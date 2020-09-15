@@ -15,3 +15,4 @@ export const selectLocation = createSelector(
 	(u) => u.location
 );
 export const selectProject = createSelector([selectSidebar], (u) => u.project);
+export const selectBuilder = createSelector([selectSidebar], (u) => u.builder);

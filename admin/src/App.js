@@ -28,6 +28,9 @@ import DashboardPage from './pages/dashboard/dashboatd.component';
 import PropertySale from './pages/properties/propertiesSale.component';
 import EditPropertySalePage from './pages/editProperty/editPropertySale.component';
 import AddProjectPage from './pages/addProject/addProject.component';
+import AddBuilderPage from './pages/addBuilder/addBuilder.component';
+import BuilderPage from './pages/builders/builders.component';
+import EditBuilderPage from './pages/editBuilder/editBuilder.component';
 // components
 import Drawer from './components/drawer/drawer.component';
 // import Authenticated from './components/protected/protected.component';
@@ -56,6 +59,9 @@ const DashboardPageWithDrawer = Drawer(DashboardPage);
 const PropertySalePageWithDrawer = Drawer(PropertySale);
 const EditPropertySalePageWithDrawer = Drawer(EditPropertySalePage);
 const AddProjectPageWithDrawer = Drawer(AddProjectPage);
+const AddBuilderPageWithDrawer = Drawer(AddBuilderPage);
+const BuilderPageWithDrawer = Drawer(BuilderPage);
+const EditBuilderPageWithDrawer = Drawer(EditBuilderPage);
 
 // import { Switch, Route, Redirect } from "react-router-dom";
 // import { connect } from "react-redux";
@@ -129,6 +135,11 @@ function App(props) {
 				/>
 				<Route
 					exact
+					path="/addBuilder"
+					render={() => <AddBuilderPageWithDrawer {...props} />}
+				/>
+				<Route
+					exact
 					path="/addProperty/sale"
 					render={() => <AddPropertyForSaleWithDrawer {...props} />}
 				/>
@@ -136,6 +147,16 @@ function App(props) {
 					exact
 					path="/all-properties/:status"
 					render={() => <ActivePropertiesWithDrawer {...props} />}
+				/>
+				<Route
+					exact
+					path="/builders/:status"
+					render={() => <BuilderPageWithDrawer {...props} />}
+				/>
+				<Route
+					exact
+					path="/edit-builder/:id"
+					render={() => <EditBuilderPageWithDrawer {...props} />}
 				/>
 				<Route
 					exact
