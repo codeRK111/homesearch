@@ -88,7 +88,7 @@ const PropertySale = ({
 		image6: '',
 	});
 	const [property, setProperty] = React.useState({
-		title: '',
+		developerName: '',
 		description: '',
 		phoneNumber: '',
 		email: '',
@@ -108,7 +108,9 @@ const PropertySale = ({
 	const validateFields = () => {
 		let citiesStatus = property.cities.length > 0 ? true : false;
 		return (
-			property.title && property.description && property.officeAddress,
+			property.developerName &&
+				property.description &&
+				property.officeAddress,
 			property.operatingSince && citiesStatus
 		);
 	};
@@ -125,7 +127,7 @@ const PropertySale = ({
 
 	const onSubmit = () => {
 		let builder = {
-			title: property.title,
+			developerName: property.developerName,
 			description: property.description,
 			phoneNumber: property.phoneNumber,
 			email: property.email,
@@ -330,10 +332,10 @@ const PropertySale = ({
 				<Box p="1rem">
 					<RowTextField
 						heading="Title"
-						name="title"
-						value={property.title}
+						name="developerName"
+						value={property.developerName}
 						onChange={handleChange}
-						label="Enter title"
+						label="Enter developerName"
 					/>
 					<RowTextField
 						heading="Description"

@@ -52,26 +52,21 @@ const availabilityMenuItems = [
 const initialState = {
 	title: '',
 	description: '',
-	units: '',
-	builtUpArea: '',
+	numberOfUnits: '',
+	superBuiltupArea: '',
 	carpetArea: '',
 	indianToilet: '',
 	westernToilet: '',
 	furnished: 'unfurnished',
 	availability: 'immediately',
 	availableDate: Date.now(),
-	salePriceOver: 'superBuiltUpArea',
+	priceOver: 'superBuiltUpArea',
 	pricePerSqFt: '',
 	price: '',
-	bedRooms: 0,
-	livingArea: 0,
+	securityDeposit: 0,
+	numberOfBedrooms: 0,
+	numberOflivingAreas: 0,
 	furnishes: [],
-	image1: '',
-	image2: '',
-	image3: '',
-	image4: '',
-	image5: '',
-	image6: '',
 };
 
 const basicValidation = (error, values, ...excludeField) => {
@@ -103,12 +98,12 @@ const validate = (values) => {
 		'image5',
 		'image6',
 		'furnishes',
-		'bedRooms',
-		'livingArea',
+		'numberOfBedrooms',
+		'numberOflivingAreas',
 		'pricePerSqFt'
 	);
 
-	if (values.builtUpArea < values.carpetArea) {
+	if (values.superBuiltupArea < values.carpetArea) {
 		console.log('dsfsdfsdfsd');
 		let msg = error.carpetArea
 			? `${error.carpetArea} | carpet area < super builtup area`
@@ -124,6 +119,25 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 		const obj = {
 			[`bhk${bhk}`]: values,
 		};
+		obj[`bhk${bhk}`]['toiletTypes'] = [
+			{
+				toiletType: 'indian',
+				numbers: values.indianToilet,
+			},
+			{
+				toiletType: 'western',
+				numbers: values.westernToilet,
+			},
+		];
+		if (values.furnished !== 'unfurnished') {
+			obj[`bhk${bhk}`]['furnishes'] = values.furnishes
+				.filter((c) => c.value)
+				.map((b) => b.id);
+		} else {
+			delete obj[`bhk${bhk}`]['furnishes'];
+		}
+
+		console.log(obj);
 		setProject(obj);
 	};
 
@@ -185,7 +199,7 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 				enableReinitialize={true}
 				initialValues={{
 					...initialState,
-					bedRooms: bhk,
+					numberOfBedrooms: bhk,
 					furnishes: furnishes.map((c) => ({ ...c, value: false })),
 				}}
 				validate={validate}
@@ -210,24 +224,24 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 						/>
 						<RowTextField
 							heading="Number of units"
-							name="units"
+							name="numberOfUnits"
 							type="number"
 							label="Enter number"
 						/>
 						<RowTextField
 							heading="Number of bedrooms"
-							name="bedRooms"
+							name="numberOfBedrooms"
 							type="number"
 							disabled={true}
 						/>
 						<RowTextField
 							heading="Number of living areas"
-							name="livingArea"
+							name="numberOflivingAreas"
 							type="number"
 						/>
 						<RowTextField
 							heading="Super builtup area"
-							name="builtUpArea"
+							name="superBuiltupArea"
 							type="number"
 							label="Enter number"
 						/>
@@ -296,6 +310,12 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 							/>
 						)}
 						<RowTextField
+							heading="Security Deposit"
+							name="securityDeposit"
+							type="number"
+							label="Enter price"
+						/>
+						<RowTextField
 							heading="Price"
 							name="price"
 							type="number"
@@ -304,9 +324,9 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 						<RowHOC heading="Price over">
 							<FormControl component="fieldset">
 								<RadioGroup
-									aria-label="salePriceOver"
-									name="salePriceOver"
-									value={values.salePriceOver}
+									aria-label="priceOver"
+									name="priceOver"
+									value={values.priceOver}
 									onChange={handleChange}
 								>
 									<Box display="flex">
@@ -324,7 +344,7 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 								</RadioGroup>
 							</FormControl>
 						</RowHOC>
-						{values.builtUpArea && values.price && (
+						{values.superBuiltupArea && values.price && (
 							<RowTextField
 								heading="Price per sqFt"
 								name="pricePerSqFt"
@@ -332,8 +352,8 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 								type="number"
 								value={(
 									values.price /
-									(values.salePriceOver === 'superBuiltUpArea'
-										? values.builtUpArea
+									(values.priceOver === 'superBuiltUpArea'
+										? values.superBuiltupArea
 										: values.carpetArea)
 								).toFixed(2)}
 								label="Price per SqFt"
@@ -342,7 +362,7 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 						)}
 						<FormHeader text="Images" />
 
-						<Box
+						{/* <Box
 							p="1rem"
 							display="flex"
 							justifyContent="space-between"
@@ -354,7 +374,7 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 									values
 								)}
 							</Grid>
-						</Box>
+						</Box> */}
 
 						<Box p="1rem" display="flex" justifyContent="flex-end">
 							<Button

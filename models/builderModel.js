@@ -4,9 +4,9 @@ const validator = require('validator');
 const { Schema, model } = mongoose;
 const builderSchema = new Schema(
 	{
-		title: {
+		developerName: {
 			type: String,
-			required: [true, 'A title must be required'],
+			required: [true, 'A developerName must be required'],
 		},
 		description: {
 			type: String,
@@ -18,7 +18,8 @@ const builderSchema = new Schema(
 		},
 		phoneNumber: {
 			type: String,
-			maxlength: [10, 'Max 10 chars allowed'],
+			maxlength: [10, '10 chars allowed for phone_number'],
+			minlength: [10, '10 chars allowed for phone_number'],
 			index: {
 				unique: true,
 				partialFilterExpression: { number: { $type: 'string' } },
@@ -47,6 +48,11 @@ const builderSchema = new Schema(
 				required: [true, 'Builder must have some cities'],
 			},
 		],
+		// location: {
+		// 	type: mongoose.Schema.ObjectId,
+		// 	ref: 'Location',
+		// 	required: [true, 'Missing location'],
+		// },
 		logo: {
 			type: String,
 			default: null,

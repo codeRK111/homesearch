@@ -30,6 +30,7 @@ import EditPropertySalePage from './pages/editProperty/editPropertySale.componen
 import AddProjectPage from './pages/addProject/addProject.component';
 import AddBuilderPage from './pages/addBuilder/addBuilder.component';
 import BuilderPage from './pages/builders/builders.component';
+import ProjectPage from './pages/projects/projects.component';
 import EditBuilderPage from './pages/editBuilder/editBuilder.component';
 // components
 import Drawer from './components/drawer/drawer.component';
@@ -61,6 +62,7 @@ const EditPropertySalePageWithDrawer = Drawer(EditPropertySalePage);
 const AddProjectPageWithDrawer = Drawer(AddProjectPage);
 const AddBuilderPageWithDrawer = Drawer(AddBuilderPage);
 const BuilderPageWithDrawer = Drawer(BuilderPage);
+const ProjectPageWithDrawer = Drawer(ProjectPage);
 const EditBuilderPageWithDrawer = Drawer(EditBuilderPage);
 
 // import { Switch, Route, Redirect } from "react-router-dom";
@@ -152,6 +154,11 @@ function App(props) {
 					exact
 					path="/builders/:status"
 					render={() => <BuilderPageWithDrawer {...props} />}
+				/>
+				<Route
+					exact
+					path="/projects/:status"
+					render={() => <ProjectPageWithDrawer {...props} />}
 				/>
 				<Route
 					exact

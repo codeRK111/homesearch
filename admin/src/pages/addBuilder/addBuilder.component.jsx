@@ -58,7 +58,7 @@ const PropertySale = ({
 	const classes = useStyles();
 	const [progress, setProgress] = React.useState(0);
 	const [property, setProperty] = React.useState({
-		title: '',
+		developerName: '',
 		description: '',
 		phoneNumber: '',
 		email: '',
@@ -80,7 +80,9 @@ const PropertySale = ({
 		let citiesStatus =
 			cities.filter((c) => c.value)['length'] > 0 ? true : false;
 		return (
-			property.title && property.description && property.officeAddress,
+			property.developerName &&
+				property.description &&
+				property.officeAddress,
 			property.operatingSince && citiesStatus
 		);
 	};
@@ -97,11 +99,11 @@ const PropertySale = ({
 
 	const onSubmit = () => {
 		let builder = {
-			title: property.title,
-			description: property.description,
-			phoneNumber: property.phoneNumber,
-			email: property.email,
-			officeAddress: property.officeAddress,
+			developerName: property.developerName.trim(),
+			description: property.description.trim(),
+			phoneNumber: property.phoneNumber.trim(),
+			email: property.email.trim(),
+			officeAddress: property.officeAddress.trim(),
 			operatingSince: property.operatingSince,
 			cities: cities.filter((c) => c.value).map((b) => b.id),
 			image: {
@@ -259,10 +261,10 @@ const PropertySale = ({
 				<p className="color-red">{asyncError}</p>
 				<Box p="1rem">
 					<RowTextField
-						heading="Title"
-						name="title"
+						heading="Developer Name"
+						name="developerName"
 						onChange={handleChange}
-						label="Enter title"
+						label="Enter developer Name"
 					/>
 					<RowTextField
 						heading="Description"

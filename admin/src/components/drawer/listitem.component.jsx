@@ -272,6 +272,26 @@ const MainListItems = ({
 						</ListItemIcon>
 						<ListItemText primary="Add Project" />
 					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/projects/active')}
+					>
+						<ListItemIcon>
+							<PeopleAltIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Active projects" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/projects/inactive')}
+					>
+						<ListItemIcon>
+							<PeopleAltIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Inactive projects" />
+					</ListItem>
 				</List>
 			</Collapse>
 			<ListItem button onClick={toggleLocation}>

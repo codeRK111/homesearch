@@ -11,10 +11,10 @@ import CustomSelect from './selectBuilder.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
-	selectBuilders,
-	selectFetchBuildersLoading as fetchBuildersLoading,
-} from '../../redux/builder/builder.selector';
-import { fetchBuilders } from '../../redux/builder/builder.action';
+	selectProjects,
+	selectFetchProjectsLoading as fetchProjectsLoading,
+} from '../../redux/project/project.selector';
+import { fetchProjects } from '../../redux/project/project.action';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
@@ -71,15 +71,15 @@ const menuItems = [
 ];
 
 function Orders({
-	fetchBuilders,
+	fetchProjects,
 	loading,
 	match: { params },
-	allBuilders = [],
+	allProjects = [],
 }) {
 	const [page, setPage] = React.useState(0);
 	const [count, setCount] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(20);
-
+	console.log(allProjects);
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
 	};
@@ -88,7 +88,7 @@ function Orders({
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
-	const handleBuilders = (status, data = null) => {
+	const handleProjects = (status, data = null) => {
 		console.log(status);
 		console.log(data);
 		if (status === 'success') {
@@ -96,12 +96,12 @@ function Orders({
 		}
 	};
 	React.useEffect(() => {
-		fetchBuilders(handleBuilders, {
+		fetchProjects(handleProjects, {
 			status: params.status,
 			page: page + 1,
 			limit: rowsPerPage,
 		});
-	}, [fetchBuilders, params.status, page, rowsPerPage]);
+	}, [fetchProjects, params.status, page, rowsPerPage]);
 
 	const classes = useStyles();
 
@@ -146,24 +146,30 @@ function Orders({
 								SL no
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
-								Developer Name
+								Title
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
 								Description
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
-								Number
+								Type
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
-								Email
-							</TableCell>
-
-							<TableCell style={{ color: '#ffffff' }}>
-								Office address
+								Complition Status
 							</TableCell>
 
 							<TableCell style={{ color: '#ffffff' }}>
-								Operating since
+								City
+							</TableCell>
+
+							<TableCell style={{ color: '#ffffff' }}>
+								Location
+							</TableCell>
+							<TableCell style={{ color: '#ffffff' }}>
+								Builder
+							</TableCell>
+							<TableCell style={{ color: '#ffffff' }}>
+								Created At
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
 								Status
@@ -177,24 +183,26 @@ function Orders({
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{allBuilders.map((c, i) => (
+						{allProjects.map((c, i) => (
 							<TableRow key={i}>
 								<TableCell>{i + 1}</TableCell>
-								<TableCell>{c.developerName}</TableCell>
+								<TableCell>{c.title}</TableCell>
 								<TableCell>{c.description}</TableCell>
-								<TableCell>{c.phoneNumber}</TableCell>
-								<TableCell>{c.email}</TableCell>
-
-								<TableCell>{c.officeAddress}</TableCell>
+								<TableCell>{c.projectType}</TableCell>
+								<TableCell>{c.complitionStatus}</TableCell>
+								<TableCell>{c.city.name}</TableCell>
+								<TableCell>{c.builder.developerName}</TableCell>
+								<TableCell>{c.location.name}</TableCell>
 								<TableCell>
 									<span>
-										{moment(c.operatingSince).format(
+										{moment(c.createdAt).format(
 											'YYYY-MM-DD'
 										)}
 									</span>
 								</TableCell>
 								<TableCell>
-									<CustomSelect
+									{c.status}
+									{/* <CustomSelect
 										value={c.status}
 										builderId={c.id}
 										items={[
@@ -207,12 +215,14 @@ function Orders({
 												value: 'inactive',
 											},
 										]}
-									/>
+									/> */}
 								</TableCell>
+
 								<TableCell align="right">
-									<Link to={`/edit-builder/${c.id}`}>
+									{/* <Link to={`/edit-builder/${c.id}`}>
 										Edit
-									</Link>
+									</Link> */}
+									Not ready yet
 								</TableCell>
 							</TableRow>
 						))}
@@ -229,13 +239,13 @@ function Orders({
 }
 
 const mapStateToProps = createStructuredSelector({
-	allBuilders: selectBuilders,
-	loading: fetchBuildersLoading,
+	allProjects: selectProjects,
+	loading: fetchProjectsLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchBuilders: (callback, param) =>
-		dispatch(fetchBuilders({ callback, param })),
+	fetchProjects: (callback, param) =>
+		dispatch(fetchProjects({ callback, param })),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Orders));

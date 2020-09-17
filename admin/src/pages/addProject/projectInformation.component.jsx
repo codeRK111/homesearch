@@ -11,6 +11,7 @@ import {
 import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import {
 	selectAllStates,
 	selectLoading as stateLoading,
@@ -131,9 +132,9 @@ const legalClearanceInitialValue = [
 ];
 
 const initialState = {
-	type: 'flat',
+	projectType: 'flat',
 	title: '',
-	status: '',
+	complitionStatus: 'ongoing',
 	description: '',
 	distanceSchool: '',
 	distanceRailwayStation: '',
@@ -141,6 +142,12 @@ const initialState = {
 	distanceBusStop: '',
 	distanceHospital: '',
 	reraId: '',
+	image1: '',
+	image2: '',
+	image3: '',
+	image4: '',
+	image5: '',
+	image6: '',
 };
 
 const filter = (state, ...excludeFields) => {
@@ -276,9 +283,11 @@ const ProjectInformation = ({
 		propertyToSubmit['state'] = state;
 		propertyToSubmit['city'] = selectedCity;
 		propertyToSubmit['location'] = selectedLocation;
-		propertyToSubmit['user'] = selectedUser;
+		propertyToSubmit['builder'] = selectedUser;
 		if (sAmenities.filter((c) => c.value).length > 0) {
-			propertyToSubmit['amenities'] = sAmenities;
+			propertyToSubmit['amenities'] = sAmenities
+				.filter((c) => c.value)
+				.map((b) => b.id);
 		}
 		if (legalClearance.filter((c) => c.value).length > 0) {
 			propertyToSubmit['legalClearance'] = legalClearance;
@@ -301,6 +310,58 @@ const ProjectInformation = ({
 			setSAmenities(amenities.map((c) => ({ ...c, value: false })));
 		}
 	}, [amenities]);
+
+	const imageCreater = (arr) => {
+		return arr.map((c) => (
+			<Grid item xs={12} md={3} lg={2} key={c}>
+				<Box
+					display="flex"
+					flexDirection="column"
+					justifyContent="center"
+					alignItems="center"
+				>
+					{/* <p>{values[`image${c}`]}</p> */}
+					<div className="image-wrapper">
+						<img
+							src={
+								!property[`image${c}`]
+									? require('../../assets/no-image.jpg')
+									: URL.createObjectURL(property[`image${c}`])
+							}
+							alt=""
+							srcset=""
+							className="image"
+						/>
+					</div>
+					<input
+						accept="image/*"
+						className="input"
+						id={`contained-button-file-${c}`}
+						multiple
+						type="file"
+						onChange={(event) => {
+							setProperty((prevState) => ({
+								...prevState,
+								[`image${c}`]: event.currentTarget.files[0],
+							}));
+						}}
+					/>
+					<label htmlFor={`contained-button-file-${c}`}>
+						<Button
+							variant="contained"
+							color="default"
+							component="span"
+							startIcon={<CloudUploadIcon />}
+							size="small"
+							fullWidth
+						>
+							Upload
+						</Button>
+					</label>
+				</Box>
+			</Grid>
+		));
+	};
 	return (
 		<Box mt="1rem">
 			<Backdrop className={classes.backdrop} open={resourcesLoading}>
@@ -308,16 +369,16 @@ const ProjectInformation = ({
 			</Backdrop>
 			<RowSelect
 				heading="Type *"
-				name="type"
-				value={property.type}
+				name="projectType"
+				value={property.projectType}
 				onChange={handleChange}
 				label="Choose"
 				menuItems={typeMenuItems}
 			/>
 			<RowSelect
 				heading="Status *"
-				name="type"
-				value={property.status}
+				name="complitionStatus"
+				value={property.complitionStatus}
 				onChange={handleChange}
 				label="Choose"
 				menuItems={statusMenuItems}
@@ -372,7 +433,7 @@ const ProjectInformation = ({
 				label="Builder"
 				onOpen={fetchUser}
 				menuItems={selectBuilders.map((c) => ({
-					label: c.title,
+					label: c.developerName,
 					value: c.id,
 				}))}
 			/>
@@ -476,6 +537,14 @@ const ProjectInformation = ({
 				type="number"
 				label="In KM"
 			/>
+			<Box mt="1rem" mb="1rem">
+				<Grid item xs={12}>
+					Images
+				</Grid>
+			</Box>
+			<Grid container spacing={2}>
+				{imageCreater(Array.of(1, 2, 3, 4, 5, 6))}
+			</Grid>
 			<Box display="flex" justifyContent="flex-end">
 				<Button
 					variant="contained"
