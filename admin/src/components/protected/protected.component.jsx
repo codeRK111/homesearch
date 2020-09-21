@@ -33,7 +33,7 @@ const Authenticated = ({
 		if (!isAuthenticated) {
 			const jwt = localStorage.getItem('JWT');
 			if (!jwt) {
-				history.push('/');
+				return history.push('/');
 			}
 			fetchAdmin();
 		}
