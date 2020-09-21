@@ -32,13 +32,13 @@ function* signUp({ payload: { username, password, showSnackbar, otp } }) {
 			showSnackbar(responseData.message);
 		} else {
 			yield put(toggleUserLoading());
+			localStorage.setItem('JWT', responseData.token);
 			yield put(
 				signInSuccess({
 					token: responseData.token,
 					user: responseData.data.user,
 				})
 			);
-			localStorage.setItem('JWT', responseData.token);
 		}
 	} catch (error) {
 		yield put(toggleUserLoading());
