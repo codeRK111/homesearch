@@ -21,31 +21,84 @@ import Checkbox from '../checkbox/checkbox.component';
 import RowDatePicker from '../rowDatePicker/rowDatePicker.component';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import FormHeader from '../formHeader/formHeader.component';
-import './oneBHK.style.scss';
 
-const furnishMenuItems = [
+const facingMenuItems = [
 	{
-		label: 'Furnished',
-		value: 'furnished',
+		label: 'East',
+		value: 'east',
 	},
 	{
-		label: 'Unfurnished',
-		value: 'unfurnished',
+		label: 'West',
+		value: 'west',
 	},
 	{
-		label: 'Semifurnished',
-		value: 'semifurnished',
+		label: 'North',
+		value: 'north',
+	},
+	{
+		label: 'South',
+		value: 'south',
 	},
 ];
 
-const availabilityMenuItems = [
+const verifiedMenuItems = [
 	{
-		label: 'Ready to move',
-		value: 'immediately',
+		label: 'Yes',
+		value: true,
 	},
 	{
-		label: 'Available from',
-		value: 'specificdate',
+		label: 'No',
+		value: false,
+	},
+];
+
+const constructionDoneMenuItems = [
+	{
+		label: 'Yes',
+		value: true,
+	},
+	{
+		label: 'No',
+		value: false,
+	},
+];
+
+const boundaryWallMadeMenuItems = [
+	{
+		label: 'Yes',
+		value: true,
+	},
+	{
+		label: 'No',
+		value: false,
+	},
+];
+
+const gatedCommunityMadeMenuItems = [
+	{
+		label: 'Yes',
+		value: true,
+	},
+	{
+		label: 'No',
+		value: false,
+	},
+];
+const landUsingZoningMenuItems = [
+	{
+		label: 'Yellow Zone',
+		value: 'yellow',
+	},
+];
+
+const transactionTypeMenuItems = [
+	{
+		label: 'New booking',
+		value: 'newbooking',
+	},
+	{
+		label: 'Resale',
+		value: 'resale',
 	},
 ];
 
@@ -53,21 +106,24 @@ const initialState = {
 	title: '',
 	description: '',
 	numberOfUnits: '',
-	superBuiltupArea: '',
-	carpetArea: '',
-	indianToilet: '',
-	westernToilet: '',
-	furnished: 'unfurnished',
-	availability: 'immediately',
-	availableDate: Date.now(),
-	priceOver: 'superBuiltUpArea',
+	length: '',
+	width: '',
+	plotFrontage: '',
+	plotArea: '',
+	widthOfRoad: '',
+	facing: 'east', //dropdown,
+	constructionDone: false, //drop,
+	boundaryWallMade: false, //drop
+	gatedCommunity: false, //drop,
+	landUsingZoning: 'yellow', //drop
+	govermentValuation: '',
 	pricePerSqFtMin: '',
 	pricePerSqFtMax: '',
 	minPrice: '',
 	maxPrice: '',
-	bookingAmount: 0,
-	numberOfBedrooms: 0,
-	numberOflivingAreas: 0,
+	carParking: 'open',
+	verified: true,
+	transactionType: 'newbooking',
 	furnishes: [],
 };
 
@@ -117,28 +173,11 @@ const validate = (values) => {
 	return error;
 };
 
-const OneBHK = ({ bhk, furnishes, setProject }) => {
+const Land = ({ bhk, furnishes, setProject }) => {
 	const onSubmit = (values) => {
 		const obj = {
-			[`bhk${bhk}`]: values,
+			land: values,
 		};
-		obj[`bhk${bhk}`]['toiletTypes'] = [
-			{
-				toiletType: 'indian',
-				numbers: values.indianToilet,
-			},
-			{
-				toiletType: 'western',
-				numbers: values.westernToilet,
-			},
-		];
-		if (values.furnished !== 'unfurnished') {
-			obj[`bhk${bhk}`]['furnishes'] = values.furnishes
-				.filter((c) => c.value)
-				.map((b) => b.id);
-		} else {
-			delete obj[`bhk${bhk}`]['furnishes'];
-		}
 
 		console.log(obj);
 		setProject(obj);
@@ -202,8 +241,6 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 				enableReinitialize={true}
 				initialValues={{
 					...initialState,
-					numberOfBedrooms: bhk,
-					furnishes: furnishes.map((c) => ({ ...c, value: false })),
 				}}
 				validate={validate}
 				onSubmit={onSubmit}
@@ -232,90 +269,93 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 							label="Enter number"
 						/>
 						<RowTextField
-							heading="Number of bedrooms"
-							name="numberOfBedrooms"
+							heading="Length"
+							name="length"
 							type="number"
-							disabled={true}
+							label="SqFt"
 						/>
 						<RowTextField
-							heading="Number of living areas"
-							name="numberOflivingAreas"
+							heading="Width"
+							name="width"
 							type="number"
+							label="SqFt"
 						/>
 						<RowTextField
-							heading="Super builtup area"
-							name="superBuiltupArea"
+							heading="Plot frontage"
+							name="plotFrontage"
 							type="number"
-							label="Enter number"
+							label="SqFt"
 						/>
 						<RowTextField
-							heading="Carpet Area"
-							name="carpetArea"
+							heading="Plot area"
+							name="plotArea"
 							type="number"
-							label="Enter number"
+							label="SqFt"
 						/>
 						<RowTextField
-							heading="Number of indian toilet"
-							name="indianToilet"
-							type="number"
-							label="Enter number"
-						/>
-						<RowTextField
-							heading="Number of western toilet"
-							name="westernToilet"
-							type="number"
-							label="Enter number"
-						/>
-						<RowSelect
-							heading="Furnished"
-							name="furnished"
-							label="Choose"
-							menuItems={furnishMenuItems}
-						/>
-						{values.furnished !== 'unfurnished' && (
-							<RowHOC heading="Furnishes">
-								<FieldArray name="legalClearance">
-									{(arrayHelpers) => (
-										<Grid container>
-											{values.furnishes.map((c, i) => {
-												return (
-													<Grid item lg={6}>
-														<Checkbox
-															key={i}
-															color="primary"
-															heading="test"
-															name={`furnishes.${i}.value`}
-															label={c.name}
-														/>
-													</Grid>
-												);
-											})}
-										</Grid>
-									)}
-								</FieldArray>
-							</RowHOC>
-						)}
-						<RowSelect
-							heading="Property availability"
-							name="availability"
-							label="Choose"
-							menuItems={availabilityMenuItems}
-						/>
-						{values.availability === 'specificdate' && (
-							<RowDatePicker
-								heading="Select date"
-								name="availableDate"
-								label="Choose Date"
-								value={values.availableDate}
-								onChange={(value) =>
-									setFieldValue('availableDate', value)
+							heading="Width of road"
+							name="widthOfRoad"
+							// type="number"
+							label="SqFt"
+							onChange={(event) => {
+								if (isFinite(event.target.value)) {
+									// UPDATE YOUR STATE (i am using formik)
+									setFieldValue(
+										'widthOfRoad',
+										event.target.value
+									);
 								}
-							/>
-						)}
+							}}
+						/>
+
+						<RowSelect
+							heading="Facing"
+							name="facing"
+							label="Choose"
+							menuItems={facingMenuItems}
+						/>
+						<RowSelect
+							heading="Is construction done"
+							name="constructionDone"
+							label="Choose"
+							menuItems={constructionDoneMenuItems}
+						/>
+						<RowSelect
+							heading="Is boundary wall made"
+							name="boundaryWallMade"
+							label="Choose"
+							menuItems={boundaryWallMadeMenuItems}
+						/>
+						<RowSelect
+							heading="Is in a gated community"
+							name="gatedCommunity"
+							label="Choose"
+							menuItems={gatedCommunityMadeMenuItems}
+						/>
+						<RowSelect
+							heading="Land use zoning"
+							name="landUsingZoning"
+							label="Choose"
+							menuItems={landUsingZoningMenuItems}
+						/>
+						<RowSelect
+							heading="Verified"
+							name="verified"
+							type="number"
+							label="Choose"
+							menuItems={verifiedMenuItems}
+						/>
+						<RowSelect
+							heading="Transaction type"
+							name="transactionType"
+							type="number"
+							label="Choose"
+							menuItems={transactionTypeMenuItems}
+						/>
 						<FormHeader text="Price" />
 						<RowTextField
-							heading="Booking amount"
-							name="bookingAmount"
+							heading="Government Valuation"
+							name="govermentValuation"
 							type="number"
 							label="Enter price"
 						/>
@@ -331,66 +371,33 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 							type="number"
 							label="Enter price"
 						/>
-						<RowHOC heading="Price over">
-							<FormControl component="fieldset">
-								<RadioGroup
-									aria-label="priceOver"
-									name="priceOver"
-									value={values.priceOver}
-									onChange={handleChange}
-								>
-									<Box display="flex">
-										<FormControlLabel
-											value="superBuiltUpArea"
-											control={<Radio />}
-											label="Super builtup area"
-										/>
-										<FormControlLabel
-											value="carpetArea"
-											control={<Radio />}
-											label="Carpet area"
-										/>
-									</Box>
-								</RadioGroup>
-							</FormControl>
-						</RowHOC>
-						{values.superBuiltupArea &&
-							values.minPrice &&
-							values.maxPrice && (
-								<Box>
-									<RowTextField
-										heading="Price per sqFt (Min)"
-										name="pricePerSqFtMin"
-										onChange={handleChange}
-										type="number"
-										value={(
-											values.minPrice /
-											(values.priceOver ===
-											'superBuiltUpArea'
-												? values.superBuiltupArea
-												: values.carpetArea)
-										).toFixed(2)}
-										label="Price per SqFt"
-										disabled={true}
-									/>
-									<RowTextField
-										heading="Price per sqFt(Max)"
-										name="pricePerSqFtMax"
-										onChange={handleChange}
-										type="number"
-										value={(
-											values.maxPrice /
-											(values.priceOver ===
-											'superBuiltUpArea'
-												? values.superBuiltupArea
-												: values.carpetArea)
-										).toFixed(2)}
-										label="Price per SqFt"
-										disabled={true}
-									/>
-								</Box>
-							)}
 
+						{values.plotArea && values.minPrice && values.maxPrice && (
+							<Box>
+								<RowTextField
+									heading="Price per sqFt (Min)"
+									name="pricePerSqFtMin"
+									onChange={handleChange}
+									type="number"
+									value={(
+										values.minPrice / values.plotArea
+									).toFixed(2)}
+									label="Price per SqFt"
+									disabled={true}
+								/>
+								<RowTextField
+									heading="Price per sqFt(Max)"
+									name="pricePerSqFtMax"
+									onChange={handleChange}
+									type="number"
+									value={(
+										values.maxPrice / values.plotArea
+									).toFixed(2)}
+									label="Price per SqFt"
+									disabled={true}
+								/>
+							</Box>
+						)}
 						{/* <Box
 							p="1rem"
 							display="flex"
@@ -404,7 +411,6 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 								)}
 							</Grid>
 						</Box> */}
-
 						<Box p="1rem" display="flex" justifyContent="flex-end">
 							<Button
 								type="submit"
@@ -424,8 +430,7 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 	);
 };
 
-OneBHK.propTypes = {
-	bhk: PropTypes.number.isRequired,
+Land.propTypes = {
 	furnishes: PropTypes.array,
 	setProject: PropTypes.func.isRequired,
 };
@@ -434,4 +439,4 @@ const mapStateToProps = createStructuredSelector({
 	furnishes: selectFurnishes,
 });
 
-export default connect(mapStateToProps)(OneBHK);
+export default connect(mapStateToProps)(Land);

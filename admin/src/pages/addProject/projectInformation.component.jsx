@@ -46,26 +46,25 @@ import { fetchAllUsersSTart } from '../../redux/users/users.actions';
 import { useHistory } from 'react-router-dom';
 import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
 import { EditorState } from 'draft-js';
-import Editor from 'draft-js-plugins-editor';
-import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
 import '../../../node_modules/draft-js-static-toolbar-plugin/lib/plugin.css';
 import 'draft-js-static-toolbar-plugin/lib/plugin.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const typeMenuItems = [
 	{
 		value: 'flat',
 		label: 'Flat',
 	},
-	// {
-	// 	value: 'land',
-	// 	label: 'Land',
-	// },
-	// {
-	// 	value: 'independenthouse',
-	// 	label: 'Independent House',
-	// },
+	{
+		value: 'land',
+		label: 'Land',
+	},
+	{
+		value: 'independenthouse',
+		label: 'Independent House',
+	},
 ];
 
 const statusMenuItems = [
@@ -131,6 +130,29 @@ const legalClearanceInitialValue = [
 	},
 ];
 
+const legalClearanceInitialValueLand = [
+	{
+		name: 'numberOfOwner',
+		value: false,
+		label: 'Number of owner',
+	},
+	{
+		name: 'withinBlockArea',
+		value: false,
+		label: 'Within Block Area',
+	},
+	{
+		name: 'approvedByDevelopmentAutority',
+		value: false,
+		label: 'Approved by Development Authority',
+	},
+	{
+		name: 'withinAreaOfDevelopmentAuthrity',
+		value: false,
+		label: 'Within Area of Development Authority',
+	},
+];
+
 const initialState = {
 	projectType: 'flat',
 	title: '',
@@ -142,6 +164,7 @@ const initialState = {
 	distanceBusStop: '',
 	distanceHospital: '',
 	reraId: '',
+	ownerNumber: '',
 	image1: '',
 	image2: '',
 	image3: '',
@@ -186,6 +209,7 @@ const ProjectInformation = ({
 	fetchBuilders,
 	selectBuilders,
 	fetchBuilderLoading,
+	changeType,
 	addPropertyLoading,
 	addProperty,
 	next,
@@ -208,7 +232,7 @@ const ProjectInformation = ({
 	const [legalClearance, setLegalClearance] = React.useState(
 		legalClearanceInitialValue
 	);
-
+	console.log(legalClearance);
 	const handleFetchResources = (type, data) => {
 		if (type === 'success') {
 			console.log(data);
@@ -238,6 +262,12 @@ const ProjectInformation = ({
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
+		if (name === 'projectType') {
+			if (value === 'land') {
+				setLegalClearance(legalClearanceInitialValueLand);
+			}
+			changeType(value);
+		}
 		setProperty((prevState) => ({
 			...prevState,
 			[name]: value,
@@ -268,10 +298,11 @@ const ProjectInformation = ({
 	};
 
 	const handleLegalClearance = (name) => (e) => {
+		const { checked } = e.target;
 		setLegalClearance((prevState) => {
 			return prevState.map((c) => {
 				if (c.name === name) {
-					c.value = e.target.checked;
+					c.value = checked;
 				}
 				return c;
 			});
@@ -289,7 +320,10 @@ const ProjectInformation = ({
 				.filter((c) => c.value)
 				.map((b) => b.id);
 		}
-		if (legalClearance.filter((c) => c.value).length > 0) {
+		if (
+			property.projectType !== 'land' &&
+			legalClearance.filter((c) => c.value).length > 0
+		) {
 			propertyToSubmit['legalClearance'] = legalClearance;
 			if (
 				legalClearance.find((c) => c.name === 'reraapproved')['value']
@@ -297,6 +331,19 @@ const ProjectInformation = ({
 				propertyToSubmit['legalClearance'].find(
 					(c) => c.name === 'reraapproved'
 				)['details'] = property.reraId;
+			}
+		}
+		if (
+			property.projectType === 'land' &&
+			legalClearance.filter((c) => c.value).length > 0
+		) {
+			propertyToSubmit['legalClearance'] = legalClearance;
+			if (
+				legalClearance.find((c) => c.name === 'numberOfOwner')['value']
+			) {
+				propertyToSubmit['legalClearance'].find(
+					(c) => c.name === 'numberOfOwner'
+				)['details'] = property.ownerNumber;
 			}
 		}
 		next(propertyToSubmit);
@@ -310,6 +357,12 @@ const ProjectInformation = ({
 			setSAmenities(amenities.map((c) => ({ ...c, value: false })));
 		}
 	}, [amenities]);
+
+	// React.useEffect(() => {
+	// 	if (projct.projectType) {
+	// 		changeType(projct.projectType);
+	// 	}
+	// }, [projct.projectType]);
 
 	const imageCreater = (arr) => {
 		return arr.map((c) => (
@@ -329,7 +382,7 @@ const ProjectInformation = ({
 									: URL.createObjectURL(property[`image${c}`])
 							}
 							alt=""
-							srcset=""
+							srcSet=""
 							className="image"
 						/>
 					</div>
@@ -365,7 +418,7 @@ const ProjectInformation = ({
 	return (
 		<Box mt="1rem">
 			<Backdrop className={classes.backdrop} open={resourcesLoading}>
-				loading resources...
+				<CircularProgress color="secondary" />
 			</Backdrop>
 			<RowSelect
 				heading="Type *"
@@ -453,23 +506,25 @@ const ProjectInformation = ({
 				rows={5}
 				multiline={true}
 			/>
-			<RowChildren heading={'Amenities'}>
-				{sAmenities.map((c) => (
-					<Grid item xs={12} lg={4} key={c.id}>
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={c.value}
-									onChange={handleAmenities(c.id)}
-									name="checkedB"
-									color="primary"
-								/>
-							}
-							label={c.name}
-						/>
-					</Grid>
-				))}
-			</RowChildren>
+			{property.projectType !== 'land' && (
+				<RowChildren heading={'Amenities'}>
+					{sAmenities.map((c) => (
+						<Grid item xs={12} lg={4} key={c.id}>
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={c.value}
+										onChange={handleAmenities(c.id)}
+										name="checkedB"
+										color="primary"
+									/>
+								}
+								label={c.name}
+							/>
+						</Grid>
+					))}
+				</RowChildren>
+			)}
 			<RowChildren heading="Legal clearance">
 				<Grid container>
 					{legalClearance.map((c, i) => {
@@ -494,14 +549,28 @@ const ProjectInformation = ({
 					})}
 				</Grid>
 			</RowChildren>
-			{legalClearance.find((c) => c.name === 'reraapproved')['value'] && (
-				<RowTextField
-					heading="RERA ID"
-					name="reraId"
-					onChange={handleChange}
-					label="Enter ID"
-				/>
-			)}
+			{property.projectType !== 'land' &&
+				legalClearance.find((c) => c.name === 'reraapproved')[
+					'value'
+				] && (
+					<RowTextField
+						heading="RERA ID"
+						name="reraId"
+						onChange={handleChange}
+						label="Enter ID"
+					/>
+				)}
+			{property.projectType === 'land' &&
+				legalClearance.find((c) => c.name === 'numberOfOwner')[
+					'value'
+				] && (
+					<RowTextField
+						heading="Owner Number"
+						name="ownerNumber"
+						onChange={handleChange}
+						label="Enter Number"
+					/>
+				)}
 			<RowTextField
 				heading="Distance from school"
 				name="distanceSchool"

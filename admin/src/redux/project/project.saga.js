@@ -7,11 +7,11 @@ import {
 	setProjects,
 } from './project.action';
 
-function* addProjectFlat({ payload: { project, callback } }) {
+function* addProjectFlat({ payload: { project, callback, type = 'flat' } }) {
 	try {
 		yield put(toggleAddProjectFlatLoading(true));
 		let data = JSON.stringify(project);
-		let url = `/api/v1/projects/flat`;
+		let url = `/api/v1/projects/${type}`;
 		const response = yield axios({
 			method: 'post',
 			headers: {

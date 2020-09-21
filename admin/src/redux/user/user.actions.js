@@ -37,3 +37,15 @@ export const toggleUserLoading = () => ({
 export const logout = () => ({
 	type: UserActionTypes.LOG_OUT,
 });
+
+export const getAdminInfo = () => ({
+	type: UserActionTypes.FETCH_ADMIN_INFO_START,
+});
+export const toggleFetchAdminInfo = (status) => ({
+	type: UserActionTypes.TOGGLE_FETCH_ADMIN_INFO_LOADING,
+	payload: status,
+});
+export const setFetchAdminError = (message) => ({
+	type: UserActionTypes.SET_FETCH_ADMIN_ERROR,
+	payload: message,
+});

@@ -40,11 +40,12 @@ function* addProperty({ payload: { property, callback } }) {
 		yield put(toggleLoading(true));
 		let data = JSON.stringify(property);
 		let url = `/api/v1/properties`;
+		const jwt = localStorage.getItem('JWT');
 		const response = yield axios({
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMzUzMzFiZTQ3YjhhN2UxODE4ZWVhNyIsImlhdCI6MTU5ODI3NzU0OSwiZXhwIjoxNjA2MDUzNTQ5fQ.kzqo1ZAGwqD1fZfZs2pkKpRMOQtMquKpjr2y4NM8Cq0`,
+				Authorization: `Bearer ${jwt}`,
 			},
 			url,
 			data,
@@ -89,11 +90,12 @@ function* addPropertySale({ payload: { property, callback } }) {
 		yield put(toggleAddPropertySaleLoading(true));
 		let data = JSON.stringify(property);
 		let url = `/api/v1/properties/add-property/sale`;
+		const jwt = localStorage.getItem('JWT');
 		const response = yield axios({
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMzUzMzFiZTQ3YjhhN2UxODE4ZWVhNyIsImlhdCI6MTU5ODI3NzU0OSwiZXhwIjoxNjA2MDUzNTQ5fQ.kzqo1ZAGwqD1fZfZs2pkKpRMOQtMquKpjr2y4NM8Cq0`,
+				Authorization: `Bearer ${jwt}`,
 			},
 			url,
 			data,

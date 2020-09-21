@@ -21,7 +21,6 @@ import Checkbox from '../checkbox/checkbox.component';
 import RowDatePicker from '../rowDatePicker/rowDatePicker.component';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import FormHeader from '../formHeader/formHeader.component';
-import './oneBHK.style.scss';
 
 const furnishMenuItems = [
 	{
@@ -49,6 +48,50 @@ const availabilityMenuItems = [
 	},
 ];
 
+const ownershipMenuItems = [
+	{
+		label: 'Freehold',
+		value: 'freehold',
+	},
+	{
+		label: 'Leased',
+		value: 'leashed',
+	},
+];
+
+const verifiedMenuItems = [
+	{
+		label: 'Yes',
+		value: true,
+	},
+	{
+		label: 'No',
+		value: false,
+	},
+];
+
+const transactionTypeMenuItems = [
+	{
+		label: 'New booking',
+		value: 'newbooking',
+	},
+	{
+		label: 'Resale',
+		value: 'resale',
+	},
+];
+
+const carParkingMenuItems = [
+	{
+		label: 'Open',
+		value: 'open',
+	},
+	{
+		label: 'Covered',
+		value: 'covered',
+	},
+];
+
 const initialState = {
 	title: '',
 	description: '',
@@ -65,9 +108,10 @@ const initialState = {
 	pricePerSqFtMax: '',
 	minPrice: '',
 	maxPrice: '',
-	bookingAmount: 0,
-	numberOfBedrooms: 0,
-	numberOflivingAreas: 0,
+	propertyOwnerShip: 'freehold',
+	carParking: 'open',
+	verified: true,
+	transactionType: 'newbooking',
 	furnishes: [],
 };
 
@@ -117,12 +161,12 @@ const validate = (values) => {
 	return error;
 };
 
-const OneBHK = ({ bhk, furnishes, setProject }) => {
+const IndependentHouse = ({ bhk, furnishes, setProject }) => {
 	const onSubmit = (values) => {
 		const obj = {
-			[`bhk${bhk}`]: values,
+			independenthouse: values,
 		};
-		obj[`bhk${bhk}`]['toiletTypes'] = [
+		obj['independenthouse']['toiletTypes'] = [
 			{
 				toiletType: 'indian',
 				numbers: values.indianToilet,
@@ -133,11 +177,11 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 			},
 		];
 		if (values.furnished !== 'unfurnished') {
-			obj[`bhk${bhk}`]['furnishes'] = values.furnishes
+			obj['independenthouse']['furnishes'] = values.furnishes
 				.filter((c) => c.value)
 				.map((b) => b.id);
 		} else {
-			delete obj[`bhk${bhk}`]['furnishes'];
+			delete obj['independenthouse']['furnishes'];
 		}
 
 		console.log(obj);
@@ -231,17 +275,7 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 							type="number"
 							label="Enter number"
 						/>
-						<RowTextField
-							heading="Number of bedrooms"
-							name="numberOfBedrooms"
-							type="number"
-							disabled={true}
-						/>
-						<RowTextField
-							heading="Number of living areas"
-							name="numberOflivingAreas"
-							type="number"
-						/>
+
 						<RowTextField
 							heading="Super builtup area"
 							name="superBuiltupArea"
@@ -265,6 +299,34 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 							name="westernToilet"
 							type="number"
 							label="Enter number"
+						/>
+						<RowSelect
+							heading="Property ownership"
+							name="propertyOwnerShip"
+							type="number"
+							label="Choose"
+							menuItems={ownershipMenuItems}
+						/>
+						<RowSelect
+							heading="Verified"
+							name="verified"
+							type="number"
+							label="Choose"
+							menuItems={verifiedMenuItems}
+						/>
+
+						<RowSelect
+							heading="Transaction type"
+							name="transactionType"
+							type="number"
+							label="Choose"
+							menuItems={transactionTypeMenuItems}
+						/>
+						<RowSelect
+							heading="Car parking"
+							name="carParking"
+							label="Choose"
+							menuItems={carParkingMenuItems}
 						/>
 						<RowSelect
 							heading="Furnished"
@@ -312,6 +374,7 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 								}
 							/>
 						)}
+
 						<FormHeader text="Price" />
 						<RowTextField
 							heading="Booking amount"
@@ -424,8 +487,7 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 	);
 };
 
-OneBHK.propTypes = {
-	bhk: PropTypes.number.isRequired,
+IndependentHouse.propTypes = {
 	furnishes: PropTypes.array,
 	setProject: PropTypes.func.isRequired,
 };
@@ -434,4 +496,4 @@ const mapStateToProps = createStructuredSelector({
 	furnishes: selectFurnishes,
 });
 
-export default connect(mapStateToProps)(OneBHK);
+export default connect(mapStateToProps)(IndependentHouse);

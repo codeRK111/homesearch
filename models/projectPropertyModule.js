@@ -41,13 +41,11 @@ const projectPropertySchema = new Schema(
 				values: [
 					'flat',
 					'independenthouse',
-					'hostel',
-					'pg',
-					'guesthouse',
-					'serviceapartment',
+					'land',
+					
 				],
 				message:
-					'type must be between <flat> | <independenthouse> | <hostel> |<pg> |<guesthouse> |<serviceapartment>',
+					'type must be between <flat> | <independenthouse> | <land> ',
 			},
 		},
 
@@ -78,10 +76,14 @@ const projectPropertySchema = new Schema(
 		carpetArea: {
 			type: Number,
 		},
-		securityDeposit: {
+		bookingAmount: {
 			type: Number,
 		},
-		price: {
+		maxPrice: {
+			type: Number,
+			required: true,
+		},
+		minPrice: {
 			type: Number,
 			required: true,
 		},
@@ -122,6 +124,92 @@ const projectPropertySchema = new Schema(
 			},
 			default: 'active',
 		},
+
+		// independenthouse
+		carParking: {
+			type: String,
+			enum: {
+				values: ['open', 'covered'],
+				message: 'carParking must be between <open> | <covered>',
+			},
+			required: requireIndependentHouse,
+		},
+		propertyOwnerShip: {
+			type: String,
+			enum: {
+				values: ['freehold', 'leashed'],
+				message: 'type must be between <freehold> | <leashed>',
+			},
+			required: requireIndependentHouse,
+		},
+		transactionType: {
+			type: String,
+			enum: {
+				values: ['newbooking', 'resale'],
+				message: 'type must be between <newbooking> | <resale> ',
+			},
+			required: requireIndependentHouse,
+		},
+		verified: {
+			type: Boolean,
+			required: requireIndependentHouse,
+		},
+
+		// land
+		length: {
+			type: Number,
+			required: requireLand,
+		},
+		width: {
+			type: Number,
+			required: requireLand,
+		},
+		plotFrontage: {
+			type: Number,
+			required: requireLand,
+		},
+		plotArea: {
+			type: Number,
+			required: requireLand,
+		},
+		widthOfRoad: {
+			type: Number,
+			required: requireLand,
+		},
+		facing: {
+			type: String,
+			enum: {
+				values: ['east', 'west', 'north', 'south'],
+				message:
+					'facing must be between <east> | <west> | <north> |<south> ',
+			},
+			required: requireLand,
+		},
+		landUsingZoning: {
+			type: String,
+			enum: {
+				values: ['yellow'],
+				message: 'landUsingZoning must be between <yellow>  ',
+			},
+			required: requireLand,
+		},
+
+		constructionDone: {
+			type: Boolean,
+			required: requireLand,
+		},
+		boundaryWallMade: {
+			type: Boolean,
+			required: requireLand,
+		},
+		gatedCommunity: {
+			type: Boolean,
+			required: requireLand,
+		},
+		govermentValuation: {
+			type: Number,
+			required: requireLand,
+		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -131,6 +219,22 @@ projectPropertySchema.index({
 	city: 1,
 	type: 1,
 });
+
+function requireIndependentHouse() {
+	if (this.type === 'independenthouse') {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function requireLand() {
+	if (this.type === 'land') {
+		return true;
+	} else {
+		return false;
+	}
+}
 
 const projectPropertyModel = model('ProjectProperty', projectPropertySchema);
 module.exports = projectPropertyModel;

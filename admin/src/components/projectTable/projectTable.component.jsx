@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 import TablePagination from '@material-ui/core/TablePagination';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -112,7 +113,7 @@ function Orders({
 				open={loading}
 				// onClick={handleClose}
 			>
-				loading...
+				<CircularProgress color="secondary" />
 			</Backdrop>
 
 			<div className={classes.tableWrapper}>

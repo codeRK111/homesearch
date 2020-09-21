@@ -34,6 +34,7 @@ import ProjectPage from './pages/projects/projects.component';
 import EditBuilderPage from './pages/editBuilder/editBuilder.component';
 // components
 import Drawer from './components/drawer/drawer.component';
+import Protected from './components/protected/protected.component';
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const QueriesPageWithDrawer = Drawer(Query);
@@ -76,123 +77,232 @@ function App(props) {
 				<Route
 					exact
 					path="/dashboard"
-					render={() => <DashboardPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={DashboardPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/locations/:state/:city?/"
-					render={() => <LocationsPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={LocationsPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route exact path="/" render={() => <LogIn />} />
-				<Route exact path="/dashboard" render={() => <HomePage />} />
 				<Route
 					exact
 					path="/queries"
-					render={() => <QueriesPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={QueriesPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/users"
-					render={() => <UsersPageWithDrawer {...props} />}
+					render={() => (
+						<Protected component={UsersPageWithDrawer} {...props} />
+					)}
 				/>
 				<Route
 					exact
 					path="/users/add"
-					render={() => <AddUsersPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={AddUsersPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/users/editUser/:id"
-					render={() => <EditUsersPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={EditUsersPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/admins"
-					render={() => <AdminPageWithDrawer {...props} />}
+					render={() => (
+						<Protected component={AdminPageWithDrawer} {...props} />
+					)}
 				/>
 				<Route
 					exact
 					path="/admins/add"
-					render={() => <AddAdminPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={AddAdminPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/admins/editAdmin/:id"
-					render={() => <EditAdminsPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={EditAdminsPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/authentication"
-					render={() => <AuthenticationPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={AuthenticationPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/addProperty/rent"
-					render={() => <AddPropertyWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={AddPropertyWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/addProject"
-					render={() => <AddProjectPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={AddProjectPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/addBuilder"
-					render={() => <AddBuilderPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={AddBuilderPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/addProperty/sale"
-					render={() => <AddPropertyForSaleWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={AddPropertyForSaleWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/all-properties/:status"
-					render={() => <ActivePropertiesWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={ActivePropertiesWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/builders/:status"
-					render={() => <BuilderPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={BuilderPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/projects/:status"
-					render={() => <ProjectPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={ProjectPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/edit-builder/:id"
-					render={() => <EditBuilderPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={EditBuilderPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/all-properties-sale/:status/:for"
-					render={() => <PropertySalePageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={PropertySalePageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/properties/editProperties/:id"
-					render={() => <EditPropertyPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={EditPropertyPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/properties/editPropertiesSale/:id"
-					render={() => <EditPropertySalePageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={EditPropertySalePageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/addCity"
-					render={() => <AddCityPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={AddCityPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/cities/:action/:id"
 					render={(props) =>
 						props.match.params.action === 'edit' ? (
-							<EditCityPageWithDrawer {...props} />
+							<Protected
+								component={EditCityPageWithDrawer}
+								{...props}
+							/>
 						) : (
-							<DeleteCityPageWithDrawer {...props} />
+							<Protected
+								component={DeleteCityPageWithDrawer}
+								{...props}
+							/>
 						)
 					}
 				/>
@@ -201,20 +311,36 @@ function App(props) {
 					path="/locations/manage/:action/:id"
 					render={(props) =>
 						props.match.params.action === 'edit' ? (
-							<EditLocationPageWithDrawer {...props} />
+							<Protected
+								component={EditLocationPageWithDrawer}
+								{...props}
+							/>
 						) : (
-							<DeleteLocationPageWithDrawer {...props} />
+							<Protected
+								component={DeleteLocationPageWithDrawer}
+								{...props}
+							/>
 						)
 					}
 				/>
 				<Route
 					path="/cities/:state"
-					render={() => <ViewCitiesPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={ViewCitiesPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 				<Route
 					exact
 					path="/addLocation"
-					render={() => <AddLocationPageWithDrawer {...props} />}
+					render={() => (
+						<Protected
+							component={AddLocationPageWithDrawer}
+							{...props}
+						/>
+					)}
 				/>
 			</Switch>
 		</div>

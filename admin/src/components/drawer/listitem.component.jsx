@@ -26,6 +26,7 @@ import {
 	selectProject,
 	selectBuilder,
 } from '../../redux/sidebar/sidebar.selector';
+import { selectCurrentUser } from '../../redux/user/user.selector';
 import {
 	togglePropertyRent,
 	togglePropertySale,
@@ -37,6 +38,12 @@ import {
 const useStyles = makeStyles((theme) => ({
 	nested: {
 		paddingLeft: theme.spacing(4),
+	},
+	name: {
+		paddingLeft: theme.spacing(2),
+		fontWeight: 'bold',
+		color: 'yellow',
+		fontSize: '1.5rem',
 	},
 	whiteColor: {
 		color: '#ffffff',
@@ -54,6 +61,7 @@ const MainListItems = ({
 	toggleProject,
 	selectBuilder,
 	toggleBuilder,
+	selectCurrentUser,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -75,6 +83,9 @@ const MainListItems = ({
 	};
 	return (
 		<div>
+			<h3
+				className={classes.name}
+			>{`Hello ${selectCurrentUser.name}`}</h3>
 			<ListItem button onClick={onUsersClick('/dashboard')}>
 				<ListItemIcon>
 					<DashboardIcon color="secondary" />
@@ -355,6 +366,7 @@ const mapStateToProps = createStructuredSelector({
 	locationOpen: selectLocation,
 	selectProject: selectProject,
 	selectBuilder,
+	selectCurrentUser,
 });
 
 const dispatchStateToProps = (dispatch) => ({

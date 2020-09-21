@@ -175,7 +175,6 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 							>
 								<TextField
 									error={!!validationError.email}
-									variant="outlined"
 									margin="normal"
 									required
 									fullWidth
@@ -190,10 +189,10 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 									name="email"
 									autoComplete="email"
 									autoFocus
+									size="small"
 								/>
 								<TextField
 									error={!!validationError.password}
-									variant="outlined"
 									margin="normal"
 									required
 									fullWidth
@@ -209,10 +208,10 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 									id="password"
 									autoComplete="current-password"
 									onBlur={focusOut}
+									size="small"
 								/>
 								<TextField
 									error={!!validationError.otp}
-									variant="outlined"
 									margin="normal"
 									required
 									fullWidth
@@ -224,15 +223,13 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 											: 'OTP'
 									}
 									helperText={validationError.password}
-									type="password"
-									id="password"
-									autoComplete="current-password"
+									size="small"
 								/>
 								{/* <ReCAPTCHA
 									sitekey="6LcK_b0ZAAAAAKH_Ze3nUOw5u200KWzoC22DKFso"
 									onChange={onvalidate}
 								/> */}
-								,
+
 								{loading ? (
 									<div className="loading-wrapper">
 										<CircularProgress />

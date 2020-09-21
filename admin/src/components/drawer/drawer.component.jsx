@@ -2,12 +2,12 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 // import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -15,6 +15,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MainListItem from './listitem.component';
 import { withRouter } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import AppBar from '../appBar/appBar.component';
 
 // import './home.styles.scss';
 
@@ -124,50 +125,7 @@ function DrawerComponent(Component) {
 		return (
 			<div className={classes.root}>
 				{/* <CssBaseline /> */}
-				<AppBar
-					position="absolute"
-					className={clsx(
-						classes.appBar,
-						open && classes.appBarShift
-					)}
-					classes={{
-						colorDefault: 'app-bar',
-					}}
-				>
-					<Toolbar className={classes.toolbar}>
-						<IconButton
-							edge="start"
-							color="inherit"
-							aria-label="open drawer"
-							onClick={handleDrawerOpen}
-							className={clsx(
-								classes.menuButton,
-								open && classes.menuButtonHidden
-							)}
-						>
-							<MenuIcon />
-						</IconButton>
-						<div
-							className={classes.pointer}
-							onClick={() => history.push('/dashboard')}
-						>
-							<Typography
-								component="h1"
-								variant="h6"
-								color="inherit"
-								noWrap
-								className={classes.title}
-							>
-								Homesearch18
-							</Typography>
-						</div>
-						{/* <IconButton color="inherit">
-							<Badge badgeContent={4} color="secondary">
-								<NotificationsIcon />
-							</Badge>
-						</IconButton> */}
-					</Toolbar>
-				</AppBar>
+				<AppBar open={open} handleDrawerOpen={handleDrawerOpen} />
 				<Drawer
 					variant="permanent"
 					classes={{

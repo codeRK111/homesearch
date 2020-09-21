@@ -4,6 +4,12 @@ const authController = require('../controllers/adminController');
 
 const router = express.Router();
 
+router.get(
+	'/getAdminInfo',
+	authController.protect,
+	authController.getAdminInfo
+);
+
 router.post('/login', authController.login);
 router.post('/admin-profile-photo/:id', authController.addProfilePicture);
 

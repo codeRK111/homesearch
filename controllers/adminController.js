@@ -110,8 +110,20 @@ exports.protect = catchAsync(async (req, res, next) => {
 	}
 
 	// GRANT ACCESS TO PROTECTED ROUTE
-	req.user = currentUser;
+	req.admin = currentUser;
 	next();
+});
+
+exports.getAdminInfo = catchAsync(async (req, res, next) => {
+	if (!req.admin) {
+		return next(new AppError('admin not found', 401));
+	}
+	res.status(200).json({
+		status: 'success',
+		data: {
+			admin: req.admin,
+		},
+	});
 });
 
 exports.addAdmin = catchAsync(async (req, res, next) => {

@@ -6,6 +6,11 @@ const INITIAL_STATE = {
 	error: null,
 	loading: false,
 	authenticated: false,
+	fetchAdminLoading: false,
+	fetchAdminError: {
+		status: null,
+		message: null,
+	},
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -24,6 +29,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
 				authenticated: false,
 				error: null,
 				currentUser: null,
+				token: null,
 			};
 		case UserActionTypes.SIGN_OUT_SUCCESS:
 			return {
@@ -42,6 +48,17 @@ const userReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				loading: !state.loading,
 			};
+		case UserActionTypes.TOGGLE_FETCH_ADMIN_INFO_LOADING:
+			return {
+				...state,
+				fetchAdminLoading: action.payload,
+			};
+		case UserActionTypes.SET_FETCH_ADMIN_ERROR:
+			return {
+				...state,
+				fetchAdminError: action.payload,
+			};
+
 		default:
 			return state;
 	}

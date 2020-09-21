@@ -4,6 +4,10 @@ const projectController = require('../controllers/projectController');
 const router = express.Router();
 
 router.route('/flat').post(projectController.addProjectFlat);
+router
+	.route('/independenthouse')
+	.post(projectController.addProjectIndependentHouse);
+router.route('/land').post(projectController.addProjectLand);
 
 router.route('/').get(projectController.getAllProjects);
 

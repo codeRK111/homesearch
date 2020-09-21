@@ -71,6 +71,84 @@ exports.addProjectFlat = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.addProjectIndependentHouse = catchAsync(async (req, res, next) => {
+	const removeFieldArray = [
+		'logo',
+		'image1',
+		'image2',
+		'image3',
+		'image4',
+		'image5',
+		'image6',
+		'independenthouse',
+	];
+
+	let clone = { ...req.body };
+	removeFieldArray.forEach((c) => {
+		if (clone[c] !== null || clone[c] !== undefined) {
+			delete clone[c];
+		}
+	});
+
+	const project = await Project.create(clone);
+	if (!project) {
+		return next(new AppError('Unable to add project', 500));
+	}
+
+	const pr = await ProjectProperty.create({
+		...req.body.independenthouse,
+		type: req.body.independenthouse.projectType,
+		project: project.id,
+	});
+
+	res.status(201).json({
+		status: 'success',
+		data: {
+			project,
+			properties: pr,
+		},
+	});
+});
+
+exports.addProjectLand = catchAsync(async (req, res, next) => {
+	const removeFieldArray = [
+		'logo',
+		'image1',
+		'image2',
+		'image3',
+		'image4',
+		'image5',
+		'image6',
+		'land',
+	];
+
+	let clone = { ...req.body };
+	removeFieldArray.forEach((c) => {
+		if (clone[c] !== null || clone[c] !== undefined) {
+			delete clone[c];
+		}
+	});
+
+	const project = await Project.create(clone);
+	if (!project) {
+		return next(new AppError('Unable to add project', 500));
+	}
+
+	const pr = await ProjectProperty.create({
+		...req.body.land,
+		type: clone.projectType,
+		project: project.id,
+	});
+
+	res.status(201).json({
+		status: 'success',
+		data: {
+			project,
+			properties: pr,
+		},
+	});
+});
+
 exports.getAllProjects = catchAsync(async (req, res, next) => {
 	let query = { ...req.query };
 	const page = query.page * 1 || 1;

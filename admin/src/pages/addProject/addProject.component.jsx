@@ -22,6 +22,8 @@ import { useHistory } from 'react-router-dom';
 import ProgressBar from '../../components/asyncProgressBar/asyncProgressBar.component';
 import { selectAddProjectFlatLoading as addProjectFlatLoading } from '../../redux/project/project.selector';
 import { addProjectFlat } from '../../redux/project/project.action';
+import IndependentHouse from '../../components/projectIndependentHouse/projectIndependentHouse.component';
+import ProjectLand from '../../components/projectLand/projectLand.component';
 
 const initialStateExpand = {
 	projectInfo: true,
@@ -29,11 +31,13 @@ const initialStateExpand = {
 };
 
 const AddProject = ({ addProjectFlatLoading, addProjectFlat }) => {
+	const history = useHistory();
 	const [expand, setExpand] = React.useState(initialStateExpand);
 	const [projectInfoCompleted, setProjectInfoCompleted] = React.useState(
 		false
 	);
 	const [project, setProject] = React.useState({});
+	const [type, changeType] = React.useState('flat');
 	const [secureAdd, setSecureAdd] = React.useState(false);
 	const [progress, setProgress] = React.useState(0);
 
@@ -93,13 +97,32 @@ const AddProject = ({ addProjectFlatLoading, addProjectFlat }) => {
 	};
 
 	const handleAddProjectFlat = (type, data) => {
+		if (type === 'success') {
+			history.push('/projects/active');
+		}
 		console.log('type-->', type);
 		console.log('data-->', data);
 	};
 
 	const addProject = () => {
 		console.log(project);
-		addProjectFlat(project, handleAddProjectFlat);
+		addProjectFlat(project, handleAddProjectFlat, type);
+	};
+
+	const filterRender = (type) => {
+		switch (type) {
+			case 'flat':
+				return <PropertyTab setProject={setProjectState} />;
+				break;
+			case 'independenthouse':
+				return <IndependentHouse setProject={setProjectState} />;
+				break;
+			case 'land':
+				return <ProjectLand setProject={setProjectState} />;
+				break;
+			default:
+				break;
+		}
 	};
 
 	const heading = (name) => <b className="header">{name}</b>;
@@ -135,7 +158,10 @@ const AddProject = ({ addProjectFlatLoading, addProjectFlat }) => {
 					</ListItem>
 					<Divider />
 					<Collapse in={expand.projectInfo} timeout="auto">
-						<ProjectInformation next={next} />
+						<ProjectInformation
+							next={next}
+							changeType={changeType}
+						/>
 					</Collapse>
 					<ListItem
 						button
@@ -152,7 +178,7 @@ const AddProject = ({ addProjectFlatLoading, addProjectFlat }) => {
 					</ListItem>
 					<Collapse in={expand.propertyInfo} timeout="auto">
 						<Box maxWidth mt="1rem">
-							<PropertyTab setProject={setProjectState} />
+							{filterRender(type)}
 						</Box>
 					</Collapse>
 					<Box mt="1rem">
@@ -176,8 +202,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	addProjectFlat: (project, callback) =>
-		dispatch(addProjectFlat({ project, callback })),
+	addProjectFlat: (project, callback, type) =>
+		dispatch(addProjectFlat({ project, callback, type })),
 });
 
 AddProject.propTypes = {
