@@ -339,3 +339,13 @@ exports.handleImage = catchAsync(async (req, res, next) => {
 		});
 	}
 });
+
+exports.getProjectDetails = catchAsync(async (req, res, next) => {
+	const project = await Project.findById(req.params.id);
+	if (!project) return next(new AppError('project not found', 404));
+	const properties = await ProjectProperty.find({ project: project.id });
+	res.status(200).json({
+		status: 'success',
+		data: { project, properties },
+	});
+});

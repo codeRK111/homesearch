@@ -4,6 +4,7 @@ import axios from 'axios';
 import {
 	toggleAddProjectFlatLoading,
 	toggleFetchProjectsLoading,
+	toggleFetchProjectDetailsLoading,
 	setProjects,
 } from './project.action';
 
@@ -69,80 +70,26 @@ export function* fetchProjects({ payload: { callback, param = {} } }) {
 	}
 }
 
-// export function* getBuilderInfo({ payload: { builderId, callback } }) {
-// 	try {
-// 		yield put(toggleFetchBuilderInfoLoading(true));
-
-// 		let url = `/api/v1/builders/${builderId}`;
-// 		const response = yield axios.get(url);
-// 		const responseData = response.data;
-// 		if (responseData.status === 'fail') {
-// 			yield put(toggleFetchBuilderInfoLoading(false));
-// 			console.log(responseData);
-// 		} else {
-// 			yield put(toggleFetchBuilderInfoLoading(false));
-// 			callback('success', responseData.data.builder);
-// 		}
-// 	} catch (error) {
-// 		yield put(toggleFetchBuilderInfoLoading(false));
-// 		const errorResponse = error.response.data;
-// 		callback(errorResponse);
-// 		callback('fail', errorResponse.message);
-// 	}
-// }
-
-// export function* updateBuilder({ payload: { builderId, builder, callback } }) {
-// 	try {
-// 		yield put(toggleUpdateBuilderLoading(true));
-// 		let url = `/api/v1/builders/${builderId}`;
-// 		let data = JSON.stringify(builder);
-// 		const response = yield axios({
-// 			method: 'patch',
-// 			headers: { 'Content-Type': 'application/json' },
-// 			url,
-// 			data,
-// 		});
-// 		const responseData = response.data;
-// 		if (responseData.status === 'fail') {
-// 			yield put(toggleUpdateBuilderLoading(false));
-// 			console.log(responseData);
-// 		} else {
-// 			if (builder.image) {
-// 				console.log(builder.image);
-// 				let dataPresent = false;
-// 				var formData = new FormData();
-// 				for (const key in builder.image) {
-// 					if (builder.image[key]) {
-// 						dataPresent = true;
-// 						formData.append(key, builder.image[key]);
-// 					}
-// 				}
-// 				if (dataPresent) {
-// 					console.log(responseData);
-// 					const imageResponse = yield axios.patch(
-// 						`/api/v1/builders/handle-image/${responseData.data.builder.id}`,
-// 						formData,
-// 						{
-// 							headers: {
-// 								'Content-Type': 'multipart/form-data',
-// 							},
-// 						}
-// 					);
-
-// 					console.log(imageResponse.data);
-// 				}
-// 			}
-
-// 			yield put(toggleUpdateBuilderLoading(false));
-// 			callback('success', responseData.data);
-// 		}
-// 	} catch (error) {
-// 		yield put(toggleUpdateBuilderLoading(false));
-// 		const errorResponse = error.response.data;
-// 		callback(errorResponse);
-// 		callback('fail', errorResponse.message);
-// 	}
-// }
+export function* fetchProjectDetails({ payload: { callback, projectId } }) {
+	try {
+		yield put(toggleFetchProjectDetailsLoading(true));
+		let url = `/api/v1/projects/${projectId}`;
+		const response = yield axios.get(url);
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(toggleFetchProjectDetailsLoading(false));
+			console.log(responseData);
+		} else {
+			yield put(toggleFetchProjectDetailsLoading(false));
+			callback('success', responseData.data);
+		}
+	} catch (error) {
+		yield put(toggleFetchProjectDetailsLoading(false));
+		const errorResponse = error.response.data;
+		callback(errorResponse);
+		callback('fail', errorResponse.message);
+	}
+}
 
 export function* onAddProjectFlat() {
 	yield takeLatest(types.ADD_PROJECT_FLAT_START, addProjectFlat);
@@ -151,12 +98,15 @@ export function* onAddProjectFlat() {
 export function* onFetchProjects() {
 	yield takeLatest(types.FETCH_PROJECTS_START, fetchProjects);
 }
+export function* onFetchProjectsDetails() {
+	yield takeLatest(types.FETCH_PROJECT_DETAILS, fetchProjectDetails);
+}
 
 export function* projectSagas() {
 	yield all([
 		call(onAddProjectFlat),
 		call(onFetchProjects),
-		// call(onUpdateBuilder),
+		call(onFetchProjectsDetails),
 		// call(onFetchBuilderInfo),
 	]);
 }

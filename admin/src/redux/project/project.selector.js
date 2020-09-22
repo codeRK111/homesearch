@@ -10,6 +10,10 @@ export const selectFetchProjectsLoading = createSelector(
 	[selectProject],
 	(u) => u.fetchProjectsLoading
 );
+export const selectFetchProjectDetailsLoading = createSelector(
+	[selectProject],
+	(u) => u.fetchProjectDetailsLoading
+);
 export const selectProjects = createSelector(
 	[selectProject],
 	(u) => u.projects

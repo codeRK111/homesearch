@@ -5,6 +5,10 @@ export const fetchProjects = (payload) => ({
 	type: projectActionTypes.FETCH_PROJECTS_START,
 	payload,
 });
+export const fetchProjectDetails = (payload) => ({
+	type: projectActionTypes.FETCH_PROJECT_DETAILS,
+	payload,
+});
 // set
 
 export const setProjects = (payload) => ({
@@ -20,6 +24,10 @@ export const toggleAddProjectFlatLoading = (status) => ({
 
 export const toggleFetchProjectsLoading = (status) => ({
 	type: projectActionTypes.TOGGLE_FETCH_PROJECTS_LOADING,
+	payload: status,
+});
+export const toggleFetchProjectDetailsLoading = (status) => ({
+	type: projectActionTypes.TOGGLE_FETCH_PROJECT_DETAILS_LOADING,
 	payload: status,
 });
 

@@ -220,10 +220,9 @@ function Orders({
 								</TableCell>
 
 								<TableCell align="right">
-									{/* <Link to={`/edit-builder/${c.id}`}>
+									<Link to={`/edit-projects/${c.id}`}>
 										Edit
-									</Link> */}
-									Not ready yet
+									</Link>
 								</TableCell>
 							</TableRow>
 						))}

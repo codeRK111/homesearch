@@ -3,6 +3,7 @@ import { projectActionTypes } from './project.types';
 const INITIAL_STATE = {
 	addProjectFlatLoading: false,
 	fetchProjectsLoading: false,
+	fetchProjectDetailsLoading: false,
 	projects: [],
 };
 
@@ -17,6 +18,11 @@ const builderReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				fetchProjectsLoading: action.payload,
+			};
+		case projectActionTypes.TOGGLE_FETCH_PROJECT_DETAILS_LOADING:
+			return {
+				...state,
+				fetchProjectDetailsLoading: action.payload,
 			};
 		case projectActionTypes.SET_PROJECTS:
 			return {

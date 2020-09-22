@@ -32,6 +32,7 @@ import AddBuilderPage from './pages/addBuilder/addBuilder.component';
 import BuilderPage from './pages/builders/builders.component';
 import ProjectPage from './pages/projects/projects.component';
 import EditBuilderPage from './pages/editBuilder/editBuilder.component';
+import EditProjectPage from './pages/editProject/editProject.component';
 // components
 import Drawer from './components/drawer/drawer.component';
 import Protected from './components/protected/protected.component';
@@ -65,6 +66,7 @@ const AddBuilderPageWithDrawer = Drawer(AddBuilderPage);
 const BuilderPageWithDrawer = Drawer(BuilderPage);
 const ProjectPageWithDrawer = Drawer(ProjectPage);
 const EditBuilderPageWithDrawer = Drawer(EditBuilderPage);
+const EditProjectPageWithDrawer = Drawer(EditProjectPage);
 
 // import { Switch, Route, Redirect } from "react-router-dom";
 // import { connect } from "react-redux";
@@ -235,6 +237,16 @@ function App(props) {
 					render={() => (
 						<Protected
 							component={ProjectPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/edit-projects/:id"
+					render={() => (
+						<Protected
+							component={EditProjectPageWithDrawer}
 							{...props}
 						/>
 					)}
