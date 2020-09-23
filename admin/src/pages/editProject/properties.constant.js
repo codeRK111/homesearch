@@ -1,0 +1,170 @@
+export const configureIntialFlat = (initialValue, furnishes) => {
+	const clone = {
+		...initialValue,
+		availableDate: initialValue.availableDate
+			? initialValue.availableDate
+			: Date.now(),
+		furnishes: furnishes.map((c) => {
+			if (initialValue.furnishes.find((b) => b === c.id)) {
+				c.value = true;
+			} else {
+				c.value = false;
+			}
+			return { ...c };
+		}),
+	};
+	if (initialValue.toiletTypes) {
+		clone['indianToilet'] = initialValue.toiletTypes.find(
+			(c) => c.toiletType === 'indian'
+		)['numbers'];
+		clone['westernToilet'] = initialValue.toiletTypes.find(
+			(c) => c.toiletType === 'western'
+		)['numbers'];
+	}
+	return clone;
+};
+
+export const validateFlat = (values) => {
+	const error = {};
+	if (!values.title) {
+		error.title = 'Title required';
+	}
+	if (!values.description) {
+		error.title = 'Description required';
+	}
+	if (values.numberOfUnits === '') {
+		error.numberOfUnits = 'Number of units  required';
+	}
+	if (values.numberOfBedrooms === '') {
+		error.numberOfBedrooms = 'Number of bedrooms required';
+	}
+	if (values.numberOflivingAreas === '') {
+		error.numberOflivingAreas = 'Number of living areas required required';
+	}
+	if (values.indianToilet === '') {
+		error.indianToilet = 'Number of indian toilet required required';
+	}
+	if (values.westernToilet === '') {
+		error.westernToilet = 'Number of western toilet required required';
+	}
+	if (values.superBuiltupArea === '') {
+		error.superBuiltupArea = 'Super built-up area required';
+	}
+	if (values.carpetArea === '') {
+		error.carpetArea = 'Carpet area required';
+	}
+	if (values.bookingAmount === '') {
+		error.bookingAmount = 'Booking amount required';
+	}
+	if (values.minPrice === '') {
+		error.minPrice = 'Min. price required';
+	}
+	if (values.maxPrice === '') {
+		error.minPrice = 'Max. price required';
+	}
+	return error;
+};
+
+export const configureForUpdateFlat = (obj) => {
+	if (obj['project']) {
+		delete obj['project'];
+	}
+	obj['toiletTypes'] = [
+		{
+			toiletType: 'indian',
+			numbers: obj.indianToilet,
+		},
+		{
+			toiletType: 'western',
+			numbers: obj.westernToilet,
+		},
+	];
+	if (obj.availability === 'immediately') {
+		delete obj['availableDate'];
+	}
+	obj.furnishes = obj.furnishes.filter((b) => b.value).map((c) => c.id);
+	return obj;
+};
+
+export const availabilityMenuItems = [
+	{
+		label: 'Ready to Move',
+		value: 'immediately',
+	},
+	{
+		label: 'Procession From',
+		value: 'specificdate',
+	},
+];
+
+export const furnishMenuItems = [
+	{
+		label: 'Furnished',
+		value: 'furnished',
+	},
+	{
+		label: 'Unfurnished',
+		value: 'unfurnished',
+	},
+	{
+		label: 'Semi furnished',
+		value: 'semifurnished',
+	},
+];
+
+export const renderTypes = (type) => {
+	switch (type) {
+		case 'flat':
+			return 'Flat';
+		case 'land':
+			return 'Land';
+		case 'independenthouse':
+			return 'Independent House';
+
+		default:
+			break;
+	}
+};
+
+export const ownershipMenuItems = [
+	{
+		label: 'Freehold',
+		value: 'freehold',
+	},
+	{
+		label: 'Leased',
+		value: 'leashed',
+	},
+];
+export const verifiedMenuItems = [
+	{
+		label: 'Yes',
+		value: true,
+	},
+	{
+		label: 'No',
+		value: false,
+	},
+];
+
+export const transactionTypeMenuItems = [
+	{
+		label: 'New booking',
+		value: 'newbooking',
+	},
+	{
+		label: 'Resale',
+		value: 'resale',
+	},
+];
+
+export const carParkingMenuItems = [
+	{
+		label: 'Open',
+		value: 'open',
+	},
+	{
+		label: 'Covered',
+		value: 'covered',
+	},
+];

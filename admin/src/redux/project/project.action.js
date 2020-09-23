@@ -34,6 +34,10 @@ export const toggleUpdateProjectDetailsLoading = (status) => ({
 	type: projectActionTypes.TOGGLE_UPDATE_PROJECT_DETAILS_LOADING,
 	payload: status,
 });
+export const toggleUpdateProjectPropertyDetailsLoading = (status) => ({
+	type: projectActionTypes.TOGGLE_UPDATE_PROJECT_PROPERTY_DETAILS_LOADING,
+	payload: status,
+});
 
 // manage resources
 export const addProjectFlat = (payload) => ({
@@ -42,5 +46,9 @@ export const addProjectFlat = (payload) => ({
 });
 export const updateProjectDetails = (payload) => ({
 	type: projectActionTypes.UPDATE_PROJECT_DETAILS,
+	payload,
+});
+export const updateProjectPropertyDetails = (payload) => ({
+	type: projectActionTypes.UPDATE_PROJECT_PROPERTY_DETAILS,
 	payload,
 });

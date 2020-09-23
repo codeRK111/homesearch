@@ -8,6 +8,7 @@ router
 	.route('/independenthouse')
 	.post(projectController.addProjectIndependentHouse);
 router.route('/land').post(projectController.addProjectLand);
+router.route('/properties/:id').patch(projectController.updateProjectProperty);
 
 router.route('/').get(projectController.getAllProjects);
 

@@ -65,7 +65,6 @@ export const statusMenuItems = [
 export const configureIntial = (initialValue, amenities) => {
 	const clone = {
 		...initialValue,
-		showAmenities: initialValue.amenities.length > 0 ? true : false,
 		initialAmenities: initialValue.amenities,
 		amenities: amenities.map((c) => {
 			if (initialValue.amenities.find((b) => b === c.id)) {
@@ -77,9 +76,14 @@ export const configureIntial = (initialValue, amenities) => {
 		}),
 	};
 	if (initialValue.amenities) {
+		clone['showAmenities'] =
+			initialValue.amenities.length > 0 ? true : false;
+	}
+	if (initialValue.amenities) {
 		clone['initialAmenities'] = initialValue.amenities;
 	}
 	if (
+		initialValue.legalClearance &&
 		initialValue.legalClearance.find((c) => c.name === 'reraapproved') &&
 		initialValue.legalClearance.find((c) => c.name === 'reraapproved')[
 			'value'
@@ -90,6 +94,7 @@ export const configureIntial = (initialValue, amenities) => {
 		)['details'];
 	}
 	if (
+		initialValue.legalClearance &&
 		initialValue.legalClearance.find((c) => c.name === 'numberOfOwner') &&
 		initialValue.legalClearance.find((c) => c.name === 'numberOfOwner')[
 			'value'

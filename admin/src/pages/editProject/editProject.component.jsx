@@ -8,6 +8,8 @@ import { fetchProjectDetails } from '../../redux/project/project.action';
 import { selectFetchProjectDetailsLoading } from '../../redux/project/project.selector';
 
 import ProjectInfo from './projectInfo.component';
+import Flat from './projectFlat.component';
+import IndependentHouse from './projectIndependentHouse.component';
 import { initialProjectDetails } from './projectInfo.constant';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,11 +32,13 @@ const EditProject = ({
 	const [projectDetails, setProjectDetails] = React.useState(
 		initialProjectDetails
 	);
+	const [propertyDetails, setPropertyDetails] = React.useState([]);
 	// API Response handler
 	const handleFetchProjects = (status, responseData) => {
 		if (status === 'success') {
 			setAsyncError(null);
 			setProjectDetails(responseData.project);
+			setPropertyDetails(responseData.properties);
 			console.log(responseData);
 		} else {
 			setAsyncError(responseData);
@@ -47,6 +51,26 @@ const EditProject = ({
 			fetchProjectDetails(handleFetchProjects, id);
 		}
 	}, [params.id]);
+
+	// views
+	const renderProperties = (property) => {
+		switch (property.type) {
+			case 'flat':
+				return <Flat initialValue={property} id={property.id} />;
+				break;
+			case 'independenthouse':
+				return (
+					<IndependentHouse
+						initialValue={property}
+						id={property.id}
+					/>
+				);
+				break;
+
+			default:
+				break;
+		}
+	};
 	return (
 		<Box p="1rem">
 			<Backdrop
@@ -68,6 +92,13 @@ const EditProject = ({
 					)}
 				</Box>
 			</Paper>
+			{propertyDetails.map((c) => (
+				<Box mt="1rem" key={c.id}>
+					<Paper>
+						<Box p="1rem">{renderProperties(c)}</Box>
+					</Paper>
+				</Box>
+			))}
 		</Box>
 	);
 };

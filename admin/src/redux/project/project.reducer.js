@@ -5,6 +5,7 @@ const INITIAL_STATE = {
 	fetchProjectsLoading: false,
 	fetchProjectDetailsLoading: false,
 	updateProjectDetailsLoading: false,
+	updateProjectPropertyDetailsLoading: false,
 	projects: [],
 };
 
@@ -29,6 +30,11 @@ const builderReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				updateProjectDetailsLoading: action.payload,
+			};
+		case projectActionTypes.TOGGLE_UPDATE_PROJECT_PROPERTY_DETAILS_LOADING:
+			return {
+				...state,
+				updateProjectPropertyDetailsLoading: action.payload,
 			};
 		case projectActionTypes.SET_PROJECTS:
 			return {

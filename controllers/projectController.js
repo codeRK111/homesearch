@@ -95,9 +95,11 @@ exports.addProjectIndependentHouse = catchAsync(async (req, res, next) => {
 		return next(new AppError('Unable to add project', 500));
 	}
 
+	// console.log(clone.projectType);
+
 	const pr = await ProjectProperty.create({
 		...req.body.independenthouse,
-		type: req.body.independenthouse.projectType,
+		type: clone.projectType,
 		project: project.id,
 	});
 
@@ -335,6 +337,24 @@ exports.updateProject = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			project,
+		},
+	});
+});
+
+exports.updateProjectProperty = catchAsync(async (req, res, next) => {
+	const property = await ProjectProperty.findByIdAndUpdate(
+		req.params.id,
+		req.body,
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			property,
 		},
 	});
 });
