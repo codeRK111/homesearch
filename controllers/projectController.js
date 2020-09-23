@@ -171,31 +171,6 @@ exports.getAllProjects = catchAsync(async (req, res, next) => {
 	});
 });
 
-exports.updateBuilder = catchAsync(async (req, res, next) => {
-	const builder = await Builder.findByIdAndUpdate(req.params.id, req.body, {
-		new: true,
-		runValidators: true,
-	});
-
-	res.status(200).json({
-		status: 'success',
-		data: {
-			builder,
-		},
-	});
-});
-
-exports.builderDetails = catchAsync(async (req, res, next) => {
-	const builder = await Builder.findById(req.params.id);
-
-	res.status(200).json({
-		status: 'success',
-		data: {
-			builder,
-		},
-	});
-});
-
 exports.handleImage = catchAsync(async (req, res, next) => {
 	if (!req.files) {
 		return next(new AppError('No image found', 400));
@@ -347,5 +322,19 @@ exports.getProjectDetails = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: { project, properties },
+	});
+});
+
+exports.updateProject = catchAsync(async (req, res, next) => {
+	const project = await Project.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+		runValidators: true,
+	});
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
 	});
 });

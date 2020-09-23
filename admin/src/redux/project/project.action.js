@@ -30,9 +30,17 @@ export const toggleFetchProjectDetailsLoading = (status) => ({
 	type: projectActionTypes.TOGGLE_FETCH_PROJECT_DETAILS_LOADING,
 	payload: status,
 });
+export const toggleUpdateProjectDetailsLoading = (status) => ({
+	type: projectActionTypes.TOGGLE_UPDATE_PROJECT_DETAILS_LOADING,
+	payload: status,
+});
 
 // manage resources
 export const addProjectFlat = (payload) => ({
 	type: projectActionTypes.ADD_PROJECT_FLAT_START,
+	payload,
+});
+export const updateProjectDetails = (payload) => ({
+	type: projectActionTypes.UPDATE_PROJECT_DETAILS,
 	payload,
 });

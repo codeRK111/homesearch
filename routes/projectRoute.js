@@ -11,7 +11,10 @@ router.route('/land').post(projectController.addProjectLand);
 
 router.route('/').get(projectController.getAllProjects);
 
-router.route('/:id').get(projectController.getProjectDetails);
+router
+	.route('/:id')
+	.get(projectController.getProjectDetails)
+	.patch(projectController.updateProject);
 // .patch(builderController.updateBuilder);
 
 module.exports = router;

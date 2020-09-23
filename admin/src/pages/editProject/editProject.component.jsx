@@ -61,7 +61,10 @@ const EditProject = ({
 				<Box p="1rem">
 					<p className="color-red">{asyncError}</p>
 					{projectDetails && (
-						<ProjectInfo initialValue={projectDetails} />
+						<ProjectInfo
+							initialValue={projectDetails}
+							id={params.id}
+						/>
 					)}
 				</Box>
 			</Paper>

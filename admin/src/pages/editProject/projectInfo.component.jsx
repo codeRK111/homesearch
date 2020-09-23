@@ -5,40 +5,60 @@ import {
 	complitionStatusMenuItems,
 	projectTypeMenuItens,
 	statusMenuItems,
+	configureIntial,
+	validate,
+	configureForUpdate,
+	showReraId,
+	showNumber,
 } from './projectInfo.constant';
 import RowSelect from '../../components/rowSelect/rowFormikSelect.component';
 import Checkbox from '../../components/checkbox/checkbox.component';
 import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
 import FormHeader from '../../components/formHeader/formHeader.component';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Switch from '@material-ui/core/Switch';
+import {
+	Box,
+	Backdrop,
+	CircularProgress,
+	Button,
+	Switch,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import {
 	selectAmenities,
 	selectLoading as resourcesLoading,
 } from '../../redux/property/property.selector';
+import { selectUpdateProjectDetailsLoading } from '../../redux/project/project.selector';
 import { fetchAllPropertyResourcesStart } from '../../redux/property/property.actions';
+import { updateProjectDetails } from '../../redux/project/project.action';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
+const useStyles = makeStyles((theme) => ({
+	backdrop: {
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#fff',
+	},
+}));
 
 const ProjectInfo = ({
 	initialValue,
 	amenities,
 	resourcesLoading,
 	fetchResourcesStart,
+	id,
+	updateProjectDetailsLoading,
+	updateProjectDetails,
 }) => {
+	// Declaration
+	const classes = useStyles();
+	const history = useHistory();
 	// State hook
 	const [visible, setVisible] = React.useState({
 		amenities: false,
 		legalClearance: false,
 	});
 	const [asyncError, setAsyncError] = React.useState(null);
-
-	// Event handler
-	const handleChangeSwitch = (e) => {
-		const { name, checked } = e.target;
-		setVisible({ ...visible, [name]: checked });
-	};
 
 	// Api response handler
 	const handleFetchResources = (type, data) => {
@@ -48,6 +68,38 @@ const ProjectInfo = ({
 			setAsyncError(null);
 		}
 	};
+
+	const handleUpdateProjectDetails = (type, data) => {
+		if (type === 'fail') {
+			setAsyncError(data);
+		} else {
+			setAsyncError(null);
+			history.push('/projects/active');
+		}
+	};
+
+	// Event handler
+	const handleChangeSwitch = (e) => {
+		const { name, checked } = e.target;
+		setVisible({ ...visible, [name]: checked });
+	};
+
+	const updateProject = (data) => {
+		const clone = { ...data };
+		if (clone.amenities.length === 0) {
+			if (clone.initialAmenities) {
+				clone.amenities = clone.initialAmenities;
+			}
+		} else {
+			clone.amenities = clone.amenities
+				.filter((c) => c.value)
+				.map((b) => b.id);
+		}
+		configureForUpdate(clone);
+		console.log(clone);
+		updateProjectDetails(handleUpdateProjectDetails, id, clone);
+	};
+
 	// UseEffect hooks
 	React.useEffect(() => {
 		if (visible.amenities) {
@@ -58,26 +110,20 @@ const ProjectInfo = ({
 	}, [visible.amenities]);
 	return (
 		<Box>
+			<Backdrop
+				className={classes.backdrop}
+				open={updateProjectDetailsLoading}
+			>
+				<CircularProgress color="secondary" />
+			</Backdrop>
 			<FormHeader text="Project Info" />
 			<Box p="1rem">
 				<p className="color-red">{asyncError}</p>
 				<Formik
-					initialValues={{
-						...initialValue,
-						showAmenities:
-							initialValue.amenities.length > 0 ? true : false,
-						amenities: amenities.map((c) => {
-							if (
-								initialValue.amenities.find((b) => b === c.id)
-							) {
-								c.value = true;
-							} else {
-								c.value = false;
-							}
-							return { ...c };
-						}),
-					}}
+					initialValues={configureIntial(initialValue, amenities)}
+					validate={validate}
 					enableReinitialize={true}
+					onSubmit={updateProject}
 				>
 					{({ values }) => (
 						<Form>
@@ -213,6 +259,20 @@ const ProjectInfo = ({
 									</FieldArray>
 								</RowHOC>
 							)}
+							{showReraId(values, visible) && (
+								<RowTextField
+									heading="RERA ID"
+									name="reraId"
+									value={values.reraId}
+								/>
+							)}
+							{showNumber(values, visible) && (
+								<RowTextField
+									heading="Owner number"
+									name="numberOfOwner"
+									value={values.numberOfOwner}
+								/>
+							)}
 							<Box display="flex" justifyContent="flex-end">
 								<Button
 									type="submit"
@@ -237,11 +297,14 @@ const ProjectInfo = ({
 const mapStateToProps = createStructuredSelector({
 	amenities: selectAmenities,
 	resourcesLoading,
+	updateProjectDetailsLoading: selectUpdateProjectDetailsLoading,
 });
 
 const mapActionToProps = (dispatch) => ({
 	fetchResourcesStart: (callback) =>
 		dispatch(fetchAllPropertyResourcesStart({ callback })),
+	updateProjectDetails: (callback, projectId, project) =>
+		dispatch(updateProjectDetails({ callback, projectId, project })),
 });
 
 export default connect(mapStateToProps, mapActionToProps)(ProjectInfo);

@@ -5,6 +5,7 @@ import {
 	toggleAddProjectFlatLoading,
 	toggleFetchProjectsLoading,
 	toggleFetchProjectDetailsLoading,
+	toggleUpdateProjectDetailsLoading,
 	setProjects,
 } from './project.action';
 
@@ -91,6 +92,37 @@ export function* fetchProjectDetails({ payload: { callback, projectId } }) {
 	}
 }
 
+export function* updateProjectDetails({
+	payload: { callback, projectId, project },
+}) {
+	try {
+		yield put(toggleUpdateProjectDetailsLoading(true));
+		let url = `/api/v1/projects/${projectId}`;
+		let data = JSON.stringify(project);
+		const response = yield axios({
+			method: 'patch',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			url,
+			data,
+		});
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(toggleUpdateProjectDetailsLoading(false));
+			console.log(responseData);
+		} else {
+			yield put(toggleUpdateProjectDetailsLoading(false));
+			callback('success', responseData.data.project);
+		}
+	} catch (error) {
+		yield put(toggleUpdateProjectDetailsLoading(false));
+		const errorResponse = error.response.data;
+		callback(errorResponse);
+		callback('fail', errorResponse.message);
+	}
+}
+
 export function* onAddProjectFlat() {
 	yield takeLatest(types.ADD_PROJECT_FLAT_START, addProjectFlat);
 }
@@ -101,12 +133,15 @@ export function* onFetchProjects() {
 export function* onFetchProjectsDetails() {
 	yield takeLatest(types.FETCH_PROJECT_DETAILS, fetchProjectDetails);
 }
+export function* onUpdateProjectsDetails() {
+	yield takeLatest(types.UPDATE_PROJECT_DETAILS, updateProjectDetails);
+}
 
 export function* projectSagas() {
 	yield all([
 		call(onAddProjectFlat),
 		call(onFetchProjects),
 		call(onFetchProjectsDetails),
-		// call(onFetchBuilderInfo),
+		call(onUpdateProjectsDetails),
 	]);
 }
