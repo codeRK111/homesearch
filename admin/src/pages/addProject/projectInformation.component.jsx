@@ -165,12 +165,6 @@ const initialState = {
 	distanceHospital: '',
 	reraId: '',
 	ownerNumber: '',
-	image1: '',
-	image2: '',
-	image3: '',
-	image4: '',
-	image5: '',
-	image6: '',
 };
 
 const filter = (state, ...excludeFields) => {
@@ -232,6 +226,12 @@ const ProjectInformation = ({
 	const [legalClearance, setLegalClearance] = React.useState(
 		legalClearanceInitialValue
 	);
+	const [images, setImages] = React.useState({
+		image1: null,
+		image2: null,
+		image3: null,
+		image4: null,
+	});
 	console.log(legalClearance);
 	const handleFetchResources = (type, data) => {
 		if (type === 'success') {
@@ -309,12 +309,21 @@ const ProjectInformation = ({
 		});
 	};
 
+	const handleImage = (e) => {
+		const { name, files } = e.target;
+		setImages((prevState) => ({
+			...prevState,
+			[name]: files[0],
+		}));
+	};
+
 	const onNext = () => {
 		let propertyToSubmit = filter(property);
 		propertyToSubmit['state'] = state;
 		propertyToSubmit['city'] = selectedCity;
 		propertyToSubmit['location'] = selectedLocation;
 		propertyToSubmit['builder'] = selectedUser;
+		propertyToSubmit['image'] = images;
 		if (sAmenities.filter((c) => c.value).length > 0) {
 			propertyToSubmit['amenities'] = sAmenities
 				.filter((c) => c.value)
@@ -364,57 +373,6 @@ const ProjectInformation = ({
 	// 	}
 	// }, [projct.projectType]);
 
-	const imageCreater = (arr) => {
-		return arr.map((c) => (
-			<Grid item xs={12} md={3} lg={2} key={c}>
-				<Box
-					display="flex"
-					flexDirection="column"
-					justifyContent="center"
-					alignItems="center"
-				>
-					{/* <p>{values[`image${c}`]}</p> */}
-					<div className="image-wrapper">
-						<img
-							src={
-								!property[`image${c}`]
-									? require('../../assets/no-image.jpg')
-									: URL.createObjectURL(property[`image${c}`])
-							}
-							alt=""
-							srcSet=""
-							className="image"
-						/>
-					</div>
-					<input
-						accept="image/*"
-						className="input"
-						id={`contained-button-file-${c}`}
-						multiple
-						type="file"
-						onChange={(event) => {
-							setProperty((prevState) => ({
-								...prevState,
-								[`image${c}`]: event.currentTarget.files[0],
-							}));
-						}}
-					/>
-					<label htmlFor={`contained-button-file-${c}`}>
-						<Button
-							variant="contained"
-							color="default"
-							component="span"
-							startIcon={<CloudUploadIcon />}
-							size="small"
-							fullWidth
-						>
-							Upload
-						</Button>
-					</label>
-				</Box>
-			</Grid>
-		));
-	};
 	return (
 		<Box mt="1rem">
 			<Backdrop className={classes.backdrop} open={resourcesLoading}>
@@ -612,7 +570,18 @@ const ProjectInformation = ({
 				</Grid>
 			</Box>
 			<Grid container spacing={2}>
-				{imageCreater(Array.of(1, 2, 3, 4, 5, 6))}
+				<Grid item xs={12} lg={3}>
+					<input type="file" name="image1" onChange={handleImage} />
+				</Grid>
+				<Grid item xs={12} lg={3}>
+					<input type="file" name="image2" onChange={handleImage} />
+				</Grid>
+				<Grid item xs={12} lg={3}>
+					<input type="file" name="image3" onChange={handleImage} />
+				</Grid>
+				<Grid item xs={12} lg={3}>
+					<input type="file" name="image4" onChange={handleImage} />
+				</Grid>
 			</Grid>
 			<Box display="flex" justifyContent="flex-end">
 				<Button

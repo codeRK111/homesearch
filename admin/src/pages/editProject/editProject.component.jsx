@@ -10,6 +10,7 @@ import { selectFetchProjectDetailsLoading } from '../../redux/project/project.se
 import ProjectInfo from './projectInfo.component';
 import Flat from './projectFlat.component';
 import IndependentHouse from './projectIndependentHouse.component';
+import Land from './projectLand.component';
 import { initialProjectDetails } from './projectInfo.constant';
 
 const useStyles = makeStyles((theme) => ({
@@ -65,6 +66,9 @@ const EditProject = ({
 						id={property.id}
 					/>
 				);
+				break;
+			case 'land':
+				return <Land initialValue={property} id={property.id} />;
 				break;
 
 			default:

@@ -24,6 +24,52 @@ export const configureIntialFlat = (initialValue, furnishes) => {
 	return clone;
 };
 
+export const configureIntialLand = (initialValue) => {
+	const clone = {
+		...initialValue,
+	};
+	return clone;
+};
+
+export const validateLand = (values) => {
+	const error = {};
+	if (!values.title) {
+		error.title = 'Title required';
+	}
+	if (!values.description) {
+		error.title = 'Description required';
+	}
+	if (values.numberOfUnits === '') {
+		error.numberOfUnits = 'Number of units  required';
+	}
+	if (values.numberOfUnits === '') {
+		error.numberOfUnits = 'Number of units  required';
+	}
+	if (values.length === '') {
+		error.length = 'Length required';
+	}
+
+	if (values.plotArea === '') {
+		error.plotArea = 'Plot area required';
+	}
+
+	if (values.plotFrontage === '') {
+		error.plotFrontage = 'Plot frontage required';
+	}
+
+	if (values.widthOfRoad === '') {
+		error.widthOfRoad = 'Width of road required';
+	}
+
+	if (values.minPrice === '') {
+		error.minPrice = 'Min. price required';
+	}
+	if (values.maxPrice === '') {
+		error.minPrice = 'Max. price required';
+	}
+	return error;
+};
+
 export const validateFlat = (values) => {
 	const error = {};
 	if (!values.title) {
@@ -83,6 +129,20 @@ export const configureForUpdateFlat = (obj) => {
 		delete obj['availableDate'];
 	}
 	obj.furnishes = obj.furnishes.filter((b) => b.value).map((c) => c.id);
+	return obj;
+};
+
+export const configureForUpdateLand = (obj) => {
+	if (obj['project']) {
+		delete obj['project'];
+	}
+	if (obj['toiletTypes']) {
+		delete obj['toiletTypes'];
+	}
+	if (obj['furnishes']) {
+		delete obj['furnishes'];
+	}
+
 	return obj;
 };
 
@@ -166,5 +226,63 @@ export const carParkingMenuItems = [
 	{
 		label: 'Covered',
 		value: 'covered',
+	},
+];
+
+export const facingMenuItems = [
+	{
+		label: 'East',
+		value: 'east',
+	},
+	{
+		label: 'West',
+		value: 'west',
+	},
+	{
+		label: 'North',
+		value: 'north',
+	},
+	{
+		label: 'South',
+		value: 'south',
+	},
+];
+
+export const constructionDoneMenuItems = [
+	{
+		label: 'Yes',
+		value: true,
+	},
+	{
+		label: 'No',
+		value: false,
+	},
+];
+
+export const boundaryWallMadeMenuItems = [
+	{
+		label: 'Yes',
+		value: true,
+	},
+	{
+		label: 'No',
+		value: false,
+	},
+];
+
+export const gatedCommunityMadeMenuItems = [
+	{
+		label: 'Yes',
+		value: true,
+	},
+	{
+		label: 'No',
+		value: false,
+	},
+];
+export const landUsingZoningMenuItems = [
+	{
+		label: 'Yellow Zone',
+		value: 'yellow',
 	},
 ];

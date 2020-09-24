@@ -21,6 +21,7 @@ import {
 	CircularProgress,
 	Button,
 	Switch,
+	Grid,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -38,6 +39,14 @@ const useStyles = makeStyles((theme) => ({
 	backdrop: {
 		zIndex: theme.zIndex.drawer + 1,
 		color: '#fff',
+	},
+	imageWrapper: {
+		width: '100px',
+		height: '100px',
+	},
+	image: {
+		height: '100%',
+		width: '100%',
 	},
 }));
 
@@ -57,6 +66,12 @@ const ProjectInfo = ({
 	const [visible, setVisible] = React.useState({
 		amenities: false,
 		legalClearance: false,
+	});
+	const [images, setImages] = React.useState({
+		image1: null,
+		image2: null,
+		image3: null,
+		image4: null,
 	});
 	const [asyncError, setAsyncError] = React.useState(null);
 
@@ -83,6 +98,13 @@ const ProjectInfo = ({
 		const { name, checked } = e.target;
 		setVisible({ ...visible, [name]: checked });
 	};
+	const handleImage = (e) => {
+		const { name, files } = e.target;
+		setImages((prevState) => ({
+			...prevState,
+			[name]: files[0],
+		}));
+	};
 
 	const updateProject = (data) => {
 		const clone = { ...data };
@@ -97,6 +119,7 @@ const ProjectInfo = ({
 		}
 		configureForUpdate(clone);
 		console.log(clone);
+		clone.image = images;
 		updateProjectDetails(handleUpdateProjectDetails, id, clone);
 	};
 
@@ -273,19 +296,175 @@ const ProjectInfo = ({
 									value={values.numberOfOwner}
 								/>
 							)}
-							<Box display="flex" justifyContent="flex-end">
-								<Button
-									type="submit"
-									color="primary"
-									variant="contained"
-									classes={{
-										label: 'transform-none',
-									}}
-									size="large"
-								>
-									Update
-								</Button>
-							</Box>
+							<RowHOC heading="Exsting images">
+								<Grid container spacing={2}>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													values.image1
+														? `/assets/projects/${values.image1}`
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													values.image2
+														? `/assets/projects/${values.image2}`
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													values.image3
+														? `/assets/projects/${values.image3}`
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													values.image4
+														? `/assets/projects/${values.image4}`
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+									</Grid>
+								</Grid>
+							</RowHOC>
+							<RowHOC heading="Update images">
+								<Grid container spacing={2}>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													images.image1
+														? URL.createObjectURL(
+																images.image1
+														  )
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+											<input
+												type="file"
+												name="image1"
+												onChange={handleImage}
+											/>
+										</Box>
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													images.image2
+														? URL.createObjectURL(
+																images.image2
+														  )
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+											<input
+												type="file"
+												name="image2"
+												onChange={handleImage}
+											/>
+										</Box>
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													images.image3
+														? URL.createObjectURL(
+																images.image3
+														  )
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+											<input
+												type="file"
+												name="image3"
+												onChange={handleImage}
+											/>
+										</Box>
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													images.image4
+														? URL.createObjectURL(
+																images.image4
+														  )
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+											<input
+												type="file"
+												name="image4"
+												onChange={handleImage}
+											/>
+										</Box>
+									</Grid>
+								</Grid>
+							</RowHOC>
+							<Grid>
+								<Grid item xs={12}>
+									<Box
+										display="flex"
+										justifyContent="flex-end"
+										mt="2rem"
+									>
+										<Button
+											type="submit"
+											color="primary"
+											variant="contained"
+											classes={{
+												label: 'transform-none',
+											}}
+											size="large"
+										>
+											Update
+										</Button>
+									</Box>
+								</Grid>
+							</Grid>
 						</Form>
 					)}
 				</Formik>

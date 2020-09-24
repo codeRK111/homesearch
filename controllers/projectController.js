@@ -177,30 +177,14 @@ exports.handleImage = catchAsync(async (req, res, next) => {
 	if (!req.files) {
 		return next(new AppError('No image found', 400));
 	} else {
-		const builder = await Builder.findById(req.params.id);
-		if (!builder) return next(new AppError('builder not found', 404));
-		if (req.files.logo) {
-			if (builder.logo) {
-				fs.unlinkSync(
-					path.join(__dirname, '../', 'images', 'builder_images/') +
-						builder.logo
-				);
-			}
-			let logo =
-				Math.floor(10000000 + Math.random() * 90000000) +
-				'-' +
-				req.files.logo.name;
-			await req.files.logo.mv(
-				path.join(__dirname, '../', 'images', 'builder_images/') + logo
-			);
-			builder.logo = logo;
-		}
+		const project = await Project.findById(req.params.id);
+		if (!project) return next(new AppError('project not found', 404));
 
 		if (req.files.image1) {
-			if (builder.image1) {
+			if (project.image1) {
 				fs.unlinkSync(
-					path.join(__dirname, '../', 'images', 'builder_images/') +
-						builder.image1
+					path.join(__dirname, '../', 'images', 'project_images/') +
+						project.image1
 				);
 			}
 			let image1 =
@@ -208,17 +192,17 @@ exports.handleImage = catchAsync(async (req, res, next) => {
 				'-' +
 				req.files.image1.name;
 			await req.files.image1.mv(
-				path.join(__dirname, '../', 'images', 'builder_images/') +
+				path.join(__dirname, '../', 'images', 'project_images/') +
 					image1
 			);
-			builder.image1 = image1;
+			project.image1 = image1;
 		}
 
 		if (req.files.image2) {
-			if (builder.image2) {
+			if (project.image2) {
 				fs.unlinkSync(
-					path.join(__dirname, '../', 'images', 'builder_images/') +
-						builder.image2
+					path.join(__dirname, '../', 'images', 'project_images/') +
+						project.image2
 				);
 			}
 			let image2 =
@@ -226,17 +210,17 @@ exports.handleImage = catchAsync(async (req, res, next) => {
 				'-' +
 				req.files.image2.name;
 			await req.files.image2.mv(
-				path.join(__dirname, '../', 'images', 'builder_images/') +
+				path.join(__dirname, '../', 'images', 'project_images/') +
 					image2
 			);
-			builder.image2 = image2;
+			project.image2 = image2;
 		}
 
 		if (req.files.image3) {
-			if (builder.image3) {
+			if (project.image3) {
 				fs.unlinkSync(
-					path.join(__dirname, '../', 'images', 'builder_images/') +
-						builder.image3
+					path.join(__dirname, '../', 'images', 'project_images/') +
+						project.image3
 				);
 			}
 			let image3 =
@@ -244,17 +228,17 @@ exports.handleImage = catchAsync(async (req, res, next) => {
 				'-' +
 				req.files.image3.name;
 			await req.files.image3.mv(
-				path.join(__dirname, '../', 'images', 'builder_images/') +
+				path.join(__dirname, '../', 'images', 'project_images/') +
 					image3
 			);
-			builder.image3 = image3;
+			project.image3 = image3;
 		}
 
 		if (req.files.image4) {
-			if (builder.image4) {
+			if (project.image4) {
 				fs.unlinkSync(
-					path.join(__dirname, '../', 'images', 'builder_images/') +
-						builder.image4
+					path.join(__dirname, '../', 'images', 'project_images/') +
+						project.image4
 				);
 			}
 			let image4 =
@@ -262,56 +246,20 @@ exports.handleImage = catchAsync(async (req, res, next) => {
 				'-' +
 				req.files.image4.name;
 			await req.files.image4.mv(
-				path.join(__dirname, '../', 'images', 'builder_images/') +
+				path.join(__dirname, '../', 'images', 'project_images/') +
 					image4
 			);
-			builder.image4 = image4;
+			project.image4 = image4;
 		}
 
-		if (req.files.image5) {
-			if (builder.image5) {
-				fs.unlinkSync(
-					path.join(__dirname, '../', 'images', 'builder_images/') +
-						builder.image5
-				);
-			}
-			let image5 =
-				Math.floor(10000000 + Math.random() * 90000000) +
-				'-' +
-				req.files.image5.name;
-			await req.files.image5.mv(
-				path.join(__dirname, '../', 'images', 'builder_images/') +
-					image5
-			);
-			builder.image5 = image5;
-		}
-
-		if (req.files.image6) {
-			if (builder.image6) {
-				fs.unlinkSync(
-					path.join(__dirname, '../', 'images', 'builder_images/') +
-						builder.image6
-				);
-			}
-			let image6 =
-				Math.floor(10000000 + Math.random() * 90000000) +
-				'-' +
-				req.files.image6.name;
-			await req.files.image6.mv(
-				path.join(__dirname, '../', 'images', 'builder_images/') +
-					image6
-			);
-			builder.image6 = image6;
-		}
-
-		const builderUpdated = await builder.save();
+		const projectUpdated = await project.save();
 
 		//send response
 		res.send({
 			status: 'success',
 			message: 'File is uploaded',
 			data: {
-				builder: builderUpdated,
+				project: projectUpdated,
 			},
 		});
 	}

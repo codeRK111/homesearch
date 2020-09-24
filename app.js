@@ -91,6 +91,10 @@ app.use(
 	'/assets/builders',
 	express.static(path.join(__dirname, 'images', 'builder_images'))
 );
+app.use(
+	'/assets/projects',
+	express.static(path.join(__dirname, 'images', 'project_images'))
+);
 // app.use(
 // 	basicAuth({
 // 		users: { admin: 'admin@123' },

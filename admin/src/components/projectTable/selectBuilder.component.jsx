@@ -4,9 +4,9 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux';
 import {
-	updateBuilder,
-	fetchBuilders,
-} from '../../redux/builder/builder.action';
+	updateProjectDetails,
+	fetchProjects,
+} from '../../redux/project/project.action';
 import { withRouter } from 'react-router-dom';
 
 const CustomSelect = ({
@@ -48,10 +48,10 @@ const CustomSelect = ({
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	updateBuilder: (builderId, builder, callback) =>
-		dispatch(updateBuilder({ builderId, builder, callback })),
+	updateBuilder: (projectId, project, callback) =>
+		dispatch(updateProjectDetails({ projectId, project, callback })),
 	fetchBuilders: (callback, status) =>
-		dispatch(fetchBuilders({ callback, param: { status } })),
+		dispatch(fetchProjects({ callback, param: { status } })),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(CustomSelect));

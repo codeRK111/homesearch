@@ -119,21 +119,25 @@ const validate = (values) => {
 
 const OneBHK = ({ bhk, furnishes, setProject }) => {
 	const onSubmit = (values) => {
+		const clone = { ...values };
+		if (clone.availability === 'immediately') {
+			delete clone['availableDate'];
+		}
 		const obj = {
-			[`bhk${bhk}`]: values,
+			[`bhk${bhk}`]: clone,
 		};
 		obj[`bhk${bhk}`]['toiletTypes'] = [
 			{
 				toiletType: 'indian',
-				numbers: values.indianToilet,
+				numbers: clone.indianToilet,
 			},
 			{
 				toiletType: 'western',
-				numbers: values.westernToilet,
+				numbers: clone.westernToilet,
 			},
 		];
-		if (values.furnished !== 'unfurnished') {
-			obj[`bhk${bhk}`]['furnishes'] = values.furnishes
+		if (clone.furnished !== 'unfurnished') {
+			obj[`bhk${bhk}`]['furnishes'] = clone.furnishes
 				.filter((c) => c.value)
 				.map((b) => b.id);
 		} else {

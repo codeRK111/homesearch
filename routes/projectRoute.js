@@ -9,7 +9,7 @@ router
 	.post(projectController.addProjectIndependentHouse);
 router.route('/land').post(projectController.addProjectLand);
 router.route('/properties/:id').patch(projectController.updateProjectProperty);
-
+router.route('/handle-image/:id').patch(projectController.handleImage);
 router.route('/').get(projectController.getAllProjects);
 
 router

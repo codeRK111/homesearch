@@ -202,8 +202,8 @@ function Orders({
 									</span>
 								</TableCell>
 								<TableCell>
-									{c.status}
-									{/* <CustomSelect
+									{/* {c.status} */}
+									<CustomSelect
 										value={c.status}
 										builderId={c.id}
 										items={[
@@ -216,7 +216,7 @@ function Orders({
 												value: 'inactive',
 											},
 										]}
-									/> */}
+									/>
 								</TableCell>
 
 								<TableCell align="right">

@@ -28,6 +28,31 @@ function* addProjectFlat({ payload: { project, callback, type = 'flat' } }) {
 			yield put(toggleAddProjectFlatLoading(false));
 			console.log(responseData);
 		} else {
+			if (project.image) {
+				console.log(project.image);
+				let dataPresent = false;
+				var formData = new FormData();
+				for (const key in project.image) {
+					if (project.image[key]) {
+						dataPresent = true;
+						formData.append(key, project.image[key]);
+					}
+				}
+				if (dataPresent) {
+					console.log(responseData);
+					const imageResponse = yield axios.patch(
+						`/api/v1/projects/handle-image/${responseData.data.project.id}`,
+						formData,
+						{
+							headers: {
+								'Content-Type': 'multipart/form-data',
+							},
+						}
+					);
+
+					console.log(imageResponse.data);
+				}
+			}
 			yield put(toggleAddProjectFlatLoading(false));
 			callback('success');
 		}
@@ -113,6 +138,31 @@ export function* updateProjectDetails({
 			yield put(toggleUpdateProjectDetailsLoading(false));
 			console.log(responseData);
 		} else {
+			if (project.image) {
+				console.log(project.image);
+				let dataPresent = false;
+				var formData = new FormData();
+				for (const key in project.image) {
+					if (project.image[key]) {
+						dataPresent = true;
+						formData.append(key, project.image[key]);
+					}
+				}
+				if (dataPresent) {
+					console.log(responseData);
+					const imageResponse = yield axios.patch(
+						`/api/v1/projects/handle-image/${projectId}`,
+						formData,
+						{
+							headers: {
+								'Content-Type': 'multipart/form-data',
+							},
+						}
+					);
+
+					console.log(imageResponse.data);
+				}
+			}
 			yield put(toggleUpdateProjectDetailsLoading(false));
 			callback('success', responseData.data.project);
 		}
