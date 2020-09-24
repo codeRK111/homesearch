@@ -192,8 +192,8 @@ function Orders({
 								<TableCell>{c.projectType}</TableCell>
 								<TableCell>{c.complitionStatus}</TableCell>
 								<TableCell>{c.city.name}</TableCell>
-								<TableCell>{c.builder.developerName}</TableCell>
 								<TableCell>{c.location.name}</TableCell>
+								<TableCell>{c.builder.developerName}</TableCell>
 								<TableCell>
 									<span>
 										{moment(c.createdAt).format(
