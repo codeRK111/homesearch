@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { createStructuredSelector } from 'reselect';
 import { useHistory } from 'react-router-dom';
 
-let drawerWidth = 290;
+let drawerWidth = 310;
 
 const useStyles = makeStyles((theme) => ({
 	root: {

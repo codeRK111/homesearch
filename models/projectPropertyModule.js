@@ -38,12 +38,7 @@ const projectPropertySchema = new Schema(
 		type: {
 			type: String,
 			enum: {
-				values: [
-					'flat',
-					'independenthouse',
-					'land',
-					
-				],
+				values: ['flat', 'independenthouse', 'land'],
 				message:
 					'type must be between <flat> | <independenthouse> | <land> ',
 			},
@@ -222,6 +217,14 @@ projectPropertySchema.index({
 
 function requireIndependentHouse() {
 	if (this.type === 'independenthouse') {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function rquiredFor(...types) {
+	if (types.includes(this.type)) {
 		return true;
 	} else {
 		return false;

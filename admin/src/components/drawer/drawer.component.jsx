@@ -19,7 +19,7 @@ import AppBar from '../appBar/appBar.component';
 
 // import './home.styles.scss';
 
-let drawerWidth = 290;
+let drawerWidth = 310;
 
 const useStyles = makeStyles((theme) => {
 	console.log(theme);
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => {
 		},
 		appBar: {
 			backgroundColor: '#34495e',
+
 			zIndex: theme.zIndex.drawer + 1,
 			transition: theme.transitions.create(['width', 'margin'], {
 				easing: theme.transitions.easing.sharp,
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => {
 			}),
 		},
 		appBarShift: {
-			marginLeft: drawerWidth,
+			marginLeft: 320,
 			width: `calc(100% - ${drawerWidth}px)`,
 			transition: theme.transitions.create(['width', 'margin'], {
 				easing: theme.transitions.easing.sharp,
@@ -69,6 +70,9 @@ const useStyles = makeStyles((theme) => {
 			width: drawerWidth,
 			backgroundColor: '#34495e',
 			color: '#ffffff',
+			overflowX: 'scroll',
+			msOverflowY: 'hidden',
+			height: '100vh',
 			transition: theme.transitions.create('width', {
 				easing: theme.transitions.easing.sharp,
 				duration: theme.transitions.duration.enteringScreen,
