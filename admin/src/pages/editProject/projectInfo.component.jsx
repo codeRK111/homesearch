@@ -48,6 +48,17 @@ const useStyles = makeStyles((theme) => ({
 		height: '100%',
 		width: '100%',
 	},
+	input: {
+		display: 'none',
+	},
+	label: {
+		padding: '0.5rem 1rem',
+		border: '1px solid #cccccc',
+		width: '100%',
+		borderRadius: '5px',
+		backgroundColor: '#cccccc',
+		cursor: 'pointer',
+	},
 }));
 
 const ProjectInfo = ({
@@ -376,7 +387,15 @@ const ProjectInfo = ({
 												type="file"
 												name="image1"
 												onChange={handleImage}
+												id="image1"
+												className={classes.input}
 											/>
+											<label
+												htmlFor="image1"
+												className={classes.label}
+											>
+												Image1
+											</label>
 										</Box>
 									</Grid>
 									<Grid item xs={12} lg={3}>
@@ -397,7 +416,15 @@ const ProjectInfo = ({
 												type="file"
 												name="image2"
 												onChange={handleImage}
+												id="image2"
+												className={classes.input}
 											/>
+											<label
+												htmlFor="image2"
+												className={classes.label}
+											>
+												Image2
+											</label>
 										</Box>
 									</Grid>
 									<Grid item xs={12} lg={3}>
@@ -418,7 +445,15 @@ const ProjectInfo = ({
 												type="file"
 												name="image3"
 												onChange={handleImage}
+												id="image3"
+												className={classes.input}
 											/>
+											<label
+												htmlFor="image3"
+												className={classes.label}
+											>
+												Image3
+											</label>
 										</Box>
 									</Grid>
 									<Grid item xs={12} lg={3}>
@@ -438,8 +473,16 @@ const ProjectInfo = ({
 											<input
 												type="file"
 												name="image4"
+												id="image4"
 												onChange={handleImage}
+												className={classes.input}
 											/>
+											<label
+												htmlFor="image4"
+												className={classes.label}
+											>
+												Image4
+											</label>
 										</Box>
 									</Grid>
 								</Grid>
