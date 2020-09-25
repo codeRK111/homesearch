@@ -166,10 +166,12 @@ const projectPropertySchema = new Schema(
 			type: Number,
 			required: requireLand,
 		},
-		plotArea: {
-			type: Number,
-			required: requireLand,
-		},
+		plotArea: [
+			{
+				type: Number,
+				required: requireLand,
+			},
+		],
 		widthOfRoad: {
 			type: Number,
 			required: requireLand,

@@ -80,7 +80,13 @@ const EditProject = ({
 				);
 				break;
 			case 'land':
-				return <Land initialValue={property} id={property.id} />;
+				return (
+					<Land
+						initialValue={property}
+						id={property.id}
+						refetch={refetch}
+					/>
+				);
 				break;
 
 			default:

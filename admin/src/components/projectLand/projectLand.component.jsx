@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-	Radio,
-	RadioGroup,
-	FormControlLabel,
-	FormControl,
-	Box,
-	Paper,
-	Button,
-	Grid,
-} from '@material-ui/core';
+import { Box, Paper, Button, Grid, Divider } from '@material-ui/core';
 import RowTextField from '../rowTextField/rowFormikTextField.component';
 import RowSelect from '../rowSelect/rowFormikSelect.component';
 import RowHOC from '../rowCheckBox/rowCheckbox.component';
@@ -17,10 +8,10 @@ import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { selectFurnishes } from '../../redux/property/property.selector';
-import Checkbox from '../checkbox/checkbox.component';
-import RowDatePicker from '../rowDatePicker/rowDatePicker.component';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import FormHeader from '../formHeader/formHeader.component';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const facingMenuItems = [
 	{
@@ -109,7 +100,7 @@ const initialState = {
 	length: '',
 	width: '',
 	plotFrontage: '',
-	plotArea: '',
+	plotArea: [0],
 	widthOfRoad: '',
 	facing: 'east', //dropdown,
 	constructionDone: false, //drop,
@@ -137,7 +128,12 @@ const basicValidation = (error, values, ...excludeField) => {
 	});
 	console.log(clone);
 	for (const key in clone) {
-		if (!clone[key]) {
+		if (
+			clone[key] === '' ||
+			clone[key] === 0 ||
+			clone[key] === null ||
+			clone[key] === undefined
+		) {
 			error[key] = `${key} required`;
 		}
 	}
@@ -170,13 +166,19 @@ const validate = (values) => {
 		error['carpetArea'] = msg;
 	}
 
+	if (!values.plotArea.find((c) => c > 0)) {
+		error.plotArea = 'Atleast one plot area required';
+	}
+
 	return error;
 };
 
 const Land = ({ bhk, furnishes, setProject }) => {
 	const onSubmit = (values) => {
+		const clone = { ...values };
+		clone.plotArea = values.plotArea.filter((c) => c);
 		const obj = {
-			land: values,
+			land: clone,
 		};
 
 		console.log(obj);
@@ -245,9 +247,9 @@ const Land = ({ bhk, furnishes, setProject }) => {
 				validate={validate}
 				onSubmit={onSubmit}
 			>
-				{({ values, handleChange, setFieldValue, error }) => (
+				{({ values, handleChange, setFieldValue, errors }) => (
 					<Form>
-						<p>{JSON.stringify(error)}</p>
+						{/* <p>{JSON.stringify(errors)}</p> */}
 						<RowTextField
 							heading="Title"
 							name="title"
@@ -286,12 +288,65 @@ const Land = ({ bhk, furnishes, setProject }) => {
 							type="number"
 							label="SqFt"
 						/>
-						<RowTextField
-							heading="Plot area"
-							name="plotArea"
-							type="number"
-							label="SqFt"
-						/>
+
+						<FormHeader text="Area" />
+						<RowHOC heading="Plot area" center>
+							<FieldArray
+								name="plotArea"
+								render={(arrayHelpers) => (
+									<Box>
+										{errors.plotArea && (
+											<p className="color-red">
+												{errors.plotArea}
+											</p>
+										)}
+										{values.plotArea.map((c, i) => (
+											<Box display="flex">
+												<RowTextField
+													key={i}
+													heading={`Area ${i + 1}`}
+													name={`plotArea.${i}`}
+													type="number"
+													label="SqFt"
+												/>
+												<IconButton
+													aria-label="delete"
+													onClick={() =>
+														arrayHelpers.remove(i)
+													}
+												>
+													<DeleteIcon
+														fontSize="small"
+														color="secondary"
+													/>
+												</IconButton>
+											</Box>
+										))}
+										<Box mb="1rem" mt="0.5rem">
+											<Divider />
+										</Box>
+										<Box
+											display="flex"
+											justifyContent="flex-end"
+										>
+											<Button
+												variant="outlined"
+												color="primary"
+												classes={{
+													label: 'transform-none',
+												}}
+												onClick={() =>
+													arrayHelpers.push(0)
+												}
+												fullWidth
+											>
+												Add more area
+											</Button>
+										</Box>
+									</Box>
+								)}
+							/>
+						</RowHOC>
 						<RowTextField
 							heading="Width of road"
 							name="widthOfRoad"
@@ -372,7 +427,7 @@ const Land = ({ bhk, furnishes, setProject }) => {
 							label="Enter price"
 						/>
 
-						{values.plotArea && values.minPrice && values.maxPrice && (
+						{/* {values.plotArea && values.minPrice && values.maxPrice && (
 							<Box>
 								<RowTextField
 									heading="Price per sqFt (Min)"
@@ -397,7 +452,7 @@ const Land = ({ bhk, furnishes, setProject }) => {
 									disabled={true}
 								/>
 							</Box>
-						)}
+						)} */}
 						{/* <Box
 							p="1rem"
 							display="flex"

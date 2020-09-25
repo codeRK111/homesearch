@@ -100,7 +100,6 @@ const validate = (values) => {
 		'image5',
 		'image6',
 		'furnishes',
-		'numberOfBedrooms',
 		'numberOflivingAreas',
 		'pricePerSqFtMin',
 		'pricePerSqFtMax'
@@ -247,7 +246,7 @@ const OneBHK = ({ bhk, furnishes, setProject }) => {
 							type="number"
 						/>
 						<RowTextField
-							heading="Super builtup area"
+							heading="Salable area"
 							name="superBuiltupArea"
 							type="number"
 							label="Enter number"

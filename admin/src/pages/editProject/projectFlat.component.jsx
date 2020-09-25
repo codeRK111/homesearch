@@ -252,7 +252,7 @@ const ProjectInfo = ({
 								value={values.westernToilet}
 							/>
 							<RowTextField
-								heading="Super built-up area"
+								heading="Salable area"
 								type="number"
 								name="superBuiltupArea"
 								value={values.superBuiltupArea}

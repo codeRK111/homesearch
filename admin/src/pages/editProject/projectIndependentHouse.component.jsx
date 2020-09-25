@@ -233,6 +233,12 @@ const ProjectInfo = ({
 								value={values.numberOfUnits}
 							/>
 							<RowTextField
+								heading="Number of bedrooms"
+								type="number"
+								name="numberOfBedrooms"
+								value={values.numberOfBedrooms}
+							/>
+							<RowTextField
 								heading="Indian toilet"
 								type="number"
 								name="indianToilet"
@@ -245,7 +251,7 @@ const ProjectInfo = ({
 								value={values.westernToilet}
 							/>
 							<RowTextField
-								heading="Super built-up area"
+								heading="Salable area"
 								type="number"
 								name="superBuiltupArea"
 								value={values.superBuiltupArea}

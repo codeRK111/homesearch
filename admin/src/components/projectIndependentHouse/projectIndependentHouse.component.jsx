@@ -113,6 +113,7 @@ const initialState = {
 	verified: true,
 	transactionType: 'newbooking',
 	furnishes: [],
+	numberOfBedrooms: 0,
 };
 
 const basicValidation = (error, values, ...excludeField) => {
@@ -144,7 +145,6 @@ const validate = (values) => {
 		'image5',
 		'image6',
 		'furnishes',
-		'numberOfBedrooms',
 		'numberOflivingAreas',
 		'pricePerSqFtMin',
 		'pricePerSqFtMax'
@@ -279,9 +279,15 @@ const IndependentHouse = ({ bhk, furnishes, setProject }) => {
 							type="number"
 							label="Enter number"
 						/>
+						<RowTextField
+							heading="Number of bedrooms"
+							name="numberOfBedrooms"
+							type="number"
+							label="Enter number"
+						/>
 
 						<RowTextField
-							heading="Super builtup area"
+							heading="Salable Area"
 							name="superBuiltupArea"
 							type="number"
 							label="Enter number"

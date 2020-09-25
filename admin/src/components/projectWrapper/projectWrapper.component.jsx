@@ -17,6 +17,7 @@ const initialStateExpand = {
 	oneBhk: false,
 	twoBhk: false,
 	threeBhk: false,
+	threeAndHalfBhk: false,
 };
 
 const AddProject = (props) => {
@@ -84,6 +85,27 @@ const AddProject = (props) => {
 					<Divider />
 					<Collapse in={expand.threeBhk} timeout="auto">
 						<PropertyOneBHK bhk={3} {...props} />
+					</Collapse>
+					<ListItem
+						button
+						onClick={toggleExpand('threeAndHalfBhk')}
+						classes={{
+							root: 'root',
+						}}
+					>
+						<ListItemIcon>
+							<ApartmentIcon color="primary" />
+						</ListItemIcon>
+						<ListItemText primary={heading('3.5 BHK')} />
+						{expand.threeAndHalfBhk ? (
+							<ExpandLess />
+						) : (
+							<ExpandMore />
+						)}
+					</ListItem>
+					<Divider />
+					<Collapse in={expand.threeAndHalfBhk} timeout="auto">
+						<PropertyOneBHK bhk={3.5} {...props} />
 					</Collapse>
 				</Box>
 			</Paper>

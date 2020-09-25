@@ -67,6 +67,10 @@ export const validateLand = (values) => {
 	if (values.maxPrice === '') {
 		error.minPrice = 'Max. price required';
 	}
+
+	if (!values.plotArea.find((c) => c > 0)) {
+		error.plotArea = 'Atleast one plot area required';
+	}
 	return error;
 };
 
