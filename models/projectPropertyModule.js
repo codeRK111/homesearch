@@ -29,6 +29,9 @@ const projectPropertySchema = new Schema(
 		bhk: {
 			type: Number,
 		},
+		numberOfBedrooms: {
+			type: Number,
+		},
 		numberOflivingAreas: {
 			type: Number,
 		},
@@ -204,6 +207,30 @@ const projectPropertySchema = new Schema(
 		govermentValuation: {
 			type: Number,
 			required: requireLand,
+		},
+		image1: {
+			type: String,
+			default: null,
+		},
+		image2: {
+			type: String,
+			default: null,
+		},
+		image3: {
+			type: String,
+			default: null,
+		},
+		image4: {
+			type: String,
+			default: null,
+		},
+		floorplan1: {
+			type: String,
+			default: null,
+		},
+		floorplan2: {
+			type: String,
+			default: null,
 		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }

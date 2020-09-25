@@ -53,17 +53,29 @@ const EditProject = ({
 		}
 	}, [params.id]);
 
+	const refetch = () => {
+		const id = params.id;
+		fetchProjectDetails(handleFetchProjects, id);
+	};
+
 	// views
 	const renderProperties = (property) => {
 		switch (property.type) {
 			case 'flat':
-				return <Flat initialValue={property} id={property.id} />;
+				return (
+					<Flat
+						initialValue={property}
+						id={property.id}
+						refetch={refetch}
+					/>
+				);
 				break;
 			case 'independenthouse':
 				return (
 					<IndependentHouse
 						initialValue={property}
 						id={property.id}
+						refetch={refetch}
 					/>
 				);
 				break;

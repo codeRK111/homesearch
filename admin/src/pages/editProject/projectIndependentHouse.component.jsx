@@ -29,6 +29,7 @@ import {
 	RadioGroup,
 	FormControlLabel,
 	FormControl,
+	Divider,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -36,9 +37,15 @@ import {
 	selectFurnishes,
 	selectLoading as resourcesLoading,
 } from '../../redux/property/property.selector';
-import { selectUpdateProjectPropertyDetailsLoading } from '../../redux/project/project.selector';
+import {
+	selectUpdateProjectPropertyDetailsLoading,
+	selectremovePropertyFloorplanLoading,
+} from '../../redux/project/project.selector';
 import { fetchAllPropertyResourcesStart } from '../../redux/property/property.actions';
-import { updateProjectPropertyDetails } from '../../redux/project/project.action';
+import {
+	updateProjectPropertyDetails,
+	removePropertyFloorplan,
+} from '../../redux/project/project.action';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -47,6 +54,29 @@ const useStyles = makeStyles((theme) => ({
 	backdrop: {
 		zIndex: theme.zIndex.drawer + 1,
 		color: '#fff',
+	},
+	imageWrapper: {
+		width: '100px',
+		height: '100px',
+	},
+	image: {
+		height: '100%',
+		width: '100%',
+	},
+	input: {
+		display: 'none',
+	},
+	label: {
+		padding: '0.5rem 1rem',
+		border: '1px solid #cccccc',
+		width: '100%',
+		borderRadius: '5px',
+		backgroundColor: '#cccccc',
+		cursor: 'pointer',
+	},
+	removeButton: {
+		marginBottom: '0.5rem',
+		marginTop: '0.5rem',
 	},
 }));
 
@@ -59,6 +89,9 @@ const ProjectInfo = ({
 	id,
 	updateProjectPropertyDetailsLoading,
 	updateProjectPropertyDetails,
+	removeFloorplanLoading,
+	removePropertyFloorplan,
+	refetch,
 }) => {
 	// Declaration
 	const classes = useStyles();
@@ -68,6 +101,16 @@ const ProjectInfo = ({
 		furnishes: false,
 	});
 	const [asyncError, setAsyncError] = React.useState(null);
+	const [floorplans, setFloorplans] = React.useState({
+		floorplan1: null,
+		floorplan2: null,
+	});
+	const [images, setImages] = React.useState({
+		image1: null,
+		image2: null,
+		image3: null,
+		image4: null,
+	});
 
 	// Api response handler
 	const handleFetchResources = (type, data) => {
@@ -87,6 +130,16 @@ const ProjectInfo = ({
 		}
 	};
 
+	const handleRemovePropertyFloorplan = (type, data) => {
+		if (type === 'fail') {
+			setAsyncError(data);
+		} else {
+			console.log(data);
+			setAsyncError(null);
+			refetch();
+		}
+	};
+
 	// Event handler
 	const handleChangeSwitch = (e) => {
 		const { name, checked } = e.target;
@@ -97,7 +150,35 @@ const ProjectInfo = ({
 		const clone = { ...data };
 		configureForUpdateFlat(clone);
 		console.log(clone);
+		clone.floorplans = floorplans;
+		clone.propertyImages = images;
 		updateProjectPropertyDetails(handleUpdateProjectDetails, id, clone);
+	};
+
+	const handleImageFloorPlan = (e) => {
+		const { name, files } = e.target;
+		setFloorplans((prevState) => ({
+			...prevState,
+			[name]: files[0],
+		}));
+	};
+
+	const handleRemove = (name) => (e) => {
+		console.log(name);
+		removePropertyFloorplan(handleRemovePropertyFloorplan, name, id);
+	};
+
+	const handleRemoveImage = (name) => (e) => {
+		console.log(name);
+		removePropertyFloorplan(handleRemovePropertyFloorplan, name, id);
+	};
+
+	const handleImage = (e) => {
+		const { name, files } = e.target;
+		setImages((prevState) => ({
+			...prevState,
+			[name]: files[0],
+		}));
 	};
 
 	// UseEffect hooks
@@ -113,6 +194,12 @@ const ProjectInfo = ({
 			<Backdrop
 				className={classes.backdrop}
 				open={updateProjectPropertyDetailsLoading}
+			>
+				<CircularProgress color="secondary" />
+			</Backdrop>
+			<Backdrop
+				className={classes.backdrop}
+				open={removeFloorplanLoading}
 			>
 				<CircularProgress color="secondary" />
 			</Backdrop>
@@ -337,6 +424,381 @@ const ProjectInfo = ({
 									disabled={true}
 								/>
 							</Box>
+							<RowHOC heading="Exsting floorplans">
+								<Grid container spacing={2}>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													values.floorplan1
+														? `/assets/projects/${values.floorplan1}`
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+										{values.floorplan1 && (
+											<Button
+												variant="outlined"
+												color="secondary"
+												classes={{
+													label: 'transform-none',
+												}}
+												size="small"
+												className={classes.removeButton}
+												onClick={handleRemove(
+													'floorplan1'
+												)}
+											>
+												Remove
+											</Button>
+										)}
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													values.floorplan2
+														? `/assets/projects/${values.floorplan2}`
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+										{values.floorplan2 && (
+											<Button
+												variant="outlined"
+												color="secondary"
+												classes={{
+													label: 'transform-none',
+												}}
+												size="small"
+												className={classes.removeButton}
+												onClick={handleRemove(
+													'floorplan2'
+												)}
+											>
+												Remove
+											</Button>
+										)}
+									</Grid>
+								</Grid>
+							</RowHOC>
+							<Divider />
+							<RowHOC heading="Update floorplans">
+								<Grid item xs={12} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												floorplans.floorplan1
+													? URL.createObjectURL(
+															floorplans.floorplan1
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										name="floorplan1"
+										onChange={handleImageFloorPlan}
+										id="floorplan1"
+										className={classes.input}
+									/>
+									<label
+										htmlFor="floorplan1"
+										className={classes.label}
+									>
+										Floorplan1
+									</label>
+								</Grid>
+								<Grid item xs={12} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												floorplans.floorplan2
+													? URL.createObjectURL(
+															floorplans.floorplan2
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										name="floorplan2"
+										onChange={handleImageFloorPlan}
+										id="floorplan2"
+										className={classes.input}
+									/>
+									<label
+										htmlFor="floorplan2"
+										className={classes.label}
+									>
+										floorplan2
+									</label>
+								</Grid>
+							</RowHOC>
+							<Box pt="1rem" pb="1rem">
+								<Divider />
+							</Box>
+							<RowHOC heading="Exsting Images" center={true}>
+								<Grid container spacing={2}>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													values.image1
+														? `/assets/projects/${values.image1}`
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+										{values.image1 && (
+											<Button
+												variant="outlined"
+												color="secondary"
+												classes={{
+													label: 'transform-none',
+												}}
+												size="small"
+												className={classes.removeButton}
+												onClick={handleRemoveImage(
+													'image1'
+												)}
+											>
+												Remove
+											</Button>
+										)}
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													values.image2
+														? `/assets/projects/${values.image2}`
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+										{values.image2 && (
+											<Button
+												variant="outlined"
+												color="secondary"
+												classes={{
+													label: 'transform-none',
+												}}
+												size="small"
+												className={classes.removeButton}
+												onClick={handleRemoveImage(
+													'image2'
+												)}
+											>
+												Remove
+											</Button>
+										)}
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													values.image3
+														? `/assets/projects/${values.image3}`
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+										{values.image3 && (
+											<Button
+												variant="outlined"
+												color="secondary"
+												classes={{
+													label: 'transform-none',
+												}}
+												size="small"
+												className={classes.removeButton}
+												onClick={handleRemoveImage(
+													'image3'
+												)}
+											>
+												Remove
+											</Button>
+										)}
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													values.image4
+														? `/assets/projects/${values.image4}`
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+										{values.image4 && (
+											<Button
+												variant="outlined"
+												color="secondary"
+												classes={{
+													label: 'transform-none',
+												}}
+												size="small"
+												className={classes.removeButton}
+												onClick={handleRemoveImage(
+													'image4'
+												)}
+											>
+												Remove
+											</Button>
+										)}
+									</Grid>
+								</Grid>
+							</RowHOC>
+							<Box pt="1rem" pb="1rem">
+								<Divider />
+							</Box>
+							<RowHOC heading="Update images" center>
+								<Grid container spacing={2}>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													images.image1
+														? URL.createObjectURL(
+																images.image1
+														  )
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+										<input
+											type="file"
+											name="image1"
+											onChange={handleImage}
+											id="pimage1"
+											className={classes.input}
+										/>
+										<label
+											htmlFor="pimage1"
+											className={classes.label}
+										>
+											Image1
+										</label>
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													images.image2
+														? URL.createObjectURL(
+																images.image2
+														  )
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+										<input
+											type="file"
+											name="image2"
+											onChange={handleImage}
+											id="pimage2"
+											className={classes.input}
+										/>
+										<label
+											htmlFor="pimage2"
+											className={classes.label}
+										>
+											Image2
+										</label>
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													images.image3
+														? URL.createObjectURL(
+																images.image3
+														  )
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+										<input
+											type="file"
+											name="image3"
+											onChange={handleImage}
+											id="pimage3"
+											className={classes.input}
+										/>
+										<label
+											htmlFor="pimage3"
+											className={classes.label}
+										>
+											Image3
+										</label>
+									</Grid>
+									<Grid item xs={12} lg={3}>
+										<Box className={classes.imageWrapper}>
+											<img
+												src={
+													images.image4
+														? URL.createObjectURL(
+																images.image4
+														  )
+														: require('../../assets/no-image.jpg')
+												}
+												alt="project"
+												srcset=""
+												className={classes.image}
+											/>
+										</Box>
+										<input
+											type="file"
+											name="image4"
+											id="pimage4"
+											onChange={handleImage}
+											className={classes.input}
+										/>
+										<label
+											htmlFor="pimage4"
+											className={classes.label}
+										>
+											Image4
+										</label>
+									</Grid>
+								</Grid>
+							</RowHOC>
 							<Box display="flex" justifyContent="flex-end">
 								<Button
 									type="submit"
@@ -363,6 +825,7 @@ const mapStateToProps = createStructuredSelector({
 	furnishes: selectFurnishes,
 	resourcesLoading,
 	updateProjectPropertyDetailsLoading: selectUpdateProjectPropertyDetailsLoading,
+	removeFloorplanLoading: selectremovePropertyFloorplanLoading,
 });
 
 const mapActionToProps = (dispatch) => ({
@@ -372,6 +835,8 @@ const mapActionToProps = (dispatch) => ({
 		dispatch(
 			updateProjectPropertyDetails({ callback, projectId, project })
 		),
+	removePropertyFloorplan: (callback, floorplan, id) =>
+		dispatch(removePropertyFloorplan({ callback, floorplan, id })),
 });
 
 export default connect(mapStateToProps, mapActionToProps)(ProjectInfo);

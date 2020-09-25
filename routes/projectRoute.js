@@ -9,6 +9,15 @@ router
 	.post(projectController.addProjectIndependentHouse);
 router.route('/land').post(projectController.addProjectLand);
 router.route('/properties/:id').patch(projectController.updateProjectProperty);
+router
+	.route('/handle-image/property/remove-floorplan/:floorName/:id')
+	.get(projectController.removeFloorplan);
+router
+	.route('/handle-image/property/floorplan/:id')
+	.patch(projectController.handleFloorplan);
+router
+	.route('/handle-image/property/:id')
+	.patch(projectController.handlePropertyImage);
 router.route('/handle-image/:id').patch(projectController.handleImage);
 router.route('/').get(projectController.getAllProjects);
 

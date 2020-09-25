@@ -22,6 +22,10 @@ export const selectUpdateProjectPropertyDetailsLoading = createSelector(
 	[selectProject],
 	(u) => u.updateProjectPropertyDetailsLoading
 );
+export const selectremovePropertyFloorplanLoading = createSelector(
+	[selectProject],
+	(u) => u.removePropertyFloorplanLoading
+);
 export const selectProjects = createSelector(
 	[selectProject],
 	(u) => u.projects

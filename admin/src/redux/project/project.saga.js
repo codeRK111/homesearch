@@ -7,6 +7,7 @@ import {
 	toggleFetchProjectDetailsLoading,
 	toggleUpdateProjectDetailsLoading,
 	toggleUpdateProjectPropertyDetailsLoading,
+	toggleremovePropertyFloorplansLoading,
 	setProjects,
 } from './project.action';
 
@@ -194,11 +195,85 @@ export function* updateProjectPropertyDetails({
 			yield put(toggleUpdateProjectPropertyDetailsLoading(false));
 			console.log(responseData);
 		} else {
+			if (project.floorplans) {
+				console.log(project.floorplans);
+				let dataPresent = false;
+				var formData = new FormData();
+				for (const key in project.floorplans) {
+					if (project.floorplans[key]) {
+						dataPresent = true;
+						formData.append(key, project.floorplans[key]);
+					}
+				}
+				if (dataPresent) {
+					console.log(responseData);
+					const imageResponse = yield axios.patch(
+						`/api/v1/projects/handle-image/property/floorplan/${projectId}`,
+						formData,
+						{
+							headers: {
+								'Content-Type': 'multipart/form-data',
+							},
+						}
+					);
+
+					console.log(imageResponse.data);
+				}
+			}
+			if (project.propertyImages) {
+				console.log(project.propertyImages);
+				let dataPresentImage = false;
+				var formData = new FormData();
+				for (const key in project.propertyImages) {
+					if (project.propertyImages[key]) {
+						dataPresentImage = true;
+						formData.append(key, project.propertyImages[key]);
+					}
+				}
+				if (dataPresentImage) {
+					console.log(responseData);
+					const imageResponse = yield axios.patch(
+						`/api/v1/projects/handle-image/property/${projectId}`,
+						formData,
+						{
+							headers: {
+								'Content-Type': 'multipart/form-data',
+							},
+						}
+					);
+
+					console.log(imageResponse.data);
+				}
+			}
 			yield put(toggleUpdateProjectPropertyDetailsLoading(false));
 			callback('success', responseData.data.property);
 		}
 	} catch (error) {
 		yield put(toggleUpdateProjectPropertyDetailsLoading(false));
+		const errorResponse = error.response.data;
+		callback(errorResponse);
+		callback('fail', errorResponse.message);
+	}
+}
+
+export function* removePropertyFloorplan({
+	payload: { callback, floorplan, id },
+}) {
+	try {
+		yield put(toggleremovePropertyFloorplansLoading(true));
+		let url = `/api/v1/projects/handle-image/property/remove-floorplan/${floorplan}/${id}`;
+		const response = yield axios.get(url);
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(toggleremovePropertyFloorplansLoading(false));
+			console.log(responseData);
+		} else {
+			yield put(toggleremovePropertyFloorplansLoading(false));
+			yield put(setProjects(responseData.data.projects));
+			callback('success', floorplan);
+		}
+	} catch (error) {
+		yield put(toggleremovePropertyFloorplansLoading(false));
 		const errorResponse = error.response.data;
 		callback(errorResponse);
 		callback('fail', errorResponse.message);
@@ -224,6 +299,9 @@ export function* onUpdateProjectPropertyDetails() {
 		updateProjectPropertyDetails
 	);
 }
+export function* onFloorplanDelete() {
+	yield takeLatest(types.REMOVE_PROPERTY_FLOORPLAN, removePropertyFloorplan);
+}
 
 export function* projectSagas() {
 	yield all([
@@ -232,5 +310,6 @@ export function* projectSagas() {
 		call(onFetchProjectsDetails),
 		call(onUpdateProjectsDetails),
 		call(onUpdateProjectPropertyDetails),
+		call(onFloorplanDelete),
 	]);
 }

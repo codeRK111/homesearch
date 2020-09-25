@@ -38,6 +38,10 @@ export const toggleUpdateProjectPropertyDetailsLoading = (status) => ({
 	type: projectActionTypes.TOGGLE_UPDATE_PROJECT_PROPERTY_DETAILS_LOADING,
 	payload: status,
 });
+export const toggleremovePropertyFloorplansLoading = (status) => ({
+	type: projectActionTypes.TOGGLE_REMOVE_PROPERTY_FLOORPLAN_LOADING,
+	payload: status,
+});
 
 // manage resources
 export const addProjectFlat = (payload) => ({
@@ -50,5 +54,9 @@ export const updateProjectDetails = (payload) => ({
 });
 export const updateProjectPropertyDetails = (payload) => ({
 	type: projectActionTypes.UPDATE_PROJECT_PROPERTY_DETAILS,
+	payload,
+});
+export const removePropertyFloorplan = (payload) => ({
+	type: projectActionTypes.REMOVE_PROPERTY_FLOORPLAN,
 	payload,
 });

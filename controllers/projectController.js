@@ -265,6 +265,177 @@ exports.handleImage = catchAsync(async (req, res, next) => {
 	}
 });
 
+exports.handlePropertyImage = catchAsync(async (req, res, next) => {
+	if (!req.files) {
+		return next(new AppError('No image found', 400));
+	} else {
+		const project = await ProjectProperty.findById(req.params.id);
+		if (!project) return next(new AppError('project not found', 404));
+
+		if (req.files.image1) {
+			if (project.image1) {
+				fs.unlinkSync(
+					path.join(__dirname, '../', 'images', 'project_images/') +
+						project.image1
+				);
+			}
+			let image1 =
+				Math.floor(10000000 + Math.random() * 90000000) +
+				'-' +
+				req.files.image1.name;
+			await req.files.image1.mv(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					image1
+			);
+			project.image1 = image1;
+		}
+
+		if (req.files.image2) {
+			if (project.image2) {
+				fs.unlinkSync(
+					path.join(__dirname, '../', 'images', 'project_images/') +
+						project.image2
+				);
+			}
+			let image2 =
+				Math.floor(10000000 + Math.random() * 90000000) +
+				'-' +
+				req.files.image2.name;
+			await req.files.image2.mv(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					image2
+			);
+			project.image2 = image2;
+		}
+
+		if (req.files.image3) {
+			if (project.image3) {
+				fs.unlinkSync(
+					path.join(__dirname, '../', 'images', 'project_images/') +
+						project.image3
+				);
+			}
+			let image3 =
+				Math.floor(10000000 + Math.random() * 90000000) +
+				'-' +
+				req.files.image3.name;
+			await req.files.image3.mv(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					image3
+			);
+			project.image3 = image3;
+		}
+
+		if (req.files.image4) {
+			if (project.image4) {
+				fs.unlinkSync(
+					path.join(__dirname, '../', 'images', 'project_images/') +
+						project.image4
+				);
+			}
+			let image4 =
+				Math.floor(10000000 + Math.random() * 90000000) +
+				'-' +
+				req.files.image4.name;
+			await req.files.image4.mv(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					image4
+			);
+			project.image4 = image4;
+		}
+
+		const projectUpdated = await project.save();
+
+		//send response
+		res.send({
+			status: 'success',
+			message: 'File is uploaded',
+			data: {
+				property: projectUpdated,
+			},
+		});
+	}
+});
+
+exports.handleFloorplan = catchAsync(async (req, res, next) => {
+	if (!req.files) {
+		return next(new AppError('No image found', 400));
+	} else {
+		const property = await ProjectProperty.findById(req.params.id);
+		if (!property) return next(new AppError('property not found', 404));
+
+		if (req.files.floorplan1) {
+			if (property.floorplan1) {
+				// Delete file
+				fs.unlinkSync(
+					path.join(__dirname, '../', 'images', 'project_images/') +
+						property.floorplan1
+				);
+			}
+			let floorplan1 =
+				Math.floor(10000000 + Math.random() * 90000000) +
+				'-' +
+				req.files.floorplan1.name;
+			await req.files.floorplan1.mv(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					floorplan1
+			);
+			property.floorplan1 = floorplan1;
+		}
+
+		if (req.files.floorplan2) {
+			if (property.floorplan2) {
+				fs.unlinkSync(
+					path.join(__dirname, '../', 'images', 'project_images/') +
+						property.floorplan2
+				);
+			}
+			let floorplan2 =
+				Math.floor(10000000 + Math.random() * 90000000) +
+				'-' +
+				req.files.floorplan2.name;
+			await req.files.floorplan2.mv(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					floorplan2
+			);
+			property.floorplan2 = floorplan2;
+		}
+
+		const propertyUpdated = await property.save();
+
+		//send response
+		res.send({
+			status: 'success',
+			message: 'File is uploaded',
+			data: {
+				property: propertyUpdated,
+			},
+		});
+	}
+});
+
+exports.removeFloorplan = catchAsync(async (req, res, next) => {
+	const property = await ProjectProperty.findById(req.params.id);
+	if (!property) {
+		return next(new AppError('property not found'));
+	}
+	if (property[req.params.floorName]) {
+		fs.unlinkSync(
+			path.join(__dirname, '../', 'images', 'project_images/') +
+				property[req.params.floorName]
+		);
+		property[req.params.floorName] = null;
+	}
+
+	const newProperty = await property.save();
+	res.send({
+		status: 'success',
+		data: {
+			property: newProperty,
+		},
+	});
+});
+
 exports.getProjectDetails = catchAsync(async (req, res, next) => {
 	const project = await Project.findById(req.params.id);
 	if (!project) return next(new AppError('project not found', 404));

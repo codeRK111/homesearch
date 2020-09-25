@@ -6,6 +6,7 @@ const INITIAL_STATE = {
 	fetchProjectDetailsLoading: false,
 	updateProjectDetailsLoading: false,
 	updateProjectPropertyDetailsLoading: false,
+	removePropertyFloorplanLoading: false,
 	projects: [],
 };
 
@@ -35,6 +36,11 @@ const builderReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				updateProjectPropertyDetailsLoading: action.payload,
+			};
+		case projectActionTypes.TOGGLE_REMOVE_PROPERTY_FLOORPLAN_LOADING:
+			return {
+				...state,
+				removePropertyFloorplanLoading: action.payload,
 			};
 		case projectActionTypes.SET_PROJECTS:
 			return {
