@@ -110,6 +110,7 @@ const EditProject = ({
 						<ProjectInfo
 							initialValue={projectDetails}
 							id={params.id}
+							refetch={refetch}
 						/>
 					)}
 				</Box>

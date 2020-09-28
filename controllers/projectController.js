@@ -414,17 +414,47 @@ exports.handleFloorplan = catchAsync(async (req, res, next) => {
 	}
 });
 
-exports.removeFloorplan = catchAsync(async (req, res, next) => {
+exports.removeProjectImage = catchAsync(async (req, res, next) => {
+	const project = await Project.findById(req.params.id);
+	if (!project) {
+		return next(new AppError('project not found'));
+	}
+	if (project[req.params.image]) {
+		try {
+			fs.unlinkSync(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					project[req.params.image]
+			);
+		} catch (_) {
+			// console.log(error);
+		}
+		project[req.params.image] = null;
+	}
+
+	const newProperty = await project.save();
+	res.send({
+		status: 'success',
+		data: {
+			project: newProperty,
+		},
+	});
+});
+
+exports.removePropertyImage = catchAsync(async (req, res, next) => {
 	const property = await ProjectProperty.findById(req.params.id);
 	if (!property) {
 		return next(new AppError('property not found'));
 	}
-	if (property[req.params.floorName]) {
-		fs.unlinkSync(
-			path.join(__dirname, '../', 'images', 'project_images/') +
-				property[req.params.floorName]
-		);
-		property[req.params.floorName] = null;
+	if (property[req.params.image]) {
+		try {
+			fs.unlinkSync(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					property[req.params.image]
+			);
+		} catch (_) {
+			// console.log(error);
+		}
+		property[req.params.image] = null;
 	}
 
 	const newProperty = await property.save();

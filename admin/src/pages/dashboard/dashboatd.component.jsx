@@ -58,298 +58,300 @@ const Dashboard = () => {
 			</Backdrop>
 			<h3 className={classes.textCenter}>Welcome to Homesearch18</h3>
 			<p>{error}</p>
-			<Box mt="3rem">
-				<Grid container spacing={3}>
-					<Grid item xs={12} md={4} lg={3}>
-						<Card className={classes.root}>
-							<Box p="0.5rem" display="flex">
-								<Box
-									display="flex"
-									justifyContent="center"
-									alignItems="center"
-									width={'30%'}
-									className={classes.grayBackground}
-								>
-									<PeopleIcon
-										color="secondary"
-										fontSize="large"
-									/>
-								</Box>
-								<Box width={'70%'}>
+			{!isLoading && (
+				<Box mt="3rem">
+					<Grid container spacing={3}>
+						<Grid item xs={12} md={4} lg={3}>
+							<Card className={classes.root}>
+								<Box p="0.5rem" display="flex">
 									<Box
-										className={[
-											classes.textCenter,
-											classes.largeFont,
-										].join(' ')}
+										display="flex"
+										justifyContent="center"
+										alignItems="center"
+										width={'30%'}
+										className={classes.grayBackground}
 									>
-										{response.users}
+										<PeopleIcon
+											color="secondary"
+											fontSize="large"
+										/>
 									</Box>
-									<Box
-										className={[
-											classes.textCenter,
-											'font-secondary',
-										].join(' ')}
-									>
-										Users
+									<Box width={'70%'}>
+										<Box
+											className={[
+												classes.textCenter,
+												classes.largeFont,
+											].join(' ')}
+										>
+											{response.users}
+										</Box>
+										<Box
+											className={[
+												classes.textCenter,
+												'font-secondary',
+											].join(' ')}
+										>
+											Users
+										</Box>
 									</Box>
 								</Box>
-							</Box>
-						</Card>
+							</Card>
+						</Grid>
+						<Grid item xs={12} md={4} lg={3}>
+							<Card className={classes.root}>
+								<Box p="0.5rem" display="flex">
+									<Box
+										display="flex"
+										justifyContent="center"
+										alignItems="center"
+										width={'30%'}
+										className={classes.grayBackground}
+									>
+										<SupervisorAccountIcon
+											color="secondary"
+											fontSize="large"
+										/>
+									</Box>
+									<Box width={'70%'}>
+										<Box
+											className={[
+												classes.textCenter,
+												classes.largeFont,
+											].join(' ')}
+										>
+											{response.admins}
+										</Box>
+										<Box
+											className={[
+												classes.textCenter,
+												'font-secondary',
+											].join(' ')}
+										>
+											Admin / Staffs
+										</Box>
+									</Box>
+								</Box>
+							</Card>
+						</Grid>
+						<Grid item xs={12} md={4} lg={3}>
+							<Card className={classes.root}>
+								<Box p="0.5rem" display="flex">
+									<Box
+										display="flex"
+										justifyContent="center"
+										alignItems="center"
+										width={'30%'}
+										className={classes.grayBackground}
+									>
+										<ApartmentIcon
+											color="secondary"
+											fontSize="large"
+										/>
+									</Box>
+									<Box width={'70%'}>
+										<Box
+											className={[
+												classes.textCenter,
+												classes.largeFont,
+											].join(' ')}
+										>
+											{response.activeProperties}
+										</Box>
+										<Box
+											className={[
+												classes.textCenter,
+												'font-secondary',
+											].join(' ')}
+										>
+											Active Properties
+										</Box>
+									</Box>
+								</Box>
+							</Card>
+						</Grid>
+						<Grid item xs={12} md={4} lg={3}>
+							<Card className={classes.root}>
+								<Box p="0.5rem" display="flex">
+									<Box
+										display="flex"
+										justifyContent="center"
+										alignItems="center"
+										width={'30%'}
+										className={classes.grayBackground}
+									>
+										<BusinessIcon
+											color="secondary"
+											fontSize="large"
+										/>
+									</Box>
+									<Box width={'70%'}>
+										<Box
+											className={[
+												classes.textCenter,
+												classes.largeFont,
+											].join(' ')}
+										>
+											{response.underScreeningProperties}
+										</Box>
+										<Box
+											className={[
+												classes.textCenter,
+												'font-secondary',
+											].join(' ')}
+										>
+											Properties under screening
+										</Box>
+									</Box>
+								</Box>
+							</Card>
+						</Grid>
+						<Grid item xs={12} md={4} lg={3}>
+							<Card className={classes.root}>
+								<Box p="0.5rem" display="flex">
+									<Box
+										display="flex"
+										justifyContent="center"
+										alignItems="center"
+										width={'30%'}
+										className={classes.grayBackground}
+									>
+										<DomainDisabledIcon
+											color="secondary"
+											fontSize="large"
+										/>
+									</Box>
+									<Box width={'70%'}>
+										<Box
+											className={[
+												classes.textCenter,
+												classes.largeFont,
+											].join(' ')}
+										>
+											{response.expiredProperties}
+										</Box>
+										<Box
+											className={[
+												classes.textCenter,
+												'font-secondary',
+											].join(' ')}
+										>
+											Expired Properties
+										</Box>
+									</Box>
+								</Box>
+							</Card>
+						</Grid>
+						<Grid item xs={12} md={4} lg={3}>
+							<Card className={classes.root}>
+								<Box p="0.5rem" display="flex">
+									<Box
+										display="flex"
+										justifyContent="center"
+										alignItems="center"
+										width={'30%'}
+										className={classes.grayBackground}
+									>
+										<EmojiTransportationIcon
+											color="secondary"
+											fontSize="large"
+										/>
+									</Box>
+									<Box width={'70%'}>
+										<Box
+											className={[
+												classes.textCenter,
+												classes.largeFont,
+											].join(' ')}
+										>
+											{response.cities}
+										</Box>
+										<Box
+											className={[
+												classes.textCenter,
+												'font-secondary',
+											].join(' ')}
+										>
+											Cities
+										</Box>
+									</Box>
+								</Box>
+							</Card>
+						</Grid>
+						<Grid item xs={12} md={4} lg={3}>
+							<Card className={classes.root}>
+								<Box p="0.5rem" display="flex">
+									<Box
+										display="flex"
+										justifyContent="center"
+										alignItems="center"
+										width={'30%'}
+										className={classes.grayBackground}
+									>
+										<LocationCityIcon
+											color="secondary"
+											fontSize="large"
+										/>
+									</Box>
+									<Box width={'70%'}>
+										<Box
+											className={[
+												classes.textCenter,
+												classes.largeFont,
+											].join(' ')}
+										>
+											{response.locations}
+										</Box>
+										<Box
+											className={[
+												classes.textCenter,
+												'font-secondary',
+											].join(' ')}
+										>
+											Locations
+										</Box>
+									</Box>
+								</Box>
+							</Card>
+						</Grid>
+						<Grid item xs={12} md={4} lg={3}>
+							<Card className={classes.root}>
+								<Box p="0.5rem" display="flex">
+									<Box
+										display="flex"
+										justifyContent="center"
+										alignItems="center"
+										width={'30%'}
+										className={classes.grayBackground}
+									>
+										<HomeWorkIcon
+											color="secondary"
+											fontSize="large"
+										/>
+									</Box>
+									<Box width={'70%'}>
+										<Box
+											className={[
+												classes.textCenter,
+												classes.largeFont,
+											].join(' ')}
+										>
+											{response.projects}
+										</Box>
+										<Box
+											className={[
+												classes.textCenter,
+												'font-secondary',
+											].join(' ')}
+										>
+											Projects
+										</Box>
+									</Box>
+								</Box>
+							</Card>
+						</Grid>
 					</Grid>
-					<Grid item xs={12} md={4} lg={3}>
-						<Card className={classes.root}>
-							<Box p="0.5rem" display="flex">
-								<Box
-									display="flex"
-									justifyContent="center"
-									alignItems="center"
-									width={'30%'}
-									className={classes.grayBackground}
-								>
-									<SupervisorAccountIcon
-										color="secondary"
-										fontSize="large"
-									/>
-								</Box>
-								<Box width={'70%'}>
-									<Box
-										className={[
-											classes.textCenter,
-											classes.largeFont,
-										].join(' ')}
-									>
-										{response.admins}
-									</Box>
-									<Box
-										className={[
-											classes.textCenter,
-											'font-secondary',
-										].join(' ')}
-									>
-										Admin / Staffs
-									</Box>
-								</Box>
-							</Box>
-						</Card>
-					</Grid>
-					<Grid item xs={12} md={4} lg={3}>
-						<Card className={classes.root}>
-							<Box p="0.5rem" display="flex">
-								<Box
-									display="flex"
-									justifyContent="center"
-									alignItems="center"
-									width={'30%'}
-									className={classes.grayBackground}
-								>
-									<ApartmentIcon
-										color="secondary"
-										fontSize="large"
-									/>
-								</Box>
-								<Box width={'70%'}>
-									<Box
-										className={[
-											classes.textCenter,
-											classes.largeFont,
-										].join(' ')}
-									>
-										{response.activeProperties}
-									</Box>
-									<Box
-										className={[
-											classes.textCenter,
-											'font-secondary',
-										].join(' ')}
-									>
-										Active Properties
-									</Box>
-								</Box>
-							</Box>
-						</Card>
-					</Grid>
-					<Grid item xs={12} md={4} lg={3}>
-						<Card className={classes.root}>
-							<Box p="0.5rem" display="flex">
-								<Box
-									display="flex"
-									justifyContent="center"
-									alignItems="center"
-									width={'30%'}
-									className={classes.grayBackground}
-								>
-									<BusinessIcon
-										color="secondary"
-										fontSize="large"
-									/>
-								</Box>
-								<Box width={'70%'}>
-									<Box
-										className={[
-											classes.textCenter,
-											classes.largeFont,
-										].join(' ')}
-									>
-										{response.underScreeningProperties}
-									</Box>
-									<Box
-										className={[
-											classes.textCenter,
-											'font-secondary',
-										].join(' ')}
-									>
-										Properties under screening
-									</Box>
-								</Box>
-							</Box>
-						</Card>
-					</Grid>
-					<Grid item xs={12} md={4} lg={3}>
-						<Card className={classes.root}>
-							<Box p="0.5rem" display="flex">
-								<Box
-									display="flex"
-									justifyContent="center"
-									alignItems="center"
-									width={'30%'}
-									className={classes.grayBackground}
-								>
-									<DomainDisabledIcon
-										color="secondary"
-										fontSize="large"
-									/>
-								</Box>
-								<Box width={'70%'}>
-									<Box
-										className={[
-											classes.textCenter,
-											classes.largeFont,
-										].join(' ')}
-									>
-										{response.expiredProperties}
-									</Box>
-									<Box
-										className={[
-											classes.textCenter,
-											'font-secondary',
-										].join(' ')}
-									>
-										Expired Properties
-									</Box>
-								</Box>
-							</Box>
-						</Card>
-					</Grid>
-					<Grid item xs={12} md={4} lg={3}>
-						<Card className={classes.root}>
-							<Box p="0.5rem" display="flex">
-								<Box
-									display="flex"
-									justifyContent="center"
-									alignItems="center"
-									width={'30%'}
-									className={classes.grayBackground}
-								>
-									<EmojiTransportationIcon
-										color="secondary"
-										fontSize="large"
-									/>
-								</Box>
-								<Box width={'70%'}>
-									<Box
-										className={[
-											classes.textCenter,
-											classes.largeFont,
-										].join(' ')}
-									>
-										{response.cities}
-									</Box>
-									<Box
-										className={[
-											classes.textCenter,
-											'font-secondary',
-										].join(' ')}
-									>
-										Cities
-									</Box>
-								</Box>
-							</Box>
-						</Card>
-					</Grid>
-					<Grid item xs={12} md={4} lg={3}>
-						<Card className={classes.root}>
-							<Box p="0.5rem" display="flex">
-								<Box
-									display="flex"
-									justifyContent="center"
-									alignItems="center"
-									width={'30%'}
-									className={classes.grayBackground}
-								>
-									<LocationCityIcon
-										color="secondary"
-										fontSize="large"
-									/>
-								</Box>
-								<Box width={'70%'}>
-									<Box
-										className={[
-											classes.textCenter,
-											classes.largeFont,
-										].join(' ')}
-									>
-										{response.locations}
-									</Box>
-									<Box
-										className={[
-											classes.textCenter,
-											'font-secondary',
-										].join(' ')}
-									>
-										Locations
-									</Box>
-								</Box>
-							</Box>
-						</Card>
-					</Grid>
-					<Grid item xs={12} md={4} lg={3}>
-						<Card className={classes.root}>
-							<Box p="0.5rem" display="flex">
-								<Box
-									display="flex"
-									justifyContent="center"
-									alignItems="center"
-									width={'30%'}
-									className={classes.grayBackground}
-								>
-									<HomeWorkIcon
-										color="secondary"
-										fontSize="large"
-									/>
-								</Box>
-								<Box width={'70%'}>
-									<Box
-										className={[
-											classes.textCenter,
-											classes.largeFont,
-										].join(' ')}
-									>
-										0
-									</Box>
-									<Box
-										className={[
-											classes.textCenter,
-											'font-secondary',
-										].join(' ')}
-									>
-										Projects
-									</Box>
-								</Box>
-							</Box>
-						</Card>
-					</Grid>
-				</Grid>
-			</Box>
+				</Box>
+			)}
 		</Box>
 	);
 };

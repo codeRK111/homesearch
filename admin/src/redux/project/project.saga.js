@@ -257,11 +257,14 @@ export function* updateProjectPropertyDetails({
 }
 
 export function* removePropertyFloorplan({
-	payload: { callback, floorplan, id },
+	payload: { callback, floorplan, id, type = 'property' },
 }) {
 	try {
 		yield put(toggleremovePropertyFloorplansLoading(true));
-		let url = `/api/v1/projects/handle-image/property/remove-floorplan/${floorplan}/${id}`;
+		let url =
+			type === 'property'
+				? `/api/v1/projects/handle-image/property/remove-floorplan/${floorplan}/${id}`
+				: `/api/v1/projects/handle-image/remove-image/${floorplan}/${id}`;
 		const response = yield axios.get(url);
 		const responseData = response.data;
 		if (responseData.status === 'fail') {

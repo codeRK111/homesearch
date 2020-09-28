@@ -28,9 +28,15 @@ import {
 	selectAmenities,
 	selectLoading as resourcesLoading,
 } from '../../redux/property/property.selector';
-import { selectUpdateProjectDetailsLoading } from '../../redux/project/project.selector';
+import {
+	selectUpdateProjectDetailsLoading,
+	selectremovePropertyFloorplanLoading,
+} from '../../redux/project/project.selector';
 import { fetchAllPropertyResourcesStart } from '../../redux/property/property.actions';
-import { updateProjectDetails } from '../../redux/project/project.action';
+import {
+	updateProjectDetails,
+	removePropertyFloorplan,
+} from '../../redux/project/project.action';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -69,6 +75,9 @@ const ProjectInfo = ({
 	id,
 	updateProjectDetailsLoading,
 	updateProjectDetails,
+	removeFloorplanLoading,
+	removePropertyFloorplan,
+	refetch,
 }) => {
 	// Declaration
 	const classes = useStyles();
@@ -104,6 +113,16 @@ const ProjectInfo = ({
 		}
 	};
 
+	const handleRemovePropertyFloorplan = (type, data) => {
+		if (type === 'fail') {
+			setAsyncError(data);
+		} else {
+			console.log(data);
+			setAsyncError(null);
+			refetch();
+		}
+	};
+
 	// Event handler
 	const handleChangeSwitch = (e) => {
 		const { name, checked } = e.target;
@@ -134,6 +153,10 @@ const ProjectInfo = ({
 		updateProjectDetails(handleUpdateProjectDetails, id, clone);
 	};
 
+	const handleRemoveImage = (name) => (e) => {
+		removePropertyFloorplan(handleRemovePropertyFloorplan, name, id);
+	};
+
 	// UseEffect hooks
 	React.useEffect(() => {
 		if (visible.amenities) {
@@ -147,6 +170,12 @@ const ProjectInfo = ({
 			<Backdrop
 				className={classes.backdrop}
 				open={updateProjectDetailsLoading}
+			>
+				<CircularProgress color="secondary" />
+			</Backdrop>
+			<Backdrop
+				className={classes.backdrop}
+				open={removeFloorplanLoading}
 			>
 				<CircularProgress color="secondary" />
 			</Backdrop>
@@ -322,6 +351,22 @@ const ProjectInfo = ({
 												className={classes.image}
 											/>
 										</Box>
+										{values.image1 && (
+											<Button
+												variant="outlined"
+												color="secondary"
+												classes={{
+													label: 'transform-none',
+												}}
+												size="small"
+												className={classes.removeButton}
+												onClick={handleRemoveImage(
+													'image1'
+												)}
+											>
+												Remove
+											</Button>
+										)}
 									</Grid>
 									<Grid item xs={12} lg={3}>
 										<Box className={classes.imageWrapper}>
@@ -336,6 +381,22 @@ const ProjectInfo = ({
 												className={classes.image}
 											/>
 										</Box>
+										{values.image2 && (
+											<Button
+												variant="outlined"
+												color="secondary"
+												classes={{
+													label: 'transform-none',
+												}}
+												size="small"
+												className={classes.removeButton}
+												onClick={handleRemoveImage(
+													'image2'
+												)}
+											>
+												Remove
+											</Button>
+										)}
 									</Grid>
 									<Grid item xs={12} lg={3}>
 										<Box className={classes.imageWrapper}>
@@ -350,6 +411,22 @@ const ProjectInfo = ({
 												className={classes.image}
 											/>
 										</Box>
+										{values.image3 && (
+											<Button
+												variant="outlined"
+												color="secondary"
+												classes={{
+													label: 'transform-none',
+												}}
+												size="small"
+												className={classes.removeButton}
+												onClick={handleRemoveImage(
+													'image3'
+												)}
+											>
+												Remove
+											</Button>
+										)}
 									</Grid>
 									<Grid item xs={12} lg={3}>
 										<Box className={classes.imageWrapper}>
@@ -364,6 +441,22 @@ const ProjectInfo = ({
 												className={classes.image}
 											/>
 										</Box>
+										{values.image4 && (
+											<Button
+												variant="outlined"
+												color="secondary"
+												classes={{
+													label: 'transform-none',
+												}}
+												size="small"
+												className={classes.removeButton}
+												onClick={handleRemoveImage(
+													'image4'
+												)}
+											>
+												Remove
+											</Button>
+										)}
 									</Grid>
 								</Grid>
 							</RowHOC>
@@ -520,6 +613,7 @@ const mapStateToProps = createStructuredSelector({
 	amenities: selectAmenities,
 	resourcesLoading,
 	updateProjectDetailsLoading: selectUpdateProjectDetailsLoading,
+	removeFloorplanLoading: selectremovePropertyFloorplanLoading,
 });
 
 const mapActionToProps = (dispatch) => ({
@@ -527,6 +621,15 @@ const mapActionToProps = (dispatch) => ({
 		dispatch(fetchAllPropertyResourcesStart({ callback })),
 	updateProjectDetails: (callback, projectId, project) =>
 		dispatch(updateProjectDetails({ callback, projectId, project })),
+	removePropertyFloorplan: (callback, floorplan, id) =>
+		dispatch(
+			removePropertyFloorplan({
+				callback,
+				floorplan,
+				id,
+				type: 'project',
+			})
+		),
 });
 
 export default connect(mapStateToProps, mapActionToProps)(ProjectInfo);

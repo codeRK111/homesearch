@@ -103,6 +103,7 @@ app.use(
 // 	})
 // );
 app.use('/admin', express.static(path.join(__dirname, 'admin', 'build')));
+app.use('/', express.static(path.join(__dirname, 'client', 'build')));
 
 // 3) ROUTES
 app.use('/api/v1/admin/users', adminUserRoute);

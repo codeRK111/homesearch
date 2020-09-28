@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
 const Feature = require('./../models/featuresModel');
+const Project = require('./../models/projectModule');
 const Admin = require('./../models/adminModel');
 const City = require('./../models/cityModel');
 const Location = require('./../models/locationModel');
@@ -8,9 +8,6 @@ const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const sendOtpMessage = require('../utils/sendOtp');
-const ApiFeatures = require('../utils/apiFeatures');
-const path = require('path');
-var fs = require('fs');
 
 exports.setAuthenticationNumber = catchAsync(async (req, res, next) => {
 	if (!req.params.number) {
@@ -71,14 +68,21 @@ exports.getAuthNumber = catchAsync(async (req, res, next) => {
 	});
 });
 
-exports.getCount = catchAsync(async (req,res,next) => {
-	const admins = await Admin.count();
-	const cities = await City.count();
-	const locations = await Location.count();
-	const activeProperties = await Property.count({status: 'active'});
-	const underScreeningProperties = await Property.count({status: 'underScreening'});
-	const expiredProperties = await Property.count({status: 'expired'});
-	const users = await User.count();
+exports.getCount = catchAsync(async (req, res, next) => {
+	const admins = await Admin.countDocuments();
+	const cities = await City.countDocuments();
+	const locations = await Location.countDocuments();
+	const activeProperties = await Property.countDocuments({
+		status: 'active',
+	});
+	const underScreeningProperties = await Property.countDocuments({
+		status: 'underScreening',
+	});
+	const expiredProperties = await Property.countDocuments({
+		status: 'expired',
+	});
+	const users = await User.countDocuments();
+	const projects = await Project.countDocuments();
 
 	res.status(200).json({
 		status: 'success',
@@ -90,6 +94,7 @@ exports.getCount = catchAsync(async (req,res,next) => {
 			activeProperties,
 			underScreeningProperties,
 			expiredProperties,
-		}
-	})
-})
+			projects,
+		},
+	});
+});

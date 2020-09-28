@@ -10,8 +10,11 @@ router
 router.route('/land').post(projectController.addProjectLand);
 router.route('/properties/:id').patch(projectController.updateProjectProperty);
 router
-	.route('/handle-image/property/remove-floorplan/:floorName/:id')
-	.get(projectController.removeFloorplan);
+	.route('/handle-image/remove-image/:image/:id')
+	.get(projectController.removeProjectImage);
+router
+	.route('/handle-image/property/remove-floorplan/:image/:id')
+	.get(projectController.removePropertyImage);
 router
 	.route('/handle-image/property/floorplan/:id')
 	.patch(projectController.handleFloorplan);

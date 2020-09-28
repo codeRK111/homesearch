@@ -10,7 +10,7 @@
 		"start:client": "cd admin && yarn start",
 		"start:proj": "concurrently \"npm:start:prod\" \"npm:start:client\"",
 		"debug": "ndb server.js",
-		"heroku-postbuild": "cd admin && npm install && npm run build --aot --prod"
+		"heroku-postbuild": "cd admin && npm install && npm run build --aot --prod && cd client && npm install && npm run build --aot --prod"
 	},
 	"keywords": [],
 	"author": "",
