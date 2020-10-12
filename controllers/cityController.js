@@ -78,6 +78,19 @@ exports.getCity = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.searchCity = catchAsync(async (req, res, next) => {
+	if (!req.body.name)
+		return next(new AppError('Parameter name not found', 400));
+	const cities = await City.find({
+		name: { $regex: req.body.name, $options: 'i' },
+	});
+
+	res.status(200).json({
+		status: 'success',
+		data: { cities },
+	});
+});
+
 exports.updateCity = catchAsync(async (req, res, next) => {
 	if (!req.body.name || !req.body.state) {
 		return next(new AppError('name and state required'), 400);

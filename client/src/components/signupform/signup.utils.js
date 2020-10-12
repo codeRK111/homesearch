@@ -19,5 +19,4 @@ export const signupSchema = Yup.object().shape({
 		.min(10, '10 digits required')
 		.max(10, '10 digits required')
 		.required('Phone number required'),
-	city: Yup.string().required('City required'),
 });

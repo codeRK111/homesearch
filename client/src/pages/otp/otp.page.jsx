@@ -4,13 +4,13 @@ import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 // Custom
 import useStyles from '../login/login.styles';
 import Copyright from '../../components/copyright/copyright.component';
-import SignUpForm from '../../components/signupform/signupform.component';
+import OtpForm from '../../components/validateNumber/validateNumber.component';
 
 export default function SignInSide() {
 	const classes = useStyles();
@@ -56,11 +56,11 @@ export default function SignInSide() {
 						alignItems="center"
 					>
 						<Avatar className={classes.avatar}>
-							<PersonAddIcon />
+							<PhoneAndroidIcon />
 						</Avatar>
-						<div className={classes.signInText}>Sign up</div>
+						<div className={classes.signInText}>Verify Number</div>
 					</Box>
-					<SignUpForm />
+					<OtpForm />
 
 					<Box mt={5}>
 						<Copyright />

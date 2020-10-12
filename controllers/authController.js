@@ -15,6 +15,7 @@ const getUserEssentials = (user) => ({
 	name: user.name,
 	email: user.email,
 	number_verified: user.number_verified,
+	number: user.number,
 });
 
 const signToken = (id) => {
@@ -48,12 +49,23 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
+	const lastDoc = await User.find().sort({ _id: -1 }).limit(1);
+	const lastDocSerialNumber =
+		lastDoc.length === 0 ? 0 : lastDoc[0].serialNumber;
 	const newUser = await User.create({
 		name: req.body.name,
 		email: req.body.email,
 		password: req.body.password,
 		city: req.body.city,
-		gender: req.body.gender,
+		gender: 'male',
+		number: req.body.number,
+		role: 'tenant',
+		registerThrough: 'site login',
+		registerVia: 'Web',
+		mobileStatus: 'semi-private',
+		paymentStatus: 'unpaid',
+		status: 'active',
+		serialNumber: lastDocSerialNumber + 1,
 	});
 
 	createSendToken(getUserEssentials(newUser), 201, res);
