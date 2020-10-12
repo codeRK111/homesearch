@@ -13,6 +13,10 @@ export const validateOtp = (payload) => ({
 	type: authActionTypes.VALIDATE_OTP_START,
 	payload,
 });
+export const signIn = (payload) => ({
+	type: authActionTypes.SIGN_IN_START,
+	payload,
+});
 // Set
 // Toggle
 export const toggleSignUpLoading = (payload) => ({
@@ -26,5 +30,9 @@ export const togglesendOtpLoading = (payload) => ({
 });
 export const toggleValidateOtpLoading = (payload) => ({
 	type: authActionTypes.TOGGLE_VALIDATE_OTP_LOADING,
+	payload,
+});
+export const toggleSignInLoading = (payload) => ({
+	type: authActionTypes.TOGGLE_SIGN_IN_LOADING,
 	payload,
 });

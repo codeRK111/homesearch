@@ -16,4 +16,8 @@ export const selectValidateOtpLoading = createSelector(
 	[selectAuth],
 	(c) => c.validateOtpLoading
 );
+export const selectSignInLoading = createSelector(
+	[selectAuth],
+	(c) => c.signInLoading
+);
 // Select Errors

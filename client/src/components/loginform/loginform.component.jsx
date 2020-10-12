@@ -1,16 +1,39 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import { Grid, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 // Custom components
 import FormInput from '../../components/forminput/forminput.component';
 import FormCheckbox from '../../components/formcheckbox/formcheckbox.component';
 import { loginSchema } from './login.utils';
 import makeStyles from './loginform.styles';
+import ErrorMessage from '../errorMessage/errorMessage.component';
 
-const LoginForm = () => {
+// Redux
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { signIn } from '../../redux/auth/auth.actions';
+import { selectSignInLoading } from '../../redux/auth/auth.selectors';
+
+const LoginForm = ({ signInLoading, signIn }) => {
 	const classes = makeStyles();
+	const history = useHistory();
+	const [asyncError, setAsyncError] = React.useState(null);
+
+	const handlesignIn = (status, data = null) => {
+		if (status === 'success') {
+			setAsyncError(null);
+			console.log(data);
+			history.push('/profile');
+		} else {
+			setAsyncError(data);
+		}
+	};
+	const onSubmit = (values) => {
+		const data = { ...values };
+		signIn(handlesignIn, data);
+	};
 	return (
 		<Formik
 			initialValues={{
@@ -19,9 +42,16 @@ const LoginForm = () => {
 				rememberMe: '',
 			}}
 			validationSchema={loginSchema}
+			onSubmit={onSubmit}
 		>
 			{({ values, isValid }) => (
 				<Form className={classes.form}>
+					{asyncError && (
+						<ErrorMessage
+							message={asyncError}
+							onClear={() => setAsyncError(null)}
+						/>
+					)}
 					<FormInput
 						variant="outlined"
 						margin="normal"
@@ -52,9 +82,14 @@ const LoginForm = () => {
 						variant="contained"
 						color="primary"
 						className={classes.submit}
-						disabled={!values.email || !values.password || !isValid}
+						disabled={
+							!values.email ||
+							!values.password ||
+							!isValid ||
+							signInLoading
+						}
 					>
-						Sign In
+						{signInLoading ? 'Authenticating ...' : 'Sign In'}
 					</Button>
 					<Grid container>
 						<Grid item xs>
@@ -74,4 +109,12 @@ const LoginForm = () => {
 	);
 };
 
-export default LoginForm;
+const mapStateToProps = createStructuredSelector({
+	signInLoading: selectSignInLoading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	signIn: (callback, user) => dispatch(signIn({ user, callback })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

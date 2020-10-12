@@ -5,6 +5,7 @@ import {
 	toggleSignUpLoading,
 	togglesendOtpLoading,
 	toggleValidateOtpLoading,
+	toggleSignInLoading,
 } from './auth.actions';
 
 function* signUpSaga({ payload: { user, callback } }) {
@@ -58,6 +59,27 @@ function* validateOtpSaga({ payload: { number, callback, otp } }) {
 	}
 }
 
+function* signInSaga({ payload: { user, callback } }) {
+	yield put(toggleSignInLoading(true));
+	const url = '/api/v1/users/login';
+	const data = JSON.stringify(user);
+	try {
+		const response = yield axios({
+			method: 'post',
+			headers: { 'Content-Type': 'application/json' },
+			url,
+			data,
+		});
+		const responseData = response.data;
+		yield put(toggleSignInLoading(false));
+		callback('success', responseData);
+	} catch (error) {
+		yield put(toggleSignInLoading(false));
+		const errorResponse = error.response.data;
+		callback('fail', errorResponse.message);
+	}
+}
+
 function* onSignUp() {
 	yield takeLatest(types.SIGN_UP_START, signUpSaga);
 }
@@ -70,6 +92,15 @@ function* onvalidateOtp() {
 	yield takeLatest(types.VALIDATE_OTP_START, validateOtpSaga);
 }
 
+function* onvSignIn() {
+	yield takeLatest(types.SIGN_IN_START, signInSaga);
+}
+
 export function* authSagas() {
-	yield all([call(onSignUp), call(onSendOtp), call(onvalidateOtp)]);
+	yield all([
+		call(onSignUp),
+		call(onSendOtp),
+		call(onvalidateOtp),
+		call(onvSignIn),
+	]);
 }

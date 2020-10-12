@@ -26,7 +26,6 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 	const handlesignUp = (status, data = null) => {
 		if (status === 'success') {
 			setAsyncError(null);
-			console.log(data);
 			history.push(`/otp/${data['data']['user']['number']}`);
 		} else {
 			setAsyncError(data);

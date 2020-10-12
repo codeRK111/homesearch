@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Formik, Form } from 'formik';
 import { Button } from '@material-ui/core';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 
 // Custom components
 import FormInput from '../../components/forminput/forminput.component';
@@ -28,21 +28,21 @@ const ValidateNumber = ({
 	validateOtp,
 }) => {
 	const classes = makeStyles();
+	const history = useHistory();
 	const [asyncError, setAsyncError] = React.useState(null);
 
-	const handleSendOtp = (status, data = null) => {
+	const handleSendOtp = useCallback((status, data = null) => {
 		if (status === 'success') {
 			setAsyncError(null);
-			console.log(data);
 		} else {
 			setAsyncError(data);
 		}
-	};
+	}, []);
 
 	const handleValidateOtp = (status, data = null) => {
 		if (status === 'success') {
 			setAsyncError(null);
-			console.log(data);
+			history.push('/profile');
 		} else {
 			setAsyncError(data);
 		}
@@ -51,7 +51,7 @@ const ValidateNumber = ({
 		if (number) {
 			sendOtp(handleSendOtp, number);
 		}
-	}, [number, sendOtp]);
+	}, [number, sendOtp, handleSendOtp]);
 
 	const onSubmit = (values) => {
 		const otp = values.otp;

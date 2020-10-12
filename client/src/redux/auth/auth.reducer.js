@@ -6,6 +6,7 @@ const initialState = {
 	signUpLoading: false,
 	sendOtpLoading: false,
 	validateOtpLoading: false,
+	signInLoading: false,
 	// Errors
 };
 
@@ -25,6 +26,11 @@ const authReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				validateOtpLoading: payload,
+			};
+		case authActionTypes.TOGGLE_SIGN_IN_LOADING:
+			return {
+				...state,
+				signInLoading: payload,
 			};
 		default:
 			return state;

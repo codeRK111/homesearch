@@ -7,6 +7,7 @@ import { store } from './redux/store';
 import LoginPage from './pages/login/login.page';
 import SignUpForm from './pages/signup/signup.page';
 import OTPPage from './pages/otp/otp.page';
+import ProfilePage from './pages/profile/profile.page';
 
 function App() {
 	return (
@@ -28,6 +29,11 @@ function App() {
 							exact
 							path="/otp/:number"
 							render={() => <OTPPage />}
+						/>
+						<Route
+							exact
+							path="/profile"
+							render={() => <ProfilePage />}
 						/>
 					</Switch>
 				</HashRouter>
