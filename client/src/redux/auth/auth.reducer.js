@@ -2,16 +2,37 @@ import { authActionTypes } from './auth.types';
 
 const initialState = {
 	// Initial Values
+	authenticated: false,
+	token: null,
+	user: {
+		email: '',
+		name: '',
+		id: '',
+		number: '',
+		numberVerified: false,
+	},
 	// Loading States
 	signUpLoading: false,
 	sendOtpLoading: false,
 	validateOtpLoading: false,
 	signInLoading: false,
+	userProfileLoading: false,
 	// Errors
+	signInError: null,
 };
 
 const authReducer = (state = initialState, { type, payload }) => {
 	switch (type) {
+		// Set Values
+		case authActionTypes.SET_USER:
+			return {
+				...state,
+				authenticated: true,
+				token: payload.token,
+				user: payload.user,
+				signInError: null,
+			};
+		// Toggle loading
 		case authActionTypes.TOGGLE_SIGN_UP_LOADING:
 			return {
 				...state,
@@ -31,6 +52,17 @@ const authReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				signInLoading: payload,
+			};
+		case authActionTypes.TOGGLE_USER_PROFILE_LOADING:
+			return {
+				...state,
+				userProfileLoading: payload,
+			};
+		// Set errors
+		case authActionTypes.SIGNIN_ERROR:
+			return {
+				...state,
+				signInError: payload,
 			};
 		default:
 			return state;

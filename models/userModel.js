@@ -166,7 +166,12 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.pre('save', function (next) {
-	if (!this.isModified(this.password) || this.isNew) return next();
+	if (!this.isModified(this.password) || this.isNew) {
+		console.log('pass', this.isModified(this.password));
+		console.log(this.isNew);
+		return next();
+	}
+	console.log('updated');
 	this.passwordChangedAt = Date.now() - 1000;
 	next();
 });
@@ -175,7 +180,7 @@ userSchema.pre('save', function (next) {
 	if (
 		!this.isModified(this.password) ||
 		this.isNew ||
-		this.number_verified == false
+		this.numberVerified == false
 	)
 		return next();
 	this.otp = null;

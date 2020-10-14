@@ -1,5 +1,5 @@
 // const crypto = require('crypto');
-// const { promisify } = require('util');
+const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
@@ -14,7 +14,7 @@ const getUserEssentials = (user) => ({
 	id: user._id,
 	name: user.name,
 	email: user.email,
-	number_verified: user.number_verified,
+	numberVerified: user.numberVerified,
 	number: user.number,
 });
 
@@ -25,7 +25,7 @@ const signToken = (id) => {
 };
 
 const createSendToken = (user, statusCode, res) => {
-	const token = signToken(user._id);
+	const token = signToken(user.id);
 	const cookieOptions = {
 		expires: new Date(
 			Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -133,7 +133,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 	// 2) Verification token
 	const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
+	console.log(decoded);
 	// 3) Check if user still exists
 	const currentUser = await User.findById(decoded.id);
 	if (!currentUser) {
@@ -146,7 +146,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 	}
 
 	// 4) Check if user changed password after the token was issued
-	if (currentUser.changedPasswordAfter(decoded.iat)) {
+	if (currentUser.passwordChanged(decoded.iat)) {
 		return next(
 			new AppError(
 				'User recently changed password! Please log in again.',
@@ -158,6 +158,13 @@ exports.protect = catchAsync(async (req, res, next) => {
 	// GRANT ACCESS TO PROTECTED ROUTE
 	req.user = currentUser;
 	next();
+});
+
+exports.getUserInfo = catchAsync(async (req, res, next) => {
+	res.status(200).json({
+		status: 'success',
+		data: { user: getUserEssentials(req.user) },
+	});
 });
 
 exports.restrictTo = (...roles) => {
@@ -236,7 +243,7 @@ exports.validateOtp = catchAsync(async (req, res, next) => {
 	if (!user.correctOtp(req.params.otp)) {
 		return next(new AppError('otp not matched', 401));
 	}
-	user.number_verified = true;
+	user.numberVerified = true;
 	await user.save();
 	createSendToken(getUserEssentials(user), 200, res);
 });

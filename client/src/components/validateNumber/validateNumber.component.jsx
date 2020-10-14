@@ -16,6 +16,7 @@ import { sendOtp, validateOtp } from '../../redux/auth/auth.actions';
 import {
 	selectSendOtpLoading,
 	selectValidateOtpLoading,
+	selectUser,
 } from '../../redux/auth/auth.selectors';
 
 const ValidateNumber = ({
@@ -26,6 +27,7 @@ const ValidateNumber = ({
 	validateOtpLoading,
 	sendOtp,
 	validateOtp,
+	currentUser,
 }) => {
 	const classes = makeStyles();
 	const history = useHistory();
@@ -47,6 +49,12 @@ const ValidateNumber = ({
 			setAsyncError(data);
 		}
 	};
+
+	React.useEffect(() => {
+		if (currentUser.numberVerified) {
+			history.push('/login');
+		}
+	}, [currentUser.numberVerified, history]);
 	React.useEffect(() => {
 		if (number) {
 			sendOtp(handleSendOtp, number);
@@ -112,6 +120,7 @@ const ValidateNumber = ({
 const mapStateToProps = createStructuredSelector({
 	sendOtpLoading: selectSendOtpLoading,
 	validateOtpLoading: selectValidateOtpLoading,
+	currentUser: selectUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
