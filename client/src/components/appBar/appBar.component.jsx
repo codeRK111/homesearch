@@ -15,6 +15,7 @@ import Menu from '../menu/menu.component';
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
+		marginBottom: '4rem',
 	},
 	menuButton: {
 		marginRight: theme.spacing(1),
@@ -46,7 +47,7 @@ const Appbar = () => {
 	return (
 		<div className={classes.root}>
 			<AppDrawer open={open} handleDrawer={handleDrawer(false)} />
-			<AppBar position="static" color="transparent">
+			<AppBar position="fixed" color="default">
 				<Toolbar variant="regular">
 					{matches && (
 						<IconButton

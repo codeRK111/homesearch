@@ -13,6 +13,11 @@ const useStyles = makeStyles((theme) => ({
 		maxHeight: '100%',
 		width: '100%',
 		objectFit: 'cover',
+		transition: '0.5s all ease-in-out',
+		cursor: 'pointer',
+		'&:hover': {
+			transform: 'scale(1.3)',
+		},
 	},
 	priceWrapper: {
 		position: 'absolute',
@@ -21,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: 'rgba(0,0,0,0.57)',
 		color: '#ffffff',
 		padding: '0.4rem',
-		fontSize: '13px',
+		fontSize: '12px',
 		fontWeight: 600,
 	},
 	location: {
@@ -33,10 +38,18 @@ const useStyles = makeStyles((theme) => ({
 	},
 	avatar: {
 		backgroundColor: theme.colorTwo,
+		width: theme.spacing(3),
+		height: theme.spacing(3),
 	},
 	title: {
 		padding: 0,
 		margin: 0,
+	},
+	callIcon: {
+		fontSize: '1rem',
+	},
+	imageWrapper: {
+		overflow: 'hidden',
 	},
 }));
 
@@ -57,11 +70,17 @@ const Row = ({ title }) => {
 			<Box mt="1rem">
 				<Grid container spacing={2}>
 					{[1, 2, 3, 4].map((_, i) => (
-						<Grid item xs={12} md={3}>
+						<Grid item xs={12} md={3} key={i}>
 							<Paper className={classes.cardWrapper}>
-								<Box height="150px" position="relative">
+								<Box
+									height="150px"
+									position="relative"
+									className={classes.imageWrapper}
+								>
 									<img
-										src="https://www.jagabadi.com/uploads/300x400/96fd326ed0daa5123b3e1749c2627461.jpg"
+										src={require(`../../assets/${
+											i % 2 === 0 ? 'flat' : 'home'
+										}.jpeg`)}
 										alt=""
 										srcset=""
 										className={classes.image}
@@ -92,7 +111,9 @@ const Row = ({ title }) => {
 										className={classes.avatar}
 										sizes="small"
 									>
-										<CallRoundedIcon />
+										<CallRoundedIcon
+											className={classes.callIcon}
+										/>
 									</Avatar>
 								</Box>
 							</Paper>

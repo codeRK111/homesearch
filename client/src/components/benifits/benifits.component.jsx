@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	icon: {
 		fontSize: '3rem',
-		color: theme.colorTwo,
+		color: theme.colorOne,
 	},
 	benifitWrapper: {
 		[theme.breakpoints.down('sm')]: {

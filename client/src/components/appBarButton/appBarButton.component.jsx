@@ -3,12 +3,14 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 	button: {
-		backgroundColor: theme.colorOne,
-		color: '#ffffff',
-		fontSize: '12px',
-		borderRadius: '2px',
+		border: `1px solid ${theme.colorOne}`,
 		padding: '7px 14px',
-		border: 'none',
+		color: theme.colorOne,
+		cursor: 'pointer',
+		'&:hover': {
+			backgroundColor: theme.colorOne,
+			color: '#ffffff',
+		},
 	},
 }));
 
