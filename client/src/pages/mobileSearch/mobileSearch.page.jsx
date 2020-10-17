@@ -42,24 +42,6 @@ const MobileSearch = () => {
 			</Box>
 			<PropertyTab />
 			<Box pl="1rem">
-				<h4>City</h4>
-			</Box>
-			<Box pl="1rem" pr="1rem">
-				<FormControl variant="outlined" fullWidth size="small">
-					<Select
-						native
-						inputProps={{
-							name: 'age',
-							id: 'filled-age-native-simple',
-						}}
-					>
-						<option value={10}>Bhubaneswar</option>
-						<option value={20}>Nayagarh</option>
-						<option value={30}>Cuttack</option>
-					</Select>
-				</FormControl>
-			</Box>
-			<Box pl="1rem">
 				<h4>Locality</h4>
 			</Box>
 			<Box pl="1rem" pr="1rem">

@@ -54,22 +54,24 @@ const SearchProperty = () => {
 				</h1>
 				<PropertyTab />
 				<Box mt="2rem" display="flex" className={classes.wrapper}>
-					<FormControl
-						variant="outlined"
-						className={classes.formControl}
-					>
-						<Select
-							native
-							inputProps={{
-								name: 'age',
-								id: 'filled-age-native-simple',
-							}}
+					{!mobile && (
+						<FormControl
+							variant="outlined"
+							className={classes.formControl}
 						>
-							<option value={10}>Bhubaneswar</option>
-							<option value={20}>Nayagarh</option>
-							<option value={30}>Cuttack</option>
-						</Select>
-					</FormControl>
+							<Select
+								native
+								inputProps={{
+									name: 'age',
+									id: 'filled-age-native-simple',
+								}}
+							>
+								<option value={10}>Bhubaneswar</option>
+								<option value={20}>Nayagarh</option>
+								<option value={30}>Cuttack</option>
+							</Select>
+						</FormControl>
+					)}
 					<Box className={classes.searchBoxWrapper}>
 						<SearchIcon />
 						<input

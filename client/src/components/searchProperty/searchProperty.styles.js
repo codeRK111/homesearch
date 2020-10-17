@@ -18,16 +18,18 @@ export const useStyles = makeStyles((theme) => ({
 		paddingLeft: '10px',
 		[theme.breakpoints.down('sm')]: {
 			height: '50px',
+			marginTop: '2rem',
 		},
 	},
 	searchField: {
 		border: 'none',
-
 		paddingLeft: '10px',
 	},
 	wrapper: {
 		[theme.breakpoints.down('sm')]: {
 			flexDirection: 'column',
+			width: '90%',
+			margin: '1rem',
 		},
 	},
 	buttonWrapper: {
@@ -60,6 +62,9 @@ export const useStyles = makeStyles((theme) => ({
 		height: '100%',
 		top: 0,
 		left: 0,
+		[theme.breakpoints.down('sm')]: {
+			alignItems: 'left',
+		},
 	},
 	formControl: {
 		backgroundColor: '#ffffff',
