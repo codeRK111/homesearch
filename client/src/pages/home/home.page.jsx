@@ -10,26 +10,24 @@ import Row from '../../components/row/row.component';
 import Enquiery from '../../components/builderEnquiery/builderEnquiery.component';
 import Testimonial from '../../components/testimonial/testimonial.component';
 import Footer from '../../components/footer/footer.component';
+import Realestate from '../../components/realestate/realestate.component';
+import Search from '../../components/searches/searches.component';
 
 const HomePage = () => {
 	return (
 		<div>
 			<Appbar />
 			<SearchProperty />
-			<Box mt="3rem" mb="3rem">
-				<Heading title="Why choose homesearch18" />
-			</Box>
-			<Box p="2rem">
+
+			<Box p="2rem" mt="2rem">
 				<Benifits />
 			</Box>
-			<Box mt="3rem">
-				<Heading title="Property Collections" />
-			</Box>
+
 			<Box mt="2rem" p="2rem">
-				<Row title="Properties for rent" />
-				<Box mt="1rem">
-					<Row title="Properties for sale" />
-				</Box>
+				<Realestate />
+			</Box>
+			<Box mt="2rem">
+				<Row title={'New Projects In Bhubaneswar'} />
 			</Box>
 			<Box mt="3rem" mb="3rem">
 				<Heading title="Homesearch18 for builders" />
@@ -43,6 +41,7 @@ const HomePage = () => {
 			<Box p="2rem" mb="1rem">
 				<Testimonial />
 			</Box>
+			<Search />
 			<Footer />
 		</div>
 	);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Grid, Paper, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Iframe from 'react-iframe';
 
 const useStyles = makeStyles((theme) => ({
 	image: {
@@ -61,50 +62,72 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Testimonial = ({ title }) => {
+const Testimonial = () => {
 	const classes = useStyles();
 	return (
 		<div>
 			<Box mt="1rem">
 				<Grid container spacing={3}>
-					{[1, 2, 3, 4].map((_, i) => (
-						<Grid item xs={12} md={3} key={i}>
-							<Paper
-								className={classes.cardWrapper}
-								elevation={2}
-							>
-								<Box
-									display="flex"
-									flexDirection="column"
-									alignItems="center"
-									p="1rem"
-								>
-									<Avatar className={classes.avatar}>
-										<img
-											src={require('../../assets/face.jpeg')}
-											alt="face"
-										/>
-									</Avatar>
-									<Box>
-										<p className={classes.text}>
-											<i>
-												Lorem ipsum dolor sit amet
-												consectetur adipisicing elit.
-												Ipsa reprehenderit molestiae hic
-												fuga pariatur architecto
-												accusamus iste eligendi quaerat
-												soluta?
-											</i>
-										</p>
-									</Box>
-									<Box display="flex" alignItems="center">
-										<div className={classes.hypen}></div>
-										<b>Avesh Khan</b>
-									</Box>
-								</Box>
-							</Paper>
+					<Grid item xs={12} md={6}>
+						<Grid container spacing={3}>
+							{[1, 2, 3, 4].map((_, i) => (
+								<Grid item xs={12} md={6} key={i}>
+									<Paper
+										className={classes.cardWrapper}
+										elevation={4}
+									>
+										<Box
+											display="flex"
+											flexDirection="column"
+											alignItems="center"
+											p="1rem"
+										>
+											<Avatar className={classes.avatar}>
+												<img
+													src={require('../../assets/face.jpeg')}
+													alt="face"
+												/>
+											</Avatar>
+											<Box>
+												<p className={classes.text}>
+													<i>
+														Lorem ipsum dolor sit
+														amet consectetur
+														adipisicing elit. Ipsa
+														reprehenderit molestiae
+														hic fuga pariatur
+														architecto accusamus
+														iste eligendi quaerat
+														soluta?
+													</i>
+												</p>
+											</Box>
+											<Box
+												display="flex"
+												alignItems="center"
+											>
+												<div
+													className={classes.hypen}
+												></div>
+												<b>Avesh Khan</b>
+											</Box>
+										</Box>
+									</Paper>
+								</Grid>
+							))}
 						</Grid>
-					))}
+					</Grid>
+					<Grid item xs={12} md={6}>
+						<Iframe
+							url="http://www.youtube.com/embed/xDMP3i36naA"
+							width="100%"
+							height="100%"
+							id="myId"
+							className="myClassname"
+							display="initial"
+							position="relative"
+						/>
+					</Grid>
 				</Grid>
 				<Box mt="2rem" display="flex" justifyContent="center">
 					<button className={classes.seeAll}>See all &#8594;</button>

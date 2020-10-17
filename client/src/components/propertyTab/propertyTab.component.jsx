@@ -15,6 +15,10 @@ const useStyles = makeStyles((theme) => ({
 	selected: {
 		color: theme.colorOne,
 	},
+	paper: {
+		backgroundColor: '#000000',
+		color: '#ffffff',
+	},
 }));
 
 export default function DisabledTabs() {
@@ -26,7 +30,7 @@ export default function DisabledTabs() {
 	};
 
 	return (
-		<Paper square>
+		<Paper elevation={3} className={classes.paper}>
 			<Tabs
 				value={value}
 				indicatorColor="primary"
@@ -52,6 +56,14 @@ export default function DisabledTabs() {
 				/>
 				<Tab
 					label="Resale"
+					classes={{
+						wrapper: classes.wrapper,
+						selected: classes.selected,
+					}}
+				/>
+				<Tab
+					disabled
+					label="Live bidding (Coming soon)"
 					classes={{
 						wrapper: classes.wrapper,
 						selected: classes.selected,

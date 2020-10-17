@@ -1,10 +1,9 @@
 import React from 'react';
-import { Grid, Box, Avatar } from '@material-ui/core';
+import { Grid, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import PersonAddDisabledRoundedIcon from '@material-ui/icons/PersonAddDisabledRounded';
-import DescriptionRoundedIcon from '@material-ui/icons/DescriptionRounded';
-import HomeWorkRoundedIcon from '@material-ui/icons/HomeWorkRounded';
-import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounded';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import BusinessIcon from '@material-ui/icons/Business';
+import HomeIcon from '@material-ui/icons/Home';
 
 const useStyles = makeStyles((theme) => ({
 	benifit: {
@@ -20,8 +19,14 @@ const useStyles = makeStyles((theme) => ({
 			'0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
 	},
 	icon: {
-		fontSize: '3rem',
-		color: theme.colorOne,
+		fontSize: '4rem',
+		color: theme.fontColorTwo,
+		transition: '0.5s all ease-in-out',
+		cursor: 'pointer',
+		'&:hover': {
+			transform: 'scale(1.3)',
+			color: theme.colorOne,
+		},
 	},
 	benifitWrapper: {
 		[theme.breakpoints.down('sm')]: {
@@ -34,82 +39,39 @@ const Benifits = () => {
 	const classes = useStyles();
 	return (
 		<Grid container spacing={3}>
-			<Grid items xs={12} md={3}>
+			<Grid items xs={12} md={4}>
 				<Box
 					display="flex"
 					flexDirection="column"
 					alignItems="center"
-					width="75%"
 					className={classes.benifitWrapper}
 				>
-					<Avatar className={classes.avatar}>
-						<PersonAddDisabledRoundedIcon
-							className={classes.icon}
-						/>
-					</Avatar>
-					<b>Lorem, ipsum dolor.</b>
-					<p className={classes.benifit}>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Rem animi dolor ipsa quaerat, porro sint doloribus
-						fugiat consequuntur enim possimus.
-					</p>
+					<BusinessIcon className={classes.icon} />
+
+					<b>New Project</b>
 				</Box>
 			</Grid>
-			<Grid items xs={12} md={3}>
+			<Grid items xs={12} md={4}>
 				<Box
 					display="flex"
 					flexDirection="column"
 					alignItems="center"
-					width="75%"
 					className={classes.benifitWrapper}
 				>
-					<Avatar className={classes.avatar}>
-						<DescriptionRoundedIcon className={classes.icon} />
-					</Avatar>
-					<b>Lorem, ipsum dolor.</b>
-					<p className={classes.benifit}>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Rem animi dolor ipsa quaerat, porro sint doloribus
-						fugiat consequuntur enim possimus.
-					</p>
+					<MonetizationOnIcon className={classes.icon} />
+
+					<b>Home Loan</b>
 				</Box>
 			</Grid>
-			<Grid items xs={12} md={3}>
+			<Grid items xs={12} md={4}>
 				<Box
 					display="flex"
 					flexDirection="column"
 					alignItems="center"
-					width="75%"
 					className={classes.benifitWrapper}
 				>
-					<Avatar className={classes.avatar}>
-						<InsertDriveFileRoundedIcon className={classes.icon} />
-					</Avatar>
-					<b>Lorem, ipsum dolor.</b>
-					<p className={classes.benifit}>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Rem animi dolor ipsa quaerat, porro sint doloribus
-						fugiat consequuntur enim possimus.
-					</p>
-				</Box>
-			</Grid>
-			<Grid items xs={12} md={3}>
-				<Box
-					display="flex"
-					flexDirection="column"
-					alignItems="center"
-					width="75%"
-					className={classes.benifitWrapper}
-				>
-					<Avatar className={classes.avatar}>
-						<HomeWorkRoundedIcon className={classes.icon} />
-					</Avatar>
-					<b>Lorem, ipsum dolor.</b>
-					<p className={classes.benifit}>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Rem animi dolor ipsa quaerat, porro sint doloribus
-						fugiat consequuntur enim possimus.
-					</p>
+					<HomeIcon className={classes.icon} />
+					<b>Home Interirors</b>
 				</Box>
 			</Grid>
 		</Grid>

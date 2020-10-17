@@ -1,9 +1,7 @@
 import React from 'react';
-import { Box, Grid, Paper, Avatar } from '@material-ui/core';
+import { Box, Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
 import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
-import CallRoundedIcon from '@material-ui/icons/CallRounded';
 
 const useStyles = makeStyles((theme) => ({
 	seeAll: {
@@ -29,6 +27,35 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: '12px',
 		fontWeight: 600,
 	},
+	companyWrapper: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		backgroundColor: 'rgba(0,0,0,0.77)',
+		color: '#ffffff',
+		fontWeight: 'bold',
+		padding: '0.2rem',
+	},
+	number: {
+		color: theme.colorTwo,
+	},
+	shortlist: {
+		border: `1px solid ${theme.colorTwo}`,
+		padding: '0.8rem 2rem',
+		color: theme.colorTwo,
+		cursor: 'pointer',
+		'&:hover': {
+			backgroundColor: theme.colorTwo,
+			color: '#ffffff',
+		},
+	},
+	details: {
+		border: `1px solid ${theme.colorOne}`,
+		padding: '0.8rem 2rem',
+		cursor: 'pointer',
+		backgroundColor: theme.colorOne,
+		color: '#ffffff',
+	},
 	location: {
 		color: theme.fontColor,
 	},
@@ -42,8 +69,7 @@ const useStyles = makeStyles((theme) => ({
 		height: theme.spacing(3),
 	},
 	title: {
-		padding: 0,
-		margin: 0,
+		textAlign: 'center',
 	},
 	callIcon: {
 		fontSize: '1rem',
@@ -51,27 +77,27 @@ const useStyles = makeStyles((theme) => ({
 	imageWrapper: {
 		overflow: 'hidden',
 	},
+	wrapper: {
+		backgroundColor: theme.fontColorThree,
+		padding: '2rem',
+	},
 }));
 
 const Row = ({ title }) => {
 	const classes = useStyles();
 	return (
-		<div>
-			<Box
-				display="flex"
-				justifyContent="space-between"
-				alignItems="center"
-			>
-				<h3 className={classes.title}>{title}</h3>
-				<Link className={classes.seeAll} to="/">
-					See all
-				</Link>
+		<div className={classes.wrapper}>
+			<Box mb="4rem">
+				<h2 className={classes.title}>{title}</h2>
 			</Box>
 			<Box mt="1rem">
-				<Grid container spacing={2}>
+				<Grid container spacing={5}>
 					{[1, 2, 3, 4].map((_, i) => (
 						<Grid item xs={12} md={3} key={i}>
-							<Paper className={classes.cardWrapper}>
+							<Paper
+								className={classes.cardWrapper}
+								elevation={5}
+							>
 								<Box
 									height="150px"
 									position="relative"
@@ -85,41 +111,68 @@ const Row = ({ title }) => {
 										srcset=""
 										className={classes.image}
 									/>
-									<div className={classes.priceWrapper}>
-										<span>72000</span>
-										<br />
-										<span>1650 sq. ft</span>
+
+									<div className={classes.companyWrapper}>
+										<b>
+											Homesearch
+											<span className={classes.number}>
+												18
+											</span>
+										</b>
 									</div>
 								</Box>
-								<Box
-									p="1rem"
-									display="flex"
-									justifyContent="space-between"
-									alignItems="center"
-								>
+								<Box p="1rem">
 									<Box mr="1rem">
-										<span>3 BHK Flat / Aspanartment</span>{' '}
-										<br />
-										<span className={classes.location}>
-											<RoomRoundedIcon
-												className={classes.locationIcon}
-											/>{' '}
-											Hanspal, Bhubaneswar
-										</span>
+										<b>3 BHK Flat / Aspanartment</b> <br />
+										<Box>
+											<span className={classes.location}>
+												<RoomRoundedIcon
+													className={
+														classes.locationIcon
+													}
+												/>{' '}
+												Hanspal, Bhubaneswar
+											</span>
+										</Box>
 									</Box>
-									<Avatar
-										className={classes.avatar}
-										sizes="small"
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="space-between"
 									>
-										<CallRoundedIcon
-											className={classes.callIcon}
-										/>
-									</Avatar>
+										<b>Rs. 26.55L to 55.8L</b>
+										<b className={classes.number}>
+											Ready to move
+										</b>
+									</Box>
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="space-between"
+									>
+										<b>1,2,3 BHK Apartment</b>
+										<b>123-345 SF</b>
+									</Box>
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="space-between"
+									>
+										<button className={classes.shortlist}>
+											Shortlist
+										</button>
+										<button className={classes.details}>
+											Details
+										</button>
+									</Box>
 								</Box>
 							</Paper>
 						</Grid>
 					))}
 				</Grid>
+			</Box>
+			<Box mt="2rem" display="flex" justifyContent="center">
+				<button className={classes.shortlist}>View all &#8594;</button>
 			</Box>
 		</div>
 	);

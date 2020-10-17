@@ -27,7 +27,7 @@ const Heading = ({ title }) => {
 	return (
 		<div className={classes.wrapper}>
 			<span className={classes.title}>{title}</span>
-			<div className={classes.bar}></div>
+			{/* <div className={classes.bar}></div> */}
 		</div>
 	);
 };

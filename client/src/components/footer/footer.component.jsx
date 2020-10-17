@@ -8,7 +8,7 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
-		backgroundColor: 'rgba(0,0,0,0.6)',
+		backgroundColor: 'rgba(0,0,0,0.9)',
 		color: '#ffffff',
 	},
 	link: {
@@ -40,7 +40,7 @@ const Footer = () => {
 	return (
 		<Box className={classes.wrapper} p="2rem">
 			<Grid container spacing={3}>
-				<Grid item xs={12} md={6}>
+				{/* <Grid item xs={12} md={6}>
 					<Box pr="1rem">
 						<h3>About Us</h3>
 						<p>
@@ -53,10 +53,31 @@ const Footer = () => {
 							nisi vitae dicta ipsa corrupti quia rem ipsam.
 						</p>
 					</Box>
-				</Grid>
+				</Grid> */}
 
 				<Grid item xs={6} md={2}>
-					<h3>Company</h3>
+					<h3>Overview</h3>
+					<Box>
+						<Link className={classes.link}>About us</Link>
+					</Box>
+					<Box>
+						<Link className={classes.link}>Careers</Link>
+					</Box>
+					<Box>
+						<Link className={classes.link}>Terms & Conditions</Link>
+					</Box>
+					<Box>
+						<Link className={classes.link}>Privacy Policy</Link>
+					</Box>
+					<Box>
+						<Link className={classes.link}>Rental Agreement</Link>
+					</Box>
+					<Box>
+						<Link className={classes.link}>Testimonials</Link>
+					</Box>
+				</Grid>
+				<Grid item xs={6} md={2}>
+					<h3>Network sites</h3>
 					<Box>
 						<Link className={classes.link}>About us</Link>
 					</Box>
@@ -94,7 +115,7 @@ const Footer = () => {
 						<Link className={classes.link}>Instagram</Link>
 					</Box>
 				</Grid>
-				<Grid item xs={12} md={2}>
+				<Grid item xs={6} md={2}>
 					<h3>Follow Us</h3>
 					<Box display="flex" alignItems="center">
 						<Avatar className={classes.avatar}>
@@ -115,7 +136,57 @@ const Footer = () => {
 						<Link className={classes.link}>Share on instagram</Link>
 					</Box>
 				</Grid>
+				<Grid item xs={12} md={4}>
+					<Box
+						display="flex"
+						alignItems="center"
+						justifyContent="center"
+					>
+						<h3>Homesearch18 on mobile</h3>
+					</Box>
+
+					<Box
+						display="flex"
+						alignItems="center"
+						justifyContent="center"
+					>
+						<img
+							src={require('../../assets/google-play.webp')}
+							alt="google-play"
+						/>
+					</Box>
+					<Box
+						display="flex"
+						alignItems="center"
+						mt="1rem"
+						justifyContent="center"
+					>
+						<img
+							src={require('../../assets/app-store.webp')}
+							alt="app-store"
+						/>
+					</Box>
+				</Grid>
 			</Grid>
+			<Box mt="1rem">
+				<Grid container>
+					<Grid item xs={12}>
+						<Box pr="1rem">
+							<h3>About Us</h3>
+							<p>
+								Lorem ipsum dolor, sit amet consectetur
+								adipisicing elit. Dolorem nihil, molestias ab
+								facere ad impedit temporibus architecto vel quis
+								pariatur, aliquid laborum nulla iure minus,
+								eligendi inventore cupiditate ex ullam
+								voluptatum fuga sed. Eum blanditiis earum rerum
+								optio sint. Quos eum magnam, nisi vitae dicta
+								ipsa corrupti quia rem ipsam.
+							</p>
+						</Box>
+					</Grid>
+				</Grid>
+			</Box>
 		</Box>
 	);
 };

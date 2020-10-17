@@ -7,12 +7,14 @@ const useStyles = makeStyles((theme) => ({
 		color: '#ffffff',
 		fontSize: '14px',
 		borderRadius: '2px',
-		padding: '0 20px 0 20px',
+		padding: '0 30px 0 30px',
 		border: 'none',
 		display: 'flex',
 		alignItems: 'center',
 		cursor: 'pointer',
 		height: '100%',
+		fontWeight: 'bold',
+		justifyContent: 'center',
 	},
 }));
 
