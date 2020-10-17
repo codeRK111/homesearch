@@ -6,103 +6,21 @@ import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
 import Popper from '@material-ui/core/Popper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import SearchIcon from '@material-ui/icons/Search';
+import { useHistory } from 'react-router-dom';
 
 // Custom components
 import PropertyTab from '../propertyTab/propertyTab.component';
 import SearchButton from '../searchButton/searchButton.component';
-const img = require('../../assets/real.jpg');
 
-const useStyles = makeStyles((theme) => ({
-	title: {
-		color: '#ffffff',
-		textAlign: 'center',
-		marginTop: '10%',
-	},
-	searchField: {
-		borderLeft: 'none',
-		borderTop: '1px solid #cccccc',
-		paddingLeft: '10px',
-		[theme.breakpoints.down('sm')]: {
-			padding: '18.5px 14px',
-			border: '1px solid #cccccc',
-		},
-	},
-	wrapper: {
-		[theme.breakpoints.down('sm')]: {
-			flexDirection: 'column',
-		},
-	},
-	buttonWrapper: {
-		[theme.breakpoints.down('sm')]: {
-			height: '50px',
-		},
-	},
-	bg: {
-		position: 'relative',
-		backgroundImage: `url("${img}")`,
-		backgroundRepeat: 'no-repeat',
-		backgroundColor:
-			theme.palette.type === 'light'
-				? theme.palette.grey[50]
-				: theme.palette.grey[900],
-		backgroundSize: 'cover',
-		backgroundPosition: 'center',
-		height: '90vh',
-	},
-	overlay: {
-		backgroundColor: 'rgba(0,0,0,0.8)',
-		position: 'absolute',
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		width: '100%',
-		height: '100%',
-		top: 0,
-		left: 0,
-	},
-	formControl: {
-		backgroundColor: '#ffffff',
-	},
-	budget: {
-		backgroundColor: '#ffffff',
-		height: '100%',
-		cursor: 'pointer',
-		[theme.breakpoints.down('sm')]: {
-			height: '50px',
-		},
-		minWidth: '150px',
-		maxWidth: '100%',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	property: {
-		backgroundColor: '#ffffff',
-		height: '100%',
-		cursor: 'pointer',
-		[theme.breakpoints.down('sm')]: {
-			height: '50px',
-		},
-		minWidth: '150px',
-		borderLeft: '1px solid #cccccc',
-		maxWidth: '100%',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	icon: {
-		fontSize: '18px',
-		marginLeft: '0.5rem',
-		color: theme.colorOne,
-	},
-	budgetPopper: {
-		backgroundColor: '#ffffff',
-		maxWidth: '200px',
-	},
-}));
+// Style
+import { useStyles } from './searchProperty.styles';
 
 const SearchProperty = () => {
 	const classes = useStyles();
+	const mobile = useMediaQuery('(max-width:600px)');
+	const history = useHistory();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [anchorElProperty, setAnchorElProperty] = React.useState(null);
 	const handleClick = (event) => {
@@ -115,6 +33,12 @@ const SearchProperty = () => {
 	const openProperty = Boolean(anchorElProperty);
 	const id = open ? 'simple-popper' : undefined;
 	const idP = open ? 'simple-popper-Type' : undefined;
+
+	const checkMobile = () => {
+		if (mobile) {
+			history.push('/m/search');
+		}
+	};
 	return (
 		<Box
 			display="flex"
@@ -146,57 +70,69 @@ const SearchProperty = () => {
 							<option value={30}>Cuttack</option>
 						</Select>
 					</FormControl>
-					<input
-						type="text"
-						placeholder="This is a dummy placeholder"
-						className={classes.searchField}
-					/>
-					<div
-						className={classes.budgetWrapper}
-						onClick={handleClick}
-					>
-						<div className={classes.budget}>
-							Budget <ArrowDropDownOutlinedIcon />
+					<Box className={classes.searchBoxWrapper}>
+						<SearchIcon />
+						<input
+							type="text"
+							placeholder="This is a dummy placeholder"
+							className={classes.searchField}
+							onClick={checkMobile}
+						/>
+					</Box>
+					{!mobile && (
+						<div
+							className={classes.budgetWrapper}
+							onClick={handleClick}
+						>
+							<div className={classes.budget}>
+								Budget <ArrowDropDownOutlinedIcon />
+							</div>
 						</div>
-					</div>
-					<Popper
-						id={id}
-						open={open}
-						anchorEl={anchorEl}
-						placement="top-start"
-						popperOptions={{
-							positionFixed: true,
-						}}
-						keepMounted={true}
-						disablePortal={true}
-					>
-						<Paper className={classes.budgetPopper}>
-							<BudgetItems />
-						</Paper>
-					</Popper>
-					<div
-						className={classes.budgetWrapper}
-						onClick={handleClickProperty}
-					>
-						<div className={classes.property}>
-							Property Type <ArrowDropDownOutlinedIcon />
+					)}
+					{!mobile && (
+						<Popper
+							id={id}
+							open={open}
+							anchorEl={anchorEl}
+							placement="top-start"
+							popperOptions={{
+								positionFixed: true,
+							}}
+							keepMounted={true}
+							disablePortal={true}
+						>
+							<Paper className={classes.budgetPopper}>
+								<BudgetItems />
+							</Paper>
+						</Popper>
+					)}
+					{!mobile && (
+						<div
+							className={classes.budgetWrapper}
+							onClick={handleClickProperty}
+						>
+							<div className={classes.property}>
+								Property Type <ArrowDropDownOutlinedIcon />
+							</div>
 						</div>
-					</div>
-					<Popper
-						id={idP}
-						open={openProperty}
-						anchorEl={anchorElProperty}
-						placement="bottom-start"
-						popperOptions={{
-							positionFixed: true,
-						}}
-						keepMounted={true}
-						disablePortal={true}
-					>
-						<Paper className={classes.budgetPopper}>
-							<PropertyItems />
-						</Paper>
-					</Popper>
+					)}
+					{!mobile && (
+						<Popper
+							id={idP}
+							open={openProperty}
+							anchorEl={anchorElProperty}
+							placement="bottom-start"
+							popperOptions={{
+								positionFixed: true,
+							}}
+							keepMounted={true}
+							disablePortal={true}
+						>
+							<Paper className={classes.budgetPopper}>
+								<PropertyItems />
+							</Paper>
+						</Popper>
+					)}
 					<div className={classes.buttonWrapper}>
 						<SearchButton text="Search" />
 					</div>

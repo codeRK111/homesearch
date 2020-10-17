@@ -1,4 +1,5 @@
 import React from 'react';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Grid, Box, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BuilderEnquiery = () => {
+	const mobile = useMediaQuery('(max-width:600px)');
 	const classes = useStyles();
 	return (
 		<div>
@@ -43,7 +45,7 @@ const BuilderEnquiery = () => {
 						display="flex"
 						flexDirection="column"
 						alignItems="center"
-						mt="10rem"
+						mt={mobile ? '1rem' : '10rem'}
 						className={classes.inquuiryWrapper}
 					>
 						<h3>Contact us to sell or rent your projects</h3>

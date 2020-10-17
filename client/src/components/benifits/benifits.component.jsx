@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 	benifitWrapper: {
 		[theme.breakpoints.down('sm')]: {
 			width: '100%',
+			marginTop: '1rem',
 		},
 	},
 }));

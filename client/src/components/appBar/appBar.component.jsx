@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -14,28 +13,8 @@ import Button from '../appBarButton/appBarButton.component';
 import Menu from '../menu/menu.component';
 import City from '../cityDropdown/cityDropdown.component';
 
-const useStyles = makeStyles((theme) => ({
-	root: {
-		flexGrow: 1,
-		marginBottom: '4rem',
-	},
-	menuButton: {
-		marginRight: theme.spacing(1),
-	},
-	title: {
-		flexGrow: 1,
-		fontWeight: 'bold',
-		display: 'flex',
-		alignItems: 'center',
-		[theme.breakpoints.down('sm')]: {
-			justifyContent: 'space-between',
-		},
-	},
-	lastWord: {
-		color: theme.colorOne,
-		fontWeight: 'bold',
-	},
-}));
+// Styles
+import { useStyles } from './appBar.styles';
 
 const Appbar = () => {
 	const classes = useStyles();

@@ -6,6 +6,9 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 
+// Custom components
+// import BottomNavigation from '../bottomNavigation/bottomNavigation.component';
+
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		backgroundColor: 'rgba(0,0,0,0.9)',
@@ -32,6 +35,11 @@ const useStyles = makeStyles((theme) => ({
 		width: theme.spacing(4),
 		height: theme.spacing(4),
 		marginRight: '0.5rem',
+	},
+	positionFixed: {
+		bottom: 0,
+		position: 'fixed',
+		top: 'auto',
 	},
 }));
 
@@ -187,6 +195,14 @@ const Footer = () => {
 					</Grid>
 				</Grid>
 			</Box>
+			{/* <AppBar
+				position="fixed"
+				classes={{
+					positionFixed: classes.positionFixed,
+				}}
+			>
+				<BottomNavigation />
+			</AppBar> */}
 		</Box>
 	);
 };

@@ -36,6 +36,7 @@ export default function DisabledTabs() {
 				indicatorColor="primary"
 				onChange={handleChange}
 				aria-label="disabled tabs example"
+				variant="fullWidth"
 				classes={{
 					indicator: classes.indicator,
 				}}
@@ -63,7 +64,7 @@ export default function DisabledTabs() {
 				/>
 				<Tab
 					disabled
-					label="Live bidding (Coming soon)"
+					label="Live bidding"
 					classes={{
 						wrapper: classes.wrapper,
 						selected: classes.selected,

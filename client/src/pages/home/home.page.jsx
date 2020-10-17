@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 // External components
 import Appbar from '../../components/appBar/appBar.component';
@@ -14,31 +15,41 @@ import Realestate from '../../components/realestate/realestate.component';
 import Search from '../../components/searches/searches.component';
 
 const HomePage = () => {
+	const mobile = useMediaQuery('(max-width:600px)');
+
+	const spacing = {
+		p: mobile ? '1rem' : '2rem',
+		mt: mobile ? '1rem' : '2rem',
+	};
+	const spacing3 = {
+		p: mobile ? '0' : '3rem',
+		mt: mobile ? '1rem' : '3rem',
+	};
 	return (
 		<div>
 			<Appbar />
 			<SearchProperty />
 
-			<Box p="2rem" mt="2rem">
+			<Box {...spacing}>
 				<Benifits />
 			</Box>
 
-			<Box mt="2rem" p="2rem">
+			<Box {...spacing}>
 				<Realestate />
 			</Box>
 			<Box mt="2rem">
 				<Row title={'New Projects In Bhubaneswar'} />
 			</Box>
-			<Box mt="3rem" mb="3rem">
+			<Box {...spacing3}>
 				<Heading title="Homesearch18 for builders" />
 			</Box>
 			<Box>
 				<Enquiery />
 			</Box>
-			<Box mt="3rem" mb="3rem">
+			<Box {...spacing3}>
 				<Heading title="What our client say ?" />
 			</Box>
-			<Box p="2rem" mb="1rem">
+			<Box p={mobile ? '0 1rem' : '2rem'} mb="1rem">
 				<Testimonial />
 			</Box>
 			<Search />
