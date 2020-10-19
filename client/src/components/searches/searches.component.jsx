@@ -44,221 +44,253 @@ const Footer = () => {
 				<Grid item xs={6} md={3}>
 					<h5>City Property</h5>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>1 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							1 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Hyderabad
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Noida
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							2 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>2 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							2 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>1 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							1 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Hyderabad
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Noida
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							2 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>2 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							2 BHK Flat in Pune
+						</Link>
 					</Box>
 				</Grid>
 				<Grid item xs={6} md={3}>
 					<h5>Top Links</h5>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>1 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							1 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Hyderabad
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Noida
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							2 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>2 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							2 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>1 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							1 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Hyderabad
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Noida
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							2 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>2 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							2 BHK Flat in Pune
+						</Link>
 					</Box>
 				</Grid>
 				<Grid item xs={6} md={3}>
 					<h5>Top Builders</h5>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>1 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							1 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Hyderabad
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Noida
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							2 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>2 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							2 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>1 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							1 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Hyderabad
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Noida
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							2 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>2 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							2 BHK Flat in Pune
+						</Link>
 					</Box>
 				</Grid>
 				<Grid item xs={6} md={3}>
 					<h5>Recent Projects</h5>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>1 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							1 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Hyderabad
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Noida
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							2 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>2 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							2 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>1 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							1 BHK Flat in Pune
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Hyderabad
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							1 BHK Flat in Noida
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>
+						<Link className={classes.link} to="/">
 							2 BHK Flat in Gurgaon
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>2 BHK Flat in Pune</Link>
+						<Link className={classes.link} to="/">
+							2 BHK Flat in Pune
+						</Link>
 					</Box>
 				</Grid>
 			</Grid>

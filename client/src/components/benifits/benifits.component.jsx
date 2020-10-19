@@ -40,7 +40,7 @@ const Benifits = () => {
 	const classes = useStyles();
 	return (
 		<Grid container spacing={3}>
-			<Grid items xs={12} md={4}>
+			<Grid item xs={12} md={4}>
 				<Box
 					display="flex"
 					flexDirection="column"
@@ -52,7 +52,7 @@ const Benifits = () => {
 					<b>New Project</b>
 				</Box>
 			</Grid>
-			<Grid items xs={12} md={4}>
+			<Grid item xs={12} md={4}>
 				<Box
 					display="flex"
 					flexDirection="column"
@@ -64,7 +64,7 @@ const Benifits = () => {
 					<b>Home Loan</b>
 				</Box>
 			</Grid>
-			<Grid items xs={12} md={4}>
+			<Grid item xs={12} md={4}>
 				<Box
 					display="flex"
 					flexDirection="column"

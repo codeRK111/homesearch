@@ -34,7 +34,6 @@ const BuilderEnquiery = () => {
 						<img
 							src={require('../../assets/tr.png')}
 							alt=""
-							srcset=""
 							className={classes.image}
 						/>
 					</Box>

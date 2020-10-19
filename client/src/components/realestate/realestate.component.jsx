@@ -67,7 +67,7 @@ const Benifits = () => {
 			</p>
 			<Box mt="4rem">
 				<Grid container spacing={5}>
-					<Grid items xs={12} md={4}>
+					<Grid item xs={12} md={4}>
 						<Box
 							display="flex"
 							flexDirection="column"
@@ -82,13 +82,13 @@ const Benifits = () => {
 								adipisicing elit. Quae ut eum, nisi eveniet unde
 							</p>
 							<Box>
-								<Link className={classes.link}>
+								<Link className={classes.link} to="/">
 									View all &#8594;
 								</Link>
 							</Box>
 						</Box>
 					</Grid>
-					<Grid items xs={12} md={4}>
+					<Grid item xs={12} md={4}>
 						<Box
 							display="flex"
 							flexDirection="column"
@@ -103,13 +103,13 @@ const Benifits = () => {
 								adipisicing elit. Quae ut eum, nisi eveniet unde
 							</p>
 							<Box>
-								<Link className={classes.link}>
+								<Link className={classes.link} to="/">
 									View all &#8594;
 								</Link>
 							</Box>
 						</Box>
 					</Grid>
-					<Grid items xs={12} md={4}>
+					<Grid item xs={12} md={4}>
 						<Box
 							display="flex"
 							flexDirection="column"
@@ -124,7 +124,7 @@ const Benifits = () => {
 								adipisicing elit. Quae ut eum, nisi eveniet unde
 							</p>
 							<Box>
-								<Link className={classes.link}>
+								<Link className={classes.link} to="/">
 									View all &#8594;
 								</Link>
 							</Box>

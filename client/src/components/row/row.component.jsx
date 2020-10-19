@@ -108,7 +108,6 @@ const Row = ({ title }) => {
 											i % 2 === 0 ? 'flat' : 'home'
 										}.jpeg`)}
 										alt=""
-										srcset=""
 										className={classes.image}
 									/>
 

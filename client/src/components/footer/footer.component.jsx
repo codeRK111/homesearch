@@ -66,61 +66,95 @@ const Footer = () => {
 				<Grid item xs={6} md={2}>
 					<h3>Overview</h3>
 					<Box>
-						<Link className={classes.link}>About us</Link>
+						<Link className={classes.link} to="/">
+							About us
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Careers</Link>
+						<Link className={classes.link} to="/">
+							Careers
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Terms & Conditions</Link>
+						<Link className={classes.link} to="/">
+							Terms & Conditions
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Privacy Policy</Link>
+						<Link className={classes.link} to="/">
+							Privacy Policy
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Rental Agreement</Link>
+						<Link className={classes.link} to="/">
+							Rental Agreement
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Testimonials</Link>
+						<Link className={classes.link} to="/">
+							Testimonials
+						</Link>
 					</Box>
 				</Grid>
 				<Grid item xs={6} md={2}>
 					<h3>Network sites</h3>
 					<Box>
-						<Link className={classes.link}>About us</Link>
+						<Link className={classes.link} to="/">
+							About us
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Careers</Link>
+						<Link className={classes.link} to="/">
+							Careers
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Terms & Conditions</Link>
+						<Link className={classes.link} to="/">
+							Terms & Conditions
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Privacy Policy</Link>
+						<Link className={classes.link} to="/">
+							Privacy Policy
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Rental Agreement</Link>
+						<Link className={classes.link} to="/">
+							Rental Agreement
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Testimonials</Link>
+						<Link className={classes.link} to="/">
+							Testimonials
+						</Link>
 					</Box>
 				</Grid>
 				<Grid item xs={6} md={2}>
 					<h3>Contact Us</h3>
 					<Box>
-						<Link className={classes.link}>Contact Us</Link>
+						<Link className={classes.link} to="/">
+							Contact Us
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Corporate Enquiry</Link>
+						<Link className={classes.link} to="/">
+							Corporate Enquiry
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Facebook</Link>
+						<Link className={classes.link} to="/">
+							Facebook
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>LinkedIn</Link>
+						<Link className={classes.link} to="/">
+							LinkedIn
+						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link}>Instagram</Link>
+						<Link className={classes.link} to="/">
+							Instagram
+						</Link>
 					</Box>
 				</Grid>
 				<Grid item xs={6} md={2}>
@@ -129,19 +163,25 @@ const Footer = () => {
 						<Avatar className={classes.avatar}>
 							<FacebookIcon className={classes.iconFb} />
 						</Avatar>
-						<Link className={classes.link}>Share on facebook</Link>
+						<Link className={classes.link} to="/">
+							Share on facebook
+						</Link>
 					</Box>
 					<Box display="flex" alignItems="center" mt="1rem">
 						<Avatar className={classes.avatar}>
 							<TwitterIcon className={classes.iconTw} />
 						</Avatar>
-						<Link className={classes.link}>Share on twitter</Link>
+						<Link className={classes.link} to="/">
+							Share on twitter
+						</Link>
 					</Box>
 					<Box display="flex" alignItems="center" mt="1rem">
 						<Avatar className={classes.avatar}>
 							<InstagramIcon className={classes.iconIn} />
 						</Avatar>
-						<Link className={classes.link}>Share on instagram</Link>
+						<Link className={classes.link} to="/">
+							Share on instagram
+						</Link>
 					</Box>
 				</Grid>
 				<Grid item xs={12} md={4}>
