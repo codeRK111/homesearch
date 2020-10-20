@@ -20,12 +20,75 @@ import PropertyTab from '../../components/propertyTab/propertyTab.component';
 // Styles
 import { useStyles } from './mobileSearch.styles';
 
-const MobileSearch = () => {
+// Redux
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentTab } from '../../redux/actionTab/actionTab.selectors';
+
+const MobileSearch = ({ currentTab }) => {
 	const history = useHistory();
 
 	const goBack = (_) => {
 		history.goBack();
 	};
+
+	const rentType = () => (
+		<div>
+			<div>
+				<FormControlLabel
+					control={<Checkbox name="checkedC" />}
+					label="Flat"
+				/>
+			</div>
+			<div>
+				<FormControlLabel
+					control={<Checkbox name="checkedC" />}
+					label="Independent House"
+				/>
+			</div>
+			<div>
+				<FormControlLabel
+					control={<Checkbox name="checkedC" />}
+					label="Guest House"
+				/>
+			</div>
+			<div>
+				<FormControlLabel
+					control={<Checkbox name="checkedC" />}
+					label="Hostel"
+				/>
+			</div>
+			<div>
+				<FormControlLabel
+					control={<Checkbox name="checkedC" />}
+					label="PG"
+				/>
+			</div>
+		</div>
+	);
+
+	const saleType = () => (
+		<div>
+			<div>
+				<FormControlLabel
+					control={<Checkbox name="checkedC" />}
+					label="Flat"
+				/>
+			</div>
+			<div>
+				<FormControlLabel
+					control={<Checkbox name="checkedC" />}
+					label="Land"
+				/>
+			</div>
+			<div>
+				<FormControlLabel
+					control={<Checkbox name="checkedC" />}
+					label="Independent House"
+				/>
+			</div>
+		</div>
+	);
 
 	const {
 		searchWrapper,
@@ -106,26 +169,16 @@ const MobileSearch = () => {
 					</Box>
 				</Box>
 				<Box mt="2rem">
-					<h4>Unit Type</h4>
+					<h4>Property Type</h4>
+					{(() => {
+						switch (currentTab) {
+							case 'rent':
+								return rentType();
 
-					<div>
-						<FormControlLabel
-							control={<Checkbox name="checkedC" />}
-							label="Flat / Apartment"
-						/>
-					</div>
-					<div>
-						<FormControlLabel
-							control={<Checkbox name="checkedC" />}
-							label="Independent House"
-						/>
-					</div>
-					<div>
-						<FormControlLabel
-							control={<Checkbox name="checkedC" />}
-							label="PG"
-						/>
-					</div>
+							default:
+								return saleType();
+						}
+					})()}
 				</Box>
 			</Box>
 			<Box mt="2rem">
@@ -137,4 +190,8 @@ const MobileSearch = () => {
 	);
 };
 
-export default MobileSearch;
+const mapStateToProps = createStructuredSelector({
+	currentTab: selectCurrentTab,
+});
+
+export default connect(mapStateToProps, null)(MobileSearch);

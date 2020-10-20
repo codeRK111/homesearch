@@ -89,13 +89,13 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 	};
 
 	const focusOut = (e) => {
-		axios
-			.get('/api/v1/admin/features/send-otp')
-			.then()
-			.catch((error) => {
-				handleClick('somethink goes wrong');
-			});
-		setOtpOpen(true);
+		// axios
+		// 	.get('/api/v1/admin/features/send-otp')
+		// 	.then()
+		// 	.catch((error) => {
+		// 		handleClick('somethink goes wrong');
+		// 	});
+		// setOtpOpen(true);
 	};
 
 	const closeOtpModal = () => {

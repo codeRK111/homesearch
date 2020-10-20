@@ -59,7 +59,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 		city: req.body.city,
 		gender: 'male',
 		number: req.body.number,
-		role: 'tenant',
+		role: req.body.role,
 		registerThrough: 'site login',
 		registerVia: 'Web',
 		mobileStatus: 'semi-private',

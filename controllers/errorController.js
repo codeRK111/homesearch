@@ -58,7 +58,6 @@ const sendErrorProd = (err, res) => {
 };
 
 module.exports = (err, req, res, next) => {
-	console.log(err);
 	err.statusCode = err.statusCode || 500;
 	err.status = err.status || 'error';
 	let er = {
@@ -67,16 +66,16 @@ module.exports = (err, req, res, next) => {
 		name: err.name,
 		code: err.code,
 	};
-	if (process.env.NODE_ENV === 'development') {
+	console.log(process.env.NODE_ENV);
+	if (process.env.NODE_ENV.trim() == 'development') {
 		sendErrorDev(err, res);
-	} else if (process.env.NODE_ENV === 'production') {
-		console.log(er.code);
+	} else if (process.env.NODE_ENV.trim() == 'production') {
 		if (er.name === 'CastError') er = handleCastErrorDB(er);
 		if (er.code === 11000) er = handleDuplicateFieldsDB(er);
 		if (er.name === 'ValidationError') er = handleValidationErrorDB(er);
 		if (er.name === 'JsonWebTokenError') er = handleJWTError();
 		if (er.name === 'TokenExpiredError') er = handleJWTExpiredError();
-		console.log(er);
+
 		sendErrorProd(er, res);
 	}
 };

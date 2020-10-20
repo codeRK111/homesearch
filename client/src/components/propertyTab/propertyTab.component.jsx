@@ -4,6 +4,12 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { makeStyles } from '@material-ui/core/styles';
 
+// Redux
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { setCurrentTab } from '../../redux/actionTab/actionTab.actions';
+import { selectCurrentTab } from '../../redux/actionTab/actionTab.selectors';
+
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		textTransform: 'none',
@@ -21,18 +27,18 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function DisabledTabs() {
-	const [value, setValue] = React.useState(2);
+function DisabledTabs({ currentTab, setCurrentTab }) {
 	const classes = useStyles();
+	const labels = ['project', 'rent', 'sale'];
 
-	const handleChange = (event, newValue) => {
-		setValue(newValue);
+	const handleChange = (_, newValue) => {
+		setCurrentTab(labels[newValue]);
 	};
 
 	return (
 		<Paper elevation={3} className={classes.paper}>
 			<Tabs
-				value={value}
+				value={labels.indexOf(currentTab)}
 				indicatorColor="primary"
 				onChange={handleChange}
 				aria-label="disabled tabs example"
@@ -74,3 +80,13 @@ export default function DisabledTabs() {
 		</Paper>
 	);
 }
+
+const mapStateToProps = createStructuredSelector({
+	currentTab: selectCurrentTab,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setCurrentTab: (tab) => dispatch(setCurrentTab(tab)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DisabledTabs);
