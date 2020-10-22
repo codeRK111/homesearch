@@ -3,6 +3,9 @@ import { Box, Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
 
+// Custom Components
+import ProjectType from '../projectTypesTab/projectTypesTab.component';
+
 const useStyles = makeStyles((theme) => ({
 	seeAll: {
 		color: theme.colorTwo,
@@ -89,6 +92,9 @@ const Row = ({ title }) => {
 		<div className={classes.wrapper}>
 			<Box mb="4rem">
 				<h2 className={classes.title}>{title}</h2>
+			</Box>
+			<Box>
+				<ProjectType />
 			</Box>
 			<Box mt="1rem">
 				<Grid container spacing={5}>

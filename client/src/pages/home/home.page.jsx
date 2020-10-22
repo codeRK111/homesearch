@@ -38,7 +38,7 @@ const HomePage = () => {
 				<Realestate />
 			</Box>
 			<Box mt="2rem">
-				<Row title={'New Projects In Bhubaneswar'} />
+				<Row title={'Hot Projects In Bhubaneswar'} />
 			</Box>
 			<Box {...spacing3}>
 				<Heading title="Homesearch18 for builders" />

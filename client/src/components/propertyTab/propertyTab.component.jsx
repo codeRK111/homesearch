@@ -39,10 +39,10 @@ function DisabledTabs({ currentTab, setCurrentTab }) {
 		<Paper elevation={3} className={classes.paper}>
 			<Tabs
 				value={labels.indexOf(currentTab)}
-				indicatorColor="primary"
 				onChange={handleChange}
 				aria-label="disabled tabs example"
 				variant="fullWidth"
+				indicatorColor="primary"
 				classes={{
 					indicator: classes.indicator,
 				}}
