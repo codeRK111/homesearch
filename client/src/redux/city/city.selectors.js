@@ -8,4 +8,8 @@ export const selectSearchCityLoading = createSelector(
 	[selectCity],
 	(c) => c.searchCityLoading
 );
+export const selectSearchLocationLoading = createSelector(
+	[selectCity],
+	(c) => c.searchLocationLoading
+);
 // Select Errors

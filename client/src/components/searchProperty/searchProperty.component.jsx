@@ -13,22 +13,31 @@ import { useHistory } from 'react-router-dom';
 // Custom components
 import PropertyTab from '../propertyTab/propertyTab.component';
 import SearchButton from '../searchButton/searchButton.component';
+import SearchLocation from '../searchLocation/searchLocation.component';
 
 // Style
 import { useStyles } from './searchProperty.styles';
 
-const SearchProperty = () => {
+// Redux
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { searchLocations } from '../../redux/city/city.actions';
+import { selectSearchLocationLoading } from '../../redux/city/city.selectors';
+
+const SearchProperty = ({ searchLocationLoading, searchLocations }) => {
 	const classes = useStyles();
 	const mobile = useMediaQuery('(max-width:600px)');
 	const history = useHistory();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [anchorElProperty, setAnchorElProperty] = React.useState(null);
+
 	const handleClick = (event) => {
 		setAnchorEl(anchorEl ? null : event.currentTarget);
 	};
 	const handleClickProperty = (event) => {
 		setAnchorElProperty(anchorElProperty ? null : event.currentTarget);
 	};
+
 	const open = Boolean(anchorEl);
 	const openProperty = Boolean(anchorElProperty);
 	const id = open ? 'simple-popper' : undefined;
@@ -39,6 +48,7 @@ const SearchProperty = () => {
 			history.push('/m/search');
 		}
 	};
+
 	return (
 		<Box
 			display="flex"
@@ -74,13 +84,13 @@ const SearchProperty = () => {
 					)}
 					<Box className={classes.searchBoxWrapper}>
 						<SearchIcon />
-						<input
-							type="text"
-							placeholder="This is a dummy placeholder"
+						<SearchLocation
 							className={classes.searchField}
 							onClick={checkMobile}
+							placeholder="Search Location"
 						/>
 					</Box>
+
 					{!mobile && (
 						<div
 							className={classes.budgetWrapper}
@@ -143,8 +153,6 @@ const SearchProperty = () => {
 		</Box>
 	);
 };
-
-export default SearchProperty;
 
 const styles = makeStyles({
 	input: {
@@ -217,3 +225,14 @@ const PropertyItems = () => {
 		</Paper>
 	);
 };
+
+const mapStateToProps = createStructuredSelector({
+	searchLocationLoading: selectSearchLocationLoading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	searchLocations: (callback, name) =>
+		dispatch(searchLocations({ name, callback })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchProperty);

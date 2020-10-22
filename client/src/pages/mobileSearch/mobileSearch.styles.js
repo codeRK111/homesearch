@@ -17,6 +17,9 @@ export const useStyles = makeStyles((theme) => ({
 		border: 'none',
 		width: '100%',
 		paddingLeft: '1rem',
+		'&:focus': {
+			outline: 'none',
+		},
 	},
 	searchIcon: {
 		color: '#cccccc',
@@ -49,5 +52,17 @@ export const useStyles = makeStyles((theme) => ({
 	selected: {
 		backgroundColor: theme.colorOne,
 		color: '#ffffff',
+	},
+	root: {
+		backgroundColor: '#ffffff',
+	},
+	positionFixed: {
+		bottom: 0,
+		position: 'fixed',
+		top: 'auto',
+	},
+	iconWrapper: {
+		backgroundColor: '#ffffff',
+		paddingRight: '1rem',
 	},
 }));

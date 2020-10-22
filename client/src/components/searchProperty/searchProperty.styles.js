@@ -12,18 +12,21 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	searchBoxWrapper: {
 		backgroundColor: '#ffffff',
+		position: 'relative',
 		display: 'flex',
 		alignItems: 'center',
 		borderRight: '1px solid #cccccc',
 		paddingLeft: '10px',
 		[theme.breakpoints.down('sm')]: {
 			height: '50px',
-			marginTop: '2rem',
 		},
 	},
 	searchField: {
 		border: 'none',
 		paddingLeft: '10px',
+		'&:focus': {
+			outline: 'none',
+		},
 	},
 	wrapper: {
 		[theme.breakpoints.down('sm')]: {
@@ -104,5 +107,17 @@ export const useStyles = makeStyles((theme) => ({
 	budgetPopper: {
 		backgroundColor: '#ffffff',
 		maxWidth: '200px',
+	},
+	locationListWrapper: {
+		padding: '1rem',
+		height: '400px',
+		overflowX: 'scroll',
+	},
+	locationWrapper: {
+		padding: '0.5rem',
+		cursor: 'pointer',
+		'&:hover': {
+			backgroundColor: '#cccccc',
+		},
 	},
 }));

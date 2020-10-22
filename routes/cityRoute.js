@@ -4,6 +4,7 @@ const cityController = require('../controllers/cityController');
 
 const router = express.Router();
 router.route('/searchCity').post(cityController.searchCity);
+router.route('/searchLocation').post(cityController.searchLocation);
 router.route('/').get(cityController.getAllCities).post(cityController.addCity);
 router
 	.route('/:id')
