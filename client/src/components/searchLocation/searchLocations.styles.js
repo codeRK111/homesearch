@@ -3,10 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles((theme) => ({
 	locationListWrapper: {
 		padding: '1rem',
-		height: '400px',
+		height: '200px',
 		overflowX: 'scroll',
 		[theme.breakpoints.down('sm')]: {
-			height: '200px',
+			height: '160px',
 		},
 	},
 	locationWrapper: {

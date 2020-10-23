@@ -18,9 +18,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const SearchButton = ({ text }) => {
+const SearchButton = ({ text, onClick }) => {
 	const classes = useStyles();
-	return <div className={classes.button}>{text}</div>;
+	return (
+		<div className={classes.button} onClick={onClick}>
+			{text}
+		</div>
+	);
 };
 
 export default SearchButton;

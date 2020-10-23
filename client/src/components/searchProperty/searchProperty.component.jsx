@@ -146,7 +146,10 @@ const SearchProperty = ({ searchLocationLoading, searchLocations }) => {
 						</Popper>
 					)}
 					<div className={classes.buttonWrapper}>
-						<SearchButton text="Search" />
+						<SearchButton
+							text="Search"
+							onClick={() => history.push('/search-results')}
+						/>
 					</div>
 				</Box>
 			</div>

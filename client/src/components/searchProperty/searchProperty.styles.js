@@ -37,7 +37,7 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	buttonWrapper: {
 		[theme.breakpoints.down('sm')]: {
-			height: '50px',
+			display: 'none',
 		},
 	},
 	bg: {

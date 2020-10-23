@@ -10,6 +10,7 @@ import OTPPage from './pages/otp/otp.page';
 import ProfilePage from './pages/profile/profile.page';
 import HomePage from './pages/home/home.page';
 import MobileSearch from './pages/mobileSearch/mobileSearch.page';
+import SearchPage from './pages/search/search.page';
 
 function App() {
 	return (
@@ -42,6 +43,11 @@ function App() {
 							exact
 							path="/m/search"
 							render={() => <MobileSearch />}
+						/>
+						<Route
+							exact
+							path="/search-results"
+							render={() => <SearchPage />}
 						/>
 					</Switch>
 				</HashRouter>

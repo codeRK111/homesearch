@@ -10,6 +10,7 @@ const customTheme = {
 	fontColor: '#707070',
 	fontColorTwo: '#bdc3c7',
 	fontColorThree: '#ecf0f1',
+	bgColor: '#dfe6e9',
 };
 
 export default customTheme;
