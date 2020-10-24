@@ -65,4 +65,11 @@ export const useStyles = makeStyles((theme) => ({
 		backgroundColor: '#ffffff',
 		paddingRight: '1rem',
 	},
+	selectedCityWrapper: {
+		padding: '0.5rem',
+		margin: '1rem',
+	},
+	chip: {
+		marginRight: '0.5rem',
+	},
 }));

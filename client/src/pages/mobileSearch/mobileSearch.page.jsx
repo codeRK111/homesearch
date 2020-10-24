@@ -10,15 +10,16 @@ import {
 	Paper,
 	Checkbox,
 	AppBar,
+	Chip,
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import SearchIcon from '@material-ui/icons/Search';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
 import { useHistory } from 'react-router-dom';
 
 // Custom components
 import PropertyTab from '../../components/propertyTab/propertyTab.component';
-import CityDropDown from '../../components/cityDropdown/cityDropdown.component';
-import SearchLocation from '../../components/searchLocation/searchLocation.component';
+import CityDropDown from '../../components/cityMenu/cityMenu.component';
+import SearchLocation from '../../components/location/location.component';
 
 // Styles
 import { useStyles } from './mobileSearch.styles';
@@ -41,6 +42,7 @@ const MobileSearch = ({ currentTab }) => {
 	const [showBedRooms, setShowBedRooms] = React.useState(false);
 	const [showAvailability, setShowAvailability] = React.useState(false);
 	const [availability, setAvailability] = React.useState(false);
+	const [locations, setLocations] = React.useState([]);
 
 	const goBack = (_) => {
 		history.goBack();
@@ -51,6 +53,18 @@ const MobileSearch = ({ currentTab }) => {
 	};
 	const handleChangeAvailability = (event) => {
 		setAvailability(event.target.checked);
+	};
+
+	const onSelect = (data) => {
+		if (locations.length < 3) {
+			if (!locations.find((c) => c.id === data.id)) {
+				setLocations([...locations, data]);
+			}
+		}
+	};
+
+	const onDelete = (data) => () => {
+		setLocations(locations.filter((c) => c.id !== data.id));
 	};
 
 	React.useEffect(() => {
@@ -84,7 +98,7 @@ const MobileSearch = ({ currentTab }) => {
 							onChange={handleChange}
 						/>
 					}
-					label="Flat"
+					label="Apartment"
 				/>
 			</div>
 			<div>
@@ -149,7 +163,7 @@ const MobileSearch = ({ currentTab }) => {
 							onChange={handleChange}
 						/>
 					}
-					label="Flat"
+					label="Apartment"
 				/>
 			</div>
 			<div>
@@ -187,6 +201,8 @@ const MobileSearch = ({ currentTab }) => {
 		root,
 		positionFixed,
 		iconWrapper,
+		chip,
+		selectedCityWrapper,
 	} = useStyles();
 	return (
 		<div>
@@ -209,14 +225,26 @@ const MobileSearch = ({ currentTab }) => {
 			<Box pl="1rem">
 				<h4>Locality</h4>
 			</Box>
+			{locations.length !== 0 && (
+				<Box mt="2rem">
+					<Paper className={selectedCityWrapper} square={true}>
+						{locations.map((c) => (
+							<Chip
+								key={c.id}
+								icon={<LocationCityIcon />}
+								label={c.name}
+								variant="outlined"
+								className={chip}
+								onDelete={onDelete(c)}
+							/>
+						))}
+					</Paper>
+				</Box>
+			)}
 			<Box pl="1rem" pr="1rem">
 				<Paper className={searchWrapper} elevation={3}>
 					<Box display="flex" alignItems="center">
-						<SearchIcon className={searchIcon} />
-						<SearchLocation
-							className={searchInput}
-							placeholder="Search locality"
-						/>
+						<SearchLocation onSelect={onSelect} />
 					</Box>
 				</Paper>
 			</Box>
@@ -227,7 +255,7 @@ const MobileSearch = ({ currentTab }) => {
 					<Box>
 						<FormControl variant="outlined" fullWidth size="small">
 							<InputLabel htmlFor="filled-age-native-simple">
-								Min
+								Price
 							</InputLabel>
 							<Select
 								native
@@ -238,33 +266,19 @@ const MobileSearch = ({ currentTab }) => {
 								}}
 							>
 								<option aria-label="None" value="" />
-								{Array.from(Array(20).keys()).map((c) => (
-									<option value={c} key={c}>
-										{c + 1}L
-									</option>
-								))}
-							</Select>
-						</FormControl>
-					</Box>
-					<Box mt="1rem">
-						<FormControl variant="outlined" fullWidth size="small">
-							<InputLabel htmlFor="filled-age-native-simple">
-								Max
-							</InputLabel>
-							<Select
-								native
-								label="Max"
-								inputProps={{
-									name: 'age',
-									id: 'filled-age-native-simple',
-								}}
-							>
-								<option aria-label="None" value="" />
-								{Array.from(Array(20).keys()).map((c) => (
-									<option value={c} key={c}>
-										{c + 1}L
-									</option>
-								))}
+								{currentTab === 'rent'
+									? [2, 5, 10, 20, 40, 60, 80, 100].map(
+											(c) => (
+												<option value={c} key={c}>
+													{c}K
+												</option>
+											)
+									  )
+									: Array.from(Array(20).keys()).map((c) => (
+											<option value={c} key={c}>
+												{c * 3}L
+											</option>
+									  ))}
 							</Select>
 						</FormControl>
 					</Box>

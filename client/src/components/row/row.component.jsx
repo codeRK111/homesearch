@@ -156,7 +156,7 @@ const Row = ({ title }) => {
 										justifyContent="space-between"
 									>
 										<b>1,2,3 BHK Apartment</b>
-										<b>123-345 SF</b>
+										<b>123-345 Sq.ft</b>
 									</Box>
 									<Box
 										mt="1rem"

@@ -11,7 +11,7 @@ import Box from '@material-ui/core/Box';
 import AppDrawer from '../appDrawer/appDrawe.component';
 import Button from '../appBarButton/appBarButton.component';
 import Menu from '../menu/menu.component';
-import City from '../cityDropdown/cityDropdown.component';
+import City from '../cityMenu/cityMenu.component';
 
 // Styles
 import { useStyles } from './appBar.styles';

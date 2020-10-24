@@ -14,6 +14,7 @@ export const useStyles = makeStyles((theme) => ({
 		backgroundColor: '#ffffff',
 		position: 'relative',
 		display: 'flex',
+		width: '100%',
 		alignItems: 'center',
 		borderRight: '1px solid #cccccc',
 		paddingLeft: '10px',
@@ -29,10 +30,21 @@ export const useStyles = makeStyles((theme) => ({
 		},
 	},
 	wrapper: {
+		maxWidth: '900px',
+		width: '100%',
 		[theme.breakpoints.down('sm')]: {
 			flexDirection: 'column',
 			width: '90%',
 			margin: '1rem',
+		},
+	},
+	warpper2: {
+		wrapper: {
+			backgroundColor: '#ffffff',
+			padding: '1rem',
+			maxHeight: '300px',
+			overflowY: 'scroll',
+			minWidth: '100px',
 		},
 	},
 	buttonWrapper: {
@@ -119,5 +131,11 @@ export const useStyles = makeStyles((theme) => ({
 		'&:hover': {
 			backgroundColor: '#cccccc',
 		},
+	},
+	selectedCityWrapper: {
+		padding: '0.5rem',
+	},
+	chip: {
+		marginRight: '0.5rem',
 	},
 }));

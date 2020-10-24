@@ -70,7 +70,7 @@ function DisabledTabs({ currentTab, setCurrentTab }) {
 				/>
 				<Tab
 					disabled
-					label="Live bidding"
+					label="Live Bidding"
 					classes={{
 						wrapper: classes.wrapper,
 						selected: classes.selected,
