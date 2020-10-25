@@ -195,8 +195,7 @@ const MobileSearch = ({ currentTab }) => {
 
 	const {
 		searchWrapper,
-		searchInput,
-		searchIcon,
+
 		filterWrapper,
 		root,
 		positionFixed,

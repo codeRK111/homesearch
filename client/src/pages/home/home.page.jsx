@@ -34,7 +34,7 @@ const HomePage = () => {
 				<Benifits />
 			</Box>
 
-			<Box {...spacing}>
+			<Box>
 				<Realestate />
 			</Box>
 			<Box mt="2rem">

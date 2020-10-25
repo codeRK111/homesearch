@@ -3,8 +3,10 @@ import { Grid, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import BusinessIcon from '@material-ui/icons/Business';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
-import { Link } from 'react-router-dom';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
+
+// Custom Components
+import Counter from '../propertyCounter/propertyCounter.component';
 
 const useStyles = makeStyles((theme) => ({
 	benifit: {
@@ -17,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 	description: {
 		textAlign: 'center',
 		color: theme.fontColor,
+		padding: '1rem',
 	},
 	link: {
 		color: theme.colorTwo,
@@ -41,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	benifitWrapper: {
+		borderRight: '1px solid #cccccc',
 		[theme.breakpoints.down('sm')]: {
 			width: '100%',
 		},
@@ -66,7 +70,7 @@ const Benifits = () => {
 				repellat quod.
 			</p>
 			<Box mt="4rem">
-				<Grid container spacing={5}>
+				<Grid container spacing={0}>
 					<Grid item xs={12} md={4}>
 						<Box
 							display="flex"
@@ -77,7 +81,16 @@ const Benifits = () => {
 							<EmojiTransportationIcon className={classes.icon} />
 
 							<b>Project in bhubaneswar</b>
-							<p className={classes.description}>
+							<Box mt="2rem" width="100%">
+								<Counter
+									details={[
+										{ label: 'Apartment' },
+										{ label: 'Independent House' },
+										{ label: 'Land' },
+									]}
+								/>
+							</Box>
+							{/* <p className={classes.description}>
 								Lorem ipsum dolor sit amet consectetur,
 								adipisicing elit. Quae ut eum, nisi eveniet unde
 							</p>
@@ -85,7 +98,7 @@ const Benifits = () => {
 								<Link className={classes.link} to="/">
 									View all &#8594;
 								</Link>
-							</Box>
+							</Box> */}
 						</Box>
 					</Grid>
 					<Grid item xs={12} md={4}>
@@ -98,14 +111,14 @@ const Benifits = () => {
 							<BusinessIcon className={classes.icon} />
 
 							<b>Resale property in bhubaneswar</b>
-							<p className={classes.description}>
-								Lorem ipsum dolor sit amet consectetur,
-								adipisicing elit. Quae ut eum, nisi eveniet unde
-							</p>
-							<Box>
-								<Link className={classes.link} to="/">
-									View all &#8594;
-								</Link>
+							<Box mt="2rem" width="100%">
+								<Counter
+									details={[
+										{ label: 'Apartment' },
+										{ label: 'Independent House' },
+										{ label: 'Land' },
+									]}
+								/>
 							</Box>
 						</Box>
 					</Grid>
@@ -119,14 +132,16 @@ const Benifits = () => {
 							<LocationCityIcon className={classes.icon} />
 
 							<b>Rental property in bhubaneswar</b>
-							<p className={classes.description}>
-								Lorem ipsum dolor sit amet consectetur,
-								adipisicing elit. Quae ut eum, nisi eveniet unde
-							</p>
-							<Box>
-								<Link className={classes.link} to="/">
-									View all &#8594;
-								</Link>
+							<Box mt="2rem" width="100%">
+								<Counter
+									details={[
+										{ label: 'Apartment' },
+										{ label: 'Independent House' },
+										{ label: 'Guest House' },
+										{ label: 'Hostel' },
+										{ label: 'PG' },
+									]}
+								/>
 							</Box>
 						</Box>
 					</Grid>
