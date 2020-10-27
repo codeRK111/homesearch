@@ -96,7 +96,7 @@ const useStyle = makeStyles((theme) => ({
 	infoWrapper: {
 		display: 'flex',
 		flexDirection: 'column',
-		alignItems: 'center',
+		alignItems: 'flex-start',
 	},
 	amenitiesWrapper: {
 		fontSize: '0.7rem',

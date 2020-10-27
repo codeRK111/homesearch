@@ -16,6 +16,9 @@ export default makeStyles((theme) => ({
 	label: {
 		textAlign: 'center',
 		fontSize: '0.9rem',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '0.8rem',
+		},
 	},
 	avatar: {
 		width: '80px',

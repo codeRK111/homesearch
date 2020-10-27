@@ -63,6 +63,10 @@ const MobileSearch = ({ currentTab }) => {
 		}
 	};
 
+	const onSearch = (_) => {
+		history.push('/search-results');
+	};
+
 	const onDelete = (data) => () => {
 		setLocations(locations.filter((c) => c.id !== data.id));
 	};
@@ -345,7 +349,12 @@ const MobileSearch = ({ currentTab }) => {
 						positionFixed: positionFixed,
 					}}
 				>
-					<Button fullWidth color="primary" variant="contained">
+					<Button
+						fullWidth
+						color="primary"
+						variant="contained"
+						onClick={onSearch}
+					>
 						Search
 					</Button>
 				</AppBar>

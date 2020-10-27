@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Box from '@material-ui/core/Box';
+import { useHistory } from 'react-router-dom';
 
 // Custom components
 import AppDrawer from '../appDrawer/appDrawe.component';
@@ -18,6 +19,7 @@ import { useStyles } from './appBar.styles';
 
 const Appbar = () => {
 	const classes = useStyles();
+	const history = useHistory();
 	const matches = useMediaQuery('(max-width:600px)');
 	const [open, setOpen] = React.useState(false);
 	const handleDrawer = (status) => (event) => {
@@ -30,6 +32,7 @@ const Appbar = () => {
 
 		setOpen(status);
 	};
+	const goToHomePage = (_) => history.push('/');
 	return (
 		<div className={classes.root}>
 			<AppDrawer open={open} handleDrawer={handleDrawer(false)} />
@@ -48,7 +51,7 @@ const Appbar = () => {
 					)}
 
 					<Box className={classes.title}>
-						<Typography variant="h6">
+						<Typography variant="h6" onClick={goToHomePage}>
 							Homesearch
 							<span className={classes.lastWord}>18</span>
 						</Typography>

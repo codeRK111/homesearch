@@ -42,11 +42,15 @@ const useStyles = makeStyles((theme) => ({
 			transform: 'scale(1.3)',
 			color: theme.colorOne,
 		},
+		[theme.breakpoints.down('sm')]: {
+			display: 'none',
+		},
 	},
 	benifitWrapper: {
 		borderRight: '1px solid #cccccc',
 		[theme.breakpoints.down('sm')]: {
 			width: '100%',
+			marginTop: '1rem',
 		},
 	},
 }));

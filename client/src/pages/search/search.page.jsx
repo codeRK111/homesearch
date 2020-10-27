@@ -1,23 +1,19 @@
 import React from 'react';
-import {
-	Box,
-	Paper,
-	Grid,
-	FormControlLabel,
-	Checkbox,
-	Divider,
-	Select,
-	MenuItem,
-	InputLabel,
-	FormControl,
-} from '@material-ui/core';
+import { Box, Paper, Grid } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import Pagination from '@material-ui/lab/Pagination';
 
 // Custom Components
 import AppBar from '../../components/appBar/appBar.component';
+import BreadCumb from '../../components/breadcumb/breadCumb.component';
 import ResultCard from '../../components/searchResultCard/searchResultCard.component';
 import Footer from '../../components/footer/footer.component';
+import PropertyFilter from '../../components/propertyTypeFilter/propertyTypeFilder.component';
+import BudgetFilter from '../../components/budgetFilter/budgetFilter.component';
+import FurnishingFilter from '../../components/furnishingFilter/furnishing.component';
+import BedRoomFilter from '../../components/bedroomFilter/bedRoom.component';
+import LegalFilter from '../../components/legalClearanceFilter/legalClearanceFilter.component';
+import SearchResultLand from '../../components/searchResultCardLand/searchResultCardLand.component';
 
 // Styles
 import useStyles from './search.styles';
@@ -27,7 +23,19 @@ const SearchPage = () => {
 	return (
 		<Box>
 			<AppBar />
-			<Box className={classes.searchWrapper}>
+			<Box
+				pt="2rem"
+				display="flex"
+				justifyContent="center"
+				className={classes.l5}
+			>
+				<BreadCumb />
+			</Box>
+			<Box
+				className={[classes.searchWrapper, classes.l5, classes.r5].join(
+					' '
+				)}
+			>
 				<p>You are looking in</p>
 				<Paper className={classes.searchBoxWrapper} elevation={3}>
 					<SearchIcon />
@@ -38,16 +46,82 @@ const SearchPage = () => {
 					/>
 				</Paper>
 			</Box>
-			<Box className={classes.resultsWrapper}>
+			<Box className={classes.l5} display="flex" justifyContent="center">
+				<Box className={classes.gridWrapper}>
+					<Grid container>
+						<Grid
+							item
+							xs={6}
+							md={2}
+							className={classes.gridItemWrapper}
+						>
+							<PropertyFilter />
+						</Grid>
+						<Grid
+							item
+							xs={6}
+							md={2}
+							className={classes.gridItemWrapper}
+						>
+							<BudgetFilter />
+						</Grid>
+						<Grid
+							item
+							xs={6}
+							md={2}
+							className={classes.gridItemWrapper}
+						>
+							<FurnishingFilter />
+						</Grid>
+						<Grid
+							item
+							xs={6}
+							md={2}
+							className={classes.gridItemWrapper}
+						>
+							<BedRoomFilter />
+						</Grid>
+						<Grid
+							item
+							xs={6}
+							md={2}
+							className={classes.gridItemWrapper}
+						>
+							<LegalFilter />
+						</Grid>
+						<Grid
+							item
+							xs={6}
+							md={2}
+							className={classes.gridItemWrapper}
+						>
+							<Box
+								position="relative"
+								width="150px"
+								height="100%"
+							>
+								<button className={classes.apply}>Apply</button>
+							</Box>
+						</Grid>
+					</Grid>
+				</Box>
+			</Box>
+			<Box className={[classes.resultsWrapper, classes.l5].join(' ')}>
 				<p>
 					{' '}
 					<b>283</b> properties found for <b>Bhubaneswar</b>{' '}
 				</p>
 				<Grid container spacing={3}>
-					<Grid item md={9}>
+					<Grid item md={12}>
 						{Array.from(Array(6).keys()).map((c) => (
 							<Box mt={c && '2rem'} key={c}>
-								<ResultCard />
+								{c === 1 ? (
+									<SearchResultLand />
+								) : (
+									<ResultCard
+										independent={c % 2 === 0 ? true : false}
+									/>
+								)}
 							</Box>
 						))}
 						<Box mt="2rem">
@@ -58,146 +132,6 @@ const SearchPage = () => {
 									justifyContent="center"
 								>
 									<Pagination count={10} color="primary" />
-								</Box>
-							</Paper>
-						</Box>
-					</Grid>
-					<Grid item md={3}>
-						<Box pl="1rem">
-							<Paper>
-								<Box p="1rem">
-									<b>Property Type</b>
-									<Box mt="0.5rem" mb="0.5rem">
-										<Divider />
-									</Box>
-									<Box>
-										<FormControlLabel
-											control={<Checkbox name="flat" />}
-											label="Flat"
-										/>
-									</Box>
-									<Box>
-										<FormControlLabel
-											control={<Checkbox name="flat" />}
-											label="Land"
-										/>
-									</Box>
-									<Box>
-										<FormControlLabel
-											control={<Checkbox name="flat" />}
-											label="Independent House"
-										/>
-									</Box>
-									<Box>
-										<FormControlLabel
-											control={<Checkbox name="flat" />}
-											label="Hostel"
-										/>
-									</Box>
-									<Box>
-										<FormControlLabel
-											control={<Checkbox name="flat" />}
-											label="PG"
-										/>
-									</Box>
-								</Box>
-							</Paper>
-						</Box>
-						<Box pl="1rem" mt="1rem">
-							<Paper>
-								<Box p="1rem">
-									<b>Budget</b>
-									<Box mt="0.5rem" mb="0.5rem">
-										<Divider />
-									</Box>
-									<Box>
-										<Box mt="0.5rem">
-											<FormControl fullWidth>
-												<InputLabel id="demo-simple-select-label">
-													Min Price
-												</InputLabel>
-												<Select
-													labelId="demo-simple-select-label"
-													id="demo-simple-select"
-												>
-													<MenuItem value={10}>
-														Ten
-													</MenuItem>
-													<MenuItem value={20}>
-														Twenty
-													</MenuItem>
-													<MenuItem value={30}>
-														Thirty
-													</MenuItem>
-												</Select>
-											</FormControl>
-										</Box>
-										<Box mt="1rem">
-											<FormControl fullWidth>
-												<InputLabel id="demo-simple-select-label">
-													Max Price
-												</InputLabel>
-												<Select
-													labelId="demo-simple-select-label"
-													id="demo-simple-select"
-												>
-													<MenuItem value={10}>
-														Ten
-													</MenuItem>
-													<MenuItem value={20}>
-														Twenty
-													</MenuItem>
-													<MenuItem value={30}>
-														Thirty
-													</MenuItem>
-												</Select>
-											</FormControl>
-										</Box>
-									</Box>
-								</Box>
-							</Paper>
-						</Box>
-						<Box pl="1rem" mt="1rem">
-							<Paper>
-								<Box p="1rem">
-									<b>Bedrooms </b>
-									<Box mt="0.5rem" mb="0.5rem">
-										<Divider />
-									</Box>
-									<Box>
-										<FormControlLabel
-											control={<Checkbox name="flat" />}
-											label="1"
-										/>
-										<FormControlLabel
-											control={<Checkbox name="flat" />}
-											label="2"
-										/>
-										<FormControlLabel
-											control={<Checkbox name="flat" />}
-											label="3"
-										/>
-										<FormControlLabel
-											control={<Checkbox name="flat" />}
-											label="3.5"
-										/>
-									</Box>
-								</Box>
-							</Paper>
-						</Box>
-						<Box pl="1rem" mt="1rem">
-							<Paper>
-								<Box p="1rem">
-									<b>Availability </b>
-									<Box mt="0.5rem" mb="0.5rem">
-										<Divider />
-									</Box>
-									<Box>
-										<FormControlLabel
-											control={<Checkbox name="flat" />}
-											label="Ready to move"
-										/>
-									</Box>
 								</Box>
 							</Paper>
 						</Box>
