@@ -5,10 +5,6 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 
 // Redux
 import { connect } from 'react-redux';
@@ -16,24 +12,25 @@ import { createStructuredSelector } from 'reselect';
 import { selectCurrentTab } from '../../redux/actionTab/actionTab.selectors';
 
 // STyles
-import useStyles from './furnishing.styles';
+import useStyles from './locationFilter.styles';
+
+const locations = [
+	'Patia',
+	'SunderPada',
+	'Jaydev Vihar',
+	'Nayapali',
+	'KhandaGiri',
+	'Dumduma',
+	'cs pur',
+	'Damana',
+	'Niladribihar',
+	'Rasulgarh',
+	'Vani bihar',
+];
 
 function MenuListComposition({ currentTab }) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
-	const [value, setValue] = React.useState({
-		furnished: false,
-		semifurnished: false,
-		unfurnished: false,
-	});
-
-	const handleChange = (event) => {
-		const { name, checked } = event.target;
-		setValue((prevState) => ({
-			...prevState,
-			[name]: checked,
-		}));
-	};
 
 	const anchorRef = React.useRef(null);
 
@@ -58,32 +55,11 @@ function MenuListComposition({ currentTab }) {
 	}, [open]);
 
 	const renderPropertyTypes = () => {
-		return (
-			<FormControl component="fieldset" className={classes.formControl}>
-				<FormGroup>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={value.furnished}
-								onChange={handleChange}
-								name="furnished"
-							/>
-						}
-						label="New Booking"
-					/>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={value.semifurnished}
-								onChange={handleChange}
-								name="semifurnished"
-							/>
-						}
-						label="Resale"
-					/>
-				</FormGroup>
-			</FormControl>
-		);
+		return locations.map((c) => (
+			<div key={c} className={classes.priceWrapper}>
+				{c}
+			</div>
+		));
 	};
 
 	return (
@@ -98,7 +74,7 @@ function MenuListComposition({ currentTab }) {
 				className={classes.buttonWrapper}
 				onClick={toggleOpen}
 			>
-				Transaction Type
+				Locations
 				<ExpandMoreIcon />
 			</Box>
 

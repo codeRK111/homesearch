@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 export default makeStyles((theme) => ({
 	wrapper: {
 		border: '1px solid #cccccc',
-		width: '150px',
-		height: '50px',
+		width: '100%',
+		height: '100%',
 	},
 	buttonWrapper: {
 		cursor: 'pointer',

@@ -56,15 +56,29 @@ const styles = makeStyles((theme) => ({
 		},
 	},
 	gridWrapper: {
-		width: '70%',
+		width: '100%',
+		marginTop: '2rem',
 		[theme.breakpoints.down('sm')]: {
 			width: '100%',
 		},
 	},
 	gridItemWrapper: {
+		height: '50px',
 		[theme.breakpoints.down('sm')]: {
 			paddingTop: '1rem',
 		},
+	},
+	button: {
+		border: `1px solid ${theme.colorOne}`,
+		cursor: 'pointer',
+		backgroundColor: theme.colorOne,
+		color: '#ffffff',
+		position: 'absolute',
+		width: '100%',
+		height: '100%',
+	},
+	center: {
+		textAlign: 'center',
 	},
 }));
 

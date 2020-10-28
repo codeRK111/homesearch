@@ -47,11 +47,14 @@ function MenuListComposition({ currentTab }) {
 						{c}k
 					</div>
 			  ))
-			: Array.from(Array(20).keys()).map((c) => (
-					<div key={c} className={classes.priceWrapper}>
-						{c * 5}L
-					</div>
-			  ));
+			: Array.from(Array(20).keys()).map(
+					(c) =>
+						c !== 0 && (
+							<div key={c} className={classes.priceWrapper}>
+								{c * 5}L
+							</div>
+						)
+			  );
 	};
 
 	return (

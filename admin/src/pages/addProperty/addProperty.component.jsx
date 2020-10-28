@@ -65,17 +65,6 @@ const typeMenuItems = [
 	},
 ];
 
-const forMenuItems = [
-	{
-		value: 'rent',
-		label: 'Rent',
-	},
-	{
-		value: 'sale',
-		label: 'Sale',
-	},
-];
-
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
 		zIndex: theme.zIndex.drawer + 1,
