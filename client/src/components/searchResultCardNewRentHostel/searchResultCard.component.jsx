@@ -2,7 +2,6 @@ import React from 'react';
 import { Paper, Box, Grid, Divider } from '@material-ui/core';
 // import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import ShareIcon from '@material-ui/icons/Share';
-import DoneIcon from '@material-ui/icons/Done';
 
 import useStyles from './searchResultCard.styles';
 
@@ -32,18 +31,12 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
-									<b>3 BHK Apartment for rent</b>
+									<b>PG on rent in *</b>
 									<br />
 
 									{/* <VerifiedUserIcon
 										className={classes.verified}
 									/> */}
-									<Box className={classes.reraWrapper}>
-										<Box>RERA</Box>
-										<DoneIcon
-											className={classes.shareIcon}
-										/>
-									</Box>
 								</Box>
 								<span className={classes.info}>
 									Patia,Bhubaneswar
@@ -52,14 +45,8 @@ const ResultCard = ({ independent }) => {
 							<Grid item xs={12} md={6}>
 								<Box className={classes.locationWrapper}>
 									<Box display="flex">
-										<Box
-											className={classes.pType}
-											mr="1rem"
-										>
-											NEW BOOKING
-										</Box>
 										<Box className={classes.price}>
-											₹ 80L
+											Rent: ₹ 20K
 										</Box>
 										<Paper
 											className={classes.iconWrapper}
@@ -72,7 +59,7 @@ const ResultCard = ({ independent }) => {
 									</Box>
 									<Box className={classes.info} mt="0.5rem">
 										{' '}
-										₹ 5990 per sq.ft. Carpet Area
+										Deposit: ₹ 5990
 									</Box>
 								</Box>
 							</Grid>
@@ -81,20 +68,20 @@ const ResultCard = ({ independent }) => {
 							<Grid container>
 								<Grid item xs={12} md={6}>
 									<Grid container>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
-													Carpet Area
+													Room type
 												</Box>
 												<Box>
-													<b>960 Sq.ft</b>
+													<b>Private</b>
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
-													Possession On
+													Available from
 												</Box>
 												<Box>
 													<b>Ready To Move</b>
@@ -103,69 +90,47 @@ const ResultCard = ({ independent }) => {
 										</Grid>
 									</Grid>
 									<Grid container>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
-													Super builtup Area
+													Type of toilets
 												</Box>
 												<Box>
-													<b>960 Sq.ft</b>
+													<b>Common</b>
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
-													Bedrooms
+													Notice periods
 												</Box>
 												<Box>
-													<b>7</b>
+													<b>30 days</b>
 												</Box>
 											</Box>
 										</Grid>
 									</Grid>
 								</Grid>
 								<Grid item xs={12} md={6}>
-									<Grid container>
-										<Grid item xs={12} md={6}>
+									<Grid container className={classes.margin}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
-													Total floor
+													Available For
 												</Box>
 												<Box>
-													<b>10</b>
+													<b>Bachelors</b>
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
-													Car parking
+													Fooding
 												</Box>
 												<Box>
-													<b>Yes</b>
-												</Box>
-											</Box>
-										</Grid>
-									</Grid>
-									<Grid container>
-										<Grid item xs={12} md={6}>
-											<Box mt="1rem">
-												<Box className={classes.info}>
-													Property on floor
-												</Box>
-												<Box>
-													<b>7</b>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={12} md={6}>
-											<Box mt="1rem">
-												<Box className={classes.info}>
-													Furnishing status
-												</Box>
-												<Box>
-													<b>furnished</b>
+													<b>Non veg</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -177,18 +142,19 @@ const ResultCard = ({ independent }) => {
 							<Divider />
 						</Box>
 						<Grid container>
-							<Grid item xs={12} md={7}>
+							<Grid item xs={12} md={8}>
 								<p className={classes.info}>
 									Lorem, ipsum dolor sit amet consectetur
 									adipisicing elit. Rem aspernatur non eius
 									neque eligendi dolorem ipsum asperiores quas
 								</p>
 							</Grid>
-							<Grid item xs={12} md={5}>
+							<Grid item xs={12} md={4}>
 								<Box
 									mt="1rem"
 									display="flex"
 									justifyContent="flex-end"
+									className={classes.smLeft}
 								>
 									<Box>
 										<button className={classes.details}>

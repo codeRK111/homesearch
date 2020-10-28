@@ -85,7 +85,7 @@ const ResultCard = ({ independent }) => {
 							<Grid container>
 								<Grid item xs={12} md={6}>
 									<Grid container>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
 													Carpet Area
@@ -95,7 +95,7 @@ const ResultCard = ({ independent }) => {
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
 													Possession On
@@ -107,7 +107,7 @@ const ResultCard = ({ independent }) => {
 										</Grid>
 									</Grid>
 									<Grid container>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
 													Super builtup Area
@@ -117,7 +117,7 @@ const ResultCard = ({ independent }) => {
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
 													Bedrooms
@@ -130,8 +130,8 @@ const ResultCard = ({ independent }) => {
 									</Grid>
 								</Grid>
 								<Grid item xs={12} md={6}>
-									<Grid container>
-										<Grid item xs={12} md={6}>
+									<Grid container className={classes.margin}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
 													Total floor
@@ -141,7 +141,7 @@ const ResultCard = ({ independent }) => {
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
 													Car parking
@@ -153,7 +153,7 @@ const ResultCard = ({ independent }) => {
 										</Grid>
 									</Grid>
 									<Grid container>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
 													Property on floor
@@ -163,7 +163,7 @@ const ResultCard = ({ independent }) => {
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
 													Furnishing status
@@ -193,6 +193,7 @@ const ResultCard = ({ independent }) => {
 									mt="1rem"
 									display="flex"
 									justifyContent="flex-end"
+									className={classes.smLeft}
 								>
 									<Box>
 										<button className={classes.details}>

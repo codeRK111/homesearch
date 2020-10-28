@@ -32,7 +32,7 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
-									<b>3 BHK Apartment for rent</b>
+									<b>$Area Sq.ft $location</b>
 									<br />
 
 									{/* <VerifiedUserIcon
@@ -81,17 +81,17 @@ const ResultCard = ({ independent }) => {
 							<Grid container>
 								<Grid item xs={12} md={6}>
 									<Grid container>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
-													Carpet Area
+													Plot Area
 												</Box>
 												<Box>
 													<b>960 Sq.ft</b>
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
 													Possession On
@@ -103,44 +103,44 @@ const ResultCard = ({ independent }) => {
 										</Grid>
 									</Grid>
 									<Grid container>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
-													Super builtup Area
+													Ownership
 												</Box>
 												<Box>
-													<b>960 Sq.ft</b>
+													<b>Freehold</b>
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
-													Bedrooms
+													Gated Community
 												</Box>
 												<Box>
-													<b>7</b>
+													<b>Yes</b>
 												</Box>
 											</Box>
 										</Grid>
 									</Grid>
 								</Grid>
 								<Grid item xs={12} md={6}>
-									<Grid container>
-										<Grid item xs={12} md={6}>
+									<Grid container className={classes.margin}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
-													Total floor
+													Facing
 												</Box>
 												<Box>
-													<b>10</b>
+													<b>East</b>
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
-													Car parking
+													Frontage
 												</Box>
 												<Box>
 													<b>Yes</b>
@@ -149,23 +149,23 @@ const ResultCard = ({ independent }) => {
 										</Grid>
 									</Grid>
 									<Grid container>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
-													Property on floor
+													Land Use Zone
 												</Box>
 												<Box>
-													<b>7</b>
+													<b>Yello Zone</b>
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
-													Furnishing status
+													Width of road
 												</Box>
 												<Box>
-													<b>furnished</b>
+													<b>20 ft</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -177,18 +177,19 @@ const ResultCard = ({ independent }) => {
 							<Divider />
 						</Box>
 						<Grid container>
-							<Grid item xs={12} md={7}>
+							<Grid item xs={12} md={8}>
 								<p className={classes.info}>
 									Lorem, ipsum dolor sit amet consectetur
 									adipisicing elit. Rem aspernatur non eius
 									neque eligendi dolorem ipsum asperiores quas
 								</p>
 							</Grid>
-							<Grid item xs={12} md={5}>
+							<Grid item xs={12} md={4}>
 								<Box
 									mt="1rem"
 									display="flex"
 									justifyContent="flex-end"
+									className={classes.smLeft}
 								>
 									<Box>
 										<button className={classes.details}>

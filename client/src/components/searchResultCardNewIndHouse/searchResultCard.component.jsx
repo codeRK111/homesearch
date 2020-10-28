@@ -32,7 +32,7 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
-									<b>3 BHK Apartment for rent</b>
+									<b>3 BHK Independent House</b>
 									<br />
 
 									{/* <VerifiedUserIcon
@@ -81,17 +81,17 @@ const ResultCard = ({ independent }) => {
 							<Grid container>
 								<Grid item xs={12} md={6}>
 									<Grid container>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
-													Carpet Area
+													Land
 												</Box>
 												<Box>
 													<b>960 Sq.ft</b>
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
 													Possession On
@@ -103,7 +103,7 @@ const ResultCard = ({ independent }) => {
 										</Grid>
 									</Grid>
 									<Grid container>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
 													Super builtup Area
@@ -113,31 +113,31 @@ const ResultCard = ({ independent }) => {
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
-													Bedrooms
+													Birthrooms
 												</Box>
 												<Box>
-													<b>7</b>
+													<b>3</b>
 												</Box>
 											</Box>
 										</Grid>
 									</Grid>
 								</Grid>
 								<Grid item xs={12} md={6}>
-									<Grid container>
-										<Grid item xs={12} md={6}>
+									<Grid container className={classes.margin}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
-													Total floor
+													Facing
 												</Box>
 												<Box>
-													<b>10</b>
+													<b>East</b>
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box>
 												<Box className={classes.info}>
 													Car parking
@@ -149,7 +149,7 @@ const ResultCard = ({ independent }) => {
 										</Grid>
 									</Grid>
 									<Grid container>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
 													Property on floor
@@ -159,7 +159,7 @@ const ResultCard = ({ independent }) => {
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
 													Furnishing status
@@ -177,18 +177,19 @@ const ResultCard = ({ independent }) => {
 							<Divider />
 						</Box>
 						<Grid container>
-							<Grid item xs={12} md={7}>
+							<Grid item xs={12} md={8}>
 								<p className={classes.info}>
 									Lorem, ipsum dolor sit amet consectetur
 									adipisicing elit. Rem aspernatur non eius
 									neque eligendi dolorem ipsum asperiores quas
 								</p>
 							</Grid>
-							<Grid item xs={12} md={5}>
+							<Grid item xs={12} md={4}>
 								<Box
 									mt="1rem"
 									display="flex"
 									justifyContent="flex-end"
+									className={classes.smLeft}
 								>
 									<Box>
 										<button className={classes.details}>

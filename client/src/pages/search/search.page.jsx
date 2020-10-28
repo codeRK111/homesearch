@@ -5,15 +5,22 @@ import Pagination from '@material-ui/lab/Pagination';
 // Custom Components
 import AppBar from '../../components/appBar/appBar.component';
 import ResultCard from '../../components/searchResultCardNew/searchResultCard.component';
+import IndHouse from '../../components/searchResultCardNewIndHouse/searchResultCard.component';
+import ResultLandSale from '../../components/searchResultCardNewLand/searchResultCard.component';
 import Footer from '../../components/footer/footer.component';
 import PropertyFilter from '../../components/propertyTypeFilter/propertyTypeFilder.component';
 import BudgetFilter from '../../components/budgetFilter/budgetFilter.component';
 import FurnishingFilter from '../../components/furnishingFilter/furnishing.component';
 import BedRoomFilter from '../../components/bedroomFilter/bedRoom.component';
 import LocationFilter from '../../components/locationFilter/locationFilter.component';
-import SearchResultLand from '../../components/searchResultCardLand/searchResultCardLand.component';
-import RentFlat from '../../components/searchResultCardRentFlat/searchResultCardLand.component';
-import RentHostel from '../../components/searchResultCardRentHostel/searchResultCardLand.component';
+
+// Rent
+import RentApartment from '../../components/searchResultCardNewRentApartment/searchResultCard.component';
+import RentIndHouse from '../../components/searchResultCardNewRentIndHouse/searchResultCard.component';
+import RentHostel from '../../components/searchResultCardNewRentHostel/searchResultCard.component';
+
+// Project
+// import ProjectApartment from '../../components/searchResultCardNewProjectApartment/searchResultCard.component';
 
 // Styles
 import useStyles from './search.styles';
@@ -98,21 +105,32 @@ const SearchPage = ({ currentTab }) => {
 					<b>283</b> properties found for <b>Bhubaneswar</b>{' '}
 				</p>
 				<Grid container spacing={3}>
-					<Grid item md={8}>
-						{currentTab === 'rent' && <RentFlat />}
+					<Grid item xs={12} md={8}>
+						{currentTab === 'rent' && <RentApartment />}
 						<Box mt="1rem">
-							{currentTab === 'rent' && <RentHostel />}
+							{currentTab === 'rent' && <RentIndHouse />}
 						</Box>
-						{currentTab === 'sale' &&
-							Array.from(Array(6).keys()).map((c) => (
-								<Box mt={c && '2rem'} key={c}>
-									{c === 1 ? (
-										<SearchResultLand />
-									) : (
-										<ResultCard independent={false} />
-									)}
-								</Box>
-							))}
+						{currentTab === 'rent' && (
+							<Box mt="1rem">
+								<RentHostel independent={true} />
+							</Box>
+						)}
+						{currentTab === 'sale' && (
+							<Box mt="1rem">
+								<ResultCard independent={true} />
+							</Box>
+						)}
+						{currentTab === 'sale' && (
+							<Box mt="1rem">
+								<IndHouse />
+							</Box>
+						)}
+						{currentTab === 'sale' && (
+							<Box mt="1rem">
+								<ResultLandSale />
+							</Box>
+						)}
+
 						<Box mt="2rem">
 							<Paper>
 								<Box
@@ -120,13 +138,13 @@ const SearchPage = ({ currentTab }) => {
 									display="flex"
 									justifyContent="center"
 								>
-									<Pagination count={10} color="primary" />
+									<Pagination count={5} color="primary" />
 								</Box>
 							</Paper>
 						</Box>
 					</Grid>
-					<Grid item md={4}>
-						<Box pl="1rem">
+					<Grid item xs={12} md={4}>
+						<Box className={classes.smLeft}>
 							<Paper>
 								<Box p="1rem">
 									<h3 className={classes.center}>

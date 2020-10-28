@@ -47,6 +47,7 @@ const styles = makeStyles((theme) => ({
 		paddingLeft: '5rem',
 		[theme.breakpoints.down('sm')]: {
 			paddingLeft: '1rem',
+			paddingRight: '1rem',
 		},
 	},
 	r5: {
@@ -79,6 +80,17 @@ const styles = makeStyles((theme) => ({
 	},
 	center: {
 		textAlign: 'center',
+	},
+	smLeft: {
+		paddingLeft: '1rem',
+		paddingRight: '1rem',
+		[theme.breakpoints.down('sm')]: {
+			paddingLeft: 0,
+			paddingRight: 0,
+		},
+	},
+	fullWidth: {
+		width: '100%',
 	},
 }));
 

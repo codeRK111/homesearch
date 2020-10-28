@@ -162,16 +162,6 @@ const useStyle = makeStyles((theme) => ({
 		color: '#ffffff',
 		marginLeft: '1rem',
 	},
-	margin: {
-		[theme.breakpoints.down('sm')]: {
-			marginTop: '1rem',
-		},
-	},
-	smLeft: {
-		[theme.breakpoints.down('sm')]: {
-			justifyContent: 'flex-start',
-		},
-	},
 }));
 
 export default useStyle;
