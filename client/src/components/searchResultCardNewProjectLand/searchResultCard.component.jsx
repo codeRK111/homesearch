@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Paper, Box, Grid, Divider } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 // import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
@@ -115,8 +114,9 @@ const ResultCard = ({ independent }) => {
 									Unit Type
 								</Grid>
 								<Grid item xs={4} className={classes.cell}>
-									Size
+									Plot Size
 								</Grid>
+
 								<Grid item xs={4} className={classes.cell}>
 									Price
 								</Grid>
@@ -133,8 +133,9 @@ const ResultCard = ({ independent }) => {
 											xs={4}
 											className={classes.cell}
 										>
-											<Link to="#">1 BHK</Link>
+											<Link to="#">Type A</Link>
 										</Grid>
+
 										<Grid
 											item
 											xs={4}
@@ -157,14 +158,14 @@ const ResultCard = ({ independent }) => {
 							<Divider />
 						</Box>
 						<Grid container>
-							<Grid item xs={12} md={8}>
+							<Grid item xs={12} md={6}>
 								<p className={classes.info}>
 									Lorem, ipsum dolor sit amet consectetur
 									adipisicing elit. Rem aspernatur non eius
 									neque eligendi dolorem ipsum asperiores quas
 								</p>
 							</Grid>
-							<Grid item xs={12} md={4}>
+							<Grid item xs={12} md={6}>
 								<Box
 									mt="1rem"
 									display="flex"

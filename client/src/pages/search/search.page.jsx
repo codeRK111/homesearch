@@ -1,6 +1,14 @@
 import React from 'react';
 import { Box, Paper, Grid, TextField } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 // Custom Components
 import AppBar from '../../components/appBar/appBar.component';
@@ -20,7 +28,9 @@ import RentIndHouse from '../../components/searchResultCardNewRentIndHouse/searc
 import RentHostel from '../../components/searchResultCardNewRentHostel/searchResultCard.component';
 
 // Project
-// import ProjectApartment from '../../components/searchResultCardNewProjectApartment/searchResultCard.component';
+import ProjectApartment from '../../components/searchResultCardNewProjectApartment/searchResultCard.component';
+import ProjectVilla from '../../components/searchResultCardNewProjectVilla/searchResultCard.component';
+import ProjectLand from '../../components/searchResultCardNewProjectLand/searchResultCard.component';
 
 // Styles
 import useStyles from './search.styles';
@@ -32,10 +42,96 @@ import { selectCurrentTab } from '../../redux/actionTab/actionTab.selectors';
 
 const SearchPage = ({ currentTab }) => {
 	const classes = useStyles();
-	return (
-		<Box>
-			<AppBar />
+	const mobile = useMediaQuery('(max-width:600px)');
+	const [open, setOpen] = React.useState(false);
 
+	const handleClick = () => {
+		setOpen(!open);
+	};
+
+	const renderFilter = () => {
+		return mobile ? (
+			<Box>
+				<ListItem button onClick={handleClick}>
+					<ListItemIcon>
+						<FilterListIcon />
+					</ListItemIcon>
+					<ListItemText primary="Filter" />
+					{open ? <ExpandLess /> : <ExpandMore />}
+				</ListItem>
+				<Collapse in={open} timeout="auto" unmountOnExit>
+					<Box
+						className={classes.l5}
+						display="flex"
+						justifyContent="center"
+					>
+						<Box className={classes.gridWrapper}>
+							<Grid container>
+								<Grid
+									item
+									xs={6}
+									md={1}
+									className={classes.gridItemWrapper}
+								>
+									<LocationFilter />
+								</Grid>
+								<Grid
+									item
+									xs={6}
+									md={1}
+									className={classes.gridItemWrapper}
+								>
+									<PropertyFilter />
+								</Grid>
+								<Grid
+									item
+									xs={6}
+									md={1}
+									className={classes.gridItemWrapper}
+								>
+									<BedRoomFilter />
+								</Grid>
+								<Grid
+									item
+									xs={6}
+									md={1}
+									className={classes.gridItemWrapper}
+								>
+									<BudgetFilter />
+								</Grid>
+								{currentTab === 'sale' && (
+									<Grid
+										item
+										xs={6}
+										md={2}
+										className={classes.gridItemWrapper}
+									>
+										<FurnishingFilter />
+									</Grid>
+								)}
+
+								<Grid
+									item
+									xs={6}
+									md={1}
+									className={classes.gridItemWrapper}
+								>
+									<Box
+										position="relative"
+										width="150px"
+										height="100%"
+									>
+										<button className={classes.apply}>
+											Apply
+										</button>
+									</Box>
+								</Grid>
+							</Grid>
+						</Box>
+					</Box>
+				</Collapse>
+			</Box>
+		) : (
 			<Box className={classes.l5} display="flex" justifyContent="center">
 				<Box className={classes.gridWrapper}>
 					<Grid container>
@@ -99,6 +195,12 @@ const SearchPage = ({ currentTab }) => {
 					</Grid>
 				</Box>
 			</Box>
+		);
+	};
+	return (
+		<Box>
+			<AppBar />
+			{renderFilter()}
 			<Box className={[classes.resultsWrapper, classes.l5].join(' ')}>
 				<p>
 					{' '}
@@ -106,6 +208,13 @@ const SearchPage = ({ currentTab }) => {
 				</p>
 				<Grid container spacing={3}>
 					<Grid item xs={12} md={8}>
+						{currentTab === 'project' && <ProjectApartment />}
+						<Box mt="1rem">
+							{currentTab === 'project' && <ProjectVilla />}
+						</Box>
+						<Box mt="1rem">
+							{currentTab === 'project' && <ProjectLand />}
+						</Box>
 						{currentTab === 'rent' && <RentApartment />}
 						<Box mt="1rem">
 							{currentTab === 'rent' && <RentIndHouse />}

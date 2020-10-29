@@ -61,6 +61,7 @@ const styles = makeStyles((theme) => ({
 		marginTop: '2rem',
 		[theme.breakpoints.down('sm')]: {
 			width: '100%',
+			marginTop: 0,
 		},
 	},
 	gridItemWrapper: {

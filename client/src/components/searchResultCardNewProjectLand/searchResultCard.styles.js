@@ -42,10 +42,21 @@ const useStyle = makeStyles((theme) => ({
 	},
 	details: {
 		border: `1px solid ${theme.colorOne}`,
-		padding: '0.8rem 2rem',
+		padding: '0.8rem 0.5rem',
 		cursor: 'pointer',
 		backgroundColor: theme.colorOne,
 		color: '#ffffff',
+		[theme.breakpoints.down('md')]: {
+			padding: '0.4rem 1rem',
+			fontSize: '80%',
+		},
+	},
+	whatsapp: {
+		border: `1px solid #cccccc`,
+		padding: '0.8rem 0.8rem',
+		cursor: 'pointer',
+		backgroundColor: '#ffffff',
+
 		[theme.breakpoints.down('md')]: {
 			padding: '0.4rem 1rem',
 			fontSize: '80%',
@@ -186,17 +197,6 @@ const useStyle = makeStyles((theme) => ({
 	margin: {
 		[theme.breakpoints.down('sm')]: {
 			marginTop: '1rem',
-		},
-	},
-	whatsapp: {
-		border: `1px solid #cccccc`,
-		padding: '0.8rem 0.8rem',
-		cursor: 'pointer',
-		backgroundColor: '#ffffff',
-
-		[theme.breakpoints.down('md')]: {
-			padding: '0.4rem 1rem',
-			fontSize: '80%',
 		},
 	},
 }));
