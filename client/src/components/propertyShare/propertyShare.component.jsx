@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.colorOne,
 		color: '#ffffff',
 		border: 'none',
+		textDecoration: 'none',
 	},
 	heading: {
 		textAlign: 'center',
@@ -135,7 +136,10 @@ const PropertyShare = ({ status, handleClose, id }) => {
 							display="flex"
 							justifyContent="center"
 						>
-							<button className={classes.button}>
+							<a
+								href="https://wa.me/919853325956?text=I%27m%20interested%20in%20your%20car%20for%20sale"
+								className={classes.button}
+							>
 								<Box display="flex" alignItems="center">
 									<WhatsAppIcon
 										className={classes.iconWh}
@@ -143,7 +147,7 @@ const PropertyShare = ({ status, handleClose, id }) => {
 									/>
 									SHARE NOW
 								</Box>
-							</button>
+							</a>
 						</Box>
 					</Box>
 				</Paper>
