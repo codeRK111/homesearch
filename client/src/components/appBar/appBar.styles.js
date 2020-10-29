@@ -21,4 +21,7 @@ export const useStyles = makeStyles((theme) => ({
 		color: theme.colorOne,
 		fontWeight: 'bold',
 	},
+	titleWrapper: {
+		cursor: 'pointer',
+	},
 }));

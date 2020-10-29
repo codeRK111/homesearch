@@ -51,7 +51,11 @@ const Appbar = () => {
 					)}
 
 					<Box className={classes.title}>
-						<Typography variant="h6" onClick={goToHomePage}>
+						<Typography
+							variant="h6"
+							onClick={goToHomePage}
+							className={classes.titleWrapper}
+						>
 							Homesearch
 							<span className={classes.lastWord}>18</span>
 						</Typography>

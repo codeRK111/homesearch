@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyle = makeStyles((theme) => ({
 	image: {
 		maxWidth: '100%',
-		maxHeight: '300px',
 		width: '100%',
 		height: '100%',
 	},
@@ -170,6 +169,22 @@ const useStyle = makeStyles((theme) => ({
 	smLeft: {
 		[theme.breakpoints.down('sm')]: {
 			justifyContent: 'flex-start',
+		},
+	},
+	shareIcon2: {
+		fontSize: '1.5rem',
+		padding: 0,
+		color: theme.colorTwo,
+	},
+	whatsapp: {
+		border: `1px solid #cccccc`,
+		padding: '0.8rem 0.8rem',
+		cursor: 'pointer',
+		backgroundColor: '#ffffff',
+
+		[theme.breakpoints.down('md')]: {
+			padding: '0.4rem 1rem',
+			fontSize: '80%',
 		},
 	},
 }));

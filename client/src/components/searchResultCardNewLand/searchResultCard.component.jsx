@@ -1,15 +1,37 @@
 import React from 'react';
 import { Paper, Box, Grid, Divider } from '@material-ui/core';
-// import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import ShareIcon from '@material-ui/icons/Share';
 import DoneIcon from '@material-ui/icons/Done';
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import useStyles from './searchResultCard.styles';
 
+// Custom components
+import PropertyShare from '../propertyShare/propertyShare.component';
+
 const ResultCard = ({ independent }) => {
 	const classes = useStyles();
+	const mobile = useMediaQuery('(max-width:600px)');
+	const [open, setOpen] = React.useState(false);
+
+	const handleOpen = (_) => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const justifyContent = mobile
+		? { justifyContent: 'flex-start' }
+		: { justifyContent: 'flex-end' };
 	return (
 		<Paper>
+			<PropertyShare
+				status={open}
+				handleClose={handleClose}
+				id="djshd123"
+			/>
 			<Grid container spacing={1}>
 				<Grid item xs={12} md={4}>
 					<img
@@ -61,14 +83,6 @@ const ResultCard = ({ independent }) => {
 										<Box className={classes.price}>
 											₹ 80L
 										</Box>
-										<Paper
-											className={classes.iconWrapper}
-											elevation={3}
-										>
-											<ShareIcon
-												className={classes.shareIcon}
-											/>
-										</Paper>
 									</Box>
 									<Box className={classes.info} mt="0.5rem">
 										{' '}
@@ -177,31 +191,41 @@ const ResultCard = ({ independent }) => {
 							<Divider />
 						</Box>
 						<Grid container>
-							<Grid item xs={12} md={8}>
+							<Grid item xs={12} md={6}>
 								<p className={classes.info}>
 									Lorem, ipsum dolor sit amet consectetur
 									adipisicing elit. Rem aspernatur non eius
 									neque eligendi dolorem ipsum asperiores quas
 								</p>
 							</Grid>
-							<Grid item xs={12} md={4}>
+							<Grid item xs={12} md={6}>
 								<Box
 									mt="1rem"
 									display="flex"
 									justifyContent="flex-end"
 									className={classes.smLeft}
 								>
-									<Box>
+									<Box display="flex">
+										<button
+											className={classes.whatsapp}
+											onClick={handleOpen}
+										>
+											<WhatsAppIcon
+												className={classes.shareIcon2}
+											/>
+										</button>
 										<button className={classes.details}>
 											Get Owner Details
 										</button>
-										<Box
-											className={classes.info}
-											mt="0.5rem"
-										>
-											Posted on - 28-10-2020
-										</Box>
 									</Box>
+								</Box>
+								<Box
+									className={classes.info}
+									mt="0.5rem"
+									display="flex"
+									{...justifyContent}
+								>
+									Posted on - 28-10-2020
 								</Box>
 							</Grid>
 						</Grid>
