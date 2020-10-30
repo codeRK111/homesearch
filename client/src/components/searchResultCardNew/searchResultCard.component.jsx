@@ -1,13 +1,12 @@
-import React from 'react';
-import { Paper, Box, Grid, Divider } from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { Box, Divider, Grid, Paper } from '@material-ui/core';
+
 import DoneIcon from '@material-ui/icons/Done';
-import WhatsAppIcon from '@material-ui/icons/WhatsApp';
-
-import useStyles from './searchResultCard.styles';
-
-// Custom components
+import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
+import React from 'react';
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useStyles from './searchResultCard.styles';
 
 const ResultCard = ({ independent }) => {
 	const classes = useStyles();
@@ -53,11 +52,16 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
-									<b>
-										{independent
-											? 'House for sale in Patia'
-											: '3 BHK Apanartment'}
-									</b>
+									<Link
+										to="/property/123/details"
+										className={classes.linkTitle}
+									>
+										<b>
+											{independent
+												? 'House for sale in Patia'
+												: '3 BHK Apanartment'}
+										</b>
+									</Link>
 									<br />
 
 									{/* <VerifiedUserIcon
@@ -213,9 +217,17 @@ const ResultCard = ({ independent }) => {
 											className={classes.whatsapp}
 											onClick={handleOpen}
 										>
-											<WhatsAppIcon
-												className={classes.shareIcon2}
-											/>
+											<Box
+												display="flex"
+												alignItems="center"
+											>
+												<WhatsAppIcon
+													className={
+														classes.shareIcon2
+													}
+												/>
+												<Box ml="0.2rem">Chat now</Box>
+											</Box>
 										</button>
 										<button className={classes.details}>
 											Get Owner Details

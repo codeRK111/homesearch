@@ -11,6 +11,7 @@ const customTheme = {
 	fontColorTwo: '#bdc3c7',
 	fontColorThree: '#ecf0f1',
 	bgColor: '#dfe6e9',
+	appBarColor: '#f5f5f5',
 };
 
 export default customTheme;

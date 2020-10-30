@@ -1,9 +1,10 @@
-import React from 'react';
-import { Modal, Paper, Box, TextField, Divider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Divider, Modal, Paper, TextField } from '@material-ui/core';
+
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import PropTypes from 'prop-types';
+import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import { makeStyles } from '@material-ui/core/styles';
 
 function getModalStyle() {
 	const top = 50;
@@ -106,7 +107,7 @@ const PropertyShare = ({ status, handleClose, id }) => {
 							</Box>
 							<Box flexGrow={1}>
 								<h3 className={classes.heading}>
-									Please share your details
+									Chat with owner
 								</h3>
 							</Box>
 							<Box flexGrow={2}>
@@ -145,7 +146,7 @@ const PropertyShare = ({ status, handleClose, id }) => {
 										className={classes.iconWh}
 										onClick={handleClose}
 									/>
-									SHARE NOW
+									CHAT NOW
 								</Box>
 							</a>
 						</Box>

@@ -1,16 +1,16 @@
-import React from 'react';
-import { HashRouter, Switch, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
-import { store } from './redux/store';
-// Custom components
+import HomePage from './pages/home/home.page';
 import LoginPage from './pages/login/login.page';
-import SignUpForm from './pages/signup/signup.page';
+import MobileSearch from './pages/mobileSearch/mobileSearch.page';
 import OTPPage from './pages/otp/otp.page';
 import ProfilePage from './pages/profile/profile.page';
-import HomePage from './pages/home/home.page';
-import MobileSearch from './pages/mobileSearch/mobileSearch.page';
+import PropertyDetailsPage from './pages/propertyDetails/propertyDetails.page';
+import { Provider } from 'react-redux';
+import React from 'react';
 import SearchPage from './pages/search/search.page';
+import SignUpForm from './pages/signup/signup.page';
+import { store } from './redux/store';
 
 function App() {
 	return (
@@ -48,6 +48,11 @@ function App() {
 							exact
 							path="/search-results"
 							render={() => <SearchPage />}
+						/>
+						<Route
+							exact
+							path="/property/:id/details"
+							render={() => <PropertyDetailsPage />}
 						/>
 					</Switch>
 				</HashRouter>
