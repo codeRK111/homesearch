@@ -19,6 +19,7 @@ import BusIcon from '@material-ui/icons/DirectionsBus';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { Center } from '../../components/flexContainer/flexContainer.component';
 import FlagIcon from '@material-ui/icons/Flag';
+import Footer from '../../components/footer/footer.component';
 import HomeIcon from '@material-ui/icons/Home';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import HospitalIcon from '@material-ui/icons/LocalHospital';
@@ -783,6 +784,7 @@ const PropertyDetails = () => {
 					</Paper>
 				</Box>
 			</Box>
+			<Footer />
 		</Box>
 	);
 };
