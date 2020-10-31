@@ -5,7 +5,7 @@ import LoginPage from './pages/login/login.page';
 import MobileSearch from './pages/mobileSearch/mobileSearch.page';
 import OTPPage from './pages/otp/otp.page';
 import ProfilePage from './pages/profile/profile.page';
-import PropertyDetailsPage from './pages/propertyDetails/propertyDetails.page';
+import PropertyDetailsPage from './pages/detailsPage/detailsPage.page';
 import { Provider } from 'react-redux';
 import React from 'react';
 import SearchPage from './pages/search/search.page';
@@ -51,8 +51,10 @@ function App() {
 						/>
 						<Route
 							exact
-							path="/property/:id/details"
-							render={() => <PropertyDetailsPage />}
+							path="/property/:id/details/:propertyFor/:type"
+							render={(props) => (
+								<PropertyDetailsPage {...props} />
+							)}
 						/>
 					</Switch>
 				</HashRouter>

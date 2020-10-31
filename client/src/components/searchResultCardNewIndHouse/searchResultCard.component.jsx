@@ -1,13 +1,15 @@
-import React from 'react';
-import { Paper, Box, Grid, Divider } from '@material-ui/core';
+import { Box, Divider, Grid, Paper } from '@material-ui/core';
+
 import DoneIcon from '@material-ui/icons/Done';
+import { Link } from 'react-router-dom';
+import PropertyShare from '../propertyShare/propertyShare.component';
+import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
 import useStyles from './searchResultCard.styles';
 
 // Custom components
-import PropertyShare from '../propertyShare/propertyShare.component';
+
 
 const ResultCard = ({ independent }) => {
 	const classes = useStyles();
@@ -53,7 +55,13 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
-									<b>3 BHK Independent House</b>
+									<Link
+										to="/property/123/details/sale/villa"
+										className={classes.linkTitle}
+									>
+										<b>3 BHK Independent House</b>
+									</Link>
+
 									<br />
 
 									{/* <VerifiedUserIcon

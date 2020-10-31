@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
 	mainImageWrapper: {
 		width: '100%',
-		minHeight: '400px',
+		// minHeight: '400px',
 	},
 	image: {
 		maxWidth: '100%',
@@ -13,13 +13,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 	otherImagesWrapper: {
 		display: 'flex',
-		justifyContent: 'space-around',
+		// justifyContent: 'space-around',
 	},
 	imageWrapper: {
 		maxWidth: '5rem',
 		maxHeight: '5rem',
 		cursor: 'pointer',
 		position: 'relative',
+		marginRight: '1rem',
 	},
 	overlay: {
 		position: 'absolute',

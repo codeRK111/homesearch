@@ -53,7 +53,7 @@ const ResultCard = ({ independent }) => {
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
 									<Link
-										to="/property/123/details"
+										to="/property/123/details/sale/apartment"
 										className={classes.linkTitle}
 									>
 										<b>

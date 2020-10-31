@@ -47,7 +47,7 @@ import SimilarProperties from '../../components/similarProperties/resaleApartmen
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import clsx from 'clsx';
 import { useMediaQuery } from '@material-ui/core';
-import useStyles from './propertyDetails.style';
+import useStyles from './rentVilla.style';
 
 // import BedroomIcon from '@material-ui/icons/Hotel';
 
@@ -311,7 +311,7 @@ const PropertyDetails = () => {
 												display="flex"
 												flexDirection="column"
 											>
-												<Box>Carpet Area</Box>
+												<Box>Land</Box>
 												<h4 className={classes.title}>
 													900 Sq.Ft
 												</h4>
@@ -473,13 +473,40 @@ const PropertyDetails = () => {
 													display="flex"
 													flexDirection="column"
 												>
-													<Box>Number of floors</Box>
+													<Box>Facing</Box>
 													<h4
 														className={
 															classes.title
 														}
 													>
-														4
+														East
+													</h4>
+												</Box>
+											</Box>
+										</Grid>
+										<Grid item xs={6} md={3}>
+											<Box
+												className={classes.p1Details}
+												display="flex"
+											>
+												<Box pl="0.5rem" pr="0.5rem">
+													<Avatar>
+														<FontAwesomeIcon
+															icon={faBuilding}
+														/>
+													</Avatar>
+												</Box>
+												<Box
+													display="flex"
+													flexDirection="column"
+												>
+													<Box>Total floors</Box>
+													<h4
+														className={
+															classes.title
+														}
+													>
+														5
 													</h4>
 												</Box>
 											</Box>
@@ -856,7 +883,8 @@ const PropertyDetails = () => {
 																classes.title
 															}
 														>
-															Legal Clearance
+															Lorem ipsum dolor
+															sit.
 														</h4>
 													</Box>
 													<Box flexGrow={1}>
@@ -967,7 +995,7 @@ const PropertyDetails = () => {
 						</Box>
 						<Box mt="1rem">
 							<SimilarProperties
-								title={'2 BHK Apartment for sale'}
+								title={'2 BHK Independent House for sale'}
 							/>
 						</Box>
 					</Paper>

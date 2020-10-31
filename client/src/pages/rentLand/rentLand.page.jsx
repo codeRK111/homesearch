@@ -13,14 +13,11 @@ import {
 	Tooltip,
 } from '@material-ui/core';
 import {
-	faBed,
 	faBuilding,
 	faCarSide,
-	faCouch,
-	faCrown,
 	faMap,
 	faQuestionCircle,
-	faToilet,
+	faRupeeSign,
 } from '@fortawesome/free-solid-svg-icons';
 
 import AirportIcon from '@material-ui/icons/Flight';
@@ -34,7 +31,6 @@ import Footer from '../../components/footer/footer.component';
 import HomeIcon from '@material-ui/icons/Home';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import HospitalIcon from '@material-ui/icons/LocalHospital';
-import HotTubIcon from '@material-ui/icons/HotTub';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import PersonIcon from '@material-ui/icons/Person';
 import PropertyImages from '../../components/propertyImages/propertyImages.component';
@@ -43,11 +39,11 @@ import React from 'react';
 import SchoolIcon from '@material-ui/icons/School';
 import SearchFeedbackForm from '../../components/searchFeedbackForm/searchFeedBackForm.component';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import SimilarProperties from '../../components/similarProperties/resaleApartment.component';
+import SimilarProperties from '../../components/similarProperties/resaleLand.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import clsx from 'clsx';
 import { useMediaQuery } from '@material-ui/core';
-import useStyles from './propertyDetails.style';
+import useStyles from './rentLand.style';
 
 // import BedroomIcon from '@material-ui/icons/Hotel';
 
@@ -139,7 +135,6 @@ const PropertyDetails = () => {
 								<Box ml="1rem">
 									<h3 className={classes.title}> 90 Lacs</h3>
 									<Box mt="0.3rem">₹ 4500 / Sq.ft</Box>
-									<Box mt="0.3rem">(SBA)</Box>
 								</Box>
 							</Grid>
 							<Grid
@@ -154,7 +149,6 @@ const PropertyDetails = () => {
 								<Box ml="1rem">
 									<h3 className={classes.title}> 1000</h3>
 									<Box mt="0.3rem">Sq.ft</Box>
-									<Box mt="0.3rem">(Carpet)</Box>
 								</Box>
 							</Grid>
 							<Grid
@@ -200,14 +194,12 @@ const PropertyDetails = () => {
 								<Box>
 									<h3 className={classes.title}> 90 Lacs</h3>
 									<Box mt="0.3rem">₹ 4500 / Sq.ft</Box>
-									<Box mt="0.3rem">(SBA)</Box>
 								</Box>
 							</Grid>
 							<Grid item xs={6}>
 								<Box mt="1rem">
 									<h3 className={classes.title}> 1000</h3>
 									<Box mt="0.3rem">Sq.ft</Box>
-									<Box mt="0.3rem">(Carpet)</Box>
 								</Box>
 							</Grid>
 							<Grid item xs={6}>
@@ -257,7 +249,7 @@ const PropertyDetails = () => {
 											<Box pl="0.5rem" pr="0.5rem">
 												<Avatar>
 													<FontAwesomeIcon
-														icon={faBed}
+														icon={faMap}
 													/>
 												</Avatar>
 											</Box>
@@ -265,9 +257,9 @@ const PropertyDetails = () => {
 												display="flex"
 												flexDirection="column"
 											>
-												<Box>Bedrooms</Box>
+												<Box>Plot Area</Box>
 												<h4 className={classes.title}>
-													1 Bedroom
+													1000 Sq.ft
 												</h4>
 											</Box>
 										</Box>
@@ -288,9 +280,9 @@ const PropertyDetails = () => {
 												display="flex"
 												flexDirection="column"
 											>
-												<Box>Super builtup area</Box>
+												<Box>Plot Frontage</Box>
 												<h4 className={classes.title}>
-													1000 Sq.Ft
+													100 Sq.Ft
 												</h4>
 											</Box>
 										</Box>
@@ -311,9 +303,9 @@ const PropertyDetails = () => {
 												display="flex"
 												flexDirection="column"
 											>
-												<Box>Carpet Area</Box>
+												<Box>Length</Box>
 												<h4 className={classes.title}>
-													900 Sq.Ft
+													900 Ft
 												</h4>
 											</Box>
 										</Box>
@@ -326,7 +318,7 @@ const PropertyDetails = () => {
 											<Box pl="0.5rem" pr="0.5rem">
 												<Avatar>
 													<FontAwesomeIcon
-														icon={faQuestionCircle}
+														icon={faMap}
 													/>
 												</Avatar>
 											</Box>
@@ -334,9 +326,9 @@ const PropertyDetails = () => {
 												display="flex"
 												flexDirection="column"
 											>
-												<Box>Availability</Box>
+												<Box>Width</Box>
 												<h4 className={classes.title}>
-													Ready to move
+													400 ft
 												</h4>
 											</Box>
 										</Box>
@@ -361,13 +353,13 @@ const PropertyDetails = () => {
 													display="flex"
 													flexDirection="column"
 												>
-													<Box>Car Parking</Box>
+													<Box>Width of road</Box>
 													<h4
 														className={
 															classes.title
 														}
 													>
-														Open
+														100 ft
 													</h4>
 												</Box>
 											</Box>
@@ -380,7 +372,9 @@ const PropertyDetails = () => {
 												<Box pl="0.5rem" pr="0.5rem">
 													<Avatar>
 														<FontAwesomeIcon
-															icon={faCouch}
+															icon={
+																faQuestionCircle
+															}
 														/>
 													</Avatar>
 												</Box>
@@ -388,13 +382,15 @@ const PropertyDetails = () => {
 													display="flex"
 													flexDirection="column"
 												>
-													<Box>Furnishing</Box>
+													<Box>
+														Is construction done
+													</Box>
 													<h4
 														className={
 															classes.title
 														}
 													>
-														Furnished
+														Yes
 													</h4>
 												</Box>
 											</Box>
@@ -407,7 +403,9 @@ const PropertyDetails = () => {
 												<Box pl="0.5rem" pr="0.5rem">
 													<Avatar>
 														<FontAwesomeIcon
-															icon={faToilet}
+															icon={
+																faQuestionCircle
+															}
 														/>
 													</Avatar>
 												</Box>
@@ -415,13 +413,15 @@ const PropertyDetails = () => {
 													display="flex"
 													flexDirection="column"
 												>
-													<Box>Toilets</Box>
+													<Box>
+														Is boundary wall made
+													</Box>
 													<h4
 														className={
 															classes.title
 														}
 													>
-														2 Indian, 2 Western
+														Yes
 													</h4>
 												</Box>
 											</Box>
@@ -434,7 +434,9 @@ const PropertyDetails = () => {
 												<Box pl="0.5rem" pr="0.5rem">
 													<Avatar>
 														<FontAwesomeIcon
-															icon={faCrown}
+															icon={
+																faQuestionCircle
+															}
 														/>
 													</Avatar>
 												</Box>
@@ -442,13 +444,15 @@ const PropertyDetails = () => {
 													display="flex"
 													flexDirection="column"
 												>
-													<Box>Ownership</Box>
+													<Box>
+														Is gated community
+													</Box>
 													<h4
 														className={
 															classes.title
 														}
 													>
-														Freehold
+														Yes
 													</h4>
 												</Box>
 											</Box>
@@ -465,7 +469,9 @@ const PropertyDetails = () => {
 												<Box pl="0.5rem" pr="0.5rem">
 													<Avatar>
 														<FontAwesomeIcon
-															icon={faBuilding}
+															icon={
+																faQuestionCircle
+															}
 														/>
 													</Avatar>
 												</Box>
@@ -473,13 +479,13 @@ const PropertyDetails = () => {
 													display="flex"
 													flexDirection="column"
 												>
-													<Box>Number of floors</Box>
+													<Box>Land using zoning</Box>
 													<h4
 														className={
 															classes.title
 														}
 													>
-														4
+														Yellow Zone
 													</h4>
 												</Box>
 											</Box>
@@ -500,13 +506,42 @@ const PropertyDetails = () => {
 													display="flex"
 													flexDirection="column"
 												>
-													<Box>Property on floor</Box>
+													<Box>Facing</Box>
 													<h4
 														className={
 															classes.title
 														}
 													>
-														2
+														East
+													</h4>
+												</Box>
+											</Box>
+										</Grid>
+										<Grid item xs={6} md={4}>
+											<Box
+												className={classes.p1Details}
+												display="flex"
+											>
+												<Box pl="0.5rem" pr="0.5rem">
+													<Avatar>
+														<FontAwesomeIcon
+															icon={faRupeeSign}
+														/>
+													</Avatar>
+												</Box>
+												<Box
+													display="flex"
+													flexDirection="column"
+												>
+													<Box>
+														Government Valuation
+													</Box>
+													<h4
+														className={
+															classes.title
+														}
+													>
+														5L
 													</h4>
 												</Box>
 											</Box>
@@ -697,147 +732,6 @@ const PropertyDetails = () => {
 							<Grid container>
 								<Grid item xs={12} md={8}>
 									<Grid container>
-										<Grid item xs={12} md={6}>
-											<Box p="1rem">
-												<Box
-													display="flex"
-													width="100%"
-													alignItems="center"
-													mb="1rem"
-													mt="1rem"
-												>
-													<Box
-														pl="0.3rem"
-														pr="0.3rem"
-													>
-														<h4
-															className={
-																classes.title
-															}
-														>
-															Amenities
-														</h4>
-													</Box>
-													<Box flexGrow={1}>
-														<Divider />
-													</Box>
-												</Box>
-												<Box
-													display="flex"
-													flexWrap="wrap"
-													// justifyContent="center"
-												>
-													{arr.map((c) => (
-														<Box
-															ml="1rem"
-															key={c}
-															mt="0.5rem"
-														>
-															<Chip
-																variant={
-																	c === 2
-																		? 'outlined'
-																		: 'default'
-																}
-																avatar={
-																	<Avatar
-																		className={clsx(
-																			{
-																				[classes.selected]:
-																					c ===
-																					2,
-																			}
-																		)}
-																	>
-																		<HomeWorkIcon
-																			className={clsx(
-																				classes.avatarIcon,
-																				{
-																					[classes.cWhite]:
-																						c ===
-																						2,
-																				}
-																			)}
-																		/>
-																	</Avatar>
-																}
-																label="Amenity"
-															/>
-														</Box>
-													))}
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={12} md={6}>
-											<Box p="1rem">
-												<Box
-													display="flex"
-													width="100%"
-													alignItems="center"
-													mb="1rem"
-													mt="1rem"
-												>
-													<Box
-														pl="0.3rem"
-														pr="0.3rem"
-													>
-														<h4
-															className={
-																classes.title
-															}
-														>
-															Furnishes
-														</h4>
-													</Box>
-													<Box flexGrow={1}>
-														<Divider />
-													</Box>
-												</Box>
-												<Box
-													display="flex"
-													flexWrap="wrap"
-												>
-													{arr.map((c) => (
-														<Box
-															ml="1rem"
-															key={c}
-															mt="0.5rem"
-														>
-															<Chip
-																variant={
-																	c === 2
-																		? 'outlined'
-																		: 'default'
-																}
-																avatar={
-																	<Avatar
-																		className={clsx(
-																			{
-																				[classes.selected]:
-																					c ===
-																					2,
-																			}
-																		)}
-																	>
-																		<HotTubIcon
-																			className={clsx(
-																				classes.avatarIcon,
-																				{
-																					[classes.cWhite]:
-																						c ===
-																						2,
-																				}
-																			)}
-																		/>
-																	</Avatar>
-																}
-																label="Furnish"
-															/>
-														</Box>
-													))}
-												</Box>
-											</Box>
-										</Grid>
 										<Grid item xs={12} md={12}>
 											<Box p="1rem">
 												<Box
@@ -966,9 +860,7 @@ const PropertyDetails = () => {
 							</Grid>
 						</Box>
 						<Box mt="1rem">
-							<SimilarProperties
-								title={'2 BHK Apartment for sale'}
-							/>
+							<SimilarProperties title={'$Area Sq.ft $locatio'} />
 						</Box>
 					</Paper>
 				</Box>

@@ -1,10 +1,31 @@
-import { Box, TextField } from '@material-ui/core';
+import { Box, FormControl, InputLabel, TextField } from '@material-ui/core';
 
+import MenuItem from '@material-ui/core/MenuItem';
 import React from 'react';
+import Select from '@material-ui/core/Select';
 import useStyles from './searchFeedBackForm.style';
 
-const SearchFeedback = () => {
+const options = [
+	'I need to talk to customer service',
+	"I still haven't found what I'm Looking for",
+	'Property already sold out',
+	'Property already rented out',
+	'Broker posing as owner',
+	'Incorrect Price/Area',
+	'For sale but listed under rent',
+	'Incorrect contact information',
+	'Property shown here doesnt exist',
+	'Incorrect location information',
+	'For rent but listed under sale',
+	'Others',
+];
+
+const SearchFeedback = ({ feedback }) => {
 	const classes = useStyles();
+	const [category, setCategory] = React.useState(
+		'I need to talk to customer service'
+	);
+	const handleChange = (e) => setCategory(e.target.value);
 	return (
 		<Box>
 			<Box>
@@ -33,6 +54,33 @@ const SearchFeedback = () => {
 					size="small"
 				/>
 			</Box>
+			{!feedback && (
+				<Box mt="1rem">
+					<FormControl
+						variant="outlined"
+						className={classes.formControl}
+						fullWidth
+						size="small"
+					>
+						<InputLabel id="demo-simple-select-outlined-label">
+							Category
+						</InputLabel>
+						<Select
+							labelId="demo-simple-select-outlined-label"
+							id="demo-simple-select-outlined"
+							label="Category"
+							value={category}
+							onChange={handleChange}
+						>
+							{options.map((c, i) => (
+								<MenuItem value={c} key={i}>
+									{c}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+				</Box>
+			)}
 			<Box mt="1rem">
 				<TextField
 					placeholder="message"

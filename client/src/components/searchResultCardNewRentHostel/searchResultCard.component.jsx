@@ -1,12 +1,19 @@
+import { Box, Divider, Grid, Paper } from '@material-ui/core';
+
+import { Link } from 'react-router-dom';
+import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
-import { Paper, Box, Grid, Divider } from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-// import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './searchResultCard.styles';
 
+// import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+
+
+
+
 // Custom components
-import PropertyShare from '../propertyShare/propertyShare.component';
+
 
 const ResultCard = ({ independent }) => {
 	const classes = useStyles();
@@ -52,7 +59,13 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
-									<b>PG on rent in *</b>
+									<Link
+										to="/property/123/details/rent/hostel"
+										className={classes.linkTitle}
+									>
+										<b>PG on rent in *</b>
+									</Link>
+
 									<br />
 
 									{/* <VerifiedUserIcon

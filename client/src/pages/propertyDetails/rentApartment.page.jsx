@@ -15,10 +15,12 @@ import {
 import {
 	faBed,
 	faBuilding,
+	faCalendarAlt,
 	faCarSide,
 	faCouch,
 	faCrown,
 	faMap,
+	faPersonBooth,
 	faQuestionCircle,
 	faToilet,
 } from '@fortawesome/free-solid-svg-icons';
@@ -79,7 +81,7 @@ const distance = [
 		icon: <HospitalIcon />,
 	},
 ];
-const PropertyDetails = () => {
+const PropertyDetails = ({ independent }) => {
 	const classes = useStyles();
 	const [feedback, setFeedBack] = React.useState({
 		status: false,
@@ -106,12 +108,12 @@ const PropertyDetails = () => {
 									classes.center,
 								].join(' ')}
 							>
-								<h3 className={classes.title}>Resale</h3>
+								<h3 className={classes.title}>Rent</h3>
 							</Grid>
 							<Grid
 								item
 								xs={6}
-								md={8}
+								md={7}
 								className={[classes.borderRight].join(' ')}
 							>
 								<Box ml="1rem">
@@ -130,31 +132,17 @@ const PropertyDetails = () => {
 							<Grid
 								item
 								xs={6}
-								md={1}
+								md={2}
 								className={[
 									classes.borderRight,
 									classes.center,
 								].join(' ')}
 							>
 								<Box ml="1rem">
-									<h3 className={classes.title}> 90 Lacs</h3>
-									<Box mt="0.3rem">₹ 4500 / Sq.ft</Box>
-									<Box mt="0.3rem">(SBA)</Box>
-								</Box>
-							</Grid>
-							<Grid
-								item
-								xs={6}
-								md={1}
-								className={[
-									classes.borderRight,
-									classes.center,
-								].join(' ')}
-							>
-								<Box ml="1rem">
-									<h3 className={classes.title}> 1000</h3>
-									<Box mt="0.3rem">Sq.ft</Box>
-									<Box mt="0.3rem">(Carpet)</Box>
+									<h3 className={classes.title}> 20K</h3>
+									<Box mt="0.3rem">
+										Security Deposit: ₹ 40K
+									</Box>
 								</Box>
 							</Grid>
 							<Grid
@@ -164,11 +152,9 @@ const PropertyDetails = () => {
 								className={[classes.center].join(' ')}
 							>
 								<Box ml="1rem">
-									<h3 className={classes.title}>
-										{' '}
-										New Booking
-									</h3>
-									<Box mt="0.3rem">Verified</Box>
+									<h3 className={classes.title}> 1000</h3>
+									<Box mt="0.3rem">Sq.ft</Box>
+									<Box mt="0.3rem">(Carpet)</Box>
 								</Box>
 							</Grid>
 						</Grid>
@@ -194,13 +180,12 @@ const PropertyDetails = () => {
 						</Grid>
 						<Grid container>
 							<Grid item xs={6}>
-								<h3 className={classes.title}>Resale</h3>
+								<h3 className={classes.title}>Rent</h3>
 							</Grid>
 							<Grid item xs={6}>
 								<Box>
-									<h3 className={classes.title}> 90 Lacs</h3>
-									<Box mt="0.3rem">₹ 4500 / Sq.ft</Box>
-									<Box mt="0.3rem">(SBA)</Box>
+									<h3 className={classes.title}> 20K</h3>
+									<Box mt="0.3rem">security: ₹ 4500</Box>
 								</Box>
 							</Grid>
 							<Grid item xs={6}>
@@ -208,15 +193,6 @@ const PropertyDetails = () => {
 									<h3 className={classes.title}> 1000</h3>
 									<Box mt="0.3rem">Sq.ft</Box>
 									<Box mt="0.3rem">(Carpet)</Box>
-								</Box>
-							</Grid>
-							<Grid item xs={6}>
-								<Box mt="1rem">
-									<h3 className={classes.title}>
-										{' '}
-										New Booking
-									</h3>
-									<Box mt="0.3rem">Verified</Box>
 								</Box>
 							</Grid>
 						</Grid>
@@ -268,6 +244,52 @@ const PropertyDetails = () => {
 												<Box>Bedrooms</Box>
 												<h4 className={classes.title}>
 													1 Bedroom
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faBed}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Balconies</Box>
+												<h4 className={classes.title}>
+													1
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faPersonBooth}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Available For</Box>
+												<h4 className={classes.title}>
+													Men,Boys
 												</h4>
 											</Box>
 										</Box>
@@ -341,178 +363,168 @@ const PropertyDetails = () => {
 											</Box>
 										</Box>
 									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faCarSide}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Car Parking</Box>
+												<h4 className={classes.title}>
+													Open
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faCouch}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Furnishing</Box>
+												<h4 className={classes.title}>
+													Furnished
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faToilet}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Toilets</Box>
+												<h4 className={classes.title}>
+													4
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faCrown}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Ownership</Box>
+												<h4 className={classes.title}>
+													Freehold
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faBuilding}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Number of floors</Box>
+												<h4 className={classes.title}>
+													4
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faBuilding}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Property on floor</Box>
+												<h4 className={classes.title}>
+													2
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faCalendarAlt}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Notice Period</Box>
+												<h4 className={classes.title}>
+													10 days
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
 								</Grid>
-
-								<Box mt="0.5rem">
-									<Grid container>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={faCarSide}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>Car Parking</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														Open
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={faCouch}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>Furnishing</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														Furnished
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={faToilet}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>Toilets</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														2 Indian, 2 Western
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={faCrown}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>Ownership</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														Freehold
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-									</Grid>
-								</Box>
-								<Box mt="0.5rem">
-									<Grid container>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={faBuilding}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>Number of floors</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														4
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={faBuilding}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>Property on floor</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														2
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-									</Grid>
-								</Box>
 
 								<Box mt="1rem">
 									<Grid container>
@@ -633,6 +645,16 @@ const PropertyDetails = () => {
 						</Grid>
 						<Box mt="2rem">
 							<h3>Brief Description</h3>
+							Lorem ipsum dolor sit amet consectetur adipisicing
+							elit. Facere saepe, error maiores soluta maxime
+							dicta quo molestiae itaque harum numquam quasi
+							reprehenderit distinctio adipisci consequuntur ex
+							recusandae id ullam dolor? Libero vero, tempore
+							doloribus recusandae quod illo voluptates deleniti
+							explicabo.
+						</Box>
+						<Box mt="2rem">
+							<h3>Restrictions</h3>
 							Lorem ipsum dolor sit amet consectetur adipisicing
 							elit. Facere saepe, error maiores soluta maxime
 							dicta quo molestiae itaque harum numquam quasi
@@ -967,7 +989,9 @@ const PropertyDetails = () => {
 						</Box>
 						<Box mt="1rem">
 							<SimilarProperties
-								title={'2 BHK Apartment for sale'}
+								title={`2 BHK ${
+									independent ? 'Independent' : 'Apartment'
+								} for rent`}
 							/>
 						</Box>
 					</Paper>
