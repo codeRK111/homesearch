@@ -42,12 +42,12 @@ const useStyle = makeStyles((theme) => ({
 	},
 	details: {
 		border: `1px solid ${theme.colorOne}`,
-		padding: '0.8rem 2rem',
+		padding: '1rem 2rem',
 		cursor: 'pointer',
 		backgroundColor: theme.colorOne,
 		color: '#ffffff',
 		[theme.breakpoints.down('md')]: {
-			padding: '0.4rem 1rem',
+			padding: '0.5rem 1rem',
 			fontSize: '80%',
 		},
 	},
@@ -139,7 +139,7 @@ const useStyle = makeStyles((theme) => ({
 	},
 	price: {
 		fontWeight: '1000',
-		fontSize: '1.5rem',
+		fontSize: '1.2rem',
 	},
 	point: {
 		width: '5px',
@@ -197,6 +197,12 @@ const useStyle = makeStyles((theme) => ({
 		[theme.breakpoints.down('md')]: {
 			padding: '0.4rem 1rem',
 			fontSize: '80%',
+		},
+	},
+	linkTitle: {
+		textDecoration: 'none',
+		'&:hover': {
+			textDecoration: 'underline',
 		},
 	},
 }));

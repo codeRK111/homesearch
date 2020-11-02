@@ -14,14 +14,10 @@ import {
 } from '@material-ui/core';
 import {
 	faBed,
-	faBuilding,
-	faCalendarAlt,
-	faCarSide,
 	faCouch,
-	faCrown,
+	faHouseDamage,
+	faListOl,
 	faMap,
-	faPersonBooth,
-	faQuestionCircle,
 	faToilet,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -31,10 +27,10 @@ import BusIcon from '@material-ui/icons/DirectionsBus';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { Center } from '../../components/flexContainer/flexContainer.component';
 import FlagIcon from '@material-ui/icons/Flag';
+import FloorPlans from '../../components/floorPlans/floorPlans.component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Footer from '../../components/footer/footer.component';
 import HomeIcon from '@material-ui/icons/Home';
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import HospitalIcon from '@material-ui/icons/LocalHospital';
 import HotTubIcon from '@material-ui/icons/HotTub';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
@@ -45,7 +41,6 @@ import React from 'react';
 import SchoolIcon from '@material-ui/icons/School';
 import SearchFeedbackForm from '../../components/searchFeedbackForm/searchFeedBackForm.component';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import SimilarProperties from '../../components/similarProperties/resaleApartment.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import clsx from 'clsx';
 import { useMediaQuery } from '@material-ui/core';
@@ -81,7 +76,7 @@ const distance = [
 		icon: <HospitalIcon />,
 	},
 ];
-const PropertyDetails = ({ independent }) => {
+const PropertyDetails = () => {
 	const classes = useStyles();
 	const [feedback, setFeedBack] = React.useState({
 		status: false,
@@ -102,18 +97,7 @@ const PropertyDetails = ({ independent }) => {
 							<Grid
 								item
 								xs={6}
-								md={1}
-								className={[
-									classes.borderRight,
-									classes.center,
-								].join(' ')}
-							>
-								<h3 className={classes.title}>Rent</h3>
-							</Grid>
-							<Grid
-								item
-								xs={6}
-								md={7}
+								md={9}
 								className={[classes.borderRight].join(' ')}
 							>
 								<Box ml="1rem">
@@ -139,10 +123,9 @@ const PropertyDetails = ({ independent }) => {
 								].join(' ')}
 							>
 								<Box ml="1rem">
-									<h3 className={classes.title}>₹ 20K</h3>
-									<Box mt="0.3rem">
-										Security Deposit: ₹ 40K
-									</Box>
+									<h3 className={classes.title}> 90 Lacs</h3>
+									<Box mt="0.3rem">₹ 4500 / Sq.ft</Box>
+									<Box mt="0.3rem">(SBA)</Box>
 								</Box>
 							</Grid>
 							<Grid
@@ -180,12 +163,10 @@ const PropertyDetails = ({ independent }) => {
 						</Grid>
 						<Grid container>
 							<Grid item xs={6}>
-								<h3 className={classes.title}>Rent</h3>
-							</Grid>
-							<Grid item xs={6}>
 								<Box>
-									<h3 className={classes.title}>₹ 20K</h3>
-									<Box mt="0.3rem">security: ₹ 4500</Box>
+									<h3 className={classes.title}> 90 Lacs</h3>
+									<Box mt="0.3rem">₹ 4500 / Sq.ft</Box>
+									<Box mt="0.3rem">(SBA)</Box>
 								</Box>
 							</Grid>
 							<Grid item xs={6}>
@@ -256,52 +237,6 @@ const PropertyDetails = ({ independent }) => {
 											<Box pl="0.5rem" pr="0.5rem">
 												<Avatar>
 													<FontAwesomeIcon
-														icon={faBed}
-													/>
-												</Avatar>
-											</Box>
-											<Box
-												display="flex"
-												flexDirection="column"
-											>
-												<Box>Balconies</Box>
-												<h4 className={classes.title}>
-													1
-												</h4>
-											</Box>
-										</Box>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<Box
-											className={classes.p1Details}
-											display="flex"
-										>
-											<Box pl="0.5rem" pr="0.5rem">
-												<Avatar>
-													<FontAwesomeIcon
-														icon={faPersonBooth}
-													/>
-												</Avatar>
-											</Box>
-											<Box
-												display="flex"
-												flexDirection="column"
-											>
-												<Box>Available For</Box>
-												<h4 className={classes.title}>
-													Men,Boys
-												</h4>
-											</Box>
-										</Box>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<Box
-											className={classes.p1Details}
-											display="flex"
-										>
-											<Box pl="0.5rem" pr="0.5rem">
-												<Avatar>
-													<FontAwesomeIcon
 														icon={faMap}
 													/>
 												</Avatar>
@@ -340,52 +275,7 @@ const PropertyDetails = ({ independent }) => {
 											</Box>
 										</Box>
 									</Grid>
-									<Grid item xs={6} md={3}>
-										<Box
-											className={classes.p1Details}
-											display="flex"
-										>
-											<Box pl="0.5rem" pr="0.5rem">
-												<Avatar>
-													<FontAwesomeIcon
-														icon={faQuestionCircle}
-													/>
-												</Avatar>
-											</Box>
-											<Box
-												display="flex"
-												flexDirection="column"
-											>
-												<Box>Availability</Box>
-												<h4 className={classes.title}>
-													Ready to move
-												</h4>
-											</Box>
-										</Box>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<Box
-											className={classes.p1Details}
-											display="flex"
-										>
-											<Box pl="0.5rem" pr="0.5rem">
-												<Avatar>
-													<FontAwesomeIcon
-														icon={faCarSide}
-													/>
-												</Avatar>
-											</Box>
-											<Box
-												display="flex"
-												flexDirection="column"
-											>
-												<Box>Car Parking</Box>
-												<h4 className={classes.title}>
-													Open
-												</h4>
-											</Box>
-										</Box>
-									</Grid>
+
 									<Grid item xs={6} md={3}>
 										<Box
 											className={classes.p1Details}
@@ -427,7 +317,7 @@ const PropertyDetails = ({ independent }) => {
 											>
 												<Box>Toilets</Box>
 												<h4 className={classes.title}>
-													4
+													2 Indian, 2 Western
 												</h4>
 											</Box>
 										</Box>
@@ -440,7 +330,7 @@ const PropertyDetails = ({ independent }) => {
 											<Box pl="0.5rem" pr="0.5rem">
 												<Avatar>
 													<FontAwesomeIcon
-														icon={faCrown}
+														icon={faListOl}
 													/>
 												</Avatar>
 											</Box>
@@ -448,9 +338,9 @@ const PropertyDetails = ({ independent }) => {
 												display="flex"
 												flexDirection="column"
 											>
-												<Box>Ownership</Box>
+												<Box>Units</Box>
 												<h4 className={classes.title}>
-													Freehold
+													100
 												</h4>
 											</Box>
 										</Box>
@@ -463,7 +353,7 @@ const PropertyDetails = ({ independent }) => {
 											<Box pl="0.5rem" pr="0.5rem">
 												<Avatar>
 													<FontAwesomeIcon
-														icon={faBuilding}
+														icon={faHouseDamage}
 													/>
 												</Avatar>
 											</Box>
@@ -471,55 +361,9 @@ const PropertyDetails = ({ independent }) => {
 												display="flex"
 												flexDirection="column"
 											>
-												<Box>Number of floors</Box>
+												<Box>Living areas</Box>
 												<h4 className={classes.title}>
-													4
-												</h4>
-											</Box>
-										</Box>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<Box
-											className={classes.p1Details}
-											display="flex"
-										>
-											<Box pl="0.5rem" pr="0.5rem">
-												<Avatar>
-													<FontAwesomeIcon
-														icon={faBuilding}
-													/>
-												</Avatar>
-											</Box>
-											<Box
-												display="flex"
-												flexDirection="column"
-											>
-												<Box>Property on floor</Box>
-												<h4 className={classes.title}>
-													2
-												</h4>
-											</Box>
-										</Box>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<Box
-											className={classes.p1Details}
-											display="flex"
-										>
-											<Box pl="0.5rem" pr="0.5rem">
-												<Avatar>
-													<FontAwesomeIcon
-														icon={faCalendarAlt}
-													/>
-												</Avatar>
-											</Box>
-											<Box
-												display="flex"
-												flexDirection="column"
-											>
-												<Box>Notice Period</Box>
-												<h4 className={classes.title}>
-													10 days
+													1
 												</h4>
 											</Box>
 										</Box>
@@ -653,16 +497,6 @@ const PropertyDetails = ({ independent }) => {
 							doloribus recusandae quod illo voluptates deleniti
 							explicabo.
 						</Box>
-						<Box mt="2rem">
-							<h3>Restrictions</h3>
-							Lorem ipsum dolor sit amet consectetur adipisicing
-							elit. Facere saepe, error maiores soluta maxime
-							dicta quo molestiae itaque harum numquam quasi
-							reprehenderit distinctio adipisci consequuntur ex
-							recusandae id ullam dolor? Libero vero, tempore
-							doloribus recusandae quod illo voluptates deleniti
-							explicabo.
-						</Box>
 						<Box
 							mt="2rem"
 							p="1rem"
@@ -717,80 +551,9 @@ const PropertyDetails = ({ independent }) => {
 						</Box>
 						<Box mt="2rem">
 							<Grid container>
-								<Grid item xs={12} md={8}>
+								<Grid item xs={12} md={6}>
 									<Grid container>
-										<Grid item xs={12} md={6}>
-											<Box p="1rem">
-												<Box
-													display="flex"
-													width="100%"
-													alignItems="center"
-													mb="1rem"
-													mt="1rem"
-												>
-													<Box
-														pl="0.3rem"
-														pr="0.3rem"
-													>
-														<h4
-															className={
-																classes.title
-															}
-														>
-															Amenities
-														</h4>
-													</Box>
-													<Box flexGrow={1}>
-														<Divider />
-													</Box>
-												</Box>
-												<Box
-													display="flex"
-													flexWrap="wrap"
-													// justifyContent="center"
-												>
-													{arr.map((c) => (
-														<Box
-															ml="1rem"
-															key={c}
-															mt="0.5rem"
-														>
-															<Chip
-																variant={
-																	c === 2
-																		? 'outlined'
-																		: 'default'
-																}
-																avatar={
-																	<Avatar
-																		className={clsx(
-																			{
-																				[classes.selected]:
-																					c ===
-																					2,
-																			}
-																		)}
-																	>
-																		<HomeWorkIcon
-																			className={clsx(
-																				classes.avatarIcon,
-																				{
-																					[classes.cWhite]:
-																						c ===
-																						2,
-																				}
-																			)}
-																		/>
-																	</Avatar>
-																}
-																label="Amenity"
-															/>
-														</Box>
-													))}
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={12} md={12}>
 											<Box p="1rem">
 												<Box
 													display="flex"
@@ -860,81 +623,10 @@ const PropertyDetails = ({ independent }) => {
 												</Box>
 											</Box>
 										</Grid>
-										<Grid item xs={12} md={12}>
-											<Box p="1rem">
-												<Box
-													display="flex"
-													width="100%"
-													alignItems="center"
-													mb="1rem"
-													mt="1rem"
-												>
-													<Box
-														pl="0.3rem"
-														pr="0.3rem"
-													>
-														<h4
-															className={
-																classes.title
-															}
-														>
-															Legal Clearance
-														</h4>
-													</Box>
-													<Box flexGrow={1}>
-														<Divider />
-													</Box>
-												</Box>
-												<Box
-													display="flex"
-													flexWrap="wrap"
-													// justifyContent="center"
-												>
-													{arr.map((c) => (
-														<Box
-															ml="1rem"
-															key={c}
-															mt="0.5rem"
-														>
-															<Chip
-																variant={
-																	c === 2
-																		? 'outlined'
-																		: 'default'
-																}
-																avatar={
-																	<Avatar
-																		className={clsx(
-																			{
-																				[classes.selected]:
-																					c ===
-																					2,
-																			}
-																		)}
-																	>
-																		<HomeWorkIcon
-																			className={clsx(
-																				classes.avatarIcon,
-																				{
-																					[classes.cWhite]:
-																						c ===
-																						2,
-																				}
-																			)}
-																		/>
-																	</Avatar>
-																}
-																label="Lorem ipsum dolor sit"
-															/>
-														</Box>
-													))}
-												</Box>
-											</Box>
-										</Grid>
 									</Grid>
 								</Grid>
 
-								<Grid item xs={12} md={4}>
+								<Grid item xs={12} md={6}>
 									<Box p="1rem">
 										<Box
 											display="flex"
@@ -988,11 +680,7 @@ const PropertyDetails = ({ independent }) => {
 							</Grid>
 						</Box>
 						<Box mt="1rem">
-							<SimilarProperties
-								title={`2 BHK ${
-									independent ? 'Independent' : 'Apartment'
-								} for rent`}
-							/>
+							<FloorPlans />
 						</Box>
 					</Paper>
 				</Box>

@@ -107,5 +107,27 @@ const useStyles = makeStyles((theme) => ({
 			marginTop: '1rem',
 		},
 	},
+	header: {
+		backgroundColor: theme.colorOne,
+		color: '#ffffff',
+		overflow: 'auto',
+	},
+	cell: {
+		padding: '0.6rem 0.5rem',
+		fontSize: '0.9rem',
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.5rem 0',
+		},
+	},
+	item: {
+		'&:nth-child(even)': {
+			backgroundColor: theme.appBarColor,
+		},
+	},
+	itemWrapper: {
+		overflow: 'auto',
+		maxHeight: '500px',
+		overflowY: 'auto',
+	},
 }));
 export default useStyles;

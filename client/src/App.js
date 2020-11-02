@@ -5,6 +5,7 @@ import LoginPage from './pages/login/login.page';
 import MobileSearch from './pages/mobileSearch/mobileSearch.page';
 import OTPPage from './pages/otp/otp.page';
 import ProfilePage from './pages/profile/profile.page';
+import ProjectDetailsPage from './pages/projectDetailsPage/detailsPage.page';
 import PropertyDetailsPage from './pages/detailsPage/detailsPage.page';
 import { Provider } from 'react-redux';
 import React from 'react';
@@ -54,6 +55,13 @@ function App() {
 							path="/property/:id/details/:propertyFor/:type"
 							render={(props) => (
 								<PropertyDetailsPage {...props} />
+							)}
+						/>
+						<Route
+							exact
+							path="/property/:id/project-details/:propertyFor/:type"
+							render={(props) => (
+								<ProjectDetailsPage {...props} />
 							)}
 						/>
 					</Switch>

@@ -2,7 +2,7 @@ import { actionTabActionTypes } from './actionTab.types';
 
 const initialState = {
 	// Initial Values
-	currentTab: 'rent',
+	currentTab: 'project',
 	// Loading States
 	// Errors
 };

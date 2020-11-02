@@ -1,3 +1,4 @@
+import ProjectApartment from '../propertyDetails/projectApartment.page';
 import React from 'react';
 import RentApartment from '../propertyDetails/rentApartment.page';
 import RentHostel from '../propertyDetails/rentHostel.page';
@@ -25,6 +26,9 @@ const DetailsPage = ({
 			{propertyFor === 'rent' && type === 'pg' && <RentHostel pg />}
 			{propertyFor === 'sale' && type === 'villa' && <RentVilla />}
 			{propertyFor === 'sale' && type === 'land' && <RentLand />}
+			{propertyFor === 'project' && type === 'apartment' && (
+				<ProjectApartment />
+			)}
 		</div>
 	);
 };

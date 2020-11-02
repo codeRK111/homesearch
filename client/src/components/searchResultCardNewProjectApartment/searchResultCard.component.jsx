@@ -1,14 +1,15 @@
-import React from 'react';
+import { Box, Divider, Grid, Paper } from '@material-ui/core';
 
-import { Paper, Box, Grid, Divider } from '@material-ui/core';
+import { AlignCenter } from '../flexContainer/flexContainer.component';
 import { Link } from 'react-router-dom';
-// import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import PropertyShare from '../propertyShare/propertyShare.component';
+import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
-
 import useStyles from './searchResultCard.styles';
 
+// import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+
 // Custom components
-import PropertyShare from '../propertyShare/propertyShare.component';
 
 const ResultCard = ({ independent }) => {
 	const classes = useStyles();
@@ -50,7 +51,12 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
-									<b>DLF fairytell in *</b>
+									<Link
+										to="/property/123/details/project/apartment"
+										className={classes.linkTitle}
+									>
+										<b>DLF fairytell in *</b>
+									</Link>
 
 									<Box ml="1rem">
 										<span>Patia,Bhubaneswar</span>
@@ -157,14 +163,14 @@ const ResultCard = ({ independent }) => {
 							<Divider />
 						</Box>
 						<Grid container>
-							<Grid item xs={12} md={8}>
+							<Grid item xs={12} md={6}>
 								<p className={classes.info}>
 									Lorem, ipsum dolor sit amet consectetur
 									adipisicing elit. Rem aspernatur non eius
 									neque eligendi dolorem ipsum asperiores quas
 								</p>
 							</Grid>
-							<Grid item xs={12} md={4}>
+							<Grid item xs={12} md={6}>
 								<Box
 									mt="1rem"
 									display="flex"
@@ -175,13 +181,20 @@ const ResultCard = ({ independent }) => {
 											className={classes.whatsapp}
 											onClick={handleOpen}
 										>
-											<WhatsAppIcon
-												className={classes.shareIcon}
-											/>
+											<AlignCenter>
+												<WhatsAppIcon
+													className={
+														classes.shareIcon
+													}
+												/>{' '}
+												Chat now
+											</AlignCenter>
 										</button>
-										<button className={classes.details}>
-											Get Offer
-										</button>
+										<Box ml="1rem">
+											<button className={classes.details}>
+												Get Offer
+											</button>
+										</Box>
 									</Box>
 								</Box>
 							</Grid>

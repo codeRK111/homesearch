@@ -139,7 +139,7 @@ const useStyle = makeStyles((theme) => ({
 	},
 	price: {
 		fontWeight: '1000',
-		fontSize: '1.5rem',
+		fontSize: '1.2rem',
 	},
 	point: {
 		width: '5px',
