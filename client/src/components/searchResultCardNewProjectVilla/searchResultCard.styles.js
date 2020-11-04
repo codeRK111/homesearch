@@ -199,6 +199,12 @@ const useStyle = makeStyles((theme) => ({
 			fontSize: '80%',
 		},
 	},
+	linkTitle: {
+		textDecoration: 'none',
+		'&:hover': {
+			textDecoration: 'underline',
+		},
+	},
 }));
 
 export default useStyle;

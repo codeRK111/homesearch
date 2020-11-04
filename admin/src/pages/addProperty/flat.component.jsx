@@ -1,16 +1,17 @@
-import React from 'react';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import RowTextField from '../../components/rowTextField/rowTextField.component';
-import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
-import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import React from 'react';
+import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
+import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import RowTextField from '../../components/rowTextField/rowTextField.component';
 
 const initialState = {
 	city: '',
+	for: 'rent',
 	location: '',
 	title: '',
 	availableFor: [],

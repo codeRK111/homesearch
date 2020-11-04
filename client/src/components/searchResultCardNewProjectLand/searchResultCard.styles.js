@@ -199,6 +199,12 @@ const useStyle = makeStyles((theme) => ({
 			marginTop: '1rem',
 		},
 	},
+	linkTitle: {
+		textDecoration: 'none',
+		'&:hover': {
+			textDecoration: 'underline',
+		},
+	},
 }));
 
 export default useStyle;

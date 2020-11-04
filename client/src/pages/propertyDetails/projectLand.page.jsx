@@ -4,33 +4,42 @@ import {
 	Chip,
 	Divider,
 	Grid,
+	List,
+	ListItem,
+	ListItemAvatar,
+	ListItemSecondaryAction,
+	ListItemText,
 	Paper,
 	Tooltip,
 } from '@material-ui/core';
 import {
-	faBed,
-	faCouch,
-	faHouseDamage,
-	faListOl,
-	faMap,
-	faToilet,
+	faBuilding,
+	faDoorOpen,
+	faRupeeSign,
+	faSquare,
 } from '@fortawesome/free-solid-svg-icons';
 
+import AirportIcon from '@material-ui/icons/Flight';
 import AppBar from '../../components/appBar/appBar.component';
+import BusIcon from '@material-ui/icons/DirectionsBus';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { Center } from '../../components/flexContainer/flexContainer.component';
 import FlagIcon from '@material-ui/icons/Flag';
-import FloorPlans from '../../components/floorPlans/floorPlans.component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Footer from '../../components/footer/footer.component';
 import HomeIcon from '@material-ui/icons/Home';
-import HotTubIcon from '@material-ui/icons/HotTub';
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import HospitalIcon from '@material-ui/icons/LocalHospital';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+import { Link } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
 import PropertyImages from '../../components/propertyImages/propertyImages.component';
+import RailwayIcon from '@material-ui/icons/Tram';
 import React from 'react';
+import SchoolIcon from '@material-ui/icons/School';
 import SearchFeedbackForm from '../../components/searchFeedbackForm/searchFeedBackForm.component';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import SimilarProperties from '../../components/similarProperties/projectLand.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import clsx from 'clsx';
 import { useMediaQuery } from '@material-ui/core';
@@ -39,8 +48,34 @@ import useStyles from './propertyDetails.style';
 // import BedroomIcon from '@material-ui/icons/Hotel';
 
 const arr = Array.from(Array(10).keys());
-
-const PropertyDetails = () => {
+const distance = [
+	{
+		label: 'School',
+		distance: '2',
+		icon: <SchoolIcon />,
+	},
+	{
+		label: 'Railway Station',
+		distance: '2',
+		icon: <RailwayIcon />,
+	},
+	{
+		label: 'Airport',
+		distance: '2',
+		icon: <AirportIcon />,
+	},
+	{
+		label: 'Bus stop',
+		distance: '2',
+		icon: <BusIcon />,
+	},
+	{
+		label: 'Hospital',
+		distance: '2',
+		icon: <HospitalIcon />,
+	},
+];
+const PropertyDetails = ({ independent }) => {
 	const classes = useStyles();
 	const [feedback, setFeedBack] = React.useState({
 		status: false,
@@ -80,28 +115,21 @@ const PropertyDetails = () => {
 							<Grid
 								item
 								xs={6}
-								md={2}
-								className={[
-									classes.borderRight,
-									classes.center,
-								].join(' ')}
-							>
-								<Box ml="1rem">
-									<h3 className={classes.title}> 90 Lacs</h3>
-									<Box mt="0.3rem">₹ 4500 / Sq.ft</Box>
-									<Box mt="0.3rem">(SBA)</Box>
-								</Box>
-							</Grid>
-							<Grid
-								item
-								xs={6}
-								md={1}
+								md={3}
 								className={[classes.center].join(' ')}
 							>
-								<Box ml="1rem">
-									<h3 className={classes.title}> 1000</h3>
-									<Box mt="0.3rem">Sq.ft</Box>
-									<Box mt="0.3rem">(Carpet)</Box>
+								<Box
+									ml="0.3rem"
+									display="flex"
+									alignItems="center"
+								>
+									<span>by</span>
+
+									<Box ml="0.5rem">
+										<h3 className={classes.title}>
+											DM builders
+										</h3>
+									</Box>
 								</Box>
 							</Grid>
 						</Grid>
@@ -124,20 +152,17 @@ const PropertyDetails = () => {
 									</Box>
 								</Box>
 							</Grid>
-						</Grid>
-						<Grid container>
-							<Grid item xs={6}>
-								<Box>
-									<h3 className={classes.title}> 90 Lacs</h3>
-									<Box mt="0.3rem">₹ 4500 / Sq.ft</Box>
-									<Box mt="0.3rem">(SBA)</Box>
-								</Box>
-							</Grid>
-							<Grid item xs={6}>
+							<Grid item xs={12}>
 								<Box mt="1rem">
-									<h3 className={classes.title}> 1000</h3>
-									<Box mt="0.3rem">Sq.ft</Box>
-									<Box mt="0.3rem">(Carpet)</Box>
+									<Box display="flex" alignItems="center">
+										<span>by</span>
+
+										<Box ml="0.5rem">
+											<h3 className={classes.title}>
+												DM builders
+											</h3>
+										</Box>
+									</Box>
 								</Box>
 							</Grid>
 						</Grid>
@@ -162,7 +187,7 @@ const PropertyDetails = () => {
 									</Box>
 									<Box pl="0.3rem" pr="0.3rem">
 										<h3 className={classes.title}>
-											Property Details
+											Project Details
 										</h3>
 									</Box>
 									<Box flexGrow={1}>
@@ -178,7 +203,7 @@ const PropertyDetails = () => {
 											<Box pl="0.5rem" pr="0.5rem">
 												<Avatar>
 													<FontAwesomeIcon
-														icon={faBed}
+														icon={faBuilding}
 													/>
 												</Avatar>
 											</Box>
@@ -186,9 +211,9 @@ const PropertyDetails = () => {
 												display="flex"
 												flexDirection="column"
 											>
-												<Box>Bedrooms</Box>
+												<Box>Property Type</Box>
 												<h4 className={classes.title}>
-													1 Bedroom
+													Land
 												</h4>
 											</Box>
 										</Box>
@@ -201,100 +226,7 @@ const PropertyDetails = () => {
 											<Box pl="0.5rem" pr="0.5rem">
 												<Avatar>
 													<FontAwesomeIcon
-														icon={faMap}
-													/>
-												</Avatar>
-											</Box>
-											<Box
-												display="flex"
-												flexDirection="column"
-											>
-												<Box>Super builtup area</Box>
-												<h4 className={classes.title}>
-													1000 Sq.Ft
-												</h4>
-											</Box>
-										</Box>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<Box
-											className={classes.p1Details}
-											display="flex"
-										>
-											<Box pl="0.5rem" pr="0.5rem">
-												<Avatar>
-													<FontAwesomeIcon
-														icon={faMap}
-													/>
-												</Avatar>
-											</Box>
-											<Box
-												display="flex"
-												flexDirection="column"
-											>
-												<Box>Carpet Area</Box>
-												<h4 className={classes.title}>
-													900 Sq.Ft
-												</h4>
-											</Box>
-										</Box>
-									</Grid>
-
-									<Grid item xs={6} md={3}>
-										<Box
-											className={classes.p1Details}
-											display="flex"
-										>
-											<Box pl="0.5rem" pr="0.5rem">
-												<Avatar>
-													<FontAwesomeIcon
-														icon={faCouch}
-													/>
-												</Avatar>
-											</Box>
-											<Box
-												display="flex"
-												flexDirection="column"
-											>
-												<Box>Furnishing</Box>
-												<h4 className={classes.title}>
-													Furnished
-												</h4>
-											</Box>
-										</Box>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<Box
-											className={classes.p1Details}
-											display="flex"
-										>
-											<Box pl="0.5rem" pr="0.5rem">
-												<Avatar>
-													<FontAwesomeIcon
-														icon={faToilet}
-													/>
-												</Avatar>
-											</Box>
-											<Box
-												display="flex"
-												flexDirection="column"
-											>
-												<Box>Toilets</Box>
-												<h4 className={classes.title}>
-													2 Indian, 2 Western
-												</h4>
-											</Box>
-										</Box>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<Box
-											className={classes.p1Details}
-											display="flex"
-										>
-											<Box pl="0.5rem" pr="0.5rem">
-												<Avatar>
-													<FontAwesomeIcon
-														icon={faListOl}
+														icon={faBuilding}
 													/>
 												</Avatar>
 											</Box>
@@ -304,7 +236,7 @@ const PropertyDetails = () => {
 											>
 												<Box>Units</Box>
 												<h4 className={classes.title}>
-													100
+													1000
 												</h4>
 											</Box>
 										</Box>
@@ -317,7 +249,7 @@ const PropertyDetails = () => {
 											<Box pl="0.5rem" pr="0.5rem">
 												<Avatar>
 													<FontAwesomeIcon
-														icon={faHouseDamage}
+														icon={faSquare}
 													/>
 												</Avatar>
 											</Box>
@@ -325,9 +257,55 @@ const PropertyDetails = () => {
 												display="flex"
 												flexDirection="column"
 											>
-												<Box>Living areas</Box>
+												<Box>Area</Box>
 												<h4 className={classes.title}>
-													1
+													3179 - 4521 Sq.ft
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faRupeeSign}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Price Range</Box>
+												<h4 className={classes.title}>
+													2.62 Cr - 4.02 Cr
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faDoorOpen}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Status</Box>
+												<h4 className={classes.title}>
+													Ongoing
 												</h4>
 											</Box>
 										</Box>
@@ -461,6 +439,73 @@ const PropertyDetails = () => {
 							doloribus recusandae quod illo voluptates deleniti
 							explicabo.
 						</Box>
+						<Box mt="1rem">
+							<h3>Unit Configuration</h3>
+							<Grid container className={classes.header}>
+								<Grid item xs={3} className={classes.cell}>
+									Unit Types
+								</Grid>
+								<Grid item xs={3} className={classes.cell}>
+									Plot Area
+								</Grid>
+								<Grid item xs={3} className={classes.cell}>
+									Plot Frontage
+								</Grid>
+								<Grid item xs={2} className={classes.cell}>
+									Price
+								</Grid>
+								<Grid item xs={1} className={classes.cell}>
+									Units
+								</Grid>
+							</Grid>
+							<Box className={classes.itemWrapper}>
+								{Array.from(Array(6).keys()).map((c) => (
+									<Grid
+										container
+										className={classes.item}
+										key={c}
+									>
+										<Grid
+											item
+											xs={3}
+											className={classes.cell}
+										>
+											<Link to="/property/123/project-details/project/land">
+												Type A
+											</Link>
+										</Grid>
+										<Grid
+											item
+											xs={3}
+											className={classes.cell}
+										>
+											317-417 Sq.Ft
+										</Grid>
+										<Grid
+											item
+											xs={3}
+											className={classes.cell}
+										>
+											17 Sq.Ft
+										</Grid>
+										<Grid
+											item
+											xs={2}
+											className={classes.cell}
+										>
+											₹ 23 Lac
+										</Grid>
+										<Grid
+											item
+											xs={1}
+											className={classes.cell}
+										>
+											1000
+										</Grid>
+									</Grid>
+								))}
+							</Box>
+						</Box>
 						<Box
 							mt="2rem"
 							p="1rem"
@@ -515,7 +560,7 @@ const PropertyDetails = () => {
 						</Box>
 						<Box mt="2rem">
 							<Grid container>
-								<Grid item xs={12} md={6}>
+								<Grid item xs={12} md={8}>
 									<Grid container>
 										<Grid item xs={12} md={12}>
 											<Box p="1rem">
@@ -535,7 +580,7 @@ const PropertyDetails = () => {
 																classes.title
 															}
 														>
-															Furnishes
+															Legal Clearance
 														</h4>
 													</Box>
 													<Box flexGrow={1}>
@@ -545,6 +590,7 @@ const PropertyDetails = () => {
 												<Box
 													display="flex"
 													flexWrap="wrap"
+													// justifyContent="center"
 												>
 													{arr.map((c) => (
 														<Box
@@ -568,7 +614,7 @@ const PropertyDetails = () => {
 																			}
 																		)}
 																	>
-																		<HotTubIcon
+																		<HomeWorkIcon
 																			className={clsx(
 																				classes.avatarIcon,
 																				{
@@ -580,7 +626,7 @@ const PropertyDetails = () => {
 																		/>
 																	</Avatar>
 																}
-																label="Furnish"
+																label="Lorem ipsum dolor sit"
 															/>
 														</Box>
 													))}
@@ -589,10 +635,64 @@ const PropertyDetails = () => {
 										</Grid>
 									</Grid>
 								</Grid>
+
+								<Grid item xs={12} md={4}>
+									<Box p="1rem">
+										<Box
+											display="flex"
+											width="100%"
+											alignItems="center"
+											mb="1rem"
+											mt="1rem"
+										>
+											<Box pl="0.3rem" pr="0.3rem">
+												<h4 className={classes.title}>
+													Near by places
+												</h4>
+											</Box>
+											<Box flexGrow={1}>
+												<Divider />
+											</Box>
+										</Box>
+										<Box>
+											{distance.map((c, i) => (
+												<List
+													key={i}
+													classes={{
+														root: classes.list,
+													}}
+												>
+													<ListItem
+														classes={{
+															root:
+																classes.listItem,
+														}}
+													>
+														<ListItemAvatar>
+															<Avatar>
+																{c.icon}
+															</Avatar>
+														</ListItemAvatar>
+														<ListItemText
+															primary={c.label}
+														/>
+														<ListItemSecondaryAction>
+															<b>
+																{c.distance} KM
+															</b>
+														</ListItemSecondaryAction>
+													</ListItem>
+												</List>
+											))}
+										</Box>
+									</Box>
+								</Grid>
 							</Grid>
 						</Box>
 						<Box mt="1rem">
-							<FloorPlans />
+							<SimilarProperties
+								title={'Lorem ipsum dolor sit'}
+							/>
 						</Box>
 					</Paper>
 				</Box>

@@ -1,48 +1,115 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, FormControl, Paper, Chip } from '@material-ui/core';
-import Select from '@material-ui/core/Select';
-import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
-import Popper from '@material-ui/core/Popper';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import LocationCityIcon from '@material-ui/icons/LocationCity';
-import { useHistory } from 'react-router-dom';
+import { Box, Chip, Paper } from '@material-ui/core';
 
-// Custom components
+import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
+import Menu from '../city/city.component';
+import Popper from '@material-ui/core/Popper';
 import PropertyTab from '../propertyTab/propertyTab.component';
+import React from 'react';
 import SearchButton from '../searchButton/searchButton.component';
 import SearchLocation from '../location/location.component';
-
-// Style
-import { useStyles } from './searchProperty.styles';
-
-// Redux
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
 import { searchLocations } from '../../redux/city/city.actions';
-import { selectSearchLocationLoading } from '../../redux/city/city.selectors';
 import { selectCurrentTab } from '../../redux/actionTab/actionTab.selectors';
+import { selectSearchLocationLoading } from '../../redux/city/city.selectors';
+import { useHistory } from 'react-router-dom';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useStyles } from './searchProperty.styles';
 
-const SearchProperty = ({
-	searchLocationLoading,
-	searchLocations,
-	currentTab,
-}) => {
+const SearchProperty = ({ currentTab }) => {
 	const classes = useStyles();
 	const mobile = useMediaQuery('(max-width:600px)');
 	const history = useHistory();
 	const [anchorEl, setAnchorEl] = React.useState(null);
-	const [budget, setBudget] = React.useState('Budget');
+	const [city, setCity] = React.useState({
+		_id: '5f2cf831ab6d0b12da114161',
+		name: 'Bhubaneswar',
+		state: 'Odisha',
+		id: '5f2cf831ab6d0b12da114161',
+	});
+	const [budget, setBudget] = React.useState({
+		value: null,
+		label: null,
+	});
 	const [locations, setLocations] = React.useState([]);
 	const [anchorElProperty, setAnchorElProperty] = React.useState(null);
+	const [types, setTypes] = React.useState({
+		flat: false,
+		independenthouse: false,
+		land: false,
+		guesthouse: false,
+		hostel: false,
+		pg: false,
+	});
+	React.useEffect(() => {
+		setLocations([]);
+	}, [city.id]);
+	React.useEffect(() => {
+		setTypes({
+			flat: false,
+			independenthouse: false,
+			land: false,
+			guesthouse: false,
+			hostel: false,
+			pg: false,
+		});
+		setBudget({
+			value: null,
+			label: null,
+		});
+	}, [currentTab]);
 
 	const handleClick = (event) => {
 		setAnchorEl(anchorEl ? null : event.currentTarget);
 	};
+	const handleCity = (city) => {
+		setCity(city);
+	};
 	const handleClickProperty = (event) => {
 		setAnchorElProperty(anchorElProperty ? null : event.currentTarget);
+	};
+	const handleTypes = (event) => {
+		const { checked, name } = event.target;
+		setTypes((prevState) => ({ ...prevState, [name]: checked }));
+	};
+
+	const onSearch = (_) => {
+		const type = Object.keys(types).filter(function (c) {
+			if (types[c]) {
+				return true;
+			} else {
+				return false;
+			}
+		});
+		const data = {
+			city: city.id,
+			locations: locations.map((c) => c.id),
+			type,
+		};
+		if (budget.value) {
+			const budgetValue =
+				budget.label === 'K'
+					? budget.value * 1000
+					: budget.value * 100000;
+			data.budget = budgetValue;
+		}
+		console.log(data);
+		let link = `/search-results?f=${currentTab}&c=${data.city}`;
+		if (data.budget) {
+			link += `&b=${data.budget}`;
+		}
+		if (data.locations.length > 0) {
+			link += `&l=${data.locations.join(',')}`;
+		}
+		if (data.type.length > 0) {
+			link += `&t=${data.type.join(',')}`;
+		}
+		console.log(link);
+		history.push(link);
 	};
 
 	const open = Boolean(anchorEl);
@@ -68,12 +135,12 @@ const SearchProperty = ({
 		setLocations(locations.filter((c) => c.id !== data.id));
 	};
 
-	const budgetClose = (data) => {
+	const budgetClose = (data, label) => {
 		if (!data) {
 			setAnchorEl(null);
 			return;
 		}
-		setBudget(data);
+		setBudget({ value: data, label });
 		setAnchorEl(null);
 	};
 
@@ -115,35 +182,13 @@ const SearchProperty = ({
 					</Box>
 				)}
 				<Box display="flex" className={classes.wrapper}>
-					{!mobile && (
-						<FormControl
-							variant="outlined"
-							className={classes.formControl}
-							fullWidth
-						>
-							<Select
-								native
-								inputProps={{
-									name: 'age',
-									id: 'filled-age-native-simple',
-								}}
-							>
-								<option value={10}>Bhubaneswar</option>
-								<option value={20}>Mumbai</option>
-								<option value={30}>Pune</option>
-								<option value={10}>Delhi</option>
-								<option value={20}>Hyderabad</option>
-								<option value={30}>Banglore</option>
-								<option value={30}>Noida</option>
-								<option value={30}>Kolkata</option>
-							</Select>
-						</FormControl>
-					)}
+					{!mobile && <Menu city={city} handleCity={handleCity} />}
 					<Box className={classes.searchBoxWrapper}>
 						<SearchLocation
 							className={classes.searchField}
 							onClick={checkMobile}
 							onSelect={onSelect}
+							city={city}
 						/>
 					</Box>
 
@@ -153,7 +198,10 @@ const SearchProperty = ({
 							onClick={handleClick}
 						>
 							<div className={classes.budget}>
-								{budget} <ArrowDropDownOutlinedIcon />
+								{budget.value
+									? `${budget.value}${budget.label}`
+									: 'Budget'}{' '}
+								<ArrowDropDownOutlinedIcon />
 							</div>
 						</div>
 					)}
@@ -162,14 +210,6 @@ const SearchProperty = ({
 							id={id}
 							open={open}
 							anchorEl={anchorEl}
-							anchorOrigin={{
-								vertical: 'bottom',
-								horizontal: 'center',
-							}}
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'center',
-							}}
 							keepMounted={true}
 							disablePortal={true}
 						>
@@ -212,15 +252,14 @@ const SearchProperty = ({
 								<PropertyItems
 									currentTab={currentTab}
 									close={typeClosed}
+									types={types}
+									handleTypes={handleTypes}
 								/>
 							</Paper>
 						</Popper>
 					)}
 					<div className={classes.buttonWrapper}>
-						<SearchButton
-							text="Search"
-							onClick={() => history.push('/search-results')}
-						/>
+						<SearchButton text="Search" onClick={onSearch} />
 					</div>
 				</Box>
 			</div>
@@ -252,8 +291,8 @@ const styles = makeStyles({
 
 const BudgetItems = ({ currentTab, close }) => {
 	const classes = styles();
-	const click = (data) => () => {
-		close(data);
+	const click = (data, label) => () => {
+		close(data, label);
 	};
 	return (
 		<Paper
@@ -267,26 +306,28 @@ const BudgetItems = ({ currentTab, close }) => {
 							<div
 								key={c}
 								className={classes.priceWrapper}
-								onClick={click(`${c}k`)}
+								onClick={click(c, 'K')}
 							>
 								{c}k
 							</div>
 					  ))
-					: Array.from(Array(20).keys()).map((c) => (
-							<div
-								key={c}
-								className={classes.priceWrapper}
-								onClick={click(`${c}L`)}
-							>
-								{c * 5}L
-							</div>
-					  ))}
+					: [2, 5, 10, 20, 40, 60, 80, 100, 200, 300, 400, 500].map(
+							(c) => (
+								<div
+									key={c}
+									className={classes.priceWrapper}
+									onClick={click(c, 'L')}
+								>
+									{c}L
+								</div>
+							)
+					  )}
 			</Box>
 		</Paper>
 	);
 };
 
-const PropertyItems = ({ currentTab, close }) => {
+const PropertyItems = ({ currentTab, close, types, handleTypes }) => {
 	return (
 		<Paper onMouseLeave={() => close()}>
 			{currentTab !== 'rent' ? (
@@ -294,19 +335,37 @@ const PropertyItems = ({ currentTab, close }) => {
 					{' '}
 					<div>
 						<FormControlLabel
-							control={<Checkbox name="checkedC" />}
+							control={
+								<Checkbox
+									name="flat"
+									checked={types.flat}
+									onChange={handleTypes}
+								/>
+							}
 							label="Apartment"
 						/>
 					</div>
 					<div>
 						<FormControlLabel
-							control={<Checkbox name="checkedC" />}
+							control={
+								<Checkbox
+									name="independenthouse"
+									checked={types.independenthouse}
+									onChange={handleTypes}
+								/>
+							}
 							label="Independent House"
 						/>
 					</div>
 					<div>
 						<FormControlLabel
-							control={<Checkbox name="checkedC" />}
+							control={
+								<Checkbox
+									name="land"
+									checked={types.land}
+									onChange={handleTypes}
+								/>
+							}
 							label="Land"
 						/>
 					</div>
@@ -316,31 +375,61 @@ const PropertyItems = ({ currentTab, close }) => {
 					{' '}
 					<div>
 						<FormControlLabel
-							control={<Checkbox name="checkedC" />}
+							control={
+								<Checkbox
+									name="flat"
+									checked={types.flat}
+									onChange={handleTypes}
+								/>
+							}
 							label="Apartment"
 						/>
 					</div>
 					<div>
 						<FormControlLabel
-							control={<Checkbox name="checkedC" />}
+							control={
+								<Checkbox
+									name="independenthouse"
+									checked={types.independenthouse}
+									onChange={handleTypes}
+								/>
+							}
 							label="Independent House"
 						/>
 					</div>
 					<div>
 						<FormControlLabel
-							control={<Checkbox name="checkedC" />}
+							control={
+								<Checkbox
+									name="guesthouse"
+									checked={types.guesthouse}
+									onChange={handleTypes}
+								/>
+							}
 							label="Guest House"
 						/>
 					</div>
 					<div>
 						<FormControlLabel
-							control={<Checkbox name="checkedC" />}
+							control={
+								<Checkbox
+									name="hostel"
+									checked={types.hostel}
+									onChange={handleTypes}
+								/>
+							}
 							label="Hostel"
 						/>
 					</div>
 					<div>
 						<FormControlLabel
-							control={<Checkbox name="checkedC" />}
+							control={
+								<Checkbox
+									name="pg"
+									checked={types.pg}
+									onChange={handleTypes}
+								/>
+							}
 							label="PG"
 						/>
 					</div>

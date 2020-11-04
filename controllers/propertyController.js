@@ -88,7 +88,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				'numberOfBedRooms',
 				'toiletTypes',
 				'numberOfBalconies',
-				'width',
+				// 'width',
 				'carpetArea',
 				'rent',
 				'securityDeposit',
@@ -162,7 +162,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				distanceHospital: req.body.distanceHospital,
 				availability: req.body.availability,
 				description: req.body.description,
-				adminId: req.user.id,
+				adminId: req.admin.id,
 				createdBy: 'admin',
 				userId: req.body.userId,
 				availableFor: req.body.availableFor,
@@ -265,7 +265,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				distanceHospital: req.body.distanceHospital,
 				availability: req.body.availability,
 				description: req.body.description,
-				adminId: req.user,
+				adminId: req.admin.id,
 				restrictions: req.body.restrictions,
 				createdBy: 'admin',
 				userId: req.body.userId,
@@ -369,7 +369,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				distanceHospital: req.body.distanceHospital,
 				availability: req.body.availability,
 				description: req.body.description,
-				adminId: req.user,
+				adminId: req.admin.id,
 				restrictions: req.body.restrictions,
 				createdBy: 'admin',
 				userId: req.body.userId,
@@ -836,5 +836,37 @@ exports.getPropertyDetails = catchAsync(async (req, res, next) => {
 		data: {
 			property,
 		},
+	});
+});
+
+exports.searchProperties = catchAsync(async (req, res, next) => {
+	const filter = {};
+	if (req.body.for) {
+		filter['for'] = req.body.for;
+	}
+	if (req.body.locations) {
+		filter['location'] = { $in: req.body.locations };
+	}
+	if (req.body.city) {
+		filter['city'] = req.body.city;
+	}
+	if (req.body.rent) {
+		filter['rent'] = { $lte: req.body.rent };
+	}
+	if (req.body.type) {
+		filter['type'] = { $in: req.body.type };
+	}
+	filter.status = 'active';
+	const totalDocs = await Property.countDocuments(filter)
+	const page = req.body.page * 1 || 1;
+		const limit = req.body.limit * 1 || 10;
+		const skip = (page - 1) * limit;
+
+	console.log(filter);
+	const properties = await Property.find(filter).skip(skip).limit(limit);
+	res.status(200).json({
+		status: 'success',
+		count: totalDocs,
+		data: { properties },
 	});
 });

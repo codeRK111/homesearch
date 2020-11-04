@@ -1,7 +1,8 @@
-import { takeLatest, put, call, all, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { searchCitiesLoading, searchLocationsLoading } from './city.actions';
+
 import axios from 'axios';
 import { cityActionTypes as types } from './city.types';
-import { searchCitiesLoading, searchLocationsLoading } from './city.actions';
 
 function* searchCitiesSaga({ payload: { name, callback } }) {
 	yield put(searchCitiesLoading(true));
@@ -24,10 +25,10 @@ function* searchCitiesSaga({ payload: { name, callback } }) {
 	}
 }
 
-function* searchLocationsSaga({ payload: { name, callback } }) {
+function* searchLocationsSaga({ payload: { name, city, callback } }) {
 	yield put(searchLocationsLoading(true));
 	const url = '/api/v1/cities/searchLocation';
-	const data = JSON.stringify({ name });
+	const data = JSON.stringify({ name, city });
 	try {
 		const response = yield axios({
 			method: 'post',

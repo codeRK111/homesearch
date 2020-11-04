@@ -4,6 +4,8 @@ const adminController = require('../controllers/adminController');
 
 const router = express.Router();
 
+router.post('/searchProperties', propertyController.searchProperties);
+
 router
 	.route('/')
 	.get(propertyController.getProperties)

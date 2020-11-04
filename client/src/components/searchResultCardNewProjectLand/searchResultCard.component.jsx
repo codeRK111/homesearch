@@ -1,13 +1,18 @@
-import React from 'react';
-import { Paper, Box, Grid, Divider } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-// import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import { Box, Divider, Grid, Paper } from '@material-ui/core';
 
+import { Link } from 'react-router-dom';
+import PropertyShare from '../propertyShare/propertyShare.component';
+import React from 'react';
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import useStyles from './searchResultCard.styles';
 
+// import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+
+
+
+
 // Custom components
-import PropertyShare from '../propertyShare/propertyShare.component';
+
 
 const ResultCard = ({ independent }) => {
 	const classes = useStyles();
@@ -49,7 +54,12 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
-									<b>DLF fairytell in *</b>
+									<Link
+										to="/property/123/details/project/land"
+										className={classes.linkTitle}
+									>
+										<b>DLF fairytell in *</b>
+									</Link>
 
 									<Box ml="1rem">
 										<span>Patia,Bhubaneswar</span>

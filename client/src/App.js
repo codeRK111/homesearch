@@ -9,7 +9,7 @@ import ProjectDetailsPage from './pages/projectDetailsPage/detailsPage.page';
 import PropertyDetailsPage from './pages/detailsPage/detailsPage.page';
 import { Provider } from 'react-redux';
 import React from 'react';
-import SearchPage from './pages/search/search.page';
+import SearchPage from './pages/searchResultPage/searchResultPage.page';
 import SignUpForm from './pages/signup/signup.page';
 import { store } from './redux/store';
 
@@ -48,7 +48,7 @@ function App() {
 						<Route
 							exact
 							path="/search-results"
-							render={() => <SearchPage />}
+							render={(props) => <SearchPage {...props} />}
 						/>
 						<Route
 							exact

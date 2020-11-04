@@ -1,18 +1,18 @@
-import React from 'react';
 import Box from '@material-ui/core/Box';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
-import { makeStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
+import React from 'react';
 import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
-
-// Redux
+import SearchIcon from '@material-ui/icons/Search';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
 import { searchLocations } from '../../redux/city/city.actions';
 import { selectSearchLocationLoading } from '../../redux/city/city.selectors';
+
+// Redux
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -73,6 +73,7 @@ function MenuListComposition({
 	className,
 	onSelect,
 	onError,
+	city,
 	...otherProps
 }) {
 	const classes = useStyles();
@@ -121,8 +122,8 @@ function MenuListComposition({
 	};
 
 	const onKeyDown = (e) => {
-		if (e.target.value.trim().length > 1) {
-			searchLocations(handleFetchLocations, e.target.value);
+		if (e.target.value.trim().length > 2) {
+			searchLocations(handleFetchLocations, e.target.value, city.id);
 			setOpen(true);
 		} else {
 			setOpen(false);
@@ -176,9 +177,6 @@ function MenuListComposition({
 				role={undefined}
 				transition
 				disablePortal
-				style={{
-					zIndex: 1000,
-				}}
 			>
 				{({ TransitionProps, placement }) => (
 					<Grow
@@ -250,8 +248,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	searchLocations: (callback, name) =>
-		dispatch(searchLocations({ name, callback })),
+	searchLocations: (callback, name, city) =>
+		dispatch(searchLocations({ name, city, callback })),
 });
 
 export default connect(

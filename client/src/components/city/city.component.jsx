@@ -18,19 +18,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import { searchCities } from '../../redux/city/city.actions';
 import { selectSearchCityLoading } from '../../redux/city/city.selectors';
 
-// Redux
-
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: 'flex',
+
+		backgroundColor: '#ffffff',
+		borderRight: '1px solid #cccccc',
 	},
 	paper: {
 		marginRight: theme.spacing(2),
 	},
 	button: {
 		textTransform: 'none',
-		marginLeft: '1rem',
-		border: '1px solid #cccccc',
 	},
 	icon: {
 		fontSize: '18px',
@@ -41,11 +40,10 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		alignItems: 'center',
 		color: '#707070',
-	},
-	paperWrapper: {
-		maxHeight: '400px',
-		overflowY: 'auto',
-		width: '100%',
+		minWidth: '200px',
+		justifyContent: 'center',
+		padding: '0.5rem 0',
+		boxSizing: 'border-box',
 	},
 	input: {
 		border: 'none',
@@ -58,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
 		border: '1px solid #cccccc',
 		margin: '0.3rem',
 		alignItems: 'center',
+		boxSizing: 'border-box',
 	},
 	searchIcon: {
 		color: '#c1c1c1',
@@ -66,20 +65,19 @@ const useStyles = makeStyles((theme) => ({
 	cRed: {
 		color: 'red',
 	},
-	textCenter: {},
 }));
 
-function CityDropDown({ searchCityLoading, searchCities }) {
+function MenuListComposition({
+	searchCities,
+	searchCityLoading,
+	city,
+	handleCity,
+}) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 	const anchorRef = React.useRef(null);
 	const [cityText, setCityText] = React.useState('');
-	const [city, selectCity] = React.useState({
-		_id: '5f2cf831ab6d0b12da114161',
-		name: 'Bhubaneswar',
-		state: 'Odisha',
-		id: '5f2cf831ab6d0b12da114161',
-	});
+
 	const [asyncError, setAsyncError] = React.useState(null);
 	const [cities, setCities] = React.useState([]);
 	const handleFetchCities = (status, data = null) => {
@@ -99,6 +97,7 @@ function CityDropDown({ searchCityLoading, searchCities }) {
 			searchCities(handleFetchCities, cityText);
 		}
 	};
+
 	const handleToggle = () => {
 		setOpen((prevOpen) => !prevOpen);
 	};
@@ -112,7 +111,7 @@ function CityDropDown({ searchCityLoading, searchCities }) {
 	};
 
 	const onClick = (data) => (e) => {
-		selectCity(data);
+		handleCity(data);
 		handleClose(e);
 	};
 
@@ -166,10 +165,7 @@ function CityDropDown({ searchCityLoading, searchCities }) {
 										: 'center bottom',
 							}}
 						>
-							<Paper
-								elevation={3}
-								className={classes.paperWrapper}
-							>
+							<Paper elevation={3}>
 								<ClickAwayListener onClickAway={handleClose}>
 									<MenuList
 										autoFocusItem={open}
@@ -198,11 +194,6 @@ function CityDropDown({ searchCityLoading, searchCities }) {
 												{asyncError}
 											</p>
 										)}
-										{/* <MenuItem
-											onClick={onClick('Bhubaneswar')}
-										>
-											Bhubaneswar
-										</MenuItem> */}
 										{searchCityLoading && (
 											<Typography
 												component="h5"
@@ -239,4 +230,7 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(searchCities({ name, callback })),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CityDropDown);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(MenuListComposition);

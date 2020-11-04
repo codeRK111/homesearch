@@ -1,4 +1,5 @@
 import ProjectApartment from '../propertyDetails/projectApartment.page';
+import ProjectLand from '../propertyDetails/projectLand.page';
 import React from 'react';
 import RentApartment from '../propertyDetails/rentApartment.page';
 import RentHostel from '../propertyDetails/rentHostel.page';
@@ -29,6 +30,7 @@ const DetailsPage = ({
 			{propertyFor === 'project' && type === 'apartment' && (
 				<ProjectApartment />
 			)}
+			{propertyFor === 'project' && type === 'land' && <ProjectLand />}
 		</div>
 	);
 };

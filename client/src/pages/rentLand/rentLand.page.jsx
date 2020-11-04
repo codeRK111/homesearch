@@ -333,337 +333,282 @@ const PropertyDetails = () => {
 											</Box>
 										</Box>
 									</Grid>
-								</Grid>
 
-								<Box mt="0.5rem">
-									<Grid container>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={faCarSide}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>Width of road</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														100 ft
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={
-																faQuestionCircle
-															}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>
-														Is construction done
-													</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														Yes
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={
-																faQuestionCircle
-															}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>
-														Is boundary wall made
-													</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														Yes
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={
-																faQuestionCircle
-															}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>
-														Is gated community
-													</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														Yes
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-									</Grid>
-								</Box>
-								<Box mt="0.5rem">
-									<Grid container>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={
-																faQuestionCircle
-															}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>Land using zoning</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														Yellow Zone
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={3}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={faBuilding}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>Facing</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														East
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={4}>
-											<Box
-												className={classes.p1Details}
-												display="flex"
-											>
-												<Box pl="0.5rem" pr="0.5rem">
-													<Avatar>
-														<FontAwesomeIcon
-															icon={faRupeeSign}
-														/>
-													</Avatar>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-												>
-													<Box>
-														Government Valuation
-													</Box>
-													<h4
-														className={
-															classes.title
-														}
-													>
-														5L
-													</h4>
-												</Box>
-											</Box>
-										</Grid>
-									</Grid>
-								</Box>
-
-								<Box mt="1rem">
-									<Grid container>
-										<Grid
-											item
-											xs={12}
-											md={4}
+									<Grid item xs={6} md={3}>
+										<Box
 											className={classes.p1Details}
+											display="flex"
 										>
-											<Grid container>
-												<Grid item xs={4} md={3}>
-													<Tooltip
-														title="Request photo"
-														aria-label="add"
-													>
-														<button
-															className={
-																classes.iconButton
-															}
-														>
-															<CameraAltIcon />
-														</button>
-													</Tooltip>
-												</Grid>
-
-												<Grid item xs={4} md={3}>
-													<Tooltip
-														title="Report Abuse"
-														aria-label="add"
-													>
-														<button
-															className={
-																classes.iconButton
-															}
-														>
-															<FlagIcon />
-														</button>
-													</Tooltip>
-												</Grid>
-												<Grid item xs={4} md={3}>
-													<Tooltip
-														title="Report Sold out"
-														aria-label="add"
-													>
-														<button
-															className={
-																classes.iconButton
-															}
-														>
-															<HomeIcon />
-														</button>
-													</Tooltip>
-												</Grid>
-											</Grid>
-										</Grid>
-										<Grid item xs={12} md={8}>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faCarSide}
+													/>
+												</Avatar>
+											</Box>
 											<Box
 												display="flex"
-												justifyContent="flex-end"
-												className={
-													classes.chatButtonWrapper
-												}
+												flexDirection="column"
 											>
-												<Box display="flex">
+												<Box>Width of road</Box>
+												<h4 className={classes.title}>
+													100 ft
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faQuestionCircle}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Is construction done</Box>
+												<h4 className={classes.title}>
+													Yes
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faQuestionCircle}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Is boundary wall made</Box>
+												<h4 className={classes.title}>
+													Yes
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faQuestionCircle}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Is gated community</Box>
+												<h4 className={classes.title}>
+													Yes
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faQuestionCircle}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Land using zoning</Box>
+												<h4 className={classes.title}>
+													Yellow Zone
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faBuilding}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Facing</Box>
+												<h4 className={classes.title}>
+													East
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+									<Grid item xs={6} md={4}>
+										<Box
+											className={classes.p1Details}
+											display="flex"
+										>
+											<Box pl="0.5rem" pr="0.5rem">
+												<Avatar>
+													<FontAwesomeIcon
+														icon={faRupeeSign}
+													/>
+												</Avatar>
+											</Box>
+											<Box
+												display="flex"
+												flexDirection="column"
+											>
+												<Box>Government Valuation</Box>
+												<h4 className={classes.title}>
+													5L
+												</h4>
+											</Box>
+										</Box>
+									</Grid>
+								</Grid>
+								<Grid container>
+									<Grid
+										item
+										xs={12}
+										md={4}
+										className={classes.p1Details}
+									>
+										<Grid container>
+											<Grid item xs={4} md={3}>
+												<Tooltip
+													title="Request photo"
+													aria-label="add"
+												>
 													<button
 														className={
-															classes.chatButton
+															classes.iconButton
+														}
+													>
+														<CameraAltIcon />
+													</button>
+												</Tooltip>
+											</Grid>
+
+											<Grid item xs={4} md={3}>
+												<Tooltip
+													title="Report Abuse"
+													aria-label="add"
+												>
+													<button
+														className={
+															classes.iconButton
+														}
+													>
+														<FlagIcon />
+													</button>
+												</Tooltip>
+											</Grid>
+											<Grid item xs={4} md={3}>
+												<Tooltip
+													title="Report Sold out"
+													aria-label="add"
+												>
+													<button
+														className={
+															classes.iconButton
+														}
+													>
+														<HomeIcon />
+													</button>
+												</Tooltip>
+											</Grid>
+										</Grid>
+									</Grid>
+									<Grid item xs={12} md={8}>
+										<Box
+											display="flex"
+											justifyContent="flex-end"
+											className={
+												classes.chatButtonWrapper
+											}
+										>
+											<Box display="flex">
+												<button
+													className={
+														classes.chatButton
+													}
+												>
+													<Box
+														display="flex"
+														alignItems="center"
+													>
+														<WhatsAppIcon
+															className={
+																classes.whIcon
+															}
+														/>
+														Chat now
+													</Box>
+												</button>
+
+												<Box ml="1rem">
+													<button
+														className={
+															classes.contactButton
 														}
 													>
 														<Box
 															display="flex"
 															alignItems="center"
 														>
-															<WhatsAppIcon
+															<PersonIcon
 																className={
-																	classes.whIcon
+																	classes.cWhite
 																}
 															/>
-															Chat now
+															Contact Owner
 														</Box>
 													</button>
-
-													<Box ml="1rem">
-														<button
-															className={
-																classes.contactButton
-															}
-														>
-															<Box
-																display="flex"
-																alignItems="center"
-															>
-																<PersonIcon
-																	className={
-																		classes.cWhite
-																	}
-																/>
-																Contact Owner
-															</Box>
-														</button>
-													</Box>
 												</Box>
 											</Box>
-											<Box
-												mt="0.5rem"
-												display="flex"
-												justifyContent="flex-end"
-												className={
-													classes.chatButtonWrapper
-												}
-											>
-												Posted on: <b>29th Sept</b>
-											</Box>
-										</Grid>
+										</Box>
+										<Box
+											mt="0.5rem"
+											display="flex"
+											justifyContent="flex-end"
+											className={
+												classes.chatButtonWrapper
+											}
+										>
+											Posted on: <b>29th Sept</b>
+										</Box>
 									</Grid>
-								</Box>
+								</Grid>
 							</Grid>
 						</Grid>
 						<Box mt="2rem">

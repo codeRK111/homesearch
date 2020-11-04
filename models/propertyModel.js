@@ -198,12 +198,12 @@ const propertySchema = new Schema(
 		city: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'City',
-			required: [true, 'Flat must have a city'],
+			required: [true, 'Property must have a city'],
 		},
 		location: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Location',
-			required: [true, 'Flat must have a location'],
+			required: [true, 'Property must have a location'],
 		},
 		numberOfBedRooms: {
 			type: Number,

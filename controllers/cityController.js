@@ -96,6 +96,7 @@ exports.searchLocation = catchAsync(async (req, res, next) => {
 		return next(new AppError('Parameter name not found', 400));
 	const locations = await Location.find({
 		name: { $regex: req.body.name, $options: 'i' },
+		city: req.body.city,
 	});
 
 	res.status(200).json({
