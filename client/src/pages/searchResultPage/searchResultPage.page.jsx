@@ -40,6 +40,17 @@ import { selectPropertyLoading } from '../../redux/property/property.selectors';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './searchResultPage.styles';
 
+// import RentIndHouse from '../../components/searchResultCardNewRentIndHouse/searchResultCard.component';
+
+
+
+
+
+
+
+
+
+
 // import IndHouse from '../../components/searchResultCardNewIndHouse/searchResultCard.component';
 
 // import ProjectApartment from '../../components/searchResultCardNewProjectApartment/searchResultCard.component';
@@ -47,7 +58,7 @@ import useStyles from './searchResultPage.styles';
 // import ProjectVilla from '../../components/searchResultCardNewProjectVilla/searchResultCard.component';
 
 // import RentHostel from '../../components/searchResultCardNewRentHostel/searchResultCard.component';
-// import RentIndHouse from '../../components/searchResultCardNewRentIndHouse/searchResultCard.component';
+
 // import ResultCard from '../../components/searchResultCardNew/searchResultCard.component';
 // import ResultLandSale from '../../components/searchResultCardNewLand/searchResultCard.component';
 
@@ -109,6 +120,8 @@ const SearchPage = ({
 	const filterTypes = (property) => {
 		switch (property.type) {
 			case 'flat':
+				return <RentApartment property={property} />;
+			case 'independenthouse':
 				return <RentApartment property={property} />;
 
 			default:
@@ -293,7 +306,9 @@ const SearchPage = ({
 						</Grid>
 					) : (
 						<Grid item xs={12} md={8}>
-							{data.map((p) => renderProperties(p))}
+							{data.map((p) => (
+								<Box mt="1rem">{renderProperties(p)}</Box>
+							))}
 							{/* {currentTab === 'project' && <ProjectApartment />}
 							<Box mt="1rem">
 								{currentTab === 'project' && <ProjectVilla />}
@@ -301,7 +316,7 @@ const SearchPage = ({
 							<Box mt="1rem">
 								{currentTab === 'project' && <ProjectLand />}
 							</Box> */}
-							{currentTab === 'rent' && <RentApartment />}
+							{/* {currentTab === 'rent' && <RentApartment />} */}
 							{/* <Box mt="1rem">
 								{currentTab === 'rent' && <RentIndHouse />}
 							</Box>
