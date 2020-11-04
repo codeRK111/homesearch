@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 
 const initialState = {
 	city: '',
+	for: 'rent',
 	location: '',
 	title: '',
 	availableFor: [],
