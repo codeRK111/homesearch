@@ -87,6 +87,7 @@ const SearchProperty = ({ currentTab }) => {
 		});
 		const data = {
 			city: city.id,
+			cityName: city.name,
 			locations: locations.map((c) => c.id),
 			type,
 		};
@@ -98,7 +99,9 @@ const SearchProperty = ({ currentTab }) => {
 			data.budget = budgetValue;
 		}
 		console.log(data);
-		let link = `/search-results?f=${currentTab}&c=${data.city}`;
+		let link = `/search-results?f=${currentTab}&c=${
+			data.city
+		}&cn=${encodeURIComponent(data.cityName)}`;
 		if (data.budget) {
 			link += `&b=${data.budget}`;
 		}

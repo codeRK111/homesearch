@@ -58,6 +58,10 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 		boxSizing: 'border-box',
 	},
+	parent: {
+		maxHeight: '300px',
+		overflowY: 'auto',
+	},
 	searchIcon: {
 		color: '#c1c1c1',
 		marginRight: '0.3rem',
@@ -165,7 +169,7 @@ function MenuListComposition({
 										: 'center bottom',
 							}}
 						>
-							<Paper elevation={3}>
+							<Paper elevation={3} className={classes.parent}>
 								<ClickAwayListener onClickAway={handleClose}>
 									<MenuList
 										autoFocusItem={open}

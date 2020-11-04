@@ -4,18 +4,20 @@ import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import moment from 'moment';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './searchResultCard.styles';
 
+const parseDate = (date) => {
+	let m = moment(date);
+	return m.format('MMM Do YY');
+};
+
 // import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-
-
-
 
 // Custom components
 
-
-const ResultCard = ({ independent }) => {
+const ResultCard = ({ independent, property }) => {
 	const classes = useStyles();
 	const mobile = useMediaQuery('(max-width:600px)');
 	const [open, setOpen] = React.useState(false);
@@ -63,7 +65,7 @@ const ResultCard = ({ independent }) => {
 										to="/property/123/details/rent/hostel"
 										className={classes.linkTitle}
 									>
-										<b>PG on rent in *</b>
+										<b>{property.title}</b>
 									</Link>
 
 									<br />
@@ -73,19 +75,21 @@ const ResultCard = ({ independent }) => {
 									/> */}
 								</Box>
 								<span className={classes.info}>
-									Patia,Bhubaneswar
+									{property.city.name},
+									{property.location.name}
 								</span>
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<Box className={classes.locationWrapper}>
 									<Box display="flex">
 										<Box className={classes.price}>
-											Rent: ₹ 20K
+											Rent: ₹ {property.rent / 1000}K
 										</Box>
 									</Box>
 									<Box className={classes.info} mt="0.5rem">
 										{' '}
-										Deposit: ₹ 5990
+										Deposit: ₹{' '}
+										{property.securityDeposit / 1000}K
 									</Box>
 								</Box>
 							</Grid>
@@ -100,7 +104,12 @@ const ResultCard = ({ independent }) => {
 													Room type
 												</Box>
 												<Box>
-													<b>Private</b>
+													<b>
+														{property.numberOfRoomMates ===
+														1
+															? 'Private'
+															: 'Shared'}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -110,7 +119,14 @@ const ResultCard = ({ independent }) => {
 													Available from
 												</Box>
 												<Box>
-													<b>Ready To Move</b>
+													<b>
+														{property.availability ===
+														'immediately'
+															? 'Ready To Move'
+															: parseDate(
+																	property.availableDate
+															  )}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -122,17 +138,22 @@ const ResultCard = ({ independent }) => {
 													Type of toilets
 												</Box>
 												<Box>
-													<b>Common</b>
+													<b>
+														{property.typeOfToilets}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
 										<Grid item xs={6} md={6}>
 											<Box mt="1rem">
 												<Box className={classes.info}>
-													Notice periods
+													Notice period
 												</Box>
 												<Box>
-													<b>30 days</b>
+													<b>
+														{property.noticePeriod}{' '}
+														days
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -146,7 +167,11 @@ const ResultCard = ({ independent }) => {
 													Available For
 												</Box>
 												<Box>
-													<b>Bachelors</b>
+													<b>
+														{property.availableFor.join(
+															','
+														)}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -156,7 +181,7 @@ const ResultCard = ({ independent }) => {
 													Fooding
 												</Box>
 												<Box>
-													<b>Non veg</b>
+													<b>Non veg,Veg</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -170,9 +195,7 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<p className={classes.info}>
-									Lorem, ipsum dolor sit amet consectetur
-									adipisicing elit. Rem aspernatur non eius
-									neque eligendi dolorem ipsum asperiores quas
+									{property.description}
 								</p>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -202,7 +225,7 @@ const ResultCard = ({ independent }) => {
 									display="flex"
 									{...justifyContent}
 								>
-									Posted on - 28-10-2020
+									Posted on - {parseDate(property.createdAt)}
 								</Box>
 							</Grid>
 						</Grid>

@@ -507,7 +507,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				distanceBusStop: req.body.distanceBusStop,
 				distanceHospital: req.body.distanceHospital,
 				availability: req.body.availability,
-				adminId: req.user.id,
+				adminId: req.admin.id,
 				createdBy: 'admin',
 				userId: req.body.userId,
 				salePriceOver: req.body.salePriceOver,
@@ -612,7 +612,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				distanceBusStop: req.body.distanceBusStop,
 				distanceHospital: req.body.distanceHospital,
 				availability: req.body.availability,
-				adminId: req.user.id,
+				adminId: req.admin.id,
 				createdBy: 'admin',
 				userId: req.body.userId,
 				salePriceOver: req.body.salePriceOver,
@@ -720,7 +720,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				distanceAirport: req.body.distanceAirport,
 				distanceBusStop: req.body.distanceBusStop,
 				distanceHospital: req.body.distanceHospital,
-				adminId: req.user.id,
+				adminId: req.admin.id,
 				createdBy: 'admin',
 				userId: req.body.userId,
 			};
@@ -857,10 +857,10 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 		filter['type'] = { $in: req.body.type };
 	}
 	filter.status = 'active';
-	const totalDocs = await Property.countDocuments(filter)
+	const totalDocs = await Property.countDocuments(filter);
 	const page = req.body.page * 1 || 1;
-		const limit = req.body.limit * 1 || 10;
-		const skip = (page - 1) * limit;
+	const limit = req.body.limit * 1 || 10;
+	const skip = (page - 1) * limit;
 
 	console.log(filter);
 	const properties = await Property.find(filter).skip(skip).limit(limit);
