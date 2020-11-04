@@ -850,11 +850,25 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 	if (req.body.city) {
 		filter['city'] = req.body.city;
 	}
+	if (req.body.availability) {
+		filter['availability'] = req.body.availability;
+	}
+	if (req.body.numberOfBedRooms) {
+		filter['numberOfBedRooms'] = req.body.numberOfBedRooms;
+	}
 	if (req.body.rent) {
-		filter['rent'] = { $lte: req.body.rent };
+		if (req.body.for === 'sale') {
+			filter['salePrice'] = { $lte: req.body.price };
+		} else {
+			filter['rent'] = { $lte: req.body.price };
+		}
 	}
 	if (req.body.type) {
-		filter['type'] = { $in: req.body.type };
+		if (req.body.for === 'sale') {
+			filter['sale_type'] = { $in: req.body.type };
+		} else {
+			filter['type'] = { $in: req.body.type };
+		}
 	}
 	filter.status = 'active';
 	const totalDocs = await Property.countDocuments(filter);

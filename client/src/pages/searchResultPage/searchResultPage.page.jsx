@@ -19,6 +19,9 @@ import PropertyFilter from '../../components/propertyTypeFilter/propertyTypeFild
 import React from 'react';
 import RentApartment from '../../components/searchResultCardNewRentApartment/searchResultCard.component';
 import RentHostel from '../../components/searchResultCardNewRentHostel/searchResultCard.component';
+import ResaleApartment from '../../components/searchResultCardNew/searchResultCard.component';
+import ResaleLand from '../../components/searchResultCardNewLand/searchResultCard.component';
+import ResaleVilla from '../../components/searchResultCardNewIndHouse/searchResultCard.component';
 import Skeleton from '../../components/searchCardSkeleton/searchCardSkeleton.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -31,14 +34,9 @@ import useStyles from './searchResultPage.styles';
 
 // import RentIndHouse from '../../components/searchResultCardNewRentIndHouse/searchResultCard.component';
 
-// import IndHouse from '../../components/searchResultCardNewIndHouse/searchResultCard.component';
-
 // import ProjectApartment from '../../components/searchResultCardNewProjectApartment/searchResultCard.component';
 // import ProjectLand from '../../components/searchResultCardNewProjectLand/searchResultCard.component';
 // import ProjectVilla from '../../components/searchResultCardNewProjectVilla/searchResultCard.component';
-
-// import ResultCard from '../../components/searchResultCardNew/searchResultCard.component';
-// import ResultLandSale from '../../components/searchResultCardNewLand/searchResultCard.component';
 
 const SearchPage = ({
 	currentTab,
@@ -73,13 +71,13 @@ const SearchPage = ({
 			city: parsed.c,
 		};
 		if (parsed.b) {
-			body.rent = parsed.b;
+			body.price = parsed.b;
 		}
 		if (parsed.l) {
 			if (typeof parsed.l === 'string') {
-				body.location = [parsed.l];
+				body.locations = [parsed.l];
 			} else {
-				body.location = parsed.l;
+				body.locations = parsed.l;
 			}
 		}
 		if (parsed.t) {
@@ -89,8 +87,14 @@ const SearchPage = ({
 				body.type = parsed.t;
 			}
 		}
+		if (parsed.av) {
+			body.availability = parsed.av;
+		}
+		if (parsed.br) {
+			body.numberOfBedRooms = parsed.br;
+		}
 		searchProperties(handleFetchCities, body);
-	}, [parsed.b, parsed.f, parsed.c, parsed.l, parsed.t, searchProperties]);
+	}, [searchProperties]);
 	const handleClick = () => {
 		setOpen(!open);
 	};
@@ -108,11 +112,28 @@ const SearchPage = ({
 				break;
 		}
 	};
+	const filterTypesSale = (property) => {
+		switch (property.sale_type) {
+			case 'flat':
+				return <ResaleApartment property={property} />;
+
+			case 'land':
+				return <ResaleLand property={property} />;
+
+			case 'independenthouse':
+				return <ResaleVilla property={property} />;
+
+			default:
+				break;
+		}
+	};
 
 	const renderProperties = (property) => {
 		switch (property.for) {
 			case 'rent':
 				return filterTypes(property);
+			case 'sale':
+				return filterTypesSale(property);
 
 			default:
 				break;
@@ -281,7 +302,12 @@ const SearchPage = ({
 					<Grid item xs={12} md={8}>
 						{asyncError && <ErrorCard message={asyncError} />}
 						{propertyLoading ? (
-							<Skeleton />
+							<Box>
+								<Skeleton />
+								<Box mt="1rem">
+									<Skeleton />
+								</Box>
+							</Box>
 						) : (
 							!asyncError &&
 							data.map((p) => (

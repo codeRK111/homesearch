@@ -5,13 +5,26 @@ import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import moment from 'moment';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './searchResultCard.styles';
 
-// Custom components
+const parseDate = (date) => {
+	const m = moment(date);
+	return m.format('MMM Do YY');
+};
 
+const showRera = (clearance) => {
+	const reraDetails = clearance.find((c) => c.name === 'reraapproved');
 
-const ResultCard = ({ independent }) => {
+	return reraDetails && reraDetails.value;
+};
+
+const parseBool = (bool) => (bool ? 'Yes' : 'No');
+
+const parsetType = (type) => (type === 'newbooking' ? 'NEW BOOKING' : 'RESALE');
+
+const ResultCard = ({ independent, property }) => {
 	const classes = useStyles();
 	const mobile = useMediaQuery('(max-width:600px)');
 	const [open, setOpen] = React.useState(false);
@@ -38,9 +51,9 @@ const ResultCard = ({ independent }) => {
 				<Grid item xs={12} md={4}>
 					<img
 						src={
-							independent
-								? require('../../assets/house-cover.jfif')
-								: require('../../assets/flat.jpeg')
+							property.image1
+								? property.image1
+								: require('../../assets/no-image.jpg')
 						}
 						alt="property"
 						className={classes.image}
@@ -60,7 +73,7 @@ const ResultCard = ({ independent }) => {
 										to="/property/123/details/sale/land"
 										className={classes.linkTitle}
 									>
-										<b>$Area Sq.ft $location</b>
+										<b>{property.title}</b>
 									</Link>
 
 									<br />
@@ -68,15 +81,18 @@ const ResultCard = ({ independent }) => {
 									{/* <VerifiedUserIcon
 										className={classes.verified}
 									/> */}
-									<Box className={classes.reraWrapper}>
-										<Box>RERA</Box>
-										<DoneIcon
-											className={classes.shareIcon}
-										/>
-									</Box>
+									{showRera(property.legalClearance) && (
+										<Box className={classes.reraWrapper}>
+											<Box>RERA</Box>
+											<DoneIcon
+												className={classes.shareIcon}
+											/>
+										</Box>
+									)}
 								</Box>
 								<span className={classes.info}>
-									Patia,Bhubaneswar
+									{property.city.name},
+									{property.location.name}
 								</span>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -86,15 +102,18 @@ const ResultCard = ({ independent }) => {
 											className={classes.pType}
 											mr="1rem"
 										>
-											NEW BOOKING
+											{parsetType(
+												property.transactionType
+											)}
 										</Box>
 										<Box className={classes.price}>
-											₹ 80L
+											₹ {property.salePrice / 100000}L
 										</Box>
 									</Box>
 									<Box className={classes.info} mt="0.5rem">
 										{' '}
-										₹ 5990 per sq.ft. Carpet Area
+										₹ {property.pricePerSqFt / 1000}K per
+										sq.ft.
 									</Box>
 								</Box>
 							</Grid>
@@ -109,7 +128,10 @@ const ResultCard = ({ independent }) => {
 													Plot Area
 												</Box>
 												<Box>
-													<b>960 Sq.ft</b>
+													<b>
+														{property.plotArea}{' '}
+														Sq.ft
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -119,7 +141,14 @@ const ResultCard = ({ independent }) => {
 													Possession On
 												</Box>
 												<Box>
-													<b>Ready To Move</b>
+													<b>
+														{property.availability ===
+														'immediately'
+															? 'Ready To Move'
+															: parseDate(
+																	property.availableDate
+															  )}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -131,7 +160,11 @@ const ResultCard = ({ independent }) => {
 													Ownership
 												</Box>
 												<Box>
-													<b>Freehold</b>
+													<b>
+														{property.propertyOwnerShip
+															? property.propertyOwnerShip
+															: 'Freehold'}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -141,7 +174,11 @@ const ResultCard = ({ independent }) => {
 													Gated Community
 												</Box>
 												<Box>
-													<b>Yes</b>
+													<b>
+														{parseBool(
+															property.gatedCommunity
+														)}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -155,7 +192,7 @@ const ResultCard = ({ independent }) => {
 													Facing
 												</Box>
 												<Box>
-													<b>East</b>
+													<b>{property.facing}</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -165,7 +202,10 @@ const ResultCard = ({ independent }) => {
 													Frontage
 												</Box>
 												<Box>
-													<b>Yes</b>
+													<b>
+														{property.plotFrontage}{' '}
+														Sq.ft
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -177,7 +217,11 @@ const ResultCard = ({ independent }) => {
 													Land Use Zone
 												</Box>
 												<Box>
-													<b>Yello Zone</b>
+													<b>
+														{
+															property.landUsingZoning
+														}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -187,7 +231,10 @@ const ResultCard = ({ independent }) => {
 													Width of road
 												</Box>
 												<Box>
-													<b>20 ft</b>
+													<b>
+														{property.widthOfRoad}{' '}
+														ft
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -201,9 +248,7 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<p className={classes.info}>
-									Lorem, ipsum dolor sit amet consectetur
-									adipisicing elit. Rem aspernatur non eius
-									neque eligendi dolorem ipsum asperiores quas
+									{property.description}
 								</p>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -233,7 +278,7 @@ const ResultCard = ({ independent }) => {
 									display="flex"
 									{...justifyContent}
 								>
-									Posted on - 28-10-2020
+									Posted on - {parseDate(property.createdAt)}
 								</Box>
 							</Grid>
 						</Grid>

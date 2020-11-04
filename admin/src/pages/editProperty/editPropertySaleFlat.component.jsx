@@ -1,20 +1,21 @@
-import React from 'react';
-import { Formik, Form, FieldArray } from 'formik';
-import RowTextField from '../../components/rowTextField/rowFormikTextField.component';
-import RowSelect from '../../components/rowSelect/rowFormikSelect.component';
-import Checkbox from '../../components/checkbox/checkbox.component';
-import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
-import FormHeader from '../../components/formHeader/formHeader.component';
-import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
 import {
 	Box,
 	Button,
+	FormControl,
+	FormControlLabel,
 	Grid,
 	Radio,
 	RadioGroup,
-	FormControlLabel,
-	FormControl,
 } from '@material-ui/core';
+import { FieldArray, Form, Formik } from 'formik';
+
+import Checkbox from '../../components/checkbox/checkbox.component';
+import FormHeader from '../../components/formHeader/formHeader.component';
+import React from 'react';
+import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
+import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
+import RowSelect from '../../components/rowSelect/rowFormikSelect.component';
+import RowTextField from '../../components/rowTextField/rowFormikTextField.component';
 
 const legalClearance = [
 	{
@@ -402,8 +403,8 @@ const PropertySale = ({ state, furnishes, amenities, onSubmit }) => {
 			}) => (
 				<Form>
 					{/* <div>{JSON.stringify(values.amenities, null, '\t')}</div> */}
-					{/* <div>{JSON.stringify(values.amenities, null, '\t')}</div>
-					<div>{JSON.stringify(errors, null, '\t')}</div> */}
+					{/* <div>{JSON.stringify(values.amenities, null, '\t')}</div>*/}
+					{/* <div>{JSON.stringify(errors, null, '\t')}</div> */}
 					<FormHeader text="Property Info" />
 					<RowTextField
 						heading="Title"

@@ -43,9 +43,9 @@ const ResultCard = ({ independent, property }) => {
 				<Grid item xs={12} md={4}>
 					<img
 						src={
-							independent
-								? require('../../assets/house-cover.jfif')
-								: require('../../assets/flat.jpeg')
+							property.image1
+								? property.image1
+								: require('../../assets/no-image.jpg')
 						}
 						alt="property"
 						className={classes.image}

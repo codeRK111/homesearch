@@ -176,7 +176,6 @@ function MenuListComposition({
 				anchorEl={anchorRef.current}
 				role={undefined}
 				transition
-				disablePortal
 			>
 				{({ TransitionProps, placement }) => (
 					<Grow

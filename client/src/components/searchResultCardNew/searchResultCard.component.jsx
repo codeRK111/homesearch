@@ -5,10 +5,24 @@ import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import moment from 'moment';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './searchResultCard.styles';
 
-const ResultCard = ({ independent }) => {
+const parseDate = (date) => {
+	const m = moment(date);
+	return m.format('MMM Do YY');
+};
+
+const showRera = (clearance) => {
+	const reraDetails = clearance.find((c) => c.name === 'reraapproved');
+
+	return reraDetails && reraDetails.value;
+};
+
+const parsetType = (type) => (type === 'newbooking' ? 'NEW BOOKING' : 'RESALE');
+
+const ResultCard = ({ independent, property }) => {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 	const mobile = useMediaQuery('(max-width:600px)');
@@ -34,9 +48,9 @@ const ResultCard = ({ independent }) => {
 				<Grid item xs={12} md={4}>
 					<img
 						src={
-							independent
-								? require('../../assets/house-cover.jfif')
-								: require('../../assets/flat.jpeg')
+							property.image1
+								? property.image1
+								: require('../../assets/no-image.jpg')
 						}
 						alt="property"
 						className={classes.image}
@@ -56,26 +70,25 @@ const ResultCard = ({ independent }) => {
 										to="/property/123/details/sale/apartment"
 										className={classes.linkTitle}
 									>
-										<b>
-											{independent
-												? 'House for sale in Patia'
-												: '3 BHK Apanartment'}
-										</b>
+										<b>{property.title}</b>
 									</Link>
 									<br />
 
 									{/* <VerifiedUserIcon
 										className={classes.verified}
 									/> */}
-									<Box className={classes.reraWrapper}>
-										<Box>RERA</Box>
-										<DoneIcon
-											className={classes.shareIcon}
-										/>
-									</Box>
+									{showRera(property.legalClearance) && (
+										<Box className={classes.reraWrapper}>
+											<Box>RERA</Box>
+											<DoneIcon
+												className={classes.shareIcon}
+											/>
+										</Box>
+									)}
 								</Box>
 								<span className={classes.info}>
-									Patia,Bhubaneswar
+									{property.city.name},
+									{property.location.name}
 								</span>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -85,15 +98,18 @@ const ResultCard = ({ independent }) => {
 											className={classes.pType}
 											mr="1rem"
 										>
-											NEW BOOKING
+											{parsetType(
+												property.transactionType
+											)}
 										</Box>
 										<Box className={classes.price}>
-											₹ 80L
+											₹ {property.salePrice / 100000}L
 										</Box>
 									</Box>
 									<Box className={classes.info} mt="0.5rem">
 										{' '}
-										₹ 5990 per sq.ft. Carpet Area
+										₹ {property.pricePerSqFt / 1000}K per
+										sq.ft. {property.salePriceOver}
 									</Box>
 								</Box>
 							</Grid>
@@ -108,7 +124,10 @@ const ResultCard = ({ independent }) => {
 													Carpet Area
 												</Box>
 												<Box>
-													<b>960 Sq.ft</b>
+													<b>
+														{property.carpetArea}{' '}
+														Sq.ft
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -118,7 +137,14 @@ const ResultCard = ({ independent }) => {
 													Possession On
 												</Box>
 												<Box>
-													<b>Ready To Move</b>
+													<b>
+														{property.availability ===
+														'immediately'
+															? 'Ready To Move'
+															: parseDate(
+																	property.availableDate
+															  )}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -130,7 +156,12 @@ const ResultCard = ({ independent }) => {
 													Super builtup Area
 												</Box>
 												<Box>
-													<b>960 Sq.ft</b>
+													<b>
+														{
+															property.superBuiltupArea
+														}{' '}
+														Sq.ft
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -140,7 +171,11 @@ const ResultCard = ({ independent }) => {
 													Bedrooms
 												</Box>
 												<Box>
-													<b>7</b>
+													<b>
+														{
+															property.numberOfBedRooms
+														}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -154,7 +189,7 @@ const ResultCard = ({ independent }) => {
 													Total floor
 												</Box>
 												<Box>
-													<b>10</b>
+													<b>{property.noOfFloors}</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -164,7 +199,7 @@ const ResultCard = ({ independent }) => {
 													Car parking
 												</Box>
 												<Box>
-													<b>Yes</b>
+													<b>{property.carParking}</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -176,7 +211,7 @@ const ResultCard = ({ independent }) => {
 													Property on floor
 												</Box>
 												<Box>
-													<b>7</b>
+													<b>{property.floor}</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -186,7 +221,7 @@ const ResultCard = ({ independent }) => {
 													Furnishing status
 												</Box>
 												<Box>
-													<b>furnished</b>
+													<b>{property.furnished}</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -200,9 +235,7 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<p className={classes.info}>
-									Lorem, ipsum dolor sit amet consectetur
-									adipisicing elit. Rem aspernatur non eius
-									neque eligendi dolorem ipsum asperiores quas
+									{property.description}
 								</p>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -240,7 +273,7 @@ const ResultCard = ({ independent }) => {
 									display="flex"
 									{...justifyContent}
 								>
-									Posted on - 28-10-2020
+									Posted on - {parseDate(property.createdAt)}
 								</Box>
 							</Grid>
 						</Grid>

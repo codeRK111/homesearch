@@ -69,17 +69,22 @@ const useStyles = makeStyles((theme) => ({
 	textCenter: {},
 }));
 
-function CityDropDown({ searchCityLoading, searchCities }) {
-	const classes = useStyles();
-	const [open, setOpen] = React.useState(false);
-	const anchorRef = React.useRef(null);
-	const [cityText, setCityText] = React.useState('');
-	const [city, selectCity] = React.useState({
+function CityDropDown({
+	searchCityLoading,
+	searchCities,
+	handleCity,
+	city = {
 		_id: '5f2cf831ab6d0b12da114161',
 		name: 'Bhubaneswar',
 		state: 'Odisha',
 		id: '5f2cf831ab6d0b12da114161',
-	});
+	},
+}) {
+	const classes = useStyles();
+	const [open, setOpen] = React.useState(false);
+	const anchorRef = React.useRef(null);
+	const [cityText, setCityText] = React.useState('');
+
 	const [asyncError, setAsyncError] = React.useState(null);
 	const [cities, setCities] = React.useState([]);
 	const handleFetchCities = (status, data = null) => {
@@ -112,7 +117,7 @@ function CityDropDown({ searchCityLoading, searchCities }) {
 	};
 
 	const onClick = (data) => (e) => {
-		selectCity(data);
+		handleCity(data);
 		handleClose(e);
 	};
 
@@ -155,6 +160,9 @@ function CityDropDown({ searchCityLoading, searchCities }) {
 					role={undefined}
 					transition
 					disablePortal
+					style={{
+						zIndex: '10000',
+					}}
 				>
 					{({ TransitionProps, placement }) => (
 						<Grow
