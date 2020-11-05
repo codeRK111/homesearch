@@ -15,6 +15,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import LocationFilter from '../../components/locationFilter/locationFilter.component';
 import Pagination from '@material-ui/lab/Pagination';
+import ProjectApartment from '../../components/searchResultCardNewProjectApartment/searchResultCard.component';
 import PropertyFilter from '../../components/propertyTypeFilter/propertyTypeFilder.component';
 import React from 'react';
 import RentApartment from '../../components/searchResultCardNewRentApartment/searchResultCard.component';
@@ -34,7 +35,6 @@ import useStyles from './searchResultPage.styles';
 
 // import RentIndHouse from '../../components/searchResultCardNewRentIndHouse/searchResultCard.component';
 
-// import ProjectApartment from '../../components/searchResultCardNewProjectApartment/searchResultCard.component';
 // import ProjectLand from '../../components/searchResultCardNewProjectLand/searchResultCard.component';
 // import ProjectVilla from '../../components/searchResultCardNewProjectVilla/searchResultCard.component';
 
@@ -50,12 +50,14 @@ const SearchPage = ({
 	const [asyncError, setAsyncError] = React.useState(null);
 	const [totalDos, setTotalDocs] = React.useState(0);
 	const [data, setData] = React.useState([]);
+	const [propertyItems, setPropertyItems] = React.useState([]);
 	const handleFetchCities = (status, data = null) => {
 		if (status === 'success') {
 			setAsyncError(null);
 			console.log(data.properties);
 			setData(data.properties);
 			setTotalDocs(data.count);
+			setPropertyItems(data.propertyItems);
 		} else {
 			setAsyncError(data);
 		}
@@ -94,6 +96,7 @@ const SearchPage = ({
 			body.numberOfBedRooms = parsed.br;
 		}
 		searchProperties(handleFetchCities, body);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchProperties]);
 	const handleClick = () => {
 		setOpen(!open);
@@ -128,6 +131,29 @@ const SearchPage = ({
 		}
 	};
 
+	const filterTypesProject = (property) => {
+		switch (property.projectType) {
+			case 'flat':
+				return (
+					<ProjectApartment
+						property={property}
+						propertyItems={propertyItems.filter(
+							(c) => c.project === property.id
+						)}
+					/>
+				);
+
+			// case 'land':
+			// 	return <ResaleLand property={property} />;
+
+			// case 'independenthouse':
+			// 	return <ResaleVilla property={property} />;
+
+			default:
+				break;
+		}
+	};
+
 	const renderProperties = (property) => {
 		switch (property.for) {
 			case 'rent':
@@ -136,7 +162,7 @@ const SearchPage = ({
 				return filterTypesSale(property);
 
 			default:
-				break;
+				return filterTypesProject(property);
 		}
 	};
 

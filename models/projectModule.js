@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
+const ProjectProperty = require('./projectPropertyModule');
+const PropertyModel = require('./propertyModel');
 
 const { Schema, model } = mongoose;
 const projectSchema = new Schema(

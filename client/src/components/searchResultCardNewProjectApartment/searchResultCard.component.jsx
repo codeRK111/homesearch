@@ -7,11 +7,21 @@ import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import useStyles from './searchResultCard.styles';
 
-// import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+const imgSrc = (property) => {
+	if (property.image1) {
+		return `/assets/projects/${property.image1}`;
+	}
+	if (property.image2) {
+		return `/assets/projects/${property.image2}`;
+	}
+	if (property.image3) {
+		return `/assets/projects/${property.image3}`;
+	}
 
-// Custom components
+	return require('../../assets/no-image.jpg');
+};
 
-const ResultCard = ({ independent }) => {
+const ResultCard = ({ independent, property, propertyItems }) => {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 
@@ -32,11 +42,7 @@ const ResultCard = ({ independent }) => {
 			<Grid container spacing={1}>
 				<Grid item xs={12} md={4}>
 					<img
-						src={
-							independent
-								? require('../../assets/house-cover.jfif')
-								: require('../../assets/flat.jpeg')
-						}
+						src={imgSrc(property)}
 						alt="property"
 						className={classes.image}
 					/>
@@ -55,18 +61,21 @@ const ResultCard = ({ independent }) => {
 										to="/property/123/details/project/apartment"
 										className={classes.linkTitle}
 									>
-										<b>DLF fairytell in *</b>
+										<b>{property.title}</b>
 									</Link>
 
 									<Box ml="1rem">
-										<span>Patia,Bhubaneswar</span>
+										<span>
+											{property.location.name},
+											{property.city.name}
+										</span>
 									</Box>
 								</Box>
 								<Box mt="0.5rem">
 									<b>
 										By{' '}
 										<span className={classes.dName}>
-											Anand Group
+											{property.builder.developerName}
 										</span>
 									</b>
 								</Box>
@@ -75,7 +84,7 @@ const ResultCard = ({ independent }) => {
 								<Box className={classes.locationWrapper}>
 									<Box display="flex" alignItems="center">
 										<Box className={classes.price}>
-											Upcoming
+											{property.complitionStatus}
 										</Box>
 									</Box>
 								</Box>
@@ -165,9 +174,7 @@ const ResultCard = ({ independent }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<p className={classes.info}>
-									Lorem, ipsum dolor sit amet consectetur
-									adipisicing elit. Rem aspernatur non eius
-									neque eligendi dolorem ipsum asperiores quas
+									{property.description}
 								</p>
 							</Grid>
 							<Grid item xs={12} md={6}>

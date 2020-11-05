@@ -4,6 +4,9 @@ const User = require('./../models/userModel');
 const Property = require('./../models/propertyModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const ProjectProperty = require('./../models/projectPropertyModule');
+const Project = require('./../models/projectModule');
+
 var fs = require('fs');
 const path = require('path');
 
@@ -841,46 +844,76 @@ exports.getPropertyDetails = catchAsync(async (req, res, next) => {
 
 exports.searchProperties = catchAsync(async (req, res, next) => {
 	const filter = {};
-	if (req.body.for) {
-		filter['for'] = req.body.for;
-	}
-	if (req.body.locations) {
-		filter['location'] = { $in: req.body.locations };
-	}
-	if (req.body.city) {
-		filter['city'] = req.body.city;
-	}
-	if (req.body.availability) {
-		filter['availability'] = req.body.availability;
-	}
-	if (req.body.numberOfBedRooms) {
-		filter['numberOfBedRooms'] = req.body.numberOfBedRooms;
-	}
-	if (req.body.rent) {
-		if (req.body.for === 'sale') {
-			filter['salePrice'] = { $lte: req.body.price };
-		} else {
-			filter['rent'] = { $lte: req.body.price };
-		}
-	}
-	if (req.body.type) {
-		if (req.body.for === 'sale') {
-			filter['sale_type'] = { $in: req.body.type };
-		} else {
-			filter['type'] = { $in: req.body.type };
-		}
-	}
-	filter.status = 'active';
-	const totalDocs = await Property.countDocuments(filter);
 	const page = req.body.page * 1 || 1;
 	const limit = req.body.limit * 1 || 10;
 	const skip = (page - 1) * limit;
+	if (req.body.for === 'project') {
+		const propertyFilter = {};
+		if (req.body.price) {
+			propertyFilter['maxPrice'] = { $lte: req.body.price };
+		}
+		if (req.body.availability) {
+			propertyFilter['availability'] = req.body.availability;
+		}
+		if (req.body.numberOfBedRooms) {
+			propertyFilter['numberOfBedRooms'] = req.body.numberOfBedRooms;
+		}
+		const propertyItems = await ProjectProperty.find(propertyFilter);
+		filter['_id'] = { $in: propertyItems.map((c) => c.project) };
+		if (req.body.locations) {
+			filter['location'] = { $in: req.body.locations };
+		}
+		if (req.body.city) {
+			filter['city'] = req.body.city;
+		}
+		filter.status = 'active';
+		const totalDocs = await Project.countDocuments(filter);
 
-	console.log(filter);
-	const properties = await Property.find(filter).skip(skip).limit(limit);
-	res.status(200).json({
-		status: 'success',
-		count: totalDocs,
-		data: { properties },
-	});
+		const properties = await Project.find(filter).skip(skip).limit(limit);
+		res.status(200).json({
+			status: 'success',
+			count: totalDocs,
+			data: { propertyItems, properties },
+		});
+	} else {
+		if (req.body.for) {
+			filter['for'] = req.body.for;
+		}
+		if (req.body.locations) {
+			filter['location'] = { $in: req.body.locations };
+		}
+		if (req.body.city) {
+			filter['city'] = req.body.city;
+		}
+		if (req.body.availability) {
+			filter['availability'] = req.body.availability;
+		}
+		if (req.body.numberOfBedRooms) {
+			filter['numberOfBedRooms'] = req.body.numberOfBedRooms;
+		}
+		if (req.body.price) {
+			if (req.body.for === 'sale') {
+				filter['salePrice'] = { $lte: req.body.price };
+			} else {
+				filter['rent'] = { $lte: req.body.price };
+			}
+		}
+		if (req.body.type) {
+			if (req.body.for === 'sale') {
+				filter['sale_type'] = { $in: req.body.type };
+			} else {
+				filter['type'] = { $in: req.body.type };
+			}
+		}
+		filter.status = 'active';
+		const totalDocs = await Property.countDocuments(filter);
+
+		console.log(filter);
+		const properties = await Property.find(filter).skip(skip).limit(limit);
+		res.status(200).json({
+			status: 'success',
+			count: totalDocs,
+			data: { properties },
+		});
+	}
 });

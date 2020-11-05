@@ -20,6 +20,9 @@ function* searchPropertySaga({ payload: { body, callback } }) {
 		callback('success', {
 			properties: responseData.data.properties,
 			count: responseData.count,
+			propertyItems: responseData.data.propertyItems
+				? responseData.data.propertyItems
+				: [],
 		});
 	} catch (error) {
 		yield put(searchPropertiesLoading(false));
