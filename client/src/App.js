@@ -1,5 +1,6 @@
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
+import DetailsPage from './pages/detailsPageNew/detailsPage.component';
 import HomePage from './pages/home/home.page';
 import LoginPage from './pages/login/login.page';
 import MobileSearch from './pages/mobileSearch/mobileSearch.page';
@@ -56,6 +57,11 @@ function App() {
 							render={(props) => (
 								<PropertyDetailsPage {...props} />
 							)}
+						/>
+						<Route
+							exact
+							path="/property-details/:id"
+							render={(props) => <DetailsPage {...props} />}
 						/>
 						<Route
 							exact

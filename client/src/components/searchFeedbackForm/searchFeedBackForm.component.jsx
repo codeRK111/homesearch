@@ -20,7 +20,7 @@ const options = [
 	'Others',
 ];
 
-const SearchFeedback = ({ feedback }) => {
+const SearchFeedback = ({ feedback, onSubmit }) => {
 	const classes = useStyles();
 	const [category, setCategory] = React.useState(
 		'I need to talk to customer service'
@@ -92,7 +92,9 @@ const SearchFeedback = ({ feedback }) => {
 				/>
 			</Box>
 			<Box mt="1rem">
-				<button className={classes.submit}>Submit</button>
+				<button className={classes.submit} onClick={onSubmit}>
+					Submit
+				</button>
 			</Box>
 		</Box>
 	);

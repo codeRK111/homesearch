@@ -1,7 +1,10 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
+import {
+	getPropertyDetailsLoading,
+	searchPropertiesLoading,
+} from './property.actions';
 
 import axios from 'axios';
-import { searchPropertiesLoading } from './property.actions';
 import { propertyActionTypes as types } from './property.types';
 
 function* searchPropertySaga({ payload: { body, callback } }) {
@@ -31,10 +34,33 @@ function* searchPropertySaga({ payload: { body, callback } }) {
 	}
 }
 
+function* getPropertyDetailsSaga({ payload: { id, callback } }) {
+	yield put(getPropertyDetailsLoading(true));
+	const url = `/api/v1/properties/${id}`;
+	try {
+		const response = yield axios.get(url);
+		const responseData = response.data;
+		yield put(getPropertyDetailsLoading(false));
+		callback('success', responseData.data.property);
+	} catch (error) {
+		yield put(getPropertyDetailsLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+
 function* onSearchProperties() {
 	yield takeEvery(types.SEARCH_PROPERTY_START, searchPropertySaga);
 }
 
+function* onGetPropertyDetails() {
+	yield takeEvery(types.GET_PROPERTY_DETAILS_START, getPropertyDetailsSaga);
+}
+
 export function* propertySagas() {
-	yield all([call(onSearchProperties)]);
+	yield all([call(onSearchProperties), call(onGetPropertyDetails)]);
 }

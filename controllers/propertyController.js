@@ -833,7 +833,12 @@ exports.getPropertyResources = catchAsync(async (req, res, next) => {
 
 exports.getPropertyDetails = catchAsync(async (req, res, next) => {
 	const property = await Property.findById(req.params.id);
+
 	if (!property) return next(new AppError('property not found', 404));
+	const allAmenities = await Amenity.find();
+	const allFurnishes = await Furnish.find();
+	property['_doc']['allAmenities'] = allAmenities;
+	property['_doc']['allFurnishes'] = allFurnishes;
 	res.status(200).json({
 		status: 'success',
 		data: {
@@ -904,6 +909,9 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 			} else {
 				filter['type'] = { $in: req.body.type };
 			}
+		}
+		if (req.body.exclude) {
+			filter['_id'] = {$ne : req.body.exclude};
 		}
 		filter.status = 'active';
 		const totalDocs = await Property.countDocuments(filter);

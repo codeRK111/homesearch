@@ -1,18 +1,13 @@
 import { Box, Divider, Grid, Paper } from '@material-ui/core';
+import { capitalizeFirstLetter, parseDate } from '../../utils/render.utils';
 
 import DoneIcon from '@material-ui/icons/Done';
 import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
-import moment from 'moment';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './searchResultCard.styles';
-
-const parseDate = (date) => {
-	const m = moment(date);
-	return m.format('MMM Do YY');
-};
 
 const showRera = (clearance) => {
 	const reraDetails = clearance.find((c) => c.name === 'reraapproved');
@@ -70,7 +65,8 @@ const ResultCard = ({ independent, property }) => {
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
 									<Link
-										to="/property/123/details/sale/land"
+										to={`/property-details/${property.id}`}
+										// to="/property/123/details/sale/land"
 										className={classes.linkTitle}
 									>
 										<b>{property.title}</b>
@@ -192,7 +188,11 @@ const ResultCard = ({ independent, property }) => {
 													Facing
 												</Box>
 												<Box>
-													<b>{property.facing}</b>
+													<b>
+														{capitalizeFirstLetter(
+															property.facing
+														)}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -218,9 +218,9 @@ const ResultCard = ({ independent, property }) => {
 												</Box>
 												<Box>
 													<b>
-														{
+														{capitalizeFirstLetter(
 															property.landUsingZoning
-														}
+														)}
 													</b>
 												</Box>
 											</Box>
@@ -263,9 +263,17 @@ const ResultCard = ({ independent, property }) => {
 											className={classes.whatsapp}
 											onClick={handleOpen}
 										>
-											<WhatsAppIcon
-												className={classes.shareIcon2}
-											/>
+											<Box
+												display="flex"
+												alignItems="center"
+											>
+												<WhatsAppIcon
+													className={
+														classes.shareIcon2
+													}
+												/>
+												<Box ml="0.3rem">Chat now</Box>
+											</Box>
 										</button>
 										<button className={classes.details}>
 											Get Owner Details

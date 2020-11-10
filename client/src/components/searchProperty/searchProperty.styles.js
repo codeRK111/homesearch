@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+
 const img = require('../../assets/real.jpg');
 
 export const useStyles = makeStyles((theme) => ({
@@ -32,6 +33,7 @@ export const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		maxWidth: '900px',
 		width: '100%',
+		maxHeight: '100px',
 		[theme.breakpoints.down('sm')]: {
 			flexDirection: 'column',
 			width: '90%',
@@ -134,8 +136,16 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	selectedCityWrapper: {
 		padding: '0.5rem',
+		width: '30rem',
 	},
 	chip: {
 		marginRight: '0.5rem',
+	},
+	bRight: {
+		borderRight: '1px solid #cccccc',
+	},
+	filterHeading: {
+		fontSize: '0.8rem',
+		margin: '0.3rem',
 	},
 }));

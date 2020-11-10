@@ -4,6 +4,7 @@ const initialState = {
 	// Initial Values
 	// Loading States
 	searchPropertyLoading: false,
+	getPropertyDetailsLoading: false,
 	// Errors
 };
 
@@ -13,6 +14,11 @@ const propertyReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				searchPropertyLoading: payload,
+			};
+		case propertyActionTypes.TOGGLE_GET_PROPERTY_DETAILS_LOADING:
+			return {
+				...state,
+				getPropertyDetailsLoading: payload,
 			};
 
 		default:

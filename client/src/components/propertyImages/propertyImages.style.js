@@ -3,11 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
 	mainImageWrapper: {
 		width: '100%',
+		// maxHeight: '400px',
 		// minHeight: '400px',
 	},
 	image: {
 		maxWidth: '100%',
-		maxHeight: '100%',
+		maxHeight: '50vh',
 		width: '100%',
 		height: '100%',
 	},

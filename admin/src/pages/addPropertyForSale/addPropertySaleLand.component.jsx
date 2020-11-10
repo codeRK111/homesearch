@@ -153,9 +153,9 @@ const validate = (state) => {
 	if (!state.widthOfRoad) {
 		errors.widthOfRoad = 'Width of road required';
 	}
-	if (typeof state.widthOfRoad !== 'number') {
-		errors.widthOfRoad = 'Only number allowed';
-	}
+	// if (typeof state.widthOfRoad != 'number') {
+	// 	errors.widthOfRoad = 'Only number allowed';
+	// }
 	if (!state.govermentValuation) {
 		errors.govermentValuation = 'Goverment valuation required';
 	}
@@ -163,9 +163,9 @@ const validate = (state) => {
 	if (!state.salePrice) {
 		errors.salePrice = 'Sale price required';
 	}
-	if (!state.pricePerSqFt) {
-		errors.pricePerSqFt = 'Price per SqFt required';
-	}
+	// if (!state.pricePerSqFt) {
+	// 	errors.pricePerSqFt = 'Price per SqFt required';
+	// }
 	if (!state.distanceSchool) {
 		errors.distanceSchool = ' required';
 	}

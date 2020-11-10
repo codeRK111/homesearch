@@ -9,4 +9,8 @@ export const selectPropertyLoading = createSelector(
 	(c) => c.searchPropertyLoading
 );
 
+export const selectGetPropertyDetailsLoading = createSelector(
+	[selectProperty],
+	(c) => c.getPropertyDetailsLoading
+);
 // Select Errors

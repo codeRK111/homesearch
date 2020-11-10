@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 		boxSizing: 'border-box',
 	},
 	parent: {
-		maxHeight: '300px',
+		maxHeight: '30vh',
 		overflowY: 'auto',
 	},
 	searchIcon: {
@@ -68,6 +68,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	cRed: {
 		color: 'red',
+	},
+	item: {
+		padding: '0.5rem',
+		cursor: 'pointer',
+		'&:hover': {
+			backgroundColor: theme.fontColor,
+		},
 	},
 }));
 
@@ -96,7 +103,7 @@ function MenuListComposition({
 	};
 	const handleChange = (e) => setCityText(e.target.value);
 	const onKeyUp = (e) => {
-		if (e.target.value.trim().length > 2) {
+		if (e.target.value.trim().length > 3) {
 			console.log(cityText);
 			searchCities(handleFetchCities, cityText);
 		}
@@ -155,70 +162,54 @@ function MenuListComposition({
 				<Popper
 					open={open}
 					anchorEl={anchorRef.current}
-					role={undefined}
-					transition
+					keepMounted={true}
 					disablePortal
 				>
-					{({ TransitionProps, placement }) => (
-						<Grow
-							{...TransitionProps}
-							style={{
-								transformOrigin:
-									placement === 'bottom'
-										? 'center top'
-										: 'center bottom',
-							}}
-						>
-							<Paper elevation={3} className={classes.parent}>
-								<ClickAwayListener onClickAway={handleClose}>
-									<MenuList
-										autoFocusItem={open}
-										id="menu-list-grow"
-										onKeyDown={handleListKeyDown}
+					<Paper elevation={3} className={classes.parent}>
+						<ClickAwayListener onClickAway={handleClose}>
+							<Box
+								id="menu-list-grow"
+								onKeyDown={handleListKeyDown}
+								autoFocus={false}
+								disableAutoFocusItem={false}
+							>
+								<Box
+									p="0.3rem"
+									className={classes.searchWrapper}
+								>
+									<FontAwesomeIcon
+										icon={faSearch}
+										className={classes.searchIcon}
+									/>
+									<input
+										type="text"
+										className={classes.input}
+										placeholder="Enter 4 letter 0f the city"
+										value={cityText}
+										onChange={handleChange}
+										onKeyUp={onKeyUp}
+									/>
+								</Box>
+								{asyncError && (
+									<p className={classes.cRed}>{asyncError}</p>
+								)}
+								{searchCityLoading && (
+									<Typography component="h5" align="center">
+										Loading...
+									</Typography>
+								)}
+								{cities.map((c) => (
+									<div
+										key={c.id}
+										onClick={onClick(c)}
+										className={classes.item}
 									>
-										<Box
-											p="0.3rem"
-											className={classes.searchWrapper}
-										>
-											<FontAwesomeIcon
-												icon={faSearch}
-												className={classes.searchIcon}
-											/>
-											<input
-												type="text"
-												className={classes.input}
-												placeholder="Search city"
-												value={cityText}
-												onChange={handleChange}
-												onKeyUp={onKeyUp}
-											/>
-										</Box>
-										{asyncError && (
-											<p className={classes.cRed}>
-												{asyncError}
-											</p>
-										)}
-										{searchCityLoading && (
-											<Typography
-												component="h5"
-												align="center"
-											>
-												Loading...
-											</Typography>
-										)}
-										{cities.map((c) => (
-											<MenuItem
-												key={c.id}
-												onClick={onClick(c)}
-											>
-												{c.name}
-											</MenuItem>
-										))}
-									</MenuList>
-								</ClickAwayListener>
-							</Paper>
-						</Grow>
-					)}
+										{c.name}
+									</div>
+								))}
+							</Box>
+						</ClickAwayListener>
+					</Paper>
 				</Popper>
 			</div>
 		</div>

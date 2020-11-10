@@ -1,4 +1,4 @@
-import { Box, Chip, Paper } from '@material-ui/core';
+import { Box, Chip, Divider, Paper } from '@material-ui/core';
 
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -36,6 +36,7 @@ const SearchProperty = ({ currentTab }) => {
 		label: null,
 	});
 	const [locations, setLocations] = React.useState([]);
+	const [budgetList, setBudgetList] = React.useState([]);
 	const [anchorElProperty, setAnchorElProperty] = React.useState(null);
 	const [types, setTypes] = React.useState({
 		flat: false,
@@ -151,6 +152,8 @@ const SearchProperty = ({ currentTab }) => {
 		setAnchorElProperty(null);
 	};
 
+	console.log('budget', budgetList);
+
 	return (
 		<Box
 			display="flex"
@@ -165,21 +168,50 @@ const SearchProperty = ({ currentTab }) => {
 					Lorem ipsum dolor sit amet consectetur.
 				</h1>
 				<PropertyTab />
-				{locations.length && (
+				{(locations.length || budgetList.length) && (
 					<Box mt="2rem">
 						<Paper
 							className={classes.selectedCityWrapper}
 							square={true}
 						>
-							{locations.map((c) => (
-								<Chip
-									key={c.id}
-									icon={<LocationCityIcon />}
-									label={c.name}
-									variant="outlined"
-									className={classes.chip}
-									onDelete={onDelete(c)}
-								/>
+							<Box className={classes.bRight} width="100%">
+								<Box>
+									{locations.length > 0 && (
+										<b className={classes.filterHeading}>
+											Locations
+										</b>
+									)}
+								</Box>
+								{locations.map((c) => (
+									<Chip
+										key={c.id}
+										icon={<LocationCityIcon />}
+										label={c.name}
+										variant="outlined"
+										className={classes.chip}
+										onDelete={onDelete(c)}
+									/>
+								))}
+							</Box>
+
+							<Box>
+								{budgetList.length > 0 && (
+									<b className={classes.filterHeading}>
+										Budgets
+									</b>
+								)}
+							</Box>
+							{budgetList.map((c, i) => (
+								<Box width="100%">
+									<Chip
+										key={i}
+										icon={<LocationCityIcon />}
+										label={c.name}
+										variant="outlined"
+										className={classes.chip}
+										onDelete={onDelete(c)}
+									/>
+								</Box>
 							))}
 						</Paper>
 					</Box>
@@ -221,6 +253,8 @@ const SearchProperty = ({ currentTab }) => {
 									<BudgetItems
 										currentTab={currentTab}
 										close={budgetClose}
+										budgetList={budgetList}
+										setBudgetList={setBudgetList}
 									/>
 								</Box>
 							</Paper>
@@ -270,7 +304,7 @@ const SearchProperty = ({ currentTab }) => {
 	);
 };
 
-const styles = makeStyles({
+const styles = makeStyles((theme) => ({
 	input: {
 		width: '50px',
 		padding: '0.5rem',
@@ -284,19 +318,109 @@ const styles = makeStyles({
 	},
 	priceWrapper: {
 		padding: '0.2rem',
-		cursor: 'pointer',
-		textAlign: 'center',
-		'&:hover': {
-			backgroundColor: '#cccccc',
-		},
+		// cursor: 'pointer',
+		// textAlign: 'center',
+		// '&:hover': {
+		// 	backgroundColor: '#cccccc',
+		// },
+		display: 'flex',
+		alignItems: 'center',
 	},
-});
+	checked: {
+		color: theme.colorOne,
+	},
+}));
 
-const BudgetItems = ({ currentTab, close }) => {
+const BudgetItems = ({ currentTab, close, budgetList, setBudgetList }) => {
 	const classes = styles();
 	const click = (data, label) => () => {
 		close(data, label);
 	};
+
+	const [selectAll, setSelectAll] = React.useState(false);
+
+	const [rentItems, setRentItems] = React.useState(
+		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
+			name: `${(c - 1) * 5}-${c * 5}K`,
+			val: { min: (c - 1) * 5 * 1000, max: c * 5 * 1000 },
+			checked: false,
+		}))
+	);
+
+	const [otherItems, setOtherItems] = React.useState(
+		Array.from({ length: 20 }, (_, i) => i + 2).map((c) => ({
+			name: `${(c - 2) * 10}-${c * 5}L`,
+			val: { min: (c - 2) * 10 * 100000, max: c * 5 * 100000 },
+			checked: false,
+		}))
+	);
+
+	const handleSelectAll = (e) => {
+		const { checked } = e.target;
+		setSelectAll(checked);
+		if (checked) {
+			setBudgetList([{ name: 'All' }]);
+		} else {
+			setBudgetList([]);
+		}
+
+		if (currentTab === 'rent') {
+			setRentItems((prevState) =>
+				prevState.map((c) => {
+					c.checked = checked;
+					return c;
+				})
+			);
+		} else {
+			setOtherItems((prevState) =>
+				prevState.map((c) => {
+					c.checked = checked;
+					return c;
+				})
+			);
+		}
+	};
+
+	React.useEffect(() => {
+		setRentItems((prevState) =>
+			prevState.map((c) => {
+				c.checked = false;
+				return c;
+			})
+		);
+		setOtherItems((prevState) =>
+			prevState.map((c) => {
+				c.checked = false;
+				return c;
+			})
+		);
+		setSelectAll(false);
+	}, [currentTab]);
+
+	const handleRent = (e) => {
+		const { name, checked } = e.target;
+		setRentItems((prevState) =>
+			prevState.map((c) => {
+				if (name === c.name) {
+					c.checked = checked;
+				}
+				return c;
+			})
+		);
+	};
+
+	const handleOtherItems = (e) => {
+		const { name, checked } = e.target;
+		setOtherItems((prevState) =>
+			prevState.map((c) => {
+				if (name === c.name) {
+					c.checked = checked;
+				}
+				return c;
+			})
+		);
+	};
+
 	return (
 		<Paper
 			width="250px"
@@ -304,27 +428,64 @@ const BudgetItems = ({ currentTab, close }) => {
 			onMouseLeave={() => close()}
 		>
 			<Box>
+				<div
+					className={classes.priceWrapper}
+					// onClick={click(c, 'L')}
+				>
+					<FormControlLabel
+						control={
+							<Checkbox
+								name="flat"
+								checked={selectAll}
+								onChange={handleSelectAll}
+								color="secondary"
+								classes={{
+									checked: classes.checked,
+									colorSecondary: classes.checked,
+								}}
+							/>
+						}
+						label="Select All"
+					/>
+				</div>
+				<Divider />
 				{currentTab === 'rent'
-					? [2, 5, 10, 20, 40, 60, 80, 100].map((c) => (
+					? rentItems.map((c) => (
 							<div
 								key={c}
 								className={classes.priceWrapper}
-								onClick={click(c, 'K')}
+								// onClick={click(c, 'L')}
 							>
-								{c}k
+								<FormControlLabel
+									control={
+										<Checkbox
+											name={c.name}
+											checked={c.checked}
+											onChange={handleRent}
+										/>
+									}
+									label={c.name}
+								/>
 							</div>
 					  ))
-					: [2, 5, 10, 20, 40, 60, 80, 100, 200, 300, 400, 500].map(
-							(c) => (
-								<div
-									key={c}
-									className={classes.priceWrapper}
-									onClick={click(c, 'L')}
-								>
-									{c}L
-								</div>
-							)
-					  )}
+					: otherItems.map((c) => (
+							<div
+								key={c}
+								className={classes.priceWrapper}
+								// onClick={click(c, 'L')}
+							>
+								<FormControlLabel
+									control={
+										<Checkbox
+											name={c.name}
+											checked={c.checked}
+											onChange={handleOtherItems}
+										/>
+									}
+									label={c.name}
+								/>
+							</div>
+					  ))}
 			</Box>
 		</Paper>
 	);
