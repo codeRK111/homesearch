@@ -913,10 +913,30 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 		if (req.body.exclude) {
 			filter['_id'] = {$ne : req.body.exclude};
 		}
+		if (req.body.budgetList) {
+			const arr = [];
+
+			if (req.body.for === 'sale') {
+				req.body.budgetList.forEach(c => {
+				arr.push({
+					salePrice: { $lte : c.max,$gte: c.min}
+				})
+			})
+				// filter['salePrice'] = { $lte: req.body.price };
+			} else {
+				req.body.budgetList.forEach(c => {
+				arr.push({
+					rent: { $lte : c.max,$gte: c.min}
+				})
+			})
+				
+			}
+			filter['$or'] = arr
+		}
 		filter.status = 'active';
 		const totalDocs = await Property.countDocuments(filter);
 
-		console.log(filter);
+		console.log(JSON.stringify(filter));
 		const properties = await Property.find(filter).skip(skip).limit(limit);
 		res.status(200).json({
 			status: 'success',

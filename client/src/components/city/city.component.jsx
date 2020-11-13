@@ -4,9 +4,6 @@ import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined'
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Grow from '@material-ui/core/Grow';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import React from 'react';
@@ -126,13 +123,6 @@ function MenuListComposition({
 		handleClose(e);
 	};
 
-	function handleListKeyDown(event) {
-		if (event.key === 'Tab') {
-			event.preventDefault();
-			setOpen(false);
-		}
-	}
-
 	// return focus to the button when we transitioned from !open -> open
 	const prevOpen = React.useRef(open);
 	React.useEffect(() => {
@@ -167,12 +157,7 @@ function MenuListComposition({
 				>
 					<Paper elevation={3} className={classes.parent}>
 						<ClickAwayListener onClickAway={handleClose}>
-							<Box
-								id="menu-list-grow"
-								onKeyDown={handleListKeyDown}
-								autoFocus={false}
-								disableAutoFocusItem={false}
-							>
+							<Box id="menu-list-grow">
 								<Box
 									p="0.3rem"
 									className={classes.searchWrapper}

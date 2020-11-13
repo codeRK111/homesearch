@@ -95,6 +95,25 @@ const SearchPage = ({
 		if (parsed.br) {
 			body.numberOfBedRooms = parsed.br;
 		}
+		if (parsed.bl && parsed.bl.length > 0) {
+			const arr = [];
+			parsed.bl.forEach((c) => {
+				const item = c.split(',');
+				if (item.length > 0) {
+					arr.push({
+						min: item[0],
+						max: item[1],
+					});
+				} else {
+					if (arr.length > 0) {
+						arr.push({ max: item[0] });
+					} else {
+						arr.push({ min: item[0] });
+					}
+				}
+			});
+			body.budgetList = arr;
+		}
 		searchProperties(handleFetchCities, body);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchProperties]);

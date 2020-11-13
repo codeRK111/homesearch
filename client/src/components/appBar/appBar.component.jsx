@@ -1,21 +1,21 @@
-import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
+import AppDrawer from '../appDrawer/appDrawe.component';
+import Box from '@material-ui/core/Box';
+import Button from '../appBarButton/appBarButton.component';
+import City from '../cityMenu/cityMenu.component';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '../menu/menu.component';
+import MenuIcon from '@material-ui/icons/Menu';
+import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Box from '@material-ui/core/Box';
 import { useHistory } from 'react-router-dom';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useStyles } from './appBar.styles';
 
 // Custom components
-import AppDrawer from '../appDrawer/appDrawe.component';
-import Button from '../appBarButton/appBarButton.component';
-import Menu from '../menu/menu.component';
-import City from '../cityMenu/cityMenu.component';
 
 // Styles
-import { useStyles } from './appBar.styles';
 
 const Appbar = () => {
 	const classes = useStyles();
@@ -33,6 +33,7 @@ const Appbar = () => {
 		setOpen(status);
 	};
 	const goToHomePage = (_) => history.push('/');
+	const redirectToPostProperty = (_) => history.push('/post-property');
 	return (
 		<div className={classes.root}>
 			<AppDrawer open={open} handleDrawer={handleDrawer(false)} />
@@ -62,7 +63,12 @@ const Appbar = () => {
 						<City />
 					</Box>
 
-					{!matches && <Button text="Post Property" />}
+					{!matches && (
+						<Button
+							text="Post Property"
+							onClick={redirectToPostProperty}
+						/>
+					)}
 					{!matches && <Menu />}
 				</Toolbar>
 			</AppBar>

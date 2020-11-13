@@ -62,7 +62,7 @@ const ResultCard = ({ independent, property }) => {
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
 									<Link
-										to="/property/123/details/rent/apartment"
+										to={`/property-details/${property.id}`}
 										className={classes.linkTitle}
 									>
 										<b>{property.title}</b>

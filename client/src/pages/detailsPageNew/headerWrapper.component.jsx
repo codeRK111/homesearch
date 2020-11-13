@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import RentAppartment from './rentApartmentHeader.component';
 import ResaleLandHeader from './resaleLandHeader.component';
 import ResaleVillHeader from './resaleVillaHeader.component';
 
@@ -16,10 +17,22 @@ const HeaderWrapper = ({ property }) => {
 				break;
 		}
 	};
+	const renderRentHeader = (property) => {
+		switch (property.type) {
+			case 'flat':
+				return <RentAppartment property={property} />;
+
+			default:
+				break;
+		}
+	};
 	const renderHeader = (property) => {
 		switch (property.for) {
 			case 'sale':
 				return renderSaleHeader(property);
+
+			case 'rent':
+				return renderRentHeader(property);
 
 			default:
 				break;

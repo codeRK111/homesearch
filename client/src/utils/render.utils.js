@@ -71,4 +71,16 @@ export const renderFurnishAndAmenities = (info) => {
 			return false;
 		}
 	}
+
+	if (info.for === 'rent') {
+		return true;
+	}
+};
+
+export const renderArray = (info) => {
+	let str = '';
+	info.forEach((c) => {
+		str += `${capitalizeFirstLetter(c)},`;
+	});
+	return str.slice(0, -1);
 };

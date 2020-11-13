@@ -5,7 +5,10 @@ import HomePage from './pages/home/home.page';
 import LoginPage from './pages/login/login.page';
 import MobileSearch from './pages/mobileSearch/mobileSearch.page';
 import OTPPage from './pages/otp/otp.page';
+import PostProperty from './pages/postProperty';
+import PostPropertyDetailsPage from './pages/postPropertyDetailsPage';
 import ProfilePage from './pages/profile/profile.page';
+import ProfileUpdate from './pages/profile/profileUpdate.page';
 import ProjectDetailsPage from './pages/projectDetailsPage/detailsPage.page';
 import PropertyDetailsPage from './pages/detailsPage/detailsPage.page';
 import { Provider } from 'react-redux';
@@ -43,6 +46,11 @@ function App() {
 						/>
 						<Route
 							exact
+							path="/update-profile"
+							render={() => <ProfileUpdate />}
+						/>
+						<Route
+							exact
 							path="/m/search"
 							render={() => <MobileSearch />}
 						/>
@@ -68,6 +76,18 @@ function App() {
 							path="/property/:id/project-details/:propertyFor/:type"
 							render={(props) => (
 								<ProjectDetailsPage {...props} />
+							)}
+						/>
+						<Route
+							exact
+							path="/post-property"
+							render={(props) => <PostProperty {...props} />}
+						/>
+						<Route
+							exact
+							path="/post-property-details/:pFor/:pType"
+							render={(props) => (
+								<PostPropertyDetailsPage {...props} />
 							)}
 						/>
 					</Switch>

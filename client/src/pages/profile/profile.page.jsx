@@ -1,113 +1,168 @@
+import {
+	AlignCenter,
+	Flex,
+	JustifyCenter,
+} from '../../components/flexContainer/flexContainer.component';
+import { Avatar, Box, Button, Grid, Typography } from '@material-ui/core';
+import {
+	faCalendarAlt,
+	faCheck,
+	faCity,
+	faEnvelopeOpen,
+} from '@fortawesome/free-solid-svg-icons';
+
+import AppBar from '../../components/appBar/appBar.component';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Footer from '../../components/footer/footer.component';
 import React from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Container from '@material-ui/core/Container';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Tab from './tab.component';
+import { useHistory } from 'react-router-dom';
+import useStyles from './profile.styles';
 
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		display: 'flex',
-	},
-
-	toolbarIcon: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'flex-end',
-		padding: '0 8px',
-		...theme.mixins.toolbar,
-	},
-
-	drawerPaper: {
-		position: 'relative',
-		whiteSpace: 'nowrap',
-		width: drawerWidth,
-		backgroundColor: '#34495e',
-		color: '#ffffff',
-		overflowX: 'scroll',
-		msOverflowY: 'hidden',
-		height: '100vh',
-		transition: theme.transitions.create('width', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-	},
-	drawerPaperClose: {
-		overflowX: 'hidden',
-		transition: theme.transitions.create('width', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen,
-		}),
-		width: theme.spacing(7),
-		[theme.breakpoints.up('sm')]: {
-			width: theme.spacing(9),
-		},
-	},
-	appBarSpacer: theme.mixins.toolbar,
-	content: {
-		flexGrow: 1,
-		height: '100vh',
-		overflow: 'auto',
-	},
-	container: {
-		paddingTop: theme.spacing(4),
-		paddingBottom: theme.spacing(4),
-	},
-	paper: {
-		padding: theme.spacing(2),
-		display: 'flex',
-		overflow: 'auto',
-		flexDirection: 'column',
-	},
-	fixedHeight: {
-		height: 240,
-	},
-	colorWhite: {
-		color: '#ffffff',
-	},
-}));
-
-export default function Dashboard() {
+const ProfilePage = () => {
 	const classes = useStyles();
-	const [open, setOpen] = React.useState(true);
+	const history = useHistory();
 
-	const handleDrawerClose = () => {
-		setOpen(!open);
-	};
-
+	const redirectToProfileUpdatepage = (_) => history.push('/update-profile');
 	return (
-		<div className={classes.root}>
-			<Drawer
-				variant="permanent"
-				classes={{
-					paper: clsx(
-						classes.drawerPaper,
-						!open && classes.drawerPaperClose
-					),
-				}}
-				open={open}
-			>
-				<div className={classes.toolbarIcon}>
-					<IconButton onClick={handleDrawerClose}>
-						{open ? (
-							<ChevronLeftIcon className={classes.colorWhite} />
-						) : (
-							<ChevronRightIcon className={classes.colorWhite} />
-						)}
-					</IconButton>
-				</div>
-				<Divider />
-			</Drawer>
-			<main>
-				<Container maxWidth="lg">
-					<h1>Not ready</h1>
-				</Container>
-			</main>
-		</div>
+		<Box>
+			<AppBar />
+			<Box mt="5rem" display="flex" width="100%" justifyContent="center">
+				<Box className={classes.wrapper}>
+					<Grid container spacing={3}>
+						<Grid item xs={12} md={4}>
+							<JustifyCenter>
+								<Avatar
+									alt="User"
+									src={require('../../assets/dummy_user.png')}
+									className={classes.avatar}
+								/>
+							</JustifyCenter>
+						</Grid>
+						<Grid item xs={12} md={7}>
+							<Flex alignItems="center">
+								<Typography
+									className={[classes.title, classes.cBlack]}
+								>
+									Prateek Gandhi
+								</Typography>
+								<Button
+									variant="contained"
+									className={classes.button}
+									size="small"
+									onClick={redirectToProfileUpdatepage}
+								>
+									Edit Profile
+								</Button>
+							</Flex>
+							<JustifyCenter mt="1rem" mb="1rem">
+								<Grid container>
+									<Grid item xs={12} md={4}>
+										<Flex>
+											<Box mr="0.3rem">
+												<b className={classes.cBlack}>
+													5
+												</b>
+											</Box>
+											<Typography>Properties</Typography>
+										</Flex>
+									</Grid>
+									<Grid item xs={12} md={4}>
+										<Flex>
+											<Box mr="0.3rem">
+												<b className={classes.cBlack}>
+													15
+												</b>
+											</Box>
+											<Typography>Queries</Typography>
+										</Flex>
+									</Grid>
+									<Grid item xs={12} md={4}>
+										<Flex>
+											<Box mr="0.3rem">
+												<b className={classes.cBlack}>
+													15
+												</b>
+											</Box>
+											<Typography>
+												Queries Received
+											</Typography>
+										</Flex>
+									</Grid>
+								</Grid>
+							</JustifyCenter>
+							<Box mt="0.3rem" mb="0.3rem">
+								<AlignCenter>
+									<Box mr="0.5rem">
+										<FontAwesomeIcon
+											icon={faEnvelopeOpen}
+											className={[
+												classes.cGreen,
+												classes.icon,
+											].join(' ')}
+										/>
+									</Box>
+									<Typography>
+										rakeshchandrra@gmail.com
+									</Typography>
+								</AlignCenter>
+							</Box>
+							<Box mt="0.3rem" mb="0.3rem">
+								<AlignCenter>
+									<Box mr="0.5rem">
+										<FontAwesomeIcon
+											icon={faCheck}
+											className={[
+												classes.cGreen,
+												classes.icon,
+											].join(' ')}
+										/>
+									</Box>
+									<Typography>
+										9873345956 (private)
+									</Typography>
+								</AlignCenter>
+							</Box>
+							<Box mt="0.3rem" mb="0.3rem">
+								<AlignCenter>
+									<Box mr="0.5rem">
+										<FontAwesomeIcon
+											icon={faCity}
+											className={[
+												classes.cGreen,
+												classes.icon,
+											].join(' ')}
+										/>
+									</Box>
+									<Typography>Bhubaneswar</Typography>
+								</AlignCenter>
+							</Box>
+
+							<Box mt="0.3rem" mb="0.3rem">
+								<AlignCenter>
+									<Box mr="0.5rem">
+										<FontAwesomeIcon
+											icon={faCalendarAlt}
+											className={[
+												classes.cGreen,
+												classes.icon,
+											].join(' ')}
+										/>
+									</Box>
+									<Typography>2nd Nov 2020</Typography>
+								</AlignCenter>
+							</Box>
+						</Grid>
+					</Grid>
+
+					<Box mt="2rem">
+						<Tab />
+					</Box>
+				</Box>
+			</Box>
+			<Footer />
+		</Box>
 	);
-}
+};
+
+export default ProfilePage;

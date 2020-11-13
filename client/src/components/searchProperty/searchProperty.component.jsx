@@ -2,6 +2,7 @@ import { Box, Chip, Divider, Paper } from '@material-ui/core';
 
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import Checkbox from '@material-ui/core/Checkbox';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import Menu from '../city/city.component';
@@ -12,7 +13,9 @@ import SearchButton from '../searchButton/searchButton.component';
 import SearchLocation from '../location/location.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { faRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import { makeStyles } from '@material-ui/core/styles';
+import queryString from 'query-string';
 import { searchLocations } from '../../redux/city/city.actions';
 import { selectCurrentTab } from '../../redux/actionTab/actionTab.selectors';
 import { selectSearchLocationLoading } from '../../redux/city/city.selectors';
@@ -37,6 +40,7 @@ const SearchProperty = ({ currentTab }) => {
 	});
 	const [locations, setLocations] = React.useState([]);
 	const [budgetList, setBudgetList] = React.useState([]);
+	const [typesList, setTypesList] = React.useState([]);
 	const [anchorElProperty, setAnchorElProperty] = React.useState(null);
 	const [types, setTypes] = React.useState({
 		flat: false,
@@ -78,7 +82,7 @@ const SearchProperty = ({ currentTab }) => {
 		setTypes((prevState) => ({ ...prevState, [name]: checked }));
 	};
 
-	const onSearch = (_) => {
+	const renderTypes = () => {
 		const type = Object.keys(types).filter(function (c) {
 			if (types[c]) {
 				return true;
@@ -86,6 +90,34 @@ const SearchProperty = ({ currentTab }) => {
 				return false;
 			}
 		});
+		console.log(type);
+		return (
+			<Box>
+				<Box>
+					{type.length > 0 && (
+						<b className={classes.filterHeading}>Types</b>
+					)}
+				</Box>
+				{type.map((c, i) => (
+					<Chip
+						key={i}
+						icon={<LocationCityIcon />}
+						label={c}
+						variant="outlined"
+						className={classes.chip}
+					/>
+				))}
+			</Box>
+		);
+	};
+	const type = Object.keys(types).filter(function (c) {
+		if (types[c]) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+	const onSearch = (_) => {
 		const data = {
 			city: city.id,
 			cityName: city.name,
@@ -99,6 +131,9 @@ const SearchProperty = ({ currentTab }) => {
 					: budget.value * 100000;
 			data.budget = budgetValue;
 		}
+		if (budgetList.length > 0) {
+			data.budgetList = budgetList.map((c) => c.val);
+		}
 		console.log(data);
 		let link = `/search-results?f=${currentTab}&c=${
 			data.city
@@ -111,6 +146,18 @@ const SearchProperty = ({ currentTab }) => {
 		}
 		if (data.type.length > 0) {
 			link += `&t=${data.type.join(',')}`;
+		}
+		if (data.budgetList && data.budgetList.length > 0) {
+			const arr = [];
+
+			data.budgetList.forEach((c) => {
+				arr.push([c.min, c.max]);
+			});
+
+			link += `&${queryString.stringify(
+				{ bl: arr },
+				{ arrayFormat: 'comma' }
+			)}`;
 		}
 		console.log(link);
 		history.push(link);
@@ -168,7 +215,7 @@ const SearchProperty = ({ currentTab }) => {
 					Lorem ipsum dolor sit amet consectetur.
 				</h1>
 				<PropertyTab />
-				{(locations.length || budgetList.length) && (
+				{(locations.length || budgetList.length || type.length) && (
 					<Box mt="2rem">
 						<Paper
 							className={classes.selectedCityWrapper}
@@ -202,17 +249,17 @@ const SearchProperty = ({ currentTab }) => {
 								)}
 							</Box>
 							{budgetList.map((c, i) => (
-								<Box width="100%">
-									<Chip
-										key={i}
-										icon={<LocationCityIcon />}
-										label={c.name}
-										variant="outlined"
-										className={classes.chip}
-										onDelete={onDelete(c)}
-									/>
-								</Box>
+								<Chip
+									key={i}
+									icon={
+										<FontAwesomeIcon icon={faRupeeSign} />
+									}
+									label={c.name}
+									variant="outlined"
+									className={classes.chip}
+								/>
 							))}
+							{renderTypes()}
 						</Paper>
 					</Box>
 				)}
@@ -291,6 +338,8 @@ const SearchProperty = ({ currentTab }) => {
 									close={typeClosed}
 									types={types}
 									handleTypes={handleTypes}
+									typesList={typesList}
+									setTypesList={setTypesList}
 								/>
 							</Paper>
 						</Popper>
@@ -348,9 +397,9 @@ const BudgetItems = ({ currentTab, close, budgetList, setBudgetList }) => {
 	);
 
 	const [otherItems, setOtherItems] = React.useState(
-		Array.from({ length: 20 }, (_, i) => i + 2).map((c) => ({
-			name: `${(c - 2) * 10}-${c * 5}L`,
-			val: { min: (c - 2) * 10 * 100000, max: c * 5 * 100000 },
+		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
+			name: `${(c - 1) * 5}-${c * 5}L`,
+			val: { min: (c - 1) * 5 * 100000, max: c * 5 * 100000 },
 			checked: false,
 		}))
 	);
@@ -358,11 +407,6 @@ const BudgetItems = ({ currentTab, close, budgetList, setBudgetList }) => {
 	const handleSelectAll = (e) => {
 		const { checked } = e.target;
 		setSelectAll(checked);
-		if (checked) {
-			setBudgetList([{ name: 'All' }]);
-		} else {
-			setBudgetList([]);
-		}
 
 		if (currentTab === 'rent') {
 			setRentItems((prevState) =>
@@ -371,6 +415,11 @@ const BudgetItems = ({ currentTab, close, budgetList, setBudgetList }) => {
 					return c;
 				})
 			);
+			if (checked) {
+				setBudgetList(rentItems);
+			} else {
+				setBudgetList([]);
+			}
 		} else {
 			setOtherItems((prevState) =>
 				prevState.map((c) => {
@@ -378,6 +427,11 @@ const BudgetItems = ({ currentTab, close, budgetList, setBudgetList }) => {
 					return c;
 				})
 			);
+			if (checked) {
+				setBudgetList(otherItems);
+			} else {
+				setBudgetList([]);
+			}
 		}
 	};
 
@@ -395,10 +449,18 @@ const BudgetItems = ({ currentTab, close, budgetList, setBudgetList }) => {
 			})
 		);
 		setSelectAll(false);
-	}, [currentTab]);
+		setBudgetList([]);
+	}, [currentTab, setBudgetList]);
 
-	const handleRent = (e) => {
+	const handleRent = (val) => (e) => {
 		const { name, checked } = e.target;
+		if (checked) {
+			setBudgetList((prevState) => [...prevState, val]);
+		} else {
+			setBudgetList((prevState) =>
+				prevState.filter((c) => c.name !== val.name)
+			);
+		}
 		setRentItems((prevState) =>
 			prevState.map((c) => {
 				if (name === c.name) {
@@ -409,8 +471,15 @@ const BudgetItems = ({ currentTab, close, budgetList, setBudgetList }) => {
 		);
 	};
 
-	const handleOtherItems = (e) => {
+	const handleOtherItems = (val) => (e) => {
 		const { name, checked } = e.target;
+		if (checked) {
+			setBudgetList((prevState) => [...prevState, val]);
+		} else {
+			setBudgetList((prevState) =>
+				prevState.filter((c) => c.name !== val.name)
+			);
+		}
 		setOtherItems((prevState) =>
 			prevState.map((c) => {
 				if (name === c.name) {
@@ -450,9 +519,9 @@ const BudgetItems = ({ currentTab, close, budgetList, setBudgetList }) => {
 				</div>
 				<Divider />
 				{currentTab === 'rent'
-					? rentItems.map((c) => (
+					? rentItems.map((c, i) => (
 							<div
-								key={c}
+								key={i}
 								className={classes.priceWrapper}
 								// onClick={click(c, 'L')}
 							>
@@ -461,16 +530,16 @@ const BudgetItems = ({ currentTab, close, budgetList, setBudgetList }) => {
 										<Checkbox
 											name={c.name}
 											checked={c.checked}
-											onChange={handleRent}
+											onChange={handleRent(c)}
 										/>
 									}
 									label={c.name}
 								/>
 							</div>
 					  ))
-					: otherItems.map((c) => (
+					: otherItems.map((c, i) => (
 							<div
-								key={c}
+								key={i}
 								className={classes.priceWrapper}
 								// onClick={click(c, 'L')}
 							>
@@ -479,7 +548,7 @@ const BudgetItems = ({ currentTab, close, budgetList, setBudgetList }) => {
 										<Checkbox
 											name={c.name}
 											checked={c.checked}
-											onChange={handleOtherItems}
+											onChange={handleOtherItems(c)}
 										/>
 									}
 									label={c.name}

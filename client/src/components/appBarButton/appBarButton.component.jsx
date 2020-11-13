@@ -14,9 +14,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const AppBarButton = ({ text }) => {
+const AppBarButton = ({ text, ...otherProps }) => {
 	const classes = useStyles();
-	return <button className={classes.button}>{text}</button>;
+	return (
+		<button className={classes.button} {...otherProps}>
+			{text}
+		</button>
+	);
 };
 
 export default AppBarButton;

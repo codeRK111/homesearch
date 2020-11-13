@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import RentApartmentHighlights from './rentApartmenrtDetails';
 import ResaleLand from './resaleLandDetails.component';
 import ResaleVillHighlights from './resaleApartmenrtDetails';
 
@@ -15,10 +16,22 @@ const HighlightsWrapper = ({ property }) => {
 				break;
 		}
 	};
+
+	const renderRentHighlights = (property) => {
+		switch (property.type) {
+			case 'flat':
+				return <RentApartmentHighlights property={property} />;
+
+			default:
+				break;
+		}
+	};
 	const renderHighlights = (property) => {
 		switch (property.for) {
 			case 'sale':
 				return renderSaleHighlights(property);
+			case 'rent':
+				return renderRentHighlights(property);
 
 			default:
 				break;
