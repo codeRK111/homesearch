@@ -13,4 +13,16 @@ export const selectGetPropertyDetailsLoading = createSelector(
 	[selectProperty],
 	(c) => c.getPropertyDetailsLoading
 );
+export const selectGetPropertyResourcesLoading = createSelector(
+	[selectProperty],
+	(c) => c.getPropertyResourcesLoading
+);
+export const selectAmenities = createSelector(
+	[selectProperty],
+	(c) => c.amenities
+);
+export const selectFurnishes = createSelector(
+	[selectProperty],
+	(c) => c.furnishes
+);
 // Select Errors

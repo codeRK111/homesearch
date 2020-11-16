@@ -42,20 +42,23 @@ const initialValues = {
 	city: '',
 	location: '',
 	carParking: 'open',
+	roomType: 'private',
+	fooding: [],
+	foodSchedule: [],
 };
 
 const RentApartment = () => {
-	const [otherDetails] = React.useState({
-		furnishes: [],
-		amenities: [],
-		legalClearances: [],
-	});
 	const classes = useStyles();
 	const [images, setImages] = React.useState({
 		image1: null,
 		image2: null,
 		image3: null,
 		image4: null,
+	});
+	const [otherDetails] = React.useState({
+		furnishes: [],
+		amenities: [],
+		legalClearances: [],
 	});
 	const handleImage = (e) => {
 		const { name, files } = e.target;
@@ -84,31 +87,51 @@ const RentApartment = () => {
 									formLabel="Location *"
 								/>
 							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="numberOfBedRooms"
-									formLabel="Bedrooms *"
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="numberOfBalconies"
-									formLabel="Balconies *"
-								/>
-							</Grid>
 
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="superBuiltupArea"
-									formLabel="Super builtup Area (Sq. ft) *"
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="carpetArea"
-									formLabel="Carpet Area (Sq. ft) *"
-								/>
-							</Grid>
+							{/* <Grid item xs={12} md={6}>
+								<Box className={classes.formLabel}>
+									Available for{' '}
+								</Box>
+								<Grid container spacing={0}>
+									<Grid item xs={6}>
+										<CheckBox
+											name="availableFor"
+											value="family"
+											formLabel="Family"
+										/>
+									</Grid>
+
+									<Grid item xs={6}>
+										<CheckBox
+											name="availableFor"
+											value="Bachelors (Men)"
+											formLabel="Bachelors (Men)"
+										/>
+									</Grid>
+									<Grid item xs={6}>
+										<CheckBox
+											name="availableFor"
+											value="Bachelors (Women)"
+											formLabel="Bachelors (Women)"
+										/>
+									</Grid>
+									<Grid item xs={6}>
+										<CheckBox
+											name="availableFor"
+											value="Job holder (Men)"
+											formLabel="Job holder (Men)"
+										/>
+									</Grid>
+									<Grid item xs={6}>
+										<CheckBox
+											name="availableFor"
+											value="Job holder (Women)"
+											formLabel="Job holder (Women)"
+										/>
+									</Grid>
+								</Grid>
+							</Grid> */}
+
 							<Grid item xs={12} md={6}>
 								<Select
 									name="availability"
@@ -140,42 +163,7 @@ const RentApartment = () => {
 									/>
 								</Grid>
 							)}
-							<Grid item xs={12} md={6}>
-								<Select
-									name="carParking"
-									formLabel="Car Parking *"
-									options={[
-										{
-											value: 'open',
-											label: 'Open',
-										},
-										{
-											value: 'covered',
-											label: 'Covered',
-										},
-									]}
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<Select
-									name="furnished"
-									formLabel="Furnishing status *"
-									options={[
-										{
-											value: 'unfurnished',
-											label: 'Unfurnished',
-										},
-										{
-											value: 'furnished',
-											label: 'Furnished',
-										},
-										{
-											value: 'semifurnished',
-											label: 'Semifurnished',
-										},
-									]}
-								/>
-							</Grid>
+
 							<Grid item xs={12} md={6}>
 								<TextField
 									name="toiletIndian"
@@ -205,18 +193,7 @@ const RentApartment = () => {
 									]}
 								/>
 							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="noOfFloors"
-									formLabel="Total number of floors *"
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="floor"
-									formLabel="Property on floor *"
-								/>
-							</Grid>
+
 							<Grid item xs={12} md={12}>
 								<TextField
 									name="noticePeriod"
@@ -284,7 +261,7 @@ const RentApartment = () => {
 									formLabel="Distance from bus stop(KM) *"
 								/>
 							</Grid>
-							<Grid item xs={12} md={12}>
+							<Grid item xs={12} md={6}>
 								<TextField
 									name="distanceHospital"
 									formLabel="Distance from hospital(KM) *"
@@ -334,6 +311,65 @@ const RentApartment = () => {
 											name="availableFor"
 											value="Job holder (Women)"
 											formLabel="Job holder (Women)"
+										/>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={12} md={12}>
+								<Box mt="1rem" mb="0.5rem">
+									<b>Fooding</b>
+								</Box>
+								<Grid container spacing={0}>
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="fooding"
+											value="family"
+											formLabel="Veg"
+										/>
+									</Grid>
+
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="fooding"
+											value="Bachelors (Men)"
+											formLabel="Non Veg"
+										/>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={12} md={12}>
+								<Box mt="1rem" mb="0.5rem">
+									<b>Food Schedule</b>
+								</Box>
+								<Grid container spacing={0}>
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="foodSchedule"
+											value="bedtea"
+											formLabel="Bed tea"
+										/>
+									</Grid>
+
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="foodSchedule"
+											value="breakfast"
+											formLabel="Breakfast"
+										/>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="foodSchedule"
+											value="lunch"
+											formLabel="Lunch"
+										/>
+									</Grid>
+
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="foodSchedule"
+											value="dinner"
+											formLabel="Dinner"
 										/>
 									</Grid>
 								</Grid>

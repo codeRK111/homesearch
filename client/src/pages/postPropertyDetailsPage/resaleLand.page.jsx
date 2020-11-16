@@ -1,11 +1,7 @@
 import { Box, Button, Grid } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 
-import CheckBox from '../../components/formik/checkbox.component';
-import DatePicker from '../../components/formik/datePicker.component';
 import DividerHeading from '../../components/DividerHeadinng/dividerHeading.component';
-import Furnishes from '../../components/furnishes/furnishes.component';
-import LegalClearance from '../../components/legal/legal.component';
 import React from 'react';
 import Select from '../../components/formik/select.component';
 import TextField from '../../components/formik/textField.component';
@@ -13,43 +9,33 @@ import useStyles from './postPropertyDetails.styles';
 
 const initialValues = {
 	title: '',
-	availableFor: [],
-	numberOfBedRooms: 1,
-	numberOfBalconies: 1,
-	noOfFloors: 1,
-	floor: 1,
-	typeOfToilets: '',
-	toiletTypes: '',
-	toiletIndian: 1,
-	toiletWestern: 1,
-	superBuiltupArea: '',
-	carpetArea: '',
-	rent: '',
-	securityDeposit: '',
-	noticePeriod: '',
-	furnished: 'furnished',
-	furnishes: [],
-	externalAmenities: [],
+	description: '',
+	length: '',
+	width: '',
+	plotFrontage: '',
+	plotArea: '',
+	widthOfRoad: '',
+	facing: 'east', //dropdown,
+	constructionDone: false, //drop,
+	boundaryWallMade: false, //drop
+	gatedCommunity: false, //drop,
+	landUsingZoning: 'yellow', //drop
+	govermentValuation: '',
+	salePrice: '',
+	pricePerSqFt: '',
+	ownerNumber: '',
+	verified: true,
+	transactionType: 'newbooking',
 	distanceSchool: '',
 	distanceRailwayStation: '',
 	distanceAirport: '',
 	distanceBusStop: '',
 	distanceHospital: '',
-	availability: '',
-	availableDate: new Date(),
-	restrictions: '',
-	description: '',
 	city: '',
 	location: '',
-	carParking: 'open',
 };
 
 const RentApartment = () => {
-	const [otherDetails] = React.useState({
-		furnishes: [],
-		amenities: [],
-		legalClearances: [],
-	});
 	const classes = useStyles();
 	const [images, setImages] = React.useState({
 		image1: null,
@@ -86,155 +72,122 @@ const RentApartment = () => {
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<TextField
-									name="numberOfBedRooms"
-									formLabel="Bedrooms *"
+									name="plotArea"
+									formLabel="Plot area(Sq. ft) *"
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<TextField
-									name="numberOfBalconies"
-									formLabel="Balconies *"
-								/>
-							</Grid>
-
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="superBuiltupArea"
-									formLabel="Super builtup Area (Sq. ft) *"
+									name="plotFrontage"
+									formLabel="Plot frontage (Sq. ft) *"
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<TextField
-									name="carpetArea"
-									formLabel="Carpet Area (Sq. ft) *"
+									name="length"
+									formLabel="Length (ft) *"
+								/>
+							</Grid>
+							<Grid item xs={12} md={6}>
+								<TextField
+									name="width"
+									formLabel="Width (ft) *"
+								/>
+							</Grid>
+							<Grid item xs={12} md={6}>
+								<TextField
+									name="widthOfRoad"
+									formLabel="Width of road (ft) *"
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<Select
-									name="availability"
-									formLabel="Availability *"
+									name="constructionDone"
+									formLabel="Is construction done *"
 									options={[
 										{
-											value: 'immediately',
-											label: 'Ready to move',
+											value: true,
+											label: 'Yes',
 										},
 										{
-											value: 'specificdate',
-											label: 'Specific date',
-										},
-									]}
-								/>
-							</Grid>
-							{values.availability === 'specificdate' && (
-								<Grid item xs={12} md={6}>
-									<DatePicker
-										formLabel="Select date"
-										name="availableDate"
-										value={values.availableDate}
-										onChange={(value) =>
-											setFieldValue(
-												'availableDate',
-												value
-											)
-										}
-									/>
-								</Grid>
-							)}
-							<Grid item xs={12} md={6}>
-								<Select
-									name="carParking"
-									formLabel="Car Parking *"
-									options={[
-										{
-											value: 'open',
-											label: 'Open',
-										},
-										{
-											value: 'covered',
-											label: 'Covered',
+											value: false,
+											label: 'No',
 										},
 									]}
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<Select
-									name="furnished"
-									formLabel="Furnishing status *"
+									name="boundaryWallMade"
+									formLabel="Is boundary wall made *"
 									options={[
 										{
-											value: 'unfurnished',
-											label: 'Unfurnished',
+											value: true,
+											label: 'Yes',
 										},
 										{
-											value: 'furnished',
-											label: 'Furnished',
-										},
-										{
-											value: 'semifurnished',
-											label: 'Semifurnished',
+											value: false,
+											label: 'No',
 										},
 									]}
 								/>
 							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="toiletIndian"
-									formLabel="Number of indian toilet *"
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="toiletWestern"
-									formLabel="Number of western toilet *"
-								/>
-							</Grid>
-
 							<Grid item xs={12} md={6}>
 								<Select
-									name="propertyOwnerShip"
-									formLabel="Ownership *"
+									name="gatedCommunity"
+									formLabel="Is gated community *"
 									options={[
 										{
-											value: 'freehold',
-											label: 'Freehold',
+											value: true,
+											label: 'Yes',
 										},
 										{
-											value: 'leashed',
-											label: 'Leashed',
+											value: false,
+											label: 'No',
 										},
 									]}
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<TextField
-									name="noOfFloors"
-									formLabel="Total number of floors *"
+								<Select
+									name="landUsingZoning"
+									formLabel="Land using zoning *"
+									options={[
+										{
+											value: 'yellow',
+											label: 'Yellow',
+										},
+									]}
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<TextField
-									name="floor"
-									formLabel="Property on floor *"
-								/>
-							</Grid>
-							<Grid item xs={12} md={12}>
-								<TextField
-									name="noticePeriod"
-									formLabel="Notice Period (days) *"
+								<Select
+									name="facing"
+									formLabel="Facing *"
+									options={[
+										{
+											value: 'east',
+											label: 'East',
+										},
+										{
+											value: 'wast',
+											label: 'Wast',
+										},
+										{
+											value: 'north',
+											label: 'North',
+										},
+										{
+											value: 'south',
+											label: 'South',
+										},
+									]}
 								/>
 							</Grid>
 							<Grid item xs={12} md={12}>
 								<TextField
 									name="description"
 									formLabel="Description"
-									multiline={true}
-									rows={5}
-								/>
-							</Grid>
-							<Grid item xs={12} md={12}>
-								<TextField
-									name="restrictions"
-									formLabel="Restrictions"
 									multiline={true}
 									rows={5}
 								/>
@@ -246,15 +199,17 @@ const RentApartment = () => {
 								</DividerHeading>
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<TextField name="rent" formLabel="Rent *" />
+								<TextField
+									name="salePrice"
+									formLabel="Sale Price *"
+								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<TextField
-									name="securityDeposit"
-									formLabel="Security Deposit *"
+									name="govermentValuation"
+									formLabel="Goverment valuation *"
 								/>
 							</Grid>
-
 							<Grid item xs={12} md={12}>
 								<DividerHeading>
 									<h3>Nearby places</h3>
@@ -284,70 +239,11 @@ const RentApartment = () => {
 									formLabel="Distance from bus stop(KM) *"
 								/>
 							</Grid>
-							<Grid item xs={12} md={12}>
+							<Grid item xs={12} md={6}>
 								<TextField
 									name="distanceHospital"
 									formLabel="Distance from hospital(KM) *"
 								/>
-							</Grid>
-							<Grid item xs={12} md={12}>
-								<DividerHeading>
-									<h3>Other details</h3>
-								</DividerHeading>
-							</Grid>
-							<Grid item xs={12} md={12}>
-								<Box mt="0.5rem" mb="0.5rem">
-									<b>Available for</b>
-								</Box>
-								<Grid container spacing={0}>
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="availableFor"
-											value="family"
-											formLabel="Family"
-										/>
-									</Grid>
-
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="availableFor"
-											value="Bachelors (Men)"
-											formLabel="Bachelors (Men)"
-										/>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="availableFor"
-											value="Bachelors (Women)"
-											formLabel="Bachelors (Women)"
-										/>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="availableFor"
-											value="Job holder (Men)"
-											formLabel="Job holder (Men)"
-										/>
-									</Grid>
-									<Grid item xs={6}>
-										<CheckBox
-											name="availableFor"
-											value="Job holder (Women)"
-											formLabel="Job holder (Women)"
-										/>
-									</Grid>
-								</Grid>
-							</Grid>
-							<Grid item xs={12} md={12}>
-								<Furnishes
-									initialValues={otherDetails}
-									showFurnishes={
-										values.furnished !== 'unfurnished'
-									}
-								/>
-							</Grid>
-							<Grid item xs={12} md={12}>
-								<LegalClearance initialValues={otherDetails} />
 							</Grid>
 							<Grid item xs={12} md={12}>
 								<DividerHeading>

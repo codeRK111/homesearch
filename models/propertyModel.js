@@ -273,6 +273,14 @@ const propertySchema = new Schema(
 					'furnished must be between <unfurnished> | <furnished> | <semifurnished> ',
 			},
 		},
+		roomType: {
+			type: String,
+			enum: {
+				values: ['private', 'shared', ],
+				message:
+					'roomType must be between <private> | <shared> ',
+			},
+		},
 		furnishes: [
 			{
 				type: mongoose.Schema.ObjectId,

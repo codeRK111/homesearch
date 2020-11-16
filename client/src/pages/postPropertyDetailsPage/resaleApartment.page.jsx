@@ -1,7 +1,6 @@
 import { Box, Button, Grid } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 
-import CheckBox from '../../components/formik/checkbox.component';
 import DatePicker from '../../components/formik/datePicker.component';
 import DividerHeading from '../../components/DividerHeadinng/dividerHeading.component';
 import Furnishes from '../../components/furnishes/furnishes.component';
@@ -12,40 +11,32 @@ import TextField from '../../components/formik/textField.component';
 import useStyles from './postPropertyDetails.styles';
 
 const initialValues = {
-	title: '',
-	availableFor: [],
 	numberOfBedRooms: 1,
-	numberOfBalconies: 1,
-	noOfFloors: 1,
-	floor: 1,
-	typeOfToilets: '',
-	toiletTypes: '',
-	toiletIndian: 1,
-	toiletWestern: 1,
 	superBuiltupArea: '',
 	carpetArea: '',
-	rent: '',
-	securityDeposit: '',
-	noticePeriod: '',
-	furnished: 'furnished',
-	furnishes: [],
-	externalAmenities: [],
-	distanceSchool: '',
-	distanceRailwayStation: '',
-	distanceAirport: '',
-	distanceBusStop: '',
-	distanceHospital: '',
-	availability: '',
-	availableDate: new Date(),
-	restrictions: '',
+	availability: 'immediately',
+	carParking: 'open',
+	furnished: 'unfurnished',
+	toiletIndian: 1,
+	toiletWestern: 1,
+	propertyOwnerShip: 'freehold',
+	noOfFloors: 1,
+	floor: 1,
+	distanceSchool: 1,
+	distanceRailwayStation: 1,
+	distanceAirport: 1,
+	distanceBusStop: 1,
+	distanceHospital: 1,
+	salePrice: '',
+	salePriceOver: 'superBuildUpArea',
+	availableDate: Date.now(),
 	description: '',
 	city: '',
 	location: '',
-	carParking: 'open',
 };
 
 const RentApartment = () => {
-	const [otherDetails] = React.useState({
+	const [furnishes] = React.useState({
 		furnishes: [],
 		amenities: [],
 		legalClearances: [],
@@ -90,13 +81,6 @@ const RentApartment = () => {
 									formLabel="Bedrooms *"
 								/>
 							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="numberOfBalconies"
-									formLabel="Balconies *"
-								/>
-							</Grid>
-
 							<Grid item xs={12} md={6}>
 								<TextField
 									name="superBuiltupArea"
@@ -219,22 +203,8 @@ const RentApartment = () => {
 							</Grid>
 							<Grid item xs={12} md={12}>
 								<TextField
-									name="noticePeriod"
-									formLabel="Notice Period (days) *"
-								/>
-							</Grid>
-							<Grid item xs={12} md={12}>
-								<TextField
 									name="description"
 									formLabel="Description"
-									multiline={true}
-									rows={5}
-								/>
-							</Grid>
-							<Grid item xs={12} md={12}>
-								<TextField
-									name="restrictions"
-									formLabel="Restrictions"
 									multiline={true}
 									rows={5}
 								/>
@@ -246,15 +216,27 @@ const RentApartment = () => {
 								</DividerHeading>
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<TextField name="rent" formLabel="Rent *" />
-							</Grid>
-							<Grid item xs={12} md={6}>
 								<TextField
-									name="securityDeposit"
-									formLabel="Security Deposit *"
+									name="salePrice"
+									formLabel="Sale Price *"
 								/>
 							</Grid>
-
+							<Grid item xs={12} md={6}>
+								<Select
+									name="salePriceOver"
+									formLabel="Price over *"
+									options={[
+										{
+											value: 'superBuildUpArea',
+											label: 'Super builtup area',
+										},
+										{
+											value: 'carpetArea',
+											label: 'Carpet Area',
+										},
+									]}
+								/>
+							</Grid>
 							<Grid item xs={12} md={12}>
 								<DividerHeading>
 									<h3>Nearby places</h3>
@@ -284,7 +266,7 @@ const RentApartment = () => {
 									formLabel="Distance from bus stop(KM) *"
 								/>
 							</Grid>
-							<Grid item xs={12} md={12}>
+							<Grid item xs={12} md={6}>
 								<TextField
 									name="distanceHospital"
 									formLabel="Distance from hospital(KM) *"
@@ -296,58 +278,15 @@ const RentApartment = () => {
 								</DividerHeading>
 							</Grid>
 							<Grid item xs={12} md={12}>
-								<Box mt="0.5rem" mb="0.5rem">
-									<b>Available for</b>
-								</Box>
-								<Grid container spacing={0}>
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="availableFor"
-											value="family"
-											formLabel="Family"
-										/>
-									</Grid>
-
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="availableFor"
-											value="Bachelors (Men)"
-											formLabel="Bachelors (Men)"
-										/>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="availableFor"
-											value="Bachelors (Women)"
-											formLabel="Bachelors (Women)"
-										/>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="availableFor"
-											value="Job holder (Men)"
-											formLabel="Job holder (Men)"
-										/>
-									</Grid>
-									<Grid item xs={6}>
-										<CheckBox
-											name="availableFor"
-											value="Job holder (Women)"
-											formLabel="Job holder (Women)"
-										/>
-									</Grid>
-								</Grid>
-							</Grid>
-							<Grid item xs={12} md={12}>
 								<Furnishes
-									initialValues={otherDetails}
+									initialValues={furnishes}
 									showFurnishes={
 										values.furnished !== 'unfurnished'
 									}
 								/>
 							</Grid>
 							<Grid item xs={12} md={12}>
-								<LegalClearance initialValues={otherDetails} />
+								<LegalClearance initialValues={furnishes} />
 							</Grid>
 							<Grid item xs={12} md={12}>
 								<DividerHeading>

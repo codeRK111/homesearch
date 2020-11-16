@@ -1,7 +1,9 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import {
 	getPropertyDetailsLoading,
+	getPropertyResourcesLoading,
 	searchPropertiesLoading,
+	setPropertyResources,
 } from './property.actions';
 
 import axios from 'axios';
@@ -53,6 +55,27 @@ function* getPropertyDetailsSaga({ payload: { id, callback } }) {
 	}
 }
 
+function* getPropertyResourcesSaga({ payload: { callback } }) {
+	yield put(getPropertyResourcesLoading(true));
+	const url = `/api/v1/properties/resources/get-property-resources`;
+	try {
+		const response = yield axios.get(url);
+		const responseData = response.data;
+		yield put(getPropertyResourcesLoading(false));
+		yield put(setPropertyResources(responseData.data));
+		callback('success', responseData.data);
+	} catch (error) {
+		yield put(getPropertyResourcesLoading(false));
+		yield put(setPropertyResources({ furnishes: [], amenities: [] }));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+
 function* onSearchProperties() {
 	yield takeEvery(types.SEARCH_PROPERTY_START, searchPropertySaga);
 }
@@ -61,6 +84,17 @@ function* onGetPropertyDetails() {
 	yield takeEvery(types.GET_PROPERTY_DETAILS_START, getPropertyDetailsSaga);
 }
 
+function* onGetPropertyResources() {
+	yield takeEvery(
+		types.GET_PROPERTY_RESOURCES_START,
+		getPropertyResourcesSaga
+	);
+}
+
 export function* propertySagas() {
-	yield all([call(onSearchProperties), call(onGetPropertyDetails)]);
+	yield all([
+		call(onSearchProperties),
+		call(onGetPropertyDetails),
+		call(onGetPropertyResources),
+	]);
 }
