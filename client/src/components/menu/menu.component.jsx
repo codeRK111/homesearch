@@ -8,7 +8,9 @@ import Paper from '@material-ui/core/Paper';
 import PersonIcon from '@material-ui/icons/Person';
 import Popper from '@material-ui/core/Popper';
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
+import { signOut } from '../../redux/auth/auth.actions';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function MenuListComposition() {
+function MenuListComposition({ signOut }) {
 	const classes = useStyles();
 	const history = useHistory();
 	const [open, setOpen] = React.useState(false);
@@ -58,10 +60,16 @@ export default function MenuListComposition() {
 		setOpen(false);
 	};
 
+	const logOut = () => {
+		signOut();
+		history.push('/login');
+	};
+
 	function handleListKeyDown(event) {
 		if (event.key === 'Tab') {
 			event.preventDefault();
 			setOpen(false);
+			handleClose();
 		}
 	}
 
@@ -118,10 +126,8 @@ export default function MenuListComposition() {
 										<MenuItem onClick={goToProfilePage}>
 											Profile
 										</MenuItem>
-										<MenuItem onClick={handleClose}>
-											My account
-										</MenuItem>
-										<MenuItem onClick={handleClose}>
+
+										<MenuItem onClick={logOut}>
 											Logout
 										</MenuItem>
 									</MenuList>
@@ -134,3 +140,9 @@ export default function MenuListComposition() {
 		</div>
 	);
 }
+
+const mapDispatchToProps = (dispatch) => ({
+	signOut: () => dispatch(signOut()),
+});
+
+export default connect(null, mapDispatchToProps)(MenuListComposition);

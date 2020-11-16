@@ -1,23 +1,32 @@
+import { Form, Formik } from 'formik';
 import React, { useCallback } from 'react';
-import { Formik, Form } from 'formik';
-import { Button } from '@material-ui/core';
-import { withRouter, useHistory } from 'react-router-dom';
-
-// Custom components
-import FormInput from '../../components/forminput/forminput.component';
-import makeStyles from '../loginform/loginform.styles';
-import ErrorMessage from '../errorMessage/errorMessage.component';
-import BackDrop from '../backdrop/backdrop.component';
-
-// Redux
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { sendOtp, validateOtp } from '../../redux/auth/auth.actions';
 import {
 	selectSendOtpLoading,
-	selectValidateOtpLoading,
 	selectUser,
+	selectValidateOtpLoading,
 } from '../../redux/auth/auth.selectors';
+import { sendOtp, validateOtp } from '../../redux/auth/auth.actions';
+import { useHistory, withRouter } from 'react-router-dom';
+
+import BackDrop from '../backdrop/backdrop.component';
+import { Button } from '@material-ui/core';
+import ErrorMessage from '../errorMessage/errorMessage.component';
+import FormInput from '../../components/forminput/forminput.component';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import makeStyles from '../loginform/loginform.styles';
+
+// Custom components
+
+
+
+
+
+// Redux
+
+
+
+
 
 const ValidateNumber = ({
 	match: {
@@ -52,7 +61,7 @@ const ValidateNumber = ({
 
 	React.useEffect(() => {
 		if (currentUser.numberVerified) {
-			history.push('/login');
+			history.push('/profile');
 		}
 	}, [currentUser.numberVerified, history]);
 	React.useEffect(() => {

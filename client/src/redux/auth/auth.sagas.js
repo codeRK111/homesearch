@@ -1,15 +1,20 @@
-import { takeLatest, put, call, all } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
+import {
+	setProfilePicture,
+	setSignInError,
+	setUser,
+	toggleChangePasswordLoading,
+	toggleChangeUserProfileInfoLoading,
+	toggleChangeUserProfilePictureLoading,
+	toggleSignInLoading,
+	toggleSignUpLoading,
+	toggleUserProfileLoading,
+	toggleValidateOtpLoading,
+	togglesendOtpLoading,
+} from './auth.actions';
+
 import axios from 'axios';
 import { authActionTypes as types } from './auth.types';
-import {
-	toggleSignUpLoading,
-	togglesendOtpLoading,
-	toggleValidateOtpLoading,
-	toggleSignInLoading,
-	toggleUserProfileLoading,
-	setUser,
-	setSignInError,
-} from './auth.actions';
 
 function* signUpSaga({ payload: { user, callback } }) {
 	yield put(toggleSignUpLoading(true));
@@ -95,7 +100,7 @@ function* signInSaga({ payload: { user, callback } }) {
 
 function* fetchProfileSaga({ payload: { token, callback } }) {
 	yield put(toggleUserProfileLoading(true));
-	const url = '/api/v1/users/getMyInfo';
+	const url = '/api/v1/users';
 	try {
 		const response = yield axios({
 			method: 'get',
@@ -113,6 +118,87 @@ function* fetchProfileSaga({ payload: { token, callback } }) {
 		const errorResponse = error.response.data;
 		yield put(toggleUserProfileLoading(false));
 		yield put(setSignInError(errorResponse.message));
+		callback('fail', errorResponse.message);
+	}
+}
+
+function* changeProfilePictureSaga({ payload: { image, callback } }) {
+	const token = localStorage.getItem('JWT_CLIENT');
+	yield put(toggleChangeUserProfilePictureLoading(true));
+	const formData = new FormData();
+	formData.append('image', image);
+	const url = '/api/v1/users/handle-profile-image';
+	try {
+		const response = yield axios({
+			method: 'patch',
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+			data: formData,
+		});
+		const responseData = response.data;
+		yield put(toggleChangeUserProfilePictureLoading(false));
+		yield put(setProfilePicture(responseData.data));
+		callback('success', responseData);
+	} catch (error) {
+		const errorResponse = error.response.data;
+		yield put(toggleChangeUserProfilePictureLoading(false));
+		callback('fail', errorResponse.message);
+	}
+}
+
+function* changeProfileInfoSaga({ payload: { data, callback } }) {
+	const token = localStorage.getItem('JWT_CLIENT');
+	yield put(toggleChangeUserProfileInfoLoading(true));
+
+	const url = '/api/v1/users';
+	try {
+		const response = yield axios({
+			method: 'patch',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+			data: JSON.stringify(data),
+		});
+		const responseData = response.data;
+		yield put(toggleChangeUserProfileInfoLoading(false));
+		yield put(setUser({ token, user: responseData.data.user }));
+		callback('success', responseData);
+	} catch (error) {
+		const errorResponse = error.response.data;
+		yield put(toggleChangeUserProfileInfoLoading(false));
+		callback('fail', errorResponse.message);
+	}
+}
+
+function* changePasswordSaga({ payload: { data, callback } }) {
+	const token = localStorage.getItem('JWT_CLIENT');
+	yield put(toggleChangePasswordLoading(true));
+
+	const url = '/api/v1/users/reset-my-password';
+	try {
+		const response = yield axios({
+			method: 'patch',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+			data: JSON.stringify(data),
+		});
+		const responseData = response.data;
+		yield put(toggleChangePasswordLoading(false));
+		yield put(
+			setUser({ token: responseData.token, user: responseData.data.user })
+		);
+		callback('success', responseData);
+	} catch (error) {
+		const errorResponse = error.response.data;
+		yield put(toggleChangePasswordLoading(false));
 		callback('fail', errorResponse.message);
 	}
 }
@@ -137,6 +223,17 @@ function* onFetchProfile() {
 	yield takeLatest(types.FETCH_USER_PROFILE, fetchProfileSaga);
 }
 
+function* onChangeProfilePicture() {
+	yield takeLatest(types.CHANGE_PROFILE_PICTURE, changeProfilePictureSaga);
+}
+function* onChangeProfileInfo() {
+	yield takeLatest(types.CHANGE_PROFILE_INFO, changeProfileInfoSaga);
+}
+
+function* onChangePassword() {
+	yield takeLatest(types.CHANGE_PASSWORD, changePasswordSaga);
+}
+
 export function* authSagas() {
 	yield all([
 		call(onSignUp),
@@ -144,5 +241,8 @@ export function* authSagas() {
 		call(onvalidateOtp),
 		call(onvSignIn),
 		call(onFetchProfile),
+		call(onChangeProfilePicture),
+		call(onChangeProfileInfo),
+		call(onChangePassword),
 	]);
 }

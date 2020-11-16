@@ -1,22 +1,30 @@
 import { authActionTypes } from './auth.types';
 
+const defaultUser = {
+	email: '',
+	name: '',
+	id: '',
+	number: '',
+	numberVerified: false,
+	city: {
+		name: '',
+		id: '',
+	},
+};
 const initialState = {
 	// Initial Values
 	authenticated: false,
 	token: null,
-	user: {
-		email: '',
-		name: '',
-		id: '',
-		number: '',
-		numberVerified: false,
-	},
+	user: defaultUser,
 	// Loading States
 	signUpLoading: false,
 	sendOtpLoading: false,
 	validateOtpLoading: false,
 	signInLoading: false,
 	userProfileLoading: false,
+	changeProfilePictureLoading: false,
+	changeProfileInfoLoading: false,
+	changePasswordLoading: false,
 	// Errors
 	signInError: null,
 };
@@ -29,8 +37,25 @@ const authReducer = (state = initialState, { type, payload }) => {
 				...state,
 				authenticated: true,
 				token: payload.token,
-				user: payload.user,
+				user: { ...state.user, ...payload.user },
 				signInError: null,
+			};
+		case authActionTypes.SIGN_OUT:
+			return {
+				...state,
+				authenticated: false,
+				token: null,
+				user: defaultUser,
+				signInError: null,
+			};
+		case authActionTypes.SET_PROFILE_PICTURE:
+			return {
+				...state,
+
+				user: {
+					...state.user,
+					photo: payload.name,
+				},
 			};
 		// Toggle loading
 		case authActionTypes.TOGGLE_SIGN_UP_LOADING:
@@ -57,6 +82,21 @@ const authReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				userProfileLoading: payload,
+			};
+		case authActionTypes.TOGGLE_CHANGE_PROFILE_PICTURE_LOADING:
+			return {
+				...state,
+				changeProfilePictureLoading: payload,
+			};
+		case authActionTypes.TOGGLE_CHANGE_PROFILE_INFO_LOADING:
+			return {
+				...state,
+				changeProfileInfoLoading: payload,
+			};
+		case authActionTypes.TOGGLE_CHANGE_PASSWORD_LOADING:
+			return {
+				...state,
+				changePasswordLoading: payload,
 			};
 		// Set errors
 		case authActionTypes.SIGNIN_ERROR:

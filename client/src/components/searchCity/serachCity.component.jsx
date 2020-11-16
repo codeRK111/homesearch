@@ -1,18 +1,24 @@
 /* eslint-disable no-use-before-define */
+
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import ErrorMessage from '../errorMessage/errorMessage.component';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { makeStyles } from '@material-ui/core/styles';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-
-// Custopm components
-import ErrorMessage from '../errorMessage/errorMessage.component';
-
-// Redux
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
 import { searchCities } from '../../redux/city/city.actions';
 import { selectSearchCityLoading } from '../../redux/city/city.selectors';
+
+// Custopm components
+
+
+// Redux
+
+
+
+
 
 const useStyles = makeStyles({
 	option: {
@@ -94,6 +100,7 @@ function SearchCity({ searchCityLoading, searchCities, setCity }) {
 						{...params}
 						label="City*"
 						margin="normal"
+						placeholder="Type 4 letter to search"
 						variant="outlined"
 						onChange={handleCity}
 						value={city}

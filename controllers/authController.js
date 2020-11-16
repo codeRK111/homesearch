@@ -78,7 +78,7 @@ exports.login = catchAsync(async (req, res, next) => {
 	if (!email || !password) {
 		return next(new AppError('Please provide email and password!', 400));
 	}
-	// 2) Check if user exists && password is correct
+	// 2) Check if user exists && password is correct 
 	const user = await User.findOne({ email }).select('+password');
 
 	if (!user || !(await user.correctPassword(password, user.password))) {
@@ -86,7 +86,27 @@ exports.login = catchAsync(async (req, res, next) => {
 	}
 
 	// 3) If everything ok, send token to client
-	createSendToken(getUserEssentials(user), 200, res);
+	createSendToken(user, 200, res);
+});
+
+exports.updateMyPassword = catchAsync(async (req, res, next) => {
+	const { oldPassword, newPassword } = req.body;
+
+	// 1) Check if email and password exist
+	if (!oldPassword || !newPassword) {
+		return next(new AppError('Please provide oldPassword and newPassword!', 400));
+	}
+	// 2) Check if user exists && password is correct 
+	const user = await User.findById(req.user.id).select('+password');
+
+	if (!user || !(await user.correctPassword(oldPassword, user.password))) {
+		return next(new AppError('Incorrect email or password', 401));
+	}
+	user.password = newPassword
+	const newUser = await user.save();
+
+	// 3) If everything ok, send token to client
+	createSendToken(newUser, 200, res);
 });
 
 exports.googleLogIn = catchAsync(async (req, res, next) => {
@@ -133,7 +153,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 	// 2) Verification token
 	const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-	console.log(decoded);
+	console.log(decoded.id);
 	// 3) Check if user still exists
 	const currentUser = await User.findById(decoded.id);
 	if (!currentUser) {
@@ -163,7 +183,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.getUserInfo = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
-		data: { user: getUserEssentials(req.user) },
+		data: { user: req.user },
 	});
 });
 
@@ -245,7 +265,7 @@ exports.validateOtp = catchAsync(async (req, res, next) => {
 	}
 	user.numberVerified = true;
 	await user.save();
-	createSendToken(getUserEssentials(user), 200, res);
+	createSendToken(user, 200, res);
 });
 
 exports.addProfilePicture = catchAsync(async (req, res, next) => {
@@ -340,6 +360,98 @@ exports.updateProfilePicture = catchAsync(async (req, res, next) => {
 			},
 		});
 	}
+});
+
+exports.handleProfileImage = catchAsync(async (req, res, next) => {
+	if (!req.files) {
+		return next(new AppError('No image found', 400));
+	} else {
+		let user = await User.findById(req.user.id);
+		if (!user) {
+			return next(new AppError('User not found', 404));
+		}
+
+		let image = req.files.image;
+
+		//Use the mv() method to place the file in upload directory (i.e. "uploads")
+		let imageName =
+			Math.floor(10000000 + Math.random() * 90000000) + '-' + image.name;
+		await image.mv(
+			path.join(__dirname, '../', 'images', 'profile_images/') + imageName
+		);
+		if (image.photo) {
+			fs.unlinkSync(
+				path.join(__dirname, '../', 'images', 'profile_images/') +
+					user.photo
+			);
+		}
+		
+		const updatedUser =await User.findByIdAndUpdate(req.user.id, {photo : imageName,photoStatus:'uploaded'  }, {
+		new: true,
+		runValidators: true
+	});
+		if (!updatedUser) {
+			fs.unlinkSync(
+				path.join(__dirname, '../', 'images', 'profile_images/') +
+					imageName
+			);
+			return next(new AppError('Unable set image  '), 500);
+		}
+
+		//send response
+		res.send({
+			status: true,
+			message: 'File is uploaded',
+			data: {
+				name: imageName,
+				mimetype: image.mimetype,
+				size: image.size,
+				user: updatedUser,
+			},
+		});
+	}
+});
+
+
+
+exports.updateMe = catchAsync(async (req, res, next) => {
+	console.log(req.body)
+	const user = [
+		'name',
+		'email',
+		'city',
+		'gender',
+		'number',
+		'numberVerified',
+		'role',
+		'status',
+		'mobileStatus',
+		'registerThrough',
+		'registerVia',
+		'paymentStatus',
+		'numberVerified',
+		'password'
+	];
+	const excludeFields = ['serialNumber', 'googleId', 'photo', 'photoStatus','role','otp','createdAt','status','registerThrough','registerVia','paymentStatus','numberVerified','passwordChangedAt'];
+		// EXCLUDE FROM QUERY OBJECT
+		excludeFields.forEach((field) => delete req.body[field]);
+		console.log(req.body)
+	const doc = await User.findByIdAndUpdate(req.user.id, req.body, {
+		new: true,
+		runValidators: true,
+		select: user.join(' '),
+	});
+
+	if (!doc) {
+		return next(new AppError('No document found with that ID', 404));
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			user: doc,
+		},
+	});
 });
 
 // -------------------------------------------Admin------------------------------------------------

@@ -29,6 +29,18 @@ export const selectUserProfileLoading = createSelector(
 	[selectAuth],
 	(c) => c.userProfileLoading
 );
+export const selectChangeUserProfilePictureLoading = createSelector(
+	[selectAuth],
+	(c) => c.changeProfilePictureLoading
+);
+export const selectChangeUserProfileInfoLoading = createSelector(
+	[selectAuth],
+	(c) => c.changeProfileInfoLoading
+);
+export const selectChangePasswordLoading = createSelector(
+	[selectAuth],
+	(c) => c.changePasswordLoading
+);
 // Select Errors
 export const selectSignInError = createSelector(
 	[selectAuth],

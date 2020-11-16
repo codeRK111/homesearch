@@ -1,21 +1,49 @@
 import { Avatar, Box, Button } from '@material-ui/core';
+import { Backdrop, CircularProgress } from '@material-ui/core';
+import {
+	selectChangeUserProfilePictureLoading,
+	selectUser,
+} from '../../redux/auth/auth.selectors';
 
 import React from 'react';
+import { changeProfilePicture } from '../../redux/auth/auth.actions';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import useStyles from './profile.styles';
 
-const ImageUpload = () => {
+const ImageUpload = ({ user, profilePictureLoading, changeProfilePicture }) => {
 	const classes = useStyles();
+	const [photo, setPhoto] = React.useState(null);
+	const handleImage = (e) => {
+		const { files } = e.target;
+		setPhoto(files[0]);
+	};
+	React.useEffect(() => {
+		if (photo) {
+			changeProfilePicture(photo, console.log);
+		}
+	}, [photo, changeProfilePicture]);
 	return (
 		<Box display="flex" flexDirection="column" alignItems="center">
+			<Backdrop className={classes.backdrop} open={profilePictureLoading}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
 			<Avatar
 				alt="User"
-				src={require('../../assets/dummy_user.png')}
+				src={
+					user.photo
+						? `/profile/${user.photo}`
+						: photo
+						? URL.createObjectURL(photo)
+						: require('../../assets/dummy_user.png')
+				}
 				className={classes.avatar}
 			/>
 			<div className={classes.root}>
 				<input
 					accept="image/*"
 					className={classes.input}
+					onChange={handleImage}
 					id="contained-button-file"
 					multiple
 					type="file"
@@ -41,4 +69,14 @@ const ImageUpload = () => {
 	);
 };
 
-export default ImageUpload;
+const mapStateToProps = createStructuredSelector({
+	profilePictureLoading: selectChangeUserProfilePictureLoading,
+	user: selectUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	changeProfilePicture: (image, callback) =>
+		dispatch(changeProfilePicture({ image, callback })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ImageUpload);

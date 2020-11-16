@@ -16,10 +16,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Footer from '../../components/footer/footer.component';
 import React from 'react';
 import Tab from './tab.component';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { parseDate } from '../../utils/render.utils';
+import { selectUser } from '../../redux/auth/auth.selectors';
 import { useHistory } from 'react-router-dom';
 import useStyles from './profile.styles';
 
-const ProfilePage = () => {
+const ProfilePage = ({ user }) => {
 	const classes = useStyles();
 	const history = useHistory();
 
@@ -34,7 +38,11 @@ const ProfilePage = () => {
 							<JustifyCenter>
 								<Avatar
 									alt="User"
-									src={require('../../assets/dummy_user.png')}
+									src={
+										user.photo
+											? `/profile/${user.photo}`
+											: require('../../assets/dummy_user.png')
+									}
 									className={classes.avatar}
 								/>
 							</JustifyCenter>
@@ -44,7 +52,7 @@ const ProfilePage = () => {
 								<Typography
 									className={[classes.title, classes.cBlack]}
 								>
-									Prateek Gandhi
+									{user.name}
 								</Typography>
 								<Button
 									variant="contained"
@@ -102,9 +110,7 @@ const ProfilePage = () => {
 											].join(' ')}
 										/>
 									</Box>
-									<Typography>
-										rakeshchandrra@gmail.com
-									</Typography>
+									<Typography>{user.email}</Typography>
 								</AlignCenter>
 							</Box>
 							<Box mt="0.3rem" mb="0.3rem">
@@ -119,7 +125,14 @@ const ProfilePage = () => {
 										/>
 									</Box>
 									<Typography>
-										9873345956 (private)
+										{user.number ? (
+											<span>
+												{user.number}(
+												{user.mobileStatus})
+											</span>
+										) : (
+											'No mobile number'
+										)}
 									</Typography>
 								</AlignCenter>
 							</Box>
@@ -134,7 +147,9 @@ const ProfilePage = () => {
 											].join(' ')}
 										/>
 									</Box>
-									<Typography>Bhubaneswar</Typography>
+									<Typography>
+										{user.city && user.city.name}
+									</Typography>
 								</AlignCenter>
 							</Box>
 
@@ -149,7 +164,9 @@ const ProfilePage = () => {
 											].join(' ')}
 										/>
 									</Box>
-									<Typography>2nd Nov 2020</Typography>
+									<Typography>
+										{parseDate(user.createdAt)}
+									</Typography>
 								</AlignCenter>
 							</Box>
 						</Grid>
@@ -165,4 +182,8 @@ const ProfilePage = () => {
 	);
 };
 
-export default ProfilePage;
+const mapStateToProps = createStructuredSelector({
+	user: selectUser,
+});
+
+export default connect(mapStateToProps)(ProfilePage);

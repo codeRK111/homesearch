@@ -24,7 +24,7 @@ const CustomizedSnackbars = ({ status, handleClose, message, severity }) => {
 		<div className={classes.root}>
 			<Snackbar
 				open={status}
-				autoHideDuration={6000}
+				autoHideDuration={2000}
 				onClose={handleClose}
 			>
 				<Alert onClose={handleClose} severity={severity}>

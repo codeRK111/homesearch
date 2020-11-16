@@ -171,6 +171,7 @@ userSchema.pre('save', function (next) {
 		console.log(this.isNew);
 		return next();
 	}
+	console.log(this.isModified(this.password))
 	console.log('updated');
 	this.passwordChangedAt = Date.now() - 1000;
 	next();

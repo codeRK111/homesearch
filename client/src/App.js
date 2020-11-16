@@ -11,6 +11,7 @@ import ProfilePage from './pages/profile/profile.page';
 import ProfileUpdate from './pages/profile/profileUpdate.page';
 import ProjectDetailsPage from './pages/projectDetailsPage/detailsPage.page';
 import PropertyDetailsPage from './pages/detailsPage/detailsPage.page';
+import Protected from './components/protected/protected.component';
 import { Provider } from 'react-redux';
 import React from 'react';
 import SearchPage from './pages/searchResultPage/searchResultPage.page';
@@ -23,7 +24,17 @@ function App() {
 			<Provider store={store}>
 				<HashRouter>
 					<Switch>
-						<Route exact path="/" render={() => <HomePage />} />
+						<Route
+							exact
+							path="/"
+							render={(props) => (
+								<Protected
+									component={HomePage}
+									redirect={false}
+									{...props}
+								/>
+							)}
+						/>
 						<Route
 							exact
 							path="/login"
@@ -42,12 +53,24 @@ function App() {
 						<Route
 							exact
 							path="/profile"
-							render={() => <ProfilePage />}
+							render={(props) => (
+								<Protected
+									component={ProfilePage}
+									{...props}
+									redirect
+								/>
+							)}
 						/>
 						<Route
 							exact
 							path="/update-profile"
-							render={() => <ProfileUpdate />}
+							render={(props) => (
+								<Protected
+									component={ProfileUpdate}
+									redirect
+									{...props}
+								/>
+							)}
 						/>
 						<Route
 							exact

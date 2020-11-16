@@ -9,6 +9,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectAuthenticated } from '../../redux/auth/auth.selectors';
 import { useHistory } from 'react-router-dom';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useStyles } from './appBar.styles';
@@ -17,7 +20,7 @@ import { useStyles } from './appBar.styles';
 
 // Styles
 
-const Appbar = () => {
+const Appbar = ({ isAuthenticated }) => {
 	const classes = useStyles();
 	const history = useHistory();
 	const matches = useMediaQuery('(max-width:600px)');
@@ -34,6 +37,7 @@ const Appbar = () => {
 	};
 	const goToHomePage = (_) => history.push('/');
 	const redirectToPostProperty = (_) => history.push('/post-property');
+	const redirectToLogIn = (_) => history.push('/login');
 	return (
 		<div className={classes.root}>
 			<AppDrawer open={open} handleDrawer={handleDrawer(false)} />
@@ -69,11 +73,24 @@ const Appbar = () => {
 							onClick={redirectToPostProperty}
 						/>
 					)}
-					{!matches && <Menu />}
+					{!matches && isAuthenticated ? (
+						<Menu />
+					) : (
+						<Box ml="1rem">
+							<Button
+								text="Login / Signup"
+								onClick={redirectToLogIn}
+							/>
+						</Box>
+					)}
 				</Toolbar>
 			</AppBar>
 		</div>
 	);
 };
 
-export default Appbar;
+const mapStateToProps = createStructuredSelector({
+	isAuthenticated: selectAuthenticated,
+});
+
+export default connect(mapStateToProps)(Appbar);

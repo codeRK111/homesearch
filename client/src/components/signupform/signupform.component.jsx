@@ -1,21 +1,23 @@
-import React from 'react';
-import { Formik, Form } from 'formik';
 import { Button, Grid } from '@material-ui/core';
+import { Form, Formik } from 'formik';
+
+import ErrorMessage from '../errorMessage/errorMessage.component';
+import FormInput from '../forminput/forminput.component';
+import FormSelect from '../formik/selectDefault.component';
 import { Link } from 'react-router-dom';
+import React from 'react';
+import SearchCity from '../searchCity/serachCity.component';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import makeStyles from './signup.styles';
+import { selectSignUpLoading } from '../../redux/auth/auth.selectors';
+import { signUp } from '../../redux/auth/auth.actions';
+import { signupSchema } from './signup.utils';
 import { useHistory } from 'react-router-dom';
 
 // Custom components
-import FormInput from '../forminput/forminput.component';
-import { signupSchema } from './signup.utils';
-import makeStyles from './signup.styles';
-import SearchCity from '../searchCity/serachCity.component';
-import ErrorMessage from '../errorMessage/errorMessage.component';
 
 // Redux
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { signUp } from '../../redux/auth/auth.actions';
-import { selectSignUpLoading } from '../../redux/auth/auth.selectors';
 
 const LoginForm = ({ signUp, signUpLoading }) => {
 	const classes = makeStyles();
@@ -43,6 +45,7 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 				email: '',
 				password: '',
 				number: '',
+				role: 'tenant',
 			}}
 			validationSchema={signupSchema}
 			onSubmit={onSubmit}
@@ -93,6 +96,17 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 						name="number"
 						autoComplete="number"
 						value={values.number}
+					/>
+					<FormSelect
+						name="role"
+						formLabel="Type"
+						label="Type"
+						options={[
+							{ value: 'builder', label: 'Builder' },
+							{ value: 'agent', label: 'Agent' },
+							{ value: 'owner', label: 'Owner' },
+							{ value: 'tenant', label: 'Tenant' },
+						]}
 					/>
 
 					<SearchCity setCity={selectedCity} />

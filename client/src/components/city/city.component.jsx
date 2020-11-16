@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	parent: {
 		maxHeight: '30vh',
+		width: '30vh',
 		overflowY: 'auto',
 	},
 	searchIcon: {

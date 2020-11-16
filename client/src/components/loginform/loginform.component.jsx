@@ -1,20 +1,21 @@
-import React from 'react';
-import { Formik, Form } from 'formik';
-import { Grid, Button } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
+import { Form, Formik } from 'formik';
 import { Link, useHistory } from 'react-router-dom';
 
-// Custom components
-import FormInput from '../../components/forminput/forminput.component';
-import FormCheckbox from '../../components/formcheckbox/formcheckbox.component';
-import { loginSchema } from './login.utils';
-import makeStyles from './loginform.styles';
 import ErrorMessage from '../errorMessage/errorMessage.component';
-
-// Redux
+import FormCheckbox from '../../components/formcheckbox/formcheckbox.component';
+import FormInput from '../../components/forminput/forminput.component';
+import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { signIn } from '../../redux/auth/auth.actions';
+import { loginSchema } from './login.utils';
+import makeStyles from './loginform.styles';
 import { selectSignInLoading } from '../../redux/auth/auth.selectors';
+import { signIn } from '../../redux/auth/auth.actions';
+
+// Custom components
+
+// Redux
 
 const LoginForm = ({ signInLoading, signIn }) => {
 	const classes = makeStyles();
@@ -25,7 +26,7 @@ const LoginForm = ({ signInLoading, signIn }) => {
 		if (status === 'success') {
 			setAsyncError(null);
 			console.log(data);
-			history.push('/profile');
+			history.push('/');
 		} else {
 			setAsyncError(data);
 		}
@@ -41,6 +42,7 @@ const LoginForm = ({ signInLoading, signIn }) => {
 				password: '',
 				rememberMe: '',
 			}}
+			enableReinitialize={true}
 			validationSchema={loginSchema}
 			onSubmit={onSubmit}
 		>
@@ -82,12 +84,6 @@ const LoginForm = ({ signInLoading, signIn }) => {
 						variant="contained"
 						color="primary"
 						className={classes.submit}
-						disabled={
-							!values.email ||
-							!values.password ||
-							!isValid ||
-							signInLoading
-						}
 					>
 						{signInLoading ? 'Authenticating ...' : 'Sign In'}
 					</Button>

@@ -3,7 +3,6 @@ const express = require('express');
 const authController = require('../controllers/authController');
 
 const router = express.Router();
-router.get('/getMyInfo', authController.protect, authController.getUserInfo);
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 router
@@ -17,6 +16,10 @@ router.get(
 	'/validateOtpAndLogIn/number/:number/otp/:otp',
 	authController.validateOtp
 );
+
+router.route('/reset-my-password').patch(authController.protect,authController.updateMyPassword);
+router.route('/handle-profile-image').patch(authController.protect,authController.handleProfileImage);
+router.route('/').get(authController.protect, authController.getUserInfo).patch(authController.protect,authController.updateMe);
 // router.post('/forgotPassword', authController.forgotPassword);
 
 module.exports = router;
