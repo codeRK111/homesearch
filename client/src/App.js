@@ -57,7 +57,7 @@ function App() {
 								<Protected
 									component={ProfilePage}
 									{...props}
-									redirect
+									redirect={true}
 								/>
 							)}
 						/>

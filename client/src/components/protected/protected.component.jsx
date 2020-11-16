@@ -58,6 +58,7 @@ const Authenticated = ({
 			<Backdrop className={classes.backdrop} open={userProfileLoading}>
 				<CircularProgress color="inherit" />
 			</Backdrop>
+			{!redirect && !userProfileLoading && <Component {...otherProps} />}
 			{isAuthenticated && !userProfileLoading && (
 				<Component {...otherProps} />
 			)}
