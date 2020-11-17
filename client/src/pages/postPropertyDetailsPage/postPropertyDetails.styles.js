@@ -8,6 +8,10 @@ const useStyles = makeStyles((theme) => ({
 			width: '90vw',
 		},
 	},
+	backdrop: {
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#fff',
+	},
 	imageWrapper: {},
 	image: {
 		width: '100px',
@@ -31,6 +35,23 @@ const useStyles = makeStyles((theme) => ({
 	formLabel: {
 		color: theme.fontColor,
 		fontSize: '0.8rem',
+	},
+	relative: {
+		position: 'relative',
+	},
+	absolute: {
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		maxHeight: '100px',
+	},
+	item: {
+		padding: '0.5rem',
+		width: '30vw',
+		cursor: 'pointer',
+		'&:hover': {
+			backgroundColor: theme.fontColor,
+		},
 	},
 }));
 export default useStyles;

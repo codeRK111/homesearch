@@ -911,27 +911,26 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 			}
 		}
 		if (req.body.exclude) {
-			filter['_id'] = {$ne : req.body.exclude};
+			filter['_id'] = { $ne: req.body.exclude };
 		}
 		if (req.body.budgetList) {
 			const arr = [];
 
 			if (req.body.for === 'sale') {
-				req.body.budgetList.forEach(c => {
-				arr.push({
-					salePrice: { $lte : c.max,$gte: c.min}
-				})
-			})
+				req.body.budgetList.forEach((c) => {
+					arr.push({
+						salePrice: { $lte: c.max, $gte: c.min },
+					});
+				});
 				// filter['salePrice'] = { $lte: req.body.price };
 			} else {
-				req.body.budgetList.forEach(c => {
-				arr.push({
-					rent: { $lte : c.max,$gte: c.min}
-				})
-			})
-				
+				req.body.budgetList.forEach((c) => {
+					arr.push({
+						rent: { $lte: c.max, $gte: c.min },
+					});
+				});
 			}
-			filter['$or'] = arr
+			filter['$or'] = arr;
 		}
 		filter.status = 'active';
 		const totalDocs = await Property.countDocuments(filter);
@@ -942,6 +941,190 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 			status: 'success',
 			count: totalDocs,
 			data: { properties },
+		});
+	}
+});
+
+exports.addPropertyByUserForSale = catchAsync(async (req, res, next) => {
+	const type = req.body.sale_type;
+	if (!type) return next(new AppError('Parameter sale_type required'));
+	switch (type) {
+		case 'flat':
+			const propertyFlat = {
+				for: req.body.for,
+				title: req.body.title,
+				numberOfBedRooms: req.body.numberOfBedRooms,
+				superBuiltupArea: req.body.superBuiltupArea,
+				carpetArea: req.body.carpetArea,
+				availability: req.body.availability,
+				carParking: req.body.carParking,
+				furnished: req.body.furnished,
+				toiletIndian: req.body.toiletIndian,
+				toiletWestern: req.body.toiletWestern,
+				propertyOwnerShip: req.body.propertyOwnerShip,
+				noOfFloors: req.body.noOfFloors,
+				floor: req.body.floor,
+				distanceSchool: req.body.distanceSchool,
+				distanceRailwayStation: req.body.distanceRailwayStation,
+				distanceAirport: req.body.distanceAirport,
+				distanceBusStop: req.body.distanceBusStop,
+				distanceHospital: req.body.distanceHospital,
+				salePrice: req.body.salePrice,
+				salePriceOver: req.body.salePriceOver,
+				description: req.body.description,
+				city: req.body.city,
+				location: req.body.location,
+				sale_type: req.body.sale_type,
+
+				amenities: req.body.amenities,
+				furnishes: req.body.furnishes,
+				pricePerSqFt: req.body.pricePerSqFt,
+				legalClearance: req.body.legalClearance,
+			};
+			console.log(Object.keys(propertyFlat));
+			for (let i = 0; i < Object.keys(propertyFlat).length; i++) {
+				const element = Object.keys(propertyFlat)[i];
+				if (!req.body[element]) {
+					return next(new AppError(`Parameter ${element} required`));
+				}
+			}
+
+			// Check for availability
+			if (req.body.availability === 'specificdate') {
+				if (!req.body.availableDate)
+					return next(
+						new AppError('Parameter availableDate required')
+					);
+				propertyFlat['availableDate'] = req.body.availableDate;
+			}
+
+			//manage toilets
+			propertyFlat['toiletTypes'] = [
+				{ toiletType: 'indian', number: req.body.toiletIndian },
+				{ toiletType: 'western', number: req.body.toiletWestern },
+			];
+			delete propertyFlat['toiletIndian'];
+			delete propertyFlat['toiletWestern'];
+
+			// manage furnished
+			if (req.body.furnished === 'unfurnished') {
+				propertyFlat['furnishes'] = [];
+			}
+
+			propertyFlat['createdBy'] = 'user';
+			propertyFlat['userId'] = req.user.id;
+			propertyFlat['postedBy'] = req.user.role;
+			propertyFlat['otherAmenties'] = req.body.otherAmenties
+				? req.body.otherAmenties
+				: [];
+			propertyFlat['externalAmenities'] = req.body.externalAmenities
+				? req.body.externalAmenities
+				: [];
+
+			console.log(propertyFlat);
+
+			const docFlat = await Property.create(propertyFlat);
+			res.status(201).json({
+				status: 'success',
+				data: {
+					property: docFlat,
+				},
+			});
+			break;
+
+		default:
+			break;
+	}
+});
+
+exports.handlePropertyImage = catchAsync(async (req, res, next) => {
+	if (!req.files) {
+		return next(new AppError('No image found', 400));
+	} else {
+		const project = await Property.findById(req.params.id);
+		if (!project) return next(new AppError('project not found', 404));
+
+		if (req.files.image1) {
+			if (project.image1) {
+				fs.unlinkSync(
+					path.join(__dirname, '../', 'images', 'property_images/') +
+						project.image1
+				);
+			}
+			let image1 =
+				Math.floor(10000000 + Math.random() * 90000000) +
+				'-' +
+				req.files.image1.name;
+			await req.files.image1.mv(
+				path.join(__dirname, '../', 'images', 'property_images/') +
+					image1
+			);
+			project.image1 = image1;
+		}
+
+		if (req.files.image2) {
+			if (project.image2) {
+				fs.unlinkSync(
+					path.join(__dirname, '../', 'images', 'property_images/') +
+						project.image2
+				);
+			}
+			let image2 =
+				Math.floor(10000000 + Math.random() * 90000000) +
+				'-' +
+				req.files.image2.name;
+			await req.files.image2.mv(
+				path.join(__dirname, '../', 'images', 'property_images/') +
+					image2
+			);
+			project.image2 = image2;
+		}
+
+		if (req.files.image3) {
+			if (project.image3) {
+				fs.unlinkSync(
+					path.join(__dirname, '../', 'images', 'property_images/') +
+						project.image3
+				);
+			}
+			let image3 =
+				Math.floor(10000000 + Math.random() * 90000000) +
+				'-' +
+				req.files.image3.name;
+			await req.files.image3.mv(
+				path.join(__dirname, '../', 'images', 'property_images/') +
+					image3
+			);
+			project.image3 = image3;
+		}
+
+		if (req.files.image4) {
+			if (project.image4) {
+				fs.unlinkSync(
+					path.join(__dirname, '../', 'images', 'property_images/') +
+						project.image4
+				);
+			}
+			let image4 =
+				Math.floor(10000000 + Math.random() * 90000000) +
+				'-' +
+				req.files.image4.name;
+			await req.files.image4.mv(
+				path.join(__dirname, '../', 'images', 'property_images/') +
+					image4
+			);
+			project.image4 = image4;
+		}
+
+		const projectUpdated = await project.save();
+
+		//send response
+		res.send({
+			status: 'success',
+			message: 'File is uploaded',
+			data: {
+				property: projectUpdated,
+			},
 		});
 	}
 });

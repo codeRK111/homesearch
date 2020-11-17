@@ -17,7 +17,7 @@ const DetailsPage = ({ match: { params } }) => {
 		switch (params.pType) {
 			case 'flat':
 			case 'independenthouse':
-				return <ResaleApartment />;
+				return <ResaleApartment pType={params.pType} />;
 			case 'land':
 				return <ResaleLand />;
 

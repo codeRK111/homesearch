@@ -9,7 +9,7 @@ import useStyles from './detailsPage.styles';
 const Furnishes = ({ property }) => {
 	const classes = useStyles();
 	const isSelected = (id) => {
-		const isPresent = property.amenities.find((c) => c === id);
+		const isPresent = property.furnishes.find((c) => c.id === id);
 		return isPresent ? true : false;
 	};
 	return (

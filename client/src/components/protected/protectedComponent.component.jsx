@@ -34,20 +34,12 @@ const Authenticated = ({
 	React.useEffect(() => {
 		if (!isAuthenticated) {
 			const jwt = localStorage.getItem('JWT_CLIENT');
-			if (!jwt) {
-				return history.push('/login');
+			if (jwt) {
+				fetchUser(jwt, console.log);
 			}
-			fetchUser(jwt, console.log);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isAuthenticated, fetchUser, history]);
-
-	React.useEffect(() => {
-		if (signInError) {
-			history.push('/login');
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [signInError, history]);
 
 	return (
 		<>
@@ -55,9 +47,7 @@ const Authenticated = ({
 				<CircularProgress color="inherit" />
 			</Backdrop>
 			{/* {!redirect && !userProfileLoading && <Component {...otherProps} />} */}
-			{isAuthenticated && !userProfileLoading && (
-				<Component {...otherProps} />
-			)}
+			{!userProfileLoading && <Component {...otherProps} />}
 		</>
 	);
 };

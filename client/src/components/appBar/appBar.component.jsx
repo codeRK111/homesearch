@@ -6,6 +6,7 @@ import City from '../cityMenu/cityMenu.component';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '../menu/menu.component';
 import MenuIcon from '@material-ui/icons/Menu';
+import Protected from '../protected/protectedComponent.component';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -93,4 +94,10 @@ const mapStateToProps = createStructuredSelector({
 	isAuthenticated: selectAuthenticated,
 });
 
-export default connect(mapStateToProps)(Appbar);
+const Test = connect(mapStateToProps)(Appbar);
+
+const Hoc = (props) => {
+	return <Protected component={Test} {...props} />;
+};
+
+export default Hoc;

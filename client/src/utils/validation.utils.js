@@ -17,3 +17,15 @@ export const validateMobileNumber = (value) => {
 		return false;
 	}
 };
+
+export const validateNumber = (value) => {
+	if (Number(value)) {
+		return true;
+	} else {
+		if (value === 0 || value === '0') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+};

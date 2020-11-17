@@ -27,13 +27,7 @@ function App() {
 						<Route
 							exact
 							path="/"
-							render={(props) => (
-								<Protected
-									component={HomePage}
-									redirect={false}
-									{...props}
-								/>
-							)}
+							render={(props) => <HomePage {...props} />}
 						/>
 						<Route
 							exact
@@ -104,13 +98,21 @@ function App() {
 						<Route
 							exact
 							path="/post-property"
-							render={(props) => <PostProperty {...props} />}
+							render={(props) => (
+								<Protected
+									component={PostProperty}
+									{...props}
+								/>
+							)}
 						/>
 						<Route
 							exact
 							path="/post-property-details/:pFor/:pType"
 							render={(props) => (
-								<PostPropertyDetailsPage {...props} />
+								<Protected
+									component={PostPropertyDetailsPage}
+									{...props}
+								/>
 							)}
 						/>
 					</Switch>
@@ -119,5 +121,7 @@ function App() {
 		</div>
 	);
 }
+
+// export default App
 
 export default App;

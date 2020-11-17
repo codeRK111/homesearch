@@ -1,5 +1,9 @@
 import { Box, Divider, Grid, Paper } from '@material-ui/core';
-import { capitalizeFirstLetter, parseDate } from '../../utils/render.utils';
+import {
+	capitalizeFirstLetter,
+	parseDate,
+	renderPerSqft,
+} from '../../utils/render.utils';
 
 import DoneIcon from '@material-ui/icons/Done';
 import { Link } from 'react-router-dom';
@@ -44,7 +48,7 @@ const ResultCard = ({ independent, property }) => {
 					<img
 						src={
 							property.image1
-								? property.image1
+								? `/assets/properties/${property.image1}`
 								: require('../../assets/no-image.jpg')
 						}
 						alt="property"
@@ -103,8 +107,8 @@ const ResultCard = ({ independent, property }) => {
 									</Box>
 									<Box className={classes.info} mt="0.5rem">
 										{' '}
-										₹ {property.pricePerSqFt / 1000}K per
-										sq.ft. {property.salePriceOver}
+										{renderPerSqft(property)} per sq.ft.{' '}
+										{property.salePriceOver}
 									</Box>
 								</Box>
 							</Grid>

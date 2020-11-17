@@ -2,6 +2,7 @@ import { all, call, put, takeEvery } from 'redux-saga/effects';
 import {
 	getPropertyDetailsLoading,
 	getPropertyResourcesLoading,
+	postPropertyLoading,
 	searchPropertiesLoading,
 	setPropertyResources,
 } from './property.actions';
@@ -76,6 +77,49 @@ function* getPropertyResourcesSaga({ payload: { callback } }) {
 	}
 }
 
+function* onPostPropertySaga({ payload: { data, callback } }) {
+	const token = localStorage.getItem('JWT_CLIENT');
+	yield put(postPropertyLoading(true));
+
+	const url = '/api/v1/properties/user/sale';
+	try {
+		const response = yield axios({
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+			data: JSON.stringify(data),
+		});
+		const responseData = response.data;
+		if (data.propertyImages) {
+			const formData = new FormData();
+			for (const key in data.propertyImages) {
+				formData.append(key, data.propertyImages[key]);
+			}
+			yield axios.patch(
+				`/api/v1/properties/handle-property-image/${responseData.data.property.id}`,
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+		}
+
+		yield put(postPropertyLoading(false));
+
+		callback('success', responseData.data.property);
+	} catch (error) {
+		const errorResponse = error.response.data;
+		yield put(postPropertyLoading(false));
+		callback('fail', errorResponse.message);
+	}
+}
+
 function* onSearchProperties() {
 	yield takeEvery(types.SEARCH_PROPERTY_START, searchPropertySaga);
 }
@@ -91,10 +135,15 @@ function* onGetPropertyResources() {
 	);
 }
 
+function* onPostProperty() {
+	yield takeEvery(types.POST_PROPERTY_START, onPostPropertySaga);
+}
+
 export function* propertySagas() {
 	yield all([
 		call(onSearchProperties),
 		call(onGetPropertyDetails),
 		call(onGetPropertyResources),
+		call(onPostProperty),
 	]);
 }

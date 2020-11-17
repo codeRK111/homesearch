@@ -35,47 +35,43 @@ const FurnishesList = ({
 			>
 				<CircularProgress color="inherit" />
 			</Backdrop>
-			<Formik initialValues={initialValues}>
-				{({ values, setFieldValue }) => (
-					<Form>
-						{showFurnishes && (
-							<Grid container spacing={0}>
-								<Grid item xs={12}>
-									<Box mt="1rem" mb="0.5rem">
-										<b>Furnishes</b>
-									</Box>
-								</Grid>
-								{furnishes.map((c) => (
-									<Grid item xs={6} md={3} key={c.id}>
-										<CheckBox
-											name="furnishes"
-											value={c.id}
-											formLabel={c.name}
-										/>
-									</Grid>
-								))}
-							</Grid>
-						)}
-
-						<Grid container spacing={0}>
-							<Grid item xs={12}>
-								<Box mt="1rem" mb="0.5rem">
-									<b>Aenities</b>
-								</Box>
-							</Grid>
-							{amenities.map((c) => (
-								<Grid item xs={6} md={3} key={c.id}>
-									<CheckBox
-										name="amenities"
-										value={c.id}
-										formLabel={c.name}
-									/>
-								</Grid>
-							))}
+			{showFurnishes && (
+				<Grid container spacing={0}>
+					<Grid item xs={12}>
+						<Box mt="1rem" mb="0.5rem">
+							<b>Furnishes</b>
+						</Box>
+					</Grid>
+					{furnishes.map((c) => (
+						<Grid item xs={6} md={3} key={c.id}>
+							<CheckBox
+								type="checkbox"
+								name="furnishes"
+								value={c.id}
+								formLabel={c.name}
+							/>
 						</Grid>
-					</Form>
-				)}
-			</Formik>
+					))}
+				</Grid>
+			)}
+
+			<Grid container spacing={0}>
+				<Grid item xs={12}>
+					<Box mt="1rem" mb="0.5rem">
+						<b>Aenities</b>
+					</Box>
+				</Grid>
+				{amenities.map((c) => (
+					<Grid item xs={6} md={3} key={c.id}>
+						<CheckBox
+							type="checkbox"
+							name="amenities"
+							value={c.id}
+							formLabel={c.name}
+						/>
+					</Grid>
+				))}
+			</Grid>
 		</div>
 	);
 };

@@ -116,11 +116,12 @@ const DetailsPage = ({
 										<Grid container spacing={3}>
 											<Grid item xs={12} md={4}>
 												<PropertyImages
-													photos={
-														data.photos
-															? data.photos
-															: []
-													}
+													photos={[
+														data.image1,
+														data.image2,
+														data.image3,
+														data.image4,
+													]}
 												/>
 											</Grid>
 											<Grid item xs={12} md={8}>

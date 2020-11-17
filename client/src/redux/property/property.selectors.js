@@ -17,6 +17,11 @@ export const selectGetPropertyResourcesLoading = createSelector(
 	[selectProperty],
 	(c) => c.getPropertyResourcesLoading
 );
+
+export const selectPostPropertyLoading = createSelector(
+	[selectProperty],
+	(c) => c.postPropertyLoading
+);
 export const selectAmenities = createSelector(
 	[selectProperty],
 	(c) => c.amenities

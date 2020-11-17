@@ -5,6 +5,10 @@ export const searchProperties = (payload) => ({
 	type: propertyActionTypes.SEARCH_PROPERTY_START,
 	payload,
 });
+export const postProperty = (payload) => ({
+	type: propertyActionTypes.POST_PROPERTY_START,
+	payload,
+});
 export const getPropertyDetails = (payload) => ({
 	type: propertyActionTypes.GET_PROPERTY_DETAILS_START,
 	payload,
@@ -31,5 +35,10 @@ export const getPropertyDetailsLoading = (payload) => ({
 });
 export const getPropertyResourcesLoading = (payload) => ({
 	type: propertyActionTypes.TOGGLE_GET_PROPERTY_RESOURCES_LOADING,
+	payload,
+});
+
+export const postPropertyLoading = (payload) => ({
+	type: propertyActionTypes.TOGGLE_POST_PROPERTY_LOADING,
 	payload,
 });
