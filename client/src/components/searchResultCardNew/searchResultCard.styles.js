@@ -138,6 +138,9 @@ const useStyle = makeStyles((theme) => ({
 		fontWeight: '1000',
 		fontSize: '1.5rem',
 	},
+	fontAbel: {
+		fontFamily: "'Abel', sans-serif",
+	},
 	point: {
 		width: '5px',
 		height: '5px',

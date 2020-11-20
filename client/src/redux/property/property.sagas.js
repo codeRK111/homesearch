@@ -1,5 +1,6 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import {
+	getMyPropertiesLoading,
 	getPropertyDetailsLoading,
 	getPropertyResourcesLoading,
 	postPropertyLoading,
@@ -80,8 +81,13 @@ function* getPropertyResourcesSaga({ payload: { callback } }) {
 function* onPostPropertySaga({ payload: { data, callback } }) {
 	const token = localStorage.getItem('JWT_CLIENT');
 	yield put(postPropertyLoading(true));
+	let url;
+	if (data['for'] === 'rent') {
+		url = '/api/v1/properties/user/rent';
+	} else {
+		url = '/api/v1/properties/user/sale';
+	}
 
-	const url = '/api/v1/properties/user/sale';
 	try {
 		const response = yield axios({
 			method: 'post',
@@ -120,6 +126,37 @@ function* onPostPropertySaga({ payload: { data, callback } }) {
 	}
 }
 
+function* onGetMyPropertiesSaga({ payload: { callback } }) {
+	const token = localStorage.getItem('JWT_CLIENT');
+	yield put(getMyPropertiesLoading(true));
+	const url = `/api/v1/properties/user/my-properties`;
+	try {
+		const response = yield axios({
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+		});
+		const responseData = response.data;
+		yield put(getMyPropertiesLoading(false));
+
+		callback('success', {
+			properties: responseData.data.properties,
+			count: responseData.count,
+		});
+	} catch (error) {
+		yield put(getMyPropertiesLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+
 function* onSearchProperties() {
 	yield takeEvery(types.SEARCH_PROPERTY_START, searchPropertySaga);
 }
@@ -139,11 +176,16 @@ function* onPostProperty() {
 	yield takeEvery(types.POST_PROPERTY_START, onPostPropertySaga);
 }
 
+function* onGetMyProperties() {
+	yield takeEvery(types.GET_MY_PROPERTIES_START, onGetMyPropertiesSaga);
+}
+
 export function* propertySagas() {
 	yield all([
 		call(onSearchProperties),
 		call(onGetPropertyDetails),
 		call(onGetPropertyResources),
 		call(onPostProperty),
+		call(onGetMyProperties),
 	]);
 }

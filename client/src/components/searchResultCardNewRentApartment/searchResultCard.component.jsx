@@ -1,10 +1,14 @@
 import { Box, Divider, Grid, Paper } from '@material-ui/core';
+import { Link, useHistory } from 'react-router-dom';
+import {
+	capitalizeFirstLetter,
+	parseDate,
+	renderInfo,
+} from '../../utils/render.utils';
 
-import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
-import moment from 'moment';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './searchResultCard.styles';
 
@@ -12,14 +16,11 @@ import useStyles from './searchResultCard.styles';
 
 // Custom components
 
-const ResultCard = ({ independent, property }) => {
+const ResultCard = ({ independent, property, edit = false }) => {
 	const classes = useStyles();
+	const history = useHistory();
 	const mobile = useMediaQuery('(max-width:600px)');
 	const [open, setOpen] = React.useState(false);
-	const parseDate = (date) => {
-		let m = moment(date);
-		return m.format('MMM Do YY');
-	};
 
 	const handleOpen = (_) => {
 		setOpen(true);
@@ -28,12 +29,15 @@ const ResultCard = ({ independent, property }) => {
 	const handleClose = () => {
 		setOpen(false);
 	};
+	const editProperty = (_) => {
+		history.push(`/edit-property/${property.id}`);
+	};
 
 	const justifyContent = mobile
 		? { justifyContent: 'flex-start' }
 		: { justifyContent: 'flex-end' };
 	return (
-		<Paper>
+		<Paper className={classes.fontAbel}>
 			<PropertyShare
 				status={open}
 				handleClose={handleClose}
@@ -44,7 +48,7 @@ const ResultCard = ({ independent, property }) => {
 					<img
 						src={
 							property.image1
-								? property.image1
+								? `/assets/properties/${property.image1}`
 								: require('../../assets/no-image.jpg')
 						}
 						alt="property"
@@ -69,10 +73,6 @@ const ResultCard = ({ independent, property }) => {
 									</Link>
 
 									<br />
-
-									{/* <VerifiedUserIcon
-										className={classes.verified}
-									/> */}
 								</Box>
 								<span className={classes.info}>
 									{property.city.name},
@@ -170,9 +170,13 @@ const ResultCard = ({ independent, property }) => {
 												</Box>
 												<Box>
 													<b>
-														{property.availableFor.join(
-															','
-														)}
+														{property.availableFor
+															.map((c) =>
+																capitalizeFirstLetter(
+																	c
+																)
+															)
+															.join(',')}
 													</b>
 												</Box>
 											</Box>
@@ -183,7 +187,13 @@ const ResultCard = ({ independent, property }) => {
 													Car parking
 												</Box>
 												<Box>
-													<b>Open</b>
+													<b>
+														{capitalizeFirstLetter(
+															renderInfo(
+																property.carParking
+															)
+														)}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -205,7 +215,13 @@ const ResultCard = ({ independent, property }) => {
 													Furnishing status
 												</Box>
 												<Box>
-													<b>{property.furnished}</b>
+													<b>
+														{capitalizeFirstLetter(
+															renderInfo(
+																property.furnished
+															)
+														)}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -223,26 +239,51 @@ const ResultCard = ({ independent, property }) => {
 								</p>
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<Box
-									mt="1rem"
-									display="flex"
-									justifyContent="flex-end"
-									className={classes.smLeft}
-								>
-									<Box display="flex">
+								{edit ? (
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="flex-end"
+									>
 										<button
-											className={classes.whatsapp}
-											onClick={handleOpen}
+											className={classes.details}
+											onClick={editProperty}
 										>
-											<WhatsAppIcon
-												className={classes.shareIcon2}
-											/>
-										</button>
-										<button className={classes.details}>
-											Get Owner Details
+											Edit
 										</button>
 									</Box>
-								</Box>
+								) : (
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="flex-end"
+										className={classes.smLeft}
+									>
+										<Box display="flex">
+											<button
+												className={classes.whatsapp}
+												onClick={handleOpen}
+											>
+												<Box
+													display="flex"
+													alignItems="center"
+												>
+													<WhatsAppIcon
+														className={
+															classes.shareIcon2
+														}
+													/>
+													<Box ml="0.2rem">
+														Chat now
+													</Box>
+												</Box>
+											</button>
+											<button className={classes.details}>
+												Get Owner Details
+											</button>
+										</Box>
+									</Box>
+								)}
 								<Box
 									className={classes.info}
 									mt="0.5rem"

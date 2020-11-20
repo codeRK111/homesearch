@@ -950,6 +950,7 @@ exports.addPropertyByUserForSale = catchAsync(async (req, res, next) => {
 	if (!type) return next(new AppError('Parameter sale_type required'));
 	switch (type) {
 		case 'flat':
+		case 'independenthouse':
 			const propertyFlat = {
 				for: req.body.for,
 				title: req.body.title,
@@ -1028,6 +1029,248 @@ exports.addPropertyByUserForSale = catchAsync(async (req, res, next) => {
 				status: 'success',
 				data: {
 					property: docFlat,
+				},
+			});
+			break;
+
+		case 'land':
+			const propertyLand = {
+				for: req.body.for,
+				title: req.body.title,
+				length: req.body['length'],
+				width: req.body.width,
+				plotFrontage: req.body.plotFrontage,
+				plotArea: req.body.plotArea,
+				widthOfRoad: req.body.widthOfRoad,
+				facing: req.body.facing,
+				constructionDone: req.body.constructionDone,
+				boundaryWallMade: req.body.boundaryWallMade,
+				gatedCommunity: req.body.gatedCommunity,
+				landUsingZoning: req.body.landUsingZoning,
+				govermentValuation: req.body.govermentValuation,
+				distanceSchool: req.body.distanceSchool,
+				distanceRailwayStation: req.body.distanceRailwayStation,
+				distanceAirport: req.body.distanceAirport,
+				distanceBusStop: req.body.distanceBusStop,
+				distanceHospital: req.body.distanceHospital,
+				salePrice: req.body.salePrice,
+				description: req.body.description,
+				city: req.body.city,
+				location: req.body.location,
+				sale_type: req.body.sale_type,
+				pricePerSqFt: req.body.pricePerSqFt,
+				legalClearance: req.body.legalClearance,
+			};
+			console.log(Object.keys(propertyLand));
+			for (let i = 0; i < Object.keys(propertyLand).length; i++) {
+				const element = Object.keys(propertyLand)[i];
+				if (
+					req.body[element] === null ||
+					req.body[element] === undefined
+				) {
+					return next(new AppError(`Parameter ${element} required`));
+				}
+			}
+
+			propertyLand['createdBy'] = 'user';
+			propertyLand['userId'] = req.user.id;
+			propertyLand['postedBy'] = req.user.role;
+
+			console.log(propertyLand);
+
+			const docLand = await Property.create(propertyLand);
+			res.status(201).json({
+				status: 'success',
+				data: {
+					property: docLand,
+				},
+			});
+			break;
+
+		default:
+			break;
+	}
+});
+
+exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
+	const type = req.body.type;
+	if (!type) return next(new AppError('Parameter type required'));
+	switch (type) {
+		case 'flat':
+		case 'independenthouse':
+			const propertyFlat = {
+				for: req.body.for,
+				title: req.body.title,
+				numberOfBedRooms: req.body.numberOfBedRooms,
+				superBuiltupArea: req.body.superBuiltupArea,
+				carpetArea: req.body.carpetArea,
+				availability: req.body.availability,
+				carParking: req.body.carParking,
+				furnished: req.body.furnished,
+				toiletIndian: req.body.toiletIndian,
+				toiletWestern: req.body.toiletWestern,
+				propertyOwnerShip: req.body.propertyOwnerShip,
+				noOfFloors: req.body.noOfFloors,
+				floor: req.body.floor,
+				distanceSchool: req.body.distanceSchool,
+				distanceRailwayStation: req.body.distanceRailwayStation,
+				distanceAirport: req.body.distanceAirport,
+				distanceBusStop: req.body.distanceBusStop,
+				distanceHospital: req.body.distanceHospital,
+				description: req.body.description,
+				city: req.body.city,
+				location: req.body.location,
+				type: req.body.type,
+				amenities: req.body.amenities,
+				furnishes: req.body.furnishes,
+				legalClearance: req.body.legalClearance,
+				availableFor: req.body.availableFor,
+				numberOfBalconies: req.body.numberOfBalconies,
+				rent: req.body.rent,
+				securityDeposit: req.body.securityDeposit,
+				noticePeriod: req.body.noticePeriod,
+				restrictions: req.body.restrictions,
+			};
+			console.log(Object.keys(propertyFlat));
+			for (let i = 0; i < Object.keys(propertyFlat).length; i++) {
+				const element = Object.keys(propertyFlat)[i];
+				if (!req.body[element]) {
+					return next(new AppError(`Parameter ${element} required`));
+				}
+			}
+
+			// Check for availability
+			if (req.body.availability === 'specificdate') {
+				if (!req.body.availableDate)
+					return next(
+						new AppError('Parameter availableDate required')
+					);
+				propertyFlat['availableDate'] = req.body.availableDate;
+			}
+
+			//manage toilets
+			propertyFlat['toiletTypes'] = [
+				{ toiletType: 'indian', number: req.body.toiletIndian },
+				{ toiletType: 'western', number: req.body.toiletWestern },
+			];
+			delete propertyFlat['toiletIndian'];
+			delete propertyFlat['toiletWestern'];
+
+			// manage furnished
+			if (req.body.furnished === 'unfurnished') {
+				propertyFlat['furnishes'] = [];
+			}
+
+			propertyFlat['createdBy'] = 'user';
+			propertyFlat['userId'] = req.user.id;
+			propertyFlat['postedBy'] = req.user.role;
+			propertyFlat['otherAmenties'] = req.body.otherAmenties
+				? req.body.otherAmenties
+				: [];
+			propertyFlat['externalAmenities'] = req.body.externalAmenities
+				? req.body.externalAmenities
+				: [];
+			propertyFlat['restrictions'] = req.body.restrictions
+				? req.body.restrictions
+				: '';
+
+			console.log(propertyFlat);
+
+			const docFlat = await Property.create(propertyFlat);
+			res.status(201).json({
+				status: 'success',
+				data: {
+					property: docFlat,
+				},
+			});
+			break;
+
+		case 'hostel':
+		case 'pg':
+			const propertyHostel = {
+				for: req.body.for,
+				superBuiltupArea: req.body.superBuiltupArea,
+				carpetArea: req.body.carpetArea,
+				title: req.body.title,
+				toiletIndian: req.body.toiletIndian,
+				toiletWestern: req.body.toiletWestern,
+				distanceSchool: req.body.distanceSchool,
+				distanceRailwayStation: req.body.distanceRailwayStation,
+				distanceAirport: req.body.distanceAirport,
+				distanceBusStop: req.body.distanceBusStop,
+				distanceHospital: req.body.distanceHospital,
+				description: req.body.description,
+				city: req.body.city,
+				location: req.body.location,
+				type: req.body.type,
+				legalClearance: req.body.legalClearance,
+				amenities: req.body.amenities,
+				furnishes: req.body.furnishes,
+				rent: req.body.rent,
+				securityDeposit: req.body.securityDeposit,
+				noticePeriod: req.body.noticePeriod,
+				availableFor: req.body.availableFor,
+				fooding: req.body.fooding,
+				foodSchedule: req.body.foodSchedule,
+				furnished: req.body.furnished,
+				availability: req.body.availability,
+				roomType: req.body.roomType,
+				typeOfToilets: req.body.typeOfToilets,
+			};
+			console.log(Object.keys(propertyHostel));
+			for (let i = 0; i < Object.keys(propertyHostel).length; i++) {
+				const element = Object.keys(propertyHostel)[i];
+				if (
+					req.body[element] === null ||
+					req.body[element] === undefined
+				) {
+					return next(new AppError(`Parameter ${element} required`));
+				}
+			}
+
+			// Check for availability
+			if (req.body.availability === 'specificdate') {
+				if (!req.body.availableDate)
+					return next(
+						new AppError('Parameter availableDate required')
+					);
+				propertyHostel['availableDate'] = req.body.availableDate;
+			}
+
+			// Check for room type
+			if (req.body.roomType === 'shared') {
+				if (!req.body.numberOfRoomMates)
+					return next(
+						new AppError('Parameter numberOfRoomMates required')
+					);
+				propertyHostel['numberOfRoomMates'] =
+					req.body.numberOfRoomMates;
+			}
+
+			//manage toilets
+			propertyHostel['toiletTypes'] = [
+				{ toiletType: 'indian', number: req.body.toiletIndian },
+				{ toiletType: 'western', number: req.body.toiletWestern },
+			];
+			delete propertyHostel['toiletIndian'];
+			delete propertyHostel['toiletWestern'];
+
+			// manage furnished
+			if (req.body.furnished === 'unfurnished') {
+				propertyHostel['furnishes'] = [];
+			}
+
+			propertyHostel['createdBy'] = 'user';
+			propertyHostel['userId'] = req.user.id;
+			propertyHostel['postedBy'] = req.user.role;
+
+			console.log(propertyHostel);
+
+			const docLand = await Property.create(propertyHostel);
+			res.status(201).json({
+				status: 'success',
+				data: {
+					property: docLand,
 				},
 			});
 			break;
@@ -1127,4 +1370,16 @@ exports.handlePropertyImage = catchAsync(async (req, res, next) => {
 			},
 		});
 	}
+});
+
+exports.getMyProperties = catchAsync(async (req, res, next) => {
+	const properties = await Property.find({ userId: req.user.id });
+	//send response
+	res.send({
+		status: 'success',
+		count: properties.length,
+		data: {
+			properties,
+		},
+	});
 });

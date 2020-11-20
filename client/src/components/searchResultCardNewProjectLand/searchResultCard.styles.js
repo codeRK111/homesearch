@@ -6,6 +6,9 @@ const useStyle = makeStyles((theme) => ({
 		width: '100%',
 		height: '100%',
 	},
+	fontAbel: {
+		fontFamily: "'Abel', sans-serif",
+	},
 	priceWrapper: {
 		position: 'absolute',
 		bottom: 0,

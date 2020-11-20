@@ -30,10 +30,10 @@ const DetailsPage = ({ match: { params } }) => {
 		switch (params.pType) {
 			case 'flat':
 			case 'independenthouse':
-				return <RentApartment />;
+				return <RentApartment pType={params.pType} />;
 			case 'hostel':
 			case 'pg':
-				return <RentHostel />;
+				return <RentHostel pType={params.pType} />;
 
 			default:
 				break;

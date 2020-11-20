@@ -1,6 +1,7 @@
 import { Box, Divider, Grid, Paper } from '@material-ui/core';
+import { Link, useHistory } from 'react-router-dom';
+import { capitalizeFirstLetter, renderInfo } from '../../utils/render.utils';
 
-import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -17,8 +18,9 @@ const parseDate = (date) => {
 
 // Custom components
 
-const ResultCard = ({ independent, property }) => {
+const ResultCard = ({ independent, property, edit = false }) => {
 	const classes = useStyles();
+	const history = useHistory();
 	const mobile = useMediaQuery('(max-width:600px)');
 	const [open, setOpen] = React.useState(false);
 
@@ -29,11 +31,15 @@ const ResultCard = ({ independent, property }) => {
 	const handleClose = () => {
 		setOpen(false);
 	};
+
+	const editProperty = (_) => {
+		history.push(`/edit-property/${property.id}`);
+	};
 	const justifyContent = mobile
 		? { justifyContent: 'flex-start' }
 		: { justifyContent: 'flex-end' };
 	return (
-		<Paper>
+		<Paper className={classes.fontAbel}>
 			<PropertyShare
 				status={open}
 				handleClose={handleClose}
@@ -44,7 +50,7 @@ const ResultCard = ({ independent, property }) => {
 					<img
 						src={
 							property.image1
-								? property.image1
+								? `/assets/properties/${property.image1}`
 								: require('../../assets/no-image.jpg')
 						}
 						alt="property"
@@ -62,7 +68,7 @@ const ResultCard = ({ independent, property }) => {
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
 									<Link
-										to="/property/123/details/rent/hostel"
+										to={`/property-details/${property.id}`}
 										className={classes.linkTitle}
 									>
 										<b>{property.title}</b>
@@ -105,10 +111,11 @@ const ResultCard = ({ independent, property }) => {
 												</Box>
 												<Box>
 													<b>
-														{property.numberOfRoomMates ===
-														1
-															? 'Private'
-															: 'Shared'}
+														{capitalizeFirstLetter(
+															renderInfo(
+																property.roomType
+															)
+														)}
 													</b>
 												</Box>
 											</Box>
@@ -139,7 +146,11 @@ const ResultCard = ({ independent, property }) => {
 												</Box>
 												<Box>
 													<b>
-														{property.typeOfToilets}
+														{capitalizeFirstLetter(
+															renderInfo(
+																property.typeOfToilets
+															)
+														)}
 													</b>
 												</Box>
 											</Box>
@@ -168,9 +179,13 @@ const ResultCard = ({ independent, property }) => {
 												</Box>
 												<Box>
 													<b>
-														{property.availableFor.join(
-															','
-														)}
+														{property.availableFor
+															.map((c) =>
+																capitalizeFirstLetter(
+																	c
+																)
+															)
+															.join(',')}
 													</b>
 												</Box>
 											</Box>
@@ -181,7 +196,15 @@ const ResultCard = ({ independent, property }) => {
 													Fooding
 												</Box>
 												<Box>
-													<b>Non veg,Veg</b>
+													<b>
+														{property.fooding
+															.map((c) =>
+																capitalizeFirstLetter(
+																	c
+																)
+															)
+															.join(',')}
+													</b>
 												</Box>
 											</Box>
 										</Grid>
@@ -193,32 +216,57 @@ const ResultCard = ({ independent, property }) => {
 							<Divider />
 						</Box>
 						<Grid container>
-							<Grid item xs={12} md={6}>
+							<Grid item xs={12} md={4}>
 								<p className={classes.info}>
 									{property.description}
 								</p>
 							</Grid>
-							<Grid item xs={12} md={6}>
-								<Box
-									mt="1rem"
-									display="flex"
-									justifyContent="flex-end"
-									className={classes.smLeft}
-								>
-									<Box display="flex">
+							<Grid item xs={12} md={8}>
+								{edit ? (
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="flex-end"
+									>
 										<button
-											className={classes.whatsapp}
-											onClick={handleOpen}
+											className={classes.details}
+											onClick={editProperty}
 										>
-											<WhatsAppIcon
-												className={classes.shareIcon2}
-											/>
-										</button>
-										<button className={classes.details}>
-											Get Owner Details
+											Edit
 										</button>
 									</Box>
-								</Box>
+								) : (
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="flex-end"
+										className={classes.smLeft}
+									>
+										<Box display="flex">
+											<button
+												className={classes.whatsapp}
+												onClick={handleOpen}
+											>
+												<Box
+													display="flex"
+													alignItems="center"
+												>
+													<WhatsAppIcon
+														className={
+															classes.shareIcon2
+														}
+													/>
+													<Box ml="0.2rem">
+														Chat now
+													</Box>
+												</Box>
+											</button>
+											<button className={classes.details}>
+												Get Owner Details
+											</button>
+										</Box>
+									</Box>
+								)}
 								<Box
 									className={classes.info}
 									mt="0.5rem"

@@ -16,25 +16,17 @@ import { selectUser } from '../../redux/auth/auth.selectors';
 import useStyles from '../profile/profile.styles';
 
 const City = ({
-	user,
 	searchLocations,
 	searchCityLoading,
 	setSelectedCity,
 	city,
+	defaultValue = { name: '' },
 }) => {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
-	const [otpHandler, setOtpHandler] = React.useState({
-		show: false,
-		buttonLabel: 'Send OTP',
-	});
-	const [asyncError, setAsyncError] = React.useState({
-		number: null,
-		password: null,
-		info: null,
-	});
+
 	const anchorRef = React.useRef(null);
-	const [cityText, setCityText] = React.useState();
+	const [cityText, setCityText] = React.useState(defaultValue.name);
 
 	const [cities, setCities] = React.useState([]);
 	const handleFetchCities = (status, data = null) => {

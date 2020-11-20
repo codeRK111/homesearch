@@ -128,6 +128,7 @@ const SearchPage = ({
 			case 'independenthouse':
 				return <RentApartment property={property} />;
 			case 'hostel':
+			case 'pg':
 				return <RentHostel property={property} />;
 
 			default:

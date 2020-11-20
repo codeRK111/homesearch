@@ -11,6 +11,7 @@ import CheckBox from '../../components/formik/checkbox.component';
 import City from './city.component';
 import DatePicker from '../../components/formik/datePicker.component';
 import DividerHeading from '../../components/DividerHeadinng/dividerHeading.component';
+import ExistingImages from './existingImages.component';
 import Furnishes from '../../components/furnishes/furnishes.component';
 import Location from './location.component';
 import React from 'react';
@@ -25,88 +26,12 @@ import { useHistory } from 'react-router-dom';
 import useStyles from './postPropertyDetails.styles';
 import { validateNumber } from '../../utils/validation.utils';
 
-const legalClearance = [
-	{
-		name: 'approvalOfBuilding',
-		value: false,
-		label: 'Approval of building',
-	},
-	{
-		name: 'nocFromFireDepts',
-		value: false,
-		label: 'NOC from Fire depts',
-	},
-	{
-		name: 'electricityConnUse',
-		value: false,
-		label: 'Electricity Connection use',
-	},
-	{
-		name: 'StructuralStatbilityCertificate',
-		value: false,
-		label: 'Structural stability certificate',
-	},
-	{
-		name: 'nocFromPollutionDepts',
-		value: false,
-		label: 'NOC from Pollution deptt',
-	},
-	{
-		name: 'functionalCertificate',
-		value: false,
-		label: 'Occupation / functional certificate',
-	},
-	{
-		name: 'holdingTax',
-		value: false,
-		label: 'Municipal /Holding Tax',
-	},
-	{
-		name: 'completionCertificate',
-		value: false,
-		label: 'Completion Certificate',
-	},
-	{
-		name: 'reraapproved',
-		value: false,
-		label: 'RERA Approved',
-	},
-];
-const initialValues = {
-	for: 'rent',
-	availableFor: [],
-	numberOfBedRooms: 1,
-	numberOfBalconies: 1,
-	noOfFloors: 1,
-	floor: 1,
-	typeOfToilets: '',
-	toiletIndian: 1,
-	toiletWestern: 1,
-	superBuiltupArea: '',
-	carpetArea: '',
-	rent: '',
-	securityDeposit: '',
-	noticePeriod: '',
-	furnished: 'furnished',
-	furnishes: [],
-	amenities: [],
-	distanceSchool: 1,
-	distanceRailwayStation: 1,
-	distanceAirport: 1,
-	distanceBusStop: 1,
-	distanceHospital: 1,
-	availability: 'immediately',
-	availableDate: new Date(),
-	restrictions: '',
-	description: '',
-	city: '',
-	location: '',
-	carParking: 'open',
-	propertyOwnerShip: 'freehold',
-	legalClearance,
-};
-
-const RentApartment = ({ propertyLoading, postProperty, pType }) => {
+const RentApartment = ({
+	propertyLoading,
+	postProperty,
+	pType,
+	initialValues,
+}) => {
 	const history = useHistory();
 	const classes = useStyles();
 	const [images, setImages] = React.useState({
@@ -143,12 +68,6 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 
 	const validateForm = (values) => {
 		const error = {};
-		if (!validateNumber(values.numberOfBedRooms)) {
-			error.numberOfBedRooms = 'Invalid value';
-		}
-		if (!validateNumber(values.numberOfBalconies)) {
-			error.numberOfBalconies = 'Invalid value';
-		}
 		if (!validateNumber(values.superBuiltupArea)) {
 			error.superBuiltupArea = 'Invalid value';
 		}
@@ -160,12 +79,6 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		}
 		if (!validateNumber(values.toiletWestern)) {
 			error.toiletWestern = 'Invalid value';
-		}
-		if (!validateNumber(values.noOfFloors)) {
-			error.noOfFloors = 'Invalid value';
-		}
-		if (!validateNumber(values.floor)) {
-			error.floor = 'Invalid value';
 		}
 		if (!validateNumber(values.distanceSchool)) {
 			error.distanceSchool = 'Invalid value';
@@ -194,6 +107,11 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		if (!values.description) {
 			error.description = 'Invalid value';
 		}
+		if (values.roomType === 'shared') {
+			if (!values.numberOfRoomMates) {
+				error.numberOfRoomMates = 'Invalid value';
+			}
+		}
 		if (
 			values.legalClearance.find((c) => c.name === 'reraapproved')[
 				'value'
@@ -217,12 +135,12 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 
 	const submitForm = (values) => {
 		console.log(values);
-		const type = pType === 'flat' ? 'apartment' : 'villa';
+		const type = pType === 'hostel' ? 'Hostel' : 'PG';
 		const data = {
 			...values,
 			city: selectedCity.id,
 			location: selectedLocation.id,
-			title: `${values.numberOfBedRooms}BHK ${type} for rent in ${selectedLocation.name},${selectedCity.name} `,
+			title: `${type}  in ${selectedLocation.name},${selectedCity.name} `,
 
 			type: pType,
 		};
@@ -273,6 +191,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 				initialValues={initialValues}
 				validate={validateForm}
 				onSubmit={submitForm}
+				enableReinitialize
 			>
 				{({ values, setFieldValue }) => (
 					<Form>
@@ -291,19 +210,50 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 									setSelectedCity={setSelectedLocation}
 								/>
 							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="numberOfBedRooms"
-									formLabel="Bedrooms *"
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="numberOfBalconies"
-									formLabel="Balconies *"
-								/>
-							</Grid>
 
+							{/* <Grid item xs={12} md={6}>
+								<Box className={classes.formLabel}>
+									Available for{' '}
+								</Box>
+								<Grid container spacing={0}>
+									<Grid item xs={6}>
+										<CheckBox
+											name="availableFor"
+											value="family"
+											formLabel="Family"
+										/>
+									</Grid>
+
+									<Grid item xs={6}>
+										<CheckBox
+											name="availableFor"
+											value="Bachelors (Men)"
+											formLabel="Bachelors (Men)"
+										/>
+									</Grid>
+									<Grid item xs={6}>
+										<CheckBox
+											name="availableFor"
+											value="Bachelors (Women)"
+											formLabel="Bachelors (Women)"
+										/>
+									</Grid>
+									<Grid item xs={6}>
+										<CheckBox
+											name="availableFor"
+											value="Job holder (Men)"
+											formLabel="Job holder (Men)"
+										/>
+									</Grid>
+									<Grid item xs={6}>
+										<CheckBox
+											name="availableFor"
+											value="Job holder (Women)"
+											formLabel="Job holder (Women)"
+										/>
+									</Grid>
+								</Grid>
+							</Grid> */}
 							<Grid item xs={12} md={6}>
 								<TextField
 									name="superBuiltupArea"
@@ -347,22 +297,59 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 									/>
 								</Grid>
 							)}
+
+							<Grid item xs={12} md={6}>
+								<TextField
+									name="toiletIndian"
+									formLabel="Number of indian toilet *"
+								/>
+							</Grid>
+							<Grid item xs={12} md={6}>
+								<TextField
+									name="toiletWestern"
+									formLabel="Number of western toilet *"
+								/>
+							</Grid>
 							<Grid item xs={12} md={6}>
 								<Select
-									name="carParking"
-									formLabel="Car Parking *"
+									name="typeOfToilets"
+									formLabel="Toilet type *"
 									options={[
 										{
-											value: 'open',
-											label: 'Open',
+											value: 'attached',
+											label: 'Attached',
 										},
 										{
-											value: 'covered',
-											label: 'Covered',
+											value: 'common',
+											label: 'Common',
 										},
 									]}
 								/>
 							</Grid>
+							<Grid item xs={12} md={6}>
+								<Select
+									name="roomType"
+									formLabel="Room Type *"
+									options={[
+										{
+											value: 'private',
+											label: 'Private',
+										},
+										{
+											value: 'shared',
+											label: 'Shared',
+										},
+									]}
+								/>
+							</Grid>
+							{values.roomType === 'shared' && (
+								<Grid item xs={12} md={6}>
+									<TextField
+										name="numberOfRoomMates"
+										formLabel="Number of roommates *"
+									/>
+								</Grid>
+							)}
 							<Grid item xs={12} md={6}>
 								<Select
 									name="furnished"
@@ -381,47 +368,6 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 											label: 'Semifurnished',
 										},
 									]}
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="toiletIndian"
-									formLabel="Number of indian toilet *"
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="toiletWestern"
-									formLabel="Number of western toilet *"
-								/>
-							</Grid>
-
-							<Grid item xs={12} md={6}>
-								<Select
-									name="propertyOwnerShip"
-									formLabel="Ownership *"
-									options={[
-										{
-											value: 'freehold',
-											label: 'Freehold',
-										},
-										{
-											value: 'leashed',
-											label: 'Leashed',
-										},
-									]}
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="noOfFloors"
-									formLabel="Total number of floors *"
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="floor"
-									formLabel="Property on floor *"
 								/>
 							</Grid>
 							<Grid item xs={12} md={12}>
@@ -491,7 +437,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 									formLabel="Distance from bus stop(KM) *"
 								/>
 							</Grid>
-							<Grid item xs={12} md={12}>
+							<Grid item xs={12} md={6}>
 								<TextField
 									name="distanceHospital"
 									formLabel="Distance from hospital(KM) *"
@@ -510,7 +456,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 									<Grid item xs={6} md={3}>
 										<CheckBox
 											name="availableFor"
-											value="family"
+											value="Family"
 											formLabel="Family"
 										/>
 									</Grid>
@@ -541,6 +487,65 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 											name="availableFor"
 											value="Job holder (Women)"
 											formLabel="Job holder (Women)"
+										/>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={12} md={12}>
+								<Box mt="1rem" mb="0.5rem">
+									<b>Fooding</b>
+								</Box>
+								<Grid container spacing={0}>
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="fooding"
+											value="veg"
+											formLabel="Veg"
+										/>
+									</Grid>
+
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="fooding"
+											value="nonveg"
+											formLabel="Non Veg"
+										/>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={12} md={12}>
+								<Box mt="1rem" mb="0.5rem">
+									<b>Food Schedule</b>
+								</Box>
+								<Grid container spacing={0}>
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="foodSchedule"
+											value="bedtea"
+											formLabel="Bed tea"
+										/>
+									</Grid>
+
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="foodSchedule"
+											value="breakfast"
+											formLabel="Breakfast"
+										/>
+									</Grid>
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="foodSchedule"
+											value="lunch"
+											formLabel="Lunch"
+										/>
+									</Grid>
+
+									<Grid item xs={6} md={3}>
+										<CheckBox
+											name="foodSchedule"
+											value="dinner"
+											formLabel="Dinner"
 										/>
 									</Grid>
 								</Grid>
@@ -593,6 +598,12 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 							<Grid item xs={12} md={12}>
 								<DividerHeading>
 									<h3>Images</h3>
+								</DividerHeading>
+							</Grid>
+							<ExistingImages property={values} />
+							<Grid item xs={12} md={12}>
+								<DividerHeading>
+									<h3>Update Images</h3>
 								</DividerHeading>
 							</Grid>
 							<Grid item xs={12} lg={3}>
@@ -719,8 +730,9 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 										fullWidth
 										size="large"
 										type="submit"
+										disabled
 									>
-										Post Property
+										Update Property
 									</Button>
 								</Box>
 							</Grid>

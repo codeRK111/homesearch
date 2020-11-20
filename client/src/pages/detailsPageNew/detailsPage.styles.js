@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 		display: 'inline',
 		padding: 0,
 		margin: 0,
+		wordBreak: 'break-all',
 	},
 	borderRight: {
 		borderRight: '1px solid #cccccc',

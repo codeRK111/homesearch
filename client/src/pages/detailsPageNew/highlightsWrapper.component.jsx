@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import RentApartmentHighlights from './rentApartmenrtDetails';
+import RentHostelHeighlights from './rentHostelDetails';
 import ResaleLand from './resaleLandDetails.component';
 import ResaleVillHighlights from './resaleApartmenrtDetails';
 
@@ -20,8 +21,11 @@ const HighlightsWrapper = ({ property }) => {
 	const renderRentHighlights = (property) => {
 		switch (property.type) {
 			case 'flat':
+			case 'independenthouse':
 				return <RentApartmentHighlights property={property} />;
-
+			case 'hostel':
+			case 'pg':
+				return <RentHostelHeighlights property={property} />;
 			default:
 				break;
 		}

@@ -17,6 +17,10 @@ export const getPropertyResources = (payload) => ({
 	type: propertyActionTypes.GET_PROPERTY_RESOURCES_START,
 	payload,
 });
+export const getMyProperties = (payload) => ({
+	type: propertyActionTypes.GET_MY_PROPERTIES_START,
+	payload,
+});
 
 // Set
 export const setPropertyResources = (payload) => ({
@@ -40,5 +44,9 @@ export const getPropertyResourcesLoading = (payload) => ({
 
 export const postPropertyLoading = (payload) => ({
 	type: propertyActionTypes.TOGGLE_POST_PROPERTY_LOADING,
+	payload,
+});
+export const getMyPropertiesLoading = (payload) => ({
+	type: propertyActionTypes.TOGGLE_MY_PROPERTIES_LOADING,
 	payload,
 });

@@ -33,6 +33,12 @@ router.get(
 router
 	.route('/user/sale')
 	.post(authController.protect, propertyController.addPropertyByUserForSale);
+router
+	.route('/user/rent')
+	.post(authController.protect, propertyController.addPropertyByUserForRent);
+router
+	.route('/user/my-properties')
+	.get(authController.protect, propertyController.getMyProperties);
 
 router
 	.route('/')

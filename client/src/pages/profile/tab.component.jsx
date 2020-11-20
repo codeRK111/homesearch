@@ -1,6 +1,7 @@
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import Box from '@material-ui/core/Box';
+import MyProperties from './myProperties.wrapper';
 import PropTypes from 'prop-types';
 import Query from '../../components/query/query.component';
 import React from 'react';
@@ -115,7 +116,7 @@ export default function FullWidthTabs() {
 				onChangeIndex={handleChangeIndex}
 			>
 				<TabPanel value={value} index={0} dir={theme.direction}>
-					Your Properties
+					<MyProperties />
 				</TabPanel>
 				<TabPanel value={value} index={1} dir={theme.direction}>
 					{Array.from(Array(5).keys()).map((c) => (

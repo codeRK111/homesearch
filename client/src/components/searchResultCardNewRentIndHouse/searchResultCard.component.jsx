@@ -1,6 +1,6 @@
 import { Box, Divider, Grid, Paper } from '@material-ui/core';
+import { Link, useHistory } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -9,10 +9,11 @@ import useStyles from './searchResultCard.styles';
 
 // Custom components
 
-const ResultCard = ({ independent }) => {
+const ResultCard = ({ independent, edit = false }) => {
 	const classes = useStyles();
 	const mobile = useMediaQuery('(max-width:600px)');
 	const [open, setOpen] = React.useState(false);
+	const history = useHistory();
 
 	const handleOpen = (_) => {
 		setOpen(true);
@@ -21,11 +22,15 @@ const ResultCard = ({ independent }) => {
 	const handleClose = () => {
 		setOpen(false);
 	};
+
+	const editProperty = (_) => {
+		history.push(`/edit-property/${property.id}`);
+	};
 	const justifyContent = mobile
 		? { justifyContent: 'flex-start' }
 		: { justifyContent: 'flex-end' };
 	return (
-		<Paper>
+		<Paper className={classes.fontAbel}>
 			<PropertyShare
 				status={open}
 				handleClose={handleClose}
@@ -36,7 +41,7 @@ const ResultCard = ({ independent }) => {
 					<img
 						src={
 							property.image1
-								? property.image1
+								? `/assets/properties/${property.image1}`
 								: require('../../assets/no-image.jpg')
 						}
 						alt="property"
@@ -54,7 +59,7 @@ const ResultCard = ({ independent }) => {
 							<Grid item xs={12} md={6}>
 								<Box display="flex" alignItems="center">
 									<Link
-										to="/property/123/details/rent/villa"
+										to={`/property-details/${property.id}`}
 										className={classes.linkTitle}
 									>
 										<b>
@@ -195,26 +200,51 @@ const ResultCard = ({ independent }) => {
 								</p>
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<Box
-									mt="1rem"
-									display="flex"
-									justifyContent="flex-end"
-									className={classes.smLeft}
-								>
-									<Box display="flex">
+								{edit ? (
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="flex-end"
+									>
 										<button
-											className={classes.whatsapp}
-											onClick={handleOpen}
+											className={classes.details}
+											onClick={editProperty}
 										>
-											<WhatsAppIcon
-												className={classes.shareIcon2}
-											/>
-										</button>
-										<button className={classes.details}>
-											Get Owner Details
+											Edit
 										</button>
 									</Box>
-								</Box>
+								) : (
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="flex-end"
+										className={classes.smLeft}
+									>
+										<Box display="flex">
+											<button
+												className={classes.whatsapp}
+												onClick={handleOpen}
+											>
+												<Box
+													display="flex"
+													alignItems="center"
+												>
+													<WhatsAppIcon
+														className={
+															classes.shareIcon2
+														}
+													/>
+													<Box ml="0.2rem">
+														Chat now
+													</Box>
+												</Box>
+											</button>
+											<button className={classes.details}>
+												Get Owner Details
+											</button>
+										</Box>
+									</Box>
+								)}
 								<Box
 									className={classes.info}
 									mt="0.5rem"

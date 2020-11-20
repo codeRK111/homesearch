@@ -1,41 +1,94 @@
-import { Box, Button, Grid } from '@material-ui/core';
-import { Form, Formik } from 'formik';
+import {
+	Backdrop,
+	Box,
+	Button,
+	CircularProgress,
+	Grid,
+} from '@material-ui/core';
+import { FieldArray, Form, Formik } from 'formik';
 
 import CheckBox from '../../components/formik/checkbox.component';
+import City from './city.component';
 import DatePicker from '../../components/formik/datePicker.component';
 import DividerHeading from '../../components/DividerHeadinng/dividerHeading.component';
 import Furnishes from '../../components/furnishes/furnishes.component';
-import LegalClearance from '../../components/legal/legal.component';
+import Location from './location.component';
 import React from 'react';
 import Select from '../../components/formik/select.component';
+import Snackbar from '../../components/snackbar/snackbar.component';
 import TextField from '../../components/formik/textField.component';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { postProperty } from '../../redux/property/property.actions';
+import { selectPostPropertyLoading } from '../../redux/property/property.selectors';
+import { useHistory } from 'react-router-dom';
 import useStyles from './postPropertyDetails.styles';
+import { validateNumber } from '../../utils/validation.utils';
 
+const legalClearance = [
+	{
+		name: 'approvalOfBuilding',
+		value: false,
+		label: 'Approval of building',
+	},
+	{
+		name: 'nocFromFireDepts',
+		value: false,
+		label: 'NOC from Fire depts',
+	},
+	{
+		name: 'electricityConnUse',
+		value: false,
+		label: 'Electricity Connection use',
+	},
+	{
+		name: 'StructuralStatbilityCertificate',
+		value: false,
+		label: 'Structural stability certificate',
+	},
+	{
+		name: 'nocFromPollutionDepts',
+		value: false,
+		label: 'NOC from Pollution deptt',
+	},
+	{
+		name: 'functionalCertificate',
+		value: false,
+		label: 'Occupation / functional certificate',
+	},
+	{
+		name: 'holdingTax',
+		value: false,
+		label: 'Municipal /Holding Tax',
+	},
+	{
+		name: 'completionCertificate',
+		value: false,
+		label: 'Completion Certificate',
+	},
+	{
+		name: 'reraapproved',
+		value: false,
+		label: 'RERA Approved',
+	},
+];
 const initialValues = {
+	for: 'rent',
 	title: '',
 	availableFor: [],
-	numberOfBedRooms: 1,
-	numberOfBalconies: 1,
-	noOfFloors: 1,
-	floor: 1,
-	typeOfToilets: '',
-	toiletTypes: '',
 	toiletIndian: 1,
 	toiletWestern: 1,
-	superBuiltupArea: '',
-	carpetArea: '',
 	rent: '',
 	securityDeposit: '',
 	noticePeriod: '',
 	furnished: 'furnished',
 	furnishes: [],
-	externalAmenities: [],
-	distanceSchool: '',
-	distanceRailwayStation: '',
-	distanceAirport: '',
-	distanceBusStop: '',
-	distanceHospital: '',
-	availability: '',
+	distanceSchool: 1,
+	distanceRailwayStation: 1,
+	distanceAirport: 1,
+	distanceBusStop: 1,
+	distanceHospital: 1,
+	availability: 'immediately',
 	availableDate: new Date(),
 	restrictions: '',
 	description: '',
@@ -45,9 +98,16 @@ const initialValues = {
 	roomType: 'private',
 	fooding: [],
 	foodSchedule: [],
+	legalClearance,
+	numberOfRoomMates: 1,
+	reraapproveId: '',
+	typeOfToilets: 'attached',
+	superBuiltupArea: '',
+	carpetArea: '',
 };
 
-const RentApartment = () => {
+const RentApartment = ({ propertyLoading, postProperty, pType }) => {
+	const history = useHistory();
 	const classes = useStyles();
 	const [images, setImages] = React.useState({
 		image1: null,
@@ -55,11 +115,137 @@ const RentApartment = () => {
 		image3: null,
 		image4: null,
 	});
-	const [otherDetails] = React.useState({
-		furnishes: [],
-		amenities: [],
-		legalClearances: [],
+	const [selectedCity, setSelectedCity] = React.useState({
+		id: '',
+		name: '',
 	});
+	const [selectedLocation, setSelectedLocation] = React.useState({
+		id: '',
+		name: '',
+	});
+	const [openSnackBar, setOpenSnackBar] = React.useState(false);
+	const [snackbarMessage, setSnackbarMessage] = React.useState('');
+	const [severity, setSeverity] = React.useState('success');
+
+	const showSnackbar = (message, severity = 'success') => {
+		setSnackbarMessage(message);
+		setOpenSnackBar(true);
+		setSeverity(severity);
+	};
+
+	const closeSnackbar = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+
+		setOpenSnackBar(false);
+	};
+
+	const validateForm = (values) => {
+		const error = {};
+
+		if (!validateNumber(values.superBuiltupArea)) {
+			error.superBuiltupArea = 'Invalid value';
+		}
+		if (!validateNumber(values.carpetArea)) {
+			error.carpetArea = 'Invalid value';
+		}
+
+		if (!validateNumber(values.toiletIndian)) {
+			error.toiletIndian = 'Invalid value';
+		}
+		if (!validateNumber(values.toiletWestern)) {
+			error.toiletWestern = 'Invalid value';
+		}
+		if (!validateNumber(values.distanceSchool)) {
+			error.distanceSchool = 'Invalid value';
+		}
+		if (!validateNumber(values.distanceRailwayStation)) {
+			error.distanceRailwayStation = 'Invalid value';
+		}
+		if (!validateNumber(values.distanceAirport)) {
+			error.distanceAirport = 'Invalid value';
+		}
+		if (!validateNumber(values.distanceBusStop)) {
+			error.distanceBusStop = 'Invalid value';
+		}
+		if (!validateNumber(values.distanceHospital)) {
+			error.distanceHospital = 'Invalid value';
+		}
+		if (!validateNumber(values.rent)) {
+			error.rent = 'Invalid value';
+		}
+		if (!validateNumber(values.securityDeposit)) {
+			error.securityDeposit = 'Invalid value';
+		}
+		if (!validateNumber(values.noticePeriod)) {
+			error.noticePeriod = 'Invalid value';
+		}
+		if (!values.description) {
+			error.description = 'Invalid value';
+		}
+		if (values.roomType === 'shared') {
+			if (!values.numberOfRoomMates) {
+				error.numberOfRoomMates = 'Invalid value';
+			}
+		}
+		if (
+			values.legalClearance.find((c) => c.name === 'reraapproved')[
+				'value'
+			] &&
+			!values.reraapproveId
+		) {
+			error.reraapproveId = 'required';
+		}
+
+		return error;
+	};
+
+	const handlePostProperty = (status, data = null) => {
+		if (status === 'success') {
+			showSnackbar('Property posted successfully');
+			history.push(`/property-details/${data.id}`);
+		} else {
+			showSnackbar(data, 'error');
+		}
+	};
+
+	const submitForm = (values) => {
+		console.log(values);
+		const type = pType === 'hostel' ? 'Hostel' : 'PG';
+		const data = {
+			...values,
+			city: selectedCity.id,
+			location: selectedLocation.id,
+			title: `${type}  in ${selectedLocation.name},${selectedCity.name} `,
+
+			type: pType,
+		};
+		if (values.reraapproveId) {
+			data.legalClearance = values.legalClearance.map((c) => {
+				if (c.name === 'reraapproved') {
+					c.details = values.reraapproveId;
+				}
+				return c;
+			});
+		}
+		let i = 0;
+		const propertyImages = {};
+		Object.keys(images).forEach((c) => {
+			if (images[c]) {
+				propertyImages[c] = images[c];
+				i++;
+			}
+		});
+		if (i > 0) {
+			data['propertyImages'] = propertyImages;
+		} else {
+			data['propertyImages'] = null;
+		}
+		console.log(data);
+
+		postProperty(handlePostProperty, data);
+	};
 	const handleImage = (e) => {
 		const { name, files } = e.target;
 		setImages((prevState) => ({
@@ -69,7 +255,20 @@ const RentApartment = () => {
 	};
 	return (
 		<Box>
-			<Formik initialValues={initialValues}>
+			<Backdrop className={classes.backdrop} open={propertyLoading}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
+			<Snackbar
+				status={openSnackBar}
+				handleClose={closeSnackbar}
+				severity={severity}
+				message={snackbarMessage}
+			/>
+			<Formik
+				initialValues={initialValues}
+				validate={validateForm}
+				onSubmit={submitForm}
+			>
 				{({ values, setFieldValue }) => (
 					<Form>
 						<Grid container spacing={1}>
@@ -79,12 +278,12 @@ const RentApartment = () => {
 								</DividerHeading>
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<TextField name="city" formLabel="City *" />
+								<City setSelectedCity={setSelectedCity} />
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<TextField
-									name="location"
-									formLabel="Location *"
+								<Location
+									city={selectedCity.id}
+									setSelectedCity={setSelectedLocation}
 								/>
 							</Grid>
 
@@ -131,6 +330,18 @@ const RentApartment = () => {
 									</Grid>
 								</Grid>
 							</Grid> */}
+							<Grid item xs={12} md={6}>
+								<TextField
+									name="superBuiltupArea"
+									formLabel="Super builtup Area (Sq. ft) *"
+								/>
+							</Grid>
+							<Grid item xs={12} md={6}>
+								<TextField
+									name="carpetArea"
+									formLabel="Carpet Area (Sq. ft) *"
+								/>
+							</Grid>
 
 							<Grid item xs={12} md={6}>
 								<Select
@@ -176,24 +387,66 @@ const RentApartment = () => {
 									formLabel="Number of western toilet *"
 								/>
 							</Grid>
-
 							<Grid item xs={12} md={6}>
 								<Select
-									name="propertyOwnerShip"
-									formLabel="Ownership *"
+									name="typeOfToilets"
+									formLabel="Toilet type *"
 									options={[
 										{
-											value: 'freehold',
-											label: 'Freehold',
+											value: 'attached',
+											label: 'Attached',
 										},
 										{
-											value: 'leashed',
-											label: 'Leashed',
+											value: 'common',
+											label: 'Common',
 										},
 									]}
 								/>
 							</Grid>
-
+							<Grid item xs={12} md={6}>
+								<Select
+									name="roomType"
+									formLabel="Room Type *"
+									options={[
+										{
+											value: 'private',
+											label: 'Private',
+										},
+										{
+											value: 'shared',
+											label: 'Shared',
+										},
+									]}
+								/>
+							</Grid>
+							{values.roomType === 'shared' && (
+								<Grid item xs={12} md={6}>
+									<TextField
+										name="numberOfRoomMates"
+										formLabel="Number of roommates *"
+									/>
+								</Grid>
+							)}
+							<Grid item xs={12} md={6}>
+								<Select
+									name="furnished"
+									formLabel="Furnishing status *"
+									options={[
+										{
+											value: 'unfurnished',
+											label: 'Unfurnished',
+										},
+										{
+											value: 'furnished',
+											label: 'Furnished',
+										},
+										{
+											value: 'semifurnished',
+											label: 'Semifurnished',
+										},
+									]}
+								/>
+							</Grid>
 							<Grid item xs={12} md={12}>
 								<TextField
 									name="noticePeriod"
@@ -280,7 +533,7 @@ const RentApartment = () => {
 									<Grid item xs={6} md={3}>
 										<CheckBox
 											name="availableFor"
-											value="family"
+											value="Family"
 											formLabel="Family"
 										/>
 									</Grid>
@@ -323,7 +576,7 @@ const RentApartment = () => {
 									<Grid item xs={6} md={3}>
 										<CheckBox
 											name="fooding"
-											value="family"
+											value="veg"
 											formLabel="Veg"
 										/>
 									</Grid>
@@ -331,7 +584,7 @@ const RentApartment = () => {
 									<Grid item xs={6} md={3}>
 										<CheckBox
 											name="fooding"
-											value="Bachelors (Men)"
+											value="nonveg"
 											formLabel="Non Veg"
 										/>
 									</Grid>
@@ -376,14 +629,48 @@ const RentApartment = () => {
 							</Grid>
 							<Grid item xs={12} md={12}>
 								<Furnishes
-									initialValues={otherDetails}
+									initialValues={initialValues}
 									showFurnishes={
 										values.furnished !== 'unfurnished'
 									}
 								/>
 							</Grid>
 							<Grid item xs={12} md={12}>
-								<LegalClearance initialValues={otherDetails} />
+								<Box mt="1rem" mb="0.5rem">
+									<b>Legal Clearance</b>
+								</Box>
+								<FieldArray name="legalClearance">
+									{(arrayHelpers) => (
+										<Grid container>
+											{values.legalClearance.map(
+												(c, i) => {
+													return (
+														<Grid item lg={3}>
+															<CheckBox
+																key={i}
+																heading="test"
+																name={`legalClearance.${i}.value`}
+																formLabel={
+																	c.label
+																}
+															/>
+														</Grid>
+													);
+												}
+											)}
+										</Grid>
+									)}
+								</FieldArray>
+							</Grid>
+							<Grid item xs={12} md={12}>
+								{values.legalClearance.find(
+									(c) => c.name === 'reraapproved'
+								)['value'] && (
+									<TextField
+										name="reraapproveId"
+										formLabel="RERA ID"
+									/>
+								)}
 							</Grid>
 							<Grid item xs={12} md={12}>
 								<DividerHeading>
@@ -513,6 +800,7 @@ const RentApartment = () => {
 										color="primary"
 										fullWidth
 										size="large"
+										type="submit"
 									>
 										Post Property
 									</Button>
@@ -526,4 +814,13 @@ const RentApartment = () => {
 	);
 };
 
-export default RentApartment;
+const mapStateToProps = createStructuredSelector({
+	propertyLoading: selectPostPropertyLoading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	postProperty: (callback, data) =>
+		dispatch(postProperty({ data, callback })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RentApartment);

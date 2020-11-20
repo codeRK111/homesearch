@@ -1,13 +1,53 @@
-import { Box, Button, Grid } from '@material-ui/core';
-import { Form, Formik } from 'formik';
+import {
+	Backdrop,
+	Box,
+	Button,
+	CircularProgress,
+	Grid,
+} from '@material-ui/core';
+import { FieldArray, Form, Formik } from 'formik';
 
+import Checkbox from '../../components/formik/checkbox.component';
+import City from './city.component';
 import DividerHeading from '../../components/DividerHeadinng/dividerHeading.component';
+import Location from './location.component';
 import React from 'react';
 import Select from '../../components/formik/select.component';
+import Snackbar from '../../components/snackbar/snackbar.component';
 import TextField from '../../components/formik/textField.component';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { postProperty } from '../../redux/property/property.actions';
+import { selectPostPropertyLoading } from '../../redux/property/property.selectors';
+import { useHistory } from 'react-router-dom';
 import useStyles from './postPropertyDetails.styles';
+import { validateNumber } from '../../utils/validation.utils';
+
+const legalClearance = [
+	{
+		name: 'numberOfOwner',
+		value: false,
+		label: 'Number of owner',
+	},
+	{
+		name: 'withinBlockArea',
+		value: false,
+		label: 'Within Block Area',
+	},
+	{
+		name: 'approvedByDevelopmentAutority',
+		value: false,
+		label: 'Approved by Development Authority',
+	},
+	{
+		name: 'withinAreaOfDevelopmentAuthrity',
+		value: false,
+		label: 'Within Area of Development Authority',
+	},
+];
 
 const initialValues = {
+	for: 'sale',
 	title: '',
 	description: '',
 	length: '',
@@ -26,23 +66,151 @@ const initialValues = {
 	ownerNumber: '',
 	verified: true,
 	transactionType: 'newbooking',
-	distanceSchool: '',
-	distanceRailwayStation: '',
-	distanceAirport: '',
-	distanceBusStop: '',
-	distanceHospital: '',
+	distanceSchool: 1,
+	distanceRailwayStation: 1,
+	distanceAirport: 1,
+	distanceBusStop: 1,
+	distanceHospital: 1,
 	city: '',
 	location: '',
+	legalClearance,
 };
 
-const RentApartment = () => {
+const RentApartment = ({ propertyLoading, postProperty }) => {
 	const classes = useStyles();
+	const history = useHistory();
 	const [images, setImages] = React.useState({
 		image1: null,
 		image2: null,
 		image3: null,
 		image4: null,
 	});
+	const [selectedCity, setSelectedCity] = React.useState({
+		id: '',
+		name: '',
+	});
+	const [selectedLocation, setSelectedLocation] = React.useState({
+		id: '',
+		name: '',
+	});
+	const [openSnackBar, setOpenSnackBar] = React.useState(false);
+	const [snackbarMessage, setSnackbarMessage] = React.useState('');
+	const [severity, setSeverity] = React.useState('success');
+
+	const showSnackbar = (message, severity = 'success') => {
+		setSnackbarMessage(message);
+		setOpenSnackBar(true);
+		setSeverity(severity);
+	};
+
+	const closeSnackbar = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+
+		setOpenSnackBar(false);
+	};
+
+	const validateForm = (values) => {
+		const error = {};
+		if (!validateNumber(values['length'])) {
+			error['length'] = 'Invalid value';
+		}
+		if (!validateNumber(values.width)) {
+			error.width = 'Invalid value';
+		}
+		if (!validateNumber(values.plotFrontage)) {
+			error.plotFrontage = 'Invalid value';
+		}
+		if (!validateNumber(values.plotArea)) {
+			error.plotArea = 'Invalid value';
+		}
+		if (!validateNumber(values.widthOfRoad)) {
+			error.widthOfRoad = 'Invalid value';
+		}
+		if (!validateNumber(values.govermentValuation)) {
+			error.govermentValuation = 'Invalid value';
+		}
+
+		if (!validateNumber(values.distanceSchool)) {
+			error.distanceSchool = 'Invalid value';
+		}
+		if (!validateNumber(values.distanceRailwayStation)) {
+			error.distanceRailwayStation = 'Invalid value';
+		}
+		if (!validateNumber(values.distanceAirport)) {
+			error.distanceAirport = 'Invalid value';
+		}
+		if (!validateNumber(values.distanceBusStop)) {
+			error.distanceBusStop = 'Invalid value';
+		}
+		if (!validateNumber(values.distanceHospital)) {
+			error.distanceHospital = 'Invalid value';
+		}
+		if (!validateNumber(values.salePrice)) {
+			error.salePrice = 'Invalid value';
+		}
+		if (!values.description) {
+			error.description = 'Invalid value';
+		}
+
+		if (
+			values.legalClearance.find((c) => c.name === 'numberOfOwner')[
+				'value'
+			] &&
+			!values.ownerNumber
+		) {
+			error.ownerNumber = 'required';
+		}
+
+		return error;
+	};
+
+	const handlePostProperty = (status, data = null) => {
+		if (status === 'success') {
+			showSnackbar('Property posted successfully');
+			history.push(`/property-details/${data.id}`);
+		} else {
+			showSnackbar(data, 'error');
+		}
+	};
+
+	const submitForm = (values) => {
+		console.log(values);
+		const data = {
+			...values,
+			city: selectedCity.id,
+			location: selectedLocation.id,
+			title: `${values.plotArea} Sq.ft land for sale in ${selectedLocation.name},${selectedCity.name} `,
+			pricePerSqFt: values.salePrice / values.plotArea,
+			sale_type: 'land',
+		};
+		if (values.ownerNumber) {
+			data.legalClearance = values.legalClearance.map((c) => {
+				if (c.name === 'numberOfOwner') {
+					c.details = values.ownerNumber;
+				}
+				return c;
+			});
+		}
+		let i = 0;
+		const propertyImages = {};
+		Object.keys(images).forEach((c) => {
+			if (images[c]) {
+				propertyImages[c] = images[c];
+				i++;
+			}
+		});
+		if (i > 0) {
+			data['propertyImages'] = propertyImages;
+		} else {
+			data['propertyImages'] = null;
+		}
+		console.log(data);
+
+		postProperty(handlePostProperty, data);
+	};
+
 	const handleImage = (e) => {
 		const { name, files } = e.target;
 		setImages((prevState) => ({
@@ -52,9 +220,23 @@ const RentApartment = () => {
 	};
 	return (
 		<Box>
-			<Formik initialValues={initialValues}>
-				{({ values, setFieldValue }) => (
+			<Backdrop className={classes.backdrop} open={propertyLoading}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
+			<Snackbar
+				status={openSnackBar}
+				handleClose={closeSnackbar}
+				severity={severity}
+				message={snackbarMessage}
+			/>
+			<Formik
+				initialValues={initialValues}
+				validate={validateForm}
+				onSubmit={submitForm}
+			>
+				{({ values, errors }) => (
 					<Form>
+						<div>{JSON.stringify(errors, null, '\t')}</div>
 						<Grid container spacing={1}>
 							<Grid item xs={12} md={12}>
 								<DividerHeading>
@@ -62,12 +244,12 @@ const RentApartment = () => {
 								</DividerHeading>
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<TextField name="city" formLabel="City *" />
+								<City setSelectedCity={setSelectedCity} />
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<TextField
-									name="location"
-									formLabel="Location *"
+								<Location
+									city={selectedCity.id}
+									setSelectedCity={setSelectedLocation}
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -210,6 +392,18 @@ const RentApartment = () => {
 									formLabel="Goverment valuation *"
 								/>
 							</Grid>
+							{values.plotArea && values.salePrice && (
+								<Grid item xs={12} md={12}>
+									<TextField
+										name="pricePerSqFt"
+										formLabel="Price / Sq. ft *"
+										disabled={true}
+										value={
+											values.salePrice / values.plotArea
+										}
+									/>
+								</Grid>
+							)}
 							<Grid item xs={12} md={12}>
 								<DividerHeading>
 									<h3>Nearby places</h3>
@@ -244,6 +438,46 @@ const RentApartment = () => {
 									name="distanceHospital"
 									formLabel="Distance from hospital(KM) *"
 								/>
+							</Grid>
+							<DividerHeading>
+								<h3>Other Details</h3>
+							</DividerHeading>
+							<Grid item xs={12} md={12}>
+								<Box mt="1rem" mb="0.5rem">
+									<b>Legal Clearance</b>
+								</Box>
+								<FieldArray name="legalClearance">
+									{(arrayHelpers) => (
+										<Grid container>
+											{values.legalClearance.map(
+												(c, i) => {
+													return (
+														<Grid item lg={3}>
+															<Checkbox
+																key={i}
+																heading="test"
+																name={`legalClearance.${i}.value`}
+																formLabel={
+																	c.label
+																}
+															/>
+														</Grid>
+													);
+												}
+											)}
+										</Grid>
+									)}
+								</FieldArray>
+							</Grid>
+							<Grid item xs={12} md={12}>
+								{values.legalClearance.find(
+									(c) => c.name === 'numberOfOwner'
+								)['value'] && (
+									<TextField
+										name="ownerNumber"
+										formLabel="Owner Number"
+									/>
+								)}
 							</Grid>
 							<Grid item xs={12} md={12}>
 								<DividerHeading>
@@ -373,6 +607,7 @@ const RentApartment = () => {
 										color="primary"
 										fullWidth
 										size="large"
+										type="submit"
 									>
 										Post Property
 									</Button>
@@ -386,4 +621,13 @@ const RentApartment = () => {
 	);
 };
 
-export default RentApartment;
+const mapStateToProps = createStructuredSelector({
+	propertyLoading: selectPostPropertyLoading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	postProperty: (callback, data) =>
+		dispatch(postProperty({ data, callback })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RentApartment);

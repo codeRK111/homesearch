@@ -2,7 +2,7 @@ import {
 	Backdrop,
 	Box,
 	Button,
-	CircularProgress,
+	CircularProgress, 
 	Grid,
 } from '@material-ui/core';
 import { FieldArray, Form, Formik } from 'formik';
@@ -222,6 +222,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 				values.salePriceOver === 'superBuildUpArea'
 					? values.salePrice / values.superBuiltupArea
 					: values.salePrice / values.carpetArea,
+			sale_type: pType
 		};
 		if (values.reraapproveId) {
 			data.legalClearance = values.legalClearance.map((c) => {

@@ -1,4 +1,5 @@
 import { Box, Divider, Grid, Paper } from '@material-ui/core';
+import { Link, useHistory } from 'react-router-dom';
 import {
 	capitalizeFirstLetter,
 	parseDate,
@@ -6,7 +7,6 @@ import {
 } from '../../utils/render.utils';
 
 import DoneIcon from '@material-ui/icons/Done';
-import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -21,8 +21,9 @@ const showRera = (clearance) => {
 
 const parsetType = (type) => (type === 'newbooking' ? 'NEW BOOKING' : 'RESALE');
 
-const ResultCard = ({ independent, property }) => {
+const ResultCard = ({ independent, property, edit = false }) => {
 	const classes = useStyles();
+	const history = useHistory();
 	const [open, setOpen] = React.useState(false);
 	const mobile = useMediaQuery('(max-width:600px)');
 	const handleOpen = (_) => {
@@ -33,11 +34,15 @@ const ResultCard = ({ independent, property }) => {
 		setOpen(false);
 	};
 
+	const editProperty = (_) => {
+		history.push(`/edit-property/${property.id}`);
+	};
+
 	const justifyContent = mobile
 		? { justifyContent: 'flex-start' }
 		: { justifyContent: 'flex-end' };
 	return (
-		<Paper>
+		<Paper className={classes.fontAbel}>
 			<PropertyShare
 				status={open}
 				handleClose={handleClose}
@@ -246,34 +251,51 @@ const ResultCard = ({ independent, property }) => {
 								</p>
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<Box
-									mt="1rem"
-									display="flex"
-									justifyContent="flex-end"
-									className={classes.smLeft}
-								>
-									<Box display="flex">
+								{edit ? (
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="flex-end"
+									>
 										<button
-											className={classes.whatsapp}
-											onClick={handleOpen}
+											className={classes.details}
+											onClick={editProperty}
 										>
-											<Box
-												display="flex"
-												alignItems="center"
-											>
-												<WhatsAppIcon
-													className={
-														classes.shareIcon2
-													}
-												/>
-												<Box ml="0.2rem">Chat now</Box>
-											</Box>
-										</button>
-										<button className={classes.details}>
-											Get Owner Details
+											Edit
 										</button>
 									</Box>
-								</Box>
+								) : (
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="flex-end"
+										className={classes.smLeft}
+									>
+										<Box display="flex">
+											<button
+												className={classes.whatsapp}
+												onClick={handleOpen}
+											>
+												<Box
+													display="flex"
+													alignItems="center"
+												>
+													<WhatsAppIcon
+														className={
+															classes.shareIcon2
+														}
+													/>
+													<Box ml="0.2rem">
+														Chat now
+													</Box>
+												</Box>
+											</button>
+											<button className={classes.details}>
+												Get Owner Details
+											</button>
+										</Box>
+									</Box>
+								)}
 								<Box
 									className={classes.info}
 									mt="0.5rem"

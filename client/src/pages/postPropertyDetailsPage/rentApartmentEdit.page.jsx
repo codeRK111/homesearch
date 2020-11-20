@@ -11,6 +11,7 @@ import CheckBox from '../../components/formik/checkbox.component';
 import City from './city.component';
 import DatePicker from '../../components/formik/datePicker.component';
 import DividerHeading from '../../components/DividerHeadinng/dividerHeading.component';
+import ExistingImages from './existingImages.component';
 import Furnishes from '../../components/furnishes/furnishes.component';
 import Location from './location.component';
 import React from 'react';
@@ -25,88 +26,12 @@ import { useHistory } from 'react-router-dom';
 import useStyles from './postPropertyDetails.styles';
 import { validateNumber } from '../../utils/validation.utils';
 
-const legalClearance = [
-	{
-		name: 'approvalOfBuilding',
-		value: false,
-		label: 'Approval of building',
-	},
-	{
-		name: 'nocFromFireDepts',
-		value: false,
-		label: 'NOC from Fire depts',
-	},
-	{
-		name: 'electricityConnUse',
-		value: false,
-		label: 'Electricity Connection use',
-	},
-	{
-		name: 'StructuralStatbilityCertificate',
-		value: false,
-		label: 'Structural stability certificate',
-	},
-	{
-		name: 'nocFromPollutionDepts',
-		value: false,
-		label: 'NOC from Pollution deptt',
-	},
-	{
-		name: 'functionalCertificate',
-		value: false,
-		label: 'Occupation / functional certificate',
-	},
-	{
-		name: 'holdingTax',
-		value: false,
-		label: 'Municipal /Holding Tax',
-	},
-	{
-		name: 'completionCertificate',
-		value: false,
-		label: 'Completion Certificate',
-	},
-	{
-		name: 'reraapproved',
-		value: false,
-		label: 'RERA Approved',
-	},
-];
-const initialValues = {
-	for: 'rent',
-	availableFor: [],
-	numberOfBedRooms: 1,
-	numberOfBalconies: 1,
-	noOfFloors: 1,
-	floor: 1,
-	typeOfToilets: '',
-	toiletIndian: 1,
-	toiletWestern: 1,
-	superBuiltupArea: '',
-	carpetArea: '',
-	rent: '',
-	securityDeposit: '',
-	noticePeriod: '',
-	furnished: 'furnished',
-	furnishes: [],
-	amenities: [],
-	distanceSchool: 1,
-	distanceRailwayStation: 1,
-	distanceAirport: 1,
-	distanceBusStop: 1,
-	distanceHospital: 1,
-	availability: 'immediately',
-	availableDate: new Date(),
-	restrictions: '',
-	description: '',
-	city: '',
-	location: '',
-	carParking: 'open',
-	propertyOwnerShip: 'freehold',
-	legalClearance,
-};
-
-const RentApartment = ({ propertyLoading, postProperty, pType }) => {
+const RentApartment = ({
+	propertyLoading,
+	postProperty,
+	pType,
+	initialValues,
+}) => {
 	const history = useHistory();
 	const classes = useStyles();
 	const [images, setImages] = React.useState({
@@ -595,6 +520,12 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 									<h3>Images</h3>
 								</DividerHeading>
 							</Grid>
+							<ExistingImages property={values} />
+							<Grid item xs={12} md={12}>
+								<DividerHeading>
+									<h3>Update Images</h3>
+								</DividerHeading>
+							</Grid>
 							<Grid item xs={12} lg={3}>
 								<Box className={classes.imageWrapper}>
 									<img
@@ -719,8 +650,9 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 										fullWidth
 										size="large"
 										type="submit"
+										disabled
 									>
-										Post Property
+										Update Property
 									</Button>
 								</Box>
 							</Grid>

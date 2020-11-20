@@ -1,6 +1,7 @@
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import DetailsPage from './pages/detailsPageNew/detailsPage.component';
+import EditProperty from './pages/postPropertyDetailsPage/editWrapper.page';
 import HomePage from './pages/home/home.page';
 import LoginPage from './pages/login/login.page';
 import MobileSearch from './pages/mobileSearch/mobileSearch.page';
@@ -87,6 +88,16 @@ function App() {
 							exact
 							path="/property-details/:id"
 							render={(props) => <DetailsPage {...props} />}
+						/>
+						<Route
+							exact
+							path="/edit-property/:id"
+							render={(props) => (
+								<Protected
+									component={EditProperty}
+									{...props}
+								/>
+							)}
 						/>
 						<Route
 							exact

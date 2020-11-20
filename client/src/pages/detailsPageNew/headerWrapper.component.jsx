@@ -20,6 +20,9 @@ const HeaderWrapper = ({ property }) => {
 	const renderRentHeader = (property) => {
 		switch (property.type) {
 			case 'flat':
+			case 'independenthouse':
+			case 'hostel':
+			case 'pg':
 				return <RentAppartment property={property} />;
 
 			default:

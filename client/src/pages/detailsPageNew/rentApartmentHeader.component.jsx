@@ -1,8 +1,8 @@
 import { Box, Grid, Paper } from '@material-ui/core';
+import { capitalizeFirstLetter, renderInfo } from '../../utils/render.utils';
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import { capitalizeFirstLetter } from '../../utils/render.utils';
 import { useMediaQuery } from '@material-ui/core';
 import useStyles from './detailsPage.styles';
 
@@ -76,7 +76,9 @@ const Header = ({ property }) => {
 							<Box ml="1rem">
 								<h3 className={classes.title}>
 									{' '}
-									{property.carpetArea} Sq.ft
+									{property.carpetArea
+										? `${property.carpetArea} Sq.ft`
+										: 'Not Specified'}
 								</h3>
 								<Box mt="0.3rem">(Carpet)</Box>
 							</Box>
