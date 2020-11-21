@@ -1092,6 +1092,146 @@ exports.addPropertyByUserForSale = catchAsync(async (req, res, next) => {
 	}
 });
 
+exports.updatePropertyByUserForSale = catchAsync(async (req, res, next) => {
+	const type = req.body.sale_type;
+	if (!type) return next(new AppError('Parameter sale_type required'));
+	const property = await Property.findById(req.params.id);
+	console.log('user', req.user.id);
+	console.log('property', property.userId);
+	if (!property) return next(new AppError('Property not found', 404));
+	if (!property.userId.equals(req.user.id))
+		return next(
+			new AppError('You are unauthorized to change this property', 401)
+		);
+	switch (type) {
+		case 'flat':
+		case 'independenthouse':
+			const propertyFlat = {
+				...req.body,
+			};
+
+			// Check for availability
+			if (req.body.availability === 'specificdate') {
+				if (!req.body.availableDate)
+					return next(
+						new AppError('Parameter availableDate required')
+					);
+				propertyFlat['availableDate'] = req.body.availableDate;
+			}
+
+			//manage toilets
+			const existingIndianToilet = property.toiletTypes.find(
+				(c) => c.toiletType === 'indian'
+			)['numbers'];
+			const existingWesternToilet = property.toiletTypes.find(
+				(c) => c.toiletType === 'western'
+			)['numbers'];
+			propertyFlat['toiletTypes'] = [
+				{
+					toiletType: 'indian',
+					numbers: req.body.toiletIndian
+						? req.body.toiletIndian
+						: existingIndianToilet,
+				},
+				{
+					toiletType: 'western',
+					numbers: req.body.toiletWestern
+						? req.body.toiletWestern
+						: existingWesternToilet,
+				},
+			];
+			delete propertyFlat['toiletIndian'];
+			delete propertyFlat['toiletWestern'];
+
+			// manage furnished
+			if (req.body.furnished === 'unfurnished') {
+				propertyFlat['furnishes'] = [];
+			}
+
+			const excludeFields = [
+				'createdBy',
+				'userId',
+				'postedBy',
+				'status',
+				'adminId',
+				'expiresAt',
+				'verified',
+			];
+			excludeFields.forEach((c) => {
+				if (propertyFlat[c]) {
+					delete propertyFlat[c];
+				}
+			});
+
+			console.log(propertyFlat);
+
+			const docFlat = await Property.findByIdAndUpdate(
+				req.params.id,
+				propertyFlat,
+				{
+					new: true,
+					runValidators: true,
+				}
+			);
+			res.status(201).json({
+				status: 'success',
+				data: {
+					property: docFlat,
+				},
+			});
+			break;
+
+		case 'land':
+			const propertyLand = {
+				...req.body,
+			};
+			const excludeFieldsForLand = [
+				'createdBy',
+				'userId',
+				'postedBy',
+				'status',
+				'adminId',
+				'expiresAt',
+				'verified',
+				'amenities',
+				'availableFor',
+				'numberOfBedRooms',
+				'numberOfOccupants',
+				'numberOfRoomMates',
+				'typeOfToilets',
+				'toiletTypes',
+				'numberOfBalconies',
+				'superBuiltupArea',
+				'carpetArea',
+			];
+			excludeFieldsForLand.forEach((c) => {
+				if (propertyLand[c]) {
+					delete propertyLand[c];
+				}
+			});
+			console.log(propertyLand);
+
+			const docLand = await Property.findByIdAndUpdate(
+				req.params.id,
+				propertyLand,
+				{
+					new: true,
+					runValidators: true,
+				}
+			);
+			res.status(201).json({
+				status: 'success',
+				data: {
+					property: docLand,
+				},
+			});
+			break;
+
+		default:
+			break;
+	}
+});
+
 exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 	const type = req.body.type;
 	if (!type) return next(new AppError('Parameter type required'));

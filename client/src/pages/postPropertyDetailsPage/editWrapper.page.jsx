@@ -41,6 +41,17 @@ const DetailsPage = ({
 						  )['numbers']
 						: '',
 			};
+			if (
+				propertyDetails.legalClearance.find(
+					(c) => c.name === 'numberOfOwner'
+				)['value']
+			) {
+				propertyDetails[
+					'ownerNumber'
+				] = propertyDetails.legalClearance.find(
+					(c) => c.name === 'numberOfOwner'
+				)['details'];
+			}
 			setData(propertyDetails);
 		} else {
 			setAsyncError(data);

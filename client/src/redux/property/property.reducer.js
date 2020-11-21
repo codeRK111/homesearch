@@ -7,6 +7,7 @@ const initialState = {
 	getPropertyDetailsLoading: false,
 	getPropertyResourcesLoading: false,
 	postPropertyLoading: false,
+	updatePropertyLoading: false,
 	getMyPropertiesLoading: false,
 	furnishes: [],
 	amenities: [],
@@ -34,6 +35,11 @@ const propertyReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				postPropertyLoading: payload,
+			};
+		case propertyActionTypes.TOGGLE_UPDATE_PROPERTY_LOADING:
+			return {
+				...state,
+				updatePropertyLoading: payload,
 			};
 		case propertyActionTypes.TOGGLE_MY_PROPERTIES_LOADING:
 			return {

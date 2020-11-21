@@ -38,7 +38,7 @@ const PropertyImages = ({ photos }) => {
 			if (photos[3]) {
 				setImages((prevState) => ({
 					...prevState,
-					image4: photos[4],
+					image4: photos[3],
 				}));
 			}
 		}

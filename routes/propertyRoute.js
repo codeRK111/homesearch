@@ -34,6 +34,12 @@ router
 	.route('/user/sale')
 	.post(authController.protect, propertyController.addPropertyByUserForSale);
 router
+	.route('/user/sale/:id')
+	.patch(
+		authController.protect,
+		propertyController.updatePropertyByUserForSale
+	);
+router
 	.route('/user/rent')
 	.post(authController.protect, propertyController.addPropertyByUserForRent);
 router

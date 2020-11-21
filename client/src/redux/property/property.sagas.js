@@ -6,6 +6,7 @@ import {
 	postPropertyLoading,
 	searchPropertiesLoading,
 	setPropertyResources,
+	updatePropertyLoading,
 } from './property.actions';
 
 import axios from 'axios';
@@ -126,6 +127,54 @@ function* onPostPropertySaga({ payload: { data, callback } }) {
 	}
 }
 
+function* onUpdatePropertySaga({ payload: { id, data, callback } }) {
+	const token = localStorage.getItem('JWT_CLIENT');
+	yield put(updatePropertyLoading(true));
+	let url;
+	if (data['for'] === 'rent') {
+		url = `/api/v1/properties/user/rent/${id}`;
+	} else {
+		url = `/api/v1/properties/user/sale/${id}`;
+	}
+
+	try {
+		const response = yield axios({
+			method: 'patch',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+			data: JSON.stringify(data),
+		});
+		const responseData = response.data;
+		if (data.propertyImages) {
+			const formData = new FormData();
+			for (const key in data.propertyImages) {
+				formData.append(key, data.propertyImages[key]);
+			}
+			yield axios.patch(
+				`/api/v1/properties/handle-property-image/${responseData.data.property.id}`,
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+		}
+
+		yield put(updatePropertyLoading(false));
+
+		callback('success', responseData.data.property);
+	} catch (error) {
+		const errorResponse = error.response.data;
+		yield put(updatePropertyLoading(false));
+		callback('fail', errorResponse.message);
+	}
+}
+
 function* onGetMyPropertiesSaga({ payload: { callback } }) {
 	const token = localStorage.getItem('JWT_CLIENT');
 	yield put(getMyPropertiesLoading(true));
@@ -175,6 +224,9 @@ function* onGetPropertyResources() {
 function* onPostProperty() {
 	yield takeEvery(types.POST_PROPERTY_START, onPostPropertySaga);
 }
+function* onUpdateProperty() {
+	yield takeEvery(types.UPDATE_PROPERTY_START, onUpdatePropertySaga);
+}
 
 function* onGetMyProperties() {
 	yield takeEvery(types.GET_MY_PROPERTIES_START, onGetMyPropertiesSaga);
@@ -187,5 +239,6 @@ export function* propertySagas() {
 		call(onGetPropertyResources),
 		call(onPostProperty),
 		call(onGetMyProperties),
+		call(onUpdateProperty),
 	]);
 }

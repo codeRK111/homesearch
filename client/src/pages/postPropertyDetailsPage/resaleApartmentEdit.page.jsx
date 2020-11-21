@@ -20,15 +20,15 @@ import Snackbar from '../../components/snackbar/snackbar.component';
 import TextField from '../../components/formik/textField.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { postProperty } from '../../redux/property/property.actions';
-import { selectPostPropertyLoading } from '../../redux/property/property.selectors';
+import { selectUpdatePropertyLoading } from '../../redux/property/property.selectors';
+import { updateProperty } from '../../redux/property/property.actions';
 import { useHistory } from 'react-router-dom';
 import useStyles from './postPropertyDetails.styles';
 import { validateNumber } from '../../utils/validation.utils';
 
 const RentApartment = ({
 	propertyLoading,
-	postProperty,
+	updateProperty,
 	pType,
 	initialValues,
 }) => {
@@ -46,12 +46,12 @@ const RentApartment = ({
 		image4: null,
 	});
 	const [selectedCity, setSelectedCity] = React.useState({
-		id: '',
-		name: '',
+		id: initialValues.city.id,
+		name: initialValues.city.name,
 	});
 	const [selectedLocation, setSelectedLocation] = React.useState({
-		id: '',
-		name: '',
+		id: initialValues.location.id,
+		name: initialValues.location.name,
 	});
 	const [openSnackBar, setOpenSnackBar] = React.useState(false);
 	const [snackbarMessage, setSnackbarMessage] = React.useState('');
@@ -149,7 +149,7 @@ const RentApartment = ({
 				values.salePriceOver === 'superBuildUpArea'
 					? values.salePrice / values.superBuiltupArea
 					: values.salePrice / values.carpetArea,
-			sale_type: pType,
+			sale_type: values.sale_type,
 		};
 		if (values.reraapproveId) {
 			data.legalClearance = values.legalClearance.map((c) => {
@@ -174,7 +174,7 @@ const RentApartment = ({
 		}
 		console.log(data);
 
-		postProperty(handlePostProperty, data);
+		updateProperty(values.id, handlePostProperty, data);
 	};
 
 	const handleImage = (e) => {
@@ -624,7 +624,6 @@ const RentApartment = ({
 										fullWidth
 										size="large"
 										type="submit"
-										disabled
 									>
 										Update Property
 									</Button>
@@ -639,12 +638,12 @@ const RentApartment = ({
 };
 
 const mapStateToProps = createStructuredSelector({
-	propertyLoading: selectPostPropertyLoading,
+	propertyLoading: selectUpdatePropertyLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	postProperty: (callback, data) =>
-		dispatch(postProperty({ data, callback })),
+	updateProperty: (id, callback, data) =>
+		dispatch(updateProperty({ id, data, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RentApartment);

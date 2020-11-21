@@ -18,13 +18,13 @@ import Snackbar from '../../components/snackbar/snackbar.component';
 import TextField from '../../components/formik/textField.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { postProperty } from '../../redux/property/property.actions';
-import { selectPostPropertyLoading } from '../../redux/property/property.selectors';
+import { selectUpdatePropertyLoading } from '../../redux/property/property.selectors';
+import { updateProperty } from '../../redux/property/property.actions';
 import { useHistory } from 'react-router-dom';
 import useStyles from './postPropertyDetails.styles';
 import { validateNumber } from '../../utils/validation.utils';
 
-const RentApartment = ({ propertyLoading, postProperty, initialValues }) => {
+const RentApartment = ({ propertyLoading, updateProperty, initialValues }) => {
 	const classes = useStyles();
 	const history = useHistory();
 	const [images, setImages] = React.useState({
@@ -33,14 +33,10 @@ const RentApartment = ({ propertyLoading, postProperty, initialValues }) => {
 		image3: null,
 		image4: null,
 	});
-	const [selectedCity, setSelectedCity] = React.useState({
-		id: '',
-		name: '',
-	});
-	const [selectedLocation, setSelectedLocation] = React.useState({
-		id: '',
-		name: '',
-	});
+	const [selectedCity, setSelectedCity] = React.useState(initialValues.city);
+	const [selectedLocation, setSelectedLocation] = React.useState(
+		initialValues.location
+	);
 	const [openSnackBar, setOpenSnackBar] = React.useState(false);
 	const [snackbarMessage, setSnackbarMessage] = React.useState('');
 	const [severity, setSeverity] = React.useState('success');
@@ -156,7 +152,7 @@ const RentApartment = ({ propertyLoading, postProperty, initialValues }) => {
 		}
 		console.log(data);
 
-		postProperty(handlePostProperty, data);
+		updateProperty(values.id, handlePostProperty, data);
 	};
 
 	const handleImage = (e) => {
@@ -185,7 +181,7 @@ const RentApartment = ({ propertyLoading, postProperty, initialValues }) => {
 			>
 				{({ values, errors }) => (
 					<Form>
-						<div>{JSON.stringify(errors, null, '\t')}</div>
+						{/* <div>{JSON.stringify(errors, null, '\t')}</div> */}
 						<Grid container spacing={1}>
 							<Grid item xs={12} md={12}>
 								<DividerHeading>
@@ -193,12 +189,16 @@ const RentApartment = ({ propertyLoading, postProperty, initialValues }) => {
 								</DividerHeading>
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<City setSelectedCity={setSelectedCity} />
+								<City
+									setSelectedCity={setSelectedCity}
+									defaultValue={initialValues.city}
+								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<Location
 									city={selectedCity.id}
 									setSelectedCity={setSelectedLocation}
+									defaultValue={initialValues.location}
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -405,6 +405,7 @@ const RentApartment = ({ propertyLoading, postProperty, initialValues }) => {
 															<Checkbox
 																key={i}
 																heading="test"
+																type="checkbox"
 																name={`legalClearance.${i}.value`}
 																formLabel={
 																	c.label
@@ -563,7 +564,6 @@ const RentApartment = ({ propertyLoading, postProperty, initialValues }) => {
 										fullWidth
 										size="large"
 										type="submit"
-										disabled
 									>
 										Update Property
 									</Button>
@@ -578,12 +578,12 @@ const RentApartment = ({ propertyLoading, postProperty, initialValues }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	propertyLoading: selectPostPropertyLoading,
+	propertyLoading: selectUpdatePropertyLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	postProperty: (callback, data) =>
-		dispatch(postProperty({ data, callback })),
+	updateProperty: (id, callback, data) =>
+		dispatch(updateProperty({ id, data, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RentApartment);

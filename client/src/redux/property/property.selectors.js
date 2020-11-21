@@ -23,6 +23,11 @@ export const selectPostPropertyLoading = createSelector(
 	(c) => c.postPropertyLoading
 );
 
+export const selectUpdatePropertyLoading = createSelector(
+	[selectProperty],
+	(c) => c.updatePropertyLoading
+);
+
 export const selectMyPropertiesLoading = createSelector(
 	[selectProperty],
 	(c) => c.getMyPropertiesLoading

@@ -236,7 +236,7 @@ const RentApartment = ({ propertyLoading, postProperty }) => {
 			>
 				{({ values, errors }) => (
 					<Form>
-						<div>{JSON.stringify(errors, null, '\t')}</div>
+						{/* <div>{JSON.stringify(errors, null, '\t')}</div> */}
 						<Grid container spacing={1}>
 							<Grid item xs={12} md={12}>
 								<DividerHeading>
