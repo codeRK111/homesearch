@@ -1,4 +1,9 @@
-import { Box, Grid, Paper, TextField } from '@material-ui/core';
+import { Box, Grid, Paper } from '@material-ui/core';
+import { Form, Formik } from 'formik';
+import {
+	validateEmail,
+	validateMobileNumber,
+} from '../../utils/validation.utils';
 
 import AppBar from '../../components/appBar/appBar.component';
 import BedRoomFilter from '../../components/bedroomFilter/bedRoom.component';
@@ -24,6 +29,8 @@ import ResaleApartment from '../../components/searchResultCardNew/searchResultCa
 import ResaleLand from '../../components/searchResultCardNewLand/searchResultCard.component';
 import ResaleVilla from '../../components/searchResultCardNewIndHouse/searchResultCard.component';
 import Skeleton from '../../components/searchCardSkeleton/searchCardSkeleton.component';
+import Snackbar from '../../components/snackbar/snackbar.component';
+import TextField from '../../components/formik/textField.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import queryString from 'query-string';
@@ -33,10 +40,11 @@ import { selectPropertyLoading } from '../../redux/property/property.selectors';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './searchResultPage.styles';
 
-// import RentIndHouse from '../../components/searchResultCardNewRentIndHouse/searchResultCard.component';
-
-// import ProjectLand from '../../components/searchResultCardNewProjectLand/searchResultCard.component';
-// import ProjectVilla from '../../components/searchResultCardNewProjectVilla/searchResultCard.component';
+const initialValues = {
+	name: '',
+	email: '',
+	phoneNumber: '',
+};
 
 const SearchPage = ({
 	currentTab,
@@ -46,6 +54,9 @@ const SearchPage = ({
 }) => {
 	const classes = useStyles();
 	const mobile = useMediaQuery('(max-width:600px)');
+	const [openSnackBar, setOpenSnackBar] = React.useState(false);
+	const [snackbarMessage, setSnackbarMessage] = React.useState('');
+	const [severity, setSeverity] = React.useState('success');
 	const [open, setOpen] = React.useState(false);
 	const [asyncError, setAsyncError] = React.useState(null);
 	const [totalDos, setTotalDocs] = React.useState(0);
@@ -62,10 +73,50 @@ const SearchPage = ({
 			setAsyncError(data);
 		}
 	};
+
+	const showSnackbar = (message, severity = 'success') => {
+		setSnackbarMessage(message);
+		setOpenSnackBar(true);
+		setSeverity(severity);
+	};
+
+	const closeSnackbar = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+
+		setOpenSnackBar(false);
+	};
 	const parsed = queryString.parse(props.location.search, {
 		arrayFormat: 'comma',
 	});
-	console.log(parsed);
+	const validateForm = (values) => {
+		const error = {};
+		if (!values.name) {
+			error.name = 'Name required';
+		}
+		if (!values.email) {
+			error.email = 'Email required';
+		}
+		if (values.email) {
+			if (!validateEmail(values.email)) {
+				error.email = 'Invalid email';
+			}
+		}
+		if (!values.phoneNumber) {
+			error.phoneNumber = 'Phone number required';
+		}
+		if (values.phoneNumber) {
+			if (!validateMobileNumber(values.phoneNumber)) {
+				error.phoneNumber = 'Invalid Phone number';
+			}
+		}
+
+		return error;
+	};
+	const submitForm = (values) => {
+		showSnackbar('We will get back to you soon');
+	};
 
 	React.useEffect(() => {
 		const body = {
@@ -337,6 +388,12 @@ const SearchPage = ({
 	return (
 		<Box>
 			<AppBar />
+			<Snackbar
+				status={openSnackBar}
+				handleClose={closeSnackbar}
+				severity={severity}
+				message={snackbarMessage}
+			/>
 			{renderFilter()}
 			<Box className={[classes.resultsWrapper, classes.l5].join(' ')}>
 				<p>
@@ -387,36 +444,47 @@ const SearchPage = ({
 									<h3 className={classes.center}>
 										Request a call back
 									</h3>
-									<Box mt="2rem" mb="2rem">
-										<TextField
-											placeholder="Full Name"
-											fullWidth
-										/>
-									</Box>
-									<Box mt="2rem" mb="2rem">
-										<TextField
-											placeholder="Email"
-											type="email"
-											fullWidth
-										/>
-									</Box>
-									<Box mt="2rem" mb="2rem">
-										<TextField
-											placeholder="Phone Number"
-											type="number"
-											fullWidth
-										/>
-									</Box>
-									<Box
-										mt="2rem"
-										mb="2rem"
-										position="relative"
-										height="40px"
+									<Formik
+										initialValues={initialValues}
+										validate={validateForm}
+										onSubmit={submitForm}
 									>
-										<button className={classes.button}>
-											Talk To Our Expert
-										</button>
-									</Box>
+										{() => (
+											<Form>
+												<TextField
+													formLabel="Full Name"
+													name="name"
+												/>
+
+												<TextField
+													formLabel="Email"
+													type="email"
+													name="email"
+												/>
+
+												<TextField
+													formLabel="Phone Number"
+													type="number"
+													name="phoneNumber"
+												/>
+												<Box
+													mt="2rem"
+													mb="2rem"
+													position="relative"
+													height="40px"
+												>
+													<button
+														className={
+															classes.button
+														}
+														type="submit"
+													>
+														Talk To Our Expert
+													</button>
+												</Box>
+											</Form>
+										)}
+									</Formik>
 								</Box>
 							</Paper>
 						</Box>

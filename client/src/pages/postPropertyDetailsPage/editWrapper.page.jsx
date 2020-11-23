@@ -42,6 +42,23 @@ const DetailsPage = ({
 						: '',
 			};
 			if (
+				propertyDetails.furnishes &&
+				propertyDetails.furnishes.length > 0
+			) {
+				propertyDetails['furnishes'] = propertyDetails.furnishes.map(
+					(c) => {
+						if (c.id) {
+							return c.id;
+						} else {
+							return c;
+						}
+					}
+				);
+			}
+			if (
+				propertyDetails.legalClearance.find(
+					(c) => c.name === 'numberOfOwner'
+				) &&
 				propertyDetails.legalClearance.find(
 					(c) => c.name === 'numberOfOwner'
 				)['value']
@@ -50,6 +67,20 @@ const DetailsPage = ({
 					'ownerNumber'
 				] = propertyDetails.legalClearance.find(
 					(c) => c.name === 'numberOfOwner'
+				)['details'];
+			}
+			if (
+				propertyDetails.legalClearance.find(
+					(c) => c.name === 'reraapproved'
+				) &&
+				propertyDetails.legalClearance.find(
+					(c) => c.name === 'reraapproved'
+				)['value']
+			) {
+				propertyDetails[
+					'reraapproveId'
+				] = propertyDetails.legalClearance.find(
+					(c) => c.name === 'reraapproved'
 				)['details'];
 			}
 			setData(propertyDetails);

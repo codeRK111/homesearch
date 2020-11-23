@@ -18,6 +18,18 @@ export const validateMobileNumber = (value) => {
 	}
 };
 
+export const validateEmail = (value) => {
+	if (
+		/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+			value
+		)
+	) {
+		return true;
+	} else {
+		return false;
+	}
+};
+
 export const validateNumber = (value) => {
 	if (Number(value)) {
 		return true;

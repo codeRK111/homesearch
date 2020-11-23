@@ -20,15 +20,15 @@ import Snackbar from '../../components/snackbar/snackbar.component';
 import TextField from '../../components/formik/textField.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { postProperty } from '../../redux/property/property.actions';
-import { selectPostPropertyLoading } from '../../redux/property/property.selectors';
+import { selectUpdatePropertyLoading } from '../../redux/property/property.selectors';
+import { updateProperty } from '../../redux/property/property.actions';
 import { useHistory } from 'react-router-dom';
 import useStyles from './postPropertyDetails.styles';
 import { validateNumber } from '../../utils/validation.utils';
 
 const RentApartment = ({
 	propertyLoading,
-	postProperty,
+	updateProperty,
 	pType,
 	initialValues,
 }) => {
@@ -41,12 +41,12 @@ const RentApartment = ({
 		image4: null,
 	});
 	const [selectedCity, setSelectedCity] = React.useState({
-		id: '',
-		name: '',
+		id: initialValues.city.id,
+		name: initialValues.city.name,
 	});
 	const [selectedLocation, setSelectedLocation] = React.useState({
-		id: '',
-		name: '',
+		id: initialValues.location.id,
+		name: initialValues.location.name,
 	});
 	const [openSnackBar, setOpenSnackBar] = React.useState(false);
 	const [snackbarMessage, setSnackbarMessage] = React.useState('');
@@ -142,7 +142,7 @@ const RentApartment = ({
 			location: selectedLocation.id,
 			title: `${type}  in ${selectedLocation.name},${selectedCity.name} `,
 
-			type: pType,
+			type: values.type,
 		};
 		if (values.reraapproveId) {
 			data.legalClearance = values.legalClearance.map((c) => {
@@ -167,7 +167,7 @@ const RentApartment = ({
 		}
 		console.log(data);
 
-		postProperty(handlePostProperty, data);
+		updateProperty(values.id, handlePostProperty, data);
 	};
 	const handleImage = (e) => {
 		const { name, files } = e.target;
@@ -202,7 +202,10 @@ const RentApartment = ({
 								</DividerHeading>
 							</Grid>
 							<Grid item xs={12} md={6}>
-								<City setSelectedCity={setSelectedCity} />
+								<City
+									setSelectedCity={setSelectedCity}
+									defaultValue={initialValues.city}
+								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<Location
@@ -458,6 +461,7 @@ const RentApartment = ({
 											name="availableFor"
 											value="Family"
 											formLabel="Family"
+											type="checkbox"
 										/>
 									</Grid>
 
@@ -466,6 +470,7 @@ const RentApartment = ({
 											name="availableFor"
 											value="Bachelors (Men)"
 											formLabel="Bachelors (Men)"
+											type="checkbox"
 										/>
 									</Grid>
 									<Grid item xs={6} md={3}>
@@ -473,6 +478,7 @@ const RentApartment = ({
 											name="availableFor"
 											value="Bachelors (Women)"
 											formLabel="Bachelors (Women)"
+											type="checkbox"
 										/>
 									</Grid>
 									<Grid item xs={6} md={3}>
@@ -480,6 +486,7 @@ const RentApartment = ({
 											name="availableFor"
 											value="Job holder (Men)"
 											formLabel="Job holder (Men)"
+											type="checkbox"
 										/>
 									</Grid>
 									<Grid item xs={6}>
@@ -487,6 +494,7 @@ const RentApartment = ({
 											name="availableFor"
 											value="Job holder (Women)"
 											formLabel="Job holder (Women)"
+											type="checkbox"
 										/>
 									</Grid>
 								</Grid>
@@ -501,6 +509,7 @@ const RentApartment = ({
 											name="fooding"
 											value="veg"
 											formLabel="Veg"
+											type="checkbox"
 										/>
 									</Grid>
 
@@ -509,6 +518,7 @@ const RentApartment = ({
 											name="fooding"
 											value="nonveg"
 											formLabel="Non Veg"
+											type="checkbox"
 										/>
 									</Grid>
 								</Grid>
@@ -523,6 +533,7 @@ const RentApartment = ({
 											name="foodSchedule"
 											value="bedtea"
 											formLabel="Bed tea"
+											type="checkbox"
 										/>
 									</Grid>
 
@@ -531,6 +542,7 @@ const RentApartment = ({
 											name="foodSchedule"
 											value="breakfast"
 											formLabel="Breakfast"
+											type="checkbox"
 										/>
 									</Grid>
 									<Grid item xs={6} md={3}>
@@ -538,6 +550,7 @@ const RentApartment = ({
 											name="foodSchedule"
 											value="lunch"
 											formLabel="Lunch"
+											type="checkbox"
 										/>
 									</Grid>
 
@@ -546,6 +559,7 @@ const RentApartment = ({
 											name="foodSchedule"
 											value="dinner"
 											formLabel="Dinner"
+											type="checkbox"
 										/>
 									</Grid>
 								</Grid>
@@ -572,6 +586,7 @@ const RentApartment = ({
 															<CheckBox
 																key={i}
 																heading="test"
+																type="checkbox"
 																name={`legalClearance.${i}.value`}
 																formLabel={
 																	c.label
@@ -730,7 +745,6 @@ const RentApartment = ({
 										fullWidth
 										size="large"
 										type="submit"
-										disabled
 									>
 										Update Property
 									</Button>
@@ -745,12 +759,12 @@ const RentApartment = ({
 };
 
 const mapStateToProps = createStructuredSelector({
-	propertyLoading: selectPostPropertyLoading,
+	propertyLoading: selectUpdatePropertyLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	postProperty: (callback, data) =>
-		dispatch(postProperty({ data, callback })),
+	updateProperty: (id, callback, data) =>
+		dispatch(updateProperty({ id, data, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RentApartment);

@@ -49,7 +49,10 @@ function* getPropertyDetailsSaga({ payload: { id, callback } }) {
 		callback('success', responseData.data.property);
 	} catch (error) {
 		yield put(getPropertyDetailsLoading(false));
-		const errorResponse = error.response.data;
+
+		const errorResponse = error.response.data
+			? error.response.data
+			: error.response;
 		if (typeof errorResponse === 'string') {
 			callback('fail', errorResponse);
 			return;

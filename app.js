@@ -40,7 +40,7 @@ app.use(
 // app.use(helmet());
 
 // RESPONSE TIMEOUT
-app.use(timeout('30s'));
+// app.use(timeout('30s'));
 
 // function haltOnTimedout(req, res, next) {
 //   if (!req.timedout) return next();
