@@ -119,18 +119,14 @@ export default function FullWidthTabs() {
 					<MyProperties />
 				</TabPanel>
 				<TabPanel value={value} index={1} dir={theme.direction}>
-					{Array.from(Array(5).keys()).map((c) => (
-						<Box key={c}>
-							<Query />
-						</Box>
-					))}
+					<Box>
+						<Query />
+					</Box>
 				</TabPanel>
 				<TabPanel value={value} index={2} dir={theme.direction}>
-					{Array.from(Array(5).keys()).map((c) => (
-						<Box key={c}>
-							<Query received />
-						</Box>
-					))}
+					<Box>
+						<Query received />
+					</Box>
 				</TabPanel>
 			</SwipeableViews>
 		</div>

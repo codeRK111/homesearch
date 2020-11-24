@@ -25,10 +25,26 @@ export const getMyProperties = (payload) => ({
 	type: propertyActionTypes.GET_MY_PROPERTIES_START,
 	payload,
 });
+export const queryOnProperty = (payload) => ({
+	type: propertyActionTypes.QUERY_ON_PROPERTY_START,
+	payload,
+});
+export const getQueries = (payload) => ({
+	type: propertyActionTypes.GET_QUERIES,
+	payload,
+});
 
 // Set
 export const setPropertyResources = (payload) => ({
 	type: propertyActionTypes.SET_PROPERTY_RESOURCES,
+	payload,
+});
+export const setMyQueries = (payload) => ({
+	type: propertyActionTypes.SET_MY_QUERIES,
+	payload,
+});
+export const setQueriesReceived = (payload) => ({
+	type: propertyActionTypes.SET_QUERIES_RECEIVED,
 	payload,
 });
 // Toggle
@@ -56,5 +72,13 @@ export const updatePropertyLoading = (payload) => ({
 });
 export const getMyPropertiesLoading = (payload) => ({
 	type: propertyActionTypes.TOGGLE_MY_PROPERTIES_LOADING,
+	payload,
+});
+export const queryOnPropertyLoading = (payload) => ({
+	type: propertyActionTypes.TOGGLE_QUERY_ON_PROPERTY_LOADING,
+	payload,
+});
+export const getQueriesLoading = (payload) => ({
+	type: propertyActionTypes.TOGGLE_GET_QUERIES_LOADING,
 	payload,
 });

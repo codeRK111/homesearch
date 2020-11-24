@@ -1,20 +1,31 @@
 import { Box, Button, Divider, Modal, Paper } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 import {
+	selectAuthenticated,
+	selectUser,
+} from '../../redux/auth/auth.selectors';
+import {
 	validateEmail,
 	validateMobileNumber,
 } from '../../utils/validation.utils';
 
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from '../formik/textField.component';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
+import { queryOnProperty } from '../../redux/property/property.actions';
+import { selectQueryOnPropertyLoading } from '../../redux/property/property.selectors';
 
 const initialValues = {
 	name: '',
 	email: '',
 	phoneNumber: '',
+	message: '',
 };
 
 function getModalStyle() {
@@ -72,18 +83,39 @@ const useStyles = makeStyles((theme) => ({
 	heading: {
 		textAlign: 'center',
 	},
+	cRed: {
+		color: 'red',
+	},
+	backdrop: {
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#fff',
+	},
 }));
 const PropertyShare = ({
+	user,
+	isAuthenticated,
+	loading,
+	queryOnProperty,
 	status,
 	handleClose,
 	title,
+	property,
 	buttonLabel = 'Submit',
 	onSubmit = () => {},
 	name = null,
 }) => {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
+	const [asyncError, setAsyncError] = React.useState(null);
 
+	const handleQuery = (status, data = null) => {
+		if (status === 'success') {
+			setAsyncError(null);
+			handleClose();
+		} else {
+			setAsyncError(data);
+		}
+	};
 	const validateForm = (values) => {
 		const error = {};
 		if (!values.name) {
@@ -109,8 +141,18 @@ const PropertyShare = ({
 		return error;
 	};
 	const submitForm = (values) => {
-		onSubmit(values);
-		handleClose();
+		// onSubmit(values);
+		// handleClose();
+		const data = {
+			userName: values.name,
+			email: values.email,
+			property: property.id,
+			owner: property.userId.id,
+			user: isAuthenticated ? user.id : null,
+			phoneNumber: values.phoneNumber,
+			message: values.message,
+		};
+		queryOnProperty(data, handleQuery);
 		// showSnackbar('We will get back to you soon');
 	};
 	return (
@@ -124,6 +166,9 @@ const PropertyShare = ({
 			}}
 		>
 			<Box style={modalStyle} className={classes.wrapper}>
+				<Backdrop className={classes.backdrop} open={loading}>
+					<CircularProgress color="inherit" />
+				</Backdrop>
 				<Box display="flex" justifyContent="flex-end" width="100%">
 					<HighlightOffIcon
 						className={classes.icon}
@@ -143,6 +188,9 @@ const PropertyShare = ({
 								<Divider />
 							</Box>
 						</Box>
+						{asyncError && (
+							<p className={classes.cRed}>{asyncError}</p>
+						)}
 						<Formik
 							initialValues={initialValues}
 							validate={validateForm}
@@ -156,6 +204,12 @@ const PropertyShare = ({
 										formLabel="Phone Number"
 										type="number"
 										name="phoneNumber"
+									/>
+									<TextField
+										formLabel="Message"
+										name="message"
+										rows={4}
+										multiline
 									/>
 									<Box
 										mt="2rem"
@@ -187,4 +241,15 @@ PropertyShare.propTypes = {
 	id: PropTypes.string.isRequired,
 };
 
-export default PropertyShare;
+const mapStateToProps = createStructuredSelector({
+	user: selectUser,
+	isAuthenticated: selectAuthenticated,
+	loading: selectQueryOnPropertyLoading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	queryOnProperty: (data, callback) =>
+		dispatch(queryOnProperty({ data, callback })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PropertyShare);

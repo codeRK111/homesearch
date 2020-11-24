@@ -4,7 +4,8 @@ import Amenities from './amenities.component';
 import AppBar from '../../components/appBar/appBar.component';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { Center } from '../../components/flexContainer/flexContainer.component';
-import ContactOwner from '../../components/contactOwner/contactOwner.component';
+import ContactDialogue from '../../components/contactOwner/contactOwner.component';
+import ContactDialogueWithMessage from '../../components/contactOwner/contactOwnerWithMessage.component';
 import ErrorCard from '../../components/errorCard/errorCard.component';
 import FlagIcon from '@material-ui/icons/Flag';
 import Footer from '../../components/footer/footer.component';
@@ -25,6 +26,7 @@ import SimilarProperties from '../../components/similarProperties/resaleApartmen
 import Skeleton from '../../components/propertyDetailsSkeleton/propertyDetailsSkeleton.component';
 import Snackbar from '../../components/snackbar/snackbar.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import { capitalizeFirstLetter } from '../../utils/render.utils';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { getPropertyDetails } from '../../redux/property/property.actions';
@@ -43,9 +45,16 @@ const DetailsPage = ({
 		status: false,
 		positive: true,
 	});
-	const [open, setOpen] = React.useState(false);
+	const [propertyActions, setPropertyActions] = React.useState(null);
 
-	const [data, setData] = React.useState({});
+	const handlePropertyActions = (name) => (_) => {
+		setPropertyActions(name);
+	};
+	const closePropertyActions = (name) => {
+		setPropertyActions(null);
+	};
+	const [open, setOpen] = React.useState(false);
+	const [data, setData] = React.useState(null);
 	const [asyncError, setAsyncError] = React.useState(null);
 	const [openSnackBar, setOpenSnackBar] = React.useState(false);
 	const [snackbarMessage, setSnackbarMessage] = React.useState('');
@@ -55,7 +64,7 @@ const DetailsPage = ({
 		setOpenSnackBar(true);
 	};
 
-	const closeSnackbar = (event, reason) => {
+	const closeSnackbar = (_, reason) => {
 		if (reason === 'clickaway') {
 			return;
 		}
@@ -66,7 +75,7 @@ const DetailsPage = ({
 		setOpen(true);
 	};
 
-	const handleClose = () => {
+	const handleClose = (_) => {
 		setOpen(false);
 	};
 	const handleFetchPropertyDetails = (status, data = null) => {
@@ -90,14 +99,13 @@ const DetailsPage = ({
 		setFeedBack({ status: true, positive: status });
 	return (
 		<div>
-			<ContactOwner status={open} handleClose={handleClose} />
+			<AppBar />
 			<Snackbar
 				status={openSnackBar}
 				handleClose={closeSnackbar}
 				severity="success"
 				message={snackbarMessage}
 			/>
-			<AppBar />
 			<Box className={classes.contentWrapper}>
 				{asyncError && <ErrorCard message={asyncError} />}
 				{propertyDetailsLoading ? (
@@ -109,6 +117,33 @@ const DetailsPage = ({
 					data && (
 						<Box className={classes.pageWrapper}>
 							<AppBar />
+							<ContactDialogueWithMessage
+								status={open}
+								handleClose={handleClose}
+								title={`Contact ${capitalizeFirstLetter(
+									data.userId.role
+								)}`}
+								property={data}
+							/>
+							<ContactDialogue
+								status={propertyActions === 'photo'}
+								handleClose={closePropertyActions}
+								title="Request photo"
+								name="photo"
+							/>
+							<ContactDialogue
+								status={propertyActions === 'abuse'}
+								handleClose={closePropertyActions}
+								title="Report Abuse"
+								name="abuse"
+							/>
+							<ContactDialogue
+								status={propertyActions === 'soldOut'}
+								handleClose={closePropertyActions}
+								title="Report Sold Out"
+								name="soldOut"
+							/>
+
 							<Box className={classes.detailsWrapper}>
 								<Header property={data} />
 								<Box mt="1rem">
@@ -150,6 +185,10 @@ const DetailsPage = ({
 																			className={
 																				classes.iconButton
 																			}
+																			onClick={handlePropertyActions(
+																				'photo',
+																				true
+																			)}
 																		>
 																			<CameraAltIcon />
 																		</button>
@@ -169,8 +208,9 @@ const DetailsPage = ({
 																			className={
 																				classes.iconButton
 																			}
-																			onClick={showSnackbar(
-																				'Abuse Reported'
+																			onClick={handlePropertyActions(
+																				'abuse',
+																				true
 																			)}
 																		>
 																			<FlagIcon />
@@ -190,8 +230,9 @@ const DetailsPage = ({
 																			className={
 																				classes.iconButton
 																			}
-																			onClick={showSnackbar(
-																				'Sold out Reported'
+																			onClick={handlePropertyActions(
+																				'soldOut',
+																				true
 																			)}
 																		>
 																			<HomeIcon />
@@ -251,7 +292,11 @@ const DetailsPage = ({
 																					}
 																				/>
 																				Contact
-																				Owner
+																				{` ${capitalizeFirstLetter(
+																					data
+																						.userId
+																						.role
+																				)}`}
 																			</Box>
 																		</button>
 																	</Box>

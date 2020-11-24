@@ -3,9 +3,13 @@ import {
 	getMyPropertiesLoading,
 	getPropertyDetailsLoading,
 	getPropertyResourcesLoading,
+	getQueriesLoading,
 	postPropertyLoading,
+	queryOnPropertyLoading,
 	searchPropertiesLoading,
+	setMyQueries,
 	setPropertyResources,
+	setQueriesReceived,
 	updatePropertyLoading,
 } from './property.actions';
 
@@ -209,6 +213,70 @@ function* onGetMyPropertiesSaga({ payload: { callback } }) {
 	}
 }
 
+function* onQueryPropertiesSaga({ payload: { data, callback } }) {
+	const token = localStorage.getItem('JWT_CLIENT');
+	yield put(queryOnPropertyLoading(true));
+	const url = `/api/v1/queries`;
+	try {
+		const response = yield axios({
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+			data: JSON.stringify(data),
+		});
+		const responseData = response.data;
+		yield put(queryOnPropertyLoading(false));
+		callback('success', responseData.data.query);
+	} catch (error) {
+		yield put(queryOnPropertyLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+
+function* onGetQueriesSaga({ payload: { data, callback } }) {
+	const token = localStorage.getItem('JWT_CLIENT');
+	yield put(getQueriesLoading(true));
+	const url = `/api/v1/queries/get-queries`;
+	try {
+		const response = yield axios({
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+			data: JSON.stringify(data),
+		});
+		const responseData = response.data;
+		yield put(getQueriesLoading(false));
+		if (data.owner) {
+			console.log('owner');
+			yield put(setQueriesReceived(responseData.data.queries));
+		}
+		if (data.user) {
+			console.log('user');
+			yield put(setMyQueries(responseData.data.queries));
+		}
+		callback('success', responseData.data.queries);
+	} catch (error) {
+		yield put(getQueriesLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+
 function* onSearchProperties() {
 	yield takeEvery(types.SEARCH_PROPERTY_START, searchPropertySaga);
 }
@@ -234,6 +302,12 @@ function* onUpdateProperty() {
 function* onGetMyProperties() {
 	yield takeEvery(types.GET_MY_PROPERTIES_START, onGetMyPropertiesSaga);
 }
+function* onQueryProperties() {
+	yield takeEvery(types.QUERY_ON_PROPERTY_START, onQueryPropertiesSaga);
+}
+function* onGetQueries() {
+	yield takeEvery(types.GET_QUERIES, onGetQueriesSaga);
+}
 
 export function* propertySagas() {
 	yield all([
@@ -243,5 +317,7 @@ export function* propertySagas() {
 		call(onPostProperty),
 		call(onGetMyProperties),
 		call(onUpdateProperty),
+		call(onQueryProperties),
+		call(onGetQueries),
 	]);
 }

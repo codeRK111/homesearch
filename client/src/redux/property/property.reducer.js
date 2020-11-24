@@ -9,8 +9,12 @@ const initialState = {
 	postPropertyLoading: false,
 	updatePropertyLoading: false,
 	getMyPropertiesLoading: false,
+	queryOnPropertyLoading: false,
+	getQueriesLoading: false,
 	furnishes: [],
 	amenities: [],
+	myQueries: [],
+	queriesReceived: [],
 	// Errors
 };
 
@@ -46,11 +50,31 @@ const propertyReducer = (state = initialState, { type, payload }) => {
 				...state,
 				getMyPropertiesLoading: payload,
 			};
+		case propertyActionTypes.TOGGLE_QUERY_ON_PROPERTY_LOADING:
+			return {
+				...state,
+				queryOnPropertyLoading: payload,
+			};
+		case propertyActionTypes.TOGGLE_GET_QUERIES_LOADING:
+			return {
+				...state,
+				getQueriesLoading: payload,
+			};
 		case propertyActionTypes.SET_PROPERTY_RESOURCES:
 			return {
 				...state,
 				furnishes: payload.furnishes,
 				amenities: payload.amenities,
+			};
+		case propertyActionTypes.SET_MY_QUERIES:
+			return {
+				...state,
+				myQueries: payload,
+			};
+		case propertyActionTypes.SET_QUERIES_RECEIVED:
+			return {
+				...state,
+				queriesReceived: payload,
 			};
 
 		default:

@@ -27,6 +27,14 @@ export const selectUpdatePropertyLoading = createSelector(
 	[selectProperty],
 	(c) => c.updatePropertyLoading
 );
+export const selectQueryOnPropertyLoading = createSelector(
+	[selectProperty],
+	(c) => c.queryOnPropertyLoading
+);
+export const selectGetQueriesLoading = createSelector(
+	[selectProperty],
+	(c) => c.getQueriesLoading
+);
 
 export const selectMyPropertiesLoading = createSelector(
 	[selectProperty],
@@ -39,5 +47,13 @@ export const selectAmenities = createSelector(
 export const selectFurnishes = createSelector(
 	[selectProperty],
 	(c) => c.furnishes
+);
+export const selectMyQueries = createSelector(
+	[selectProperty],
+	(c) => c.myQueries
+);
+export const selectQueriesReceived = createSelector(
+	[selectProperty],
+	(c) => c.queriesReceived
 );
 // Select Errors

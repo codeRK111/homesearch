@@ -16,6 +16,7 @@ const cityRouter = require('./routes/cityRoute');
 const featureRouter = require('./routes/siteFeaturesRoute');
 const builderRouter = require('./routes/builderRoute');
 const projectRoute = require('./routes/projectRoute');
+const queryRoute = require('./routes/propertyQueryRoute');
 const AppError = require('./utils/appError');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
@@ -118,6 +119,7 @@ app.use('/api/v1/cities', cityRouter);
 app.use('/api/v1/properties', propertyRoute);
 app.use('/api/v1/builders', builderRouter);
 app.use('/api/v1/projects', projectRoute);
+app.use('/api/v1/queries', queryRoute);
 
 app.all('*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));

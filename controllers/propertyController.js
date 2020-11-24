@@ -925,8 +925,16 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 				// filter['salePrice'] = { $lte: req.body.price };
 			} else {
 				req.body.budgetList.forEach((c) => {
+					console.log(typeof c.max)
+					const obj = {}
+					if(c.max){
+						obj['$lte'] = Number(c.max)
+					}
+					if(c.min){
+						obj['$gte'] = Number(c.min)
+					}
 					arr.push({
-						rent: { $lte: c.max, $gte: c.min },
+						rent: obj,
 					});
 				});
 			}

@@ -148,18 +148,20 @@ const SearchPage = ({
 		}
 		if (parsed.bl && parsed.bl.length > 0) {
 			const arr = [];
-			parsed.bl.forEach((c) => {
+			console.log('bl', parsed.bl);
+			parsed.bl.forEach((c, i) => {
 				const item = c.split(',');
-				if (item.length > 0) {
+
+				if (item.length > 1) {
 					arr.push({
 						min: item[0],
 						max: item[1],
 					});
 				} else {
-					if (arr.length > 0) {
-						arr.push({ max: item[0] });
+					if (i === 0) {
+						arr.push({ min: c });
 					} else {
-						arr.push({ min: item[0] });
+						arr[0]['max'] = c;
 					}
 				}
 			});
