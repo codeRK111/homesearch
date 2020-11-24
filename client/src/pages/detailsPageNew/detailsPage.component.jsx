@@ -459,13 +459,13 @@ const DetailsPage = ({
 												</Grid>
 											</Grid>
 										</Box>
-										<Box mt="1rem">
+										{/* <Box mt="1rem">
 											<SimilarProperties
 												title={
 													'2 BHK Apartment for sale'
 												}
 											/>
-										</Box>
+										</Box> */}
 									</Paper>
 								</Box>
 							</Box>

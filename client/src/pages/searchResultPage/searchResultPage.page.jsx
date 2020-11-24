@@ -396,7 +396,7 @@ const SearchPage = ({
 				severity={severity}
 				message={snackbarMessage}
 			/>
-			{renderFilter()}
+			{/* {renderFilter()} */}
 			<Box className={[classes.resultsWrapper, classes.l5].join(' ')}>
 				<p>
 					{' '}
