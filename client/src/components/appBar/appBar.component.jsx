@@ -74,16 +74,17 @@ const Appbar = ({ isAuthenticated }) => {
 							onClick={redirectToPostProperty}
 						/>
 					)}
-					{!matches && isAuthenticated ? (
-						<Menu />
-					) : (
-						<Box ml="1rem">
-							<Button
-								text="Login / Signup"
-								onClick={redirectToLogIn}
-							/>
-						</Box>
-					)}
+					{!matches &&
+						(isAuthenticated ? (
+							<Menu />
+						) : (
+							<Box ml="1rem">
+								<Button
+									text="Login / Signup"
+									onClick={redirectToLogIn}
+								/>
+							</Box>
+						))}
 				</Toolbar>
 			</AppBar>
 		</div>

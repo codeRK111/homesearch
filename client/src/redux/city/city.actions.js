@@ -10,6 +10,10 @@ export const searchLocations = (payload) => ({
 	payload,
 });
 // Set
+export const setDefaultCity = (payload) => ({
+	type: cityActionTypes.SET_SELECTED_CITY,
+	payload,
+});
 // Toggle
 export const searchCitiesLoading = (payload) => ({
 	type: cityActionTypes.TOGGLE_SEARCH_CITY_LOADING,

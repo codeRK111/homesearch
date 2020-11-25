@@ -1,4 +1,9 @@
 import { Box, Typography } from '@material-ui/core';
+import { searchCities, setDefaultCity } from '../../redux/city/city.actions';
+import {
+	selectDefaultCity,
+	selectSearchCityLoading,
+} from '../../redux/city/city.selectors';
 
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import Button from '@material-ui/core/Button';
@@ -15,8 +20,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { makeStyles } from '@material-ui/core/styles';
-import { searchCities } from '../../redux/city/city.actions';
-import { selectSearchCityLoading } from '../../redux/city/city.selectors';
 
 // Redux
 
@@ -72,19 +75,14 @@ const useStyles = makeStyles((theme) => ({
 function CityDropDown({
 	searchCityLoading,
 	searchCities,
+	setDefaultCity,
 	handleCity,
-	city = {
-		_id: '5f2cf831ab6d0b12da114161',
-		name: 'Bhubaneswar',
-		state: 'Odisha',
-		id: '5f2cf831ab6d0b12da114161',
-	},
+	defaultCity,
 }) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 	const anchorRef = React.useRef(null);
 	const [cityText, setCityText] = React.useState('');
-
 	const [asyncError, setAsyncError] = React.useState(null);
 	const [cities, setCities] = React.useState([]);
 	const handleFetchCities = (status, data = null) => {
@@ -99,7 +97,7 @@ function CityDropDown({
 	};
 	const handleChange = (e) => setCityText(e.target.value);
 	const onKeyUp = (e) => {
-		if (e.target.value.trim().length > 2) {
+		if (e.target.value.trim().length > 3) {
 			console.log(cityText);
 			searchCities(handleFetchCities, cityText);
 		}
@@ -117,7 +115,7 @@ function CityDropDown({
 	};
 
 	const onClick = (data) => (e) => {
-		handleCity(data);
+		setDefaultCity(data);
 		handleClose(e);
 	};
 
@@ -150,7 +148,7 @@ function CityDropDown({
 				>
 					<div className={classes.buttonText}>
 						<RoomRoundedIcon className={classes.icon} />
-						<span>{city.name}</span>
+						<span>{defaultCity.name}</span>
 						<ArrowDropDownOutlinedIcon />
 					</div>
 				</Button>
@@ -195,7 +193,7 @@ function CityDropDown({
 											<input
 												type="text"
 												className={classes.input}
-												placeholder="Search city"
+												placeholder="Enter 4 letter of the city"
 												value={cityText}
 												onChange={handleChange}
 												onKeyUp={onKeyUp}
@@ -240,11 +238,13 @@ function CityDropDown({
 
 const mapStateToProps = createStructuredSelector({
 	searchCityLoading: selectSearchCityLoading,
+	defaultCity: selectDefaultCity,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	searchCities: (callback, name) =>
 		dispatch(searchCities({ name, callback })),
+	setDefaultCity: (data) => dispatch(setDefaultCity(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CityDropDown);

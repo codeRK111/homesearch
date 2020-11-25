@@ -1,12 +1,16 @@
-import React from 'react';
-import { Grid, Box } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Grid } from '@material-ui/core';
+
 import BusinessIcon from '@material-ui/icons/Business';
+import Counter from '../propertyCounter/propertyCounter.component';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
+import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
+import { selectDefaultCity } from '../../redux/city/city.selectors';
 
 // Custom Components
-import Counter from '../propertyCounter/propertyCounter.component';
 
 const useStyles = makeStyles((theme) => ({
 	benifit: {
@@ -55,11 +59,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Benifits = () => {
+const Benifits = ({ defaultCity }) => {
 	const classes = useStyles();
 	return (
 		<Box>
-			<h2 className={classes.title}>Bhubaneswar Real Estate</h2>
+			<h2 className={classes.title}>{defaultCity.name} Real Estate</h2>
 			<p className={classes.description}>
 				Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
 				necessitatibus impedit voluptates minus sunt commodi
@@ -84,7 +88,7 @@ const Benifits = () => {
 						>
 							<EmojiTransportationIcon className={classes.icon} />
 
-							<b>Project in bhubaneswar</b>
+							<b>Project in {defaultCity.name}</b>
 							<Box mt="2rem" width="100%">
 								<Counter
 									details={[
@@ -114,7 +118,7 @@ const Benifits = () => {
 						>
 							<BusinessIcon className={classes.icon} />
 
-							<b>Resale property in bhubaneswar</b>
+							<b>Resale property in {defaultCity.name}</b>
 							<Box mt="2rem" width="100%">
 								<Counter
 									details={[
@@ -135,7 +139,7 @@ const Benifits = () => {
 						>
 							<LocationCityIcon className={classes.icon} />
 
-							<b>Rental property in bhubaneswar</b>
+							<b>Rental property in {defaultCity.name}</b>
 							<Box mt="2rem" width="100%">
 								<Counter
 									details={[
@@ -155,4 +159,8 @@ const Benifits = () => {
 	);
 };
 
-export default Benifits;
+const mapStateToProps = createStructuredSelector({
+	defaultCity: selectDefaultCity,
+});
+
+export default connect(mapStateToProps)(Benifits);

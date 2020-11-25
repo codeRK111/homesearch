@@ -1,4 +1,5 @@
 import { Box, Divider, Grid, Paper } from '@material-ui/core';
+import { Link, useHistory } from 'react-router-dom';
 import {
 	capitalizeFirstLetter,
 	parseDate,
@@ -6,7 +7,6 @@ import {
 } from '../../utils/render.utils';
 
 import DoneIcon from '@material-ui/icons/Done';
-import { Link, useHistory } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -52,7 +52,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 			<PropertyShare
 				status={open}
 				handleClose={handleClose}
-				id="djshd123"
+				id={property.id}
 			/>
 			<Grid container spacing={1}>
 				<Grid item xs={12} md={4}>

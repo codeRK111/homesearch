@@ -1,20 +1,38 @@
-import React from 'react';
+import Appbar from '../../components/appBar/appBar.component';
+import Benifits from '../../components/benifits/benifits.component';
 import { Box } from '@material-ui/core';
+import Enquiery from '../../components/builderEnquiery/builderEnquiery.component';
+import Footer from '../../components/footer/footer.component';
+import Heading from '../../components/heading/heading.component';
+import React from 'react';
+import Realestate from '../../components/realestate/realestate.component';
+import Row from '../../components/row/row.component';
+import Search from '../../components/searches/searches.component';
+import SearchProperty from '../../components/searchProperty/searchProperty.component';
+import Testimonial from '../../components/testimonial/testimonial.component';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
+import { selectDefaultCity } from '../../redux/city/city.selectors';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 // External components
-import Appbar from '../../components/appBar/appBar.component';
-import SearchProperty from '../../components/searchProperty/searchProperty.component';
-import Heading from '../../components/heading/heading.component';
-import Benifits from '../../components/benifits/benifits.component';
-import Row from '../../components/row/row.component';
-import Enquiery from '../../components/builderEnquiery/builderEnquiery.component';
-import Testimonial from '../../components/testimonial/testimonial.component';
-import Footer from '../../components/footer/footer.component';
-import Realestate from '../../components/realestate/realestate.component';
-import Search from '../../components/searches/searches.component';
 
-const HomePage = () => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const HomePage = ({ defaultCity }) => {
 	const mobile = useMediaQuery('(max-width:600px)');
 
 	const spacing = {
@@ -38,7 +56,7 @@ const HomePage = () => {
 				<Realestate />
 			</Box>
 			<Box mt="2rem">
-				<Row title={'Hot Projects In Bhubaneswar'} />
+				<Row title={`Hot Projects In ${defaultCity.name}`} />
 			</Box>
 			<Box {...spacing3}>
 				<Heading title="Homesearch18 for builders" />
@@ -58,4 +76,8 @@ const HomePage = () => {
 	);
 };
 
-export default HomePage;
+const mapStateToProps = createStructuredSelector({
+	defaultCity: selectDefaultCity,
+});
+
+export default connect(mapStateToProps)(HomePage);

@@ -12,4 +12,8 @@ export const selectSearchLocationLoading = createSelector(
 	[selectCity],
 	(c) => c.searchLocationLoading
 );
+export const selectDefaultCity = createSelector(
+	[selectCity],
+	(c) => c.defaultCity
+);
 // Select Errors

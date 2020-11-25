@@ -78,7 +78,7 @@ exports.login = catchAsync(async (req, res, next) => {
 	if (!email || !password) {
 		return next(new AppError('Please provide email and password!', 400));
 	}
-	// 2) Check if user exists && password is correct 
+	// 2) Check if user exists && password is correct
 	const user = await User.findOne({ email }).select('+password');
 
 	if (!user || !(await user.correctPassword(password, user.password))) {
@@ -94,15 +94,17 @@ exports.updateMyPassword = catchAsync(async (req, res, next) => {
 
 	// 1) Check if email and password exist
 	if (!oldPassword || !newPassword) {
-		return next(new AppError('Please provide oldPassword and newPassword!', 400));
+		return next(
+			new AppError('Please provide oldPassword and newPassword!', 400)
+		);
 	}
-	// 2) Check if user exists && password is correct 
+	// 2) Check if user exists && password is correct
 	const user = await User.findById(req.user.id).select('+password');
 
 	if (!user || !(await user.correctPassword(oldPassword, user.password))) {
 		return next(new AppError('Incorrect email or password', 401));
 	}
-	user.password = newPassword
+	user.password = newPassword;
 	const newUser = await user.save();
 
 	// 3) If everything ok, send token to client
@@ -228,6 +230,33 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.sendOtp = catchAsync(async (req, res, next) => {
+	// 1) Get user based on the id
+	const user = await User.findOne({ number: req.params.number }).select(
+		'+otp'
+	);
+
+	// 2) If token has not expired, and there is user, set the new password
+	if (!user) {
+		return next(new AppError('User not found', 404));
+	}
+	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+	user.otp = randomNumber;
+	await user.save();
+	const otpResponse = await sendOtpMessage(req.params.number, randomNumber);
+	if (otpResponse.data.startsWith('OK')) {
+		res.status(200).json({
+			status: 'success',
+			data: {
+				userId: user._id,
+			},
+		});
+	} else {
+		return next(new AppError('Unable to send otp', 500));
+	}
+	console.log();
+});
+
+exports.sendOtpWithoutVerfication = catchAsync(async (req, res, next) => {
 	// 1) Get user based on the id
 	const user = await User.findOne({ number: req.params.number }).select(
 		'+otp'
@@ -385,11 +414,15 @@ exports.handleProfileImage = catchAsync(async (req, res, next) => {
 					user.photo
 			);
 		}
-		
-		const updatedUser =await User.findByIdAndUpdate(req.user.id, {photo : imageName,photoStatus:'uploaded'  }, {
-		new: true,
-		runValidators: true
-	});
+
+		const updatedUser = await User.findByIdAndUpdate(
+			req.user.id,
+			{ photo: imageName, photoStatus: 'uploaded' },
+			{
+				new: true,
+				runValidators: true,
+			}
+		);
 		if (!updatedUser) {
 			fs.unlinkSync(
 				path.join(__dirname, '../', 'images', 'profile_images/') +
@@ -412,10 +445,8 @@ exports.handleProfileImage = catchAsync(async (req, res, next) => {
 	}
 });
 
-
-
 exports.updateMe = catchAsync(async (req, res, next) => {
-	console.log(req.body)
+	console.log(req.body);
 	const user = [
 		'name',
 		'email',
@@ -430,12 +461,26 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 		'registerVia',
 		'paymentStatus',
 		'numberVerified',
-		'password'
+		'password',
 	];
-	const excludeFields = ['serialNumber', 'googleId', 'photo', 'photoStatus','role','otp','createdAt','status','registerThrough','registerVia','paymentStatus','numberVerified','passwordChangedAt'];
-		// EXCLUDE FROM QUERY OBJECT
-		excludeFields.forEach((field) => delete req.body[field]);
-		console.log(req.body)
+	const excludeFields = [
+		'serialNumber',
+		'googleId',
+		'photo',
+		'photoStatus',
+		'role',
+		'otp',
+		'createdAt',
+		'status',
+		'registerThrough',
+		'registerVia',
+		'paymentStatus',
+		'numberVerified',
+		'passwordChangedAt',
+	];
+	// EXCLUDE FROM QUERY OBJECT
+	excludeFields.forEach((field) => delete req.body[field]);
+	console.log(req.body);
 	const doc = await User.findByIdAndUpdate(req.user.id, req.body, {
 		new: true,
 		runValidators: true,
