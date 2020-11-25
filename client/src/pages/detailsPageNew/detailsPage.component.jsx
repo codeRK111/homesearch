@@ -23,6 +23,7 @@ import NearByPlaces from './nearByPlaces.component';
 import PersonIcon from '@material-ui/icons/Person';
 import PropTypes from 'prop-types';
 import PropertyImages from '../../components/propertyImages/propertyImages.component';
+import PropertyShare from '../../components/propertyShare/propertyShare.component';
 import React from 'react';
 import SearchFeedbackForm from '../../components/searchFeedbackForm/searchFeedBackForm.component';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
@@ -50,17 +51,25 @@ const DetailsPage = ({
 	});
 	const [propertyActions, setPropertyActions] = React.useState(null);
 
+	const [open, setOpen] = React.useState(false);
+	const [data, setData] = React.useState(null);
+	const [asyncError, setAsyncError] = React.useState(null);
+	const [openSnackBar, setOpenSnackBar] = React.useState(false);
+	const [snackbarMessage, setSnackbarMessage] = React.useState('');
+	const [propertyShareOpen, setPropertyShareOpen] = React.useState(false);
 	const handlePropertyActions = (name) => (_) => {
 		setPropertyActions(name);
 	};
 	const closePropertyActions = (name) => {
 		setPropertyActions(null);
 	};
-	const [open, setOpen] = React.useState(false);
-	const [data, setData] = React.useState(null);
-	const [asyncError, setAsyncError] = React.useState(null);
-	const [openSnackBar, setOpenSnackBar] = React.useState(false);
-	const [snackbarMessage, setSnackbarMessage] = React.useState('');
+	const handlPropertyShareOpen = (_) => {
+		setPropertyShareOpen(true);
+	};
+
+	const handlePropertyShareClose = () => {
+		setPropertyShareOpen(false);
+	};
 
 	const showSnackbar = (message) => () => {
 		setSnackbarMessage(message);
@@ -120,6 +129,11 @@ const DetailsPage = ({
 					data && (
 						<Box className={classes.pageWrapper}>
 							<AppBar />
+							<PropertyShare
+								status={propertyShareOpen}
+								handleClose={handlePropertyShareClose}
+								id={data.id}
+							/>
 							<ContactDialogueWithMessage
 								status={open}
 								handleClose={handleClose}
@@ -260,6 +274,9 @@ const DetailsPage = ({
 																	<button
 																		className={
 																			classes.chatButton
+																		}
+																		onClick={
+																			handlPropertyShareOpen
 																		}
 																	>
 																		<Box
