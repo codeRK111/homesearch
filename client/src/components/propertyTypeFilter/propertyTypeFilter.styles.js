@@ -10,7 +10,7 @@ export default makeStyles((theme) => ({
 		cursor: 'pointer',
 	},
 	valueWrapper: {
-		maxWidth: '150px',
+		maxWidth: '180px',
 		padding: '0.5rem',
 		boxSizing: 'border-box',
 	},

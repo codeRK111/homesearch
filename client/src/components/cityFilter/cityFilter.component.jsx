@@ -1,50 +1,51 @@
-import { Checkbox, FormControlLabel } from '@material-ui/core';
+import { MenuItem, Typography } from '@material-ui/core';
 
 import Box from '@material-ui/core/Box';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { searchLocations } from '../../redux/city/city.actions';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { searchCities } from '../../redux/city/city.actions';
 import { selectCurrentTab } from '../../redux/actionTab/actionTab.selectors';
-import { selectSearchLocationLoading } from '../../redux/city/city.selectors';
-import useStyles from './locationFilter.styles';
+import { selectSearchCityLoading } from '../../redux/city/city.selectors';
+import useStyles from './cityFilter.styles';
 
-// Redux
-
-// STyles
+const locations = [
+	'Patia',
+	'SunderPada',
+	'Jaydev Vihar',
+	'Nayapali',
+	'KhandaGiri',
+	'Dumduma',
+	'cs pur',
+	'Damana',
+	'Niladribihar',
+	'Rasulgarh',
+	'Vani bihar',
+];
 
 function MenuListComposition({
 	currentTab,
-	searchLocations,
-	loading,
+	searchCities,
+	searchCityLoading,
 	city,
-	existingLocations = [],
-	handleLocations,
+	handleCity,
 }) {
 	const classes = useStyles();
+	const [cityText, setCityText] = React.useState('');
 	const [open, setOpen] = React.useState(false);
-	const [locations, setLocations] = React.useState([]);
 	const [asyncError, setAsyncError] = React.useState(null);
-	const anchorRef = React.useRef(null);
-	const handleFetchLocations = (status, data = null) => {
-		if (status === 'success') {
-			setAsyncError(null);
-			setLocations(data);
-		} else {
-			setAsyncError(data);
-		}
-	};
+	const [cities, setCities] = React.useState([]);
 
-	React.useEffect(() => {
-		if (city) {
-			searchLocations(handleFetchLocations, '', city);
-		}
-	}, [city]);
+	const anchorRef = React.useRef(null);
+	const handleChange = (e) => setCityText(e.target.value);
+
 	const handleClose = (event) => {
 		if (anchorRef.current && anchorRef.current.contains(event.target)) {
 			return;
@@ -53,20 +54,25 @@ function MenuListComposition({
 		setOpen(false);
 	};
 
-	const toggleOpen = (_) => setOpen(!open);
-	const handleChangeCheckbox = (data) => (e) => {
-		const { checked } = e.target;
-		console.log(data);
-		console.log(checked);
-		if (checked) {
-			if (existingLocations.length < 3) {
-				console.log('object');
-				handleLocations((prevState) => [...prevState, data]);
-			}
+	const handleFetchCities = (status, data = null) => {
+		if (status === 'success') {
+			setAsyncError(null);
+			setCities(data);
+			console.log(data);
+			setOpen(true);
 		} else {
-			handleLocations((prevSTate) => prevSTate.filter((c) => c !== data));
+			setAsyncError(data);
 		}
 	};
+
+	const onKeyUp = (e) => {
+		if (e.target.value.trim().length > 3) {
+			console.log(cityText);
+			searchCities(handleFetchCities, cityText);
+		}
+	};
+
+	const toggleOpen = (_) => setOpen(!open);
 
 	// return focus to the button when we transitioned from !open -> open
 	const prevOpen = React.useRef(open);
@@ -78,24 +84,9 @@ function MenuListComposition({
 		prevOpen.current = open;
 	}, [open]);
 
-	console.log(existingLocations);
-
-	const renderPropertyTypes = () => {
-		return locations.map((c) => (
-			<div key={c.id}>
-				<FormControlLabel
-					control={
-						<Checkbox
-							checked={Boolean(
-								existingLocations.find((b) => b === c.id)
-							)}
-							onChange={handleChangeCheckbox(c.id)}
-						/>
-					}
-					label={c.name}
-				/>
-			</div>
-		));
+	const onClick = (data) => (e) => {
+		handleCity(data);
+		handleClose(e);
 	};
 
 	return (
@@ -110,7 +101,7 @@ function MenuListComposition({
 				className={classes.buttonWrapper}
 				onClick={toggleOpen}
 			>
-				Locations
+				{city.name}
 				<ExpandMoreIcon />
 			</Box>
 
@@ -144,7 +135,52 @@ function MenuListComposition({
 								onMouseLeave={handleClose}
 								className={classes.valueWrapper}
 							>
-								{renderPropertyTypes()}
+								<Box
+									p="0.3rem"
+									className={classes.searchWrapper}
+								>
+									<FontAwesomeIcon
+										icon={faSearch}
+										className={classes.searchIcon}
+									/>
+									<input
+										type="text"
+										className={classes.input}
+										placeholder="Enter 4 letter of the city"
+										value={cityText}
+										onChange={handleChange}
+										onKeyUp={onKeyUp}
+										autoComplete="new-password"
+									/>
+								</Box>
+								<Box>
+									{asyncError && (
+										<p className={classes.cRed}>
+											{asyncError}
+										</p>
+									)}
+								</Box>
+								<Box>
+									{searchCityLoading && (
+										<Typography
+											component="h5"
+											align="center"
+										>
+											Loading...
+										</Typography>
+									)}
+								</Box>
+								<Box>
+									{cities.map((c) => (
+										<MenuItem
+											key={c.id}
+											onClick={onClick(c)}
+										>
+											{c.name}
+										</MenuItem>
+									))}
+								</Box>
+								{/* {renderPropertyTypes()} */}
 							</Paper>
 						</ClickAwayListener>
 					</Grow>
@@ -156,12 +192,12 @@ function MenuListComposition({
 
 const mapStateToProps = createStructuredSelector({
 	currentTab: selectCurrentTab,
-	loading: selectSearchLocationLoading,
+	searchCityLoading: selectSearchCityLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	searchLocations: (callback, name, city) =>
-		dispatch(searchLocations({ name, callback, city })),
+	searchCities: (callback, name) =>
+		dispatch(searchCities({ name, callback })),
 });
 
 export default connect(

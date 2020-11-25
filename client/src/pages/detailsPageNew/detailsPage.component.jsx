@@ -1,4 +1,8 @@
 import { Box, Grid, Paper, Tooltip } from '@material-ui/core';
+import {
+	renderFurnishAndAmenities,
+	renderLegalClearance,
+} from '../../utils/render.utils';
 
 import Amenities from './amenities.component';
 import AppBar from '../../components/appBar/appBar.component';
@@ -31,7 +35,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { getPropertyDetails } from '../../redux/property/property.actions';
 import { parseDate } from '../../utils/render.utils';
-import { renderFurnishAndAmenities } from '../../utils/render.utils';
 import { selectGetPropertyDetailsLoading } from '../../redux/property/property.selectors';
 import useStyles from './detailsPage.styles';
 
@@ -440,15 +443,21 @@ const DetailsPage = ({
 																/>
 															</Grid>
 														)}
-														<Grid
-															item
-															xs={12}
-															md={12}
-														>
-															<LegalClearance
-																property={data}
-															/>
-														</Grid>
+														{renderLegalClearance(
+															data
+														) && (
+															<Grid
+																item
+																xs={12}
+																md={12}
+															>
+																<LegalClearance
+																	property={
+																		data
+																	}
+																/>
+															</Grid>
+														)}
 													</Grid>
 												</Grid>
 

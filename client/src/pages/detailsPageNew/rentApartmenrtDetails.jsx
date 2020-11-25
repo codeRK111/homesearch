@@ -188,7 +188,7 @@ const ResaleApartmentDetails = ({ property }) => {
 						</Box>
 					</Box>
 				</Grid>
-				<Grid item xs={6} md={3}>
+				{/* <Grid item xs={6} md={3}>
 					<Box className={classes.p1Details} display="flex">
 						<Box pl="0.5rem" pr="0.5rem">
 							<Avatar>
@@ -206,7 +206,7 @@ const ResaleApartmentDetails = ({ property }) => {
 							</h4>
 						</Box>
 					</Box>
-				</Grid>
+				</Grid> */}
 				<Grid item xs={6} md={3}>
 					<Box className={classes.p1Details} display="flex">
 						<Box pl="0.5rem" pr="0.5rem">

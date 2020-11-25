@@ -82,6 +82,9 @@ const useStyles = makeStyles((theme) => ({
 		'&:hover': {
 			backgroundColor: theme.fontColor,
 		},
+		[theme.breakpoints.down('sm')]: {
+			width: '80vw',
+		},
 	},
 	mobileNumberWrapper: {
 		width: '50vw',

@@ -77,6 +77,14 @@ export const renderFurnishAndAmenities = (info) => {
 	}
 };
 
+export const renderLegalClearance = (info) => {
+	if (info['for'] !== 'rent') {
+		return true;
+	} else {
+		return false;
+	}
+};
+
 export const renderArray = (info) => {
 	let str = '';
 	info.forEach((c) => {

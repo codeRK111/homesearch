@@ -1,27 +1,30 @@
-import React from 'react';
 import Box from '@material-ui/core/Box';
+import { Checkbox } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-
-// Redux
+import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentTab } from '../../redux/actionTab/actionTab.selectors';
-
-// STyles
 import useStyles from './propertyTypeFilter.styles';
 
-function MenuListComposition({ currentTab }) {
+// Redux
+
+// STyles
+
+function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 	const [value, setValue] = React.useState('female');
+
+	const handleTypes = (event) => {
+		const { checked, name } = event.target;
+		setTypes((prevState) => ({ ...prevState, [name]: checked }));
+	};
 
 	const handleChange = (event) => {
 		setValue(event.target.value);
@@ -50,79 +53,111 @@ function MenuListComposition({ currentTab }) {
 	}, [open]);
 
 	const renderPropertyTypes = () => {
-		if (currentTab === 'rent') {
-			return (
-				<FormControl component="fieldset">
-					<RadioGroup
-						aria-label="gender"
-						name="gender1"
-						value={value}
-						onChange={handleChange}
-					>
+		{
+			return pFor !== 'rent' ? (
+				<Box p="1rem">
+					{' '}
+					<div>
 						<FormControlLabel
-							value="female"
-							control={<Radio />}
-							label="Flat"
+							control={
+								<Checkbox
+									name="flat"
+									checked={types.flat}
+									onChange={handleTypes}
+								/>
+							}
+							label="Apartment"
 						/>
+					</div>
+					<div>
 						<FormControlLabel
-							value="male"
-							control={<Radio />}
-							label="Land"
-						/>
-						<FormControlLabel
-							value="other"
-							control={<Radio />}
+							control={
+								<Checkbox
+									name="independenthouse"
+									checked={types.independenthouse}
+									onChange={handleTypes}
+								/>
+							}
 							label="Independent House"
 						/>
+					</div>
+					<div>
 						<FormControlLabel
-							value="male"
-							control={<Radio />}
+							control={
+								<Checkbox
+									name="land"
+									checked={types.land}
+									onChange={handleTypes}
+								/>
+							}
+							label="Land"
+						/>
+					</div>
+				</Box>
+			) : (
+				<Box p="1rem">
+					{' '}
+					<div>
+						<FormControlLabel
+							control={
+								<Checkbox
+									name="flat"
+									checked={types.flat}
+									onChange={handleTypes}
+								/>
+							}
+							label="Apartment"
+						/>
+					</div>
+					<div>
+						<FormControlLabel
+							control={
+								<Checkbox
+									name="independenthouse"
+									checked={types.independenthouse}
+									onChange={handleTypes}
+								/>
+							}
+							label="Independent House"
+						/>
+					</div>
+					<div>
+						<FormControlLabel
+							control={
+								<Checkbox
+									name="guesthouse"
+									checked={types.guesthouse}
+									onChange={handleTypes}
+								/>
+							}
+							label="Guest House"
+						/>
+					</div>
+					<div>
+						<FormControlLabel
+							control={
+								<Checkbox
+									name="hostel"
+									checked={types.hostel}
+									onChange={handleTypes}
+								/>
+							}
 							label="Hostel"
 						/>
+					</div>
+					<div>
 						<FormControlLabel
-							value="other"
-							control={<Radio />}
+							control={
+								<Checkbox
+									name="pg"
+									checked={types.pg}
+									onChange={handleTypes}
+								/>
+							}
 							label="PG"
 						/>
-						<FormControlLabel
-							value="other"
-							control={<Radio />}
-							label="All"
-						/>
-					</RadioGroup>
-				</FormControl>
-			);
-		} else {
-			return (
-				<FormControl component="fieldset">
-					<RadioGroup
-						aria-label="gender"
-						name="gender1"
-						value={value}
-						onChange={handleChange}
-					>
-						<FormControlLabel
-							value="female"
-							control={<Radio />}
-							label="Flat"
-						/>
-						<FormControlLabel
-							value="male"
-							control={<Radio />}
-							label="Land"
-						/>
-						<FormControlLabel
-							value="other"
-							control={<Radio />}
-							label="Independent House"
-						/>
-						<FormControlLabel
-							value="all"
-							control={<Radio />}
-							label="All"
-						/>
-					</RadioGroup>
-				</FormControl>
+					</div>
+				</Box>
 			);
 		}
 	};

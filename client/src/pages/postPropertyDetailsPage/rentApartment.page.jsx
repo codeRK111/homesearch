@@ -25,53 +25,6 @@ import { useHistory } from 'react-router-dom';
 import useStyles from './postPropertyDetails.styles';
 import { validateNumber } from '../../utils/validation.utils';
 
-const legalClearance = [
-	{
-		name: 'approvalOfBuilding',
-		value: false,
-		label: 'Approval of building',
-	},
-	{
-		name: 'nocFromFireDepts',
-		value: false,
-		label: 'NOC from Fire depts',
-	},
-	{
-		name: 'electricityConnUse',
-		value: false,
-		label: 'Electricity Connection use',
-	},
-	{
-		name: 'StructuralStatbilityCertificate',
-		value: false,
-		label: 'Structural stability certificate',
-	},
-	{
-		name: 'nocFromPollutionDepts',
-		value: false,
-		label: 'NOC from Pollution deptt',
-	},
-	{
-		name: 'functionalCertificate',
-		value: false,
-		label: 'Occupation / functional certificate',
-	},
-	{
-		name: 'holdingTax',
-		value: false,
-		label: 'Municipal /Holding Tax',
-	},
-	{
-		name: 'completionCertificate',
-		value: false,
-		label: 'Completion Certificate',
-	},
-	{
-		name: 'reraapproved',
-		value: false,
-		label: 'RERA Approved',
-	},
-];
 const initialValues = {
 	for: 'rent',
 	availableFor: [],
@@ -102,8 +55,6 @@ const initialValues = {
 	city: '',
 	location: '',
 	carParking: 'open',
-	propertyOwnerShip: 'freehold',
-	legalClearance,
 };
 
 const RentApartment = ({ propertyLoading, postProperty, pType }) => {
@@ -155,6 +106,10 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		if (!validateNumber(values.carpetArea)) {
 			error.carpetArea = 'Invalid value';
 		}
+		if (Number(values.superBuiltupArea) < Number(values.carpetArea)) {
+			error.carpetArea =
+				'Super builtup area cannot be less than carpet area';
+		}
 		if (!validateNumber(values.toiletIndian)) {
 			error.toiletIndian = 'Invalid value';
 		}
@@ -164,8 +119,13 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		if (!validateNumber(values.noOfFloors)) {
 			error.noOfFloors = 'Invalid value';
 		}
+
 		if (!validateNumber(values.floor)) {
 			error.floor = 'Invalid value';
+		}
+		if (values.noOfFloors < values.floor) {
+			error.floor =
+				'Property on floor cannot be greater than total floors';
 		}
 		if (!validateNumber(values.distanceSchool)) {
 			error.distanceSchool = 'Invalid value';
@@ -193,14 +153,6 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		}
 		if (!values.description) {
 			error.description = 'Invalid value';
-		}
-		if (
-			values.legalClearance.find((c) => c.name === 'reraapproved')[
-				'value'
-			] &&
-			!values.reraapproveId
-		) {
-			error.reraapproveId = 'required';
 		}
 
 		return error;
@@ -397,22 +349,6 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 							</Grid>
 
 							<Grid item xs={12} md={6}>
-								<Select
-									name="propertyOwnerShip"
-									formLabel="Ownership *"
-									options={[
-										{
-											value: 'freehold',
-											label: 'Freehold',
-										},
-										{
-											value: 'leashed',
-											label: 'Leashed',
-										},
-									]}
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
 								<TextField
 									name="noOfFloors"
 									formLabel="Total number of floors *"
@@ -553,163 +489,129 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 									}
 								/>
 							</Grid>
-							<Grid item xs={12} md={12}>
-								<Box mt="1rem" mb="0.5rem">
-									<b>Legal Clearance</b>
-								</Box>
-								<FieldArray name="legalClearance">
-									{(arrayHelpers) => (
-										<Grid container>
-											{values.legalClearance.map(
-												(c, i) => {
-													return (
-														<Grid item lg={3}>
-															<CheckBox
-																key={i}
-																heading="test"
-																name={`legalClearance.${i}.value`}
-																formLabel={
-																	c.label
-																}
-															/>
-														</Grid>
-													);
-												}
-											)}
-										</Grid>
-									)}
-								</FieldArray>
-							</Grid>
-							<Grid item xs={12} md={12}>
-								{values.legalClearance.find(
-									(c) => c.name === 'reraapproved'
-								)['value'] && (
-									<TextField
-										name="reraapproveId"
-										formLabel="RERA ID"
-									/>
-								)}
-							</Grid>
+
 							<Grid item xs={12} md={12}>
 								<DividerHeading>
 									<h3>Images</h3>
 								</DividerHeading>
 							</Grid>
-							<Grid item xs={12} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image1
-												? URL.createObjectURL(
-														images.image1
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
+							<Grid container spacing={3}>
+								<Grid item xs={6} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												images.image1
+													? URL.createObjectURL(
+															images.image1
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										name="image1"
+										onChange={handleImage}
+										id="pimage1"
+										className={classes.input}
 									/>
-								</Box>
-								<input
-									type="file"
-									name="image1"
-									onChange={handleImage}
-									id="pimage1"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage1"
-									className={classes.label}
-								>
-									Upload
-								</label>
-							</Grid>
-							<Grid item xs={12} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image2
-												? URL.createObjectURL(
-														images.image2
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
+									<label
+										htmlFor="pimage1"
+										className={classes.label}
+									>
+										Upload
+									</label>
+								</Grid>
+								<Grid item xs={6} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												images.image2
+													? URL.createObjectURL(
+															images.image2
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										name="image2"
+										onChange={handleImage}
+										id="pimage2"
+										className={classes.input}
 									/>
-								</Box>
-								<input
-									type="file"
-									name="image2"
-									onChange={handleImage}
-									id="pimage2"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage2"
-									className={classes.label}
-								>
-									Upload
-								</label>
-							</Grid>
-							<Grid item xs={12} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image3
-												? URL.createObjectURL(
-														images.image3
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
+									<label
+										htmlFor="pimage2"
+										className={classes.label}
+									>
+										Upload
+									</label>
+								</Grid>
+								<Grid item xs={6} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												images.image3
+													? URL.createObjectURL(
+															images.image3
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										name="image3"
+										onChange={handleImage}
+										id="pimage3"
+										className={classes.input}
 									/>
-								</Box>
-								<input
-									type="file"
-									name="image3"
-									onChange={handleImage}
-									id="pimage3"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage3"
-									className={classes.label}
-								>
-									Upload
-								</label>
-							</Grid>
-							<Grid item xs={12} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image4
-												? URL.createObjectURL(
-														images.image4
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
+									<label
+										htmlFor="pimage3"
+										className={classes.label}
+									>
+										Upload
+									</label>
+								</Grid>
+								<Grid item xs={6} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												images.image4
+													? URL.createObjectURL(
+															images.image4
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										name="image4"
+										onChange={handleImage}
+										id="pimage4"
+										className={classes.input}
 									/>
-								</Box>
-								<input
-									type="file"
-									name="image4"
-									onChange={handleImage}
-									id="pimage4"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage4"
-									className={classes.label}
-								>
-									Upload
-								</label>
+									<label
+										htmlFor="pimage4"
+										className={classes.label}
+									>
+										Upload
+									</label>
+								</Grid>
 							</Grid>
 							<Grid item xs={12} md={12}>
 								<Box mt="2rem">

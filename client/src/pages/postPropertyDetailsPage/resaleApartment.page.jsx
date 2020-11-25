@@ -2,7 +2,7 @@ import {
 	Backdrop,
 	Box,
 	Button,
-	CircularProgress, 
+	CircularProgress,
 	Grid,
 } from '@material-ui/core';
 import { FieldArray, Form, Formik } from 'formik';
@@ -197,6 +197,15 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 			error.reraapproveId = 'required';
 		}
 
+		if (values.noOfFloors < values.floor) {
+			error.floor =
+				'Property on floor cannot be greater than total floors';
+		}
+		if (Number(values.superBuiltupArea) < Number(values.carpetArea)) {
+			error.carpetArea =
+				'Super builtup area cannot be less than carpet area';
+		}
+
 		return error;
 	};
 
@@ -222,7 +231,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 				values.salePriceOver === 'superBuildUpArea'
 					? values.salePrice / values.superBuiltupArea
 					: values.salePrice / values.carpetArea,
-			sale_type: pType
+			sale_type: pType,
 		};
 		if (values.reraapproveId) {
 			data.legalClearance = values.legalClearance.map((c) => {
@@ -561,121 +570,123 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 									<h3>Images</h3>
 								</DividerHeading>
 							</Grid>
-							<Grid item xs={12} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image1
-												? URL.createObjectURL(
-														images.image1
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
+							<Grid container spacing={3}>
+								<Grid item xs={6} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												images.image1
+													? URL.createObjectURL(
+															images.image1
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										name="image1"
+										onChange={handleImage}
+										id="pimage1"
+										className={classes.input}
 									/>
-								</Box>
-								<input
-									type="file"
-									name="image1"
-									onChange={handleImage}
-									id="pimage1"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage1"
-									className={classes.label}
-								>
-									Upload
-								</label>
-							</Grid>
-							<Grid item xs={12} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image2
-												? URL.createObjectURL(
-														images.image2
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
+									<label
+										htmlFor="pimage1"
+										className={classes.label}
+									>
+										Upload
+									</label>
+								</Grid>
+								<Grid item xs={6} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												images.image2
+													? URL.createObjectURL(
+															images.image2
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										name="image2"
+										onChange={handleImage}
+										id="pimage2"
+										className={classes.input}
 									/>
-								</Box>
-								<input
-									type="file"
-									name="image2"
-									onChange={handleImage}
-									id="pimage2"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage2"
-									className={classes.label}
-								>
-									Upload
-								</label>
-							</Grid>
-							<Grid item xs={12} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image3
-												? URL.createObjectURL(
-														images.image3
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
+									<label
+										htmlFor="pimage2"
+										className={classes.label}
+									>
+										Upload
+									</label>
+								</Grid>
+								<Grid item xs={6} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												images.image3
+													? URL.createObjectURL(
+															images.image3
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										name="image3"
+										onChange={handleImage}
+										id="pimage3"
+										className={classes.input}
 									/>
-								</Box>
-								<input
-									type="file"
-									name="image3"
-									onChange={handleImage}
-									id="pimage3"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage3"
-									className={classes.label}
-								>
-									Upload
-								</label>
-							</Grid>
-							<Grid item xs={12} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image4
-												? URL.createObjectURL(
-														images.image4
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
+									<label
+										htmlFor="pimage3"
+										className={classes.label}
+									>
+										Upload
+									</label>
+								</Grid>
+								<Grid item xs={6} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												images.image4
+													? URL.createObjectURL(
+															images.image4
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										name="image4"
+										onChange={handleImage}
+										id="pimage4"
+										className={classes.input}
 									/>
-								</Box>
-								<input
-									type="file"
-									name="image4"
-									onChange={handleImage}
-									id="pimage4"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage4"
-									className={classes.label}
-								>
-									Upload
-								</label>
+									<label
+										htmlFor="pimage4"
+										className={classes.label}
+									>
+										Upload
+									</label>
+								</Grid>
 							</Grid>
 							<Grid item xs={12} md={12}>
 								<Box mt="2rem">

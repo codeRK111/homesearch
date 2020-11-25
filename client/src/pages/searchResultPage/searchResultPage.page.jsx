@@ -8,6 +8,7 @@ import {
 import AppBar from '../../components/appBar/appBar.component';
 import BedRoomFilter from '../../components/bedroomFilter/bedRoom.component';
 import BudgetFilter from '../../components/budgetFilter/budgetFilter.component';
+import CityFilter from '../../components/cityFilter/cityFilter.component';
 import Collapse from '@material-ui/core/Collapse';
 import ErrorCard from '../../components/errorCard/errorCard.component';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -62,6 +63,35 @@ const SearchPage = ({
 	const [totalDos, setTotalDocs] = React.useState(0);
 	const [data, setData] = React.useState([]);
 	const [propertyItems, setPropertyItems] = React.useState([]);
+	const [city, setCity] = React.useState({
+		id: null,
+		name: null,
+	});
+	const [pFor, setPFor] = React.useState('rent');
+	const [locations, setLocations] = React.useState([]);
+	const [types, setTypes] = React.useState({
+		flat: false,
+		independenthouse: false,
+		land: false,
+		guesthouse: false,
+		hostel: false,
+		pg: false,
+	});
+	const [rentItems, setRentItems] = React.useState(
+		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
+			name: `${(c - 1) * 5}-${c * 5}K`,
+			val: { min: (c - 1) * 5 * 1000, max: c * 5 * 1000 },
+			checked: false,
+		}))
+	);
+
+	const [otherItems, setOtherItems] = React.useState(
+		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
+			name: `${(c - 1) * 5}-${c * 5}L`,
+			val: { min: (c - 1) * 5 * 100000, max: c * 5 * 100000 },
+			checked: false,
+		}))
+	);
 	const handleFetchCities = (status, data = null) => {
 		if (status === 'success') {
 			setAsyncError(null);
@@ -73,6 +103,8 @@ const SearchPage = ({
 			setAsyncError(data);
 		}
 	};
+
+	const handleCity = (data) => setCity(data);
 
 	const showSnackbar = (message, severity = 'success') => {
 		setSnackbarMessage(message);
@@ -119,6 +151,11 @@ const SearchPage = ({
 	};
 
 	React.useEffect(() => {
+		setCity({
+			id: parsed.c,
+			name: parsed.cn,
+		});
+		setPFor(parsed.f);
 		const body = {
 			for: parsed.f,
 			city: parsed.c,
@@ -129,8 +166,10 @@ const SearchPage = ({
 		if (parsed.l) {
 			if (typeof parsed.l === 'string') {
 				body.locations = [parsed.l];
+				setLocations([parsed.l]);
 			} else {
 				body.locations = parsed.l;
+				setLocations(parsed.l);
 			}
 		}
 		if (parsed.t) {
@@ -139,6 +178,13 @@ const SearchPage = ({
 			} else {
 				body.type = parsed.t;
 			}
+
+			body.type.forEach((c) => {
+				setTypes((prevState) => ({
+					...prevState,
+					[c]: true,
+				}));
+			});
 		}
 		if (parsed.av) {
 			body.availability = parsed.av;
@@ -153,6 +199,29 @@ const SearchPage = ({
 				const item = c.split(',');
 
 				if (item.length > 1) {
+					let test = '';
+					if (parsed.f === 'rent') {
+						test = `${item[0] / 1000}-${item[1] / 1000}K`;
+						setRentItems((prevState) =>
+							prevState.map((c) => {
+								if (c.name === test) {
+									c.checked = true;
+								}
+								return c;
+							})
+						);
+					} else {
+						test = `${item[0] / 100000}-${item[1] / 100000}L`;
+						setOtherItems((prevState) =>
+							prevState.map((c) => {
+								if (c.name === test) {
+									c.checked = true;
+								}
+								return c;
+							})
+						);
+					}
+
 					arr.push({
 						min: item[0],
 						max: item[1],
@@ -160,6 +229,32 @@ const SearchPage = ({
 				} else {
 					if (i === 0) {
 						arr.push({ min: c });
+						let test2 = '';
+						if (parsed.f === 'rent') {
+							test2 = `${parsed.bl[0] / 1000}-${
+								parsed.bl[1] / 1000
+							}K`;
+							setRentItems((prevState) =>
+								prevState.map((c) => {
+									if (c.name === test2) {
+										c.checked = true;
+									}
+									return c;
+								})
+							);
+						} else {
+							test2 = `${parsed.bl[0] / 100000}-${
+								parsed.bl[1] / 100000
+							}L`;
+							setOtherItems((prevState) =>
+								prevState.map((c) => {
+									if (c.name === test2) {
+										c.checked = true;
+									}
+									return c;
+								})
+							);
+						}
 					} else {
 						arr[0]['max'] = c;
 					}
@@ -331,7 +426,7 @@ const SearchPage = ({
 							md={1}
 							className={classes.gridItemWrapper}
 						>
-							<LocationFilter />
+							<CityFilter city={city} handleCity={handleCity} />
 						</Grid>
 						<Grid
 							item
@@ -339,25 +434,47 @@ const SearchPage = ({
 							md={1}
 							className={classes.gridItemWrapper}
 						>
-							<PropertyFilter />
+							<LocationFilter
+								city={city.id}
+								existingLocations={locations}
+								handleLocations={setLocations}
+							/>
 						</Grid>
 						<Grid
+							item
+							xs={6}
+							md={1}
+							className={classes.gridItemWrapper}
+						>
+							<PropertyFilter
+								pFor={pFor}
+								types={types}
+								setTypes={setTypes}
+							/>
+						</Grid>
+						{/* <Grid
 							item
 							xs={6}
 							md={1}
 							className={classes.gridItemWrapper}
 						>
 							<BedRoomFilter />
-						</Grid>
+						</Grid> */}
 						<Grid
 							item
 							xs={6}
 							md={1}
 							className={classes.gridItemWrapper}
 						>
-							<BudgetFilter />
+							<BudgetFilter
+								pFor={pFor}
+								rentItems={rentItems}
+								setRentItems={setRentItems}
+								otherItems={otherItems}
+								setOtherItems={setOtherItems}
+							/>
 						</Grid>
-						{currentTab === 'sale' && (
+						{/* {currentTab === 'sale' && (
 							<Grid
 								item
 								xs={6}
@@ -366,7 +483,7 @@ const SearchPage = ({
 							>
 								<FurnishingFilter />
 							</Grid>
-						)}
+						)} */}
 
 						<Grid
 							item

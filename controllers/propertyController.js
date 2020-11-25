@@ -925,13 +925,13 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 				// filter['salePrice'] = { $lte: req.body.price };
 			} else {
 				req.body.budgetList.forEach((c) => {
-					console.log(typeof c.max)
-					const obj = {}
-					if(c.max){
-						obj['$lte'] = Number(c.max)
+					console.log(typeof c.max);
+					const obj = {};
+					if (c.max) {
+						obj['$lte'] = Number(c.max);
 					}
-					if(c.min){
-						obj['$gte'] = Number(c.min)
+					if (c.min) {
+						obj['$gte'] = Number(c.min);
 					}
 					arr.push({
 						rent: obj,
@@ -1449,7 +1449,6 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 				furnished: req.body.furnished,
 				toiletIndian: req.body.toiletIndian,
 				toiletWestern: req.body.toiletWestern,
-				propertyOwnerShip: req.body.propertyOwnerShip,
 				noOfFloors: req.body.noOfFloors,
 				floor: req.body.floor,
 				distanceSchool: req.body.distanceSchool,
@@ -1463,7 +1462,6 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 				type: req.body.type,
 				amenities: req.body.amenities,
 				furnishes: req.body.furnishes,
-				legalClearance: req.body.legalClearance,
 				availableFor: req.body.availableFor,
 				numberOfBalconies: req.body.numberOfBalconies,
 				rent: req.body.rent,
@@ -1543,7 +1541,6 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 				city: req.body.city,
 				location: req.body.location,
 				type: req.body.type,
-				legalClearance: req.body.legalClearance,
 				amenities: req.body.amenities,
 				furnishes: req.body.furnishes,
 				rent: req.body.rent,

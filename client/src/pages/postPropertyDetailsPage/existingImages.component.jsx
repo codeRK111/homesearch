@@ -6,8 +6,8 @@ import useStyles from './postPropertyDetails.styles';
 const ExistingImages = ({ property }) => {
 	const classes = useStyles();
 	return (
-		<>
-			<Grid item xs={12} lg={3}>
+		<Grid container spacing={3}>
+			<Grid item xs={6} lg={3}>
 				<Box className={classes.imageWrapper}>
 					<img
 						src={
@@ -21,7 +21,7 @@ const ExistingImages = ({ property }) => {
 					/>
 				</Box>
 			</Grid>
-			<Grid item xs={12} lg={3}>
+			<Grid item xs={6} lg={3}>
 				<Box className={classes.imageWrapper}>
 					<img
 						src={
@@ -35,7 +35,7 @@ const ExistingImages = ({ property }) => {
 					/>
 				</Box>
 			</Grid>
-			<Grid item xs={12} lg={3}>
+			<Grid item xs={6} lg={3}>
 				<Box className={classes.imageWrapper}>
 					<img
 						src={
@@ -49,7 +49,7 @@ const ExistingImages = ({ property }) => {
 					/>
 				</Box>
 			</Grid>
-			<Grid item xs={12} lg={3}>
+			<Grid item xs={6} lg={3}>
 				<Box className={classes.imageWrapper}>
 					<img
 						src={
@@ -63,7 +63,7 @@ const ExistingImages = ({ property }) => {
 					/>
 				</Box>
 			</Grid>
-		</>
+		</Grid>
 	);
 };
 
