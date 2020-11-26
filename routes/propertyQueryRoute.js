@@ -6,6 +6,6 @@ const router = express.Router();
 router
 	.route('/get-queries')
 	.post(authController.protect, queryController.getQueries);
-router.route('/').post(authController.protect, queryController.addQuery);
+router.route('/').post(queryController.addQuery);
 
 module.exports = router;
