@@ -49,9 +49,10 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-	const lastDoc = await User.find().sort({ _id: -1 }).limit(1);
+	const lastDoc = await User.find().sort({ createdAt: -1 }).limit(1);
 	const lastDocSerialNumber =
 		lastDoc.length === 0 ? 0 : lastDoc[0].serialNumber;
+	console.log(lastDocSerialNumber);
 	const newUser = await User.create({
 		name: req.body.name,
 		email: req.body.email,
