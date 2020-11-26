@@ -52,7 +52,7 @@ const propertySchema = new Schema(
 		postedBy: {
 			type: String,
 			enum: {
-				values: ['owner', 'broker', 'builder', 'tenant'],
+				values: ['owner', 'broker', 'builder', 'tenant', 'agent'],
 				message: 'type must be between <owner> | <broker> | <builder>',
 			},
 			required: requireSaleType,
