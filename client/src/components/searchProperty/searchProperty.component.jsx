@@ -1,7 +1,8 @@
-import { Box, Chip, Divider, Paper } from '@material-ui/core';
+import { Box, Chip, Divider, Grid, Paper } from '@material-ui/core';
 
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import Checkbox from '@material-ui/core/Checkbox';
+import DividerHeading from '../DividerHeadinng/dividerHeading.component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
@@ -42,6 +43,21 @@ const SearchProperty = ({ currentTab }) => {
 	const [budgetList, setBudgetList] = React.useState([]);
 	const [typesList, setTypesList] = React.useState([]);
 	const [anchorElProperty, setAnchorElProperty] = React.useState(null);
+	const [rentItems, setRentItems] = React.useState(
+		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
+			name: `${(c - 1) * 5}-${c * 5}K`,
+			val: { min: (c - 1) * 5 * 1000, max: c * 5 * 1000 },
+			checked: false,
+		}))
+	);
+
+	const [otherItems, setOtherItems] = React.useState(
+		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
+			name: `${(c - 1) * 5}-${c * 5}L`,
+			val: { min: (c - 1) * 5 * 100000, max: c * 5 * 100000 },
+			checked: false,
+		}))
+	);
 	const [types, setTypes] = React.useState({
 		flat: false,
 		independenthouse: false,
@@ -82,6 +98,35 @@ const SearchProperty = ({ currentTab }) => {
 		setTypes((prevState) => ({ ...prevState, [name]: checked }));
 	};
 
+	const onDeleteType = (name) => () => {
+		setTypes((prevState) => ({
+			...prevState,
+			[name]: false,
+		}));
+	};
+
+	const onDeleteBudget = (name) => () => {
+		if (currentTab === 'rent') {
+			setRentItems((prevState) =>
+				prevState.map((c) => {
+					if (c.name === name) {
+						c.checked = false;
+					}
+					return c;
+				})
+			);
+		} else {
+			setOtherItems((prevState) =>
+				prevState.map((c) => {
+					if (c.name === name) {
+						c.checked = false;
+					}
+					return c;
+				})
+			);
+		}
+	};
+
 	const renderTypes = () => {
 		const type = Object.keys(types).filter(function (c) {
 			if (types[c]) {
@@ -93,11 +138,6 @@ const SearchProperty = ({ currentTab }) => {
 		console.log(type);
 		return (
 			<Box>
-				<Box>
-					{type.length > 0 && (
-						<b className={classes.filterHeading}>Types</b>
-					)}
-				</Box>
 				{type.map((c, i) => (
 					<Chip
 						key={i}
@@ -105,10 +145,49 @@ const SearchProperty = ({ currentTab }) => {
 						label={c}
 						variant="outlined"
 						className={classes.chip}
+						onDelete={onDeleteType(c)}
 					/>
 				))}
 			</Box>
 		);
+	};
+
+	const renderBudgetList = () => {
+		if (currentTab === 'rent') {
+			return (
+				<Box>
+					{rentItems
+						.filter((b) => b.checked)
+						.map((c, i) => (
+							<Chip
+								key={i}
+								icon={<FontAwesomeIcon icon={faRupeeSign} />}
+								label={c.name}
+								variant="outlined"
+								className={classes.chip}
+								onDelete={onDeleteBudget(c.name)}
+							/>
+						))}
+				</Box>
+			);
+		} else {
+			return (
+				<Box>
+					{otherItems
+						.filter((b) => b.checked)
+						.map((c, i) => (
+							<Chip
+								key={i}
+								icon={<FontAwesomeIcon icon={faRupeeSign} />}
+								label={c.name}
+								variant="outlined"
+								className={classes.chip}
+								onDelete={onDeleteBudget(c.name)}
+							/>
+						))}
+				</Box>
+			);
+		}
 	};
 	const type = Object.keys(types).filter(function (c) {
 		if (types[c]) {
@@ -131,9 +210,7 @@ const SearchProperty = ({ currentTab }) => {
 					: budget.value * 100000;
 			data.budget = budgetValue;
 		}
-		if (budgetList.length > 0) {
-			data.budgetList = budgetList.map((c) => c.val);
-		}
+
 		console.log(data);
 		let link = `/search-results?f=${currentTab}&c=${
 			data.city
@@ -147,10 +224,15 @@ const SearchProperty = ({ currentTab }) => {
 		if (data.type.length > 0) {
 			link += `&t=${data.type.join(',')}`;
 		}
-		if (data.budgetList && data.budgetList.length > 0) {
+
+		const budgetItems =
+			currentTab === 'rent'
+				? rentItems.filter((c) => c.checked).map((b) => b.val)
+				: otherItems.filter((c) => c.checked).map((b) => b.val);
+		if (budgetItems.length > 0) {
 			const arr = [];
 
-			data.budgetList.forEach((c) => {
+			budgetItems.forEach((c) => {
 				arr.push([c.min, c.max]);
 			});
 
@@ -215,54 +297,7 @@ const SearchProperty = ({ currentTab }) => {
 					Lorem ipsum dolor sit amet consectetur.
 				</h1>
 				<PropertyTab />
-				{(locations.length || budgetList.length || type.length) && (
-					<Box mt="2rem">
-						<Paper
-							className={classes.selectedCityWrapper}
-							square={true}
-						>
-							<Box className={classes.bRight} width="100%">
-								<Box>
-									{locations.length > 0 && (
-										<b className={classes.filterHeading}>
-											Locations
-										</b>
-									)}
-								</Box>
-								{locations.map((c) => (
-									<Chip
-										key={c.id}
-										icon={<LocationCityIcon />}
-										label={c.name}
-										variant="outlined"
-										className={classes.chip}
-										onDelete={onDelete(c)}
-									/>
-								))}
-							</Box>
 
-							<Box>
-								{budgetList.length > 0 && (
-									<b className={classes.filterHeading}>
-										Budgets
-									</b>
-								)}
-							</Box>
-							{budgetList.map((c, i) => (
-								<Chip
-									key={i}
-									icon={
-										<FontAwesomeIcon icon={faRupeeSign} />
-									}
-									label={c.name}
-									variant="outlined"
-									className={classes.chip}
-								/>
-							))}
-							{renderTypes()}
-						</Paper>
-					</Box>
-				)}
 				<Box display="flex" className={classes.wrapper}>
 					{!mobile && <Menu city={city} handleCity={handleCity} />}
 					<Box className={classes.searchBoxWrapper}>
@@ -302,6 +337,10 @@ const SearchProperty = ({ currentTab }) => {
 										close={budgetClose}
 										budgetList={budgetList}
 										setBudgetList={setBudgetList}
+										rentItems={rentItems}
+										setRentItems={setRentItems}
+										otherItems={otherItems}
+										setOtherItems={setOtherItems}
 									/>
 								</Box>
 							</Paper>
@@ -348,6 +387,60 @@ const SearchProperty = ({ currentTab }) => {
 						<SearchButton text="Search" onClick={onSearch} />
 					</div>
 				</Box>
+				{(locations.length || budgetList.length || type.length) && (
+					<Box mt="2rem">
+						<Paper
+							className={classes.selectedCityWrapper}
+							square={true}
+							elevation={10}
+						>
+							<DividerHeading>Show properties for</DividerHeading>
+							<Grid container>
+								<Grid items xs={3}>
+									<Box width="100%">
+										<Box mt="0.5remrem" mb="0.3rem">
+											<b
+												className={
+													classes.filterHeading
+												}
+											>
+												Locations
+											</b>
+										</Box>
+										{locations.map((c) => (
+											<Chip
+												key={c.id}
+												icon={<LocationCityIcon />}
+												label={c.name}
+												variant="outlined"
+												className={classes.chip}
+												onDelete={onDelete(c)}
+											/>
+										))}
+									</Box>
+								</Grid>
+
+								<Grid item xs={budgetList.length >= 3 ? 7 : 3}>
+									<Box mb="0.3rem">
+										<b className={classes.filterHeading}>
+											Budgets
+										</b>
+									</Box>
+									{renderBudgetList()}
+								</Grid>
+
+								<Grid items xs={2}>
+									<Box mb="0.3rem">
+										<b className={classes.filterHeading}>
+											Types
+										</b>
+									</Box>
+									{renderTypes()}
+								</Grid>
+							</Grid>
+						</Paper>
+					</Box>
+				)}
 			</div>
 		</Box>
 	);
@@ -380,29 +473,22 @@ const styles = makeStyles((theme) => ({
 	},
 }));
 
-const BudgetItems = ({ currentTab, close, budgetList, setBudgetList }) => {
+const BudgetItems = ({
+	currentTab,
+	close,
+	budgetList,
+	setBudgetList,
+	rentItems,
+	setRentItems,
+	otherItems,
+	setOtherItems,
+}) => {
 	const classes = styles();
 	const click = (data, label) => () => {
 		close(data, label);
 	};
 
 	const [selectAll, setSelectAll] = React.useState(false);
-
-	const [rentItems, setRentItems] = React.useState(
-		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
-			name: `${(c - 1) * 5}-${c * 5}K`,
-			val: { min: (c - 1) * 5 * 1000, max: c * 5 * 1000 },
-			checked: false,
-		}))
-	);
-
-	const [otherItems, setOtherItems] = React.useState(
-		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
-			name: `${(c - 1) * 5}-${c * 5}L`,
-			val: { min: (c - 1) * 5 * 100000, max: c * 5 * 100000 },
-			checked: false,
-		}))
-	);
 
 	const handleSelectAll = (e) => {
 		const { checked } = e.target;

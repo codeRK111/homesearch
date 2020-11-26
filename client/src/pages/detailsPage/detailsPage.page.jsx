@@ -14,7 +14,8 @@ const DetailsPage = ({
 }) => {
 	return (
 		<div>
-			{propertyFor === 'sale' && type === 'apartment' && (
+			<ProjectApartment />
+			{/* {propertyFor === 'sale' && type === 'apartment' && (
 				<ResaleApartment />
 			)}
 			{propertyFor === 'rent' && type === 'apartment' && (
@@ -30,7 +31,7 @@ const DetailsPage = ({
 			{propertyFor === 'project' && type === 'apartment' && (
 				<ProjectApartment />
 			)}
-			{propertyFor === 'project' && type === 'land' && <ProjectLand />}
+			{propertyFor === 'project' && type === 'land' && <ProjectLand />} */}
 		</div>
 	);
 };

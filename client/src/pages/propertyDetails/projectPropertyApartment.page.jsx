@@ -147,7 +147,7 @@ const PropertyDetails = () => {
 					<Paper className={classes.p1}>
 						<Grid container spacing={3}>
 							<Grid item xs={12} md={4}>
-								<PropertyImages />
+								{/* <PropertyImages /> */}
 							</Grid>
 							<Grid item xs={12} md={8}>
 								<Box

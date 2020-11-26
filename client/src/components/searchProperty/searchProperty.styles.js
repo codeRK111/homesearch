@@ -135,8 +135,8 @@ export const useStyles = makeStyles((theme) => ({
 		},
 	},
 	selectedCityWrapper: {
-		padding: '0.5rem',
-		width: '55vw',
+		padding: '1rem',
+		width: '70vw',
 	},
 	chip: {
 		marginRight: '0.5rem',

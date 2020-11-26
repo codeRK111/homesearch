@@ -1,12 +1,13 @@
 const Builder = require('./../models/builderModel');
 const Project = require('./../models/projectModule');
 const ProjectProperty = require('./../models/projectPropertyModule');
-
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const ApiFeatures = require('../utils/apiFeatures');
 const path = require('path');
 const fs = require('fs');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.addProjectFlat = catchAsync(async (req, res, next) => {
 	const removeFieldArray = [
@@ -473,6 +474,32 @@ exports.getProjectDetails = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: { project, properties },
+	});
+});
+
+exports.getAllProjectInfo = catchAsync(async (req, res, next) => {
+	const project = await Project.findById(req.params.id);
+	if (!project) return next(new AppError('project not found', 404));
+	const properties = await ProjectProperty.find({ project: project.id });
+	const projectInfo = await ProjectProperty.aggregate([
+		{ $match: { project: ObjectId(project.id) } },
+		{
+			$group: {
+				_id: null,
+				minPrice: { $min: '$minPrice' },
+				maxPrice: { $max: '$maxPrice' },
+				totalUnits: { $sum: '$numberOfUnits' },
+				minArea: { $min: '$superBuiltupArea' },
+				maxArea: { $max: '$superBuiltupArea' },
+				minAreaLand: { $min: '$plotArea' },
+				maxAreaLand: { $max: '$plotArea' },
+				bedRooms: { $push: '$numberOfBedrooms' },
+			},
+		},
+	]);
+	res.status(200).json({
+		status: 'success',
+		data: { project, properties, projectInfo },
 	});
 });
 

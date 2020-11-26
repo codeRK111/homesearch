@@ -863,6 +863,27 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 		if (req.body.numberOfBedRooms) {
 			propertyFilter['numberOfBedRooms'] = req.body.numberOfBedRooms;
 		}
+
+		if (req.body.budgetList) {
+			const arr = [];
+
+			req.body.budgetList.forEach((c) => {
+				console.log(typeof c.max);
+				const obj = {};
+				if (c.max) {
+					obj['$lte'] = Number(c.max);
+				}
+				if (c.min) {
+					obj['$gte'] = Number(c.min);
+				}
+				arr.push({
+					maxPrice: obj,
+				});
+			});
+			propertyFilter['$or'] = arr;
+		}
+
+		console.log(JSON.stringify(propertyFilter));
 		const propertyItems = await ProjectProperty.find(propertyFilter);
 		filter['_id'] = { $in: propertyItems.map((c) => c.project) };
 		if (req.body.locations) {
@@ -870,6 +891,9 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 		}
 		if (req.body.city) {
 			filter['city'] = req.body.city;
+		}
+		if (req.body.type) {
+			filter['projectType'] = { $in: req.body.type };
 		}
 		filter.status = 'active';
 		const totalDocs = await Project.countDocuments(filter);

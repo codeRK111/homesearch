@@ -3,6 +3,7 @@ const projectController = require('../controllers/projectController');
 
 const router = express.Router();
 
+router.route('/get-all-details/:id').get(projectController.getAllProjectInfo);
 router.route('/flat').post(projectController.addProjectFlat);
 router
 	.route('/independenthouse')

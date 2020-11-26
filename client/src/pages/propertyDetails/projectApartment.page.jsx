@@ -35,7 +35,6 @@ import HotTubIcon from '@material-ui/icons/HotTub';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import { Link } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
-import PropertyImages from '../../components/propertyImages/propertyImages.component';
 import RailwayIcon from '@material-ui/icons/Tram';
 import React from 'react';
 import SchoolIcon from '@material-ui/icons/School';
@@ -46,6 +45,18 @@ import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import clsx from 'clsx';
 import { useMediaQuery } from '@material-ui/core';
 import useStyles from './propertyDetails.style';
+
+// import PropertyImages from '../../components/propertyImages/propertyImages.component';
+
+
+
+
+
+
+
+
+
+
 
 // import BedroomIcon from '@material-ui/icons/Hotel';
 
@@ -174,7 +185,7 @@ const PropertyDetails = ({ independent }) => {
 					<Paper className={classes.p1}>
 						<Grid container spacing={3}>
 							<Grid item xs={12} md={4}>
-								<PropertyImages />
+								{/* <PropertyImages /> */}
 							</Grid>
 							<Grid item xs={12} md={8}>
 								<Box
