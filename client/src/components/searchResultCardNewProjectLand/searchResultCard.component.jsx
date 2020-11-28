@@ -8,13 +8,9 @@ import useStyles from './searchResultCard.styles';
 
 // import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
-
-
-
 // Custom components
 
-
-const ResultCard = ({ independent }) => {
+const ResultCard = ({ independent, property }) => {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 
@@ -30,7 +26,7 @@ const ResultCard = ({ independent }) => {
 			<PropertyShare
 				status={open}
 				handleClose={handleClose}
-				id="djshd123"
+				data={property}
 			/>
 			<Grid container spacing={1}>
 				<Grid item xs={12} md={4}>

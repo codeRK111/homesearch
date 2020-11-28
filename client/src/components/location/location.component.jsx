@@ -65,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
 			outline: 'none',
 		},
 	},
+	dropdownWrapper: {
+		width: '25vw',
+	},
 }));
 
 function MenuListComposition({
@@ -158,24 +161,11 @@ function MenuListComposition({
 					{...otherProps}
 				/>
 			</Box>
-			{/* <Button
-					ref={anchorRef}
-					aria-controls={open ? 'menu-list-grow' : undefined}
-					aria-haspopup="true"
-					onClick={handleToggle}
-					className={classes.button}
-				>
-					<div className={classes.buttonText}>
-						<PersonIcon className={classes.icon} />
-						<span>Account</span>
-						<ArrowDropDownOutlinedIcon />
-					</div>
-				</Button> */}
 			<Popper
 				open={open}
 				anchorEl={anchorRef.current}
-				role={undefined}
 				transition
+				keepMounted={true}
 			>
 				{({ TransitionProps, placement }) => (
 					<Grow
@@ -192,7 +182,11 @@ function MenuListComposition({
 							mouseEvent="onMouseDown"
 							touchEvent="onTouchStart"
 						>
-							<Paper elevation={3} onMouseLeave={handleClose}>
+							<Paper
+								elevation={3}
+								onMouseLeave={handleClose}
+								className={classes.dropdownWrapper}
+							>
 								{searchLocationLoading ? (
 									<div
 										className={classes.locationListWrapper}

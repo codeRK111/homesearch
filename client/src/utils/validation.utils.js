@@ -30,6 +30,15 @@ export const validateEmail = (value) => {
 	}
 };
 
+export const validateLength = (value, length) => {
+	const str = String(value);
+	if (str.length > length) {
+		return false;
+	} else {
+		return true;
+	}
+};
+
 export const validateNumber = (value) => {
 	if (Number(value)) {
 		return true;

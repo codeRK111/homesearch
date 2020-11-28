@@ -5,6 +5,7 @@ import {
 	renderInfo,
 	renderOwnership,
 	renderToilets,
+	renderTransactionType,
 } from '../../utils/render.utils';
 import {
 	faBed,
@@ -93,6 +94,21 @@ const ResaleApartmentDetails = ({ property }) => {
 					<Box className={classes.p1Details} display="flex">
 						<Box pl="0.5rem" pr="0.5rem">
 							<Avatar>
+								<FontAwesomeIcon icon={faMap} />
+							</Avatar>
+						</Box>
+						<Box display="flex" flexDirection="column">
+							<Box>Land area</Box>
+							<h4 className={classes.title}>
+								{renderInfo(property.landArea)} Sq.Ft
+							</h4>
+						</Box>
+					</Box>
+				</Grid>
+				<Grid item xs={6} md={3}>
+					<Box className={classes.p1Details} display="flex">
+						<Box pl="0.5rem" pr="0.5rem">
+							<Avatar>
 								<FontAwesomeIcon icon={faQuestionCircle} />
 							</Avatar>
 						</Box>
@@ -165,7 +181,7 @@ const ResaleApartmentDetails = ({ property }) => {
 						<Box display="flex" flexDirection="column">
 							<Box>Ownership</Box>
 							<h4 className={classes.title}>
-								{renderOwnership(property.propertyOwnerShip)}
+								{renderOwnership(property)}
 							</h4>
 						</Box>
 					</Box>
@@ -195,7 +211,24 @@ const ResaleApartmentDetails = ({ property }) => {
 						<Box display="flex" flexDirection="column">
 							<Box>Property on floor</Box>
 							<h4 className={classes.title}>
-								{renderInfo(property.noOfFloors)}
+								{renderInfo(property.floor)}
+							</h4>
+						</Box>
+					</Box>
+				</Grid>
+				<Grid item xs={6} md={3}>
+					<Box className={classes.p1Details} display="flex">
+						<Box pl="0.5rem" pr="0.5rem">
+							<Avatar>
+								<FontAwesomeIcon icon={faBuilding} />
+							</Avatar>
+						</Box>
+						<Box display="flex" flexDirection="column">
+							<Box>Transaction Type</Box>
+							<h4 className={classes.title}>
+								{renderTransactionType(
+									renderInfo(property.transactionType)
+								)}
 							</h4>
 						</Box>
 					</Box>

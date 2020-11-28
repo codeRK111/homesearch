@@ -90,7 +90,7 @@ export default function FullWidthTabs() {
 						wrapper: classes.wrapper,
 						selected: classes.selected,
 					}}
-					label="Your Properties"
+					label="Posted Properties"
 					{...a11yProps(0)}
 				/>
 				<Tab

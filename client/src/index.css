@@ -21,3 +21,10 @@ code {
 .text-normal {
 	text-transform: none !important;
 }
+
+.ul {
+	padding: 0 !important;
+	margin: 0 !important;
+	font-size: 0.9rem;
+	list-style-type: none;
+}

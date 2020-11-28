@@ -968,7 +968,7 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 		const totalDocs = await Property.countDocuments(filter);
 
 		console.log(JSON.stringify(filter));
-		const properties = await Property.find(filter).skip(skip).limit(limit);
+		const properties = await Property.find(filter).sort('-createdAt').skip(skip).limit(limit);
 		res.status(200).json({
 			status: 'success',
 			count: totalDocs,
@@ -1008,11 +1008,12 @@ exports.addPropertyByUserForSale = catchAsync(async (req, res, next) => {
 				city: req.body.city,
 				location: req.body.location,
 				sale_type: req.body.sale_type,
-
 				amenities: req.body.amenities,
 				furnishes: req.body.furnishes,
 				pricePerSqFt: req.body.pricePerSqFt,
 				legalClearance: req.body.legalClearance,
+				transactionType: req.body.transactionType,
+				landArea: req.body.landArea
 			};
 			console.log(Object.keys(propertyFlat));
 			for (let i = 0; i < Object.keys(propertyFlat).length; i++) {
@@ -1045,6 +1046,7 @@ exports.addPropertyByUserForSale = catchAsync(async (req, res, next) => {
 			}
 
 			propertyFlat['createdBy'] = 'user';
+			propertyFlat['status'] = 'underScreening';
 			propertyFlat['userId'] = req.user.id;
 			propertyFlat['postedBy'] = req.user.role;
 			propertyFlat['otherAmenties'] = req.body.otherAmenties
@@ -1105,6 +1107,7 @@ exports.addPropertyByUserForSale = catchAsync(async (req, res, next) => {
 			}
 
 			propertyLand['createdBy'] = 'user';
+			propertyLand['status'] = 'underScreening';
 			propertyLand['userId'] = req.user.id;
 			propertyLand['postedBy'] = req.user.role;
 
@@ -1491,7 +1494,6 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 				rent: req.body.rent,
 				securityDeposit: req.body.securityDeposit,
 				noticePeriod: req.body.noticePeriod,
-				restrictions: req.body.restrictions,
 			};
 			console.log(Object.keys(propertyFlat));
 			for (let i = 0; i < Object.keys(propertyFlat).length; i++) {
@@ -1524,6 +1526,7 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 			}
 
 			propertyFlat['createdBy'] = 'user';
+			propertyFlat['status'] = 'underScreening'
 			propertyFlat['userId'] = req.user.id;
 			propertyFlat['postedBy'] = req.user.role;
 			propertyFlat['otherAmenties'] = req.body.otherAmenties
@@ -1551,8 +1554,6 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 		case 'pg':
 			const propertyHostel = {
 				for: req.body.for,
-				superBuiltupArea: req.body.superBuiltupArea,
-				carpetArea: req.body.carpetArea,
 				title: req.body.title,
 				toiletIndian: req.body.toiletIndian,
 				toiletWestern: req.body.toiletWestern,
@@ -1622,6 +1623,7 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 			}
 
 			propertyHostel['createdBy'] = 'user';
+			propertyHostel['status'] = 'underScreening'
 			propertyHostel['userId'] = req.user.id;
 			propertyHostel['postedBy'] = req.user.role;
 
@@ -1734,7 +1736,7 @@ exports.handlePropertyImage = catchAsync(async (req, res, next) => {
 });
 
 exports.getMyProperties = catchAsync(async (req, res, next) => {
-	const properties = await Property.find({ userId: req.user.id });
+	const properties = await Property.find({ userId: req.user.id }).sort('-createdAt');
 	//send response
 	res.send({
 		status: 'success',

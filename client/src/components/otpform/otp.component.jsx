@@ -1,22 +1,24 @@
-import React from 'react';
-import { Formik, Form } from 'formik';
-import { Button } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
-
-// Custom components
-import FormInput from '../forminput/forminput.component';
-import makeStyles from './otp.styles';
-import ErrorMessage from '../errorMessage/errorMessage.component';
-import BackDrop from '../backdrop/backdrop.component';
-
-// Redux
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { sendOtp, validateOtp } from '../../redux/auth/auth.actions';
+import { Form, Formik } from 'formik';
+import { Link, useHistory } from 'react-router-dom';
 import {
 	selectSendOtpLoading,
 	selectValidateOtpLoading,
 } from '../../redux/auth/auth.selectors';
+import { sendOtp, validateOtp } from '../../redux/auth/auth.actions';
+
+import BackDrop from '../backdrop/backdrop.component';
+import { Button } from '@material-ui/core';
+import ErrorMessage from '../errorMessage/errorMessage.component';
+import FormInput from '../forminput/forminput.component';
+import { JustifyCenter } from '../flexContainer/flexContainer.component';
+import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import makeStyles from './otp.styles';
+
+// Custom components
+
+// Redux
 
 const LoginForm = ({
 	sendOtpLoading,
@@ -49,12 +51,13 @@ const LoginForm = ({
 	};
 
 	const onSubmit = (values) => {
-		validateOtp(handleValidateOtp, values.number, values.otp);
+		if (!otpSent) {
+			sendOtp(handleSendOtp, values.number);
+		} else {
+			validateOtp(handleValidateOtp, values.number, values.otp);
+		}
 	};
 
-	const focusOut = (number) => (_) => {
-		sendOtp(handleSendOtp, number);
-	};
 	return (
 		<Formik
 			initialValues={{
@@ -98,7 +101,6 @@ const LoginForm = ({
 						autoComplete="number"
 						value={values.number}
 						type="number"
-						onBlur={focusOut(values.number)}
 					/>
 					{otpSent && (
 						<FormInput
@@ -123,6 +125,11 @@ const LoginForm = ({
 					>
 						{otpSent ? 'Sign In' : 'Send OTP'}
 					</Button>
+					<JustifyCenter mt="1rem">
+						<Link to="/signup" variant="body2">
+							{"Don't have an account? Sign Up"}
+						</Link>
+					</JustifyCenter>
 				</Form>
 			)}
 		</Formik>

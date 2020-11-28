@@ -5,7 +5,8 @@ import {
 	CircularProgress,
 	Grid,
 } from '@material-ui/core';
-import { FieldArray, Form, Formik } from 'formik';
+import { Form, Formik } from 'formik';
+import { validateLength, validateNumber } from '../../utils/validation.utils';
 
 import CheckBox from '../../components/formik/checkbox.component';
 import City from './city.component';
@@ -24,7 +25,6 @@ import { selectUpdatePropertyLoading } from '../../redux/property/property.selec
 import { updateProperty } from '../../redux/property/property.actions';
 import { useHistory } from 'react-router-dom';
 import useStyles from './postPropertyDetails.styles';
-import { validateNumber } from '../../utils/validation.utils';
 
 const RentApartment = ({
 	propertyLoading,
@@ -80,6 +80,7 @@ const RentApartment = ({
 		if (!validateNumber(values.carpetArea)) {
 			error.carpetArea = 'Invalid value';
 		}
+
 		if (!validateNumber(values.toiletIndian)) {
 			error.toiletIndian = 'Invalid value';
 		}
@@ -89,7 +90,7 @@ const RentApartment = ({
 		if (!validateNumber(values.noOfFloors)) {
 			error.noOfFloors = 'Invalid value';
 		}
-		if (!validateNumber(values.floor)) {
+		if (values['type'] === 'flat' && !validateNumber(values.floor)) {
 			error.floor = 'Invalid value';
 		}
 		if (!validateNumber(values.distanceSchool)) {
@@ -119,13 +120,19 @@ const RentApartment = ({
 		if (!values.description) {
 			error.description = 'Invalid value';
 		}
-		if (values.noOfFloors < values.floor) {
+		if (values['type'] === 'flat' && values.noOfFloors < values.floor) {
 			error.floor =
 				'Property on floor cannot be greater than total floors';
 		}
 		if (Number(values.superBuiltupArea) < Number(values.carpetArea)) {
 			error.carpetArea =
 				'Super builtup area cannot be less than carpet area';
+		}
+		if (!validateLength(values.numberOfBedRooms, 1)) {
+			error.numberOfBedRooms = '1 digit allowed';
+		}
+		if (!validateLength(values.numberOfBalconies, 1)) {
+			error.numberOfBalconies = '1 digit allowed';
 		}
 
 		return error;
@@ -201,6 +208,7 @@ const RentApartment = ({
 			>
 				{({ values, setFieldValue }) => (
 					<Form>
+						{/* <div>{JSON.stringify(errors, null, '\t')}</div> */}
 						<Grid container spacing={1}>
 							<Grid item xs={12} md={12}>
 								<DividerHeading>
@@ -331,12 +339,47 @@ const RentApartment = ({
 									formLabel="Total number of floors *"
 								/>
 							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="floor"
-									formLabel="Property on floor *"
-								/>
-							</Grid>
+							{values['type'] === 'flat' ? (
+								<Grid item xs={12} md={6}>
+									<TextField
+										name="floor"
+										formLabel="Property on floor *"
+									/>
+								</Grid>
+							) : (
+								<Grid item xs={12} md={6}>
+									<Select
+										name="floor"
+										formLabel="Property on floor *"
+										options={[
+											{
+												value: 'G',
+												label: 'G',
+											},
+											{
+												value: '1',
+												label: '1',
+											},
+											{
+												value: '2',
+												label: '2',
+											},
+											{
+												value: '3',
+												label: '3',
+											},
+											{
+												value: '4',
+												label: '4',
+											},
+											{
+												value: 'Entire Building',
+												label: 'Entire Building',
+											},
+										]}
+									/>
+								</Grid>
+							)}
 							<Grid item xs={12} md={12}>
 								<TextField
 									name="noticePeriod"

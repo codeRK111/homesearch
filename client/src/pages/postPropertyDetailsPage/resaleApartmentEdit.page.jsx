@@ -6,6 +6,7 @@ import {
 	Grid,
 } from '@material-ui/core';
 import { FieldArray, Form, Formik } from 'formik';
+import { validateLength, validateNumber } from '../../utils/validation.utils';
 
 import Checkbox from '../../components/formik/checkbox.component';
 import City from './city.component';
@@ -24,7 +25,6 @@ import { selectUpdatePropertyLoading } from '../../redux/property/property.selec
 import { updateProperty } from '../../redux/property/property.actions';
 import { useHistory } from 'react-router-dom';
 import useStyles from './postPropertyDetails.styles';
-import { validateNumber } from '../../utils/validation.utils';
 
 const RentApartment = ({
 	propertyLoading,
@@ -82,6 +82,9 @@ const RentApartment = ({
 		if (!validateNumber(values.carpetArea)) {
 			error.carpetArea = 'Invalid value';
 		}
+		if (!validateNumber(values.landArea)) {
+			error.landArea = 'Invalid value';
+		}
 		if (!validateNumber(values.toiletIndian)) {
 			error.toiletIndian = 'Invalid value';
 		}
@@ -91,7 +94,7 @@ const RentApartment = ({
 		if (!validateNumber(values.noOfFloors)) {
 			error.noOfFloors = 'Invalid value';
 		}
-		if (!validateNumber(values.floor)) {
+		if (values['sale_type'] === 'flat' && !validateNumber(values.floor)) {
 			error.floor = 'Invalid value';
 		}
 		if (!validateNumber(values.distanceSchool)) {
@@ -124,13 +127,20 @@ const RentApartment = ({
 			error.reraapproveId = 'required';
 		}
 
-		if (values.noOfFloors < values.floor) {
+		if (
+			values['sale_type'] === 'flat' &&
+			values.noOfFloors < values.floor
+		) {
 			error.floor =
 				'Property on floor cannot be greater than total floors';
 		}
 		if (Number(values.superBuiltupArea) < Number(values.carpetArea)) {
 			error.carpetArea =
 				'Super builtup area cannot be less than carpet area';
+		}
+
+		if (!validateLength(values.numberOfBedRooms, 1)) {
+			error.numberOfBedRooms = '1 digit allowed';
 		}
 
 		return error;
@@ -250,6 +260,12 @@ const RentApartment = ({
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
+								<TextField
+									name="landArea"
+									formLabel="Land Area (Sq. ft) *"
+								/>
+							</Grid>
+							<Grid item xs={12} md={6}>
 								<Select
 									name="availability"
 									formLabel="Availability *"
@@ -351,12 +367,47 @@ const RentApartment = ({
 									formLabel="Total number of floors *"
 								/>
 							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="floor"
-									formLabel="Property on floor *"
-								/>
-							</Grid>
+							{values['sale_type'] === 'flat' ? (
+								<Grid item xs={12} md={6}>
+									<TextField
+										name="floor"
+										formLabel="Property on floor *"
+									/>
+								</Grid>
+							) : (
+								<Grid item xs={12} md={6}>
+									<Select
+										name="floor"
+										formLabel="Property on floor *"
+										options={[
+											{
+												value: 'G',
+												label: 'G',
+											},
+											{
+												value: '1',
+												label: '1',
+											},
+											{
+												value: '2',
+												label: '2',
+											},
+											{
+												value: '3',
+												label: '3',
+											},
+											{
+												value: '4',
+												label: '4',
+											},
+											{
+												value: 'Entire Building',
+												label: 'Entire Building',
+											},
+										]}
+									/>
+								</Grid>
+							)}
 							<Grid item xs={12} md={12}>
 								<TextField
 									name="description"

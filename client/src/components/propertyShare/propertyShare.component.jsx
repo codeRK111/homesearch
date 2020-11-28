@@ -1,9 +1,7 @@
+import * as Yup from 'yup';
+
 import { Box, Divider, Modal, Paper } from '@material-ui/core';
 import { Form, Formik } from 'formik';
-import {
-	validateEmail,
-	validateMobileNumber,
-} from '../../utils/validation.utils';
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import PropTypes from 'prop-types';
@@ -11,6 +9,7 @@ import React from 'react';
 import TextField from '../formik/textField.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { makeStyles } from '@material-ui/core/styles';
+import queryString from 'query-string';
 
 const initialValues = {
 	name: '',
@@ -75,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'center',
 	},
 }));
-const PropertyShare = ({ status, handleClose, id }) => {
+const PropertyShare = ({ status, handleClose, data }) => {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
 	const [copySuccess, setCopySuccess] = React.useState('Copy');
@@ -89,33 +88,25 @@ const PropertyShare = ({ status, handleClose, id }) => {
 		e.target.focus();
 		setCopySuccess('Copied!');
 	}
-	const validateForm = (values) => {
-		const error = {};
-		if (!values.name) {
-			error.name = 'Name required';
-		}
-		if (!values.email) {
-			error.email = 'Email required';
-		}
-		if (values.email) {
-			if (!validateEmail(values.email)) {
-				error.email = 'Invalid email';
-			}
-		}
-		if (!values.phoneNumber) {
-			error.phoneNumber = 'Phone number required';
-		}
-		if (values.phoneNumber) {
-			if (!validateMobileNumber(values.phoneNumber)) {
-				error.phoneNumber = 'Invalid Phone number';
-			}
-		}
-
-		return error;
-	};
+	const validationSchema = Yup.object({
+		name: Yup.string('Invalid name')
+			.matches(/^[a-zA-Z ]+$/, 'Invalid Name')
+			.required('Name required'),
+		email: Yup.string('Invalid email')
+			.email('Invalid email')
+			.required('Email required'),
+		phoneNumber: Yup.string('Invalid number')
+			.length(10, '10 digits required')
+			.matches(/^\d{10}$/, 'Invalid Number')
+			.required('Phone number required'),
+	});
 	const submitForm = (values) => {
-		window.location.href =
-			'https://wa.me/919853325956?text=I%27m%20interested%20in%20your%20car%20for%20sale';
+		const userNumber = data.userId.number;
+		const number = `91${userNumber}`;
+		const text = `Hello, I am ${values.name} and I am interested for ${data.title}`;
+		window.location.href = `https://wa.me/${number}?text=${encodeURI(
+			text
+		)}`;
 		// showSnackbar('We will get back to you soon');
 	};
 	return (
@@ -143,7 +134,7 @@ const PropertyShare = ({ status, handleClose, id }) => {
 									type="text"
 									ref={textAreaRef}
 									className={classes.input}
-									value={`www.homesearch18.com/#/property-details/${id}`}
+									value={`www.homesearch18.com/#/property-details/${data.id}`}
 								/>
 							</Box>
 							<Box>
@@ -156,7 +147,7 @@ const PropertyShare = ({ status, handleClose, id }) => {
 							</Box>
 						</Box>
 					</Paper>
-					<Box p="1rem">
+					<Box>
 						<Box display="flex" alignItems="center">
 							<Box flexGrow={2}>
 								<Divider />
@@ -172,7 +163,7 @@ const PropertyShare = ({ status, handleClose, id }) => {
 						</Box>
 						<Formik
 							initialValues={initialValues}
-							validate={validateForm}
+							validationSchema={validationSchema}
 							onSubmit={submitForm}
 						>
 							{() => (
@@ -195,8 +186,7 @@ const PropertyShare = ({ status, handleClose, id }) => {
 										fullWidth
 									/>
 									<Box
-										mt="2rem"
-										mb="2rem"
+										mt="1rem"
 										display="flex"
 										justifyContent="center"
 									>
@@ -229,7 +219,6 @@ const PropertyShare = ({ status, handleClose, id }) => {
 PropertyShare.propTypes = {
 	status: PropTypes.bool.isRequired,
 	handleClose: PropTypes.func.isRequired,
-	id: PropTypes.string.isRequired,
 };
 
 export default PropertyShare;

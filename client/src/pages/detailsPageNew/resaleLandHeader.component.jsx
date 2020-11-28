@@ -64,7 +64,7 @@ const Header = ({ property }) => {
 							<Box ml="1rem">
 								<h3 className={classes.title}>
 									{' '}
-									{property.salePrice / 100000} Lacs
+									₹{property.salePrice / 100000} Lacs
 								</h3>
 								<Box mt="0.3rem">
 									{renderPerSqft(property)} / Sq.ft
@@ -135,7 +135,7 @@ const Header = ({ property }) => {
 							<Box>
 								<h3 className={classes.title}>
 									{' '}
-									{property.salePrice / 100000} Lacs
+									₹{property.salePrice / 100000} Lacs
 								</h3>
 								<Box mt="0.3rem">
 									{renderPerSqft(property)} / Sq.ft

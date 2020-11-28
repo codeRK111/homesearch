@@ -1,9 +1,11 @@
-import React from 'react';
-import { Box, Avatar } from '@material-ui/core';
+import { Avatar, Box } from '@material-ui/core';
+
 import { Link } from 'react-router-dom';
+import React from 'react';
+import useStyles from './propertyCounter.styles';
 
 // Styles
-import useStyles from './propertyCounter.styles';
+
 
 const PropertyCounter = ({ details }) => {
 	const classes = useStyles();
@@ -62,7 +64,7 @@ const PropertyCounter = ({ details }) => {
 					</Box>
 					<Box className={classes.numberWrapper}>
 						<span className={classes.number}>
-							<b>130</b>
+							<b>0</b>
 						</span>{' '}
 						properties
 					</Box>

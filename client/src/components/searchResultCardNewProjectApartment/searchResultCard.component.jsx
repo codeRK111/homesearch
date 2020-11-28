@@ -37,7 +37,7 @@ const ResultCard = ({ independent, property, propertyItems }) => {
 			<PropertyShare
 				status={open}
 				handleClose={handleClose}
-				id="djshd123"
+				data={property}
 			/>
 			<Grid container spacing={1}>
 				<Grid item xs={12} md={4}>

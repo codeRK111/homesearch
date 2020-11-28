@@ -1,3 +1,5 @@
+import * as Yup from 'yup';
+
 import { Box, Button, Divider, Modal, Paper } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 import {
@@ -107,6 +109,18 @@ const PropertyShare = ({
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
 	const [asyncError, setAsyncError] = React.useState(null);
+	const validationSchema = Yup.object({
+		name: Yup.string('Invalid name')
+			.matches(/^[a-zA-Z ]+$/, 'Invalid Name')
+			.required('Name required'),
+		email: Yup.string('Invalid email')
+			.email('Invalid email')
+			.required('Email required'),
+		phoneNumber: Yup.string('Invalid number')
+			.length(10, '10 digits required')
+			.matches(/^\d{10}$/, 'Invalid Number')
+			.required('Phone number required'),
+	});
 
 	const handleQuery = (status, data = null) => {
 		if (status === 'success') {
@@ -176,13 +190,17 @@ const PropertyShare = ({
 					/>
 				</Box>
 				<Paper className={classes.paper}>
-					<Box p="1rem">
+					<Box>
 						<Box display="flex" alignItems="center">
 							<Box flexGrow={2}>
 								<Divider />
 							</Box>
-							<Box flexGrow={1}>
-								<h3 className={classes.heading}>{title}</h3>
+							<Box
+								flexGrow={1}
+								display="flex"
+								justifyContent="center"
+							>
+								<b className={classes.heading}>{title}</b>
 							</Box>
 							<Box flexGrow={2}>
 								<Divider />
@@ -193,16 +211,21 @@ const PropertyShare = ({
 						)}
 						<Formik
 							initialValues={initialValues}
-							validate={validateForm}
+							validationSchema={validationSchema}
 							onSubmit={submitForm}
+							validateOnChange={true}
+							validateOnMount={true}
 						>
 							{() => (
 								<Form>
-									<TextField name="name" formLabel="Name" />
+									<TextField
+										name="name"
+										formLabel="Name"
+										type="text"
+									/>
 									<TextField name="email" formLabel="Email" />
 									<TextField
 										formLabel="Phone Number"
-										type="number"
 										name="phoneNumber"
 									/>
 									<TextField
@@ -212,8 +235,7 @@ const PropertyShare = ({
 										multiline
 									/>
 									<Box
-										mt="2rem"
-										mb="2rem"
+										mt="1rem"
 										display="flex"
 										justifyContent="center"
 									>

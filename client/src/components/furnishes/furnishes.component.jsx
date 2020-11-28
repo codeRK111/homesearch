@@ -58,7 +58,7 @@ const FurnishesList = ({
 			<Grid container spacing={0}>
 				<Grid item xs={12}>
 					<Box mt="1rem" mb="0.5rem">
-						<b>Aenities</b>
+						<b>Amenities</b>
 					</Box>
 				</Grid>
 				{amenities.map((c) => (

@@ -1,6 +1,5 @@
 import { Box, Paper } from '@material-ui/core';
 
-import AppBar from '../../components/appBar/appBar.component';
 import EditSkeleton from '../../components/skeleton/editPropertySkeleton.component';
 import ErrorCard from '../../components/errorCard/errorCard.component';
 import Footer from '../../components/footer/footer.component';
@@ -147,14 +146,7 @@ const DetailsPage = ({
 	};
 	return (
 		<Box>
-			<AppBar />
-			<Box
-				mt="5rem"
-				mb="5rem"
-				width="100%"
-				display="flex"
-				justifyContent="center"
-			>
+			<Box mb="5rem" width="100%" display="flex" justifyContent="center">
 				{propertyDetailsLoading && (
 					<Box className={classes.wrapper}>{<EditSkeleton />}</Box>
 				)}

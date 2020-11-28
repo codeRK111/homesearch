@@ -1,4 +1,8 @@
 import { Box, Chip, Divider, Grid, Paper } from '@material-ui/core';
+import {
+	selectDefaultCity,
+	selectSearchLocationLoading,
+} from '../../redux/city/city.selectors';
 
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -19,12 +23,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import queryString from 'query-string';
 import { searchLocations } from '../../redux/city/city.actions';
 import { selectCurrentTab } from '../../redux/actionTab/actionTab.selectors';
-import { selectSearchLocationLoading } from '../../redux/city/city.selectors';
 import { useHistory } from 'react-router-dom';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useStyles } from './searchProperty.styles';
 
-const SearchProperty = ({ currentTab }) => {
+const SearchProperty = ({ currentTab, defaultCity }) => {
 	const classes = useStyles();
 	const mobile = useMediaQuery('(max-width:600px)');
 	const history = useHistory();
@@ -69,6 +72,9 @@ const SearchProperty = ({ currentTab }) => {
 	React.useEffect(() => {
 		setLocations([]);
 	}, [city.id]);
+	React.useEffect(() => {
+		setCity(defaultCity);
+	}, [defaultCity]);
 	React.useEffect(() => {
 		setTypes({
 			flat: false,
@@ -484,9 +490,6 @@ const BudgetItems = ({
 	setOtherItems,
 }) => {
 	const classes = styles();
-	const click = (data, label) => () => {
-		close(data, label);
-	};
 
 	const [selectAll, setSelectAll] = React.useState(false);
 
@@ -720,18 +723,6 @@ const PropertyItems = ({ currentTab, close, types, handleTypes }) => {
 						<FormControlLabel
 							control={
 								<Checkbox
-									name="guesthouse"
-									checked={types.guesthouse}
-									onChange={handleTypes}
-								/>
-							}
-							label="Guest House"
-						/>
-					</div>
-					<div>
-						<FormControlLabel
-							control={
-								<Checkbox
 									name="hostel"
 									checked={types.hostel}
 									onChange={handleTypes}
@@ -761,6 +752,7 @@ const PropertyItems = ({ currentTab, close, types, handleTypes }) => {
 const mapStateToProps = createStructuredSelector({
 	searchLocationLoading: selectSearchLocationLoading,
 	currentTab: selectCurrentTab,
+	defaultCity: selectDefaultCity,
 });
 
 const mapDispatchToProps = (dispatch) => ({

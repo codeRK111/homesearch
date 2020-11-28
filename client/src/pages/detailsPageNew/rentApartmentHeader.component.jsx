@@ -1,8 +1,8 @@
 import { Box, Grid, Paper } from '@material-ui/core';
-import { capitalizeFirstLetter, renderInfo } from '../../utils/render.utils';
 
 import PropTypes from 'prop-types';
 import React from 'react';
+import { capitalizeFirstLetter } from '../../utils/render.utils';
 import { useMediaQuery } from '@material-ui/core';
 import useStyles from './detailsPage.styles';
 
@@ -58,7 +58,7 @@ const Header = ({ property }) => {
 							<Box ml="1rem">
 								<h3 className={classes.title}>
 									{' '}
-									{property.rent / 1000} K
+									₹{property.rent / 1000}K
 								</h3>
 								<Box mt="0.3rem">
 									Security Deposit: ₹{' '}
@@ -114,7 +114,7 @@ const Header = ({ property }) => {
 							<Box>
 								<h3 className={classes.title}>
 									{' '}
-									{property.rent / 1000} K
+									₹{property.rent / 1000}K
 								</h3>
 								<Box mt="0.3rem">
 									Security Deposit: ₹{' '}

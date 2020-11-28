@@ -19,10 +19,36 @@ export const renderToilets = (toilets) => {
 export const renderFor = (pFor) => {
 	switch (pFor) {
 		case 'sale':
-			return 'Resale';
+			return 'Sale';
 
 		default:
 			break;
+	}
+};
+
+export const renderStatus = (status) => {
+	switch (status) {
+		case 'active':
+			return 'Active';
+		case 'expired':
+			return 'Expired';
+		case 'underScreening':
+			return 'Under Screening';
+
+		default:
+			break;
+	}
+};
+
+export const renderTransactionType = (type) => {
+	switch (type) {
+		case 'newbooking':
+			return 'New Booking';
+		case 'resale':
+			return 'Resale';
+
+		default:
+			return type;
 	}
 };
 
@@ -30,7 +56,7 @@ export const renderOwnership = (property) => {
 	if (property.propertyOwnerShip === 'freehold') {
 		return 'Freehold';
 	} else {
-		return 'New Booking';
+		return 'Leashed';
 	}
 };
 

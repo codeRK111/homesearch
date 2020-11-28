@@ -66,11 +66,15 @@ const ResaleApartmentDetails = ({ property }) => {
 						</Box>
 						<Box display="flex" flexDirection="column">
 							<Box>Available For</Box>
-							<h4 className={classes.title}>
-								{property.availableFor
-									.map((c) => capitalizeFirstLetter(c))
-									.join(',')}
-							</h4>
+							<ul className="ul">
+								{property.availableFor.map((c, i) => (
+									<li key={i}>
+										<h4 className={classes.title}>
+											{capitalizeFirstLetter(c)}
+										</h4>
+									</li>
+								))}
+							</ul>
 						</Box>
 					</Box>
 				</Grid>
@@ -83,11 +87,19 @@ const ResaleApartmentDetails = ({ property }) => {
 						</Box>
 						<Box display="flex" flexDirection="column">
 							<Box>Fooding</Box>
-							<h4 className={classes.title}>
-								{property.fooding
-									.map((c) => capitalizeFirstLetter(c))
-									.join(',')}
-							</h4>
+							{property.fooding.length === 0 ? (
+								<b>Not available</b>
+							) : (
+								<ul className="ul">
+									{property.fooding.map((c, i) => (
+										<li key={i}>
+											<h4 className={classes.title}>
+												{capitalizeFirstLetter(c)}
+											</h4>
+										</li>
+									))}
+								</ul>
+							)}
 						</Box>
 					</Box>
 				</Grid>
@@ -100,11 +112,19 @@ const ResaleApartmentDetails = ({ property }) => {
 						</Box>
 						<Box display="flex" flexDirection="column">
 							<Box>Food Schdule</Box>
-							<h4 className={classes.title}>
-								{property.foodSchedule
-									.map((c) => capitalizeFirstLetter(c))
-									.join(',')}
-							</h4>
+							{property.foodSchedule.length === 0 ? (
+								<b>Not available</b>
+							) : (
+								<ul className="ul">
+									{property.foodSchedule.map((c, i) => (
+										<li key={i}>
+											<h4 className={classes.title}>
+												{capitalizeFirstLetter(c)}
+											</h4>
+										</li>
+									))}
+								</ul>
+							)}
 						</Box>
 					</Box>
 				</Grid>

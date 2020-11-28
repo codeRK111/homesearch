@@ -247,6 +247,9 @@ const propertySchema = new Schema(
 		carpetArea: {
 			type: Number,
 		},
+		landArea: {
+			type: Number,
+		},
 		rent: {
 			type: Number,
 		},
@@ -259,6 +262,7 @@ const propertySchema = new Schema(
 		floor: {
 			type: String,
 		},
+		
 		noOfFloors: {
 			type: Number,
 		},

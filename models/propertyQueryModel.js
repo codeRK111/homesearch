@@ -21,7 +21,6 @@ const propertyQuerySchema = new Schema(
 		email: {
 			type: String,
 			lowercase: true,
-			required: [true, 'A email must be required'],
 			validate: [validator.isEmail, 'Please use a valid email'],
 		},
 
@@ -71,11 +70,10 @@ propertyQuerySchema.pre(/^find/, function (next) {
 		.populate({
 			path: 'user',
 			select: 'id name',
-		})
-		
+		});
+
 	next();
 });
-
 
 const propertyQuery = model('PropertyQuery', propertyQuerySchema);
 module.exports = propertyQuery;

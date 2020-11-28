@@ -1,6 +1,8 @@
 import { Box, Divider, Grid, Paper } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
+import { capitalizeFirstLetter, renderStatus } from '../../utils/render.utils';
 
+import ContactDialogueWithMessage from '../contactOwner/contactOwnerWithMessage.component';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -9,10 +11,11 @@ import useStyles from './searchResultCard.styles';
 
 // Custom components
 
-const ResultCard = ({ independent, edit = false }) => {
+const ResultCard = ({ independent, property, edit = false }) => {
 	const classes = useStyles();
 	const mobile = useMediaQuery('(max-width:600px)');
 	const [open, setOpen] = React.useState(false);
+	const [contactOpen, setContactOpen] = React.useState(false);
 	const history = useHistory();
 
 	const handleOpen = (_) => {
@@ -23,6 +26,14 @@ const ResultCard = ({ independent, edit = false }) => {
 		setOpen(false);
 	};
 
+	const handleContactOpen = (_) => {
+		setContactOpen(true);
+	};
+
+	const handleContactClose = (_) => {
+		setContactOpen(false);
+	};
+
 	const editProperty = (_) => {
 		history.push(`/edit-property/${property.id}`);
 	};
@@ -31,10 +42,16 @@ const ResultCard = ({ independent, edit = false }) => {
 		: { justifyContent: 'flex-end' };
 	return (
 		<Paper className={classes.fontAbel}>
+			<ContactDialogueWithMessage
+				status={contactOpen}
+				handleClose={handleContactClose}
+				title={`Contact ${capitalizeFirstLetter(property.postedBy)}`}
+				property={property}
+			/>
 			<PropertyShare
 				status={open}
 				handleClose={handleClose}
-				id={property.id}
+				data={property}
 			/>
 			<Grid container spacing={1}>
 				<Grid item xs={12} md={4}>
@@ -61,6 +78,7 @@ const ResultCard = ({ independent, edit = false }) => {
 									<Link
 										to={`/property-details/${property.id}`}
 										className={classes.linkTitle}
+										target="_blank"
 									>
 										<b>
 											* BHK Independent House for rent in
@@ -206,12 +224,18 @@ const ResultCard = ({ independent, edit = false }) => {
 										display="flex"
 										justifyContent="flex-end"
 									>
-										<button
-											className={classes.details}
-											onClick={editProperty}
-										>
-											Edit
-										</button>
+										{property.status !== 'active' ? (
+											<Box className={classes.price}>
+												{renderStatus(property.status)}
+											</Box>
+										) : (
+											<button
+												className={classes.details}
+												onClick={editProperty}
+											>
+												Editt
+											</button>
+										)}
 									</Box>
 								) : (
 									<Box
@@ -239,7 +263,10 @@ const ResultCard = ({ independent, edit = false }) => {
 													</Box>
 												</Box>
 											</button>
-											<button className={classes.details}>
+											<button
+												className={classes.details}
+												onClick={handleContactOpen}
+											>
 												Get Owner Details
 											</button>
 										</Box>

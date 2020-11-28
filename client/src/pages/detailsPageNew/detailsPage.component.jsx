@@ -132,7 +132,7 @@ const DetailsPage = ({
 							<PropertyShare
 								status={propertyShareOpen}
 								handleClose={handlePropertyShareClose}
-								id={data.id}
+								data={data}
 							/>
 							<ContactDialogueWithMessage
 								status={open}
@@ -313,9 +313,7 @@ const DetailsPage = ({
 																				/>
 																				Contact
 																				{` ${capitalizeFirstLetter(
-																					data
-																						.userId
-																						.role
+																					data.postedBy
 																				)}`}
 																			</Box>
 																		</button>

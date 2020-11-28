@@ -1,7 +1,12 @@
 import { Box, Divider, Grid, Paper } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
-import { capitalizeFirstLetter, renderInfo } from '../../utils/render.utils';
+import {
+	capitalizeFirstLetter,
+	renderInfo,
+	renderStatus,
+} from '../../utils/render.utils';
 
+import ContactDialogueWithMessage from '../contactOwner/contactOwnerWithMessage.component';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -23,6 +28,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 	const history = useHistory();
 	const mobile = useMediaQuery('(max-width:600px)');
 	const [open, setOpen] = React.useState(false);
+	const [contactOpen, setContactOpen] = React.useState(false);
 
 	const handleOpen = (_) => {
 		setOpen(true);
@@ -30,6 +36,14 @@ const ResultCard = ({ independent, property, edit = false }) => {
 
 	const handleClose = () => {
 		setOpen(false);
+	};
+
+	const handleContactOpen = (_) => {
+		setContactOpen(true);
+	};
+
+	const handleContactClose = (_) => {
+		setContactOpen(false);
 	};
 
 	const editProperty = (_) => {
@@ -40,10 +54,16 @@ const ResultCard = ({ independent, property, edit = false }) => {
 		: { justifyContent: 'flex-end' };
 	return (
 		<Paper className={classes.fontAbel}>
+			<ContactDialogueWithMessage
+				status={contactOpen}
+				handleClose={handleContactClose}
+				title={`Contact ${capitalizeFirstLetter(property.postedBy)}`}
+				property={property}
+			/>
 			<PropertyShare
 				status={open}
 				handleClose={handleClose}
-				id={property.id}
+				data={property}
 			/>
 			<Grid container spacing={1}>
 				<Grid item xs={12} md={4}>
@@ -70,6 +90,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 									<Link
 										to={`/property-details/${property.id}`}
 										className={classes.linkTitle}
+										target="_blank"
 									>
 										<b>{property.title}</b>
 									</Link>
@@ -101,115 +122,116 @@ const ResultCard = ({ independent, property, edit = false }) => {
 							</Grid>
 						</Grid>
 						<Box mt="1rem">
-							<Grid container>
-								<Grid item xs={12} md={6}>
-									<Grid container>
-										<Grid item xs={6} md={6}>
-											<Box>
-												<Box className={classes.info}>
-													Room type
-												</Box>
-												<Box>
-													<b>
-														{capitalizeFirstLetter(
-															renderInfo(
-																property.roomType
-															)
-														)}
-													</b>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={6}>
-											<Box>
-												<Box className={classes.info}>
-													Available from
-												</Box>
-												<Box>
-													<b>
-														{property.availability ===
-														'immediately'
-															? 'Ready To Move'
-															: parseDate(
-																	property.availableDate
-															  )}
-													</b>
-												</Box>
-											</Box>
-										</Grid>
-									</Grid>
-									<Grid container>
-										<Grid item xs={6} md={6}>
-											<Box mt="1rem">
-												<Box className={classes.info}>
-													Type of toilets
-												</Box>
-												<Box>
-													<b>
-														{capitalizeFirstLetter(
-															renderInfo(
-																property.typeOfToilets
-															)
-														)}
-													</b>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={6}>
-											<Box mt="1rem">
-												<Box className={classes.info}>
-													Notice period
-												</Box>
-												<Box>
-													<b>
-														{property.noticePeriod}{' '}
-														days
-													</b>
-												</Box>
-											</Box>
-										</Grid>
-									</Grid>
+							<Grid container spacing={3}>
+								<Grid item xs={6} md={4}>
+									<Box>
+										<Box className={classes.info}>
+											Room type
+										</Box>
+										<Box>
+											<b>
+												{capitalizeFirstLetter(
+													renderInfo(
+														property.roomType
+													)
+												)}
+											</b>
+										</Box>
+									</Box>
 								</Grid>
-								<Grid item xs={12} md={6}>
-									<Grid container className={classes.margin}>
-										<Grid item xs={6} md={6}>
-											<Box>
-												<Box className={classes.info}>
-													Available For
-												</Box>
-												<Box>
-													<b>
-														{property.availableFor
-															.map((c) =>
-																capitalizeFirstLetter(
-																	c
-																)
-															)
-															.join(',')}
-													</b>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={6} md={6}>
-											<Box>
-												<Box className={classes.info}>
-													Fooding
-												</Box>
-												<Box>
-													<b>
-														{property.fooding
-															.map((c) =>
-																capitalizeFirstLetter(
-																	c
-																)
-															)
-															.join(',')}
-													</b>
-												</Box>
-											</Box>
-										</Grid>
-									</Grid>
+								<Grid item xs={6} md={4}>
+									<Box>
+										<Box className={classes.info}>
+											Available from
+										</Box>
+										<Box>
+											<b>
+												{property.availability ===
+												'immediately'
+													? 'Ready To Move'
+													: parseDate(
+															property.availableDate
+													  )}
+											</b>
+										</Box>
+									</Box>
 								</Grid>
+								<Grid item xs={6} md={4}>
+									<Box>
+										<Box className={classes.info}>
+											Type of toilets
+										</Box>
+										<Box>
+											<b>
+												{capitalizeFirstLetter(
+													renderInfo(
+														property.typeOfToilets
+													)
+												)}
+											</b>
+										</Box>
+									</Box>
+								</Grid>
+								<Grid item xs={6} md={4}>
+									<Box mt="1rem">
+										<Box className={classes.info}>
+											Notice period
+										</Box>
+										<Box>
+											<b>{property.noticePeriod} days</b>
+										</Box>
+									</Box>
+								</Grid>
+								<Grid item xs={6} md={4}>
+									<Box>
+										<Box className={classes.info}>
+											Available For
+										</Box>
+										<Box>
+											<ul className="ul">
+												{property.availableFor.map(
+													(c, i) => (
+														<li key={i}>
+															<b>
+																{capitalizeFirstLetter(
+																	c
+																)}
+															</b>
+														</li>
+													)
+												)}
+											</ul>
+										</Box>
+									</Box>
+								</Grid>
+								<Grid item xs={6} md={4}>
+									<Box>
+										<Box className={classes.info}>
+											Fooding
+										</Box>
+										<Box>
+											{property.fooding.length === 0 ? (
+												<b>Not available</b>
+											) : (
+												<ul className="ul">
+													{property.fooding.map(
+														(c, i) => (
+															<li key={i}>
+																<b>
+																	{capitalizeFirstLetter(
+																		c
+																	)}
+																</b>
+															</li>
+														)
+													)}
+												</ul>
+											)}
+										</Box>
+									</Box>
+								</Grid>
+								<Grid item xs={6} md={4}></Grid>
+								<Grid item xs={6} md={4}></Grid>
 							</Grid>
 						</Box>
 						<Box mt="1rem">
@@ -228,12 +250,18 @@ const ResultCard = ({ independent, property, edit = false }) => {
 										display="flex"
 										justifyContent="flex-end"
 									>
-										<button
-											className={classes.details}
-											onClick={editProperty}
-										>
-											Edit
-										</button>
+										{property.status !== 'active' ? (
+											<Box className={classes.price}>
+												{renderStatus(property.status)}
+											</Box>
+										) : (
+											<button
+												className={classes.details}
+												onClick={editProperty}
+											>
+												Edit
+											</button>
+										)}
 									</Box>
 								) : (
 									<Box
@@ -261,7 +289,10 @@ const ResultCard = ({ independent, property, edit = false }) => {
 													</Box>
 												</Box>
 											</button>
-											<button className={classes.details}>
+											<button
+												className={classes.details}
+												onClick={handleContactOpen}
+											>
 												Get Owner Details
 											</button>
 										</Box>

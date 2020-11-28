@@ -2,9 +2,7 @@ import { Avatar, Box, Divider, Grid } from '@material-ui/core';
 import {
 	capitalizeFirstLetter,
 	parseDate,
-	renderArray,
 	renderInfo,
-	renderOwnership,
 	renderToilets,
 } from '../../utils/render.utils';
 import {
@@ -13,7 +11,6 @@ import {
 	faCalendarAlt,
 	faCarSide,
 	faCouch,
-	faCrown,
 	faMap,
 	faPersonBooth,
 	faQuestionCircle,
@@ -86,9 +83,13 @@ const ResaleApartmentDetails = ({ property }) => {
 						</Box>
 						<Box display="flex" flexDirection="column">
 							<Box>Available For</Box>
-							<h4 className={classes.title}>
-								{renderArray(property.availableFor)}
-							</h4>
+							<ul className="ul">
+								{property.availableFor.map((c, i) => (
+									<li key={i}>
+										<h4 className={classes.title}>{c}</h4>
+									</li>
+								))}
+							</ul>
 						</Box>
 					</Box>
 				</Grid>
@@ -188,25 +189,6 @@ const ResaleApartmentDetails = ({ property }) => {
 						</Box>
 					</Box>
 				</Grid>
-				{/* <Grid item xs={6} md={3}>
-					<Box className={classes.p1Details} display="flex">
-						<Box pl="0.5rem" pr="0.5rem">
-							<Avatar>
-								<FontAwesomeIcon icon={faCrown} />
-							</Avatar>
-						</Box>
-						<Box display="flex" flexDirection="column">
-							<Box>Ownership</Box>
-							<h4 className={classes.title}>
-								{property.propertyOwnerShip
-									? renderOwnership(
-											property.propertyOwnerShip
-									  )
-									: 'Not Specified'}
-							</h4>
-						</Box>
-					</Box>
-				</Grid> */}
 				<Grid item xs={6} md={3}>
 					<Box className={classes.p1Details} display="flex">
 						<Box pl="0.5rem" pr="0.5rem">
@@ -232,7 +214,7 @@ const ResaleApartmentDetails = ({ property }) => {
 						<Box display="flex" flexDirection="column">
 							<Box>Property on floor</Box>
 							<h4 className={classes.title}>
-								{renderInfo(property.noOfFloors)}
+								{renderInfo(property.floor)}
 							</h4>
 						</Box>
 					</Box>

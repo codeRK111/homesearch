@@ -4,8 +4,9 @@ import {
 	Button,
 	CircularProgress,
 	Grid,
+	Switch,
 } from '@material-ui/core';
-import { FieldArray, Form, Formik } from 'formik';
+import { Form, Formik } from 'formik';
 
 import CheckBox from '../../components/formik/checkbox.component';
 import City from './city.component';
@@ -51,6 +52,14 @@ const RentApartment = ({
 	const [openSnackBar, setOpenSnackBar] = React.useState(false);
 	const [snackbarMessage, setSnackbarMessage] = React.useState('');
 	const [severity, setSeverity] = React.useState('success');
+	const [fooding, setFooding] = React.useState(
+		initialValues.fooding.length || initialValues.foodSchedule.length
+			? true
+			: false
+	);
+	const handleFooding = (event) => {
+		setFooding(event.target.checked);
+	};
 
 	const showSnackbar = (message, severity = 'success') => {
 		setSnackbarMessage(message);
@@ -68,12 +77,7 @@ const RentApartment = ({
 
 	const validateForm = (values) => {
 		const error = {};
-		if (!validateNumber(values.superBuiltupArea)) {
-			error.superBuiltupArea = 'Invalid value';
-		}
-		if (!validateNumber(values.carpetArea)) {
-			error.carpetArea = 'Invalid value';
-		}
+
 		if (!validateNumber(values.toiletIndian)) {
 			error.toiletIndian = 'Invalid value';
 		}
@@ -112,10 +116,6 @@ const RentApartment = ({
 				error.numberOfRoomMates = 'Invalid value';
 			}
 		}
-		if (Number(values.superBuiltupArea) < Number(values.carpetArea)) {
-			error.carpetArea =
-				'Super builtup area cannot be less than carpet area';
-		}
 
 		return error;
 	};
@@ -137,7 +137,8 @@ const RentApartment = ({
 			city: selectedCity.id,
 			location: selectedLocation.id,
 			title: `${type}  in ${selectedLocation.name},${selectedCity.name} `,
-
+			fooding: fooding ? values.fooding : [],
+			foodSchedule: fooding ? values.foodSchedule : [],
 			type: values.type,
 		};
 		if (values.reraapproveId) {
@@ -253,18 +254,7 @@ const RentApartment = ({
 									</Grid>
 								</Grid>
 							</Grid> */}
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="superBuiltupArea"
-									formLabel="Super builtup Area (Sq. ft) *"
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<TextField
-									name="carpetArea"
-									formLabel="Carpet Area (Sq. ft) *"
-								/>
-							</Grid>
+
 							<Grid item xs={12} md={6}>
 								<Select
 									name="availability"
@@ -386,7 +376,7 @@ const RentApartment = ({
 							<Grid item xs={12} md={12}>
 								<TextField
 									name="restrictions"
-									formLabel="Restrictions"
+									formLabel="Restrictions (If any)"
 									multiline={true}
 									rows={5}
 								/>
@@ -496,70 +486,107 @@ const RentApartment = ({
 								</Grid>
 							</Grid>
 							<Grid item xs={12} md={12}>
-								<Box mt="1rem" mb="0.5rem">
-									<b>Fooding</b>
-								</Box>
-								<Grid container spacing={0}>
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="fooding"
-											value="veg"
-											formLabel="Veg"
-											type="checkbox"
-										/>
+								<Grid container alignItems="center">
+									<Grid
+										item
+										xs={12}
+										md={3}
+										alignItems="center"
+									>
+										<Box>
+											<b>Fooding Available</b>
+										</Box>
 									</Grid>
-
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="fooding"
-											value="nonveg"
-											formLabel="Non Veg"
-											type="checkbox"
-										/>
-									</Grid>
-								</Grid>
-							</Grid>
-							<Grid item xs={12} md={12}>
-								<Box mt="1rem" mb="0.5rem">
-									<b>Food Schedule</b>
-								</Box>
-								<Grid container spacing={0}>
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="foodSchedule"
-											value="bedtea"
-											formLabel="Bed tea"
-											type="checkbox"
-										/>
-									</Grid>
-
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="foodSchedule"
-											value="breakfast"
-											formLabel="Breakfast"
-											type="checkbox"
-										/>
-									</Grid>
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="foodSchedule"
-											value="lunch"
-											formLabel="Lunch"
-											type="checkbox"
-										/>
-									</Grid>
-
-									<Grid item xs={6} md={3}>
-										<CheckBox
-											name="foodSchedule"
-											value="dinner"
-											formLabel="Dinner"
-											type="checkbox"
-										/>
+									<Grid item xs={12} md={6}>
+										<Grid
+											component="label"
+											container
+											alignItems="center"
+											spacing={1}
+										>
+											<Grid item>No</Grid>
+											<Grid item>
+												<Switch
+													checked={fooding}
+													onChange={handleFooding}
+													color="primary"
+													name="checkedB"
+													inputProps={{
+														'aria-label':
+															'primary checkbox',
+													}}
+												/>
+											</Grid>
+											<Grid item>Yes</Grid>
+										</Grid>
 									</Grid>
 								</Grid>
+
+								{fooding && (
+									<Grid container spacing={0}>
+										<Grid item xs={6} md={3}>
+											<CheckBox
+												name="fooding"
+												value="veg"
+												formLabel="Veg"
+												type="checkbox"
+											/>
+										</Grid>
+
+										<Grid item xs={6} md={3}>
+											<CheckBox
+												name="fooding"
+												value="nonveg"
+												formLabel="Non Veg"
+												type="checkbox"
+											/>
+										</Grid>
+									</Grid>
+								)}
 							</Grid>
+							{fooding && (
+								<Grid item xs={12} md={12}>
+									<Box mt="1rem" mb="0.5rem">
+										<b>Food Schedule</b>
+									</Box>
+									<Grid container spacing={0}>
+										<Grid item xs={6} md={3}>
+											<CheckBox
+												name="foodSchedule"
+												value="bedtea"
+												formLabel="Bed tea"
+												type="checkbox"
+											/>
+										</Grid>
+
+										<Grid item xs={6} md={3}>
+											<CheckBox
+												name="foodSchedule"
+												value="breakfast"
+												formLabel="Breakfast"
+												type="checkbox"
+											/>
+										</Grid>
+										<Grid item xs={6} md={3}>
+											<CheckBox
+												name="foodSchedule"
+												value="lunch"
+												formLabel="Lunch"
+												type="checkbox"
+											/>
+										</Grid>
+
+										<Grid item xs={6} md={3}>
+											<CheckBox
+												name="foodSchedule"
+												value="dinner"
+												formLabel="Dinner"
+												type="checkbox"
+											/>
+										</Grid>
+									</Grid>
+								</Grid>
+							)}
 							<Grid item xs={12} md={12}>
 								<Furnishes
 									initialValues={initialValues}

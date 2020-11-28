@@ -1,6 +1,7 @@
 import { Box } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactImageMagnify from 'react-image-magnify';
 import clsx from 'clsx';
 import useStyles from './propertyImages.style';
 
@@ -53,7 +54,28 @@ const PropertyImages = ({ photos }) => {
 	return (
 		<Box>
 			<Box className={classes.mainImageWrapper}>
-				<img
+				<ReactImageMagnify
+					enlargedImageContainerStyle={{
+						zIndex: 1000,
+					}}
+					{...{
+						smallImage: {
+							alt: 'Wristwatch by Ted Baker London',
+							isFluidWidth: true,
+							src: images.mainImage
+								? `/assets/properties/${images.mainImage}`
+								: require('../../assets/no-image.jpg'),
+						},
+						largeImage: {
+							src: images.mainImage
+								? `/assets/properties/${images.mainImage}`
+								: require('../../assets/no-image.jpg'),
+							width: 1200,
+							height: 1800,
+						},
+					}}
+				/>
+				{/* <img
 					src={
 						images.mainImage
 							? `/assets/properties/${images.mainImage}`
@@ -61,7 +83,7 @@ const PropertyImages = ({ photos }) => {
 					}
 					alt="apartment"
 					className={classes.image}
-				/>
+				/> */}
 			</Box>
 			<Box className={classes.otherImagesWrapper} mt="1rem">
 				{images.image1 && (
@@ -83,9 +105,9 @@ const PropertyImages = ({ photos }) => {
 				{images.image2 && (
 					<Box
 						className={clsx(classes.imageWrapper, {
-							[classes.activeImage]: selectedImage === 1,
+							[classes.activeImage]: selectedImage === 2,
 						})}
-						onClick={imageClick(1, images.image2)}
+						onClick={imageClick(2, images.image2)}
 					>
 						<Box className={classes.overlay}></Box>
 						<img
@@ -99,9 +121,9 @@ const PropertyImages = ({ photos }) => {
 				{images.image3 && (
 					<Box
 						className={clsx(classes.imageWrapper, {
-							[classes.activeImage]: selectedImage === 1,
+							[classes.activeImage]: selectedImage === 3,
 						})}
-						onClick={imageClick(1, images.image3)}
+						onClick={imageClick(3, images.image3)}
 					>
 						<Box className={classes.overlay}></Box>
 						<img
@@ -115,9 +137,9 @@ const PropertyImages = ({ photos }) => {
 				{images.image4 && (
 					<Box
 						className={clsx(classes.imageWrapper, {
-							[classes.activeImage]: selectedImage === 1,
+							[classes.activeImage]: selectedImage === 4,
 						})}
-						onClick={imageClick(1, images.image4)}
+						onClick={imageClick(4, images.image4)}
 					>
 						<Box className={classes.overlay}></Box>
 						<img

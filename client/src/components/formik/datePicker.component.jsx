@@ -19,6 +19,7 @@ const RowSelect = ({ formLabel, ...otherProps }) => {
 				<MuiPickersUtilsProvider utils={DateFnsUtils} fullWidth>
 					<KeyboardDatePicker
 						fullWidth
+						disablePast
 						id="date-picker-dialog"
 						format="MM/dd/yyyy"
 						KeyboardButtonProps={{
