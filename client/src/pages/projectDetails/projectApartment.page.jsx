@@ -30,13 +30,13 @@ import useStyles from './propertyDetails.style';
 
 const PropertyDetails = ({ project, properties, info }) => {
 	const classes = useStyles();
-	const [propertyActions, setPropertyActions] = React.useState(null);
-	const [propertyShareOpen, setPropertyShareOpen] = React.useState(false);
-	const [open, setOpen] = React.useState(false);
 	const [feedback, setFeedBack] = React.useState({
 		status: false,
 		positive: true,
 	});
+	const [propertyActions, setPropertyActions] = React.useState(null);
+	const [propertyShareOpen, setPropertyShareOpen] = React.useState(false);
+	const [open, setOpen] = React.useState(false);
 
 	const closePropertyActions = (name) => {
 		setPropertyActions(null);
@@ -110,7 +110,7 @@ const PropertyDetails = ({ project, properties, info }) => {
 										project.image3,
 										project.image4,
 									]}
-									dir="project_images"
+									dir="projects"
 								/>
 							</Grid>
 							<Grid item xs={12} md={8}>

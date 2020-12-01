@@ -184,10 +184,10 @@ export const renderFloorPlans = (property) => {
 	const defaultImage = require('../assets/no-image.jpg');
 	return {
 		image1: property.floorplan1
-			? `/assets/project_images/${property.floorplan1}`
+			? `/assets/projects/${property.floorplan1}`
 			: defaultImage,
 		image2: property.floorplan2
-			? `/assets/project_images/${property.floorplan2}`
+			? `/assets/projects/${property.floorplan2}`
 			: defaultImage,
 	};
 };

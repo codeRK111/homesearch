@@ -107,7 +107,7 @@ const PropertyDetails = ({ property }) => {
 										property.image3,
 										property.image4,
 									]}
-									dir="project_images"
+									dir="projects"
 								/>
 							</Grid>
 							<Grid item xs={12} md={8}>
