@@ -1,6 +1,8 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import {
 	getMyPropertiesLoading,
+	getProjectDetailsLoading,
+	getProjectPropertyDetailsLoading,
 	getPropertyDetailsLoading,
 	getPropertyResourcesLoading,
 	getQueriesLoading,
@@ -53,6 +55,56 @@ function* getPropertyDetailsSaga({ payload: { id, callback } }) {
 		callback('success', responseData.data.property);
 	} catch (error) {
 		yield put(getPropertyDetailsLoading(false));
+
+		const errorResponse = error.response.data
+			? error.response.data
+			: error.response;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+
+function* getProjectPropertyDetailsSaga({ payload: { id, callback } }) {
+	yield put(getProjectPropertyDetailsLoading(true));
+	const url = `/api/v1/projects/get-project-property-details/${id}`;
+	try {
+		const response = yield axios.get(url);
+		const responseData = response.data;
+		yield put(getProjectPropertyDetailsLoading(false));
+		console.log(responseData.data);
+		callback('success', responseData.data.property);
+	} catch (error) {
+		yield put(getProjectPropertyDetailsLoading(false));
+
+		const errorResponse = error.response.data
+			? error.response.data
+			: error.response;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+
+function* getProjectDetailsSaga({ payload: { id, callback } }) {
+	yield put(getProjectDetailsLoading(true));
+	const url = `/api/v1/projects/get-all-details/${id}`;
+	try {
+		const response = yield axios.get(url);
+		const responseData = response.data;
+		yield put(getProjectDetailsLoading(false));
+		console.log(responseData.data);
+		callback('success', {
+			project: responseData.data.project,
+			properties: responseData.data.properties,
+			projectInfo: responseData.data.projectInfo,
+		});
+	} catch (error) {
+		yield put(getProjectDetailsLoading(false));
 
 		const errorResponse = error.response.data
 			? error.response.data
@@ -284,6 +336,15 @@ function* onSearchProperties() {
 function* onGetPropertyDetails() {
 	yield takeEvery(types.GET_PROPERTY_DETAILS_START, getPropertyDetailsSaga);
 }
+function* onGetProjectDetails() {
+	yield takeEvery(types.GET_PROJECT_DETAILS_START, getProjectDetailsSaga);
+}
+function* onGetProjectPropertyDetails() {
+	yield takeEvery(
+		types.GET_PROJECT_PROPERTY_DETAILS_START,
+		getProjectPropertyDetailsSaga
+	);
+}
 
 function* onGetPropertyResources() {
 	yield takeEvery(
@@ -313,6 +374,8 @@ export function* propertySagas() {
 	yield all([
 		call(onSearchProperties),
 		call(onGetPropertyDetails),
+		call(onGetProjectDetails),
+		call(onGetProjectPropertyDetails),
 		call(onGetPropertyResources),
 		call(onPostProperty),
 		call(onGetMyProperties),

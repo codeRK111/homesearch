@@ -88,7 +88,7 @@ const Header = ({ property }) => {
 									{renderPerSqft(property)} / Sq.ft
 								</Box>
 								<Box mt="0.3rem">
-									{renderPriceOver(property)}
+									{renderPriceOver(property.salePriceOver)}
 								</Box>
 							</Box>
 						</Grid>
@@ -163,7 +163,7 @@ const Header = ({ property }) => {
 									{renderPerSqft(property)} / Sq.ft
 								</Box>
 								<Box mt="0.3rem">
-									{renderPriceOver(property)}
+									{renderPriceOver(property.salePriceOver)}
 								</Box>
 							</Box>
 						</Grid>

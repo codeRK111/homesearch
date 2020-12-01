@@ -7,7 +7,6 @@ import useStyles from './formik.styles';
 const RowSelect = ({ formLabel, ...otherProps }) => {
 	const classes = useStyles();
 	const [field, meta] = useField(otherProps);
-	console.log(meta);
 	let helperText = (meta.value || meta.touched) && meta.error;
 	return (
 		<Box p="0.5rem">

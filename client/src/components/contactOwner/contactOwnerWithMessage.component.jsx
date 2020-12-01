@@ -6,10 +6,6 @@ import {
 	selectAuthenticated,
 	selectUser,
 } from '../../redux/auth/auth.selectors';
-import {
-	validateEmail,
-	validateMobileNumber,
-} from '../../utils/validation.utils';
 
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -130,30 +126,7 @@ const PropertyShare = ({
 			setAsyncError(data);
 		}
 	};
-	const validateForm = (values) => {
-		const error = {};
-		if (!values.name) {
-			error.name = 'Name required';
-		}
-		if (!values.email) {
-			error.email = 'Email required';
-		}
-		if (values.email) {
-			if (!validateEmail(values.email)) {
-				error.email = 'Invalid email';
-			}
-		}
-		if (!values.phoneNumber) {
-			error.phoneNumber = 'Phone number required';
-		}
-		if (values.phoneNumber) {
-			if (!validateMobileNumber(values.phoneNumber)) {
-				error.phoneNumber = 'Invalid Phone number';
-			}
-		}
 
-		return error;
-	};
 	const submitForm = (values) => {
 		// onSubmit(values);
 		// handleClose();

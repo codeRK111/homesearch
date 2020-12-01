@@ -40,6 +40,53 @@ export const renderStatus = (status) => {
 	}
 };
 
+export const renderTypes = (type) => {
+	switch (type) {
+		case 'independenthouse':
+			return 'Villa';
+		case 'flat':
+			return 'Apartment';
+		case 'land':
+			return 'Land';
+
+		default:
+			break;
+	}
+};
+
+export const renderLandArea = (project, info) => {
+	if (project.projectType === 'land') {
+		return `${Math.min(...info.minAreaLand)} - ${Math.max(
+			...info.maxAreaLand
+		)}`;
+	} else {
+		return `${info.minArea} - ${info.maxArea}`;
+	}
+};
+
+export const renderProjectTypes = (project, info) => {
+	if (project.projectType === 'land') {
+		return 'Land';
+	} else {
+		switch (project.projectType) {
+			case 'independenthouse':
+			case 'flat':
+				return `${info.bedRooms.join(',')} BHK`;
+
+			default:
+				break;
+		}
+	}
+};
+
+export const renderProjectAmenities = (project) => {
+	if (project.projectType !== 'land') {
+		return true;
+	} else {
+		return false;
+	}
+};
+
 export const renderTransactionType = (type) => {
 	switch (type) {
 		case 'newbooking':
@@ -50,6 +97,12 @@ export const renderTransactionType = (type) => {
 		default:
 			return type;
 	}
+};
+
+export const renderMinAndMax = (arr) => {
+	return arr.length > 1
+		? `${Math.min(...arr)}-${Math.max(...arr)}`
+		: `${arr[0]}`;
 };
 
 export const renderOwnership = (property) => {
@@ -117,4 +170,24 @@ export const renderArray = (info) => {
 		str += `${capitalizeFirstLetter(c)},`;
 	});
 	return str.slice(0, -1);
+};
+
+export const renderAvailability = (property) => {
+	if (property.availability === 'immediately') {
+		return 'Ready to move';
+	} else {
+		return parseDate(property.availableDate);
+	}
+};
+
+export const renderFloorPlans = (property) => {
+	const defaultImage = require('../assets/no-image.jpg');
+	return {
+		image1: property.floorplan1
+			? `/assets/project_images/${property.floorplan1}`
+			: defaultImage,
+		image2: property.floorplan2
+			? `/assets/project_images/${property.floorplan2}`
+			: defaultImage,
+	};
 };

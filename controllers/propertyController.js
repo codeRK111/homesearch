@@ -898,7 +898,7 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 		filter.status = 'active';
 		const totalDocs = await Project.countDocuments(filter);
 
-		const properties = await Project.find(filter).skip(skip).limit(limit);
+		const properties = await Project.find(filter).sort('-createdAt').skip(skip).limit(limit);
 		res.status(200).json({
 			status: 'success',
 			count: totalDocs,

@@ -5,6 +5,8 @@ const initialState = {
 	// Loading States
 	searchPropertyLoading: false,
 	getPropertyDetailsLoading: false,
+	getProjectDetailsLoading: false,
+	getProjectPropertyDetailsLoading: false,
 	getPropertyResourcesLoading: false,
 	postPropertyLoading: false,
 	updatePropertyLoading: false,
@@ -29,6 +31,16 @@ const propertyReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				getPropertyDetailsLoading: payload,
+			};
+		case propertyActionTypes.TOGGLE_GET_PROJECT_DETAILS_LOADING:
+			return {
+				...state,
+				getProjectDetailsLoading: payload,
+			};
+		case propertyActionTypes.TOGGLE_GET_PROJECT_PROPERTY_DETAILS_LOADING:
+			return {
+				...state,
+				getProjectPropertyDetailsLoading: payload,
 			};
 		case propertyActionTypes.TOGGLE_GET_PROPERTY_RESOURCES_LOADING:
 			return {

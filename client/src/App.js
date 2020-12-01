@@ -10,8 +10,8 @@ import PostProperty from './pages/postProperty';
 import PostPropertyDetailsPage from './pages/postPropertyDetailsPage';
 import ProfilePage from './pages/profile/profile.page';
 import ProfileUpdate from './pages/profile/profileUpdate.page';
-import ProjectDetailsPage from './pages/projectDetailsPage/detailsPage.page';
-import PropertyDetailsPage from './pages/detailsPage/detailsPage.page';
+import ProjectDetailsPage from './pages/projectDetails/index.component';
+import ProjectProperty from './pages/projectDetails/projectPropertyWrapper.component';
 import Protected from './components/protected/protected.component';
 import { Provider } from 'react-redux';
 import React from 'react';
@@ -79,9 +79,9 @@ function App() {
 						/>
 						<Route
 							exact
-							path="/property/:id/details/:propertyFor/:type"
+							path="/project/:id"
 							render={(props) => (
-								<PropertyDetailsPage {...props} />
+								<ProjectDetailsPage {...props} />
 							)}
 						/>
 						<Route
@@ -101,10 +101,8 @@ function App() {
 						/>
 						<Route
 							exact
-							path="/property/:id/project-details/:propertyFor/:type"
-							render={(props) => (
-								<ProjectDetailsPage {...props} />
-							)}
+							path="/project-property/:id"
+							render={(props) => <ProjectProperty {...props} />}
 						/>
 						<Route
 							exact

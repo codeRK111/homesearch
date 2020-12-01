@@ -4,14 +4,25 @@ import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import PropTypes from 'prop-types';
 import React from 'react';
 import clsx from 'clsx';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { getPropertyResources } from '../../redux/property/property.actions';
+import { selectFurnishes } from '../../redux/property/property.selectors';
 import useStyles from './detailsPage.styles';
 
-const Furnishes = ({ property }) => {
+const Furnishes = ({ property, furnishes, getPropertyResources }) => {
 	const classes = useStyles();
 	const isSelected = (id) => {
-		const isPresent = property.furnishes.find((c) => c.id === id);
+		const isPresent = property.furnishes.find(
+			(c) => (c.id ? c.id : c) === id
+		);
 		return isPresent ? true : false;
 	};
+	React.useEffect(() => {
+		if (furnishes.length === 0) {
+			getPropertyResources((d) => {});
+		}
+	}, [furnishes, getPropertyResources]);
 	return (
 		<Box p="1rem">
 			<Box
@@ -33,8 +44,8 @@ const Furnishes = ({ property }) => {
 				flexWrap="wrap"
 				// justifyContent="center"
 			>
-				{property.allFurnishes &&
-					property.allFurnishes.map((c) => (
+				{furnishes &&
+					furnishes.map((c) => (
 						<Box ml="1rem" key={c.id} mt="0.5rem">
 							<Chip
 								variant={
@@ -73,4 +84,12 @@ Furnishes.propTypes = {
 	property: PropTypes.object.isRequired,
 };
 
-export default Furnishes;
+const mapStateToProps = createStructuredSelector({
+	furnishes: selectFurnishes,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	getPropertyResources: (callback) =>
+		dispatch(getPropertyResources({ callback })),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Furnishes);

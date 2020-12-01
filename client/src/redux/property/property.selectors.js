@@ -13,6 +13,14 @@ export const selectGetPropertyDetailsLoading = createSelector(
 	[selectProperty],
 	(c) => c.getPropertyDetailsLoading
 );
+export const selectGetProjectDetailsLoading = createSelector(
+	[selectProperty],
+	(c) => c.getProjectDetailsLoading
+);
+export const selectGetProjectPropertyDetailsLoading = createSelector(
+	[selectProperty],
+	(c) => c.getProjectPropertyDetailsLoading
+);
 export const selectGetPropertyResourcesLoading = createSelector(
 	[selectProperty],
 	(c) => c.getPropertyResourcesLoading

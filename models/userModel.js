@@ -103,7 +103,6 @@ const userSchema = new Schema(
 		},
 		otp: {
 			type: String,
-			maxlength: [4, 'Minimum 12 characters required'],
 			default: null,
 			select: false,
 		},

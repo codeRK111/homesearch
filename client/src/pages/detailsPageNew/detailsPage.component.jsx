@@ -27,7 +27,6 @@ import PropertyShare from '../../components/propertyShare/propertyShare.componen
 import React from 'react';
 import SearchFeedbackForm from '../../components/searchFeedbackForm/searchFeedBackForm.component';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import SimilarProperties from '../../components/similarProperties/resaleApartment.component';
 import Skeleton from '../../components/propertyDetailsSkeleton/propertyDetailsSkeleton.component';
 import Snackbar from '../../components/snackbar/snackbar.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -38,6 +37,18 @@ import { getPropertyDetails } from '../../redux/property/property.actions';
 import { parseDate } from '../../utils/render.utils';
 import { selectGetPropertyDetailsLoading } from '../../redux/property/property.selectors';
 import useStyles from './detailsPage.styles';
+
+// import SimilarProperties from '../../components/similarProperties/resaleApartment.component';
+
+
+
+
+
+
+
+
+
+
 
 const DetailsPage = ({
 	getPropertyDetails,
@@ -97,7 +108,6 @@ const DetailsPage = ({
 			setData(data);
 		} else {
 			setAsyncError(data);
-			console.log(data);
 		}
 	};
 

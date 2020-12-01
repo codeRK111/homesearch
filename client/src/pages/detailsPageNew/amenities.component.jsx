@@ -1,17 +1,30 @@
 import { Avatar, Box, Chip, Divider } from '@material-ui/core';
+import {
+	selectAmenities,
+	selectGetPropertyResourcesLoading,
+} from '../../redux/property/property.selectors';
 
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import PropTypes from 'prop-types';
 import React from 'react';
 import clsx from 'clsx';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { getPropertyResources } from '../../redux/property/property.actions';
 import useStyles from './detailsPage.styles';
 
-const Amenities = ({ property }) => {
+const Amenities = ({ property, amenities, getPropertyResources }) => {
 	const classes = useStyles();
 	const isSelected = (id) => {
 		const isPresent = property.amenities.find((c) => c === id);
 		return isPresent ? true : false;
 	};
+
+	React.useEffect(() => {
+		if (amenities.length === 0) {
+			getPropertyResources(console.log);
+		}
+	}, [amenities, getPropertyResources]);
 	return (
 		<Box p="1rem">
 			<Box
@@ -33,8 +46,8 @@ const Amenities = ({ property }) => {
 				flexWrap="wrap"
 				// justifyContent="center"
 			>
-				{property.allAmenities &&
-					property.allAmenities.map((c) => (
+				{amenities &&
+					amenities.map((c) => (
 						<Box ml="1rem" key={c.id} mt="0.5rem">
 							<Chip
 								variant={
@@ -73,4 +86,13 @@ Amenities.propTypes = {
 	property: PropTypes.object.isRequired,
 };
 
-export default Amenities;
+const mapStateToProps = createStructuredSelector({
+	propertyResourcesLoading: selectGetPropertyResourcesLoading,
+	amenities: selectAmenities,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	getPropertyResources: (callback) =>
+		dispatch(getPropertyResources({ callback })),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Amenities);

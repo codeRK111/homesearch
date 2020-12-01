@@ -1,9 +1,4 @@
 import { Box, Grid, Paper } from '@material-ui/core';
-import { Form, Formik } from 'formik';
-import {
-	validateEmail,
-	validateMobileNumber,
-} from '../../utils/validation.utils';
 
 import AppBar from '../../components/appBar/appBar.component';
 import BedRoomFilter from '../../components/bedroomFilter/bedRoom.component';
@@ -22,6 +17,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import LocationFilter from '../../components/locationFilter/locationFilter.component';
 import Pagination from '@material-ui/lab/Pagination';
 import ProjectApartment from '../../components/searchResultCardNewProjectApartment/searchResultCard.component';
+import ProjectLand from '../../components/searchResultCardNewProjectLand/searchResultCard.component';
 import PropertyFilter from '../../components/propertyTypeFilter/propertyTypeFilder.component';
 import React from 'react';
 import RentApartment from '../../components/searchResultCardNewRentApartment/searchResultCard.component';
@@ -30,8 +26,7 @@ import ResaleApartment from '../../components/searchResultCardNew/searchResultCa
 import ResaleLand from '../../components/searchResultCardNewLand/searchResultCard.component';
 import ResaleVilla from '../../components/searchResultCardNewIndHouse/searchResultCard.component';
 import Skeleton from '../../components/searchCardSkeleton/searchCardSkeleton.component';
-import Snackbar from '../../components/snackbar/snackbar.component';
-import TextField from '../../components/formik/textField.component';
+import TalkToOurExpert from '../../components/talkToExpert/talkToExpert.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import queryString from 'query-string';
@@ -41,12 +36,6 @@ import { selectPropertyLoading } from '../../redux/property/property.selectors';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './searchResultPage.styles';
 
-const initialValues = {
-	name: '',
-	email: '',
-	phoneNumber: '',
-};
-
 const SearchPage = ({
 	currentTab,
 	propertyLoading,
@@ -55,9 +44,6 @@ const SearchPage = ({
 }) => {
 	const classes = useStyles();
 	const mobile = useMediaQuery('(max-width:600px)');
-	const [openSnackBar, setOpenSnackBar] = React.useState(false);
-	const [snackbarMessage, setSnackbarMessage] = React.useState('');
-	const [severity, setSeverity] = React.useState('success');
 	const [open, setOpen] = React.useState(false);
 	const [asyncError, setAsyncError] = React.useState(null);
 	const [totalDos, setTotalDocs] = React.useState(0);
@@ -106,49 +92,9 @@ const SearchPage = ({
 
 	const handleCity = (data) => setCity(data);
 
-	const showSnackbar = (message, severity = 'success') => {
-		setSnackbarMessage(message);
-		setOpenSnackBar(true);
-		setSeverity(severity);
-	};
-
-	const closeSnackbar = (event, reason) => {
-		if (reason === 'clickaway') {
-			return;
-		}
-
-		setOpenSnackBar(false);
-	};
 	const parsed = queryString.parse(props.location.search, {
 		arrayFormat: 'comma',
 	});
-	const validateForm = (values) => {
-		const error = {};
-		if (!values.name) {
-			error.name = 'Name required';
-		}
-		if (!values.email) {
-			error.email = 'Email required';
-		}
-		if (values.email) {
-			if (!validateEmail(values.email)) {
-				error.email = 'Invalid email';
-			}
-		}
-		if (!values.phoneNumber) {
-			error.phoneNumber = 'Phone number required';
-		}
-		if (values.phoneNumber) {
-			if (!validateMobileNumber(values.phoneNumber)) {
-				error.phoneNumber = 'Invalid Phone number';
-			}
-		}
-
-		return error;
-	};
-	const submitForm = (values) => {
-		showSnackbar('We will get back to you soon');
-	};
 
 	React.useEffect(() => {
 		setCity({
@@ -302,8 +248,18 @@ const SearchPage = ({
 	const filterTypesProject = (property) => {
 		switch (property.projectType) {
 			case 'flat':
+			case 'independenthouse':
 				return (
 					<ProjectApartment
+						property={property}
+						propertyItems={propertyItems.filter(
+							(c) => c.project === property.id
+						)}
+					/>
+				);
+			case 'land':
+				return (
+					<ProjectLand
 						property={property}
 						propertyItems={propertyItems.filter(
 							(c) => c.project === property.id
@@ -507,12 +463,7 @@ const SearchPage = ({
 	return (
 		<Box>
 			<AppBar />
-			<Snackbar
-				status={openSnackBar}
-				handleClose={closeSnackbar}
-				severity={severity}
-				message={snackbarMessage}
-			/>
+
 			{/* {renderFilter()} */}
 			<Box className={[classes.resultsWrapper, classes.l5].join(' ')}>
 				<p>
@@ -559,52 +510,7 @@ const SearchPage = ({
 					<Grid item xs={12} md={4}>
 						<Box className={classes.smLeft}>
 							<Paper>
-								<Box p="1rem">
-									<h3 className={classes.center}>
-										Request a call back
-									</h3>
-									<Formik
-										initialValues={initialValues}
-										validate={validateForm}
-										onSubmit={submitForm}
-									>
-										{() => (
-											<Form>
-												<TextField
-													formLabel="Full Name"
-													name="name"
-												/>
-
-												<TextField
-													formLabel="Email"
-													type="email"
-													name="email"
-												/>
-
-												<TextField
-													formLabel="Phone Number"
-													type="number"
-													name="phoneNumber"
-												/>
-												<Box
-													mt="2rem"
-													mb="2rem"
-													position="relative"
-													height="40px"
-												>
-													<button
-														className={
-															classes.button
-														}
-														type="submit"
-													>
-														Talk To Our Expert
-													</button>
-												</Box>
-											</Form>
-										)}
-									</Formik>
-								</Box>
+								<TalkToOurExpert />
 							</Paper>
 						</Box>
 					</Grid>

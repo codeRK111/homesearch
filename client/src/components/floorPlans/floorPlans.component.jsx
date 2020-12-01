@@ -6,6 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { renderFloorPlans } from '../../utils/render.utils';
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -59,9 +60,13 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: '#000000',
 		color: '#ffffff',
 	},
+	image: {
+		height: '30vh',
+		width: 'auto',
+	},
 }));
 
-export default function SimpleTabs() {
+export default function SimpleTabs({ property }) {
 	const classes = useStyles();
 	const [value, setValue] = React.useState(0);
 
@@ -100,10 +105,18 @@ export default function SimpleTabs() {
 				</Tabs>
 			</Paper>
 			<TabPanel value={value} index={0}>
-				Floor plan 1
+				<img
+					src={renderFloorPlans(property)['image1']}
+					alt="floorplan 1"
+					className={classes.image}
+				/>
 			</TabPanel>
 			<TabPanel value={value} index={1}>
-				Floor plan 2
+				<img
+					src={renderFloorPlans(property)['image2']}
+					alt="floorplan 2"
+					className={classes.image}
+				/>
 			</TabPanel>
 		</div>
 	);

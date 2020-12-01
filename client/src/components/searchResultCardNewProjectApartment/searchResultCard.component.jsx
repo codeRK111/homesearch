@@ -1,6 +1,11 @@
 import { Box, Divider, Grid, Paper } from '@material-ui/core';
+import {
+	capitalizeFirstLetter,
+	renderMinAndMax,
+} from '../../utils/render.utils';
 
 import { AlignCenter } from '../flexContainer/flexContainer.component';
+import ContactDialogueWithMessage from '../contactOwner/contactOwnerProject.component';
 import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
@@ -21,9 +26,17 @@ const imgSrc = (property) => {
 	return require('../../assets/no-image.jpg');
 };
 
-const ResultCard = ({ independent, property, propertyItems }) => {
+const ResultCard = ({ property, propertyItems }) => {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
+	const [contactOpen, setContactOpen] = React.useState(false);
+	const handleContactOpen = (_) => {
+		setContactOpen(true);
+	};
+
+	const handleContactClose = (_) => {
+		setContactOpen(false);
+	};
 
 	const handleOpen = (_) => {
 		setOpen(true);
@@ -38,6 +51,14 @@ const ResultCard = ({ independent, property, propertyItems }) => {
 				status={open}
 				handleClose={handleClose}
 				data={property}
+				project={true}
+			/>
+			<ContactDialogueWithMessage
+				status={contactOpen}
+				handleClose={handleContactClose}
+				title={'Get offer'}
+				property={property}
+				type="project"
 			/>
 			<Grid container spacing={1}>
 				<Grid item xs={12} md={4}>
@@ -56,15 +77,16 @@ const ResultCard = ({ independent, property, propertyItems }) => {
 						></Box>
 						<Grid container>
 							<Grid item xs={12} md={6}>
-								<Box display="flex" alignItems="center">
+								<Box display="flex" flexDirection="column">
 									<Link
-										to="/property/123/details/project/apartment"
+										to={`/project/${property.id}`}
 										className={classes.linkTitle}
+										target="_blank"
 									>
 										<b>{property.title}</b>
 									</Link>
 
-									<Box ml="1rem">
+									<Box>
 										<span>
 											{property.location.name},
 											{property.city.name}
@@ -84,7 +106,9 @@ const ResultCard = ({ independent, property, propertyItems }) => {
 								<Box className={classes.locationWrapper}>
 									<Box display="flex" alignItems="center">
 										<Box className={classes.price}>
-											{property.complitionStatus}
+											{capitalizeFirstLetter(
+												property.complitionStatus
+											)}
 										</Box>
 									</Box>
 								</Box>
@@ -92,21 +116,47 @@ const ResultCard = ({ independent, property, propertyItems }) => {
 						</Grid>
 						<Box mt="1rem">
 							<Grid container>
-								<Grid item xs={6} md={4}>
+								<Grid item xs={6}>
 									<Box>
 										<Box>
-											<b>660-739 Sq.Ft</b>
+											<b>
+												{renderMinAndMax(
+													propertyItems.map(
+														(c) =>
+															c.superBuiltupArea
+													)
+												)}{' '}
+												Sq.Ft
+											</b>
 										</Box>
 									</Box>
 								</Grid>
-								<Grid item xs={6} md={4}>
+								<Grid item xs={6}>
 									<Box>
 										<Box>
-											<b>₹ 23 Lacs - 26.29 Lacs</b>
+											<b>
+												₹{' '}
+												{Math.min(
+													...propertyItems.map((c) =>
+														Number(
+															c.minPrice / 100000
+														)
+													)
+												)}{' '}
+												Lacs -{' '}
+												{Math.max(
+													...propertyItems.map((c) =>
+														Number(
+															c.maxPrice / 100000
+														)
+													)
+												)}{' '}
+												Lacs
+											</b>
 										</Box>
 									</Box>
 								</Grid>
-								<Grid item xs={12} md={4}>
+								{/* <Grid item xs={12} md={4}>
 									<Box
 										display="flex"
 										alignItems="center"
@@ -121,7 +171,7 @@ const ResultCard = ({ independent, property, propertyItems }) => {
 											</b>
 										</Box>
 									</Box>
-								</Grid>
+								</Grid> */}
 							</Grid>
 						</Box>
 						<Box mt="1rem">
@@ -137,7 +187,7 @@ const ResultCard = ({ independent, property, propertyItems }) => {
 								</Grid>
 							</Grid>
 							<Box className={classes.itemWrapper}>
-								{Array.from(Array(6).keys()).map((c) => (
+								{propertyItems.map((c) => (
 									<Grid
 										container
 										className={classes.item}
@@ -148,21 +198,27 @@ const ResultCard = ({ independent, property, propertyItems }) => {
 											xs={4}
 											className={classes.cell}
 										>
-											<Link to="#">1 BHK</Link>
+											<Link
+												to={`/project-property/${c.id}`}
+												target="_blank"
+											>
+												{c.numberOfBedrooms} BHK
+											</Link>
 										</Grid>
 										<Grid
 											item
 											xs={4}
 											className={classes.cell}
 										>
-											317 Sq.Ft
+											{c.superBuiltupArea} Sq.Ft
 										</Grid>
 										<Grid
 											item
 											xs={4}
 											className={classes.cell}
 										>
-											₹ 23 Lac
+											₹ {c.minPrice / 100000} Lac -{' '}
+											{c.maxPrice / 100000} Lac
 										</Grid>
 									</Grid>
 								))}
@@ -198,7 +254,10 @@ const ResultCard = ({ independent, property, propertyItems }) => {
 											</AlignCenter>
 										</button>
 										<Box ml="1rem">
-											<button className={classes.details}>
+											<button
+												className={classes.details}
+												onClick={handleContactOpen}
+											>
 												Get Offer
 											</button>
 										</Box>

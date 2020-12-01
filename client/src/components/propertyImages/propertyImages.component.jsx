@@ -5,7 +5,7 @@ import ReactImageMagnify from 'react-image-magnify';
 import clsx from 'clsx';
 import useStyles from './propertyImages.style';
 
-const PropertyImages = ({ photos }) => {
+const PropertyImages = ({ photos, dir = 'properties' }) => {
 	const classes = useStyles();
 	const [selectedImage, setSelectedImage] = React.useState(1);
 	const [images, setImages] = React.useState({
@@ -63,12 +63,12 @@ const PropertyImages = ({ photos }) => {
 							alt: 'Wristwatch by Ted Baker London',
 							isFluidWidth: true,
 							src: images.mainImage
-								? `/assets/properties/${images.mainImage}`
+								? `/assets/${dir}/${images.mainImage}`
 								: require('../../assets/no-image.jpg'),
 						},
 						largeImage: {
 							src: images.mainImage
-								? `/assets/properties/${images.mainImage}`
+								? `/assets/${dir}/${images.mainImage}`
 								: require('../../assets/no-image.jpg'),
 							width: 1200,
 							height: 1800,
@@ -78,7 +78,7 @@ const PropertyImages = ({ photos }) => {
 				{/* <img
 					src={
 						images.mainImage
-							? `/assets/properties/${images.mainImage}`
+							? `/assets/${dir}/${images.mainImage}`
 							: require('../../assets/no-image.jpg')
 					}
 					alt="apartment"
@@ -95,7 +95,7 @@ const PropertyImages = ({ photos }) => {
 					>
 						<Box className={classes.overlay}></Box>
 						<img
-							src={`/assets/properties/${images.image1}`}
+							src={`/assets/${dir}/${images.image1}`}
 							alt="apartment"
 							className={classes.image}
 						/>
@@ -111,7 +111,7 @@ const PropertyImages = ({ photos }) => {
 					>
 						<Box className={classes.overlay}></Box>
 						<img
-							src={`/assets/properties/${images.image2}`}
+							src={`/assets/${dir}/${images.image2}`}
 							alt="apartment"
 							className={classes.image}
 						/>
@@ -127,7 +127,7 @@ const PropertyImages = ({ photos }) => {
 					>
 						<Box className={classes.overlay}></Box>
 						<img
-							src={`/assets/properties/${images.image3}`}
+							src={`/assets/${dir}/${images.image3}`}
 							alt="apartment"
 							className={classes.image}
 						/>
@@ -143,7 +143,7 @@ const PropertyImages = ({ photos }) => {
 					>
 						<Box className={classes.overlay}></Box>
 						<img
-							src={`/assets/properties/${images.image4}`}
+							src={`/assets/${dir}/${images.image4}`}
 							alt="apartment"
 							className={classes.image}
 						/>

@@ -45,12 +45,12 @@ const useStyle = makeStyles((theme) => ({
 	},
 	details: {
 		border: `1px solid ${theme.colorOne}`,
-		padding: '0.8rem 0.5rem',
+		padding: '1rem 0.5rem',
 		cursor: 'pointer',
 		backgroundColor: theme.colorOne,
 		color: '#ffffff',
 		[theme.breakpoints.down('md')]: {
-			padding: '0.4rem 1rem',
+			padding: '0.6rem 1rem',
 			fontSize: '80%',
 		},
 	},

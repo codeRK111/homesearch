@@ -145,7 +145,7 @@ projectSchema.pre(/^find/, function (next) {
 		})
 		.populate({
 			path: 'builder',
-			select: 'id developerName',
+			select: 'id developerName phoneNumber',
 		});
 
 	next();

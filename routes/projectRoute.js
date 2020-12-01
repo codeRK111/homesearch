@@ -4,6 +4,7 @@ const projectController = require('../controllers/projectController');
 const router = express.Router();
 
 router.route('/get-all-details/:id').get(projectController.getAllProjectInfo);
+router.route('/get-project-property-details/:id').get(projectController.getProjectPropertyDetails);
 router.route('/flat').post(projectController.addProjectFlat);
 router
 	.route('/independenthouse')
@@ -11,8 +12,7 @@ router
 router.route('/land').post(projectController.addProjectLand);
 router.route('/properties/:id').patch(projectController.updateProjectProperty);
 router
-	.route('/handle-image/remove-image/:image/:id')
-	.get(projectController.removeProjectImage);
+	.route('/handle-image/remove-image/:image/:id') 
 router
 	.route('/handle-image/property/remove-floorplan/:image/:id')
 	.get(projectController.removePropertyImage);

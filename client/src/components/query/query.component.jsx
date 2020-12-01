@@ -96,6 +96,20 @@ function SimpleCard({
 		}
 	};
 
+	const renderTitle = (data) => {
+		switch (data.type) {
+			case 'property':
+				return data.property.title;
+			case 'project':
+				return data.project.title;
+			case 'projectproperty':
+				return data.projectProperty.title;
+
+			default:
+				break;
+		}
+	};
+
 	return (
 		<Box>
 			{showSkeleton() && <Skeleton />}
@@ -110,7 +124,7 @@ function SimpleCard({
 						>
 							{parseDate(c.createdAt)}
 						</Typography>
-						<b>{c.property.title}</b>
+						<b>{renderTitle(c)}</b>
 
 						<Box mt="1rem">
 							<Typography

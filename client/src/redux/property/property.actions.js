@@ -17,6 +17,14 @@ export const getPropertyDetails = (payload) => ({
 	type: propertyActionTypes.GET_PROPERTY_DETAILS_START,
 	payload,
 });
+export const getProjectDetails = (payload) => ({
+	type: propertyActionTypes.GET_PROJECT_DETAILS_START,
+	payload,
+});
+export const getProjectPropertyDetails = (payload) => ({
+	type: propertyActionTypes.GET_PROJECT_PROPERTY_DETAILS_START,
+	payload,
+});
 export const getPropertyResources = (payload) => ({
 	type: propertyActionTypes.GET_PROPERTY_RESOURCES_START,
 	payload,
@@ -55,6 +63,14 @@ export const searchPropertiesLoading = (payload) => ({
 
 export const getPropertyDetailsLoading = (payload) => ({
 	type: propertyActionTypes.TOGGLE_GET_PROPERTY_DETAILS_LOADING,
+	payload,
+});
+export const getProjectDetailsLoading = (payload) => ({
+	type: propertyActionTypes.TOGGLE_GET_PROJECT_DETAILS_LOADING,
+	payload,
+});
+export const getProjectPropertyDetailsLoading = (payload) => ({
+	type: propertyActionTypes.TOGGLE_GET_PROJECT_PROPERTY_DETAILS_LOADING,
 	payload,
 });
 export const getPropertyResourcesLoading = (payload) => ({

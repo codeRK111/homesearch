@@ -534,3 +534,16 @@ exports.updateProjectProperty = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+
+exports.getProjectPropertyDetails = catchAsync(async (req, res, next) => {
+	const property = await ProjectProperty.findById(
+		req.params.id
+	).populate('project');
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			property,
+		},
+	});
+});

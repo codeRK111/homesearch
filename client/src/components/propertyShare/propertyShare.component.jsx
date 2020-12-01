@@ -9,7 +9,6 @@ import React from 'react';
 import TextField from '../formik/textField.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { makeStyles } from '@material-ui/core/styles';
-import queryString from 'query-string';
 
 const initialValues = {
 	name: '',
@@ -74,7 +73,14 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'center',
 	},
 }));
-const PropertyShare = ({ status, handleClose, data }) => {
+const PropertyShare = ({
+	status,
+	handleClose,
+	data,
+	project = false,
+	whatsAppNumber = null,
+	url = null,
+}) => {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
 	const [copySuccess, setCopySuccess] = React.useState('Copy');
@@ -101,9 +107,14 @@ const PropertyShare = ({ status, handleClose, data }) => {
 			.required('Phone number required'),
 	});
 	const submitForm = (values) => {
-		const userNumber = data.userId.number;
+		const userNumber = whatsAppNumber
+			? whatsAppNumber
+			: project
+			? data.builder.phoneNumber
+			: data.userId.number;
 		const number = `91${userNumber}`;
 		const text = `Hello, I am ${values.name} and I am interested for ${data.title}`;
+		console.log(`https://wa.me/${number}?text=${encodeURI(text)}`);
 		window.location.href = `https://wa.me/${number}?text=${encodeURI(
 			text
 		)}`;
@@ -134,7 +145,15 @@ const PropertyShare = ({ status, handleClose, data }) => {
 									type="text"
 									ref={textAreaRef}
 									className={classes.input}
-									value={`www.homesearch18.com/#/property-details/${data.id}`}
+									value={
+										url
+											? url
+											: `www.homesearch18.com/#/${
+													project
+														? 'project'
+														: 'property-details'
+											  }/${data.id}`
+									}
 								/>
 							</Box>
 							<Box>
@@ -200,7 +219,6 @@ const PropertyShare = ({ status, handleClose, data }) => {
 											>
 												<WhatsAppIcon
 													className={classes.iconWh}
-													onClick={handleClose}
 												/>
 												CHAT NOW
 											</Box>

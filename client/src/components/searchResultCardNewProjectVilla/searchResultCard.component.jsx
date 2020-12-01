@@ -27,6 +27,7 @@ const ResultCard = ({ independent, property }) => {
 				status={open}
 				handleClose={handleClose}
 				data={property}
+				project={true}
 			/>
 			<Grid container spacing={1}>
 				<Grid item xs={12} md={4}>

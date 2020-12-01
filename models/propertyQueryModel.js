@@ -31,12 +31,18 @@ const propertyQuerySchema = new Schema(
 		property: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Property',
-			required: [true, 'Property Required'],
+		},
+		project: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Project',
+		},
+		projectProperty: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'ProjectProperty',
 		},
 		owner: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
-			required: [true, 'Owner Required'],
 		},
 		user: {
 			type: mongoose.Schema.ObjectId,
@@ -54,6 +60,13 @@ const propertyQuerySchema = new Schema(
 			},
 			default: 'pending',
 		},
+		type: {
+			type: String,
+			enum: {
+				values: ['property', 'project','projectproperty'],
+			},
+			default: 'property',
+		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -70,6 +83,12 @@ propertyQuerySchema.pre(/^find/, function (next) {
 		.populate({
 			path: 'user',
 			select: 'id name',
+		}).populate({
+			path: 'project',
+			select: 'id title ',
+		}).populate({
+			path: 'projectProperty',
+			select: 'id title ',
 		});
 
 	next();
