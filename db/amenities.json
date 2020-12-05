@@ -1,0 +1,141 @@
+[{
+  "_id": {
+    "$oid": "5f3e720671cdccd063dd1c2a"
+  },
+  "type": "external",
+  "name": "Park",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e721371cdccd063dd1c2b"
+  },
+  "type": "external",
+  "name": "Gymnasium",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e721c71cdccd063dd1c2c"
+  },
+  "type": "external",
+  "name": "Swimming Pool",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e723871cdccd063dd1c2d"
+  },
+  "type": "external",
+  "name": "Community Hall",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e724971cdccd063dd1c2e"
+  },
+  "type": "external",
+  "name": "Lift",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e726671cdccd063dd1c2f"
+  },
+  "type": "external",
+  "name": "Power Back Up",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e727471cdccd063dd1c30"
+  },
+  "type": "external",
+  "name": "Reserved Parking",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e728171cdccd063dd1c31"
+  },
+  "type": "external",
+  "name": "Security",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e72a171cdccd063dd1c32"
+  },
+  "type": "external",
+  "name": "Maintenance Staff",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e72b771cdccd063dd1c33"
+  },
+  "type": "external",
+  "name": "Waste Disposal",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e72cd71cdccd063dd1c34"
+  },
+  "type": "external",
+  "name": "Visitor Parking",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e732871cdccd063dd1c35"
+  },
+  "type": "internal",
+  "name": "Refrigerator",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e734b71cdccd063dd1c36"
+  },
+  "type": "internal",
+  "name": "Equipped kitchen",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e735871cdccd063dd1c37"
+  },
+  "type": "internal",
+  "name": "Coffee Maker",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e736a71cdccd063dd1c38"
+  },
+  "type": "internal",
+  "name": "Hot water kettle",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e738071cdccd063dd1c39"
+  },
+  "type": "internal",
+  "name": "24x7 hot water",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e738c71cdccd063dd1c3a"
+  },
+  "type": "internal",
+  "name": "Wi-fi/Internet",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e739871cdccd063dd1c3b"
+  },
+  "type": "internal",
+  "name": "Landline Connection",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e73a571cdccd063dd1c3c"
+  },
+  "type": "internal",
+  "name": "RO water Purifier",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3e73b271cdccd063dd1c3d"
+  },
+  "type": "internal",
+  "name": "Laundry facility",
+  "__v": 0
+}]

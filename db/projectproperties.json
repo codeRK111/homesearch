@@ -1,0 +1,579 @@
+[{
+  "_id": {
+    "$oid": "5f6df58c51cb70fde6502eed"
+  },
+  "furnishes": [],
+  "createdAt": {
+    "$date": "2020-09-25T13:21:33.933Z"
+  },
+  "status": "active",
+  "plotArea": [
+    500
+  ],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": null,
+  "floorplan2": null,
+  "title": "test",
+  "description": "test",
+  "numberOfUnits": 500,
+  "length": 400,
+  "width": 300,
+  "plotFrontage": 247,
+  "widthOfRoad": 20,
+  "facing": "east",
+  "constructionDone": true,
+  "boundaryWallMade": true,
+  "gatedCommunity": true,
+  "landUsingZoning": "yellow",
+  "govermentValuation": 500000,
+  "minPrice": 500000,
+  "maxPrice": 1000000,
+  "carParking": "open",
+  "verified": true,
+  "transactionType": "newbooking",
+  "type": "land",
+  "project": {
+    "$oid": "5f6df58b51cb70fde6502ee8"
+  },
+  "toiletTypes": [],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f6dfa4ab32d623fe14d7628"
+  },
+  "furnishes": [],
+  "createdAt": {
+    "$date": "2020-09-25T13:52:03.002Z"
+  },
+  "status": "active",
+  "plotArea": [
+    500
+  ],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": null,
+  "floorplan2": null,
+  "title": "Test land",
+  "description": "Test",
+  "numberOfUnits": 400,
+  "length": 600,
+  "width": 500,
+  "plotFrontage": 400,
+  "widthOfRoad": 200,
+  "facing": "east",
+  "constructionDone": true,
+  "boundaryWallMade": true,
+  "gatedCommunity": true,
+  "landUsingZoning": "yellow",
+  "govermentValuation": 500000,
+  "minPrice": 500000,
+  "maxPrice": 1000000,
+  "carParking": "open",
+  "verified": true,
+  "transactionType": "newbooking",
+  "type": "land",
+  "project": {
+    "$oid": "5f6dfa4ab32d623fe14d7623"
+  },
+  "toiletTypes": [],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f6dfbcab32d623fe14d762e"
+  },
+  "furnishes": [],
+  "createdAt": {
+    "$date": "2020-09-25T13:52:03.002Z"
+  },
+  "status": "active",
+  "plotArea": [
+    600
+  ],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": "48358270-carpenter.png",
+  "floorplan2": null,
+  "title": "Test land",
+  "description": "Test",
+  "numberOfUnits": 500,
+  "length": 500,
+  "width": 400,
+  "plotFrontage": 300,
+  "widthOfRoad": 20,
+  "facing": "east",
+  "constructionDone": false,
+  "boundaryWallMade": false,
+  "gatedCommunity": false,
+  "landUsingZoning": "yellow",
+  "govermentValuation": 400000,
+  "minPrice": 400000,
+  "maxPrice": 800000,
+  "carParking": "open",
+  "verified": true,
+  "transactionType": "newbooking",
+  "type": "land",
+  "project": {
+    "$oid": "5f6dfbcab32d623fe14d7629"
+  },
+  "toiletTypes": [],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f6e2eeabefa0d0017c552b4"
+  },
+  "furnishes": [],
+  "createdAt": {
+    "$date": "2020-09-25T17:21:13.872Z"
+  },
+  "status": "active",
+  "plotArea": [
+    2000,
+    2500
+  ],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": null,
+  "floorplan2": null,
+  "title": "13just",
+  "description": "gh",
+  "numberOfUnits": 2,
+  "length": 12,
+  "width": 1,
+  "plotFrontage": 3,
+  "widthOfRoad": 30,
+  "facing": "south",
+  "constructionDone": true,
+  "boundaryWallMade": true,
+  "gatedCommunity": true,
+  "landUsingZoning": "yellow",
+  "govermentValuation": 1100,
+  "minPrice": 1250,
+  "maxPrice": 1500,
+  "carParking": "open",
+  "verified": true,
+  "transactionType": "newbooking",
+  "type": "land",
+  "project": {
+    "$oid": "5f6e2ee9befa0d0017c552af"
+  },
+  "toiletTypes": [],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f9e5c354a03460017cd26f5"
+  },
+  "furnishes": [],
+  "createdAt": {
+    "$date": "2020-11-01T06:27:47.853Z"
+  },
+  "status": "active",
+  "plotArea": [],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": "86694817-land.jfif",
+  "floorplan2": "67533363-land.jfif",
+  "title": "1 bhk",
+  "description": "test",
+  "numberOfUnits": 100,
+  "minPrice": 45000000,
+  "maxPrice": 100000,
+  "toiletTypes": [
+    {
+      "numbers": 1,
+      "_id": {
+        "$oid": "5fbf5f1bc672280017c5726f"
+      },
+      "toiletType": "indian"
+    },
+    {
+      "numbers": 1,
+      "_id": {
+        "$oid": "5fbf5f1bc672280017c57270"
+      },
+      "toiletType": "western"
+    }
+  ],
+  "type": "flat",
+  "project": {
+    "$oid": "5f9e5c344a03460017cd26eb"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fbf607bc672280017c5727b"
+  },
+  "furnishes": [
+    {
+      "$oid": "5f3e6baee592599c90c25360"
+    },
+    {
+      "$oid": "5f3e6bdbe592599c90c25361"
+    },
+    {
+      "$oid": "5f3e6be4e592599c90c25362"
+    },
+    {
+      "$oid": "5f3e6bf1e592599c90c25363"
+    },
+    {
+      "$oid": "5f3e6c02e592599c90c25364"
+    }
+  ],
+  "createdAt": {
+    "$date": "2020-11-26T07:52:29.584Z"
+  },
+  "status": "active",
+  "plotArea": [],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": "81054029-land.jfif",
+  "floorplan2": null,
+  "title": "1BHK Apartment",
+  "description": "1BHK Apartment",
+  "numberOfUnits": 100,
+  "minPrice": 100000,
+  "maxPrice": 1000000,
+  "toiletTypes": [
+    {
+      "numbers": 2,
+      "_id": {
+        "$oid": "5fc646f9c47fa7e0cdf45bf4"
+      },
+      "toiletType": "indian"
+    },
+    {
+      "numbers": 2,
+      "_id": {
+        "$oid": "5fc646f9c47fa7e0cdf45bf5"
+      },
+      "toiletType": "western"
+    }
+  ],
+  "type": "flat",
+  "project": {
+    "$oid": "5fbf607bc672280017c57271"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fbf655bc672280017c5728b"
+  },
+  "furnishes": [],
+  "createdAt": {
+    "$date": "2020-11-26T07:52:29.584Z"
+  },
+  "status": "active",
+  "plotArea": [],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": null,
+  "floorplan2": null,
+  "title": "2BHK Apartment",
+  "description": "2BHK Apartment",
+  "numberOfUnits": 200,
+  "minPrice": 4000000,
+  "maxPrice": 8000000,
+  "toiletTypes": [
+    {
+      "numbers": 2,
+      "_id": {
+        "$oid": "5fbf655bc672280017c5728c"
+      },
+      "toiletType": "indian"
+    },
+    {
+      "numbers": 2,
+      "_id": {
+        "$oid": "5fbf655bc672280017c5728d"
+      },
+      "toiletType": "western"
+    }
+  ],
+  "type": "flat",
+  "project": {
+    "$oid": "5fbf655bc672280017c5727e"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fbf655bc672280017c5728e"
+  },
+  "furnishes": [],
+  "createdAt": {
+    "$date": "2020-11-26T07:52:29.584Z"
+  },
+  "status": "active",
+  "plotArea": [],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": null,
+  "floorplan2": null,
+  "title": "3BHK Apartment",
+  "description": "3BHK Apartment",
+  "numberOfUnits": 200,
+  "minPrice": 10000000,
+  "maxPrice": 20000000,
+  "toiletTypes": [
+    {
+      "numbers": 3,
+      "_id": {
+        "$oid": "5fbf655bc672280017c5728f"
+      },
+      "toiletType": "indian"
+    },
+    {
+      "numbers": 3,
+      "_id": {
+        "$oid": "5fbf655bc672280017c57290"
+      },
+      "toiletType": "western"
+    }
+  ],
+  "type": "flat",
+  "project": {
+    "$oid": "5fbf655bc672280017c5727e"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fbf655bc672280017c57288"
+  },
+  "furnishes": [],
+  "createdAt": {
+    "$date": "2020-11-26T07:52:29.584Z"
+  },
+  "status": "active",
+  "plotArea": [],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": null,
+  "floorplan2": null,
+  "title": "1BHK Apartment",
+  "description": "1BHK Apartment",
+  "numberOfUnits": 150,
+  "minPrice": 2000000,
+  "maxPrice": 4000000,
+  "toiletTypes": [
+    {
+      "numbers": 2,
+      "_id": {
+        "$oid": "5fbf655bc672280017c57289"
+      },
+      "toiletType": "indian"
+    },
+    {
+      "numbers": 2,
+      "_id": {
+        "$oid": "5fbf655bc672280017c5728a"
+      },
+      "toiletType": "western"
+    }
+  ],
+  "type": "flat",
+  "project": {
+    "$oid": "5fbf655bc672280017c5727e"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc675ee2827d6183f08e20e"
+  },
+  "furnishes": [
+    {
+      "$oid": "5f3e6baee592599c90c25360"
+    },
+    {
+      "$oid": "5f3e6be4e592599c90c25362"
+    },
+    {
+      "$oid": "5f3e6c02e592599c90c25364"
+    }
+  ],
+  "createdAt": {
+    "$date": "2020-12-01T15:46:00.587Z"
+  },
+  "status": "active",
+  "plotArea": [],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": null,
+  "floorplan2": null,
+  "title": "2BHK-Type-1",
+  "description": "For those who cherish to live a life beyond the ordinary,in a space that defines them and their lifestyle, Vyom presents a luxe home filled with exhilarating experiences designed to provide functionality, amenities and aesthetics",
+  "numberOfUnits": 112,
+  "minPrice": 5500000,
+  "maxPrice": 6500000,
+  "toiletTypes": [
+    {
+      "numbers": 1,
+      "_id": {
+        "$oid": "5fc677d22827d6183f08e211"
+      },
+      "toiletType": "indian"
+    },
+    {
+      "numbers": 1,
+      "_id": {
+        "$oid": "5fc677d22827d6183f08e212"
+      },
+      "toiletType": "western"
+    }
+  ],
+  "type": "flat",
+  "project": {
+    "$oid": "5fc675ee2827d6183f08e204"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc67bdc2827d6183f08e220"
+  },
+  "furnishes": [
+    {
+      "$oid": "5f3e6baee592599c90c25360"
+    },
+    {
+      "$oid": "5f3e6bdbe592599c90c25361"
+    },
+    {
+      "$oid": "5f3e6be4e592599c90c25362"
+    },
+    {
+      "$oid": "5f3e6bf1e592599c90c25363"
+    },
+    {
+      "$oid": "5f3e6c02e592599c90c25364"
+    },
+    {
+      "$oid": "5f3e6c21e592599c90c25365"
+    },
+    {
+      "$oid": "5f3e6c3be592599c90c25366"
+    },
+    {
+      "$oid": "5f3e6c45e592599c90c25367"
+    },
+    {
+      "$oid": "5f3e6c54e592599c90c25368"
+    },
+    {
+      "$oid": "5f3e6c5de592599c90c25369"
+    }
+  ],
+  "createdAt": {
+    "$date": "2020-12-01T15:46:00.587Z"
+  },
+  "status": "active",
+  "plotArea": [],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": null,
+  "floorplan2": null,
+  "title": "3 BHK TYPE-1",
+  "description": "For those who cherish to live a life beyond the ordinary,in a space that defines them and their lifestyle, Vyom presents a luxe home filled with exhilarating experiences designed to provide functionality, amenities and aesthetics.",
+  "numberOfUnits": 452,
+  "minPrice": 7500000,
+  "maxPrice": 9500000,
+  "toiletTypes": [
+    {
+      "numbers": 2,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e221"
+      },
+      "toiletType": "indian"
+    },
+    {
+      "numbers": 1,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e222"
+      },
+      "toiletType": "western"
+    }
+  ],
+  "type": "flat",
+  "project": {
+    "$oid": "5fc67bdc2827d6183f08e213"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc67bdc2827d6183f08e21d"
+  },
+  "furnishes": [
+    {
+      "$oid": "5f3e6baee592599c90c25360"
+    },
+    {
+      "$oid": "5f3e6bdbe592599c90c25361"
+    },
+    {
+      "$oid": "5f3e6be4e592599c90c25362"
+    },
+    {
+      "$oid": "5f3e6bf1e592599c90c25363"
+    },
+    {
+      "$oid": "5f3e6c02e592599c90c25364"
+    }
+  ],
+  "createdAt": {
+    "$date": "2020-12-01T15:46:00.587Z"
+  },
+  "status": "active",
+  "plotArea": [],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "floorplan1": null,
+  "floorplan2": null,
+  "title": "2BHK TYPE-A",
+  "description": "For those who cherish to live a life beyond the ordinary,in a space that defines them and their lifestyle, Vyom presents a luxe home filled with exhilarating experiences designed to provide functionality, amenities and aesthetics.",
+  "numberOfUnits": 1122,
+  "minPrice": 5500000,
+  "maxPrice": 7500000,
+  "toiletTypes": [
+    {
+      "numbers": 1,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e21e"
+      },
+      "toiletType": "indian"
+    },
+    {
+      "numbers": 1,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e21f"
+      },
+      "toiletType": "western"
+    }
+  ],
+  "type": "flat",
+  "project": {
+    "$oid": "5fc67bdc2827d6183f08e213"
+  },
+  "__v": 0
+}]

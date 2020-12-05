@@ -1,0 +1,298 @@
+[{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cfa"
+  },
+  "name": "Cuttack Road",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d09"
+  },
+  "name": "Pokhariput",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d0a"
+  },
+  "name": "Rasulgarh Square",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cf5"
+  },
+  "name": "Bapuji Nagar",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cf4"
+  },
+  "name": "Ashok Nagar",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d0e"
+  },
+  "name": "Satya Nagar",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cfe"
+  },
+  "name": "Janpath",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d08"
+  },
+  "name": "Patia",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cf6"
+  },
+  "name": "Baramunda",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cfd"
+  },
+  "name": "Jagmara",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cf9"
+  },
+  "name": "Chandaka",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cf8"
+  },
+  "name": "C.S.Pur",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d04"
+  },
+  "name": "Nayapalli",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d12"
+  },
+  "name": "Unit-8",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cfc"
+  },
+  "name": "IRC Village",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d0c"
+  },
+  "name": "Sailashree Vihar",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d01"
+  },
+  "name": "Khandagiri Square",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d13"
+  },
+  "name": "Unit-4",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cf7"
+  },
+  "name": "Bhima Tangi",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d00"
+  },
+  "name": "Kalpana Square",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d0b"
+  },
+  "name": "Sahid Nagar",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d0d"
+  },
+  "name": "Samantrapur",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d06"
+  },
+  "name": "Palasuni",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d0f"
+  },
+  "name": "Surya Nagar",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d11"
+  },
+  "name": "Tankapani",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d05"
+  },
+  "name": "Pahala",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d10"
+  },
+  "name": "Tamando",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cff"
+  },
+  "name": "Jaydev Vihar",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854cfb"
+  },
+  "name": "Forest Park",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d02"
+  },
+  "name": "Kharvel Nagar",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4667f2f1998651d7854d07"
+  },
+  "name": "Pallaspalli",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f475652c3c75b499f3c21a3"
+  },
+  "name": "zoo road",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114156"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f4e43228ecace2d63c27b22"
+  },
+  "name": "Malkangiri town",
+  "city": {
+    "$oid": "5f2cf84dab6d0b12da114565"
+  },
+  "__v": 0
+}]

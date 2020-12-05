@@ -1,0 +1,966 @@
+[{
+  "_id": {
+    "$oid": "5f6df58b51cb70fde6502ee8"
+  },
+  "amenities": [],
+  "createdAt": {
+    "$date": "2020-09-25T13:21:33.929Z"
+  },
+  "image1": "37868110-congratulation.png",
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "status": "active",
+  "projectType": "land",
+  "title": "Test land",
+  "complitionStatus": "ongoing",
+  "description": "test",
+  "distanceSchool": 2,
+  "distanceRailwayStation": 2,
+  "distanceAirport": 2,
+  "distanceBusStop": 2,
+  "distanceHospital": 2,
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "location": {
+    "$oid": "5f4667f2f1998651d7854cfe"
+  },
+  "builder": {
+    "$oid": "5f6484db8c813700176ad9fc"
+  },
+  "legalClearance": [
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6df58b51cb70fde6502ee9"
+      },
+      "name": "numberOfOwner",
+      "value": false,
+      "label": "Number of owner"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6df58b51cb70fde6502eea"
+      },
+      "name": "withinBlockArea",
+      "value": false,
+      "label": "Within Block Area"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6df58b51cb70fde6502eeb"
+      },
+      "name": "approvedByDevelopmentAutority",
+      "value": true,
+      "label": "Approved by Development Authority"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6df58b51cb70fde6502eec"
+      },
+      "name": "withinAreaOfDevelopmentAuthrity",
+      "value": false,
+      "label": "Within Area of Development Authority"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f6dfa4ab32d623fe14d7623"
+  },
+  "amenities": [],
+  "createdAt": {
+    "$date": "2020-09-25T13:52:02.996Z"
+  },
+  "image1": "11203535-furniture.png",
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "status": "active",
+  "projectType": "land",
+  "title": "Demo land 2",
+  "complitionStatus": "ongoing",
+  "description": "demo",
+  "distanceSchool": 2,
+  "distanceRailwayStation": 2,
+  "distanceAirport": 2,
+  "distanceBusStop": 2,
+  "distanceHospital": 2,
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "location": {
+    "$oid": "5f4667f2f1998651d7854cff"
+  },
+  "builder": {
+    "$oid": "5f6484db8c813700176ad9fc"
+  },
+  "legalClearance": [
+    {
+      "details": "0987654321",
+      "_id": {
+        "$oid": "5f6dfa4ab32d623fe14d7624"
+      },
+      "name": "numberOfOwner",
+      "value": true,
+      "label": "Number of owner"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6dfa4ab32d623fe14d7625"
+      },
+      "name": "withinBlockArea",
+      "value": false,
+      "label": "Within Block Area"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6dfa4ab32d623fe14d7626"
+      },
+      "name": "approvedByDevelopmentAutority",
+      "value": false,
+      "label": "Approved by Development Authority"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6dfa4ab32d623fe14d7627"
+      },
+      "name": "withinAreaOfDevelopmentAuthrity",
+      "value": false,
+      "label": "Within Area of Development Authority"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f6dfbcab32d623fe14d7629"
+  },
+  "amenities": [],
+  "createdAt": {
+    "$date": "2020-09-25T13:52:02.996Z"
+  },
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "status": "active",
+  "projectType": "land",
+  "title": "Demo land 3",
+  "complitionStatus": "ongoing",
+  "description": "Test",
+  "distanceSchool": 2,
+  "distanceRailwayStation": 2,
+  "distanceAirport": 2,
+  "distanceBusStop": 2,
+  "distanceHospital": 2,
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "location": {
+    "$oid": "5f4667f2f1998651d7854cff"
+  },
+  "builder": {
+    "$oid": "5f6484db8c813700176ad9fc"
+  },
+  "legalClearance": [
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6dfbcab32d623fe14d762a"
+      },
+      "name": "numberOfOwner",
+      "value": false,
+      "label": "Number of owner"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6dfbcab32d623fe14d762b"
+      },
+      "name": "withinBlockArea",
+      "value": true,
+      "label": "Within Block Area"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6dfbcab32d623fe14d762c"
+      },
+      "name": "approvedByDevelopmentAutority",
+      "value": true,
+      "label": "Approved by Development Authority"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6dfbcab32d623fe14d762d"
+      },
+      "name": "withinAreaOfDevelopmentAuthrity",
+      "value": false,
+      "label": "Within Area of Development Authority"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f6e2ee9befa0d0017c552af"
+  },
+  "amenities": [],
+  "createdAt": {
+    "$date": "2020-09-25T17:21:13.865Z"
+  },
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "status": "active",
+  "projectType": "land",
+  "title": "1200 Sq.ft to 2500 Sq.ft ",
+  "complitionStatus": "ongoing",
+  "description": "Hi test",
+  "distanceSchool": 1,
+  "distanceRailwayStation": 2,
+  "distanceAirport": 3,
+  "distanceBusStop": 3,
+  "distanceHospital": 4,
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "location": {
+    "$oid": "5f4667f2f1998651d7854cfd"
+  },
+  "builder": {
+    "$oid": "5f6484db8c813700176ad9fc"
+  },
+  "legalClearance": [
+    {
+      "details": "2",
+      "_id": {
+        "$oid": "5f6e2ee9befa0d0017c552b0"
+      },
+      "name": "numberOfOwner",
+      "value": true,
+      "label": "Number of owner"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6e2ee9befa0d0017c552b1"
+      },
+      "name": "withinBlockArea",
+      "value": false,
+      "label": "Within Block Area"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6e2ee9befa0d0017c552b2"
+      },
+      "name": "approvedByDevelopmentAutority",
+      "value": true,
+      "label": "Approved by Development Authority"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f6e2ee9befa0d0017c552b3"
+      },
+      "name": "withinAreaOfDevelopmentAuthrity",
+      "value": true,
+      "label": "Within Area of Development Authority"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f9e5c344a03460017cd26eb"
+  },
+  "amenities": [
+    {
+      "$oid": "5f3e727471cdccd063dd1c30"
+    },
+    {
+      "$oid": "5f3e72b771cdccd063dd1c33"
+    }
+  ],
+  "createdAt": {
+    "$date": "2020-11-01T06:27:47.844Z"
+  },
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "status": "active",
+  "projectType": "flat",
+  "title": "Test",
+  "complitionStatus": "ongoing",
+  "description": "test",
+  "distanceSchool": 2,
+  "distanceRailwayStation": 2,
+  "distanceAirport": 2,
+  "distanceBusStop": 2,
+  "distanceHospital": 2,
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "location": {
+    "$oid": "5f4667f2f1998651d7854cff"
+  },
+  "builder": {
+    "$oid": "5f6484db8c813700176ad9fc"
+  },
+  "legalClearance": [
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f9e5c344a03460017cd26ec"
+      },
+      "name": "approvalOfBuilding",
+      "value": true,
+      "label": "Approval of building"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f9e5c344a03460017cd26ed"
+      },
+      "name": "nocFromFireDepts",
+      "value": false,
+      "label": "NOC from Fire depts"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f9e5c344a03460017cd26ee"
+      },
+      "name": "electricityConnUse",
+      "value": true,
+      "label": "Electricity Connection use"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f9e5c344a03460017cd26ef"
+      },
+      "name": "StructuralStatbilityCertificate",
+      "value": false,
+      "label": "Structural stability certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f9e5c344a03460017cd26f0"
+      },
+      "name": "nocFromPollutionDepts",
+      "value": false,
+      "label": "NOC from Pollution deptt"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f9e5c344a03460017cd26f1"
+      },
+      "name": "functionalCertificate",
+      "value": false,
+      "label": "Occupation / functional certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f9e5c344a03460017cd26f2"
+      },
+      "name": "holdingTax",
+      "value": false,
+      "label": "Municipal /Holding Tax"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f9e5c344a03460017cd26f3"
+      },
+      "name": "completionCertificate",
+      "value": false,
+      "label": "Completion Certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5f9e5c344a03460017cd26f4"
+      },
+      "name": "reraapproved",
+      "value": false,
+      "label": "RERA Approved"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fbf607bc672280017c57271"
+  },
+  "amenities": [
+    {
+      "$oid": "5f3e720671cdccd063dd1c2a"
+    },
+    {
+      "$oid": "5f3e721371cdccd063dd1c2b"
+    },
+    {
+      "$oid": "5f3e723871cdccd063dd1c2d"
+    },
+    {
+      "$oid": "5f3e724971cdccd063dd1c2e"
+    }
+  ],
+  "createdAt": {
+    "$date": "2020-11-26T07:52:29.575Z"
+  },
+  "image1": "23182593-apartment.png",
+  "image2": "87985571-pg.png",
+  "image3": null,
+  "image4": null,
+  "status": "active",
+  "projectType": "independenthouse",
+  "title": "Apartment for sale",
+  "complitionStatus": "ongoing",
+  "description": "Apartment for sale",
+  "distanceSchool": 2,
+  "distanceRailwayStation": 2,
+  "distanceAirport": 2,
+  "distanceBusStop": 2,
+  "distanceHospital": 2,
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "location": {
+    "$oid": "5f4667f2f1998651d7854cff"
+  },
+  "builder": {
+    "$oid": "5f6484db8c813700176ad9fc"
+  },
+  "legalClearance": [
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf607bc672280017c57272"
+      },
+      "name": "approvalOfBuilding",
+      "value": true,
+      "label": "Approval of building"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf607bc672280017c57273"
+      },
+      "name": "nocFromFireDepts",
+      "value": true,
+      "label": "NOC from Fire depts"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf607bc672280017c57274"
+      },
+      "name": "electricityConnUse",
+      "value": true,
+      "label": "Electricity Connection use"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf607bc672280017c57275"
+      },
+      "name": "StructuralStatbilityCertificate",
+      "value": true,
+      "label": "Structural stability certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf607bc672280017c57276"
+      },
+      "name": "nocFromPollutionDepts",
+      "value": false,
+      "label": "NOC from Pollution deptt"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf607bc672280017c57277"
+      },
+      "name": "functionalCertificate",
+      "value": false,
+      "label": "Occupation / functional certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf607bc672280017c57278"
+      },
+      "name": "holdingTax",
+      "value": false,
+      "label": "Municipal /Holding Tax"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf607bc672280017c57279"
+      },
+      "name": "completionCertificate",
+      "value": false,
+      "label": "Completion Certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf607bc672280017c5727a"
+      },
+      "name": "reraapproved",
+      "value": false,
+      "label": "RERA Approved"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fbf655bc672280017c5727e"
+  },
+  "amenities": [
+    {
+      "$oid": "5f3e720671cdccd063dd1c2a"
+    },
+    {
+      "$oid": "5f3e721371cdccd063dd1c2b"
+    },
+    {
+      "$oid": "5f3e723871cdccd063dd1c2d"
+    },
+    {
+      "$oid": "5f3e724971cdccd063dd1c2e"
+    }
+  ],
+  "createdAt": {
+    "$date": "2020-11-26T07:52:29.575Z"
+  },
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "status": "active",
+  "projectType": "flat",
+  "title": "New Project in bhubaneswar",
+  "complitionStatus": "ongoing",
+  "description": "New Project in bhubaneswar",
+  "distanceSchool": 2,
+  "distanceRailwayStation": 2,
+  "distanceAirport": 1,
+  "distanceBusStop": 2,
+  "distanceHospital": 1,
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "location": {
+    "$oid": "5f4667f2f1998651d7854cfc"
+  },
+  "builder": {
+    "$oid": "5f636f7e959638f7438e4590"
+  },
+  "legalClearance": [
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf655bc672280017c5727f"
+      },
+      "name": "approvalOfBuilding",
+      "value": true,
+      "label": "Approval of building"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf655bc672280017c57280"
+      },
+      "name": "nocFromFireDepts",
+      "value": true,
+      "label": "NOC from Fire depts"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf655bc672280017c57281"
+      },
+      "name": "electricityConnUse",
+      "value": true,
+      "label": "Electricity Connection use"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf655bc672280017c57282"
+      },
+      "name": "StructuralStatbilityCertificate",
+      "value": true,
+      "label": "Structural stability certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf655bc672280017c57283"
+      },
+      "name": "nocFromPollutionDepts",
+      "value": false,
+      "label": "NOC from Pollution deptt"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf655bc672280017c57284"
+      },
+      "name": "functionalCertificate",
+      "value": false,
+      "label": "Occupation / functional certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf655bc672280017c57285"
+      },
+      "name": "holdingTax",
+      "value": false,
+      "label": "Municipal /Holding Tax"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf655bc672280017c57286"
+      },
+      "name": "completionCertificate",
+      "value": false,
+      "label": "Completion Certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fbf655bc672280017c57287"
+      },
+      "name": "reraapproved",
+      "value": false,
+      "label": "RERA Approved"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc675ee2827d6183f08e204"
+  },
+  "amenities": [
+    {
+      "$oid": "5f3e720671cdccd063dd1c2a"
+    },
+    {
+      "$oid": "5f3e721371cdccd063dd1c2b"
+    },
+    {
+      "$oid": "5f3e721c71cdccd063dd1c2c"
+    },
+    {
+      "$oid": "5f3e723871cdccd063dd1c2d"
+    },
+    {
+      "$oid": "5f3e724971cdccd063dd1c2e"
+    },
+    {
+      "$oid": "5f3e726671cdccd063dd1c2f"
+    },
+    {
+      "$oid": "5f3e727471cdccd063dd1c30"
+    },
+    {
+      "$oid": "5f3e728171cdccd063dd1c31"
+    },
+    {
+      "$oid": "5f3e72a171cdccd063dd1c32"
+    },
+    {
+      "$oid": "5f3e72b771cdccd063dd1c33"
+    },
+    {
+      "$oid": "5f3e72cd71cdccd063dd1c34"
+    },
+    {
+      "$oid": "5f3e732871cdccd063dd1c35"
+    },
+    {
+      "$oid": "5f3e734b71cdccd063dd1c36"
+    },
+    {
+      "$oid": "5f3e735871cdccd063dd1c37"
+    },
+    {
+      "$oid": "5f3e736a71cdccd063dd1c38"
+    },
+    {
+      "$oid": "5f3e738071cdccd063dd1c39"
+    },
+    {
+      "$oid": "5f3e738c71cdccd063dd1c3a"
+    },
+    {
+      "$oid": "5f3e739871cdccd063dd1c3b"
+    },
+    {
+      "$oid": "5f3e73a571cdccd063dd1c3c"
+    },
+    {
+      "$oid": "5f3e73b271cdccd063dd1c3d"
+    }
+  ],
+  "createdAt": {
+    "$date": "2020-12-01T15:46:00.593Z"
+  },
+  "image1": "90170646-banner 3.jpg",
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "status": "active",
+  "projectType": "flat",
+  "title": "2/3 BHK FLAT IN Z-1",
+  "complitionStatus": "ongoing",
+  "description": "For those who cherish to live a life beyond the ordinary,in a space that defines them and their lifestyle, Vyom presents a luxe home filled with exhilarating experiences designed to provide functionality, amenities and aesthetics",
+  "distanceSchool": 2,
+  "distanceRailwayStation": 5,
+  "distanceAirport": 6,
+  "distanceBusStop": 8,
+  "distanceHospital": 1,
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "location": {
+    "$oid": "5f4667f2f1998651d7854d08"
+  },
+  "builder": {
+    "$oid": "5fc674412827d6183f08e203"
+  },
+  "legalClearance": [
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc675ee2827d6183f08e205"
+      },
+      "name": "approvalOfBuilding",
+      "value": true,
+      "label": "Approval of building"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc675ee2827d6183f08e206"
+      },
+      "name": "nocFromFireDepts",
+      "value": false,
+      "label": "NOC from Fire depts"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc675ee2827d6183f08e207"
+      },
+      "name": "electricityConnUse",
+      "value": false,
+      "label": "Electricity Connection use"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc675ee2827d6183f08e208"
+      },
+      "name": "StructuralStatbilityCertificate",
+      "value": false,
+      "label": "Structural stability certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc675ee2827d6183f08e209"
+      },
+      "name": "nocFromPollutionDepts",
+      "value": false,
+      "label": "NOC from Pollution deptt"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc675ee2827d6183f08e20a"
+      },
+      "name": "functionalCertificate",
+      "value": false,
+      "label": "Occupation / functional certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc675ee2827d6183f08e20b"
+      },
+      "name": "holdingTax",
+      "value": false,
+      "label": "Municipal /Holding Tax"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc675ee2827d6183f08e20c"
+      },
+      "name": "completionCertificate",
+      "value": false,
+      "label": "Completion Certificate"
+    },
+    {
+      "details": "https://www.zestates.in/",
+      "_id": {
+        "$oid": "5fc675ee2827d6183f08e20d"
+      },
+      "name": "reraapproved",
+      "value": true,
+      "label": "RERA Approved"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc67bdc2827d6183f08e213"
+  },
+  "amenities": [
+    {
+      "$oid": "5f3e720671cdccd063dd1c2a"
+    },
+    {
+      "$oid": "5f3e723871cdccd063dd1c2d"
+    },
+    {
+      "$oid": "5f3e727471cdccd063dd1c30"
+    },
+    {
+      "$oid": "5f3e735871cdccd063dd1c37"
+    },
+    {
+      "$oid": "5f3e73a571cdccd063dd1c3c"
+    }
+  ],
+  "createdAt": {
+    "$date": "2020-12-01T15:46:00.593Z"
+  },
+  "image1": "81896747-tweeter banner 4.jpg",
+  "image2": "42681811-banner 3.jpg",
+  "image3": null,
+  "image4": null,
+  "status": "active",
+  "projectType": "flat",
+  "title": "2/3 BHK FLAT IN Z1 VYOM",
+  "complitionStatus": "upcoming",
+  "description": "For those who cherish to live a life beyond the ordinary,in a space that defines them and their lifestyle, Vyom presents a luxe home filled with exhilarating experiences designed to provide functionality, amenities and aesthetics.",
+  "distanceSchool": 1,
+  "distanceRailwayStation": 2,
+  "distanceAirport": 3,
+  "distanceBusStop": 4,
+  "distanceHospital": 5,
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "location": {
+    "$oid": "5f4667f2f1998651d7854cff"
+  },
+  "builder": {
+    "$oid": "5fc674412827d6183f08e203"
+  },
+  "legalClearance": [
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e214"
+      },
+      "name": "approvalOfBuilding",
+      "value": true,
+      "label": "Approval of building"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e215"
+      },
+      "name": "nocFromFireDepts",
+      "value": false,
+      "label": "NOC from Fire depts"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e216"
+      },
+      "name": "electricityConnUse",
+      "value": false,
+      "label": "Electricity Connection use"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e217"
+      },
+      "name": "StructuralStatbilityCertificate",
+      "value": false,
+      "label": "Structural stability certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e218"
+      },
+      "name": "nocFromPollutionDepts",
+      "value": false,
+      "label": "NOC from Pollution deptt"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e219"
+      },
+      "name": "functionalCertificate",
+      "value": false,
+      "label": "Occupation / functional certificate"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e21a"
+      },
+      "name": "holdingTax",
+      "value": false,
+      "label": "Municipal /Holding Tax"
+    },
+    {
+      "details": null,
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e21b"
+      },
+      "name": "completionCertificate",
+      "value": false,
+      "label": "Completion Certificate"
+    },
+    {
+      "details": "LKK",
+      "_id": {
+        "$oid": "5fc67bdc2827d6183f08e21c"
+      },
+      "name": "reraapproved",
+      "value": true,
+      "label": "RERA Approved"
+    }
+  ],
+  "__v": 0
+}]

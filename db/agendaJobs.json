@@ -1,0 +1,76 @@
+[{
+  "_id": {
+    "$oid": "5f3f9369c111a234ede39ad3"
+  },
+  "name": "delete old users",
+  "type": "single",
+  "data": null,
+  "lastModifiedBy": null,
+  "nextRunAt": {
+    "$date": "2020-08-21T09:52:25.077Z"
+  },
+  "priority": 0,
+  "repeatInterval": "3 seconds",
+  "repeatTimezone": null,
+  "lockedAt": null,
+  "lastRunAt": {
+    "$date": "2020-08-21T09:52:22.077Z"
+  },
+  "lastFinishedAt": {
+    "$date": "2020-08-21T09:52:22.273Z"
+  },
+  "failCount": 7,
+  "failReason": "Cast to date failed for value \"{ '$lte': 1598003392076 }\" at path \"expiresAt\"",
+  "failedAt": {
+    "$date": "2020-08-21T09:49:52.077Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f3f980dc111a234ede4eba4"
+  },
+  "name": "handle expired documents",
+  "type": "single",
+  "data": null,
+  "lastModifiedBy": null,
+  "nextRunAt": {
+    "$date": "2020-08-21T09:48:06.469Z"
+  },
+  "priority": 0,
+  "repeatInterval": "3 seconds",
+  "repeatTimezone": null,
+  "lockedAt": {
+    "$date": "2020-08-21T09:48:03.250Z"
+  },
+  "lastRunAt": {
+    "$date": "2020-08-21T09:48:03.469Z"
+  },
+  "failCount": 14,
+  "failReason": "Cast to date failed for value \"{ '$lte': 1598003278996 }\" at path \"expiresAt\"",
+  "failedAt": {
+    "$date": "2020-08-21T09:47:58.998Z"
+  },
+  "lastFinishedAt": {
+    "$date": "2020-08-21T09:47:58.998Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f3f99f7c111a234ede57d09"
+  },
+  "name": "handleExpired",
+  "type": "single",
+  "data": null,
+  "lastModifiedBy": null,
+  "nextRunAt": {
+    "$date": "2020-12-06T06:34:57.992Z"
+  },
+  "priority": 0,
+  "repeatInterval": "24 hours",
+  "repeatTimezone": null,
+  "lockedAt": null,
+  "lastRunAt": {
+    "$date": "2020-12-05T06:34:57.992Z"
+  },
+  "lastFinishedAt": {
+    "$date": "2020-12-05T06:34:58.192Z"
+  }
+}]

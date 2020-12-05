@@ -1,1109 +1,29 @@
 [{
   "_id": {
-    "$oid": "5f4cca0bd7dc37435f814e25"
+    "$oid": "5fc285cec47fa7e0cdf45beb"
   },
-  "availableFor": [
-    "workingwomwn",
-    "workingmen"
-  ],
-  "furnishes": [
-    {
-      "$oid": "5f3e6baee592599c90c25360"
-    },
-    {
-      "$oid": "5f3e6bdbe592599c90c25361"
-    },
-    {
-      "$oid": "5f3e6c02e592599c90c25364"
-    },
-    {
-      "$oid": "5f3e6c21e592599c90c25365"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [
-    {
-      "$oid": "5f3e724971cdccd063dd1c2e"
-    },
-    {
-      "$oid": "5f3e726671cdccd063dd1c2f"
-    }
-  ],
-  "createdAt": {
-    "$date": "2020-08-31T09:55:11.973Z"
-  },
-  "photos": [],
-  "status": "expired",
-  "for": "rent",
-  "type": "flat",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "title": "Test title",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cf8"
-  },
-  "numberOfBedRooms": 1,
-  "toiletTypes": [
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5f4e4f8331ecbd9457dc6544"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5f4e4f8331ecbd9457dc6545"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "numberOfBalconies": 1,
-  "superBuiltupArea": 2400,
-  "carpetArea": 1200,
-  "rent": 12000,
-  "securityDeposit": 24000,
-  "floor": "1",
-  "noOfFloors": 1,
-  "furnished": "furnished",
-  "distanceSchool": 2,
-  "distanceRailwayStation": 2,
-  "distanceAirport": 2,
-  "distanceBusStop": 2,
-  "distanceHospital": 2,
-  "availability": "specificdate",
-  "description": "This is for testt",
-  "adminId": {
-    "$oid": "5f35331be47b8a7e1818eea7"
-  },
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "noticePeriod": "10",
-  "restrictions": "No",
-  "availableDate": {
-    "$date": "2020-08-31T09:52:28.326Z"
-  },
-  "expiresAt": {
-    "$date": "2020-10-30T09:59:40.035Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5f4cccd7b7fec7578470897b"
-  },
-  "availableFor": [
-    "women",
-    "men",
-    "workingwomwn",
-    "family"
-  ],
-  "furnishes": [
-    {
-      "$oid": "5f3e6be4e592599c90c25362"
-    },
-    {
-      "$oid": "5f3e6bf1e592599c90c25363"
-    },
-    {
-      "$oid": "5f3e6c21e592599c90c25365"
-    },
-    {
-      "$oid": "5f3e6c02e592599c90c25364"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [
-    {
-      "$oid": "5f3e720671cdccd063dd1c2a"
-    },
-    {
-      "$oid": "5f3e72b771cdccd063dd1c33"
-    }
-  ],
-  "createdAt": {
-    "$date": "2020-08-31T10:04:38.887Z"
-  },
-  "photos": [],
-  "status": "expired",
-  "for": "rent",
-  "type": "flat",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "title": "This is for test and updated",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cf8"
-  },
-  "numberOfBedRooms": 1,
-  "toiletTypes": [
-    {
-      "numbers": 4,
-      "_id": {
-        "$oid": "5f4cfcff4c337a5a8254523c"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 4,
-      "_id": {
-        "$oid": "5f4cfcff4c337a5a8254523d"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "numberOfBalconies": 2,
-  "superBuiltupArea": 24000,
-  "carpetArea": 12000,
-  "rent": 12000,
-  "securityDeposit": 24000,
-  "floor": "1",
-  "noOfFloors": 2,
-  "furnished": "semifurnished",
-  "distanceSchool": 4,
-  "distanceRailwayStation": 4,
-  "distanceAirport": 4,
-  "distanceBusStop": 4,
-  "distanceHospital": 4,
-  "availability": "specificdate",
-  "description": "Test description and updated",
-  "adminId": {
-    "$oid": "5f35331be47b8a7e1818eea7"
-  },
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "noticePeriod": "20",
-  "restrictions": "No restrictions",
-  "expiresAt": {
-    "$date": "2020-10-30T10:11:35.666Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5f4e3e16ec0879830940c946"
-  },
-  "availableFor": [
-    "women",
-    "men"
-  ],
-  "furnishes": [
-    {
-      "$oid": "5f3e6be4e592599c90c25362"
-    },
-    {
-      "$oid": "5f3e6bf1e592599c90c25363"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [
-    "both"
-  ],
-  "foodSchedule": [
-    "evngsnacks"
-  ],
-  "otherAmenties": [
-    {
-      "$oid": "5f3e739871cdccd063dd1c3b"
-    },
-    {
-      "$oid": "5f3e738c71cdccd063dd1c3a"
-    },
-    {
-      "$oid": "5f3e736a71cdccd063dd1c38"
-    },
-    {
-      "$oid": "5f3e732871cdccd063dd1c35"
-    },
-    {
-      "$oid": "5f3e73a571cdccd063dd1c3c"
-    }
-  ],
-  "externalAmenities": [
-    {
-      "$oid": "5f3e724971cdccd063dd1c2e"
-    },
-    {
-      "$oid": "5f3e726671cdccd063dd1c2f"
-    }
-  ],
-  "createdAt": {
-    "$date": "2020-09-01T10:58:37.781Z"
-  },
-  "photos": [],
-  "status": "expired",
-  "for": "rent",
-  "type": "hostel",
-  "title": "New hostel",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "floor": "",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854d00"
-  },
-  "toiletTypes": [
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5f4e3e9f2c6b371ea0b3af1a"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5f4e3e9f2c6b371ea0b3af1b"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "rent": 6000,
-  "securityDeposit": 12000,
-  "noticePeriod": "10",
-  "furnished": "furnished",
-  "distanceSchool": 2,
-  "distanceRailwayStation": 2,
-  "distanceAirport": 2,
-  "distanceBusStop": 2,
-  "distanceHospital": 2,
-  "availability": "immediately",
-  "description": "test",
-  "adminId": {
-    "$oid": "5f35331be47b8a7e1818eea7"
-  },
-  "restrictions": "",
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "expiresAt": {
-    "$date": "2020-10-31T12:27:02.872Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5f4e502d31ecbd9457dc6546"
-  },
-  "availableFor": [
-    "bachelors"
-  ],
-  "furnishes": [],
-  "kitchen": [],
-  "fooding": [
-    "both"
-  ],
-  "foodSchedule": [
-    "evngsnacks"
-  ],
-  "otherAmenties": [
-    {
-      "$oid": "5f3e739871cdccd063dd1c3b"
-    },
-    {
-      "$oid": "5f3e738c71cdccd063dd1c3a"
-    },
-    {
-      "$oid": "5f3e735871cdccd063dd1c37"
-    }
-  ],
-  "externalAmenities": [
-    {
-      "$oid": "5f3e724971cdccd063dd1c2e"
-    },
-    {
-      "$oid": "5f3e721371cdccd063dd1c2b"
-    },
-    {
-      "$oid": "5f3e72b771cdccd063dd1c33"
-    }
-  ],
-  "createdAt": {
-    "$date": "2020-09-01T13:21:41.123Z"
-  },
-  "photos": [],
-  "status": "expired",
-  "for": "rent",
-  "type": "hostel",
-  "title": "Test title",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "floor": "",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cfa"
-  },
-  "toiletTypes": [
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5f4e502d31ecbd9457dc6547"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5f4e502d31ecbd9457dc6548"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "rent": 12000,
-  "securityDeposit": 24000,
-  "noticePeriod": "10",
-  "furnished": "unfurnished",
-  "distanceSchool": 2,
-  "distanceRailwayStation": 2,
-  "distanceAirport": 2,
-  "distanceBusStop": 2,
-  "distanceHospital": 2,
-  "availability": "specificdate",
-  "description": "Test description",
-  "adminId": {
-    "$oid": "5f35331be47b8a7e1818eea7"
-  },
-  "restrictions": "",
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "availableDate": {
-    "$date": "2020-09-01T13:41:03.072Z"
-  },
-  "expiresAt": {
-    "$date": "2020-10-31T13:44:13.449Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5f524b28d74aac269c7b4a4e"
-  },
-  "availableFor": [],
-  "furnishes": [],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-09-04T14:07:54.142Z"
-  },
-  "photos": [],
-  "status": "expired",
-  "for": "sale",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "title": "New flat",
-  "description": "Flat for sale",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cf8"
-  },
-  "toiletTypes": [
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5f564b2b83a584ce110bed8b"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5f564b2b83a584ce110bed8c"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "superBuiltupArea": 45000,
-  "carpetArea": 40000,
-  "floor": "2",
-  "noOfFloors": 4,
-  "furnished": "unfurnished",
-  "distanceSchool": 2,
-  "distanceRailwayStation": 2,
-  "distanceAirport": 2,
-  "distanceBusStop": 2,
-  "distanceHospital": 2,
-  "availability": "immediately",
-  "adminId": {
-    "$oid": "5f35331be47b8a7e1818eea7"
-  },
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "expiresAt": {
-    "$date": "2020-11-03T14:11:52.744Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5f53aedf42bd8b99c9ed0b31"
-  },
-  "availableFor": [],
-  "furnishes": [],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-09-05T15:29:02.548Z"
-  },
-  "photos": [],
-  "status": "expired",
-  "for": "sale",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "title": "Land for sale",
-  "description": "This is for test",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cfc"
-  },
-  "distanceSchool": 2,
-  "distanceRailwayStation": 2,
-  "distanceAirport": 2,
-  "distanceBusStop": 2,
-  "distanceHospital": 2,
-  "adminId": {
-    "$oid": "5f35331be47b8a7e1818eea7"
-  },
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "toiletTypes": [],
-  "expiresAt": {
-    "$date": "2020-11-04T15:29:35.751Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5f5643c66c36c79bcc281613"
-  },
-  "availableFor": [],
-  "furnishes": [
-    {
-      "$oid": "5f3e6baee592599c90c25360"
-    },
-    {
-      "$oid": "5f3e6c5de592599c90c25369"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-09-07T14:24:47.630Z"
-  },
-  "photos": [],
-  "status": "expired",
-  "for": "sale",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "title": "New apartment for sale",
-  "description": "Flat for sale",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cf8"
-  },
-  "toiletTypes": [
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fa29a0bba95631a685b75bd"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fa29a0bba95631a685b75be"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "superBuiltupArea": 45000,
-  "carpetArea": 40000,
-  "floor": "2",
-  "noOfFloors": 4,
-  "furnished": "furnished",
-  "distanceSchool": 2,
-  "distanceRailwayStation": 2,
-  "distanceAirport": 2,
-  "distanceBusStop": 2,
-  "distanceHospital": 2,
-  "availability": "immediately",
-  "adminId": {
-    "$oid": "5f35331be47b8a7e1818eea7"
-  },
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "expiresAt": {
-    "$date": "2020-11-06T14:48:08.782Z"
-  },
-  "__v": 2,
-  "numberOfBedRooms": 2
-},{
-  "_id": {
-    "$oid": "5f574a86dbaa4d8501a012bb"
-  },
-  "availableFor": [],
-  "furnishes": [
-    {
-      "$oid": "5f3e6baee592599c90c25360"
-    },
-    {
-      "$oid": "5f3e6bf1e592599c90c25363"
-    },
-    {
-      "$oid": "5f3e6c02e592599c90c25364"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-09-08T08:57:47.338Z"
-  },
-  "photos": [],
-  "status": "expired",
-  "for": "sale",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "title": "Independent house for sale",
-  "description": "Indepeent House for sale at a great price",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cf6"
-  },
-  "toiletTypes": [
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5f579be71dac568c54a7801b"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5f579be71dac568c54a7801c"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "superBuiltupArea": 45000,
-  "carpetArea": 40000,
-  "furnished": "semifurnished",
-  "distanceSchool": 2,
-  "distanceRailwayStation": 2,
-  "distanceAirport": 2,
-  "distanceBusStop": 2,
-  "distanceHospital": 2,
-  "availability": "immediately",
-  "adminId": {
-    "$oid": "5f35331be47b8a7e1818eea7"
-  },
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "expiresAt": {
-    "$date": "2020-11-07T09:10:30.050Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5f9ff08921c29c2b405f2aa1"
-  },
-  "availableFor": [
-    "bachelors",
-    "family"
-  ],
-  "furnishes": [
-    {
-      "$oid": "5f3e6baee592599c90c25360"
-    },
-    {
-      "$oid": "5f3e6bdbe592599c90c25361"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [
+  "amenities": [
     {
       "$oid": "5f3e720671cdccd063dd1c2a"
     },
     {
       "$oid": "5f3e721371cdccd063dd1c2b"
-    }
-  ],
-  "createdAt": {
-    "$date": "2020-11-02T11:41:28.967Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "rent",
-  "type": "flat",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "title": "New apartment for rent",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cfd"
-  },
-  "numberOfBedRooms": 1,
-  "toiletTypes": [
-    {
-      "numbers": 1,
-      "_id": {
-        "$oid": "5fa148bc515ac500179771a9"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 1,
-      "_id": {
-        "$oid": "5fa148bc515ac500179771aa"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "numberOfBalconies": 0,
-  "superBuiltupArea": 1000,
-  "carpetArea": 900,
-  "rent": 12000,
-  "securityDeposit": 24000,
-  "floor": "1",
-  "noOfFloors": 1,
-  "furnished": "furnished",
-  "distanceSchool": 2,
-  "distanceRailwayStation": 2,
-  "distanceAirport": 2,
-  "distanceBusStop": 2,
-  "distanceHospital": 2,
-  "availability": "immediately",
-  "description": "New apartment for sale",
-  "adminId": {
-    "$oid": "5f8e877604dc661e348387ab"
-  },
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "noticePeriod": "10",
-  "restrictions": "No restrictions",
-  "expiresAt": {
-    "$date": "2021-01-01T11:42:01.909Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5fa22a9f8a58dde9dccfc0d0"
-  },
-  "availableFor": [
-    "bachelors",
-    "family"
-  ],
-  "furnishes": [
-    {
-      "$oid": "5f3e6baee592599c90c25360"
-    },
-    {
-      "$oid": "5f3e6be4e592599c90c25362"
-    },
-    {
-      "$oid": "5f3e6c02e592599c90c25364"
-    },
-    {
-      "$oid": "5f3e6c3be592599c90c25366"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [
-    {
-      "$oid": "5f3e720671cdccd063dd1c2a"
     },
     {
       "$oid": "5f3e721c71cdccd063dd1c2c"
-    },
-    {
-      "$oid": "5f3e724971cdccd063dd1c2e"
     }
   ],
-  "createdAt": {
-    "$date": "2020-11-04T04:07:47.076Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "rent",
-  "type": "independenthouse",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "title": "House for rent",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cfd"
-  },
-  "numberOfBedRooms": 1,
-  "toiletTypes": [
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fa22a9f8a58dde9dccfc0d1"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fa22a9f8a58dde9dccfc0d2"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "numberOfBalconies": 1,
-  "superBuiltupArea": 1000,
-  "carpetArea": 900,
-  "rent": 15000,
-  "securityDeposit": 30000,
-  "floor": "1",
-  "noOfFloors": 1,
-  "furnished": "furnished",
-  "distanceSchool": 2,
-  "distanceRailwayStation": 2,
-  "distanceAirport": 2,
-  "distanceBusStop": 2,
-  "distanceHospital": 2,
-  "availability": "specificdate",
-  "description": "House for rent",
-  "adminId": {
-    "$oid": "5f356c4f72a6740017cd997e"
-  },
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "noticePeriod": "30",
-  "restrictions": "No restrictions",
-  "availableDate": {
-    "$date": "2020-11-25T02:40:00Z"
-  },
-  "expiresAt": {
-    "$date": "2021-01-03T04:14:24.852Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5fa2464a8d6ad8679d57ff41"
-  },
   "availableFor": [
-    "bachelors",
-    "family"
+    "Family",
+    "Bachelors (Men)",
+    "Bachelors (Women)"
   ],
-  "furnishes": [
-    {
-      "$oid": "5f3e6c54e592599c90c25368"
-    },
-    {
-      "$oid": "5f3e6c5de592599c90c25369"
-    },
-    {
-      "$oid": "5f3e6c02e592599c90c25364"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [
-    "both"
-  ],
-  "foodSchedule": [
-    "lunch"
-  ],
-  "otherAmenties": [
-    {
-      "$oid": "5f3e735871cdccd063dd1c37"
-    },
-    {
-      "$oid": "5f3e736a71cdccd063dd1c38"
-    }
-  ],
-  "externalAmenities": [
-    {
-      "$oid": "5f3e724971cdccd063dd1c2e"
-    },
-    {
-      "$oid": "5f3e726671cdccd063dd1c2f"
-    }
-  ],
-  "createdAt": {
-    "$date": "2020-11-04T06:10:08.624Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "rent",
-  "type": "hostel",
-  "title": "Hostel for rent",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "floor": "",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cfa"
-  },
-  "toiletTypes": [
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fa2464a8d6ad8679d57ff42"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fa2464a8d6ad8679d57ff43"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "rent": 5000,
-  "securityDeposit": 10000,
-  "noticePeriod": "30",
-  "furnished": "furnished",
-  "distanceSchool": 2,
-  "distanceRailwayStation": 2,
-  "distanceAirport": 2,
-  "distanceBusStop": 2,
-  "distanceHospital": 2,
-  "availability": "specificdate",
-  "description": "Hostel for rent",
-  "adminId": {
-    "$oid": "5f356c4f72a6740017cd997e"
-  },
-  "restrictions": "No restrictions",
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "availableDate": {
-    "$date": "2020-11-18T04:41:00Z"
-  },
-  "expiresAt": {
-    "$date": "2021-01-03T06:12:26.706Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5fa2a233ba95631a685b75c8"
-  },
-  "availableFor": [],
-  "furnishes": [],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-11-04T11:49:41.965Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "sale",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "title": "Villa for sale",
-  "description": "Villa for sale",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cff"
-  },
-  "toiletTypes": [
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fa2a233ba95631a685b75c9"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fa2a233ba95631a685b75ca"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "superBuiltupArea": 1000,
-  "carpetArea": 900,
-  "furnished": "unfurnished",
-  "distanceSchool": 2,
-  "distanceRailwayStation": 2,
-  "distanceAirport": 2,
-  "distanceBusStop": 2,
-  "distanceHospital": 2,
-  "availability": "immediately",
-  "adminId": {
-    "$oid": "5f356c4f72a6740017cd997e"
-  },
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f5ce659afd47bd0b9a66a71"
-  },
-  "expiresAt": {
-    "$date": "2021-01-03T12:44:36.208Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5fa9f07bd0436f066cfea028"
-  },
-  "availableFor": [],
-  "furnishes": [],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-11-10T01:30:35.028Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "sale",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "title": "Land for sale",
-  "description": "Land for sale",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cfc"
-  },
-  "distanceSchool": 3,
-  "distanceRailwayStation": 3,
-  "distanceAirport": 3,
-  "distanceBusStop": 3,
-  "distanceHospital": 3,
-  "adminId": {
-    "$oid": "5f356c4f72a6740017cd997e"
-  },
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "toiletTypes": [],
-  "expiresAt": {
-    "$date": "2021-01-09T01:44:28.217Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5fa9fb5ebbcdd116c4632412"
-  },
-  "availableFor": [],
-  "furnishes": [],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-11-10T02:22:31.760Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "sale",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "title": "Flat for sale",
-  "description": "Flat for sale",
-  "location": {
-    "$oid": "5f4667f2f1998651d7854cf7"
-  },
-  "toiletTypes": [
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fa9fb5ebbcdd116c4632413"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fa9fb5ebbcdd116c4632414"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "superBuiltupArea": 1000,
-  "carpetArea": 900,
-  "floor": "2",
-  "noOfFloors": 4,
-  "numberOfBedRooms": 2,
-  "furnished": "unfurnished",
-  "distanceSchool": 4,
-  "distanceRailwayStation": 4,
-  "distanceAirport": 4,
-  "distanceBusStop": 4,
-  "distanceHospital": 4,
-  "availability": "specificdate",
-  "adminId": {
-    "$oid": "5f356c4f72a6740017cd997e"
-  },
-  "createdBy": "admin",
-  "userId": {
-    "$oid": "5f3be9185803e6bac67e6c75"
-  },
-  "availableDate": {
-    "$date": "2020-11-10T02:28:45.246Z"
-  },
-  "expiresAt": {
-    "$date": "2021-01-09T02:30:54.645Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5fb3e7c6cec9484db4069e80"
-  },
-  "availableFor": [],
   "furnishes": [
     {
       "$oid": "5f3e6baee592599c90c25360"
     },
     {
       "$oid": "5f3e6bdbe592599c90c25361"
-    },
-    {
-      "$oid": "5f3e6be4e592599c90c25362"
-    },
-    {
-      "$oid": "5f3e6fa26d15dfb8a61ab917"
     }
   ],
   "kitchen": [],
@@ -1112,17 +32,22 @@
   "otherAmenties": [],
   "externalAmenities": [],
   "createdAt": {
-    "$date": "2020-11-17T15:06:06.015Z"
+    "$date": "2020-11-28T17:14:09.441Z"
   },
   "photos": [],
+  "image1": "98934181-pg.png",
+  "image2": null,
+  "image3": null,
+  "image4": null,
   "status": "active",
-  "for": "sale",
-  "title": "1BHK villa for sale in Patia,Bhubaneswar ",
+  "for": "rent",
+  "title": "1BHK apartment for rent in Patia,Bhubaneswar ",
   "numberOfBedRooms": 1,
   "superBuiltupArea": 1200,
-  "carpetArea": 1000,
-  "availability": "specificdate",
-  "furnished": "semifurnished",
+  "carpetArea": 900,
+  "availability": "immediately",
+  "carParking": "open",
+  "furnished": "furnished",
   "noOfFloors": 1,
   "floor": "1",
   "distanceSchool": 1,
@@ -1130,87 +55,57 @@
   "distanceAirport": 1,
   "distanceBusStop": 1,
   "distanceHospital": 1,
-  "description": "New villa for sale",
+  "description": "Test",
   "city": {
     "$oid": "5f2cf831ab6d0b12da114161"
   },
   "location": {
     "$oid": "5f4667f2f1998651d7854d08"
   },
-  "availableDate": {
-    "$date": "2020-11-17T15:08:17.665Z"
-  },
+  "type": "flat",
+  "numberOfBalconies": 1,
+  "rent": 12000,
+  "securityDeposit": 24000,
+  "noticePeriod": "10",
   "toiletTypes": [
     {
       "numbers": 1,
       "_id": {
-        "$oid": "5fb3e7c6cec9484db4069e8a"
+        "$oid": "5fc285cec47fa7e0cdf45bec"
       },
       "toiletType": "indian"
     },
     {
       "numbers": 1,
       "_id": {
-        "$oid": "5fb3e7c6cec9484db4069e8b"
+        "$oid": "5fc285cec47fa7e0cdf45bed"
       },
       "toiletType": "western"
     }
   ],
   "createdBy": "user",
   "userId": {
-    "$oid": "5fb28d8d42d4281004238fbc"
+    "$oid": "5fbe2c1aca35e71e685ff819"
   },
-  "expiresAt": {
-    "$date": "2021-01-16T15:09:59.853Z"
-  },
+  "postedBy": "tenant",
+  "restrictions": "",
+  "legalClearance": [],
   "__v": 0
 },{
   "_id": {
-    "$oid": "5fb50670c2a4aa534cc4d1d2"
+    "$oid": "5fc4a582c47fa7e0cdf45bef"
   },
-  "availableFor": [],
-  "furnishes": [],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-11-18T11:32:53.624Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "sale",
-  "title": "2000 Sq.ft land for sale in Khandagiri Square,Bhubaneswar ",
-  "distanceSchool": 1,
-  "distanceRailwayStation": 1,
-  "distanceAirport": 1,
-  "distanceBusStop": 1,
-  "distanceHospital": 1,
-  "description": "Land for sale",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "location": {
-    "$oid": "5f4667f2f1998651d7854d01"
-  },
-  "createdBy": "user",
-  "userId": {
-    "$oid": "5fb28d8d42d4281004238fbc"
-  },
-  "toiletTypes": [],
-  "expiresAt": {
-    "$date": "2021-01-17T11:33:06.356Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5fb511bc98157b062ca3e266"
-  },
+  "amenities": [
+    {
+      "$oid": "5f3e720671cdccd063dd1c2a"
+    },
+    {
+      "$oid": "5f3e721371cdccd063dd1c2b"
+    }
+  ],
   "availableFor": [
-    "family",
-    "Bachelors (Men)",
-    "Bachelors (Women)"
+    "Family",
+    "Bachelors (Men)"
   ],
   "furnishes": [
     {
@@ -1218,9 +113,6 @@
     },
     {
       "$oid": "5f3e6bdbe592599c90c25361"
-    },
-    {
-      "$oid": "5f3e6be4e592599c90c25362"
     }
   ],
   "kitchen": [],
@@ -1229,16 +121,21 @@
   "otherAmenties": [],
   "externalAmenities": [],
   "createdAt": {
-    "$date": "2020-11-18T12:20:16.714Z"
+    "$date": "2020-11-28T17:14:09.441Z"
   },
   "photos": [],
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
   "status": "active",
   "for": "rent",
-  "title": "1BHK apartment for rent in Khandagiri Square,Bhubaneswar ",
+  "title": "1BHK apartment for rent in Patia,Bhubaneswar ",
   "numberOfBedRooms": 1,
   "superBuiltupArea": 1200,
   "carpetArea": 900,
   "availability": "immediately",
+  "carParking": "open",
   "furnished": "furnished",
   "noOfFloors": 1,
   "floor": "1",
@@ -1247,419 +144,40 @@
   "distanceAirport": 1,
   "distanceBusStop": 1,
   "distanceHospital": 1,
-  "description": "Apartment for rent",
+  "description": "Test",
   "city": {
     "$oid": "5f2cf831ab6d0b12da114161"
   },
   "location": {
-    "$oid": "5f4667f2f1998651d7854d01"
+    "$oid": "5f4667f2f1998651d7854d08"
   },
   "type": "flat",
   "numberOfBalconies": 1,
   "rent": 12000,
   "securityDeposit": 24000,
   "noticePeriod": "10",
-  "restrictions": "No restrictions",
   "toiletTypes": [
     {
       "numbers": 1,
       "_id": {
-        "$oid": "5fb511bc98157b062ca3e270"
+        "$oid": "5fc4a582c47fa7e0cdf45bf0"
       },
       "toiletType": "indian"
     },
     {
       "numbers": 1,
       "_id": {
-        "$oid": "5fb511bc98157b062ca3e271"
+        "$oid": "5fc4a582c47fa7e0cdf45bf1"
       },
       "toiletType": "western"
     }
   ],
   "createdBy": "user",
   "userId": {
-    "$oid": "5fb28d8d42d4281004238fbc"
+    "$oid": "5fc4a4f3c47fa7e0cdf45bee"
   },
-  "expiresAt": {
-    "$date": "2021-01-17T12:21:16.352Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5fb5121e98157b062ca3e272"
-  },
-  "availableFor": [
-    "family",
-    "Bachelors (Men)",
-    "Bachelors (Women)"
-  ],
-  "furnishes": [
-    {
-      "$oid": "5f3e6baee592599c90c25360"
-    },
-    {
-      "$oid": "5f3e6bdbe592599c90c25361"
-    },
-    {
-      "$oid": "5f3e6be4e592599c90c25362"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-11-18T12:20:16.714Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "rent",
-  "title": "1BHK villa for rent in Khandagiri Square,Bhubaneswar ",
-  "numberOfBedRooms": 1,
-  "superBuiltupArea": 1200,
-  "carpetArea": 900,
-  "availability": "immediately",
-  "furnished": "furnished",
-  "noOfFloors": 3,
-  "floor": "1",
-  "distanceSchool": 1,
-  "distanceRailwayStation": 1,
-  "distanceAirport": 1,
-  "distanceBusStop": 1,
-  "distanceHospital": 1,
-  "description": "Apartment for rent",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "location": {
-    "$oid": "5f4667f2f1998651d7854d01"
-  },
-  "type": "flat",
-  "numberOfBalconies": 1,
-  "rent": 12000,
-  "securityDeposit": 24000,
-  "noticePeriod": "10",
-  "restrictions": "No restrictions",
-  "toiletTypes": [
-    {
-      "numbers": 1,
-      "_id": {
-        "$oid": "5fbb04125174a931b0a0d597"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 1,
-      "_id": {
-        "$oid": "5fbb04125174a931b0a0d598"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "createdBy": "user",
-  "userId": {
-    "$oid": "5fb28d8d42d4281004238fbc"
-  },
-  "expiresAt": {
-    "$date": "2021-01-17T12:22:57.561Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5fb5137498157b062ca3e27e"
-  },
-  "availableFor": [
-    "family"
-  ],
-  "furnishes": [],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-11-18T12:20:16.714Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "rent",
-  "title": "1BHK villa for rent in Rasulgarh Square,Bhubaneswar ",
-  "numberOfBedRooms": 1,
-  "superBuiltupArea": 1200,
-  "carpetArea": 1000,
-  "availability": "specificdate",
-  "furnished": "unfurnished",
-  "noOfFloors": 1,
-  "floor": "1",
-  "distanceSchool": 1,
-  "distanceRailwayStation": 1,
-  "distanceAirport": 1,
-  "distanceBusStop": 1,
-  "distanceHospital": 1,
-  "description": "New villa for rent",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "location": {
-    "$oid": "5f4667f2f1998651d7854d0a"
-  },
-  "type": "independenthouse",
-  "numberOfBalconies": 0,
-  "rent": 14000,
-  "securityDeposit": 28000,
-  "noticePeriod": "10",
-  "restrictions": "No restrictions",
-  "availableDate": {
-    "$date": "2020-11-28T12:25:00Z"
-  },
-  "toiletTypes": [
-    {
-      "numbers": 1,
-      "_id": {
-        "$oid": "5fb5137498157b062ca3e288"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 1,
-      "_id": {
-        "$oid": "5fb5137498157b062ca3e289"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "createdBy": "user",
-  "userId": {
-    "$oid": "5fb28d8d42d4281004238fbc"
-  },
-  "expiresAt": {
-    "$date": "2021-01-17T12:28:40.998Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5fb635b6e0488709d006fd8e"
-  },
-  "availableFor": [
-    "family",
-    "Bachelors (Men)",
-    "Family"
-  ],
-  "furnishes": [
-    {
-      "$oid": "5f3e6baee592599c90c25360"
-    },
-    {
-      "$oid": "5f3e6baee592599c90c25360"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [
-    "veg",
-    "nonveg"
-  ],
-  "foodSchedule": [
-    "bedtea",
-    "breakfast",
-    "lunch",
-    "dinner"
-  ],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-11-19T08:52:39.187Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "rent",
-  "title": "PG  in Rasulgarh Square,Bhubaneswar ",
-  "distanceSchool": 1,
-  "distanceRailwayStation": 1,
-  "distanceAirport": 1,
-  "distanceBusStop": 1,
-  "distanceHospital": 1,
-  "description": "Hostel for rent",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "location": {
-    "$oid": "5f4667f2f1998651d7854d0a"
-  },
-  "type": "hostel",
-  "rent": 12000,
-  "securityDeposit": 24000,
-  "noticePeriod": "10",
-  "furnished": "furnished",
-  "availability": "immediately",
-  "toiletTypes": [
-    {
-      "numbers": 1,
-      "_id": {
-        "$oid": "5fbb07e9e38f080e24e82e70"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 1,
-      "_id": {
-        "$oid": "5fbb07e9e38f080e24e82e71"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "createdBy": "user",
-  "userId": {
-    "$oid": "5fb28d8d42d4281004238fbc"
-  },
-  "expiresAt": {
-    "$date": "2021-01-22T00:52:58.871Z"
-  },
-  "__v": 0,
-  "carpetArea": 900,
-  "superBuiltupArea": 1200
-},{
-  "_id": {
-    "$oid": "5fb6384358ba7910f499676f"
-  },
-  "availableFor": [
-    "family"
-  ],
-  "furnishes": [
-    {
-      "$oid": "5f3e6baee592599c90c25360"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [
-    "veg"
-  ],
-  "foodSchedule": [
-    "bedtea"
-  ],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-11-19T09:11:22.259Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "rent",
-  "title": "PG for rent in Rasulgarh Square,Bhubaneswar ",
-  "distanceSchool": 1,
-  "distanceRailwayStation": 1,
-  "distanceAirport": 1,
-  "distanceBusStop": 1,
-  "distanceHospital": 1,
-  "description": "PG in bhubaneswar",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "location": {
-    "$oid": "5f4667f2f1998651d7854d0a"
-  },
-  "type": "pg",
-  "rent": 12000,
-  "securityDeposit": 28000,
-  "noticePeriod": "10",
-  "furnished": "furnished",
-  "availability": "specificdate",
-  "availableDate": {
-    "$date": "2020-11-28T09:14:00Z"
-  },
-  "toiletTypes": [
-    {
-      "numbers": 1,
-      "_id": {
-        "$oid": "5fb6384358ba7910f4996779"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 1,
-      "_id": {
-        "$oid": "5fb6384358ba7910f499677a"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "createdBy": "user",
-  "userId": {
-    "$oid": "5fb28d8d42d4281004238fbc"
-  },
-  "expiresAt": {
-    "$date": "2021-01-18T09:17:57.412Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5fb6fb78b4cfd7172468b4d1"
-  },
-  "availableFor": [],
-  "furnishes": [
-    {
-      "$oid": "5f3e6baee592599c90c25360"
-    },
-    {
-      "$oid": "5f3e6bdbe592599c90c25361"
-    },
-    {
-      "$oid": "5f3e6be4e592599c90c25362"
-    }
-  ],
-  "kitchen": [],
-  "fooding": [],
-  "foodSchedule": [],
-  "otherAmenties": [],
-  "externalAmenities": [],
-  "createdAt": {
-    "$date": "2020-11-19T23:03:01.732Z"
-  },
-  "photos": [],
-  "status": "active",
-  "for": "sale",
-  "title": "1BHK villa for sale in Khandagiri Square,Bhubaneswar ",
-  "numberOfBedRooms": 1,
-  "superBuiltupArea": 1200,
-  "carpetArea": 900,
-  "availability": "immediately",
-  "furnished": "furnished",
-  "noOfFloors": 3,
-  "floor": "1",
-  "distanceSchool": 2,
-  "distanceRailwayStation": 1,
-  "distanceAirport": 1,
-  "distanceBusStop": 1,
-  "distanceHospital": 1,
-  "description": "Apartment for rent",
-  "city": {
-    "$oid": "5f2cf831ab6d0b12da114161"
-  },
-  "location": {
-    "$oid": "5f4667f2f1998651d7854d01"
-  },
-  "toiletTypes": [
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fb89baab6295a2144f1b652"
-      },
-      "toiletType": "indian"
-    },
-    {
-      "numbers": 2,
-      "_id": {
-        "$oid": "5fb89baab6295a2144f1b653"
-      },
-      "toiletType": "western"
-    }
-  ],
-  "createdBy": "user",
-  "userId": {
-    "$oid": "5fb28d8d42d4281004238fbc"
-  },
-  "expiresAt": {
-    "$date": "2021-01-20T04:43:56.725Z"
-  },
+  "postedBy": "tenant",
+  "restrictions": "",
+  "legalClearance": [],
   "__v": 0
 }]

@@ -1,0 +1,176 @@
+[{
+  "_id": {
+    "$oid": "5fbe3cb3e6654b39f519e295"
+  },
+  "number": "7381123123",
+  "googleId": null,
+  "photo": null,
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "photoStatus": "not-uploaded",
+  "password": "$2a$12$uXPXbqXWf1m3Y3JwBxO.3.2wLFhP3Kz9vhzlKUpkMOuDaAiiSFive",
+  "otp": null,
+  "createdAt": {
+    "$date": "2020-11-25T03:56:17.179Z"
+  },
+  "status": "active",
+  "paymentStatus": "unpaid",
+  "numberVerified": true,
+  "name": "Ramesh Singh",
+  "email": "ramesh@singhamventures.com",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "gender": "male",
+  "role": "agent",
+  "registerThrough": "site login",
+  "registerVia": "Web",
+  "mobileStatus": "semi-private",
+  "serialNumber": 11,
+  "__v": 0,
+  "passwordChangedAt": {
+    "$date": "2020-11-26T16:33:37.699Z"
+  }
+},{
+  "_id": {
+    "$oid": "5fbe2c1aca35e71e685ff819"
+  },
+  "number": "9853325956",
+  "googleId": null,
+  "photo": null,
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "photoStatus": "not-uploaded",
+  "password": "$2a$12$eO31QhD/ssc4SB5qz9/DquZAbclm1SaAGFveRos.AJq01yUv7ro.O",
+  "otp": "5482",
+  "createdAt": {
+    "$date": "2020-11-25T09:55:44.168Z"
+  },
+  "status": "active",
+  "paymentStatus": "unpaid",
+  "numberVerified": true,
+  "name": "Rakesh Chandra Dash",
+  "email": "rk@gmail.com",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "gender": "male",
+  "role": "tenant",
+  "registerThrough": "site login",
+  "registerVia": "Web",
+  "mobileStatus": "semi-private",
+  "serialNumber": 12,
+  "__v": 0,
+  "passwordChangedAt": {
+    "$date": "2020-12-04T04:28:15.458Z"
+  }
+},{
+  "_id": {
+    "$oid": "5fbfc95ccb0b0131c49ba55f"
+  },
+  "number": "9124785656",
+  "googleId": null,
+  "photo": null,
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "photoStatus": "not-uploaded",
+  "password": "$2a$12$U32w2Bv8KvEO8fUyyE7.DuYG0GjQDINAfEI75Cp487hhUNB3iFnP.",
+  "otp": null,
+  "createdAt": {
+    "$date": "2020-11-26T15:27:11.456Z"
+  },
+  "status": "active",
+  "paymentStatus": "unpaid",
+  "numberVerified": true,
+  "name": "Subash",
+  "email": "sb@gmail.com",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "gender": "male",
+  "role": "tenant",
+  "registerThrough": "site login",
+  "registerVia": "Web",
+  "mobileStatus": "semi-private",
+  "serialNumber": 13,
+  "__v": 0,
+  "passwordChangedAt": {
+    "$date": "2020-11-26T15:28:37.843Z"
+  }
+},{
+  "_id": {
+    "$oid": "5fbfe063b4efc213c9cc9c0f"
+  },
+  "number": "9853724437",
+  "googleId": null,
+  "photo": null,
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "photoStatus": "not-uploaded",
+  "password": "$2a$12$OJkXsRk6T5PJu5CagfvDLu.Rz7.t5KY66WNLjgacroFh2pNsVlgzG",
+  "otp": null,
+  "createdAt": {
+    "$date": "2020-11-26T17:05:16.467Z"
+  },
+  "status": "active",
+  "paymentStatus": "unpaid",
+  "numberVerified": true,
+  "name": "ramesh singh",
+  "email": "ramesh@grovisgroup.com",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "gender": "male",
+  "role": "agent",
+  "registerThrough": "site login",
+  "registerVia": "Web",
+  "mobileStatus": "semi-private",
+  "serialNumber": 14,
+  "__v": 0,
+  "passwordChangedAt": {
+    "$date": "2020-12-01T16:40:55.939Z"
+  }
+},{
+  "_id": {
+    "$oid": "5fc4a4f3c47fa7e0cdf45bee"
+  },
+  "number": "8458059528",
+  "googleId": null,
+  "photo": null,
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "photoStatus": "not-uploaded",
+  "password": "$2a$12$3/PGxZ1bwY0Ze3bIm5pwHeSbG6AFjnQ6xbDSgvF6PHLu8ju05jA26",
+  "otp": null,
+  "createdAt": {
+    "$date": "2020-11-28T17:14:09.773Z"
+  },
+  "status": "active",
+  "paymentStatus": "unpaid",
+  "numberVerified": true,
+  "name": "Rakesh Chandra Dash",
+  "email": "rk2@gmail.com",
+  "city": {
+    "$oid": "5f2cf831ab6d0b12da114161"
+  },
+  "gender": "male",
+  "role": "tenant",
+  "registerThrough": "site login",
+  "registerVia": "Web",
+  "mobileStatus": "semi-private",
+  "serialNumber": 15,
+  "__v": 0,
+  "passwordChangedAt": {
+    "$date": "2020-11-30T07:54:59.886Z"
+  }
+}]

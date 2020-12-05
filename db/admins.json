@@ -1,0 +1,387 @@
+[{
+  "_id": {
+    "$oid": "5f35308202a6fe68a729a3db"
+  },
+  "photoStatus": "uploaded",
+  "ableToSee": [
+    "self-created-users",
+    "google-users"
+  ],
+  "cities": [
+    {
+      "$oid": "5f2cf831ab6d0b12da114161"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11417f"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11416e"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114192"
+    }
+  ],
+  "password": "$2a$12$O.JdnkCcdHeDLC1vD8rOnuj3eSyAZ0SSkBTIBmzRuyqsAOr4FNRJS",
+  "createdAt": {
+    "$date": "2020-08-13T12:20:48.908Z"
+  },
+  "status": "active",
+  "type": "super-admin",
+  "name": "Aman Mandal",
+  "username": "aman",
+  "email": "aman@gmail.com",
+  "serialNumber": 3,
+  "gender": "male",
+  "__v": 0,
+  "passwordChangedAt": {
+    "$date": "2020-08-13T12:26:32.895Z"
+  },
+  "photo": "76940376-men.png"
+},{
+  "_id": {
+    "$oid": "5f35331be47b8a7e1818eea7"
+  },
+  "photoStatus": "uploaded",
+  "ableToSee": [
+    "self-created-users",
+    "google-users"
+  ],
+  "cities": [
+    {
+      "$oid": "5f2cf831ab6d0b12da114161"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11417f"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11416e"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114192"
+    }
+  ],
+  "password": "$2a$12$eZPMBY7rb7Y8dqfUC98OGOCqDKs0ZEEFHeTldc3Ny/SQkTOmJpOWi",
+  "createdAt": {
+    "$date": "2020-08-13T12:30:33.840Z"
+  },
+  "status": "active",
+  "type": "super-admin",
+  "name": "Armaan",
+  "username": "arman",
+  "email": "arm@gmail.com",
+  "serialNumber": 4,
+  "gender": "male",
+  "__v": 0,
+  "passwordChangedAt": {
+    "$date": "2020-08-13T12:36:09.425Z"
+  },
+  "photo": "28489251-men.png"
+},{
+  "_id": {
+    "$oid": "5f356c4f72a6740017cd997e"
+  },
+  "photoStatus": "not-uploaded",
+  "ableToSee": [
+    "self-created-users"
+  ],
+  "cities": [
+    {
+      "$oid": "5f2cf831ab6d0b12da114139"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1141d9"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114213"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114224"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1141b9"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1141c1"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1141cd"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114204"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114214"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1141bb"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114228"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114194"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1141a3"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11426b"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11438e"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114266"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11439f"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114260"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11427a"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114320"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114381"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1142fb"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114318"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114366"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1143cb"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114352"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114390"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114232"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1142a3"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11426d"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114259"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114280"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11424e"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1142c0"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1143a4"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1143e1"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11436d"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114273"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1142a4"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114307"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1143f3"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114461"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1143f6"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114429"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114418"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11446b"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114460"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114484"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1144b5"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1144f9"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1144b4"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1144f4"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1144a2"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114471"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da11451c"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da114531"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da11453a"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da114554"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da1145e9"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da114564"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da11458e"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da1145cd"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da1145e0"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da11456a"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da1145a7"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da1145b8"
+    },
+    {
+      "$oid": "5f2cf84dab6d0b12da114599"
+    }
+  ],
+  "password": "$2a$12$Hfy.9xn/yxm54mlaI8AJfe3DlhE2cZLc4xzf64rH/fggwdFSATiDi",
+  "createdAt": {
+    "$date": "2020-08-13T16:21:36.230Z"
+  },
+  "status": "active",
+  "type": "staff",
+  "name": "Ramesh",
+  "username": "ramesh",
+  "email": "ramesh@grovisgroup.com",
+  "serialNumber": 5,
+  "gender": "male",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f3bd54f6a4a09aa945a8cf0"
+  },
+  "photoStatus": "uploaded",
+  "ableToSee": [
+    "self-created-users",
+    "google-users"
+  ],
+  "cities": [
+    {
+      "$oid": "5f2cf831ab6d0b12da114436"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da1143d0"
+    }
+  ],
+  "password": "$2a$12$B982Ppj7fxd8HeIGsl9PiOxVLXYLbvisd4BCNOtJrD0DgJC4.ODke",
+  "createdAt": {
+    "$date": "2020-08-18T08:59:13.895Z"
+  },
+  "status": "active",
+  "type": "admin",
+  "name": "Swastik",
+  "username": "sws123",
+  "email": "sws123@gmail.com",
+  "serialNumber": 6,
+  "gender": "male",
+  "__v": 0,
+  "passwordChangedAt": {
+    "$date": "2020-08-18T13:19:12.244Z"
+  },
+  "photo": "77515950-men.png"
+},{
+  "_id": {
+    "$oid": "5f69074484b50e60f6b982ce"
+  },
+  "photoStatus": "uploaded",
+  "ableToSee": [
+    "self-created-users",
+    "other-staff-created-users",
+    "google-users"
+  ],
+  "cities": [
+    {
+      "$oid": "5f2cf831ab6d0b12da114161"
+    }
+  ],
+  "password": "$2a$12$qtUHj8SdOYh2Z.vUq6LJvuc3K9AdE/EfjzZbx.obV.rGUUwuH.XZG",
+  "createdAt": {
+    "$date": "2020-09-21T20:02:33.508Z"
+  },
+  "status": "active",
+  "type": "super-admin",
+  "name": "Devdutt",
+  "username": "dev@123",
+  "email": "dev@gmail.com",
+  "serialNumber": 7,
+  "gender": "male",
+  "__v": 0,
+  "passwordChangedAt": {
+    "$date": "2020-09-21T20:33:57.931Z"
+  },
+  "photo": "91880802-carpenter.png"
+},{
+  "_id": {
+    "$oid": "5f8e877604dc661e348387ab"
+  },
+  "photoStatus": "not-uploaded",
+  "ableToSee": [
+    "self-created-users"
+  ],
+  "cities": [],
+  "password": "$2a$12$xLctgUtH70w.k1HZ46Snt.Ru4U0yshJJ.6T8Ta6jMUuY6fWOdB3Xy",
+  "createdAt": {
+    "$date": "2020-10-20T06:43:14.315Z"
+  },
+  "status": "active",
+  "type": "staff",
+  "name": "Tester 1",
+  "username": "user1",
+  "email": "tester1@gmail.com",
+  "serialNumber": 8,
+  "gender": "male",
+  "__v": 0
+}]

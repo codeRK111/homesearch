@@ -1,0 +1,97 @@
+[{
+  "_id": {
+    "$oid": "5f636f7e959638f7438e4590"
+  },
+  "phoneNumber": "7894561212",
+  "operatingSince": {
+    "$date": "2020-09-17T14:11:38.412Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-17T14:03:54.490Z"
+  },
+  "cities": [
+    {
+      "$oid": "5f4515639a93b9a7f42b93b6"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da11416e"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114161"
+    }
+  ],
+  "logo": "30223075-cctv.png",
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "image5": null,
+  "image6": null,
+  "status": "active",
+  "developerName": "Rk Enter prices",
+  "description": "Best builder",
+  "email": "rk@gmail.com",
+  "officeAddress": "Near bbsr",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f6484db8c813700176ad9fc"
+  },
+  "phoneNumber": "9853724437",
+  "operatingSince": {
+    "$date": "2020-09-29T09:57:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-18T09:32:46.190Z"
+  },
+  "cities": [
+    {
+      "$oid": "5f2cf831ab6d0b12da114161"
+    },
+    {
+      "$oid": "5f2cf831ab6d0b12da114192"
+    }
+  ],
+  "logo": "75360354-favicon.png",
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "image5": null,
+  "image6": null,
+  "status": "active",
+  "developerName": "D N HOMES",
+  "description": "HI Testuiojlkjrewq4kfjrwoijo\njioroeifo\njioruioujer",
+  "email": "ramesh@grovisgroup.com",
+  "officeAddress": "34 Homre\nhiujhif\njuihjfgg",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc674412827d6183f08e203"
+  },
+  "phoneNumber": "9853805227",
+  "operatingSince": {
+    "$date": "1985-12-01T16:46:30.615Z"
+  },
+  "createdAt": {
+    "$date": "2020-12-01T15:46:00.604Z"
+  },
+  "cities": [
+    {
+      "$oid": "5f2cf831ab6d0b12da114161"
+    }
+  ],
+  "logo": "79102765-z-estate.jpg",
+  "image1": null,
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "image5": null,
+  "image6": null,
+  "status": "active",
+  "developerName": "Z-Estate",
+  "description": "Z Estates have been recognized as a top Real Estate Developer in Odisha. We have established a culture of creating a customer friendly environment",
+  "email": "ramesh@singhamventures.com",
+  "officeAddress": "Jaydev Vihar",
+  "__v": 0
+}]
