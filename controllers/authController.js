@@ -241,14 +241,22 @@ exports.sendOtp = catchAsync(async (req, res, next) => {
 		return next(new AppError('User not found', 404));
 	}
 	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
-	user.otp = randomNumber;
-	await user.save();
+	const updatedUser = await User.findByIdAndUpdate(
+			user.id,
+			{ otp: randomNumber },
+			{
+				new: true,
+				runValidators: true,
+			}
+		);
+	
+	console.log(updatedUser)
 	const otpResponse = await sendOtpMessage(req.params.number, randomNumber);
 	if (otpResponse.data.startsWith('OK')) {
 		res.status(200).json({
 			status: 'success',
 			data: {
-				userId: user._id,
+				userId: updatedUser._id,
 			},
 		});
 	} else {
@@ -289,6 +297,8 @@ exports.validateOtp = catchAsync(async (req, res, next) => {
 	const user = await User.findOne({ number: req.params.number }).select(
 		'+otp'
 	);
+
+	
 
 	if (!user.correctOtp(req.params.otp)) {
 		return next(new AppError('otp not matched', 401));

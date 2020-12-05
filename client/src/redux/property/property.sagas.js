@@ -3,6 +3,7 @@ import {
 	getMyPropertiesLoading,
 	getProjectDetailsLoading,
 	getProjectPropertyDetailsLoading,
+	getPropertyCountLoading,
 	getPropertyDetailsLoading,
 	getPropertyResourcesLoading,
 	getQueriesLoading,
@@ -10,6 +11,7 @@ import {
 	queryOnPropertyLoading,
 	searchPropertiesLoading,
 	setMyQueries,
+	setPropertyCount,
 	setPropertyResources,
 	setQueriesReceived,
 	updatePropertyLoading,
@@ -130,6 +132,29 @@ function* getPropertyResourcesSaga({ payload: { callback } }) {
 		yield put(getPropertyResourcesLoading(false));
 		yield put(setPropertyResources({ furnishes: [], amenities: [] }));
 		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+
+function* getPropertyCountSaga({ payload: { id, callback } }) {
+	yield put(getPropertyCountLoading(true));
+	const url = `/api/v1/features/get-properties-count/${id}`;
+	try {
+		const response = yield axios.get(url);
+		const responseData = response.data;
+		yield put(getPropertyCountLoading(false));
+		yield put(setPropertyCount(responseData.data));
+		callback('success', responseData.data);
+	} catch (error) {
+		yield put(getPropertyCountLoading(false));
+
+		const errorResponse = error.response.data
+			? error.response.data
+			: error.response;
 		if (typeof errorResponse === 'string') {
 			callback('fail', errorResponse);
 			return;
@@ -352,6 +377,9 @@ function* onGetPropertyResources() {
 		getPropertyResourcesSaga
 	);
 }
+function* onGetPropertyCount() {
+	yield takeEvery(types.GET_PROPERTY_COUNT_START, getPropertyCountSaga);
+}
 
 function* onPostProperty() {
 	yield takeEvery(types.POST_PROPERTY_START, onPostPropertySaga);
@@ -377,6 +405,7 @@ export function* propertySagas() {
 		call(onGetProjectDetails),
 		call(onGetProjectPropertyDetails),
 		call(onGetPropertyResources),
+		call(onGetPropertyCount),
 		call(onPostProperty),
 		call(onGetMyProperties),
 		call(onUpdateProperty),

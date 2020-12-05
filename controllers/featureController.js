@@ -98,3 +98,53 @@ exports.getCount = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+
+
+exports.getPropertiesCount = catchAsync(async (req, res, next) => {
+	const { city } = req.params;
+	if(!city) return next(new AppError('City required',400))
+
+	//Project
+	const projApartment = await Project.countDocuments({status: 'active',projectType: 'flat',city})
+    const projVilla =  await Project.countDocuments({status: 'active',projectType: 'independenthouse',city})
+    const projLand =  await Project.countDocuments({status: 'active',projectType: 'land',city})
+
+    //Property Sale
+	const propApartment =  await Property.countDocuments({status: 'active',sale_type: 'flat',city})
+    const propVilla =  await Property.countDocuments({status: 'active',sale_type: 'independenthouse',city})
+    const propLand =  await Property.countDocuments({status: 'active',sale_type: 'land',city})
+
+     //Property Rent
+	const propApartmentRent =  await Property.countDocuments({status: 'active',type: 'flat',city})
+    const propVillaRent =  await Property.countDocuments({status: 'active',type: 'independenthouse',city})
+    const propHostel =  await Property.countDocuments({status: 'active',type: 'hostel',city})
+    const propPG =  await Property.countDocuments({status: 'active',type: 'pg',city})
+
+
+
+
+		
+	
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			projectCount: {
+				apartment: projApartment,
+				villa: projVilla,
+				land: projLand,
+			},
+			saleCount: {
+				apartment: propApartment,
+				villa: propVilla,
+				land: propLand,
+			},
+			rentCount: {
+				apartment: propApartmentRent,
+				villa: propVillaRent,
+				hostel: propHostel,
+				PG: propPG,
+			}
+		},
+	});
+});

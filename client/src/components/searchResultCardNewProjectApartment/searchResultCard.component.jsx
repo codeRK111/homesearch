@@ -6,10 +6,12 @@ import {
 
 import { AlignCenter } from '../flexContainer/flexContainer.component';
 import ContactDialogueWithMessage from '../contactOwner/contactOwnerProject.component';
+import DoneIcon from '@material-ui/icons/Done';
 import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import { handleRERA } from '../../utils/render.utils';
 import useStyles from './searchResultCard.styles';
 
 const imgSrc = (property) => {
@@ -45,6 +47,9 @@ const ResultCard = ({ property, propertyItems }) => {
 	const handleClose = () => {
 		setOpen(false);
 	};
+
+	const rera = handleRERA(property.legalClearance);
+
 	return (
 		<Paper>
 			<PropertyShare
@@ -92,6 +97,17 @@ const ResultCard = ({ property, propertyItems }) => {
 											{property.city.name}
 										</span>
 									</Box>
+									{rera['show'] && (
+										<Box
+											display="flex"
+											className={classes.reraWrapper}
+										>
+											<Box>RERA</Box>
+											<DoneIcon
+												className={classes.reraIcon}
+											/>
+										</Box>
+									)}
 								</Box>
 								<Box mt="0.5rem">
 									<b>

@@ -8,6 +8,7 @@ const initialState = {
 	getProjectDetailsLoading: false,
 	getProjectPropertyDetailsLoading: false,
 	getPropertyResourcesLoading: false,
+	getPropertyCountLoading: false,
 	postPropertyLoading: false,
 	updatePropertyLoading: false,
 	getMyPropertiesLoading: false,
@@ -17,6 +18,9 @@ const initialState = {
 	amenities: [],
 	myQueries: [],
 	queriesReceived: [],
+	projectCount: null,
+	saleCount: null,
+	rentCount: null,
 	// Errors
 };
 
@@ -46,6 +50,18 @@ const propertyReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				getPropertyResourcesLoading: payload,
+			};
+		case propertyActionTypes.TOGGLE_GET_PROPERTY_COUNT_LOADING:
+			return {
+				...state,
+				getPropertyCountLoading: payload,
+			};
+		case propertyActionTypes.SET_PROPERTIES_COUNT:
+			return {
+				...state,
+				projectCount: payload.projectCount,
+				saleCount: payload.saleCount,
+				rentCount: payload.rentCount,
 			};
 		case propertyActionTypes.TOGGLE_POST_PROPERTY_LOADING:
 			return {

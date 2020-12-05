@@ -80,6 +80,7 @@ const PropertyShare = ({
 	project = false,
 	whatsAppNumber = null,
 	url = null,
+	projectInfo = null,
 }) => {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
@@ -113,7 +114,10 @@ const PropertyShare = ({
 			? data.builder.phoneNumber
 			: data.userId.number;
 		const number = `91${userNumber}`;
-		const text = `Hello, I am ${values.name} and I am interested for ${data.title}`;
+		let text = `Hello, I am ${values.name} and I am interested for ${data.title}`;
+		if (projectInfo) {
+			text += ` in ${projectInfo.title}`;
+		}
 		console.log(`https://wa.me/${number}?text=${encodeURI(text)}`);
 		window.location.href = `https://wa.me/${number}?text=${encodeURI(
 			text

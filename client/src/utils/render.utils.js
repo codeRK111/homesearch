@@ -48,9 +48,13 @@ export const renderTypes = (type) => {
 			return 'Apartment';
 		case 'land':
 			return 'Land';
+		case 'hostel':
+			return 'Hostel';
+		case 'pg':
+			return 'PG';
 
 		default:
-			break;
+			return type;
 	}
 };
 
@@ -189,5 +193,14 @@ export const renderFloorPlans = (property) => {
 		image2: property.floorplan2
 			? `/assets/projects/${property.floorplan2}`
 			: defaultImage,
+	};
+};
+
+export const handleRERA = (clearance) => {
+	const reraDetails = clearance.find((c) => c.name === 'reraapproved');
+
+	return {
+		show: reraDetails && reraDetails.value,
+		value: reraDetails && reraDetails.details,
 	};
 };

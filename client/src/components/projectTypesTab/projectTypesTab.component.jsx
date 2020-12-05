@@ -1,16 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
+import ApartmentIcon from '@material-ui/icons/Apartment';
 import Box from '@material-ui/core/Box';
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import LandscapeIcon from '@material-ui/icons/Landscape';
 import Paper from '@material-ui/core/Paper';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
 // Icons
-import ApartmentIcon from '@material-ui/icons/Apartment';
-import LandscapeIcon from '@material-ui/icons/Landscape';
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
+
+
+
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -59,13 +62,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function FullWidthTabs() {
+export default function FullWidthTabs({ value, handleChange }) {
 	const classes = useStyles();
-	const [value, setValue] = React.useState(0);
-
-	const handleChange = (event, newValue) => {
-		setValue(newValue);
-	};
 
 	return (
 		<Paper elevation={3} className={classes.paper}>
@@ -80,7 +78,7 @@ export default function FullWidthTabs() {
 				}}
 			>
 				<Tab
-					label="Flat"
+					label="Apartment"
 					classes={{
 						wrapper: classes.wrapper,
 						selected: classes.selected,
@@ -96,7 +94,7 @@ export default function FullWidthTabs() {
 					icon={<LandscapeIcon />}
 				/>
 				<Tab
-					label="Independent House"
+					label="Villa"
 					classes={{
 						wrapper: classes.wrapper,
 						selected: classes.selected,

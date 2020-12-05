@@ -6,8 +6,7 @@ import useStyles from './propertyCounter.styles';
 
 // Styles
 
-
-const PropertyCounter = ({ details }) => {
+const PropertyCounter = ({ details, pFor, city }) => {
 	const classes = useStyles();
 
 	const imageSrc = (name) => {
@@ -64,14 +63,26 @@ const PropertyCounter = ({ details }) => {
 					</Box>
 					<Box className={classes.numberWrapper}>
 						<span className={classes.number}>
-							<b>0</b>
+							<b>{c.value}</b>
 						</span>{' '}
 						properties
 					</Box>
 					<Box>
-						<Link className={classes.link} to="/">
-							View all &#8594;
-						</Link>
+						{c.value ? (
+							<Link
+								className={classes.link}
+								to={`/browse?f=${pFor}&c=${
+									city.id
+								}&cn=${encodeURIComponent(city.name)}&t=${
+									c.type
+								}&p=1`}
+								target="_blank"
+							>
+								View all &#8594;
+							</Link>
+						) : (
+							''
+						)}
 					</Box>
 				</Box>
 			))}

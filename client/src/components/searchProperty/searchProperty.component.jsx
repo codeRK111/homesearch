@@ -306,6 +306,7 @@ const SearchProperty = ({ currentTab, defaultCity }) => {
 
 				<Box display="flex" className={classes.wrapper}>
 					{!mobile && <Menu city={city} handleCity={handleCity} />}
+
 					<Box className={classes.searchBoxWrapper}>
 						<SearchLocation
 							className={classes.searchField}

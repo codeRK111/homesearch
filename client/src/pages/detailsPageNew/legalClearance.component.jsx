@@ -30,30 +30,33 @@ const LegalClearance = ({ property }) => {
 				// justifyContent="center"
 			>
 				{property.legalClearance &&
-					property.legalClearance.map((c, i) => (
-						<Box ml="1rem" key={i} mt="0.5rem">
-							<Chip
-								variant={c.value ? 'outlined' : 'default'}
-								avatar={
-									<Avatar
-										className={clsx({
-											[classes.selected]: c.value,
-										})}
-									>
-										<HomeWorkIcon
-											className={clsx(
-												classes.avatarIcon,
-												{
-													[classes.cWhite]: c.value,
-												}
-											)}
-										/>
-									</Avatar>
-								}
-								label={c.label}
-							/>
-						</Box>
-					))}
+					property.legalClearance
+						.filter((b) => b.value)
+						.map((c, i) => (
+							<Box ml="1rem" key={i} mt="0.5rem">
+								<Chip
+									variant={c.value ? 'outlined' : 'default'}
+									avatar={
+										<Avatar
+											className={clsx({
+												[classes.selected]: c.value,
+											})}
+										>
+											<HomeWorkIcon
+												className={clsx(
+													classes.avatarIcon,
+													{
+														[classes.cWhite]:
+															c.value,
+													}
+												)}
+											/>
+										</Avatar>
+									}
+									label={c.label}
+								/>
+							</Box>
+						))}
 			</Box>
 		</Box>
 	);

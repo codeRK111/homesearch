@@ -41,6 +41,10 @@ export const getQueries = (payload) => ({
 	type: propertyActionTypes.GET_QUERIES,
 	payload,
 });
+export const getPropertyCount = (payload) => ({
+	type: propertyActionTypes.GET_PROPERTY_COUNT_START,
+	payload,
+});
 
 // Set
 export const setPropertyResources = (payload) => ({
@@ -53,6 +57,10 @@ export const setMyQueries = (payload) => ({
 });
 export const setQueriesReceived = (payload) => ({
 	type: propertyActionTypes.SET_QUERIES_RECEIVED,
+	payload,
+});
+export const setPropertyCount = (payload) => ({
+	type: propertyActionTypes.SET_PROPERTIES_COUNT,
 	payload,
 });
 // Toggle
@@ -75,6 +83,10 @@ export const getProjectPropertyDetailsLoading = (payload) => ({
 });
 export const getPropertyResourcesLoading = (payload) => ({
 	type: propertyActionTypes.TOGGLE_GET_PROPERTY_RESOURCES_LOADING,
+	payload,
+});
+export const getPropertyCountLoading = (payload) => ({
+	type: propertyActionTypes.TOGGLE_GET_PROPERTY_COUNT_LOADING,
 	payload,
 });
 

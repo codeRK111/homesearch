@@ -152,7 +152,7 @@ const ApartmentHighLights = ({ property }) => {
 						</Avatar>
 					</Box>
 					<Box display="flex" flexDirection="column">
-						<Box>Availability</Box>
+						<Box>Possession From</Box>
 						<h4 className={classes.title}>
 							{renderAvailability(property)}
 						</h4>

@@ -1,5 +1,6 @@
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
+import BrowsePage from './pages/browsePage/browse.page';
 import DetailsPage from './pages/detailsPageNew/detailsPage.component';
 import EditProperty from './pages/postPropertyDetailsPage/editWrapper.page';
 import HomePage from './pages/home/home.page';
@@ -76,6 +77,11 @@ function App() {
 							exact
 							path="/search-results"
 							render={(props) => <SearchPage {...props} />}
+						/>
+						<Route
+							exact
+							path="/browse"
+							render={(props) => <BrowsePage {...props} />}
 						/>
 						<Route
 							exact

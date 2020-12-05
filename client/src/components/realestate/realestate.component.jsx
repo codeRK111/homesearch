@@ -1,12 +1,20 @@
 import { Box, Grid } from '@material-ui/core';
+import {
+	selectGetPropertyCountLoading,
+	selectProjectCount,
+	selectRentCount,
+	selectSaleCount,
+} from '../../redux/property/property.selectors';
 
 import BusinessIcon from '@material-ui/icons/Business';
 import Counter from '../propertyCounter/propertyCounter.component';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import React from 'react';
+import Skeleton from '../skeleton/propertyCount.skeleton';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { getPropertyCount } from '../../redux/property/property.actions';
 import { makeStyles } from '@material-ui/core/styles';
 import { selectDefaultCity } from '../../redux/city/city.selectors';
 
@@ -59,8 +67,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Benifits = ({ defaultCity }) => {
+const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 	const classes = useStyles();
+	React.useEffect(() => {
+		getCount(defaultCity.id, () => {});
+	}, [defaultCity.id, getCount]);
 	return (
 		<Box>
 			<h2 className={classes.title}>{defaultCity.name} Real Estate</h2>
@@ -90,13 +101,30 @@ const Benifits = ({ defaultCity }) => {
 
 							<b>Project in {defaultCity.name}</b>
 							<Box mt="2rem" width="100%">
-								<Counter
-									details={[
-										{ label: 'Apartment' },
-										{ label: 'Independent House' },
-										{ label: 'Land' },
-									]}
-								/>
+								{loading && <Skeleton count={3} />}
+								{!loading && project && (
+									<Counter
+										pFor="project"
+										city={defaultCity}
+										details={[
+											{
+												label: 'Apartment',
+												value: project.apartment,
+												type: 'flat',
+											},
+											{
+												label: 'Independent House',
+												value: project.villa,
+												type: 'independenthouse',
+											},
+											{
+												label: 'Land',
+												value: project.land,
+												type: 'land',
+											},
+										]}
+									/>
+								)}
 							</Box>
 							{/* <p className={classes.description}>
 								Lorem ipsum dolor sit amet consectetur,
@@ -120,13 +148,30 @@ const Benifits = ({ defaultCity }) => {
 
 							<b>Resale property in {defaultCity.name}</b>
 							<Box mt="2rem" width="100%">
-								<Counter
-									details={[
-										{ label: 'Apartment' },
-										{ label: 'Independent House' },
-										{ label: 'Land' },
-									]}
-								/>
+								{loading && <Skeleton count={3} />}
+								{!loading && sale && (
+									<Counter
+										pFor="sale"
+										city={defaultCity}
+										details={[
+											{
+												label: 'Apartment',
+												value: sale.apartment,
+												type: 'flat',
+											},
+											{
+												label: 'Independent House',
+												value: sale.villa,
+												type: 'independenthouse',
+											},
+											{
+												label: 'Land',
+												value: sale.land,
+												type: 'land',
+											},
+										]}
+									/>
+								)}
 							</Box>
 						</Box>
 					</Grid>
@@ -141,15 +186,35 @@ const Benifits = ({ defaultCity }) => {
 
 							<b>Rental property in {defaultCity.name}</b>
 							<Box mt="2rem" width="100%">
-								<Counter
-									details={[
-										{ label: 'Apartment' },
-										{ label: 'Independent House' },
-										{ label: 'Guest House' },
-										{ label: 'Hostel' },
-										{ label: 'PG' },
-									]}
-								/>
+								{loading && <Skeleton count={3} />}
+								{!loading && rent && (
+									<Counter
+										pFor="rent"
+										city={defaultCity}
+										details={[
+											{
+												label: 'Apartment',
+												value: rent.apartment,
+												type: 'flat',
+											},
+											{
+												label: 'Independent House',
+												value: rent.villa,
+												type: 'independenthouse',
+											},
+											{
+												label: 'Hostel',
+												value: rent.hostel,
+												type: 'hostel',
+											},
+											{
+												label: 'PG',
+												value: rent.PG,
+												type: 'pg',
+											},
+										]}
+									/>
+								)}
 							</Box>
 						</Box>
 					</Grid>
@@ -161,6 +226,14 @@ const Benifits = ({ defaultCity }) => {
 
 const mapStateToProps = createStructuredSelector({
 	defaultCity: selectDefaultCity,
+	loading: selectGetPropertyCountLoading,
+	project: selectProjectCount,
+	rent: selectRentCount,
+	sale: selectSaleCount,
 });
 
-export default connect(mapStateToProps)(Benifits);
+const mapDispatchToProps = (dispatch) => ({
+	getCount: (id, callback) => dispatch(getPropertyCount({ id, callback })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Benifits);

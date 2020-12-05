@@ -25,6 +25,7 @@ function MenuListComposition({
 	city,
 	existingLocations = [],
 	handleLocations,
+	setLocationData,
 }) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
@@ -45,6 +46,11 @@ function MenuListComposition({
 			searchLocations(handleFetchLocations, '', city);
 		}
 	}, [city]);
+	React.useEffect(() => {
+		setLocationData(
+			locations.filter((c) => existingLocations.includes(c.id))
+		);
+	}, [existingLocations, locations, setLocationData]);
 	const handleClose = (event) => {
 		if (anchorRef.current && anchorRef.current.contains(event.target)) {
 			return;

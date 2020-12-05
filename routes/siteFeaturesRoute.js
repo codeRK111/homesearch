@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/send-otp', featureController.setAndSendOtp);
 router.get('/get-resources-count', featureController.getCount);
+router.get('/get-properties-count/:city', featureController.getCount);
 
 
 router.route('/auth-number').get(featureController.getAuthNumber);

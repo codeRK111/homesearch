@@ -1,6 +1,7 @@
 import { Box, Grid, Paper } from '@material-ui/core';
 
 import React from 'react';
+import { handleRERA } from '../../../utils/render.utils';
 import { useMediaQuery } from '@material-ui/core';
 import useStyles from '../propertyDetails.style';
 
@@ -8,6 +9,7 @@ const Header = ({ project }) => {
 	console.log(project);
 	const classes = useStyles();
 	const mobile = useMediaQuery('(max-width:600px)');
+	const rera = handleRERA(project.legalClearance);
 	return (
 		<Box>
 			{!mobile && (
@@ -29,6 +31,20 @@ const Header = ({ project }) => {
 										{project.city.name}
 									</span>
 								</Box>
+								{rera['show'] && (
+									<Box mt="0.3rem">
+										<span>
+											{rera['show'] && (
+												<a
+													href={rera['value']}
+													target="_blank"
+												>
+													{rera['value']}
+												</a>
+											)}
+										</span>
+									</Box>
+								)}
 							</Box>
 						</Grid>
 						<Grid

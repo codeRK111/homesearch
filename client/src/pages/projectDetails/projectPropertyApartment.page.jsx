@@ -65,6 +65,7 @@ const PropertyDetails = ({ property }) => {
 				status={propertyShareOpen}
 				handleClose={handlePropertyShareClose}
 				data={property}
+				projectInfo={property.project}
 				project={true}
 				whatsAppNumber={property['project']['builder']['phoneNumber']}
 				url={`www.homesearch18.com/#/project-property/${property.id}`}

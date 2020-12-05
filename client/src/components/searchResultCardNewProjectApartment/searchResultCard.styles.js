@@ -162,11 +162,16 @@ const useStyle = makeStyles((theme) => ({
 	},
 	reraWrapper: {
 		display: 'flex',
+		alignItems: 'center',
 		fontSize: '0.8rem',
 		padding: '0.1rem',
 		backgroundColor: theme.colorTwo,
 		color: '#ffffff',
-		marginLeft: '1rem',
+		width: '40px',
+	},
+	reraIcon: {
+		color: '#ffffff',
+		fontSize: '0.8rem',
 	},
 	smallText: {
 		fontSize: '0.8rem',

@@ -209,8 +209,8 @@ userSchema.methods.correctPassword = async function (userPassword, dbPassword) {
 	return await bcrypt.compare(userPassword, dbPassword);
 };
 
-userSchema.methods.correctOtp = async function (otp) {
-	return otp == this.otp;
+userSchema.methods.correctOtp = function (otp) {
+	return String(otp) === this.otp;
 };
 
 userSchema.methods.passwordChanged = function (jwtCreated) {

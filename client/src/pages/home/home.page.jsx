@@ -12,25 +12,10 @@ import SearchProperty from '../../components/searchProperty/searchProperty.compo
 import Testimonial from '../../components/testimonial/testimonial.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { makeStyles } from '@material-ui/core/styles';
 import { selectDefaultCity } from '../../redux/city/city.selectors';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 // External components
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const HomePage = ({ defaultCity }) => {
 	const mobile = useMediaQuery('(max-width:600px)');
@@ -56,7 +41,10 @@ const HomePage = ({ defaultCity }) => {
 				<Realestate />
 			</Box>
 			<Box mt="2rem">
-				<Row title={`Hot Projects In ${defaultCity.name}`} />
+				<Row
+					title={`Hot Projects In ${defaultCity.name}`}
+					city={defaultCity}
+				/>
 			</Box>
 			<Box {...spacing3}>
 				<Heading title="Homesearch18 for builders" />

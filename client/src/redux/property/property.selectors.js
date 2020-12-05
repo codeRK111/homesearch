@@ -25,6 +25,10 @@ export const selectGetPropertyResourcesLoading = createSelector(
 	[selectProperty],
 	(c) => c.getPropertyResourcesLoading
 );
+export const selectGetPropertyCountLoading = createSelector(
+	[selectProperty],
+	(c) => c.getPropertyCountLoading
+);
 
 export const selectPostPropertyLoading = createSelector(
 	[selectProperty],
@@ -63,5 +67,17 @@ export const selectMyQueries = createSelector(
 export const selectQueriesReceived = createSelector(
 	[selectProperty],
 	(c) => c.queriesReceived
+);
+export const selectProjectCount = createSelector(
+	[selectProperty],
+	(c) => c.projectCount
+);
+export const selectSaleCount = createSelector(
+	[selectProperty],
+	(c) => c.saleCount
+);
+export const selectRentCount = createSelector(
+	[selectProperty],
+	(c) => c.rentCount
 );
 // Select Errors

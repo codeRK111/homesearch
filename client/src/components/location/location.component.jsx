@@ -157,7 +157,7 @@ function MenuListComposition({
 					value={location}
 					onKeyUp={onKeyDown}
 					onChange={(e) => setLocation(e.target.value)}
-					placeholder="You can choose 3 locations"
+					placeholder={'You can select 3 locations'}
 					{...otherProps}
 				/>
 			</Box>
@@ -167,70 +167,78 @@ function MenuListComposition({
 				transition
 				keepMounted={true}
 			>
-				{({ TransitionProps, placement }) => (
-					<Grow
-						{...TransitionProps}
-						style={{
-							transformOrigin:
-								placement === 'bottom'
-									? 'center top'
-									: 'center bottom',
-						}}
-					>
-						<ClickAwayListener
-							onClickAway={handleClose}
-							mouseEvent="onMouseDown"
-							touchEvent="onTouchStart"
+				{({ TransitionProps, placement }) =>
+					open && (
+						<Grow
+							{...TransitionProps}
+							style={{
+								transformOrigin:
+									placement === 'bottom'
+										? 'center top'
+										: 'center bottom',
+							}}
 						>
-							<Paper
-								elevation={3}
-								onMouseLeave={handleClose}
-								className={classes.dropdownWrapper}
+							<ClickAwayListener
+								onClickAway={handleClose}
+								mouseEvent="onMouseDown"
+								touchEvent="onTouchStart"
 							>
-								{searchLocationLoading ? (
-									<div
-										className={classes.locationListWrapper}
-									>
-										<h3>Loading ...</h3>
-									</div>
-								) : (
-									<div
-										className={classes.locationListWrapper}
-									>
-										{noData ? (
-											<div
-												className={
-													classes.locationListWrapper
-												}
-											>
-												<h3>No results found</h3>
-											</div>
-										) : (
-											locations.map((c) => (
+								<Paper
+									elevation={3}
+									onMouseLeave={handleClose}
+									className={classes.dropdownWrapper}
+								>
+									{searchLocationLoading ? (
+										<div
+											className={
+												classes.locationListWrapper
+											}
+										>
+											<h3>Loading ...</h3>
+										</div>
+									) : (
+										<div
+											className={
+												classes.locationListWrapper
+											}
+										>
+											{noData ? (
 												<div
-													key={c.id}
 													className={
-														classes.locationWrapper
+														classes.locationListWrapper
 													}
-													onClick={selectLocation(c)}
 												>
-													<RoomRoundedIcon
-														className={
-															classes.locationIcon
-														}
-													/>
-													<span>{c.name}</span>
-													&nbsp; (<b>{c.city.name}</b>
-													)
+													<h3>No results found</h3>
 												</div>
-											))
-										)}
-									</div>
-								)}
-							</Paper>
-						</ClickAwayListener>
-					</Grow>
-				)}
+											) : (
+												locations.map((c) => (
+													<div
+														key={c.id}
+														className={
+															classes.locationWrapper
+														}
+														onClick={selectLocation(
+															c
+														)}
+													>
+														<RoomRoundedIcon
+															className={
+																classes.locationIcon
+															}
+														/>
+														<span>{c.name}</span>
+														&nbsp; (
+														<b>{c.city.name}</b>)
+													</div>
+												))
+											)}
+										</div>
+									)}
+								</Paper>
+							</ClickAwayListener>
+						</Grow>
+					)
+				}
 			</Popper>
 		</Box>
 	);
