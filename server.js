@@ -13,7 +13,7 @@ process.on('uncaughtException', (error) => {
 
 dotenv.config({ path: './config.env' });
 
-const dbString = process.env.LOCAL_DATABASE_URL;
+const dbString = process.env.REMOTE_DATABASE_URL;
 const agenda = new Agenda({ db: { address: dbString } });
 
 mongoose
