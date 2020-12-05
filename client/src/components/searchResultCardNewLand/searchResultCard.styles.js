@@ -5,6 +5,7 @@ const useStyle = makeStyles((theme) => ({
 		maxWidth: '100%',
 		width: '100%',
 		height: '100%',
+		objectFit: 'cover',
 	},
 	fontAbel: {
 		fontFamily: "'Abel', sans-serif",
