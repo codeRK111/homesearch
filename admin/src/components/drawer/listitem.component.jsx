@@ -1,39 +1,41 @@
-import React from 'react';
+import {
+	selectBuilder,
+	selectLocation,
+	selectProject,
+	selectPropertyRent,
+	selectPropertySale,
+} from '../../redux/sidebar/sidebar.selector';
+import {
+	toggleBuilder,
+	toggleLocation,
+	toggleProject,
+	togglePropertyRent,
+	togglePropertySale,
+} from '../../redux/sidebar/sidebar.actions';
+
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import ApartmentIcon from '@material-ui/icons/Apartment';
+import ChatIcon from '@material-ui/icons/Chat';
+import Collapse from '@material-ui/core/Collapse';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import Divider from '@material-ui/core/Divider';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import Divider from '@material-ui/core/Divider';
-import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
-import LockIcon from '@material-ui/icons/Lock';
-import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import { useHistory } from 'react-router-dom';
-import List from '@material-ui/core/List';
-import { makeStyles } from '@material-ui/core/styles';
-import ApartmentIcon from '@material-ui/icons/Apartment';
-import AddBoxIcon from '@material-ui/icons/AddBox';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
-import { green } from '@material-ui/core/colors';
+import LockIcon from '@material-ui/icons/Lock';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
+import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import {
-	selectPropertyRent,
-	selectPropertySale,
-	selectLocation,
-	selectProject,
-	selectBuilder,
-} from '../../redux/sidebar/sidebar.selector';
+import { green } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles';
 import { selectCurrentUser } from '../../redux/user/user.selector';
-import {
-	togglePropertyRent,
-	togglePropertySale,
-	toggleLocation,
-	toggleProject,
-	toggleBuilder,
-} from '../../redux/sidebar/sidebar.actions';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	nested: {
@@ -356,6 +358,12 @@ const MainListItems = ({
 					</ListItem>
 				</List>
 			</Collapse>
+			<ListItem button onClick={onUsersClick('/queries')}>
+				<ListItemIcon>
+					<ChatIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Property queries" />
+			</ListItem>
 		</div>
 	);
 };

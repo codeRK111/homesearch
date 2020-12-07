@@ -88,7 +88,7 @@ propertyQuerySchema.pre(/^find/, function (next) {
 			select: 'id title ',
 		}).populate({
 			path: 'projectProperty',
-			select: 'id title ',
+			select: 'id title project',
 		});
 
 	next();

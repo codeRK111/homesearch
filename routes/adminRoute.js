@@ -10,6 +10,19 @@ router.get(
 	authController.getAdminInfo
 );
 
+router.post(
+	'/get-queries',
+	authController.protect,
+	authController.getQueries
+);
+
+router.get(
+	'/delete-query/:id',
+	authController.protect,
+	authController.deleteQuery
+);
+
+
 router.post('/login', authController.login);
 router.post('/admin-profile-photo/:id', authController.addProfilePicture);
 

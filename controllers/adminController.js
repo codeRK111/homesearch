@@ -4,6 +4,7 @@ const Feature = require('./../models/featuresModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const ApiFeatures = require('../utils/apiFeatures');
+const PropertyQuery = require('./../models/propertyQueryModel');
 const path = require('path');
 var fs = require('fs');
 const { promisify } = require('util');
@@ -261,6 +262,38 @@ exports.deleteAdmin = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			user: deleteAdmin,
+		},
+	});
+});
+
+
+exports.getQueries = catchAsync(async (req, res, next) => {
+	const filter = {};
+	const page = req.body.page * 1 || 1;
+	const limit = req.body.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+
+	console.log(filter)
+
+	const queries = await PropertyQuery.find(filter).skip(skip).limit(limit).sort('-createdAt');
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			queries,
+		},
+	});
+});
+
+exports.deleteQuery = catchAsync(async (req, res, next) => {
+
+	const queries = await PropertyQuery.findByIdAndRemove(req.params.id);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			queries,
 		},
 	});
 });

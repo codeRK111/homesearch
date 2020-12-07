@@ -1,0 +1,14 @@
+export const queryActionTypes = {
+	// Initiate fetching
+
+	GET_QUERIES: 'GET_QUERIES',
+	DELETE_QUERY: 'DELETE_QUERY',
+	// set values
+	SET_QUERIES: 'SET_QUERIES',
+
+	// Toggle loading
+
+	TOGGLE_GET_QUERIES_LOADING: 'TOGGLE_GET_QUERIES_LOADING',
+	TOGGLE_DELETE_QUERY_LOADING: 'TOGGLE_DELETE_QUERY_LOADING',
+	// SetErrors
+};

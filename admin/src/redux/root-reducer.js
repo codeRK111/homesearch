@@ -1,15 +1,26 @@
+import adminReducer from './admins/admins.reducer';
+import builderReducer from './builder/builder.reducer';
+import cityReducer from './city/city.reducer';
 import { combineReducers } from 'redux';
+import projectReducer from './project/project.reducer';
+import propertyReducer from './property/property.reducer';
+import queryReducer from './query/query.reducer';
+import sidebarReducer from './sidebar/sidebar.reducer';
+import userReducer from './user/user.reducer';
+import usersReducer from './users/users.reducer';
+
 // import { persistReducer } from "redux-persist";
 // import storage from "redux-persist/lib/storage";
 
-import userReducer from './user/user.reducer';
-import usersReducer from './users/users.reducer';
-import cityReducer from './city/city.reducer';
-import adminReducer from './admins/admins.reducer';
-import propertyReducer from './property/property.reducer';
-import sidebarReducer from './sidebar/sidebar.reducer';
-import builderReducer from './builder/builder.reducer';
-import projectReducer from './project/project.reducer';
+
+
+
+
+
+
+
+
+
 
 // const persistConfig = {
 //     key: "root",
@@ -26,6 +37,7 @@ const rootReducer = combineReducers({
 	sidebar: sidebarReducer,
 	builder: builderReducer,
 	project: projectReducer,
+	query: queryReducer,
 });
 
 // export default persistReducer(persistConfig, rootReducer);
