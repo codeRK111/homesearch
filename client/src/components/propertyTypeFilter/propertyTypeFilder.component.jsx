@@ -19,15 +19,10 @@ import useStyles from './propertyTypeFilter.styles';
 function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
-	const [value, setValue] = React.useState('female');
 
 	const handleTypes = (event) => {
 		const { checked, name } = event.target;
 		setTypes((prevState) => ({ ...prevState, [name]: checked }));
-	};
-
-	const handleChange = (event) => {
-		setValue(event.target.value);
 	};
 
 	const anchorRef = React.useRef(null);
@@ -52,115 +47,112 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 		prevOpen.current = open;
 	}, [open]);
 
-	const renderPropertyTypes = () => {
-		{
-			return pFor !== 'rent' ? (
-				<Box p="1rem">
-					{' '}
-					<div>
-						<FormControlLabel
-							control={
-								<Checkbox
-									name="flat"
-									checked={types.flat}
-									onChange={handleTypes}
-								/>
-							}
-							label="Apartment"
-						/>
-					</div>
-					<div>
-						<FormControlLabel
-							control={
-								<Checkbox
-									name="independenthouse"
-									checked={types.independenthouse}
-									onChange={handleTypes}
-								/>
-							}
-							label="Independent House"
-						/>
-					</div>
-					<div>
-						<FormControlLabel
-							control={
-								<Checkbox
-									name="land"
-									checked={types.land}
-									onChange={handleTypes}
-								/>
-							}
-							label="Land"
-						/>
-					</div>
-				</Box>
-			) : (
-				<Box p="1rem">
-					{' '}
-					<div>
-						<FormControlLabel
-							control={
-								<Checkbox
-									name="flat"
-									checked={types.flat}
-									onChange={handleTypes}
-								/>
-							}
-							label="Apartment"
-						/>
-					</div>
-					<div>
-						<FormControlLabel
-							control={
-								<Checkbox
-									name="independenthouse"
-									checked={types.independenthouse}
-									onChange={handleTypes}
-								/>
-							}
-							label="Independent House"
-						/>
-					</div>
-					<div>
-						<FormControlLabel
-							control={
-								<Checkbox
-									name="guesthouse"
-									checked={types.guesthouse}
-									onChange={handleTypes}
-								/>
-							}
-							label="Guest House"
-						/>
-					</div>
-					<div>
-						<FormControlLabel
-							control={
-								<Checkbox
-									name="hostel"
-									checked={types.hostel}
-									onChange={handleTypes}
-								/>
-							}
-							label="Hostel"
-						/>
-					</div>
-					<div>
-						<FormControlLabel
-							control={
-								<Checkbox
-									name="pg"
-									checked={types.pg}
-									onChange={handleTypes}
-								/>
-							}
-							label="PG"
-						/>
-					</div>
-				</Box>
-			);
-		}
-	};
+	const renderPropertyTypes = () =>
+		pFor !== 'rent' ? (
+			<Box p="1rem">
+				{' '}
+				<div>
+					<FormControlLabel
+						control={
+							<Checkbox
+								name="flat"
+								checked={types.flat}
+								onChange={handleTypes}
+							/>
+						}
+						label="Apartment"
+					/>
+				</div>
+				<div>
+					<FormControlLabel
+						control={
+							<Checkbox
+								name="independenthouse"
+								checked={types.independenthouse}
+								onChange={handleTypes}
+							/>
+						}
+						label="Villa"
+					/>
+				</div>
+				<div>
+					<FormControlLabel
+						control={
+							<Checkbox
+								name="land"
+								checked={types.land}
+								onChange={handleTypes}
+							/>
+						}
+						label="Land"
+					/>
+				</div>
+			</Box>
+		) : (
+			<Box p="1rem">
+				{' '}
+				<div>
+					<FormControlLabel
+						control={
+							<Checkbox
+								name="flat"
+								checked={types.flat}
+								onChange={handleTypes}
+							/>
+						}
+						label="Apartment"
+					/>
+				</div>
+				<div>
+					<FormControlLabel
+						control={
+							<Checkbox
+								name="independenthouse"
+								checked={types.independenthouse}
+								onChange={handleTypes}
+							/>
+						}
+						label="Independent House"
+					/>
+				</div>
+				<div>
+					<FormControlLabel
+						control={
+							<Checkbox
+								name="guesthouse"
+								checked={types.guesthouse}
+								onChange={handleTypes}
+							/>
+						}
+						label="Guest House"
+					/>
+				</div>
+				<div>
+					<FormControlLabel
+						control={
+							<Checkbox
+								name="hostel"
+								checked={types.hostel}
+								onChange={handleTypes}
+							/>
+						}
+						label="Hostel"
+					/>
+				</div>
+				<div>
+					<FormControlLabel
+						control={
+							<Checkbox
+								name="pg"
+								checked={types.pg}
+								onChange={handleTypes}
+							/>
+						}
+						label="PG"
+					/>
+				</div>
+			</Box>
+		);
 
 	return (
 		<Box height="100%" width="100%" className={classes.wrapper}>

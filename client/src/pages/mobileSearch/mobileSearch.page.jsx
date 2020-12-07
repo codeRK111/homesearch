@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import BudgetFilter from '../../components/budgetFilter/m.budgetFilter.component';
 import CityDropDown from '../../components/cityMenu/cityMenu.component';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import PropertyTab from '../../components/propertyTab/propertyTab.component';
@@ -20,6 +21,7 @@ import React from 'react';
 import SearchLocation from '../../components/location/location.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import queryString from 'query-string';
 import { selectCurrentTab } from '../../redux/actionTab/actionTab.selectors';
 import { useHistory } from 'react-router-dom';
 import { useStyles } from './mobileSearch.styles';
@@ -52,6 +54,21 @@ const MobileSearch = ({ currentTab }) => {
 	const [locations, setLocations] = React.useState([]);
 	const [price, setPrice] = React.useState('');
 	const [bedrooms, setBedRooms] = React.useState(1);
+	const [rentItems, setRentItems] = React.useState(
+		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
+			name: `${(c - 1) * 5}-${c * 5}K`,
+			val: { min: (c - 1) * 5 * 1000, max: c * 5 * 1000 },
+			checked: false,
+		}))
+	);
+
+	const [otherItems, setOtherItems] = React.useState(
+		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
+			name: `${(c - 1) * 5}-${c * 5}L`,
+			val: { min: (c - 1) * 5 * 100000, max: c * 5 * 100000 },
+			checked: false,
+		}))
+	);
 
 	React.useEffect(() => {
 		setState({
@@ -79,9 +96,6 @@ const MobileSearch = ({ currentTab }) => {
 		setAvailability(event.target.checked);
 	};
 
-	const handlePriceChange = (e) => {
-		setPrice(e.target.value);
-	};
 	const handleBedroomsChange = (e) => {
 		setBedRooms(e.target.value);
 	};
@@ -141,6 +155,23 @@ const MobileSearch = ({ currentTab }) => {
 		}
 		if (data.bedRooms) {
 			link += `&br=${data.bedRooms}`;
+		}
+
+		const budgetItems =
+			currentTab === 'rent'
+				? rentItems.filter((c) => c.checked).map((b) => b.val)
+				: otherItems.filter((c) => c.checked).map((b) => b.val);
+		if (budgetItems.length > 0) {
+			const arr = [];
+
+			budgetItems.forEach((c) => {
+				arr.push([c.min, c.max]);
+			});
+
+			link += `&${queryString.stringify(
+				{ bl: arr },
+				{ arrayFormat: 'comma' }
+			)}`;
 		}
 		console.log(link);
 		history.push(link);
@@ -334,7 +365,14 @@ const MobileSearch = ({ currentTab }) => {
 
 			<Box className={filterWrapper}>
 				<h4>Budget</h4>
-				<Box>
+				<BudgetFilter
+					pFor={currentTab}
+					rentItems={rentItems}
+					setRentItems={setRentItems}
+					otherItems={otherItems}
+					setOtherItems={setOtherItems}
+				/>
+				{/* <Box>
 					<Box>
 						<FormControl variant="outlined" fullWidth size="small">
 							<InputLabel htmlFor="filled-age-native-simple">
@@ -380,7 +418,7 @@ const MobileSearch = ({ currentTab }) => {
 							</Select>
 						</FormControl>
 					</Box>
-				</Box>
+				</Box> */}
 				<Box mt="2rem">
 					<h4>Property Type</h4>
 					{(() => {

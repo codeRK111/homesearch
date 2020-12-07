@@ -16,6 +16,14 @@ export default makeStyles((theme) => ({
 		maxHeight: '300px',
 		overflowY: 'auto',
 	},
+	valueWrapperMobile: {
+		minWidth: '90vw',
+		height: '30vh',
+		padding: '0.5rem',
+		boxSizing: 'border-box',
+		maxHeight: '300px',
+		overflowY: 'auto',
+	},
 	priceWrapper: {
 		padding: '0.5rem',
 		textAlign: 'center',
@@ -23,5 +31,8 @@ export default makeStyles((theme) => ({
 		'&:hover': {
 			backgroundColor: '#cccccc',
 		},
+	},
+	buttonWrapperMobile: {
+		padding: '1rem',
 	},
 }));

@@ -677,7 +677,7 @@ const PropertyItems = ({ currentTab, close, types, handleTypes }) => {
 									onChange={handleTypes}
 								/>
 							}
-							label="Independent House"
+							label="Villa"
 						/>
 					</div>
 					<div>

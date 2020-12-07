@@ -4,7 +4,6 @@ import AppBar from '../../components/appBar/appBar.component';
 import BudgetFilter from '../../components/budgetFilter/budgetFilter.component';
 import CityFilter from '../../components/cityFilter/cityFilter.component';
 import Collapse from '@material-ui/core/Collapse';
-import DividerHeading from '../../components/DividerHeadinng/dividerHeading.component';
 import ErrorCard from '../../components/errorCard/errorCard.component';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -28,6 +27,7 @@ import ResaleLand from '../../components/searchResultCardNewLand/searchResultCar
 import ResaleVilla from '../../components/searchResultCardNewIndHouse/searchResultCard.component';
 import Skeleton from '../../components/searchCardSkeleton/searchCardSkeleton.component';
 import TalkToOurExpert from '../../components/talkToExpert/talkToExpert.component';
+import Toggle from '../../components/toggle/toggle.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { faRupeeSign } from '@fortawesome/free-solid-svg-icons';
@@ -644,42 +644,49 @@ const SearchPage = ({
 		<Box>
 			<AppBar />
 			<Box className={[classes.resultsWrapper, classes.l5].join(' ')}>
-				<DividerHeading>Show properties for</DividerHeading>
-				<Grid container>
-					<Grid items xs={12} md={3}>
-						<Box width="100%">
-							<Box mt="0.5remrem" mb="0.3rem">
-								<b className={classes.filterHeading}>
-									Locations
-								</b>
-							</Box>
-							{locationData.map((c) => (
-								<Chip
-									key={c.id}
-									icon={<LocationCityIcon />}
-									label={c.name}
-									variant="outlined"
-									className={classes.chip}
-									onDelete={onDelete(c)}
-								/>
-							))}
-						</Box>
-					</Grid>
+				<Toggle text="Show filters applied">
+					<Box p="1rem">
+						<Grid container>
+							<Grid items xs={12} md={3}>
+								<Box width="100%">
+									<Box mt="0.5remrem" mb="0.3rem">
+										<b className={classes.filterHeading}>
+											Locations
+										</b>
+									</Box>
+									{locationData.map((c) => (
+										<Chip
+											key={c.id}
+											icon={<LocationCityIcon />}
+											label={c.name}
+											variant="outlined"
+											className={classes.chip}
+											onDelete={onDelete(c)}
+										/>
+									))}
+								</Box>
+							</Grid>
 
-					<Grid item xs={12} md={7}>
-						<Box mb="0.3rem">
-							<b className={classes.filterHeading}>Budgets</b>
-						</Box>
-						{renderBudgetList()}
-					</Grid>
+							<Grid item xs={12} md={7}>
+								<Box mb="0.3rem">
+									<b className={classes.filterHeading}>
+										Budgets
+									</b>
+								</Box>
+								{renderBudgetList()}
+							</Grid>
 
-					<Grid items xs={12} md={2}>
-						<Box mb="0.3rem">
-							<b className={classes.filterHeading}>Types</b>
-						</Box>
-						{renderTypes()}
-					</Grid>
-				</Grid>
+							<Grid items xs={12} md={2}>
+								<Box mb="0.3rem">
+									<b className={classes.filterHeading}>
+										Types
+									</b>
+								</Box>
+								{renderTypes()}
+							</Grid>
+						</Grid>
+					</Box>
+				</Toggle>
 			</Box>
 
 			{renderFilter()}
