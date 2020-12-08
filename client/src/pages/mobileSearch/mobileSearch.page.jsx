@@ -64,8 +64,11 @@ const MobileSearch = ({ currentTab }) => {
 
 	const [otherItems, setOtherItems] = React.useState(
 		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
-			name: `${(c - 1) * 5}-${c * 5}L`,
-			val: { min: (c - 1) * 5 * 100000, max: c * 5 * 100000 },
+			name: `${(c - 1) * 5}-${c === 20 ? 'Above' : `${c * 5}L`}`,
+			val: {
+				min: (c - 1) * 5 * 100000,
+				max: c * 5 * (c === 20 ? 10000000 : 100000),
+			},
 			checked: false,
 		}))
 	);
