@@ -45,36 +45,40 @@ const Furnishes = ({ property, furnishes, getPropertyResources }) => {
 				// justifyContent="center"
 			>
 				{furnishes &&
-					furnishes.map((c) => (
-						<Box ml="1rem" key={c.id} mt="0.5rem">
-							<Chip
-								variant={
-									isSelected(c.id) ? 'outlined' : 'default'
-								}
-								avatar={
-									<Avatar
-										className={clsx({
-											[classes.selected]: isSelected(
-												c.id
-											),
-										})}
-									>
-										<HomeWorkIcon
-											className={clsx(
-												classes.avatarIcon,
-												{
-													[classes.cWhite]: isSelected(
-														c.id
-													),
-												}
-											)}
-										/>
-									</Avatar>
-								}
-								label={c.name}
-							/>
-						</Box>
-					))}
+					furnishes
+						.filter((b) => isSelected(b.id))
+						.map((c) => (
+							<Box ml="1rem" key={c.id} mt="0.5rem">
+								<Chip
+									variant={
+										isSelected(c.id)
+											? 'outlined'
+											: 'default'
+									}
+									avatar={
+										<Avatar
+											className={clsx({
+												[classes.selected]: isSelected(
+													c.id
+												),
+											})}
+										>
+											<HomeWorkIcon
+												className={clsx(
+													classes.avatarIcon,
+													{
+														[classes.cWhite]: isSelected(
+															c.id
+														),
+													}
+												)}
+											/>
+										</Avatar>
+									}
+									label={c.name}
+								/>
+							</Box>
+						))}
 			</Box>
 		</Box>
 	);

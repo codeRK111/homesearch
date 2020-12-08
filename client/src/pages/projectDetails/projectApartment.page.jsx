@@ -18,6 +18,7 @@ import PropertyShare from '../../components/propertyShare/propertyShare.componen
 import React from 'react';
 import SearchFeedbackForm from '../../components/searchFeedbackForm/searchFeedBackForm.component';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import SimilarProjects from '../../components/similarProjects/project.component';
 import Unit from './unitWrapper.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { parseDate } from '../../utils/render.utils';
@@ -356,9 +357,14 @@ const PropertyDetails = ({ project, properties, info }) => {
 							</Grid>
 						</Box>
 						<Box mt="1rem">
-							{/* <SimilarProperties
-								title={'3 BHK Flat / Aspanartment'}
-							/> */}
+							<h3>Similar Properties</h3>
+							{project && (
+								<SimilarProjects
+									city={project.city}
+									type={project.projectType}
+									exclude={project.id}
+								/>
+							)}
 						</Box>
 					</Paper>
 				</Box>

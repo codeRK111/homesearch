@@ -2,9 +2,8 @@ import { Box, Grid } from '@material-ui/core';
 
 import ErrorCard from '../../components/errorCard/errorCard.component';
 import { Link } from 'react-router-dom';
-import ProjectApartment from '../similarProjects/apartment.component';
-import ProjectLand from '../similarProjects/land.component';
-import ProjectType from '../projectTypesTab/projectTypesTab.component';
+import ProjectApartment from './apartment.component';
+import ProjectLand from './land.component';
 import React from 'react';
 import Skeleton from '../skeleton/similarProperties.component';
 import { connect } from 'react-redux';
@@ -30,19 +29,13 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: '1.1rem',
 	},
 }));
-const types = ['flat', 'land', 'independenthouse'];
-const Row = ({ title, city, propertyLoading, searchProperties }) => {
+const Row = ({ type, city, propertyLoading, searchProperties, exclude }) => {
 	const classes = useStyles();
-	const [value, setValue] = React.useState(0);
 	const [noResults, setNoResults] = React.useState(false);
 	const [asyncError, setAsyncError] = React.useState(null);
 	const [totalDos, setTotalDocs] = React.useState(0);
 	const [data, setData] = React.useState([]);
 	const [propertyItems, setPropertyItems] = React.useState([]);
-
-	const handleChange = (event, newValue) => {
-		setValue(newValue);
-	};
 
 	const handleFetchCities = (status, data = null) => {
 		if (status === 'success') {
@@ -65,13 +58,13 @@ const Row = ({ title, city, propertyLoading, searchProperties }) => {
 		const body = {
 			for: 'project',
 			city: city.id,
-			type: [types[value]],
+			type: [type],
 			limit: 4,
 		};
 
 		searchProperties(handleFetchCities, body);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchProperties, value, city.id]);
+	}, [searchProperties]);
 
 	const filterTypesProject = (property) => {
 		switch (property.projectType) {
@@ -108,13 +101,7 @@ const Row = ({ title, city, propertyLoading, searchProperties }) => {
 
 	return (
 		<div className={classes.wrapper}>
-			<Box mb="4rem">
-				<h2 className={classes.title}>{title}</h2>
-			</Box>
 			<Box>
-				<ProjectType value={value} handleChange={handleChange} />
-			</Box>
-			<Box mt="1rem">
 				{asyncError && <ErrorCard message={asyncError} />}
 				{noResults && !propertyLoading && (
 					<Box display="flex" justifyContent="center">
@@ -129,7 +116,9 @@ const Row = ({ title, city, propertyLoading, searchProperties }) => {
 					!asyncError && (
 						<Box mt="1rem">
 							<Grid container spacing={5}>
-								{data.map((p) => filterTypesProject(p))}
+								{data
+									.filter((b) => b.id !== exclude)
+									.map((p) => filterTypesProject(p))}
 							</Grid>
 						</Box>
 					)
@@ -141,9 +130,7 @@ const Row = ({ title, city, propertyLoading, searchProperties }) => {
 						className={classes.link}
 						to={`/browse?f=project&c=${
 							city.id
-						}&cn=${encodeURIComponent(city.name)}&t=${[
-							types[value],
-						]}&p=1`}
+						}&cn=${encodeURIComponent(city.name)}&t=${[type]}&p=1`}
 						target="_blank"
 					>
 						View all &#8594;

@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from '../formik/textField.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import { capitalizeFirstLetter } from '../../utils/render.utils';
 import { makeStyles } from '@material-ui/core/styles';
 
 const initialValues = {
@@ -86,6 +87,16 @@ const PropertyShare = ({
 	const [modalStyle] = React.useState(getModalStyle);
 	const [copySuccess, setCopySuccess] = React.useState('Copy');
 	const textAreaRef = React.useRef(null);
+
+	const renderPostedBy = () => {
+		if (project || projectInfo) {
+			return 'Builder';
+		} else {
+			return data.postedBy
+				? capitalizeFirstLetter(data.postedBy)
+				: capitalizeFirstLetter(data.userId.role);
+		}
+	};
 
 	function copyToClipboard(e) {
 		textAreaRef.current.select();
@@ -177,7 +188,7 @@ const PropertyShare = ({
 							</Box>
 							<Box flexGrow={1}>
 								<h3 className={classes.heading}>
-									Chat with owner
+									Chat with {renderPostedBy()}
 								</h3>
 							</Box>
 							<Box flexGrow={2}>

@@ -1,7 +1,9 @@
+import { Avatar, Box, Grid, Paper } from '@material-ui/core';
+
 import React from 'react';
-import { Box, Grid, Paper, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Iframe from 'react-iframe';
+
+// import Iframe from 'react-iframe';
 
 const useStyles = makeStyles((theme) => ({
 	image: {
@@ -68,10 +70,10 @@ const Testimonial = () => {
 		<div>
 			<Box mt="1rem">
 				<Grid container spacing={3}>
-					<Grid item xs={12} md={6}>
+					<Grid item xs={12}>
 						<Grid container spacing={3}>
 							{[1, 2, 3, 4].map((_, i) => (
-								<Grid item xs={12} md={6} key={i}>
+								<Grid item xs={12} md={3} key={i}>
 									<Paper
 										className={classes.cardWrapper}
 										elevation={4}
@@ -117,7 +119,7 @@ const Testimonial = () => {
 							))}
 						</Grid>
 					</Grid>
-					<Grid item xs={12} md={6}>
+					{/* <Grid item xs={12} md={6}>
 						<Iframe
 							url="http://www.youtube.com/embed/xDMP3i36naA"
 							width="100%"
@@ -127,7 +129,7 @@ const Testimonial = () => {
 							display="initial"
 							position="relative"
 						/>
-					</Grid>
+					</Grid> */}
 				</Grid>
 				<Box mt="2rem" display="flex" justifyContent="center">
 					<button className={classes.seeAll}>See all &#8594;</button>

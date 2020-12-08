@@ -35,12 +35,12 @@ const Header = ({ project }) => {
 									<Box mt="0.3rem">
 										<span>
 											{rera['show'] && (
-												<a
-													href={rera['value']}
-													target="_blank"
-												>
-													{rera['value']}
-												</a>
+												<Box>
+													<span>RERA ID:</span>{' '}
+													<a href={rera['value']}>
+														{rera['value']}
+													</a>
+												</Box>
 											)}
 										</span>
 									</Box>

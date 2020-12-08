@@ -1,7 +1,8 @@
+import { Box, Grid } from '@material-ui/core';
+
+import { Link } from 'react-router-dom';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Box } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
@@ -41,255 +42,117 @@ const Footer = () => {
 				<h2>Popular Links</h2>
 			</Box>
 			<Grid container spacing={3}>
-				<Grid item xs={6} md={3}>
-					<h5>City Property</h5>
+				<Grid item xs={6} md={4}>
+					<h5>Apartment for rent</h5>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Gurgaon
+							Apartment in Gurgaon
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Pune
+							Apartment in Pune
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Hyderabad
+							Apartment in Hyderabad
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Noida
+							Apartment in Noida
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							2 BHK Flat in Gurgaon
+							Apartment in Bengaluru
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							2 BHK Flat in Pune
+							Apartment in Delhi
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Gurgaon
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Pune
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Hyderabad
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Noida
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							2 BHK Flat in Gurgaon
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							2 BHK Flat in Pune
+							Apartment in Mumbai
 						</Link>
 					</Box>
 				</Grid>
-				<Grid item xs={6} md={3}>
-					<h5>Top Links</h5>
+				<Grid item xs={6} md={4}>
+					<h5>PG & Hostel for rent</h5>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Gurgaon
+							Hostel in Gurgaon
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Pune
+							Hostel in Pune
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Hyderabad
+							Hostel in Hyderabad
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Noida
+							Hostel in Noida
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							2 BHK Flat in Gurgaon
+							PG in Bengaluru
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							2 BHK Flat in Pune
+							PG in Delhi
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Gurgaon
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Pune
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Hyderabad
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Noida
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							2 BHK Flat in Gurgaon
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							2 BHK Flat in Pune
+							PG in Mumbai
 						</Link>
 					</Box>
 				</Grid>
-				<Grid item xs={6} md={3}>
-					<h5>Top Builders</h5>
+				<Grid item xs={6} md={4}>
+					<h5>Villa</h5>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Gurgaon
+							Villa in Gurgaon
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Pune
+							Villa in Pune
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Hyderabad
+							Villa in Hyderabad
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Noida
+							Villa in Noida
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							2 BHK Flat in Gurgaon
+							Villa in Bengaluru
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							2 BHK Flat in Pune
+							Villa in Delhi
 						</Link>
 					</Box>
 					<Box>
 						<Link className={classes.link} to="/">
-							1 BHK Flat in Gurgaon
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Pune
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Hyderabad
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Noida
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							2 BHK Flat in Gurgaon
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							2 BHK Flat in Pune
-						</Link>
-					</Box>
-				</Grid>
-				<Grid item xs={6} md={3}>
-					<h5>Recent Projects</h5>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Gurgaon
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Pune
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Hyderabad
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Noida
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							2 BHK Flat in Gurgaon
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							2 BHK Flat in Pune
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Gurgaon
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Pune
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Hyderabad
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							1 BHK Flat in Noida
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							2 BHK Flat in Gurgaon
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							2 BHK Flat in Pune
+							Villa in Mumbai
 						</Link>
 					</Box>
 				</Grid>

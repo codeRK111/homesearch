@@ -119,18 +119,6 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 					<FormControlLabel
 						control={
 							<Checkbox
-								name="guesthouse"
-								checked={types.guesthouse}
-								onChange={handleTypes}
-							/>
-						}
-						label="Guest House"
-					/>
-				</div>
-				<div>
-					<FormControlLabel
-						control={
-							<Checkbox
 								name="hostel"
 								checked={types.hostel}
 								onChange={handleTypes}

@@ -127,6 +127,19 @@ const ResultCard = ({ property, edit = false }) => {
 								<Grid item xs={6} md={3}>
 									<Box>
 										<Box className={classes.info}>
+											Super builtup Area
+										</Box>
+										<Box>
+											<b>
+												{property.superBuiltupArea}{' '}
+												Sq.ft
+											</b>
+										</Box>
+									</Box>
+								</Grid>
+								<Grid item xs={6} md={3}>
+									<Box>
+										<Box className={classes.info}>
 											Available from
 										</Box>
 										<Box>
@@ -141,21 +154,9 @@ const ResultCard = ({ property, edit = false }) => {
 										</Box>
 									</Box>
 								</Grid>
+
 								<Grid item xs={6} md={3}>
-									<Box mt="1rem">
-										<Box className={classes.info}>
-											Super builtup Area
-										</Box>
-										<Box>
-											<b>
-												{property.superBuiltupArea}{' '}
-												Sq.ft
-											</b>
-										</Box>
-									</Box>
-								</Grid>
-								<Grid item xs={6} md={3}>
-									<Box mt="1rem">
+									<Box>
 										<Box className={classes.info}>
 											Bedrooms
 										</Box>

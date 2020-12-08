@@ -151,6 +151,19 @@ const ResultCard = ({ independent, property, edit = false }) => {
 								<Grid item xs={6} md={3}>
 									<Box>
 										<Box className={classes.info}>
+											Super builtup Area
+										</Box>
+										<Box>
+											<b>
+												{property.superBuiltupArea}{' '}
+												Sq.ft
+											</b>
+										</Box>
+									</Box>
+								</Grid>
+								<Grid item xs={6} md={3}>
+									<Box>
+										<Box className={classes.info}>
 											Possession On
 										</Box>
 										<Box>
@@ -165,19 +178,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 										</Box>
 									</Box>
 								</Grid>
-								<Grid item xs={6} md={3}>
-									<Box>
-										<Box className={classes.info}>
-											Super builtup Area
-										</Box>
-										<Box>
-											<b>
-												{property.superBuiltupArea}{' '}
-												Sq.ft
-											</b>
-										</Box>
-									</Box>
-								</Grid>
+
 								<Grid item xs={6} md={3}>
 									<Box>
 										<Box className={classes.info}>

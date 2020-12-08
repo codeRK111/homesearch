@@ -6,7 +6,10 @@ export const parseDate = (date) => {
 	const m = moment(date);
 	return m.format('Do MMM YYYY');
 };
-
+export const parseDateOnlyMonth = (date) => {
+	const m = moment(date);
+	return m.format(' MMM YYYY');
+};
 export const capitalizeFirstLetter = (string) =>
 	string.charAt(0).toUpperCase() + string.slice(1);
 
@@ -180,7 +183,7 @@ export const renderAvailability = (property) => {
 	if (property.availability === 'immediately') {
 		return 'Ready to move';
 	} else {
-		return parseDate(property.availableDate);
+		return parseDateOnlyMonth(property.availableDate);
 	}
 };
 

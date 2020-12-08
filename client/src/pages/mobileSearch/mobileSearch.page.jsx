@@ -228,18 +228,7 @@ const MobileSearch = ({ currentTab }) => {
 					label="Independent House"
 				/>
 			</div>
-			<div>
-				<FormControlLabel
-					control={
-						<Checkbox
-							name="guesthouse"
-							checked={state.guesthouse}
-							onChange={handleChange}
-						/>
-					}
-					label="Guest House"
-				/>
-			</div>
+
 			<div>
 				<FormControlLabel
 					control={

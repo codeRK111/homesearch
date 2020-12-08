@@ -56,8 +56,11 @@ const SearchProperty = ({ currentTab, defaultCity }) => {
 
 	const [otherItems, setOtherItems] = React.useState(
 		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
-			name: `${(c - 1) * 5}-${c * 5}L`,
-			val: { min: (c - 1) * 5 * 100000, max: c * 5 * 100000 },
+			name: `${(c - 1) * 5}-${c === 20 ? 'Above' : `${c * 5}L`}`,
+			val: {
+				min: (c - 1) * 5 * 100000,
+				max: c * 5 * (c === 20 ? 10000000 : 100000),
+			},
 			checked: false,
 		}))
 	);
@@ -300,7 +303,7 @@ const SearchProperty = ({ currentTab, defaultCity }) => {
 		>
 			<div className={classes.overlay}>
 				<h1 className={classes.title}>
-					Lorem ipsum dolor sit amet consectetur.
+					The new way to find your desired home
 				</h1>
 				<PropertyTab />
 

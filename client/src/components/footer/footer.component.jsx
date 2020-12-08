@@ -1,10 +1,11 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Box, Avatar } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Avatar, Box, Grid } from '@material-ui/core';
+
 import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
+import { Link } from 'react-router-dom';
+import React from 'react';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import { makeStyles } from '@material-ui/core/styles';
 
 // Custom components
 // import BottomNavigation from '../bottomNavigation/bottomNavigation.component';
@@ -206,6 +207,13 @@ const Footer = () => {
 					<Box
 						display="flex"
 						alignItems="center"
+						justifyContent="center"
+					>
+						<span>Coming soon</span>
+					</Box>
+					<Box
+						display="flex"
+						alignItems="center"
 						mt="1rem"
 						justifyContent="center"
 					>
@@ -213,6 +221,13 @@ const Footer = () => {
 							src={require('../../assets/app-store.webp')}
 							alt="app-store"
 						/>
+					</Box>
+					<Box
+						display="flex"
+						alignItems="center"
+						justifyContent="center"
+					>
+						<span>Coming soon</span>
 					</Box>
 				</Grid>
 			</Grid>

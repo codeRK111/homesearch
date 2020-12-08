@@ -81,8 +81,11 @@ const SearchPage = ({
 
 	const [otherItems, setOtherItems] = React.useState(
 		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
-			name: `${(c - 1) * 5}-${c * 5}L`,
-			val: { min: (c - 1) * 5 * 100000, max: c * 5 * 100000 },
+			name: `${(c - 1) * 5}-${c === 20 ? 'Above' : `${c * 5}L`}`,
+			val: {
+				min: (c - 1) * 5 * 100000,
+				max: c * 5 * (c === 20 ? 10000000 : 100000),
+			},
 			checked: false,
 		}))
 	);
@@ -515,7 +518,7 @@ const SearchPage = ({
 						<Grid
 							item
 							xs={6}
-							md={1}
+							md={2}
 							className={classes.gridItemWrapper}
 						>
 							<CityFilter city={city} handleCity={handleCity} />
@@ -523,7 +526,7 @@ const SearchPage = ({
 						<Grid
 							item
 							xs={6}
-							md={1}
+							md={2}
 							className={classes.gridItemWrapper}
 						>
 							<LocationFilter
@@ -536,7 +539,7 @@ const SearchPage = ({
 						<Grid
 							item
 							xs={6}
-							md={1}
+							md={2}
 							className={classes.gridItemWrapper}
 						>
 							<PropertyFilter
@@ -556,7 +559,7 @@ const SearchPage = ({
 						<Grid
 							item
 							xs={6}
-							md={1}
+							md={2}
 							className={classes.gridItemWrapper}
 						>
 							<BudgetFilter
@@ -581,7 +584,7 @@ const SearchPage = ({
 						<Grid
 							item
 							xs={6}
-							md={1}
+							md={2}
 							className={classes.gridItemWrapper}
 						>
 							<Box
@@ -723,7 +726,7 @@ const SearchPage = ({
 										justifyContent="center"
 									>
 										<Pagination
-											count={Math.round(totalDos / 10)}
+											count={Math.ceil(totalDos / 10)}
 											color="primary"
 											page={page}
 											onChange={handleChangePage}

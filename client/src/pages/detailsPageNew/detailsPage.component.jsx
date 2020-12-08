@@ -25,8 +25,10 @@ import PropTypes from 'prop-types';
 import PropertyImages from '../../components/propertyImages/propertyImages.component';
 import PropertyShare from '../../components/propertyShare/propertyShare.component';
 import React from 'react';
+import RentApartment from '../../components/similarProjects/rentApartment.component';
 import SearchFeedbackForm from '../../components/searchFeedbackForm/searchFeedBackForm.component';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import SimilarResale from '../../components/similarProjects/resale.component';
 import Skeleton from '../../components/propertyDetailsSkeleton/propertyDetailsSkeleton.component';
 import Snackbar from '../../components/snackbar/snackbar.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -39,16 +41,6 @@ import { selectGetPropertyDetailsLoading } from '../../redux/property/property.s
 import useStyles from './detailsPage.styles';
 
 // import SimilarProperties from '../../components/similarProperties/resaleApartment.component';
-
-
-
-
-
-
-
-
-
-
 
 const DetailsPage = ({
 	getPropertyDetails,
@@ -100,6 +92,37 @@ const DetailsPage = ({
 
 	const handleClose = (_) => {
 		setOpen(false);
+	};
+
+	const renderSimilarProperties = (data) => {
+		switch (data.for) {
+			case 'rent':
+				return renderTypes(data);
+			case 'sale':
+				return (
+					<SimilarResale
+						city={data.city.id}
+						type={data.sale_type}
+						exclude={data.id}
+					/>
+				);
+
+			default:
+				break;
+		}
+	};
+
+	const renderTypes = (data) => {
+		switch (data.type) {
+			case 'flat':
+			case 'independenthouse':
+			case 'hostel':
+			case 'pg':
+				return <RentApartment city={data.city.id} type={data.type} />;
+
+			default:
+				break;
+		}
 	};
 	const handleFetchPropertyDetails = (status, data = null) => {
 		if (status === 'success') {
@@ -493,13 +516,11 @@ const DetailsPage = ({
 												</Grid>
 											</Grid>
 										</Box>
-										{/* <Box mt="1rem">
-											<SimilarProperties
-												title={
-													'2 BHK Apartment for sale'
-												}
-											/>
-										</Box> */}
+										<Box mt="1rem">
+											<h3>Similar Properties</h3>
+											{data &&
+												renderSimilarProperties(data)}
+										</Box>
 									</Paper>
 								</Box>
 							</Box>

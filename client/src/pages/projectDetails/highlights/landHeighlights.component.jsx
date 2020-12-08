@@ -44,7 +44,7 @@ const ApartmentHighLights = ({ project, info }) => {
 						</Avatar>
 					</Box>
 					<Box display="flex" flexDirection="column">
-						<Box>Units</Box>
+						<Box>Total Units</Box>
 						<h4 className={classes.title}>{info.totalUnits}</h4>
 					</Box>
 				</Box>

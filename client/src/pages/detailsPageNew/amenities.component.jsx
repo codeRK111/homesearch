@@ -47,36 +47,40 @@ const Amenities = ({ property, amenities, getPropertyResources }) => {
 				// justifyContent="center"
 			>
 				{amenities &&
-					amenities.map((c) => (
-						<Box ml="1rem" key={c.id} mt="0.5rem">
-							<Chip
-								variant={
-									isSelected(c.id) ? 'outlined' : 'default'
-								}
-								avatar={
-									<Avatar
-										className={clsx({
-											[classes.selected]: isSelected(
-												c.id
-											),
-										})}
-									>
-										<HomeWorkIcon
-											className={clsx(
-												classes.avatarIcon,
-												{
-													[classes.cWhite]: isSelected(
-														c.id
-													),
-												}
-											)}
-										/>
-									</Avatar>
-								}
-								label={c.name}
-							/>
-						</Box>
-					))}
+					amenities
+						.filter((b) => isSelected(b.id))
+						.map((c) => (
+							<Box ml="1rem" key={c.id} mt="0.5rem">
+								<Chip
+									variant={
+										isSelected(c.id)
+											? 'outlined'
+											: 'default'
+									}
+									avatar={
+										<Avatar
+											className={clsx({
+												[classes.selected]: isSelected(
+													c.id
+												),
+											})}
+										>
+											<HomeWorkIcon
+												className={clsx(
+													classes.avatarIcon,
+													{
+														[classes.cWhite]: isSelected(
+															c.id
+														),
+													}
+												)}
+											/>
+										</Avatar>
+									}
+									label={c.name}
+								/>
+							</Box>
+						))}
 			</Box>
 		</Box>
 	);
