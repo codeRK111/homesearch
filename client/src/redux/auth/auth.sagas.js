@@ -6,6 +6,8 @@ import {
 	toggleChangePasswordLoading,
 	toggleChangeUserProfileInfoLoading,
 	toggleChangeUserProfilePictureLoading,
+	toggleResetMyPasswordLoading,
+	toggleSendResetPasswordOtpLoading,
 	toggleSignInLoading,
 	toggleSignUpLoading,
 	toggleUserProfileLoading,
@@ -47,6 +49,47 @@ function* sendOtpSaga({ payload: { number, callback } }) {
 		callback('success', responseData);
 	} catch (error) {
 		yield put(togglesendOtpLoading(false));
+		const errorResponse = error.response.data;
+		callback('fail', errorResponse.message);
+	}
+}
+
+function* sendResetPasswordOtp({ payload: { body, callback } }) {
+	yield put(toggleSendResetPasswordOtpLoading(true));
+	const url = `/api/v1/users/send-reset-password-otp`;
+	const data = JSON.stringify(body);
+	try {
+		const response = yield axios({
+			method: 'post',
+			headers: { 'Content-Type': 'application/json' },
+			url,
+			data,
+		});
+		const responseData = response.data;
+		yield put(toggleSendResetPasswordOtpLoading(false));
+		callback('success', responseData);
+	} catch (error) {
+		yield put(toggleSendResetPasswordOtpLoading(false));
+		const errorResponse = error.response.data;
+		callback('fail', errorResponse.message);
+	}
+}
+function* resetMyPassword({ payload: { body, callback } }) {
+	yield put(toggleResetMyPasswordLoading(true));
+	const url = `/api/v1/users/reset-my-password`;
+	const data = JSON.stringify(body);
+	try {
+		const response = yield axios({
+			method: 'post',
+			headers: { 'Content-Type': 'application/json' },
+			url,
+			data,
+		});
+		const responseData = response.data;
+		yield put(toggleResetMyPasswordLoading(false));
+		callback('success', responseData);
+	} catch (error) {
+		yield put(toggleResetMyPasswordLoading(false));
 		const errorResponse = error.response.data;
 		callback('fail', errorResponse.message);
 	}
@@ -211,6 +254,14 @@ function* onSendOtp() {
 	yield takeLatest(types.SEND_OTP_START, sendOtpSaga);
 }
 
+function* onResetMyPassword() {
+	yield takeLatest(types.RESET_MY_PASSWORD_START, resetMyPassword);
+}
+
+function* onSendResetPasswordOtp() {
+	yield takeLatest(types.SEND_RESET_PASSWORD_OTP_START, sendResetPasswordOtp);
+}
+
 function* onvalidateOtp() {
 	yield takeLatest(types.VALIDATE_OTP_START, validateOtpSaga);
 }
@@ -237,7 +288,9 @@ function* onChangePassword() {
 export function* authSagas() {
 	yield all([
 		call(onSignUp),
+		call(onResetMyPassword),
 		call(onSendOtp),
+		call(onSendResetPasswordOtp),
 		call(onvalidateOtp),
 		call(onvSignIn),
 		call(onFetchProfile),

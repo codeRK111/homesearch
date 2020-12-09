@@ -16,6 +16,7 @@ import ProjectProperty from './pages/projectDetails/projectPropertyWrapper.compo
 import Protected from './components/protected/protected.component';
 import { Provider } from 'react-redux';
 import React from 'react';
+import ResetPassword from './pages/resetPasswordPage/resetPassword.page';
 import SearchPage from './pages/searchResultPage/searchResultPage.page';
 import SignUpForm from './pages/signup/signup.page';
 import { store } from './redux/store';
@@ -35,6 +36,11 @@ function App() {
 							exact
 							path="/login"
 							render={() => <LoginPage />}
+						/>
+						<Route
+							exact
+							path="/reset-password"
+							render={() => <ResetPassword />}
 						/>
 						<Route
 							exact

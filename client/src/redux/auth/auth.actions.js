@@ -33,6 +33,14 @@ export const changePassword = (payload) => ({
 	type: authActionTypes.CHANGE_PASSWORD,
 	payload,
 });
+export const resetMyPassword = (payload) => ({
+	type: authActionTypes.RESET_MY_PASSWORD_START,
+	payload,
+});
+export const sendResetPasswordOTP = (payload) => ({
+	type: authActionTypes.SEND_RESET_PASSWORD_OTP_START,
+	payload,
+});
 // Set
 export const setUser = (payload) => ({
 	type: authActionTypes.SET_USER,
@@ -62,6 +70,10 @@ export const toggleValidateOtpLoading = (payload) => ({
 	type: authActionTypes.TOGGLE_VALIDATE_OTP_LOADING,
 	payload,
 });
+export const toggleResetMyPasswordLoading = (payload) => ({
+	type: authActionTypes.TOGGLE_RESET_MY_PASSWORD_LOADING,
+	payload,
+});
 export const toggleSignInLoading = (payload) => ({
 	type: authActionTypes.TOGGLE_SIGN_IN_LOADING,
 	payload,
@@ -80,6 +92,10 @@ export const toggleChangeUserProfileInfoLoading = (payload) => ({
 });
 export const toggleChangePasswordLoading = (payload) => ({
 	type: authActionTypes.TOGGLE_CHANGE_PASSWORD_LOADING,
+	payload,
+});
+export const toggleSendResetPasswordOtpLoading = (payload) => ({
+	type: authActionTypes.TOGGLE_SEND_RESET_PASSWORD_OTP_LOADING,
 	payload,
 });
 

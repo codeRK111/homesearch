@@ -6,6 +6,7 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const sendOtpMessage = require('../utils/sendOtp');
 const ApiFeatures = require('../utils/apiFeatures');
+const sendEmail = require('../utils/mail');
 const path = require('path');
 var fs = require('fs');
 // const sendEmail = require('./../utils/email');
@@ -88,6 +89,67 @@ exports.login = catchAsync(async (req, res, next) => {
 
 	// 3) If everything ok, send token to client
 	createSendToken(user, 200, res);
+});
+
+exports.sendResetPasswordOtp = catchAsync(async (req, res, next) => {
+	const { email } = req.body;
+	if (!email) return next(new AppError('Please give your email', 400));
+	const user = await User.findOne({ email, registerThrough: 'site login' });
+	if (!user) {
+		return next(new AppError('No user found', 401));
+	}
+
+	try {
+		let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+		const test = await sendEmail(
+			email,
+			'Reset password',
+			`Your homesearch18 reset password otp is ${randomNumber}`
+		);
+		console.log(test);
+		const updatedUser = await User.findByIdAndUpdate(
+			user.id,
+			{ otp: randomNumber },
+			{
+				new: true,
+				runValidators: true,
+				useFindAndModify: false,
+			}
+		);
+		res.status(200).json({
+			status: 'success',
+			data: updatedUser,
+		});
+	} catch (error) {
+		res.status(200).json({
+			status: 'fail',
+			error: error.message,
+		});
+	}
+});
+
+exports.resetMyPassword = catchAsync(async (req, res, next) => {
+	const { email, password, otp } = req.body;
+	if (!email) return next(new AppError('Please give your email', 400));
+	if (!otp) return next(new AppError('Please give  otp', 400));
+	if (!password) return next(new AppError('Please give your password', 400));
+	const user = await await User.findOne({
+		email,
+		registerThrough: 'site login',
+	}).select('+password +otp');
+	if (!user) {
+		return next(new AppError('No user found', 401));
+	}
+
+	if (!user.correctOtp(otp)) {
+		return next(new AppError('otp not matched', 401));
+	}
+	user.numberVerified = true;
+	user.password = password;
+	const newUser = await user.save();
+
+	// 3) If everything ok, send token to client
+	createSendToken(newUser, 200, res);
 });
 
 exports.updateMyPassword = catchAsync(async (req, res, next) => {
@@ -242,15 +304,15 @@ exports.sendOtp = catchAsync(async (req, res, next) => {
 	}
 	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
 	const updatedUser = await User.findByIdAndUpdate(
-			user.id,
-			{ otp: randomNumber },
-			{
-				new: true,
-				runValidators: true,
-			}
-		);
-	
-	console.log(updatedUser)
+		user.id,
+		{ otp: randomNumber },
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	console.log(updatedUser);
 	const otpResponse = await sendOtpMessage(req.params.number, randomNumber);
 	if (otpResponse.data.startsWith('OK')) {
 		res.status(200).json({
@@ -297,8 +359,6 @@ exports.validateOtp = catchAsync(async (req, res, next) => {
 	const user = await User.findOne({ number: req.params.number }).select(
 		'+otp'
 	);
-
-	
 
 	if (!user.correctOtp(req.params.otp)) {
 		return next(new AppError('otp not matched', 401));

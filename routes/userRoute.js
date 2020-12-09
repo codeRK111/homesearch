@@ -4,6 +4,8 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 router.post('/signup', authController.signup);
+router.post('/send-reset-password-otp', authController.sendResetPasswordOtp);
+router.post('/reset-my-password', authController.resetMyPassword);
 router.post('/login', authController.login);
 router
 	.route('/profile-picture/:id')
@@ -17,9 +19,16 @@ router.get(
 	authController.validateOtp
 );
 
-router.route('/reset-my-password').patch(authController.protect,authController.updateMyPassword);
-router.route('/handle-profile-image').patch(authController.protect,authController.handleProfileImage);
-router.route('/').get(authController.protect, authController.getUserInfo).patch(authController.protect,authController.updateMe);
+router
+	.route('/reset-my-password')
+	.patch(authController.protect, authController.updateMyPassword);
+router
+	.route('/handle-profile-image')
+	.patch(authController.protect, authController.handleProfileImage);
+router
+	.route('/')
+	.get(authController.protect, authController.getUserInfo)
+	.patch(authController.protect, authController.updateMe);
 // router.post('/forgotPassword', authController.forgotPassword);
 
 module.exports = router;

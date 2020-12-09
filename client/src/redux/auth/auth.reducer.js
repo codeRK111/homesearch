@@ -20,11 +20,13 @@ const initialState = {
 	signUpLoading: false,
 	sendOtpLoading: false,
 	validateOtpLoading: false,
+	resetMyPasswordLoading: false,
 	signInLoading: false,
 	userProfileLoading: false,
 	changeProfilePictureLoading: false,
 	changeProfileInfoLoading: false,
 	changePasswordLoading: false,
+	sendResetPasswordOtpLoading: false,
 	// Errors
 	signInError: null,
 };
@@ -73,6 +75,11 @@ const authReducer = (state = initialState, { type, payload }) => {
 				...state,
 				validateOtpLoading: payload,
 			};
+		case authActionTypes.TOGGLE_RESET_MY_PASSWORD_LOADING:
+			return {
+				...state,
+				resetMyPasswordLoading: payload,
+			};
 		case authActionTypes.TOGGLE_SIGN_IN_LOADING:
 			return {
 				...state,
@@ -87,6 +94,11 @@ const authReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				changeProfilePictureLoading: payload,
+			};
+		case authActionTypes.TOGGLE_SEND_RESET_PASSWORD_OTP_LOADING:
+			return {
+				...state,
+				sendResetPasswordOtpLoading: payload,
 			};
 		case authActionTypes.TOGGLE_CHANGE_PROFILE_INFO_LOADING:
 			return {

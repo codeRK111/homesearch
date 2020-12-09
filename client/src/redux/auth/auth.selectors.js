@@ -21,6 +21,10 @@ export const selectValidateOtpLoading = createSelector(
 	[selectAuth],
 	(c) => c.validateOtpLoading
 );
+export const selectResetMyPasswordLoading = createSelector(
+	[selectAuth],
+	(c) => c.resetMyPasswordLoading
+);
 export const selectSignInLoading = createSelector(
 	[selectAuth],
 	(c) => c.signInLoading
@@ -40,6 +44,10 @@ export const selectChangeUserProfileInfoLoading = createSelector(
 export const selectChangePasswordLoading = createSelector(
 	[selectAuth],
 	(c) => c.changePasswordLoading
+);
+export const selectSendResetPasswordOtpLoading = createSelector(
+	[selectAuth],
+	(c) => c.sendResetPasswordOtpLoading
 );
 // Select Errors
 export const selectSignInError = createSelector(
