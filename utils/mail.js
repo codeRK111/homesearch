@@ -3,11 +3,12 @@ const transporter = nodemailer.createTransport({
 	service: 'Gmail',
 	auth: {
 		user: 'rakesh@singhamventures.com',
-		pass: 'rajk@72h',
+		pass: 'test@1234',
 	},
 	tls: {
 		rejectUnauthorized: false,
 	},
+	secureConnection: false,
 });
 
 const sendEmail = async (to, subject, text) => {
