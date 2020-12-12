@@ -90,14 +90,19 @@ const City = ({
 					/>
 				</Box>
 			</Box>
-			<Popper open={open} anchorEl={anchorRef.current} keepMounted={true}>
+			<Popper
+				open={open || searchCityLoading}
+				anchorEl={anchorRef.current}
+			>
 				<Paper elevation={3} className={classes.parent}>
 					<ClickAwayListener onClickAway={handleClose}>
 						<Box id="menu-list-grow">
 							{searchCityLoading && (
-								<Typography component="h5" align="center">
-									Loading...
-								</Typography>
+								<div className={classes.item}>
+									<Typography component="h5" align="center">
+										Loading...
+									</Typography>
+								</div>
 							)}
 							{cities.map((c) => (
 								<div

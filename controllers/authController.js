@@ -101,6 +101,9 @@ exports.sendResetPasswordOtp = catchAsync(async (req, res, next) => {
 
 	try {
 		let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+		if (user.number) {
+			await sendOtpMessage(user.number, randomNumber);
+		}
 		const test = await sendEmail(
 			email,
 			'Reset password',

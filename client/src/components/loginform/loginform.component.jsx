@@ -3,9 +3,9 @@ import { Form, Formik } from 'formik';
 import { Link, useHistory } from 'react-router-dom';
 
 import ErrorMessage from '../errorMessage/errorMessage.component';
-import FormCheckbox from '../../components/formcheckbox/formcheckbox.component';
-import FormInput from '../../components/forminput/forminput.component';
 import React from 'react';
+import TextField from '../formik/textField.component';
+import TextFieldPassword from '../formik/textFieldPassword.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { loginSchema } from './login.utils';
@@ -46,7 +46,7 @@ const LoginForm = ({ signInLoading, signIn }) => {
 			validationSchema={loginSchema}
 			onSubmit={onSubmit}
 		>
-			{({ values, isValid }) => (
+			{() => (
 				<Form className={classes.form}>
 					{asyncError && (
 						<ErrorMessage
@@ -54,30 +54,12 @@ const LoginForm = ({ signInLoading, signIn }) => {
 							onClear={() => setAsyncError(null)}
 						/>
 					)}
-					<FormInput
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						id="email"
-						label="Email Address"
+					<TextField
 						name="email"
-						autoComplete="email"
-						value={values.email}
+						formLabel="Email Address *"
+						type="email"
 					/>
-					<FormInput
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						name="password"
-						label="Password"
-						type="password"
-						id="password"
-						autoComplete="current-password"
-						value={values.password}
-					/>
-					<FormCheckbox label="Remember me" name="rememberMe" />
+					<TextFieldPassword name="password" formLabel="Password *" />
 					<Button
 						type="submit"
 						fullWidth
@@ -88,12 +70,12 @@ const LoginForm = ({ signInLoading, signIn }) => {
 						{signInLoading ? 'Authenticating ...' : 'Sign In'}
 					</Button>
 					<Grid container>
-						<Grid item xs>
+						<Grid item xs={12} md={6}>
 							<Link to="/reset-password" variant="body2">
 								Forgot password?
 							</Link>
 						</Grid>
-						<Grid item>
+						<Grid item xs={12} md={6}>
 							<Link to="/signup" variant="body2">
 								{"Don't have an account? Sign Up"}
 							</Link>

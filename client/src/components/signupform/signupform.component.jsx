@@ -1,12 +1,13 @@
 import { Button, Grid } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 
+import City from '../../pages/postPropertyDetailsPage/city.component';
 import ErrorMessage from '../errorMessage/errorMessage.component';
-import FormInput from '../forminput/forminput.component';
-import FormSelect from '../formik/selectDefault.component';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import SearchCity from '../searchCity/serachCity.component';
+import Select from '../formik/select.component';
+import TextField from '../formik/textField.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import makeStyles from './signup.styles';
@@ -15,6 +16,9 @@ import { signUp } from '../../redux/auth/auth.actions';
 import { signupSchema } from './signup.utils';
 import { useHistory } from 'react-router-dom';
 
+// import FormInput from '../forminput/forminput.component';
+// import FormSelect from '../formik/selectDefault.component';
+
 // Custom components
 
 // Redux
@@ -22,7 +26,10 @@ import { useHistory } from 'react-router-dom';
 const LoginForm = ({ signUp, signUpLoading }) => {
 	const classes = makeStyles();
 	const history = useHistory();
-	const [city, selectedCity] = React.useState('');
+	const [selectedCity, setSelectedCity] = React.useState({
+		id: '',
+		name: '',
+	});
 	const [asyncError, setAsyncError] = React.useState(null);
 
 	const handlesignUp = (status, data = null) => {
@@ -35,7 +42,7 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 	};
 
 	const onSubmit = (values) => {
-		const data = { ...values, city };
+		const data = { ...values, city: selectedCity.id };
 		signUp(handlesignUp, data);
 	};
 	return (
@@ -52,52 +59,27 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 		>
 			{({ values, isValid }) => (
 				<Form className={classes.form}>
-					<FormInput
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						id="name"
-						label="Full name"
+					<TextField
 						name="name"
-						autoComplete="name"
-						value={values.name}
+						formLabel="Full name *"
+						type="text"
 					/>
-					<FormInput
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						id="email"
-						label="Email Address"
+					<TextField
 						name="email"
-						autoComplete="email"
-						value={values.email}
+						formLabel="Email Address *"
+						type="email"
 					/>
-					<FormInput
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
+					<TextField
 						name="password"
-						label="Password"
-						type="password"
-						id="password"
-						autoComplete="current-password"
-						value={values.password}
+						formLabel="Password *"
+						type="text"
 					/>
-					<FormInput
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						id="name"
-						label="Phone number"
+					<TextField
 						name="number"
-						autoComplete="number"
-						value={values.number}
+						formLabel="Phone number *"
+						type="text"
 					/>
-					<FormSelect
+					<Select
 						name="role"
 						formLabel="Type"
 						label="Type"
@@ -109,7 +91,8 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 						]}
 					/>
 
-					<SearchCity setCity={selectedCity} />
+					{/* <SearchCity setCity={selectedCity} /> */}
+					<City setSelectedCity={setSelectedCity} />
 					{asyncError && (
 						<ErrorMessage
 							message={asyncError}

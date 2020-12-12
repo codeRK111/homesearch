@@ -6,10 +6,10 @@ import {
 } from '../../redux/auth/auth.selectors';
 import { sendOtp, validateOtp } from '../../redux/auth/auth.actions';
 
-import BackDrop from '../backdrop/backdrop.component';
 import { Button } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorMessage from '../errorMessage/errorMessage.component';
-import FormInput from '../forminput/forminput.component';
+import FormInput from '../formik/textField.component';
 import { JustifyCenter } from '../flexContainer/flexContainer.component';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -58,6 +58,12 @@ const LoginForm = ({
 		}
 	};
 
+	const buttonProps = {};
+	if (sendOtpLoading || validateOtpLoading) {
+		buttonProps.endIcon = <CircularProgress color="inherit" size={20} />;
+		buttonProps.disabled = true;
+	}
+
 	return (
 		<Formik
 			initialValues={{
@@ -81,40 +87,22 @@ const LoginForm = ({
 			}}
 			onSubmit={onSubmit}
 		>
-			{({ values }) => (
+			{() => (
 				<Form className={classes.form}>
-					<BackDrop open={sendOtpLoading || validateOtpLoading} />
 					{asyncError && (
 						<ErrorMessage
 							message={asyncError}
 							onClear={() => setAsyncError(null)}
 						/>
 					)}
+
 					<FormInput
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						id="number"
-						label="Number"
 						name="number"
-						autoComplete="number"
-						value={values.number}
 						type="number"
+						formLabel="Phone Number"
 					/>
 					{otpSent && (
-						<FormInput
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							name="otp"
-							label="OTP"
-							type="number"
-							id="otp"
-							autoComplete="current-otp"
-							value={values.otp}
-						/>
+						<FormInput name="otp" type="number" formLabel="OTP" />
 					)}
 					<Button
 						type="submit"
@@ -122,6 +110,7 @@ const LoginForm = ({
 						variant="contained"
 						color="primary"
 						className={classes.submit}
+						{...buttonProps}
 					>
 						{otpSent ? 'Sign In' : 'Send OTP'}
 					</Button>

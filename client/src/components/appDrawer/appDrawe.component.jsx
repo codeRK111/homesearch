@@ -66,7 +66,7 @@ function TemporaryDrawer({ open, handleDrawer, isAuthenticated, signOut }) {
 									</Box>
 								</Box>
 							) : (
-								<Box ml="1rem">
+								<Box>
 									<Button
 										text="Login / Signup"
 										onClick={redirectToLogIn}
