@@ -1,16 +1,16 @@
-import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
+import Box from '@material-ui/core/Box';
+import Copyright from '../../components/copyright/copyright.component';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import React from 'react';
+import SignUpForm from '../../components/signupform/signupform.component';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useStyles from '../login/login.styles';
 
 // Custom
-import useStyles from '../login/login.styles';
-import Copyright from '../../components/copyright/copyright.component';
-import SignUpForm from '../../components/signupform/signupform.component';
 
 export default function SignInSide() {
 	const classes = useStyles();
@@ -47,6 +47,7 @@ export default function SignInSide() {
 				component={Paper}
 				elevation={6}
 				square
+				className={classes.contentWrapper}
 			>
 				<div className={classes.paper}>
 					<Box

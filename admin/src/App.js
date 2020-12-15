@@ -1,44 +1,50 @@
-import React from 'react';
 import './App.css';
-import { Switch, Route } from 'react-router-dom';
 
-import LogIn from './pages/login/login.component';
-import HomePage from './pages/home/home.component';
-import Query from './pages/queries/queries.component';
-import Users from './pages/users/users.component';
-import AddUser from './components/addUser/addUser.component';
-import EditUser from './components/editUser/editUser.component';
-import EditAdmin from './components/editAdmin/editAdmin.component';
+import { Route, Switch } from 'react-router-dom';
+
+import ActiveProperties from './pages/properties/properties.component';
 import AddAdmin from './components/addAdmin/addAdmin.component';
-import AdminPage from './pages/admins/admins.component';
-import Authentication from './pages/authpage/authentication.component';
+import AddBuilderPage from './pages/addBuilder/addBuilder.component';
+import AddCityPage from './pages/addCity/addCity.component';
+import AddLocationPage from './pages/addLocation/addLocation.component';
+import AddProjectPage from './pages/addProject/addProject.component';
 import AddProperty from './pages/addProperty/addProperty.component';
 import AddPropertyForSale from './pages/addPropertyForSale/addPropertyWrapper.component';
-import ActiveProperties from './pages/properties/properties.component';
-import EditPropertyPage from './pages/editProperty/editProperty.component';
-import AddCityPage from './pages/addCity/addCity.component';
-import ViewCitiesPage from './pages/getCities/getCities.componet';
-import AddLocationPage from './pages/addLocation/addLocation.component';
-import LocationsPage from './pages/getLocations/getLocations.componet';
-import EditCityPage from './pages/editCity/editCity.component';
-import DeleteCityPage from './pages/deleteCity/deleteCity.component';
-import EditLocationPage from './pages/editLocation/editLocation.component';
-import DeleteLocationPage from './pages/deleteLocation/deleteLocation.component';
-import DashboardPage from './pages/dashboard/dashboatd.component';
-import PropertySale from './pages/properties/propertiesSale.component';
-import EditPropertySalePage from './pages/editProperty/editPropertySale.component';
-import AddProjectPage from './pages/addProject/addProject.component';
-import AddBuilderPage from './pages/addBuilder/addBuilder.component';
+import AddUser from './components/addUser/addUser.component';
+import AdminPage from './pages/admins/admins.component';
+import Authentication from './pages/authpage/authentication.component';
 import BuilderPage from './pages/builders/builders.component';
-import ProjectPage from './pages/projects/projects.component';
-import EditBuilderPage from './pages/editBuilder/editBuilder.component';
-import EditProjectPage from './pages/editProject/editProject.component';
-// components
+import DashboardPage from './pages/dashboard/dashboatd.component';
+import DeleteCityPage from './pages/deleteCity/deleteCity.component';
+import DeleteLocationPage from './pages/deleteLocation/deleteLocation.component';
 import Drawer from './components/drawer/drawer.component';
+import EditAdmin from './components/editAdmin/editAdmin.component';
+import EditBuilderPage from './pages/editBuilder/editBuilder.component';
+import EditCityPage from './pages/editCity/editCity.component';
+import EditLocationPage from './pages/editLocation/editLocation.component';
+import EditProjectPage from './pages/editProject/editProject.component';
+import EditPropertyPage from './pages/editProperty/editProperty.component';
+import EditPropertySalePage from './pages/editProperty/editPropertySale.component';
+import EditUser from './components/editUser/editUser.component';
+import ExpertQuery from './pages/queries/expert-queries.component';
+import HomePage from './pages/home/home.component';
+import LocationsPage from './pages/getLocations/getLocations.componet';
+import LogIn from './pages/login/login.component';
+import ProjectPage from './pages/projects/projects.component';
+import PropertySale from './pages/properties/propertiesSale.component';
 import Protected from './components/protected/protected.component';
+import Query from './pages/queries/queries.component';
+import React from 'react';
+import Users from './pages/users/users.component';
+import ViewCitiesPage from './pages/getCities/getCities.componet';
+
+// components
+
+
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const QueriesPageWithDrawer = Drawer(Query);
+const ExpertQueriesPageWithDrawer = Drawer(ExpertQuery);
 const UsersPageWithDrawer = Drawer(Users);
 const AddUsersPageWithDrawer = Drawer(AddUser);
 const EditUsersPageWithDrawer = Drawer(EditUser);
@@ -103,6 +109,16 @@ function App(props) {
 					render={() => (
 						<Protected
 							component={QueriesPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/expert-queries"
+					render={() => (
+						<Protected
+							component={ExpertQueriesPageWithDrawer}
 							{...props}
 						/>
 					)}

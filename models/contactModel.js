@@ -4,7 +4,7 @@ const validator = require('validator');
 const { Schema, model } = mongoose;
 const contactSchema = new Schema(
 	{
-		userName: {
+		name: {
 			type: String,
 		},
 
@@ -26,7 +26,7 @@ const contactSchema = new Schema(
 
 		createdAt: {
 			type: Date,
-			default: Date.now()
+			default: Date.now(),
 		},
 		otp: {
 			type: String,
@@ -35,9 +35,9 @@ const contactSchema = new Schema(
 		},
 		verified: {
 			type: Boolean,
-			
+
 			default: false,
-		}
+		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

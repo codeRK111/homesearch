@@ -1,3 +1,5 @@
+import * as Yup from 'yup';
+
 import { Button, Grid } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 
@@ -15,6 +17,7 @@ import { selectSignUpLoading } from '../../redux/auth/auth.selectors';
 import { signUp } from '../../redux/auth/auth.actions';
 import { signupSchema } from './signup.utils';
 import { useHistory } from 'react-router-dom';
+import { yupValidation } from '../../utils/validation.utils';
 
 // import FormInput from '../forminput/forminput.component';
 // import FormSelect from '../formik/selectDefault.component';
@@ -26,6 +29,12 @@ import { useHistory } from 'react-router-dom';
 const LoginForm = ({ signUp, signUpLoading }) => {
 	const classes = makeStyles();
 	const history = useHistory();
+	const validationSchema = Yup.object({
+		name: yupValidation.name,
+		email: yupValidation.email,
+		password: yupValidation.password,
+		number: yupValidation.phoneNumber,
+	});
 	const [selectedCity, setSelectedCity] = React.useState({
 		id: '',
 		name: '',
@@ -54,7 +63,7 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 				number: '',
 				role: 'tenant',
 			}}
-			validationSchema={signupSchema}
+			validationSchema={validationSchema}
 			onSubmit={onSubmit}
 		>
 			{({ values, isValid }) => (

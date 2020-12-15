@@ -10,6 +10,4 @@ router.get(
 	contactController.validateNumber
 );
 
-
-
 module.exports = router;

@@ -39,6 +39,10 @@ const useStyles = makeStyles((theme) => ({
 	submit: {
 		margin: theme.spacing(3, 0, 2),
 	},
+	contentWrapper: {
+		overflow: 'auto',
+		height: '100vh',
+	},
 	overlay: {
 		position: 'absolute',
 		width: '100%',

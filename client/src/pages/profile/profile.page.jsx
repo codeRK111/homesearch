@@ -63,42 +63,7 @@ const ProfilePage = ({ user }) => {
 									Edit Profile
 								</Button>
 							</Flex>
-							<JustifyCenter mt="1rem" mb="1rem">
-								<Grid container>
-									<Grid item xs={12} md={4}>
-										<Flex>
-											<Box mr="0.3rem">
-												<b className={classes.cBlack}>
-													5
-												</b>
-											</Box>
-											<Typography>Properties</Typography>
-										</Flex>
-									</Grid>
-									<Grid item xs={12} md={4}>
-										<Flex>
-											<Box mr="0.3rem">
-												<b className={classes.cBlack}>
-													15
-												</b>
-											</Box>
-											<Typography>Queries</Typography>
-										</Flex>
-									</Grid>
-									<Grid item xs={12} md={4}>
-										<Flex>
-											<Box mr="0.3rem">
-												<b className={classes.cBlack}>
-													15
-												</b>
-											</Box>
-											<Typography>
-												Queries Received
-											</Typography>
-										</Flex>
-									</Grid>
-								</Grid>
-							</JustifyCenter>
+
 							<Box mt="0.3rem" mb="0.3rem">
 								<AlignCenter>
 									<Box mr="0.5rem">

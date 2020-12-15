@@ -1,7 +1,10 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import {
+	deleteExpertQueryLoading,
 	deleteQueryLoading,
+	getExpertQueriesLoading,
 	getQueriesLoading,
+	setExpertQueries,
 	setQueries,
 } from './query.actions';
 
@@ -28,6 +31,39 @@ function* onGetQueriesSaga({ payload: { body, callback } }) {
 		callback('success', responseData.data.queries);
 	} catch (error) {
 		yield put(getQueriesLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+function* onGetExpertQueriesSaga({ payload: { body, callback } }) {
+	const token = localStorage.getItem('JWT');
+	yield put(getExpertQueriesLoading(true));
+	const url = `/api/v1/admins/get-expert-queries`;
+	try {
+		const response = yield axios({
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+			data: JSON.stringify(body),
+		});
+		const responseData = response.data;
+		yield put(getExpertQueriesLoading(false));
+		yield put(
+			setExpertQueries({
+				queries: responseData.data.queries,
+				count: responseData.count,
+			})
+		);
+		callback('success', responseData.data.queries);
+	} catch (error) {
+		yield put(getExpertQueriesLoading(false));
 		const errorResponse = error.response.data;
 		if (typeof errorResponse === 'string') {
 			callback('fail', errorResponse);
@@ -64,14 +100,52 @@ function* onDeleteQuerySaga({ payload: { id, callback } }) {
 		callback('fail', errorResponse.message);
 	}
 }
+function* onDeleteExpertQuerySaga({ payload: { id, callback } }) {
+	const token = localStorage.getItem('JWT');
+	yield put(deleteExpertQueryLoading(true));
+	const url = `/api/v1/admins/delete-expert-query/${id}`;
+	try {
+		const response = yield axios({
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+		});
+		console.log(response);
+		const responseData = response.data;
+		yield put(deleteExpertQueryLoading(false));
+		callback('success', responseData.data.queries);
+	} catch (error) {
+		yield put(deleteExpertQueryLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
 
 function* onGetQueries() {
 	yield takeEvery(types.GET_QUERIES, onGetQueriesSaga);
 }
+function* onGetExpertQueries() {
+	yield takeEvery(types.GET_EXPERT_QUERIES, onGetExpertQueriesSaga);
+}
 function* oDeleteQuery() {
 	yield takeEvery(types.DELETE_QUERY, onDeleteQuerySaga);
 }
+function* oDeleteExpertQuery() {
+	yield takeEvery(types.DELETE_EXPERT_QUERY, onDeleteExpertQuerySaga);
+}
 
 export function* querySagas() {
-	yield all([call(onGetQueries), call(oDeleteQuery)]);
+	yield all([
+		call(onGetQueries),
+		call(onGetExpertQueries),
+		call(oDeleteQuery),
+		call(oDeleteExpertQuery),
+	]);
 }

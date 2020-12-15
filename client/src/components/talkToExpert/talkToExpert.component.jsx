@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 
+import { Box, CircularProgress } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 import {
 	addContact,
@@ -10,12 +11,12 @@ import {
 	selectContactValidateNumberoading,
 } from '../../redux/contact/contact.selectors';
 
-import { Box } from '@material-ui/core';
 import React from 'react';
 import Snackbar from '../snackbar/snackbar.component';
 import TextField from '../../components/formik/textField.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { selectUser } from '../../redux/auth/auth.selectors';
 import useStyles from './talkToExport.styles';
 
 const initialValues = {
@@ -29,6 +30,7 @@ const TalkToExport = ({
 	validateLoading,
 	addContact,
 	validateContactNumber,
+	user,
 }) => {
 	const classes = useStyles();
 	const [openSnackBar, setOpenSnackBar] = React.useState(false);
@@ -51,9 +53,15 @@ const TalkToExport = ({
 	const validationSchemaOTP = Yup.object({
 		otp: Yup.string('Invalid OTP')
 			.length(4, '4 digits required')
-			.matches(/^\d{10}$/, 'Invalid Number')
+			.matches(/^[0-9]+$/, 'Invalid OTP')
 			.required('OTP Required'),
 	});
+
+	const initialValues = {
+		name: user.name,
+		email: user.email,
+		phoneNumber: user.number,
+	};
 	const showSnackbar = (message, severity = 'success') => {
 		setSnackbarMessage(message);
 		setOpenSnackBar(true);
@@ -81,6 +89,7 @@ const TalkToExport = ({
 
 	const handleAddValidation = (status, data) => {
 		if (status === 'success') {
+			setValidation(false);
 			showSnackbar(
 				'Thanks for contacting us, we will get back to you soon'
 			);
@@ -107,12 +116,23 @@ const TalkToExport = ({
 			{showValidation ? (
 				<Formik
 					initialValues={{ otp: '' }}
+					enableReinitialize
 					validationSchema={validationSchemaOTP}
 					onSubmit={submitFormOTP}
 				>
 					{() => (
 						<Form>
-							<TextField formLabel="OTP" name="otp" />
+							<TextField
+								formLabel="OTP"
+								name="otp"
+								type="text"
+								inputProps={{
+									autocomplete: 'new-password',
+									form: {
+										autocomplete: 'off',
+									},
+								}}
+							/>
 
 							<Box
 								mt="2rem"
@@ -133,6 +153,7 @@ const TalkToExport = ({
 			) : (
 				<Formik
 					initialValues={initialValues}
+					enableReinitialize
 					validationSchema={validationSchema}
 					onSubmit={submitForm}
 				>
@@ -161,7 +182,22 @@ const TalkToExport = ({
 									className={classes.button}
 									type="submit"
 								>
-									Submit
+									<Box
+										display="flex"
+										width="100%"
+										justifyContent="center"
+										alignItems="center"
+									>
+										Submit
+										{(addLoading || validateLoading) && (
+											<Box ml="1rem">
+												<CircularProgress
+													color="inherit"
+													size={20}
+												/>
+											</Box>
+										)}
+									</Box>
 								</button>
 							</Box>
 						</Form>
@@ -175,6 +211,7 @@ const TalkToExport = ({
 const mapStateToProps = createStructuredSelector({
 	addLoading: selectAddContactLoading,
 	validateLoading: selectContactValidateNumberoading,
+	user: selectUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({

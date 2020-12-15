@@ -20,7 +20,7 @@ function* addContactSaga({ payload: { body, callback } }) {
 		});
 		const responseData = response.data;
 		yield put(addContactLoading(false));
-		callback('success', responseData.data.cities);
+		callback('success', responseData.data.contact);
 	} catch (error) {
 		yield put(addContactLoading(false));
 		const errorResponse = error.response.data;

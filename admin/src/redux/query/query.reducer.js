@@ -3,10 +3,14 @@ import { queryActionTypes } from './query.types';
 const initialState = {
 	// Initial Values
 	queries: [],
+	expertQueries: [],
+	expertQueriesCount: 0,
 	// Loading States
 
 	getQueriesLoading: false,
+	getExpertQueriesLoading: false,
 	deleteQueryLoading: false,
+	deleteExpertQueryLoading: false,
 
 	// Errors
 };
@@ -18,16 +22,32 @@ const propertyReducer = (state = initialState, { type, payload }) => {
 				...state,
 				getQueriesLoading: payload,
 			};
+		case queryActionTypes.TOGGLE_GET_EXPERT_QUERIES_LOADING:
+			return {
+				...state,
+				getExpertQueriesLoading: payload,
+			};
 		case queryActionTypes.TOGGLE_DELETE_QUERY_LOADING:
 			return {
 				...state,
 				deleteQueryLoading: payload,
+			};
+		case queryActionTypes.TOGGLE_DELETE_EXPERT_QUERY_LOADING:
+			return {
+				...state,
+				deleteExpertQueryLoading: payload,
 			};
 
 		case queryActionTypes.SET_QUERIES:
 			return {
 				...state,
 				queries: payload,
+			};
+		case queryActionTypes.SET_EXPERT_QUERIES:
+			return {
+				...state,
+				expertQueries: payload.queries,
+				expertQueriesCount: payload.count,
 			};
 
 		default:

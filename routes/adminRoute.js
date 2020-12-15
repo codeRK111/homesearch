@@ -1,7 +1,7 @@
 const express = require('express');
 // const userController = require('./../controllers/userController');
 const authController = require('../controllers/adminController');
-
+const contactController = require('../controllers/contactController');
 const router = express.Router();
 
 router.get(
@@ -9,19 +9,23 @@ router.get(
 	authController.protect,
 	authController.getAdminInfo
 );
-
 router.post(
-	'/get-queries',
+	'/get-expert-queries',
 	authController.protect,
-	authController.getQueries
+	contactController.getContacts
 );
+router.post('/get-queries', authController.protect, authController.getQueries);
 
 router.get(
 	'/delete-query/:id',
 	authController.protect,
 	authController.deleteQuery
 );
-
+router.get(
+	'/delete-expert-query/:id',
+	authController.protect,
+	contactController.deleteQuery
+);
 
 router.post('/login', authController.login);
 router.post('/admin-profile-photo/:id', authController.addProfilePicture);
