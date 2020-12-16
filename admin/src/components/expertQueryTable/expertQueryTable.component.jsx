@@ -3,6 +3,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 import DeleteAlert from '../deleteAlert/deleteAlert.component';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -59,6 +60,7 @@ function CustomizedTables({
 	loading,
 	fetchData,
 }) {
+	const history = useHistory();
 	const [open, setOpen] = React.useState(false);
 	const [id, setId] = React.useState(null);
 	const [allQueries, setAllQueries] = React.useState([]);
@@ -80,6 +82,9 @@ function CustomizedTables({
 	const onDelete = (id) => (_) => {
 		setId(id);
 		setOpen(true);
+	};
+	const onEdit = (id) => (_) => {
+		history.push(`/update-expert-query/${id}`);
 	};
 
 	const handleDeleteQuery = (status, data) => {
@@ -148,8 +153,20 @@ function CustomizedTables({
 										<Box
 											display="flex"
 											alignItems="center"
-											justifyContent="space-around"
+											justifyContent="center"
 										>
+											<Tooltip title="Edit">
+												<Box
+													className="pointer"
+													onClick={onEdit(row.id)}
+												>
+													<EditIcon
+														style={{
+															fontSize: '1.2rem',
+														}}
+													/>
+												</Box>
+											</Tooltip>
 											<Tooltip title="Delete">
 												<Box
 													className="pointer"

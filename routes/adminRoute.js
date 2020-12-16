@@ -15,6 +15,21 @@ router.post(
 	contactController.getContacts
 );
 router.post('/get-queries', authController.protect, authController.getQueries);
+router.get(
+	'/get-expert-query-details/:id',
+	authController.protect,
+	contactController.getQueryDetails
+);
+router.patch(
+	'/update-expert-query-details/:id',
+	authController.protect,
+	contactController.updateQuery
+);
+router.post(
+	'/add-contact',
+	authController.protect,
+	contactController.addContactByAdmin
+);
 
 router.get(
 	'/delete-query/:id',

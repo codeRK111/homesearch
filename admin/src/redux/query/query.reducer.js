@@ -9,6 +9,9 @@ const initialState = {
 
 	getQueriesLoading: false,
 	getExpertQueriesLoading: false,
+	getExpertQueryDetailsLoading: false,
+	updateExpertQueryDetailsLoading: false,
+	addExpertQueryLoading: false,
 	deleteQueryLoading: false,
 	deleteExpertQueryLoading: false,
 
@@ -26,6 +29,21 @@ const propertyReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				getExpertQueriesLoading: payload,
+			};
+		case queryActionTypes.TOGGLE_GET_EXPERT_QUERY_DETAILS_LOADING:
+			return {
+				...state,
+				getExpertQueryDetailsLoading: payload,
+			};
+		case queryActionTypes.TOGGLE_UPDATE_EXPERT_QUERY_DETAILS_LOADING:
+			return {
+				...state,
+				updateExpertQueryDetailsLoading: payload,
+			};
+		case queryActionTypes.TOGGLE_ADD_EXPERT_QUERY_LOADING:
+			return {
+				...state,
+				addExpertQueryLoading: payload,
 			};
 		case queryActionTypes.TOGGLE_DELETE_QUERY_LOADING:
 			return {

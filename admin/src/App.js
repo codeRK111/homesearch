@@ -21,12 +21,13 @@ import Drawer from './components/drawer/drawer.component';
 import EditAdmin from './components/editAdmin/editAdmin.component';
 import EditBuilderPage from './pages/editBuilder/editBuilder.component';
 import EditCityPage from './pages/editCity/editCity.component';
+import EditExpertQuery from './pages/queries/expertQueriesEdit.component';
 import EditLocationPage from './pages/editLocation/editLocation.component';
 import EditProjectPage from './pages/editProject/editProject.component';
 import EditPropertyPage from './pages/editProperty/editProperty.component';
 import EditPropertySalePage from './pages/editProperty/editPropertySale.component';
 import EditUser from './components/editUser/editUser.component';
-import ExpertQuery from './pages/queries/expert-queries.component';
+import ExpertQuery from './pages/queries/expertQueries.component';
 import HomePage from './pages/home/home.component';
 import LocationsPage from './pages/getLocations/getLocations.componet';
 import LogIn from './pages/login/login.component';
@@ -40,11 +41,11 @@ import ViewCitiesPage from './pages/getCities/getCities.componet';
 
 // components
 
-
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const QueriesPageWithDrawer = Drawer(Query);
 const ExpertQueriesPageWithDrawer = Drawer(ExpertQuery);
+const EditExpertQueryPageWithDrawer = Drawer(EditExpertQuery);
 const UsersPageWithDrawer = Drawer(Users);
 const AddUsersPageWithDrawer = Drawer(AddUser);
 const EditUsersPageWithDrawer = Drawer(EditUser);
@@ -119,6 +120,16 @@ function App(props) {
 					render={() => (
 						<Protected
 							component={ExpertQueriesPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/update-expert-query/:id"
+					render={() => (
+						<Protected
+							component={EditExpertQueryPageWithDrawer}
 							{...props}
 						/>
 					)}

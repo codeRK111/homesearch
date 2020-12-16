@@ -10,9 +10,21 @@ export const selectGetExpertQueriesLoading = createSelector(
 	[selectProperty],
 	(c) => c.getExpertQueriesLoading
 );
+export const selectAddExpertQueryLoading = createSelector(
+	[selectProperty],
+	(c) => c.addExpertQueryLoading
+);
 export const selectGetExpertQueriesCount = createSelector(
 	[selectProperty],
 	(c) => c.expertQueriesCount
+);
+export const selectGetExpertQueryDetailsLoading = createSelector(
+	[selectProperty],
+	(c) => c.getExpertQueryDetailsLoading
+);
+export const selectUpdateExpertQueryDetailsLoading = createSelector(
+	[selectProperty],
+	(c) => c.updateExpertQueryDetailsLoading
 );
 export const selectDeleteQueryLoading = createSelector(
 	[selectProperty],

@@ -10,6 +10,18 @@ export const getExpertQueries = (payload) => ({
 	type: queryActionTypes.GET_EXPERT_QUERIES,
 	payload,
 });
+export const getExpertQueryDetails = (payload) => ({
+	type: queryActionTypes.GET_EXPERT_QUERY_DETAILS,
+	payload,
+});
+export const updateExpertQueryDetails = (payload) => ({
+	type: queryActionTypes.UPDATE_EXPERT_QUERY_DETAILS,
+	payload,
+});
+export const addExpertQuery = (payload) => ({
+	type: queryActionTypes.ADD_EXPERT_QUERY,
+	payload,
+});
 export const deleteQuery = (payload) => ({
 	type: queryActionTypes.DELETE_QUERY,
 	payload,
@@ -31,8 +43,20 @@ export const getQueriesLoading = (payload) => ({
 	type: queryActionTypes.TOGGLE_GET_QUERIES_LOADING,
 	payload,
 });
+export const getExpertQueryDetailsLoading = (payload) => ({
+	type: queryActionTypes.TOGGLE_GET_EXPERT_QUERY_DETAILS_LOADING,
+	payload,
+});
+export const updateExpertQueryDetailsLoading = (payload) => ({
+	type: queryActionTypes.TOGGLE_UPDATE_EXPERT_QUERY_DETAILS_LOADING,
+	payload,
+});
 export const getExpertQueriesLoading = (payload) => ({
 	type: queryActionTypes.TOGGLE_GET_EXPERT_QUERIES_LOADING,
+	payload,
+});
+export const addExpertQueryLoading = (payload) => ({
+	type: queryActionTypes.TOGGLE_ADD_EXPERT_QUERY_LOADING,
 	payload,
 });
 export const deleteQueryLoading = (payload) => ({

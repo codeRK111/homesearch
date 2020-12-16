@@ -44,6 +44,16 @@ exports.addContact = catchAsync(async (req, res, next) => {
 	}
 });
 
+exports.addContactByAdmin = catchAsync(async (req, res, next) => {
+	let contact = await Contact.create(req.body);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			contact,
+		},
+	});
+});
+
 exports.validateNumber = catchAsync(async (req, res, next) => {
 	const contact = await Contact.findOne({
 		phoneNumber: req.params.number,
@@ -68,6 +78,29 @@ exports.deleteQuery = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			queries,
+		},
+	});
+});
+exports.getQueryDetails = catchAsync(async (req, res, next) => {
+	const query = await Contact.findById(req.params.id);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			query,
+		},
+	});
+});
+exports.updateQuery = catchAsync(async (req, res, next) => {
+	const query = await Contact.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+		runValidators: true,
+	});
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			query,
 		},
 	});
 });
