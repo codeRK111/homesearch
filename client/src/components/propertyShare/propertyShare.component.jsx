@@ -9,13 +9,11 @@ import React from 'react';
 import TextField from '../formik/textField.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { capitalizeFirstLetter } from '../../utils/render.utils';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
+import { selectUser } from '../../redux/auth/auth.selectors';
 
-const initialValues = {
-	name: '',
-	email: '',
-	phoneNumber: '',
-};
 function getModalStyle() {
 	const top = 50;
 	const left = 50;
@@ -75,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 const PropertyShare = ({
+	user,
 	status,
 	handleClose,
 	data,
@@ -87,7 +86,11 @@ const PropertyShare = ({
 	const [modalStyle] = React.useState(getModalStyle);
 	const [copySuccess, setCopySuccess] = React.useState('Copy');
 	const textAreaRef = React.useRef(null);
-
+	const initialValues = {
+		name: user.name,
+		email: user.email,
+		phoneNumber: user.number,
+	};
 	const renderPostedBy = () => {
 		if (project || projectInfo) {
 			return 'Builder';
@@ -254,4 +257,8 @@ PropertyShare.propTypes = {
 	handleClose: PropTypes.func.isRequired,
 };
 
-export default PropertyShare;
+const mapStateToProps = createStructuredSelector({
+	user: selectUser,
+});
+
+export default connect(mapStateToProps)(PropertyShare);

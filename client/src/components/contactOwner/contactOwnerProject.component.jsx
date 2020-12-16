@@ -19,13 +19,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { queryOnProperty } from '../../redux/property/property.actions';
 import { selectQueryOnPropertyLoading } from '../../redux/property/property.selectors';
 
-const initialValues = {
-	name: '',
-	email: '',
-	phoneNumber: '',
-	message: '',
-};
-
 function getModalStyle() {
 	const top = 50;
 	const left = 50;
@@ -118,6 +111,12 @@ const PropertyShare = ({
 			.matches(/^\d{10}$/, 'Invalid Number')
 			.required('Phone number required'),
 	});
+	const initialValues = {
+		name: user.name,
+		email: user.email,
+		phoneNumber: user.number,
+		message: '',
+	};
 
 	const handleQuery = (status, data = null) => {
 		if (status === 'success') {

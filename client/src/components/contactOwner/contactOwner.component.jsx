@@ -9,13 +9,10 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from '../formik/textField.component';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
-
-const initialValues = {
-	name: '',
-	email: '',
-	phoneNumber: '',
-};
+import { selectUser } from '../../redux/auth/auth.selectors';
 
 function getModalStyle() {
 	const top = 50;
@@ -74,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 const PropertyShare = ({
+	user,
 	status,
 	handleClose,
 	title,
@@ -83,7 +81,11 @@ const PropertyShare = ({
 }) => {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
-
+	const initialValues = {
+		name: user.name,
+		email: user.email,
+		phoneNumber: user.number,
+	};
 	const validateForm = (values) => {
 		const error = {};
 		if (!values.name) {
@@ -187,4 +189,8 @@ PropertyShare.propTypes = {
 	id: PropTypes.string.isRequired,
 };
 
-export default PropertyShare;
+const mapStateToProps = createStructuredSelector({
+	user: selectUser,
+});
+
+export default connect(mapStateToProps)(PropertyShare);

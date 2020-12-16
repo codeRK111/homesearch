@@ -6,7 +6,6 @@ import {
 	selectAuthenticated,
 	selectUser,
 } from '../../redux/auth/auth.selectors';
-
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -18,13 +17,6 @@ import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
 import { queryOnProperty } from '../../redux/property/property.actions';
 import { selectQueryOnPropertyLoading } from '../../redux/property/property.selectors';
-
-const initialValues = {
-	name: '',
-	email: '',
-	phoneNumber: '',
-	message: '',
-};
 
 function getModalStyle() {
 	const top = 50;
@@ -117,7 +109,12 @@ const PropertyShare = ({
 			.matches(/^\d{10}$/, 'Invalid Number')
 			.required('Phone number required'),
 	});
-
+	const initialValues = {
+		name: user.name,
+		email: user.email,
+		phoneNumber: user.number,
+		message: '',
+	};
 	const handleQuery = (status, data = null) => {
 		if (status === 'success') {
 			setAsyncError(null);
