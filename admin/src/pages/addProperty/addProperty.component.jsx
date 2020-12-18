@@ -1,20 +1,12 @@
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Backdrop from '@material-ui/core/Backdrop';
-import Paper from '@material-ui/core/Paper';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import Hostel from './hostel.component';
-import Flat from './flat.component';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
 import {
-	selectAllStates,
-	selectLoading as stateLoading,
+	addProperty,
+	fetchAllPropertyResourcesStart,
+} from '../../redux/property/property.actions';
+import {
 	selectCityLoading as cityLoading,
 	selectFetchLocationLoading as locationLoading,
+	selectAllStates,
+	selectLoading as stateLoading,
 } from '../../redux/city/city.selector';
 import {
 	fetchAllStatesStart,
@@ -22,18 +14,27 @@ import {
 	fetchLocationssStart as fetchLocations,
 } from '../../redux/city/city.actions';
 import {
+	selectLoading as resourcesLoading,
 	selectAmenities,
 	selectFurnishes,
-	selectLoading as resourcesLoading,
 } from '../../redux/property/property.selector';
-import {
-	fetchAllPropertyResourcesStart,
-	addProperty,
-} from '../../redux/property/property.actions';
 import {
 	selectAllUsers,
 	selectLoading as userLoading,
 } from '../../redux/users/users.selector';
+
+import Backdrop from '@material-ui/core/Backdrop';
+import Box from '@material-ui/core/Box';
+import Flat from './flat.component';
+import Grid from '@material-ui/core/Grid';
+import Hostel from './hostel.component';
+import MuiAlert from '@material-ui/lab/Alert';
+import Paper from '@material-ui/core/Paper';
+import React from 'react';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import Snackbar from '@material-ui/core/Snackbar';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { fetchAllUsersSTart } from '../../redux/users/users.actions';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
@@ -64,6 +65,19 @@ const typeMenuItems = [
 		label: 'Pg',
 	},
 ];
+
+const renderTypes = (value) => {
+	switch (value) {
+		case 'flat':
+			return 'apartment';
+		case 'independenthouse':
+			return 'villa';
+		case 'hostel':
+			return 'hostel';
+		case 'pg':
+			return 'pg';
+	}
+};
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -273,16 +287,82 @@ const AddProperty = ({
 													furnishes={furnishes}
 													amenities={amenities}
 													onClick={onSubmit}
+													type={renderTypes(
+														property.type
+													)}
+													type={renderTypes(
+														property.type
+													)}
+													location={
+														locations.find(
+															(c) =>
+																c.id ===
+																selectedLocation
+														)
+															? locations.find(
+																	(c) =>
+																		c.id ===
+																		selectedLocation
+															  )['name']
+															: ''
+													}
+													city={
+														cities.find(
+															(c) =>
+																c.id ===
+																selectedCity
+														)
+															? cities.find(
+																	(c) =>
+																		c.id ===
+																		selectedCity
+															  )['name']
+															: ''
+													}
 												/>
 											);
 										case 'flat':
 										case 'independenthouse':
-										case 'guesthouse':
 											return (
 												<Flat
 													furnishes={furnishes}
 													amenities={amenities}
 													onClick={onSubmit}
+													renderVilla={
+														property.type ===
+														'independenthouse'
+															? true
+															: false
+													}
+													type={renderTypes(
+														property.type
+													)}
+													location={
+														locations.find(
+															(c) =>
+																c.id ===
+																selectedLocation
+														)
+															? locations.find(
+																	(c) =>
+																		c.id ===
+																		selectedLocation
+															  )['name']
+															: ''
+													}
+													city={
+														cities.find(
+															(c) =>
+																c.id ===
+																selectedCity
+														)
+															? cities.find(
+																	(c) =>
+																		c.id ===
+																		selectedCity
+															  )['name']
+															: ''
+													}
 												/>
 											);
 

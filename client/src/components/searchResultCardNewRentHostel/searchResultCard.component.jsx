@@ -293,7 +293,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 												className={classes.details}
 												onClick={handleContactOpen}
 											>
-												Get Owner Details
+												Get {capitalizeFirstLetter(property.postedBy)} Details
 											</button>
 										</Box>
 									</Box>

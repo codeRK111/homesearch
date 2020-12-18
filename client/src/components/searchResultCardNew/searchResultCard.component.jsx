@@ -214,7 +214,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 									</Box>
 								</Grid>
 								<Grid item xs={6} md={3}>
-									<Box mt="1rem">
+									<Box>
 										<Box className={classes.info}>
 											Property on floor
 										</Box>
@@ -224,7 +224,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 									</Box>
 								</Grid>
 								<Grid item xs={6} md={3}>
-									<Box mt="1rem">
+									<Box>
 										<Box className={classes.info}>
 											Furnishing status
 										</Box>

@@ -77,8 +77,9 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 	if (!req.body.userId) {
 		return next(new AppError('parameter <userId> is missing', 400));
 	}
-
+	const user = await User.findById(req.body.userId);
 	let type = req.body.type;
+	console.log(user.role);
 
 	switch (type) {
 		case 'flat':
@@ -97,7 +98,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				'securityDeposit',
 				'noOfFloors',
 				'furnished',
-				'externalAmenities',
+				'amenities',
 				'distanceSchool',
 				'distanceRailwayStation',
 				'distanceAirport',
@@ -105,6 +106,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				'distanceHospital',
 				'availableFor',
 				'availability',
+				'carParking',
 			];
 			const missingFields = [];
 			requiredFields.forEach((f) => {
@@ -157,7 +159,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				floor: req.body.floor,
 				noOfFloors: req.body.noOfFloors,
 				furnished: req.body.furnished,
-				externalAmenities: req.body.externalAmenities,
+				amenities: req.body.amenities,
 				distanceSchool: req.body.distanceSchool,
 				distanceRailwayStation: req.body.distanceRailwayStation,
 				distanceAirport: req.body.distanceAirport,
@@ -171,6 +173,8 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				availableFor: req.body.availableFor,
 				noticePeriod: req.body.noticePeriod,
 				restrictions: req.body.restrictions,
+				postedBy: user.role,
+				carParking: req.body.carParking,
 			};
 
 			if (req.body.furnished !== 'unfurnished') {
@@ -218,14 +222,14 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				'furnished',
 				'fooding',
 				'foodSchedule',
-				'otherAmenties',
-				'externalAmenities',
+				'amenities',
 				'distanceSchool',
 				'distanceRailwayStation',
 				'distanceAirport',
 				'distanceBusStop',
 				'distanceHospital',
 				'availability',
+				'roomType',
 			];
 			const missingHostelFields = [];
 			requiredHostelFields.forEach((f) => {
@@ -259,8 +263,6 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				furnished: req.body.furnished,
 				fooding: req.body.fooding,
 				foodSchedule: req.body.foodSchedule,
-				otherAmenties: req.body.otherAmenties,
-				externalAmenities: req.body.externalAmenities,
 				distanceSchool: req.body.distanceSchool,
 				distanceRailwayStation: req.body.distanceRailwayStation,
 				distanceAirport: req.body.distanceAirport,
@@ -272,6 +274,9 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				restrictions: req.body.restrictions,
 				createdBy: 'admin',
 				userId: req.body.userId,
+				postedBy: user.role,
+				amenities: req.body.amenities,
+				roomType: req.body.roomType,
 			};
 			if (req.body.furnished !== 'unfurnished') {
 				if (!req.body.furnishes) {
@@ -376,6 +381,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				restrictions: req.body.restrictions,
 				createdBy: 'admin',
 				userId: req.body.userId,
+				postedBy: user.role,
 			};
 			if (req.body.furnished !== 'unfurnished') {
 				if (!req.body.furnishes) {
@@ -465,6 +471,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				'availability',
 				'salePriceOver',
 				'carParking',
+				'landArea',
 			];
 			const missingFields = [];
 			requiredFields.forEach((f) => {
@@ -514,6 +521,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				createdBy: 'admin',
 				userId: req.body.userId,
 				salePriceOver: req.body.salePriceOver,
+				landArea: req.body.landArea,
 			};
 
 			if (req.body.furnished !== 'unfurnished') {
@@ -571,6 +579,10 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				'availability',
 				'salePriceOver',
 				'carParking',
+				'landArea',
+				'floor',
+				'noOfFloors',
+				'numberOfBedRooms',
 			];
 			const missingIndependentHouseFields = [];
 			requiredIndependentHouseFields.forEach((f) => {
@@ -619,6 +631,10 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				createdBy: 'admin',
 				userId: req.body.userId,
 				salePriceOver: req.body.salePriceOver,
+				landArea: req.body.landArea,
+				floor: req.body.floor,
+				noOfFloors: req.body.noOfFloors,
+				numberOfBedRooms: req.body.numberOfBedRooms,
 			};
 
 			if (req.body.furnished !== 'unfurnished') {
@@ -898,7 +914,10 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 		filter.status = 'active';
 		const totalDocs = await Project.countDocuments(filter);
 
-		const properties = await Project.find(filter).sort('-createdAt').skip(skip).limit(limit);
+		const properties = await Project.find(filter)
+			.sort('-createdAt')
+			.skip(skip)
+			.limit(limit);
 		res.status(200).json({
 			status: 'success',
 			count: totalDocs,
@@ -968,7 +987,10 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 		const totalDocs = await Property.countDocuments(filter);
 
 		console.log(JSON.stringify(filter));
-		const properties = await Property.find(filter).sort('-createdAt').skip(skip).limit(limit);
+		const properties = await Property.find(filter)
+			.sort('-createdAt')
+			.skip(skip)
+			.limit(limit);
 		res.status(200).json({
 			status: 'success',
 			count: totalDocs,
@@ -1013,7 +1035,7 @@ exports.addPropertyByUserForSale = catchAsync(async (req, res, next) => {
 				pricePerSqFt: req.body.pricePerSqFt,
 				legalClearance: req.body.legalClearance,
 				transactionType: req.body.transactionType,
-				landArea: req.body.landArea
+				landArea: req.body.landArea,
 			};
 			console.log(Object.keys(propertyFlat));
 			for (let i = 0; i < Object.keys(propertyFlat).length; i++) {
@@ -1526,7 +1548,7 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 			}
 
 			propertyFlat['createdBy'] = 'user';
-			propertyFlat['status'] = 'underScreening'
+			propertyFlat['status'] = 'underScreening';
 			propertyFlat['userId'] = req.user.id;
 			propertyFlat['postedBy'] = req.user.role;
 			propertyFlat['otherAmenties'] = req.body.otherAmenties
@@ -1623,7 +1645,7 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 			}
 
 			propertyHostel['createdBy'] = 'user';
-			propertyHostel['status'] = 'underScreening'
+			propertyHostel['status'] = 'underScreening';
 			propertyHostel['userId'] = req.user.id;
 			propertyHostel['postedBy'] = req.user.role;
 
@@ -1736,7 +1758,9 @@ exports.handlePropertyImage = catchAsync(async (req, res, next) => {
 });
 
 exports.getMyProperties = catchAsync(async (req, res, next) => {
-	const properties = await Property.find({ userId: req.user.id }).sort('-createdAt');
+	const properties = await Property.find({ userId: req.user.id }).sort(
+		'-createdAt'
+	);
 	//send response
 	res.send({
 		status: 'success',

@@ -1,13 +1,17 @@
-import React from 'react';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import RowTextField from '../../components/rowTextField/rowTextField.component';
-import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
-import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import React from 'react';
+import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
+import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import RowTextField from '../../components/rowTextField/rowTextField.component';
+import useStyles from './addProperty.styles';
+
+export const capitalizeFirstLetter = (string) =>
+	string.charAt(0).toUpperCase() + string.slice(1);
 
 const initialState = {
 	city: '',
@@ -26,10 +30,9 @@ const initialState = {
 	noticePeriod: '',
 	furnished: 'furnished',
 	furnishes: [],
-	fooding: '',
-	foodSchedule: '',
-	otherAmenties: [],
-	externalAmenities: [],
+	fooding: [],
+	foodSchedule: [],
+	amenities: [],
 	distanceSchool: '',
 	distanceRailwayStation: '',
 	distanceAirport: '',
@@ -39,6 +42,7 @@ const initialState = {
 	availableDate: new Date(),
 	description: '',
 	restrictions: '',
+	roomType: 'private',
 };
 
 const filter = (a) => {
@@ -64,38 +68,47 @@ const toiletMenuItems = [
 	},
 ];
 
-const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
-	console.log(amenities);
+const foodingData = [
+	{ value: 'veg', label: 'Veg' },
+	{ value: 'nonveg', label: 'Non-veg' },
+];
+const foodScheduleData = [
+	{ value: 'bedtea', label: 'Bd tea' },
+	{ value: 'breakfast', label: 'Breakfast' },
+	{ value: 'lunch', label: 'Lunch' },
+	{ value: 'dinner', label: 'Dinner' },
+];
+
+const Hostel = ({
+	onClick,
+	furnishes = [],
+	amenities = [],
+	type,
+	city,
+	location,
+}) => {
+	const classes = useStyles();
 	const [hostel, setHostel] = React.useState(initialState);
 	const [file, setFile] = React.useState([]);
+	const [images, setImages] = React.useState({
+		image1: null,
+		image2: null,
+		image3: null,
+		image4: null,
+	});
+	const handleImage = (e) => {
+		const { name, files } = e.target;
+		setImages((prevState) => ({
+			...prevState,
+			[name]: files[0],
+		}));
+	};
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		setHostel((prevState) => ({
 			...prevState,
 			[name]: value,
 		}));
-	};
-
-	const handleFileChange = (event) => {
-		const b = event.target;
-		setFile((prevState) => [...prevState, b.files[0]]);
-	};
-
-	const imageInput = (number) => {
-		const images = [];
-		for (let index = 0; index < number; index++) {
-			images.push(
-				<Box m="0.3rem" key={index}>
-					<input
-						type="file"
-						name=""
-						id=""
-						onChange={handleFileChange}
-					/>
-				</Box>
-			);
-		}
-		return images;
 	};
 
 	const handleCheckbox = (id, name) => (event) => {
@@ -111,12 +124,50 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 			}));
 		}
 	};
+	const handleCheckboxFooding = (id) => (event) => {
+		if (event.target.checked == true) {
+			setHostel((prevState) => ({
+				...prevState,
+				fooding: [...prevState.fooding, id],
+			}));
+		} else {
+			setHostel((prevState) => ({
+				...prevState,
+				fooding: prevState.fooding.filter((b) => b !== id),
+			}));
+		}
+	};
+
+	const handleCheckboxFoodSchedule = (id) => (event) => {
+		if (event.target.checked == true) {
+			setHostel((prevState) => ({
+				...prevState,
+				foodSchedule: [...prevState.foodSchedule, id],
+			}));
+		} else {
+			setHostel((prevState) => ({
+				...prevState,
+				foodSchedule: prevState.foodSchedule.filter((b) => b !== id),
+			}));
+		}
+	};
 
 	const buttonClick = () => {
 		let propertyDetails = filter(hostel);
-		if (file.length > 0) {
-			propertyDetails['image'] = file;
+		let i = 0;
+		const propertyImages = {};
+		Object.keys(images).forEach((c) => {
+			if (images[c]) {
+				propertyImages[c] = images[c];
+				i++;
+			}
+		});
+		if (i > 0) {
+			propertyDetails['propertyImages'] = propertyImages;
+		} else {
+			propertyDetails['propertyImages'] = null;
 		}
+
 		propertyDetails['toiletTypes'] = [
 			{
 				toiletType: 'indian',
@@ -127,6 +178,9 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				numbers: hostel.toiletWestern,
 			},
 		];
+		propertyDetails['title'] = `${capitalizeFirstLetter(
+			type
+		)}  in ${location},${city} `;
 
 		onClick(propertyDetails);
 	};
@@ -161,92 +215,9 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 					<FormControlLabel
 						control={
 							<Checkbox
-								checked={hostel.availableFor.includes(
-									'bachelors'
-								)}
+								checked={hostel.availableFor.includes('Family')}
 								onChange={handleCheckbox(
-									'bachelors',
-									'availableFor'
-								)}
-								name="checkedB"
-								color="primary"
-							/>
-						}
-						label={'Bachelors'}
-					/>
-				</Grid>
-				<Grid item xs={12} lg={6}>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={hostel.availableFor.includes('men')}
-								onChange={handleCheckbox('men', 'availableFor')}
-								name="checkedB"
-								color="primary"
-							/>
-						}
-						label={'Men'}
-					/>
-				</Grid>
-				<Grid item xs={12} lg={6}>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={hostel.availableFor.includes('women')}
-								onChange={handleCheckbox(
-									'women',
-									'availableFor'
-								)}
-								name="checkedB"
-								color="primary"
-							/>
-						}
-						label={'Women'}
-					/>
-				</Grid>
-				<Grid item xs={12} lg={6}>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={hostel.availableFor.includes(
-									'workingmen'
-								)}
-								onChange={handleCheckbox(
-									'workingmen',
-									'availableFor'
-								)}
-								name="checkedB"
-								color="primary"
-							/>
-						}
-						label={'Working men'}
-					/>
-				</Grid>
-				<Grid item xs={12} lg={6}>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={hostel.availableFor.includes(
-									'workingwomwn'
-								)}
-								onChange={handleCheckbox(
-									'workingwomwn',
-									'availableFor'
-								)}
-								name="checkedB"
-								color="primary"
-							/>
-						}
-						label={'Working womwn'}
-					/>
-				</Grid>
-				<Grid item xs={12} lg={6}>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={hostel.availableFor.includes('family')}
-								onChange={handleCheckbox(
-									'family',
+									'Family',
 									'availableFor'
 								)}
 								name="checkedB"
@@ -254,6 +225,78 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 							/>
 						}
 						label={'Family'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={hostel.availableFor.includes(
+									'Bachelors (Men)'
+								)}
+								onChange={handleCheckbox(
+									'Bachelors (Men)',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Bachelors (Men)'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={hostel.availableFor.includes(
+									'Bachelors (Women)'
+								)}
+								onChange={handleCheckbox(
+									'Bachelors (Women)',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Bachelors (Women)'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={hostel.availableFor.includes(
+									'Job holder (Men)'
+								)}
+								onChange={handleCheckbox(
+									'Job holder (Men)',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Job holder (Men)'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={hostel.availableFor.includes(
+									'Job holder (Women)'
+								)}
+								onChange={handleCheckbox(
+									'Job holder (Women)',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Job holder (Women)'}
 					/>
 				</Grid>
 			</RowChildren>
@@ -358,109 +401,83 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 					))}
 				</RowChildren>
 			)}
-			<RowSelect
-				heading="Fooding"
-				name="fooding"
-				label="Select"
-				value={hostel.fooding}
-				onChange={handleChange}
-				menuItems={[
-					{
-						label: 'Veg',
-						value: 'veg',
-					},
-					{
-						label: 'Non veg',
-						value: 'nonveg',
-					},
-					{
-						label: 'Both',
-						value: 'both',
-					},
-					{
-						label: 'None',
-						value: 'none',
-					},
-				]}
-			/>
-			<RowSelect
-				heading="Food Schedule"
-				name="foodSchedule"
-				label="Select"
-				value={hostel.foodSchedule}
-				onChange={handleChange}
-				menuItems={[
-					{
-						label: 'Bed Tea',
-						value: 'bedtea',
-					},
-					{
-						label: 'Breakfast',
-						value: 'breakfast',
-					},
-					{
-						label: 'Lunch',
-						value: 'lunch',
-					},
-					{
-						label: 'Evening Snacks',
-						value: 'evngsnacks',
-					},
-					{
-						label: 'Dinner',
-						value: 'dinner',
-					},
-				]}
-			/>
-			<RowChildren heading={'Other Amenities'}>
-				{amenities
-					.filter((b) => b.type === 'internal')
-					.map((c) => (
-						<Grid item xs={12} lg={6} key={c.id}>
-							<FormControlLabel
-								control={
-									<Checkbox
-										checked={hostel.otherAmenties.includes(
-											c.id
-										)}
-										onChange={handleCheckbox(
-											c.id,
-											'otherAmenties'
-										)}
-										name="checkedB"
-										color="primary"
-									/>
-								}
-								label={c.name}
-							/>
-						</Grid>
-					))}
-			</RowChildren>
-			<RowChildren heading={'External Amenities'}>
-				{amenities
-					.filter((b) => b.type === 'external')
-					.map((c) => (
-						<Grid item xs={12} lg={6} key={c.id}>
-							<FormControlLabel
-								control={
-									<Checkbox
-										checked={hostel.externalAmenities.includes(
-											c.id
-										)}
-										onChange={handleCheckbox(
-											c.id,
-											'externalAmenities'
-										)}
-										name="checkedB"
-										color="primary"
-									/>
-								}
-								label={c.name}
-							/>
-						</Grid>
-					))}
+
+			<RowChildren heading={'Fooding'}>
+				{foodingData.map((c) => (
+					<Grid item xs={12} lg={6} key={c.id}>
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={hostel.fooding.includes(c.value)}
+									onChange={handleCheckboxFooding(
+										c.value,
+										'furnishes'
+									)}
+									name="checkedB"
+									color="primary"
+								/>
+							}
+							label={c.label}
+						/>
+					</Grid>
+				))}
 			</RowChildren>
 
+			<RowChildren heading={'Food Schedule'}>
+				{foodScheduleData.map((c) => (
+					<Grid item xs={12} lg={6} key={c.id}>
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={hostel.foodSchedule.includes(
+										c.value
+									)}
+									onChange={handleCheckboxFoodSchedule(
+										c.value
+									)}
+									name="checkedB"
+									color="primary"
+								/>
+							}
+							label={c.label}
+						/>
+					</Grid>
+				))}
+			</RowChildren>
+			<RowChildren heading={'Amenities'}>
+				{amenities.map((c) => (
+					<Grid item xs={12} lg={6} key={c.id}>
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={hostel.amenities.includes(c.id)}
+									onChange={handleCheckbox(c.id, 'amenities')}
+									name="checkedB"
+									color="primary"
+								/>
+							}
+							label={c.name}
+						/>
+					</Grid>
+				))}
+			</RowChildren>
+			<RowSelect
+				heading="Room type"
+				name="roomType"
+				label="Select"
+				value={hostel.roomType}
+				onChange={handleChange}
+				menuItems={[
+					{
+						value: 'private',
+						label: 'Private',
+					},
+					{
+						value: 'shared',
+						label: 'Shared',
+					},
+				]}
+			/>
 			<RowTextField
 				heading="Distance from school"
 				name="distanceSchool"
@@ -535,14 +552,106 @@ const Hostel = ({ onClick, furnishes = [], amenities = [] }) => {
 				/>
 			)}
 			<Box p="0.8rem">
-				<Grid container>
-					<Grid item xs={12} md={12} lg={6}>
-						Image
+				<Box p="0.8rem">
+					<Grid container spacing={3}>
+						<Grid item xs={6} lg={3}>
+							<Box className={classes.imageWrapper}>
+								<img
+									src={
+										images.image1
+											? URL.createObjectURL(images.image1)
+											: require('../../assets/no-image.jpg')
+									}
+									alt="project"
+									srcset=""
+									className={classes.image}
+								/>
+							</Box>
+							<input
+								type="file"
+								name="image1"
+								onChange={handleImage}
+								id="pimage1"
+								className={classes.input}
+							/>
+							<label htmlFor="pimage1" className={classes.label}>
+								Upload
+							</label>
+						</Grid>
+						<Grid item xs={6} lg={3}>
+							<Box className={classes.imageWrapper}>
+								<img
+									src={
+										images.image2
+											? URL.createObjectURL(images.image2)
+											: require('../../assets/no-image.jpg')
+									}
+									alt="project"
+									srcset=""
+									className={classes.image}
+								/>
+							</Box>
+							<input
+								type="file"
+								name="image2"
+								onChange={handleImage}
+								id="pimage2"
+								className={classes.input}
+							/>
+							<label htmlFor="pimage2" className={classes.label}>
+								Upload
+							</label>
+						</Grid>
+						<Grid item xs={6} lg={3}>
+							<Box className={classes.imageWrapper}>
+								<img
+									src={
+										images.image3
+											? URL.createObjectURL(images.image3)
+											: require('../../assets/no-image.jpg')
+									}
+									alt="project"
+									srcset=""
+									className={classes.image}
+								/>
+							</Box>
+							<input
+								type="file"
+								name="image3"
+								onChange={handleImage}
+								id="pimage3"
+								className={classes.input}
+							/>
+							<label htmlFor="pimage3" className={classes.label}>
+								Upload
+							</label>
+						</Grid>
+						<Grid item xs={6} lg={3}>
+							<Box className={classes.imageWrapper}>
+								<img
+									src={
+										images.image4
+											? URL.createObjectURL(images.image4)
+											: require('../../assets/no-image.jpg')
+									}
+									alt="project"
+									srcset=""
+									className={classes.image}
+								/>
+							</Box>
+							<input
+								type="file"
+								name="image4"
+								onChange={handleImage}
+								id="pimage4"
+								className={classes.input}
+							/>
+							<label htmlFor="pimage4" className={classes.label}>
+								Upload
+							</label>
+						</Grid>
 					</Grid>
-					<Grid item xs={12} md={12} lg={6}>
-						{imageInput(3)}
-					</Grid>
-				</Grid>
+				</Box>
 			</Box>
 			<Box>
 				<Button

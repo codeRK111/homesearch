@@ -1,11 +1,13 @@
-import React from 'react';
-import { Formik, Form, FieldArray } from 'formik';
-import RowTextField from '../../components/rowTextField/rowFormikTextField.component';
-import RowSelect from '../../components/rowSelect/rowFormikSelect.component';
-import Checkbox from '../../components/checkbox/checkbox.component';
-import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
-import FormHeader from '../../components/formHeader/formHeader.component';
 import { Box, Button, Grid } from '@material-ui/core';
+import { FieldArray, Form, Formik } from 'formik';
+
+import Checkbox from '../../components/checkbox/checkbox.component';
+import FormHeader from '../../components/formHeader/formHeader.component';
+import React from 'react';
+import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
+import RowSelect from '../../components/rowSelect/rowFormikSelect.component';
+import RowTextField from '../../components/rowTextField/rowFormikTextField.component';
+import useStyles from '../addProperty/addProperty.styles';
 
 const legalClearance = [
 	{
@@ -192,6 +194,7 @@ const filter = (a) => {
 };
 
 const PropertySale = ({ state, onSubmit }) => {
+	const classes = useStyles();
 	const [initialValues, setInitialValues] = React.useState({
 		title: '',
 		description: '',
@@ -218,7 +221,74 @@ const PropertySale = ({ state, onSubmit }) => {
 		distanceBusStop: '',
 		distanceHospital: '',
 	});
-	const [file, setFile] = React.useState([]);
+	const [images, setImages] = React.useState({
+		image1: {
+			data: null,
+			type: 'local',
+		},
+		image2: {
+			data: null,
+			type: 'local',
+		},
+		image3: {
+			data: null,
+			type: 'local',
+		},
+		image4: {
+			data: null,
+			type: 'local',
+		},
+	});
+	const handleImage = (e) => {
+		const { name, files } = e.target;
+		setImages((prevState) => ({
+			...prevState,
+			[name]: {
+				type: 'local',
+				data: files[0],
+			},
+		}));
+	};
+
+	React.useEffect(() => {
+		const s = { ...state };
+		if (s.image1) {
+			setImages((prevState) => ({
+				...prevState,
+				image1: {
+					type: 'remote',
+					data: `/assets/properties/${s.image1}`,
+				},
+			}));
+		}
+		if (s.image2) {
+			setImages((prevState) => ({
+				...prevState,
+				image2: {
+					type: 'remote',
+					data: `/assets/properties/${s.image2}`,
+				},
+			}));
+		}
+		if (s.image3) {
+			setImages((prevState) => ({
+				...prevState,
+				image3: {
+					type: 'remote',
+					data: `/assets/properties/${s.image3}`,
+				},
+			}));
+		}
+		if (s.image4) {
+			setImages((prevState) => ({
+				...prevState,
+				image4: {
+					type: 'remote',
+					data: `/assets/properties/${s.image4}`,
+				},
+			}));
+		}
+	}, [state]);
 	React.useEffect(() => {
 		setInitialValues((prevState) => {
 			if (
@@ -238,37 +308,22 @@ const PropertySale = ({ state, onSubmit }) => {
 		});
 	}, [state]);
 
-	const handleFileChange = (event) => {
-		const b = event.target;
-		setFile((prevState) => [...prevState, b.files[0]]);
-	};
-
-	const imageInput = (number) => {
-		const images = [];
-		for (let index = 0; index < number; index++) {
-			images.push(
-				<Box m="0.3rem" key={index}>
-					<input
-						type="file"
-						name=""
-						id=""
-						onChange={handleFileChange}
-					/>
-				</Box>
-			);
-		}
-		return images;
-	};
-
 	const onSubmitForm = (data, { setSubmitting }) => {
 		setSubmitting(true);
 		let propertyDetails = filter(data);
-		if (file.length > 0) {
-			console.log('--------Img--------');
-			propertyDetails['image'] = file;
+		let i = 0;
+		const propertyImages = {};
+		Object.keys(images).forEach((c) => {
+			if (images[c]['type'] === 'local' && images[c]['data']) {
+				propertyImages[c] = images[c]['data'];
+				i++;
+			}
+		});
+		if (i > 0) {
+			propertyDetails['propertyImages'] = propertyImages;
+		} else {
+			propertyDetails['propertyImages'] = null;
 		}
-
-		console.log('------orop', propertyDetails);
 
 		onSubmit(propertyDetails);
 		setSubmitting(false);
@@ -479,12 +534,130 @@ const PropertySale = ({ state, onSubmit }) => {
 						label="In KM"
 					/>
 					<Box p="0.8rem">
-						<Grid container>
-							<Grid item xs={12} md={12} lg={4}>
-								Image
+						<Grid container spacing={3}>
+							<Grid item xs={6} lg={3}>
+								<Box className={classes.imageWrapper}>
+									<img
+										src={
+											images.image1.type === 'local'
+												? images.image1.data
+													? URL.createObjectURL(
+															images.image1.data
+													  )
+													: require('../../assets/no-image.jpg')
+												: images.image1.data
+										}
+										alt="project"
+										srcset=""
+										className={classes.image}
+									/>
+								</Box>
+								<input
+									type="file"
+									name="image1"
+									onChange={handleImage}
+									id="pimage1"
+									className={classes.input}
+								/>
+								<label
+									htmlFor="pimage1"
+									className={classes.label}
+								>
+									Upload
+								</label>
 							</Grid>
-							<Grid item xs={12} md={12} lg={8}>
-								{imageInput(3)}
+							<Grid item xs={6} lg={3}>
+								<Box className={classes.imageWrapper}>
+									<img
+										src={
+											images.image2.type === 'local'
+												? images.image2.data
+													? URL.createObjectURL(
+															images.image2.data
+													  )
+													: require('../../assets/no-image.jpg')
+												: images.image2.data
+										}
+										alt="project"
+										srcset=""
+										className={classes.image}
+									/>
+								</Box>
+								<input
+									type="file"
+									name="image2"
+									onChange={handleImage}
+									id="pimage2"
+									className={classes.input}
+								/>
+								<label
+									htmlFor="pimage2"
+									className={classes.label}
+								>
+									Upload
+								</label>
+							</Grid>
+							<Grid item xs={6} lg={3}>
+								<Box className={classes.imageWrapper}>
+									<img
+										src={
+											images.image3.type === 'local'
+												? images.image3.data
+													? URL.createObjectURL(
+															images.image3.data
+													  )
+													: require('../../assets/no-image.jpg')
+												: images.image3.data
+										}
+										alt="project"
+										srcset=""
+										className={classes.image}
+									/>
+								</Box>
+								<input
+									type="file"
+									name="image3"
+									onChange={handleImage}
+									id="pimage3"
+									className={classes.input}
+								/>
+								<label
+									htmlFor="pimage3"
+									className={classes.label}
+								>
+									Upload
+								</label>
+							</Grid>
+							<Grid item xs={6} lg={3}>
+								<Box className={classes.imageWrapper}>
+									<img
+										src={
+											images.image4.type === 'local'
+												? images.image4.data
+													? URL.createObjectURL(
+															images.image4.data
+													  )
+													: require('../../assets/no-image.jpg')
+												: images.image4.data
+										}
+										alt="project"
+										srcset=""
+										className={classes.image}
+									/>
+								</Box>
+								<input
+									type="file"
+									name="image4"
+									onChange={handleImage}
+									id="pimage4"
+									className={classes.input}
+								/>
+								<label
+									htmlFor="pimage4"
+									className={classes.label}
+								>
+									Upload
+								</label>
 							</Grid>
 						</Grid>
 					</Box>

@@ -10,6 +10,9 @@ router
 	.route('/handle-property-image/:id')
 	.patch(authController.protect, propertyController.handlePropertyImage);
 router
+	.route('/handle-property-image-by-admin/:id')
+	.patch(adminController.protect, propertyController.handlePropertyImage);
+router
 	.route('/furnishes')
 	.get(propertyController.getFurnishes)
 	.post(propertyController.addFurnish);

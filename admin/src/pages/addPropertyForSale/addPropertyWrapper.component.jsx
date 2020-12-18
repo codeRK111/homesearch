@@ -1,22 +1,18 @@
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Backdrop from '@material-ui/core/Backdrop';
-import Paper from '@material-ui/core/Paper';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import FormHeader from '../../components/formHeader/formHeader.component';
-import FlatSale from './addPropertySale.component';
-import LandSale from './addPropertySaleLand.component';
-import IndependentHouseSale from './addPropertySaleIndependentHouse.component';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
 import {
-	selectAllStates,
-	selectLoading as stateLoading,
+	selectAddPropertySaleLoading as addPropertyLoading,
+	selectLoading as resourcesLoading,
+	selectAmenities,
+	selectFurnishes,
+} from '../../redux/property/property.selector';
+import {
+	addPropertySale,
+	fetchAllPropertyResourcesStart,
+} from '../../redux/property/property.actions';
+import {
 	selectCityLoading as cityLoading,
 	selectFetchLocationLoading as locationLoading,
+	selectAllStates,
+	selectLoading as stateLoading,
 } from '../../redux/city/city.selector';
 import {
 	fetchAllStatesStart,
@@ -24,19 +20,24 @@ import {
 	fetchLocationssStart as fetchLocations,
 } from '../../redux/city/city.actions';
 import {
-	selectAmenities,
-	selectFurnishes,
-	selectLoading as resourcesLoading,
-	selectAddPropertySaleLoading as addPropertyLoading,
-} from '../../redux/property/property.selector';
-import {
-	fetchAllPropertyResourcesStart,
-	addPropertySale,
-} from '../../redux/property/property.actions';
-import {
 	selectAllUsers,
 	selectLoading as userLoading,
 } from '../../redux/users/users.selector';
+
+import Backdrop from '@material-ui/core/Backdrop';
+import Box from '@material-ui/core/Box';
+import FlatSale from './addPropertySale.component';
+import FormHeader from '../../components/formHeader/formHeader.component';
+import Grid from '@material-ui/core/Grid';
+import IndependentHouseSale from './addPropertySaleIndependentHouse.component';
+import LandSale from './addPropertySaleLand.component';
+import MuiAlert from '@material-ui/lab/Alert';
+import Paper from '@material-ui/core/Paper';
+import React from 'react';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import Snackbar from '@material-ui/core/Snackbar';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { fetchAllUsersSTart } from '../../redux/users/users.actions';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
@@ -179,6 +180,21 @@ const AddProperty = ({
 						furnishes={furnishes}
 						amenities={amenities}
 						onSubmit={onSubmit}
+						type={'apartment'}
+						location={
+							locations.find((c) => c.id === selectedLocation)
+								? locations.find(
+										(c) => c.id === selectedLocation
+								  )['name']
+								: ''
+						}
+						city={
+							cities.find((c) => c.id === selectedCity)
+								? cities.find((c) => c.id === selectedCity)[
+										'name'
+								  ]
+								: ''
+						}
 					/>
 				);
 			case 'land':
@@ -187,6 +203,20 @@ const AddProperty = ({
 						furnishes={furnishes}
 						amenities={amenities}
 						onSubmit={onSubmit}
+						location={
+							locations.find((c) => c.id === selectedLocation)
+								? locations.find(
+										(c) => c.id === selectedLocation
+								  )['name']
+								: ''
+						}
+						city={
+							cities.find((c) => c.id === selectedCity)
+								? cities.find((c) => c.id === selectedCity)[
+										'name'
+								  ]
+								: ''
+						}
 					/>
 				);
 			case 'independenthouse':
@@ -195,6 +225,21 @@ const AddProperty = ({
 						furnishes={furnishes}
 						amenities={amenities}
 						onSubmit={onSubmit}
+						type={'villa'}
+						location={
+							locations.find((c) => c.id === selectedLocation)
+								? locations.find(
+										(c) => c.id === selectedLocation
+								  )['name']
+								: ''
+						}
+						city={
+							cities.find((c) => c.id === selectedCity)
+								? cities.find((c) => c.id === selectedCity)[
+										'name'
+								  ]
+								: ''
+						}
 					/>
 				);
 

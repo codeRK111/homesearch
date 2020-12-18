@@ -52,9 +52,16 @@ const LoginForm = ({
 
 	const onSubmit = (values) => {
 		if (!otpSent) {
+			if(values.number){
+
 			sendOtp(handleSendOtp, values.number);
+			}
 		} else {
+			if(values.otp){
+
 			validateOtp(handleValidateOtp, values.number, values.otp);
+			}
+			
 		}
 	};
 

@@ -1,13 +1,14 @@
-import React from 'react';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import RowTextField from '../../components/rowTextField/rowTextField.component';
-import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
-import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import React from 'react';
+import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
+import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import RowTextField from '../../components/rowTextField/rowTextField.component';
+import useStyles from '../addProperty/addProperty.styles';
 
 const initialState = {
 	city: '',
@@ -29,7 +30,7 @@ const initialState = {
 	noticePeriod: '',
 	furnished: 'furnished',
 	furnishes: [],
-	externalAmenities: [],
+	amenities: [],
 	distanceSchool: '',
 	distanceRailwayStation: '',
 	distanceAirport: '',
@@ -39,6 +40,7 @@ const initialState = {
 	availableDate: new Date(),
 	restrictions: '',
 	description: '',
+	carParking: 'open',
 };
 
 const filter = (a) => {
@@ -72,7 +74,36 @@ const Flat = ({
 	loading = false,
 }) => {
 	console.log(amenities);
+	const classes = useStyles();
 	const [flat, setFlat] = React.useState(initialState);
+	const [images, setImages] = React.useState({
+		image1: {
+			data: null,
+			type: 'local',
+		},
+		image2: {
+			data: null,
+			type: 'local',
+		},
+		image3: {
+			data: null,
+			type: 'local',
+		},
+		image4: {
+			data: null,
+			type: 'local',
+		},
+	});
+	const handleImage = (e) => {
+		const { name, files } = e.target;
+		setImages((prevState) => ({
+			...prevState,
+			[name]: {
+				type: 'local',
+				data: files[0],
+			},
+		}));
+	};
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		setFlat((prevState) => ({
@@ -97,10 +128,43 @@ const Flat = ({
 				)['numbers'];
 			}
 			console.log(s);
-			s['externalAmenities'] = state['externalAmenities'].map(
-				(c) => c.id
-			);
 			s['furnishes'] = state['furnishes'].map((c) => c.id);
+			if (s.image1) {
+				setImages((prevState) => ({
+					...prevState,
+					image1: {
+						type: 'remote',
+						data: `/assets/properties/${s.image1}`,
+					},
+				}));
+			}
+			if (s.image2) {
+				setImages((prevState) => ({
+					...prevState,
+					image2: {
+						type: 'remote',
+						data: `/assets/properties/${s.image2}`,
+					},
+				}));
+			}
+			if (s.image3) {
+				setImages((prevState) => ({
+					...prevState,
+					image3: {
+						type: 'remote',
+						data: `/assets/properties/${s.image3}`,
+					},
+				}));
+			}
+			if (s.image4) {
+				setImages((prevState) => ({
+					...prevState,
+					image4: {
+						type: 'remote',
+						data: `/assets/properties/${s.image4}`,
+					},
+				}));
+			}
 			setFlat(s);
 		}
 	}, [loading, state]);
@@ -140,6 +204,20 @@ const Flat = ({
 			},
 		];
 
+		let i = 0;
+		const propertyImages = {};
+		Object.keys(images).forEach((c) => {
+			if (images[c]['type'] === 'local' && images[c]['data']) {
+				propertyImages[c] = images[c]['data'];
+				i++;
+			}
+		});
+		if (i > 0) {
+			propertyDetails['propertyImages'] = propertyImages;
+		} else {
+			propertyDetails['propertyImages'] = null;
+		}
+
 		onClick(propertyDetails);
 	};
 
@@ -167,92 +245,9 @@ const Flat = ({
 					<FormControlLabel
 						control={
 							<Checkbox
-								checked={flat.availableFor.includes(
-									'bachelors'
-								)}
+								checked={flat.availableFor.includes('Family')}
 								onChange={handleCheckbox(
-									'bachelors',
-									'availableFor'
-								)}
-								name="checkedB"
-								color="primary"
-							/>
-						}
-						label={'Bachelors'}
-					/>
-				</Grid>
-				<Grid item xs={12} lg={6}>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={flat.availableFor.includes('men')}
-								onChange={handleCheckbox('men', 'availableFor')}
-								name="checkedB"
-								color="primary"
-							/>
-						}
-						label={'Men'}
-					/>
-				</Grid>
-				<Grid item xs={12} lg={6}>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={flat.availableFor.includes('women')}
-								onChange={handleCheckbox(
-									'women',
-									'availableFor'
-								)}
-								name="checkedB"
-								color="primary"
-							/>
-						}
-						label={'Women'}
-					/>
-				</Grid>
-				<Grid item xs={12} lg={6}>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={flat.availableFor.includes(
-									'workingmen'
-								)}
-								onChange={handleCheckbox(
-									'workingmen',
-									'availableFor'
-								)}
-								name="checkedB"
-								color="primary"
-							/>
-						}
-						label={'Working men'}
-					/>
-				</Grid>
-				<Grid item xs={12} lg={6}>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={flat.availableFor.includes(
-									'workingwomwn'
-								)}
-								onChange={handleCheckbox(
-									'workingwomwn',
-									'availableFor'
-								)}
-								name="checkedB"
-								color="primary"
-							/>
-						}
-						label={'Working womwn'}
-					/>
-				</Grid>
-				<Grid item xs={12} lg={6}>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={flat.availableFor.includes('family')}
-								onChange={handleCheckbox(
-									'family',
+									'Family',
 									'availableFor'
 								)}
 								name="checkedB"
@@ -260,6 +255,78 @@ const Flat = ({
 							/>
 						}
 						label={'Family'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={flat.availableFor.includes(
+									'Bachelors (Men)'
+								)}
+								onChange={handleCheckbox(
+									'Bachelors (Men)',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Bachelors (Men)'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={flat.availableFor.includes(
+									'Bachelors (Women)'
+								)}
+								onChange={handleCheckbox(
+									'Bachelors (Women)',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Bachelors (Women)'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={flat.availableFor.includes(
+									'Job holder (Men)'
+								)}
+								onChange={handleCheckbox(
+									'Job holder (Men)',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Job holder (Men)'}
+					/>
+				</Grid>
+				<Grid item xs={12} lg={6}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={flat.availableFor.includes(
+									'Job holder (Women)'
+								)}
+								onChange={handleCheckbox(
+									'Job holder (Women)',
+									'availableFor'
+								)}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={'Job holder (Women)'}
 					/>
 				</Grid>
 			</RowChildren>
@@ -361,6 +428,23 @@ const Flat = ({
 				type="number"
 			/>
 			<RowSelect
+				heading="Car parking"
+				name="carParking"
+				label="Select"
+				value={flat.carParking}
+				onChange={handleChange}
+				menuItems={[
+					{
+						label: 'Open',
+						value: 'open',
+					},
+					{
+						label: 'Covered',
+						value: 'covered',
+					},
+				]}
+			/>
+			<RowSelect
 				heading="Furnished"
 				name="furnished"
 				label="Select"
@@ -381,6 +465,7 @@ const Flat = ({
 					},
 				]}
 			/>
+
 			{flat.furnished !== 'unfurnished' && (
 				<RowChildren heading={'Furnishes'}>
 					{furnishes.map((c) => (
@@ -405,29 +490,22 @@ const Flat = ({
 			)}
 
 			<RowChildren heading={'External Amenities'}>
-				{amenities
-					.filter((b) => b.type === 'external')
-					.map((c) => (
-						<Grid item xs={12} lg={6} key={c.id}>
-							{/* {`${c.name}`} */}
-							<FormControlLabel
-								control={
-									<Checkbox
-										checked={flat.externalAmenities.includes(
-											c.id
-										)}
-										onChange={handleCheckbox(
-											c.id,
-											'externalAmenities'
-										)}
-										name="checkedB"
-										color="primary"
-									/>
-								}
-								label={c.name}
-							/>
-						</Grid>
-					))}
+				{amenities.map((c) => (
+					<Grid item xs={12} lg={6} key={c.id}>
+						{/* {`${c.name}`} */}
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={flat.amenities.includes(c.id)}
+									onChange={handleCheckbox(c.id, 'amenities')}
+									name="checkedB"
+									color="primary"
+								/>
+							}
+							label={c.name}
+						/>
+					</Grid>
+				))}
 			</RowChildren>
 
 			<RowTextField
@@ -503,16 +581,122 @@ const Flat = ({
 					onChange={handleDatePicker}
 				/>
 			)}
-			{/* <Box p="0.8rem">
-				<Grid container>
-					<Grid item xs={12} md={12} lg={6}>
-						Image
+			<Box p="0.8rem">
+				<Grid container spacing={3}>
+					<Grid item xs={6} lg={3}>
+						<Box className={classes.imageWrapper}>
+							<img
+								src={
+									images.image1.type === 'local'
+										? images.image1.data
+											? URL.createObjectURL(
+													images.image1.data
+											  )
+											: require('../../assets/no-image.jpg')
+										: images.image1.data
+								}
+								alt="project"
+								srcset=""
+								className={classes.image}
+							/>
+						</Box>
+						<input
+							type="file"
+							name="image1"
+							onChange={handleImage}
+							id="pimage1"
+							className={classes.input}
+						/>
+						<label htmlFor="pimage1" className={classes.label}>
+							Upload
+						</label>
 					</Grid>
-					<Grid item xs={12} md={12} lg={6}>
-						 {imageInput(3)} 
+					<Grid item xs={6} lg={3}>
+						<Box className={classes.imageWrapper}>
+							<img
+								src={
+									images.image2.type === 'local'
+										? images.image2.data
+											? URL.createObjectURL(
+													images.image2.data
+											  )
+											: require('../../assets/no-image.jpg')
+										: images.image2.data
+								}
+								alt="project"
+								srcset=""
+								className={classes.image}
+							/>
+						</Box>
+						<input
+							type="file"
+							name="image2"
+							onChange={handleImage}
+							id="pimage2"
+							className={classes.input}
+						/>
+						<label htmlFor="pimage2" className={classes.label}>
+							Upload
+						</label>
+					</Grid>
+					<Grid item xs={6} lg={3}>
+						<Box className={classes.imageWrapper}>
+							<img
+								src={
+									images.image3.type === 'local'
+										? images.image3.data
+											? URL.createObjectURL(
+													images.image3.data
+											  )
+											: require('../../assets/no-image.jpg')
+										: images.image3.data
+								}
+								alt="project"
+								srcset=""
+								className={classes.image}
+							/>
+						</Box>
+						<input
+							type="file"
+							name="image3"
+							onChange={handleImage}
+							id="pimage3"
+							className={classes.input}
+						/>
+						<label htmlFor="pimage3" className={classes.label}>
+							Upload
+						</label>
+					</Grid>
+					<Grid item xs={6} lg={3}>
+						<Box className={classes.imageWrapper}>
+							<img
+								src={
+									images.image4.type === 'local'
+										? images.image4.data
+											? URL.createObjectURL(
+													images.image4.data
+											  )
+											: require('../../assets/no-image.jpg')
+										: images.image4.data
+								}
+								alt="project"
+								srcset=""
+								className={classes.image}
+							/>
+						</Box>
+						<input
+							type="file"
+							name="image4"
+							onChange={handleImage}
+							id="pimage4"
+							className={classes.input}
+						/>
+						<label htmlFor="pimage4" className={classes.label}>
+							Upload
+						</label>
 					</Grid>
 				</Grid>
-			</Box> */}
+			</Box>
 			<Box>
 				<Button
 					color="primary"

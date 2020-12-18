@@ -53,7 +53,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 	};
 
 	const handleContactClose = (_) => {
-		setContactOpen(false);
+		setContactOpen(false); 
 	};
 	const justifyContent = mobile
 		? { justifyContent: 'flex-start' }
@@ -76,7 +76,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 					<img
 						src={
 							property.image1
-								? property.image1
+								? `/assets/properties/${property.image1}`
 								: require('../../assets/no-image.jpg')
 						}
 						alt="property"
@@ -197,20 +197,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 										</Box>
 									</Box>
 								</Grid>
-								<Grid item xs={6} md={3}>
-									<Box>
-										<Box className={classes.info}>
-											Facing
-										</Box>
-										<Box>
-											<b>
-												{property.facing
-													? property.facing
-													: 'Not specified'}
-											</b>
-										</Box>
-									</Box>
-								</Grid>
+								
 								<Grid item xs={6} md={3}>
 									<Box>
 										<Box className={classes.info}>

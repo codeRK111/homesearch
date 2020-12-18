@@ -1,15 +1,16 @@
-import { takeLatest, put, call, all } from 'redux-saga/effects';
-import { PropertyActionTypes as types } from './property.types';
-import axios from 'axios';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import {
+	fetchPropertyDetailsLoading,
 	setAllAmenities,
 	setAllFurnishes,
-	toggleLoading,
 	setAllProperties,
-	fetchPropertyDetailsLoading,
-	updatePropertyLoading,
 	toggleAddPropertySaleLoading,
+	toggleLoading,
+	updatePropertyLoading,
 } from './property.actions';
+
+import axios from 'axios';
+import { PropertyActionTypes as types } from './property.types';
 
 function* getPropertyResources({ payload: { callback } }) {
 	try {
@@ -55,25 +56,42 @@ function* addProperty({ payload: { property, callback } }) {
 			yield put(toggleLoading(false));
 			console.log(responseData);
 		} else {
-			if (property.image) {
-				console.log(property.image);
-				var formData = new FormData();
-				for (let index = 0; index < property.image.length; index++) {
-					formData.append('image', property.image[index]);
+			if (property.propertyImages) {
+				console.log('object');
+				const formData = new FormData();
+				for (const key in property.propertyImages) {
+					formData.append(key, property.propertyImages[key]);
 				}
-				console.log(responseData);
-				const imageResponse = yield axios.post(
-					`/api/v1/properties/upload-images/${responseData.data.property.id}`,
+				yield axios.patch(
+					`/api/v1/properties/handle-property-image-by-admin/${responseData.data.property.id}`,
 					formData,
 					{
 						headers: {
 							'Content-Type': 'multipart/form-data',
+							Authorization: `Bearer ${jwt}`,
 						},
 					}
 				);
-
-				console.log(imageResponse.data);
 			}
+			// if (property.image) {
+			// 	console.log(property.image);
+			// 	var formData = new FormData();
+			// 	for (let index = 0; index < property.image.length; index++) {
+			// 		formData.append('image', property.image[index]);
+			// 	}
+			// 	console.log(responseData);
+			// 	const imageResponse = yield axios.post(
+			// 		`/api/v1/properties/upload-images/${responseData.data.property.id}`,
+			// 		formData,
+			// 		{
+			// 			headers: {
+			// 				'Content-Type': 'multipart/form-data',
+			// 			},
+			// 		}
+			// 	);
+
+			// 	console.log(imageResponse.data);
+			// }
 			yield put(toggleLoading(false));
 			callback('success');
 		}
@@ -105,24 +123,22 @@ function* addPropertySale({ payload: { property, callback } }) {
 			yield put(toggleAddPropertySaleLoading(false));
 			console.log(responseData);
 		} else {
-			if (property.image) {
-				console.log(property.image);
-				var formData = new FormData();
-				for (let index = 0; index < property.image.length; index++) {
-					formData.append('image', property.image[index]);
+			if (property.propertyImages) {
+				console.log('object');
+				const formData = new FormData();
+				for (const key in property.propertyImages) {
+					formData.append(key, property.propertyImages[key]);
 				}
-				console.log(responseData);
-				const imageResponse = yield axios.post(
-					`/api/v1/properties/upload-images/${responseData.data.property.id}`,
+				yield axios.patch(
+					`/api/v1/properties/handle-property-image-by-admin/${responseData.data.property.id}`,
 					formData,
 					{
 						headers: {
 							'Content-Type': 'multipart/form-data',
+							Authorization: `Bearer ${jwt}`,
 						},
 					}
 				);
-
-				console.log(imageResponse.data);
 			}
 			yield put(toggleAddPropertySaleLoading(false));
 			callback('success');
@@ -194,6 +210,7 @@ export function* updateProperty({
 	payload: { propertyId, property, callback },
 }) {
 	try {
+		const jwt = localStorage.getItem('JWT');
 		yield put(updatePropertyLoading(true));
 		let url = `/api/v1/properties/${propertyId}`;
 		let data = JSON.stringify(property);
@@ -208,24 +225,22 @@ export function* updateProperty({
 			yield put(updatePropertyLoading(false));
 			console.log(responseData);
 		} else {
-			if (property.image) {
-				console.log(property.image);
-				var formData = new FormData();
-				for (let index = 0; index < property.image.length; index++) {
-					formData.append('image', property.image[index]);
+			if (property.propertyImages) {
+				console.log('object');
+				const formData = new FormData();
+				for (const key in property.propertyImages) {
+					formData.append(key, property.propertyImages[key]);
 				}
-				console.log(responseData);
-				const imageResponse = yield axios.post(
-					`/api/v1/properties/upload-images/${responseData.data.property.id}`,
+				yield axios.patch(
+					`/api/v1/properties/handle-property-image-by-admin/${responseData.data.property.id}`,
 					formData,
 					{
 						headers: {
 							'Content-Type': 'multipart/form-data',
+							Authorization: `Bearer ${jwt}`,
 						},
 					}
 				);
-
-				console.log(imageResponse.data);
 			}
 			yield put(updatePropertyLoading(false));
 			yield put(setAllProperties(responseData.data.properties));
