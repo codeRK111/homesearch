@@ -327,6 +327,8 @@ const PropertyDetails = ({ project, properties, info }) => {
 									</Box>
 									<SearchFeedbackForm
 										feedback={feedback.positive}
+										propertyType="project"
+										propertyId={project.id}
 									/>
 								</Box>
 							)}

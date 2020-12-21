@@ -1,21 +1,28 @@
+import AppBar from '../appBar/appBar.component';
+import Button from '@material-ui/core/Button';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import MainListItem from './listitem.component';
+import MenuIcon from '@material-ui/icons/Menu';
 import React from 'react';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
-// import Badge from '@material-ui/core/Badge';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-// import NotificationsIcon from '@material-ui/icons/Notifications';
-import MainListItem from './listitem.component';
-import { withRouter } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import AppBar from '../appBar/appBar.component';
+import { withRouter } from 'react-router-dom';
+
+// import Badge from '@material-ui/core/Badge';
+
+
+// import NotificationsIcon from '@material-ui/icons/Notifications';
+
+
+
+
 
 // import './home.styles.scss';
 
@@ -70,7 +77,6 @@ const useStyles = makeStyles((theme) => {
 			width: drawerWidth,
 			backgroundColor: '#34495e',
 			color: '#ffffff',
-			overflowX: 'scroll',
 			msOverflowY: 'hidden',
 			height: '100vh',
 			transition: theme.transitions.create('width', {

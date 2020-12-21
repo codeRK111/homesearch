@@ -3,6 +3,7 @@ import { all, call } from 'redux-saga/effects';
 import { adminsSagas } from './admins/admins.saga';
 import { builderSagas } from './builder/builder.saga';
 import { citySagas } from './city/city.saga';
+import { feedbackSagas } from './feedback/feedback.sagas';
 import { projectSagas } from './project/project.saga';
 import { propertySagas } from './property/property.saga';
 import { querySagas } from './query/query.sagas';
@@ -19,5 +20,6 @@ export default function* () {
 		call(builderSagas),
 		call(projectSagas),
 		call(querySagas),
+		call(feedbackSagas),
 	]);
 }

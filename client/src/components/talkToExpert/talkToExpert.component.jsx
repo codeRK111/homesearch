@@ -19,12 +19,6 @@ import { createStructuredSelector } from 'reselect';
 import { selectUser } from '../../redux/auth/auth.selectors';
 import useStyles from './talkToExport.styles';
 
-const initialValues = {
-	name: '',
-	email: '',
-	phoneNumber: '',
-};
-
 const TalkToExport = ({
 	addLoading,
 	validateLoading,

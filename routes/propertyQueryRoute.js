@@ -3,6 +3,7 @@ const queryController = require('../controllers/propertyQueryController');
 const authController = require('../controllers/authController');
 
 const router = express.Router();
+router.route('/test-sms').get(queryController.sendTest);
 router
 	.route('/get-queries')
 	.post(authController.protect, queryController.getQueries);

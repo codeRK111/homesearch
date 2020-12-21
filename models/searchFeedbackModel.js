@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 
 const { Schema, model } = mongoose;
-const propertyQuerySchema = new Schema(
+const searchFeedBackSchema = new Schema(
 	{
 		userName: {
 			type: String,
@@ -31,69 +31,85 @@ const propertyQuerySchema = new Schema(
 		property: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Property',
+			validate: {
+				validator: function (value) {
+					if (this.propertyType === 'property') {
+						if (!value) {
+							return false;
+						}
+					}
+					return true;
+				},
+				message: 'Please give property details',
+			},
 		},
 		project: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Project',
+			validate: {
+				validator: function (value) {
+					if (this.propertyType === 'project') {
+						if (!value) {
+							return false;
+						}
+					}
+					return true;
+				},
+				message: 'Please give project details',
+			},
 		},
 		projectProperty: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'ProjectProperty',
-		},
-		owner: {
-			type: mongoose.Schema.ObjectId,
-			ref: 'User',
-		},
-		user: {
-			type: mongoose.Schema.ObjectId,
-			ref: 'User',
-			default: null,
+			validate: {
+				validator: function (value) {
+					if (this.propertyType === 'projectproperty') {
+						if (!value) {
+							return false;
+						}
+					}
+					return true;
+				},
+				message: 'Please give a property of the project',
+			},
 		},
 		message: {
 			type: String,
 		},
-
-		status: {
-			type: String,
-			enum: {
-				values: ['pending', 'resolved'],
-			},
-			default: 'pending',
+		searchResult: {
+			type: Boolean,
+			required: [true, 'Search result required'],
 		},
-		type: {
+		propertyType: {
 			type: String,
 			enum: {
 				values: ['property', 'project', 'projectproperty'],
 			},
 			default: 'property',
 		},
-		verified: {
-			type: Boolean,
-
-			default: false,
-		},
-		otp: {
+		category: {
 			type: String,
-			default: null,
-			select: false,
+			validate: {
+				validator: function (value) {
+					if (this.searchResult === false) {
+						if (!value) {
+							return false;
+						}
+					}
+					return true;
+				},
+				message: 'Please give a category',
+			},
 		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-propertyQuerySchema.pre(/^find/, function (next) {
+searchFeedBackSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'property',
 		select: 'id title',
 	})
-		.populate({
-			path: 'owner',
-			select: 'id name ',
-		})
-		.populate({
-			path: 'user',
-			select: 'id name',
-		})
 		.populate({
 			path: 'project',
 			select: 'id title ',
@@ -106,9 +122,9 @@ propertyQuerySchema.pre(/^find/, function (next) {
 	next();
 });
 
-propertyQuerySchema.methods.correctOtp = function (otp) {
+searchFeedBackSchema.methods.correctOtp = function (otp) {
 	return String(otp) === this.otp;
 };
 
-const propertyQuery = model('PropertyQuery', propertyQuerySchema);
-module.exports = propertyQuery;
+const searchFeedBack = model('SearchFeedback', searchFeedBackSchema);
+module.exports = searchFeedBack;

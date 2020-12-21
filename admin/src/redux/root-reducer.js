@@ -2,6 +2,7 @@ import adminReducer from './admins/admins.reducer';
 import builderReducer from './builder/builder.reducer';
 import cityReducer from './city/city.reducer';
 import { combineReducers } from 'redux';
+import feedbackReducer from './feedback/feedbacj.reducer';
 import projectReducer from './project/project.reducer';
 import propertyReducer from './property/property.reducer';
 import queryReducer from './query/query.reducer';
@@ -11,16 +12,6 @@ import usersReducer from './users/users.reducer';
 
 // import { persistReducer } from "redux-persist";
 // import storage from "redux-persist/lib/storage";
-
-
-
-
-
-
-
-
-
-
 
 // const persistConfig = {
 //     key: "root",
@@ -38,6 +29,7 @@ const rootReducer = combineReducers({
 	builder: builderReducer,
 	project: projectReducer,
 	query: queryReducer,
+	feedback: feedbackReducer,
 });
 
 // export default persistReducer(persistConfig, rootReducer);

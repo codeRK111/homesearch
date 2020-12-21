@@ -453,6 +453,8 @@ const DetailsPage = ({
 														onSubmit={showSnackbar(
 															'Feedback submitted'
 														)}
+														propertyType="property"
+														propertyId={data.id}
 													/>
 												</Box>
 											)}

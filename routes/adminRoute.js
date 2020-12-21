@@ -2,7 +2,22 @@ const express = require('express');
 // const userController = require('./../controllers/userController');
 const authController = require('../controllers/adminController');
 const contactController = require('../controllers/contactController');
+const feedbackController = require('../controllers/searchFeedbackController');
 const router = express.Router();
+
+// feedbacks
+router.post(
+	'/get-feedbacks',
+	authController.protect,
+	feedbackController.getFeedbacks
+);
+router
+	.route('/feedbacks')
+	.post(authController.protect, feedbackController.addSearchFeedback);
+router
+	.route('/feedbacks/:id')
+	.patch(authController.protect, feedbackController.updateFeedback)
+	.delete(authController.protect, feedbackController.deleteFeedback);
 
 router.get(
 	'/getAdminInfo',

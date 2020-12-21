@@ -1,9 +1,15 @@
 const AppError = require('./../utils/appError');
 const PropertyQuery = require('./../models/propertyQueryModel');
 const catchAsync = require('./../utils/catchAsync');
+const sendOtpMessage = require('../utils/sendOtp');
+const sms = require('./../utils/sms');
 
 exports.addQuery = catchAsync(async (req, res, next) => {
-	let query = await PropertyQuery.create(req.body);
+	const body = req.body;
+	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+	body.otp = randomNumber;
+	const otpResponse = await sendOtpMessage(body.number, randomNumber);
+	let query = await PropertyQuery.create(body);
 
 	res.status(200).json({
 		status: 'success',
@@ -11,6 +17,24 @@ exports.addQuery = catchAsync(async (req, res, next) => {
 			query,
 		},
 	});
+});
+
+exports.sendTest = catchAsync(async (req, res, next) => {
+	try {
+		const resp = await sms.sendQueryToOwner(
+			{
+				name: 'Rakesh Chandra Dash',
+				number: '9853325956',
+				property: 'Test Property',
+				price: '45000',
+				city: 'Bhubaneswar',
+			},
+			'8458059528'
+		);
+		console.log(resp.data);
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 exports.getQueries = catchAsync(async (req, res, next) => {
@@ -27,7 +51,7 @@ exports.getQueries = catchAsync(async (req, res, next) => {
 		filter['user'] = req.body.user;
 	}
 
-	console.log(filter)
+	console.log(filter);
 
 	const queries = await PropertyQuery.find(filter).skip(skip).limit(limit);
 

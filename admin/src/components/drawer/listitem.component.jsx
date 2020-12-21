@@ -21,6 +21,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import Divider from '@material-ui/core/Divider';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import FeedbackIcon from '@material-ui/icons/Feedback';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -369,6 +370,12 @@ const MainListItems = ({
 					<ChatIcon color="secondary" />
 				</ListItemIcon>
 				<ListItemText primary="Queries for experts" />
+			</ListItem>
+			<ListItem button onClick={onUsersClick('/feedbacks')}>
+				<ListItemIcon>
+					<FeedbackIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Search Feedbacks" />
 			</ListItem>
 		</div>
 	);
