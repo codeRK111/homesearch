@@ -37,7 +37,7 @@ import PropertySale from './pages/properties/propertiesSale.component';
 import Protected from './components/protected/protected.component';
 import Query from './pages/queries/queries.component';
 import React from 'react';
-import RequestsPage from './pages/requestPhotosPage/reqestPhotos.page';
+import RequestsPage from './pages/requestPhotosPage/requestPhotos.page';
 import Users from './pages/users/users.component';
 import ViewCitiesPage from './pages/getCities/getCities.componet';
 
