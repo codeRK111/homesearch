@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import contactReducer from './contact/contact.reducer';
 import feedbackReducer from './feedback/feedbacj.reducer';
 import propertyReducer from './property/property.reducer';
+import requestReducer from './request/request.reducer';
 
 const rootReducer = combineReducers({
 	city: cityReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
 	property: propertyReducer,
 	contact: contactReducer,
 	feedback: feedbackReducer,
+	request: requestReducer,
 });
 
 export default rootReducer;

@@ -5,6 +5,7 @@ import { citySagas } from './city/city.sagas';
 import { contactSagas } from './contact/contact.sagas';
 import { feedbackSagas } from './feedback/feedback.sagas';
 import { propertySagas } from './property/property.sagas';
+import { requestSagas } from './request/request.sagas';
 
 export default function* () {
 	yield all([
@@ -13,5 +14,6 @@ export default function* () {
 		call(propertySagas),
 		call(contactSagas),
 		call(feedbackSagas),
+		call(requestSagas),
 	]);
 }

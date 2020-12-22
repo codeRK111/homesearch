@@ -26,6 +26,7 @@ import PropertyImages from '../../components/propertyImages/propertyImages.compo
 import PropertyShare from '../../components/propertyShare/propertyShare.component';
 import React from 'react';
 import RentApartment from '../../components/similarProjects/rentApartment.component';
+import RequestPhoto from '../../components/requestPhoto/requestPhoto.component';
 import SearchFeedbackForm from '../../components/searchFeedbackForm/searchFeedBackForm.component';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import SimilarResale from '../../components/similarProjects/resale.component';
@@ -175,11 +176,12 @@ const DetailsPage = ({
 								)}`}
 								property={data}
 							/>
-							<ContactDialogue
+							<RequestPhoto
 								status={propertyActions === 'photo'}
 								handleClose={closePropertyActions}
-								title="Request photo"
 								name="photo"
+								type="property"
+								propertyId={data.id}
 							/>
 							<ContactDialogue
 								status={propertyActions === 'abuse'}

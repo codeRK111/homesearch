@@ -19,6 +19,7 @@ const builderRouter = require('./routes/builderRoute');
 const projectRoute = require('./routes/projectRoute');
 const queryRoute = require('./routes/propertyQueryRoute');
 const feedbackRoute = require('./routes/feedbackRoute');
+const requestPhotoRoute = require('./routes/requestPhotoRoute');
 const contactRoute = require('./routes/contactRoute');
 const AppError = require('./utils/appError');
 const cors = require('cors');
@@ -124,6 +125,7 @@ app.use('/api/v1/builders', builderRouter);
 app.use('/api/v1/projects', projectRoute);
 app.use('/api/v1/queries', queryRoute);
 app.use('/api/v1/feedbacks', feedbackRoute);
+app.use('/api/v1/requests', requestPhotoRoute);
 app.use('/api/v1/contacts', contactRoute);
 app.use('/api/v1/features', userFeatureRouter);
 

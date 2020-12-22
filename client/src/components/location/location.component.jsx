@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 		maxHeight: '200px',
 		overflowY: 'auto',
 		[theme.breakpoints.down('sm')]: {
-			height: '160px',
+			maxHeight: '160px',
 		},
 	},
 	locationWrapper: {
@@ -67,6 +67,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 	dropdownWrapper: {
 		width: '25vw',
+		[theme.breakpoints.down('sm')]: {
+			width: '75vw',
+			height: 'auto',
+		},
 	},
 }));
 

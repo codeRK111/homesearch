@@ -84,6 +84,7 @@ const MobileSearch = ({ currentTab }) => {
 		});
 
 		setAvailability(false);
+		setShowAvailability(false);
 		setPrice('');
 		setBedRooms(1);
 	}, [currentTab]);
@@ -469,7 +470,7 @@ const MobileSearch = ({ currentTab }) => {
 				)}
 			</Box>
 
-			<Box mt="2rem">
+			<Box mt="4rem">
 				<AppBar
 					position="fixed"
 					classes={{
@@ -481,6 +482,7 @@ const MobileSearch = ({ currentTab }) => {
 						color="primary"
 						variant="contained"
 						onClick={onSearch}
+						style={{ height: '9vh' }}
 					>
 						Search
 					</Button>

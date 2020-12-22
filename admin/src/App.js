@@ -37,6 +37,7 @@ import PropertySale from './pages/properties/propertiesSale.component';
 import Protected from './components/protected/protected.component';
 import Query from './pages/queries/queries.component';
 import React from 'react';
+import RequestsPage from './pages/requestPhotosPage/reqestPhotos.page';
 import Users from './pages/users/users.component';
 import ViewCitiesPage from './pages/getCities/getCities.componet';
 
@@ -45,6 +46,7 @@ import ViewCitiesPage from './pages/getCities/getCities.componet';
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const QueriesPageWithDrawer = Drawer(Query);
+const RequestsPageWithDrawer = Drawer(RequestsPage);
 const FeedbackPageWithDrawer = Drawer(Feedback);
 const ExpertQueriesPageWithDrawer = Drawer(ExpertQuery);
 const EditExpertQueryPageWithDrawer = Drawer(EditExpertQuery);
@@ -112,6 +114,16 @@ function App(props) {
 					render={() => (
 						<Protected
 							component={QueriesPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/photo-requests"
+					render={() => (
+						<Protected
+							component={RequestsPageWithDrawer}
 							{...props}
 						/>
 					)}

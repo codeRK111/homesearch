@@ -15,6 +15,7 @@ import {
 
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ApartmentIcon from '@material-ui/icons/Apartment';
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import ChatIcon from '@material-ui/icons/Chat';
 import Collapse from '@material-ui/core/Collapse';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -376,6 +377,12 @@ const MainListItems = ({
 					<FeedbackIcon color="secondary" />
 				</ListItemIcon>
 				<ListItemText primary="Search Feedbacks" />
+			</ListItem>
+			<ListItem button onClick={onUsersClick('/photo-requests')}>
+				<ListItemIcon>
+					<CameraAltIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Photo Requests" />
 			</ListItem>
 		</div>
 	);

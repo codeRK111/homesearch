@@ -3,7 +3,15 @@ const express = require('express');
 const authController = require('../controllers/adminController');
 const contactController = require('../controllers/contactController');
 const feedbackController = require('../controllers/searchFeedbackController');
+const requestController = require('../controllers/requestPhotoController');
 const router = express.Router();
+
+// requests
+router.post(
+	'/get-requests',
+	authController.protect,
+	requestController.getRequests
+);
 
 // feedbacks
 router.post(

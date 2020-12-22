@@ -126,8 +126,9 @@ const Header = ({ property }) => {
 						<Grid item xs={6}>
 							<Box>
 								<h3 className={classes.title}>
-									{' '}
-									{property.carpetArea} Sq.ft
+									{property.carpetArea
+										? `${property.carpetArea} Sq.ft`
+										: 'Not Specified'}
 								</h3>
 								<Box mt="0.3rem">(Carpet)</Box>
 							</Box>
