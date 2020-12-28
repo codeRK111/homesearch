@@ -15,24 +15,25 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fetchFeedbacks } from '../../redux/feedback/feedback.actions';
+import useStyles from './feedback.styles';
 
 // import * as Yup from 'yup';
 // import { Form, Formik } from 'formik';
 
-// import useStyles from './feedback.styles';
+
 // import Select from '../../components/formik/select.component';
 // import TextField from '../../components/formik/textField.component';
 
 const Queries = ({ loading, queries, fetchFeedbacks, count, feedbacks }) => {
-	// const classes = useStyles();
+	const classes = useStyles();
 	const [page, setPage] = React.useState(1);
-	// const [showAddQuery, setShowAddQuery] = React.useState(false);
+	const [showAddQuery, setShowAddQuery] = React.useState(false);
 	const handleChange = (event, value) => {
 		setPage(value);
 	};
-	// const handleSwitch = (event) => {
-	// 	setShowAddQuery(event.target.checked);
-	// };
+	const handleSwitch = (event) => {
+		setShowAddQuery(event.target.checked);
+	};
 	React.useEffect(() => {
 		const handleGetQueries = (status, data) => {
 			console.log('status', status);
@@ -44,7 +45,7 @@ const Queries = ({ loading, queries, fetchFeedbacks, count, feedbacks }) => {
 		<div>
 			<Box p="1rem">
 				<h3>Search Feedbacks</h3>
-				{/* <Box display="flex" justifyContent="center">
+				<Box display="flex" justifyContent="center">
 					<Box className={classes.addWrapper}>
 						<Box
 							display="flex"
@@ -64,7 +65,7 @@ const Queries = ({ loading, queries, fetchFeedbacks, count, feedbacks }) => {
 							/>
 						</Box>
 					</Box>
-				</Box> */}
+				</Box>
 				<QueryTable feedbacks={feedbacks} loading={loading} />
 				{!loading && (
 					<Box mt="1rem" display="flex" justifyContent="center">

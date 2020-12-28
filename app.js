@@ -112,6 +112,10 @@ app.use(
 // 	})
 // );
 app.use('/admin', express.static(path.join(__dirname, 'admin', 'build')));
+app.use(
+	'/homesearchIndia',
+	express.static(path.join(__dirname, 'homesearchIndia', 'build'))
+);
 app.use('/', express.static(path.join(__dirname, 'client', 'build')));
 
 // 3) ROUTES
