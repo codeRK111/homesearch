@@ -1,7 +1,10 @@
 import { createSelector } from 'reselect';
 
 const selectCitiy = (state) => state.city;
-
+export const selectSearchCityLoading = createSelector(
+	[selectCitiy],
+	(c) => c.searchCityLoading
+);
 export const selectAllCity = createSelector([selectCitiy], (c) => c.cities);
 export const selectAllStates = createSelector([selectCitiy], (c) => c.states);
 export const selectLoading = createSelector([selectCitiy], (c) => c.loading);

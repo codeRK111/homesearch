@@ -1,30 +1,43 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-// import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { signInStart } from '../../redux/user/user.actions';
-import { withRouter } from 'react-router-dom';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { Redirect } from 'react-router-dom';
-import { createStructuredSelector } from 'reselect';
 import './login.styles.scss';
+
 import {
 	selectIsAuthenticated,
 	selectLoading,
 } from '../../redux/user/user.selector';
-// import ReCAPTCHA from 'react-google-recaptcha';
-import axios from 'axios';
+
+import Avatar from '@material-ui/core/Avatar';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Container from '@material-ui/core/Container';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import MuiAlert from '@material-ui/lab/Alert';
 import OTPAlert from '../../components/otpAlert/otpAlert.component';
+import Paper from '@material-ui/core/Paper';
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import Snackbar from '@material-ui/core/Snackbar';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
+import { signInStart } from '../../redux/user/user.actions';
+import { withRouter } from 'react-router-dom';
+
+// import { withRouter } from 'react-router-dom';
+
+
+
+
+
+
+
+
+// import ReCAPTCHA from 'react-google-recaptcha';
+
+
 
 function Alert(props) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;

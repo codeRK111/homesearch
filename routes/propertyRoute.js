@@ -57,7 +57,7 @@ router
 
 router
 	.route('/')
-	.get(propertyController.getProperties)
+	.get(adminController.protect, propertyController.getProperties)
 	.post(adminController.protect, propertyController.addProperty);
 
 router

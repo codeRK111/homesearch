@@ -135,6 +135,7 @@ exports.addAdmin = catchAsync(async (req, res, next) => {
 	// name username email serialNumber password cities gender  status ableToSee type
 	const newAdmin = await Admin.create({
 		name: req.body.name,
+		city: req.body.city,
 		username: req.body.username,
 		email: req.body.email,
 		serialNumber: lastDocSerialNumber + 1,
@@ -143,8 +144,13 @@ exports.addAdmin = catchAsync(async (req, res, next) => {
 		gender: req.body.gender,
 		role: req.body.role,
 		status: req.body.status,
-		ableToSee: req.body.ableToSee,
 		type: req.body.type,
+		propertyAccess: req.body.propertyAccess,
+		userAccess: req.body.userAccess,
+		propertyActions: req.body.propertyActions,
+		userActions: req.body.userActions,
+		propertyAccessCities: req.body.propertyAccessCities,
+		userAccessCities: req.body.userAccessCities,
 	});
 
 	res.status(201).json({
@@ -227,7 +233,7 @@ exports.addProfilePicture = catchAsync(async (req, res, next) => {
 
 exports.getAdmin = catchAsync(async (req, res, next) => {
 	const admin = await Admin.findById(req.params.id).select(
-		'name username email serialNumber password cities gender  status ableToSee type photo'
+		'name username email serialNumber password cities gender  status ableToSee type photo city propertyAccess userAccess propertyActions userActions'
 	);
 
 	res.status(201).json({

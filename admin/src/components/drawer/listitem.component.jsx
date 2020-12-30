@@ -103,12 +103,14 @@ const MainListItems = ({
 				<ListItemText primary="Users" />
 			</ListItem>
 			<Divider color="#fff" />
-			<ListItem button onClick={onUsersClick('/admins')}>
-				<ListItemIcon>
-					<PeopleOutlineIcon color="secondary" />
-				</ListItemIcon>
-				<ListItemText primary="Admin / Staffs" />
-			</ListItem>
+			{selectCurrentUser.type === 'super-admin' && (
+				<ListItem button onClick={onUsersClick('/admins')}>
+					<ListItemIcon>
+						<PeopleOutlineIcon color="secondary" />
+					</ListItemIcon>
+					<ListItemText primary="Admin / Staffs" />
+				</ListItem>
+			)}
 			<Divider color="#fff" />
 			<ListItem button onClick={onUsersClick('/authentication')}>
 				<ListItemIcon>

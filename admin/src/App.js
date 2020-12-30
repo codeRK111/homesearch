@@ -29,6 +29,7 @@ import EditPropertySalePage from './pages/editProperty/editPropertySale.componen
 import EditUser from './components/editUser/editUser.component';
 import ExpertQuery from './pages/queries/expertQueries.component';
 import Feedback from './pages/feedback/feedback.component';
+import HOC from './components/hoc/hoc.component';
 import HomePage from './pages/home/home.component';
 import LocationsPage from './pages/getLocations/getLocations.componet';
 import LogIn from './pages/login/login.component';
@@ -38,6 +39,7 @@ import Protected from './components/protected/protected.component';
 import Query from './pages/queries/queries.component';
 import React from 'react';
 import RequestsPage from './pages/requestPhotosPage/requestPhotos.page';
+import TypeProtected from './components/typeProtected/typeProtected.component';
 import Users from './pages/users/users.component';
 import ViewCitiesPage from './pages/getCities/getCities.componet';
 
@@ -189,7 +191,12 @@ function App(props) {
 					exact
 					path="/admins"
 					render={() => (
-						<Protected component={AdminPageWithDrawer} {...props} />
+						<Protected
+							component={TypeProtected}
+							baseComponent={AdminPageWithDrawer}
+							type="super-admin"
+							{...props}
+						/>
 					)}
 				/>
 				<Route
@@ -197,7 +204,9 @@ function App(props) {
 					path="/admins/add"
 					render={() => (
 						<Protected
-							component={AddAdminPageWithDrawer}
+							component={TypeProtected}
+							baseComponent={AddAdminPageWithDrawer}
+							type="super-admin"
 							{...props}
 						/>
 					)}
@@ -207,7 +216,9 @@ function App(props) {
 					path="/admins/editAdmin/:id"
 					render={() => (
 						<Protected
-							component={EditAdminsPageWithDrawer}
+							component={TypeProtected}
+							baseComponent={EditAdminsPageWithDrawer}
+							type="super-admin"
 							{...props}
 						/>
 					)}
@@ -222,12 +233,22 @@ function App(props) {
 						/>
 					)}
 				/>
+
 				<Route
 					exact
 					path="/addProperty/rent"
 					render={() => (
 						<Protected
-							component={AddPropertyWithDrawer}
+							component={HOC(AddPropertyWithDrawer, [
+								{
+									type: 'propertyAccess',
+									value: 'rent',
+								},
+								{
+									type: 'propertyActions',
+									value: 'create',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -257,7 +278,12 @@ function App(props) {
 					path="/addProperty/sale"
 					render={() => (
 						<Protected
-							component={AddPropertyForSaleWithDrawer}
+							component={HOC(AddPropertyForSaleWithDrawer, [
+								{
+									type: 'propertyAccess',
+									value: 'sale',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -267,7 +293,12 @@ function App(props) {
 					path="/all-properties/:status"
 					render={() => (
 						<Protected
-							component={ActivePropertiesWithDrawer}
+							component={HOC(ActivePropertiesWithDrawer, [
+								{
+									type: 'propertyAccess',
+									value: 'rent',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -317,17 +348,28 @@ function App(props) {
 					path="/all-properties-sale/:status/:for"
 					render={() => (
 						<Protected
-							component={PropertySalePageWithDrawer}
+							component={HOC(PropertySalePageWithDrawer, [
+								{
+									type: 'propertyAccess',
+									value: 'rent',
+								},
+							])}
 							{...props}
 						/>
 					)}
 				/>
+
 				<Route
 					exact
 					path="/properties/editProperties/:id"
 					render={() => (
 						<Protected
-							component={EditPropertyPageWithDrawer}
+							component={HOC(EditPropertyPageWithDrawer, [
+								{
+									type: 'propertyAccess',
+									value: 'rent',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -337,7 +379,12 @@ function App(props) {
 					path="/properties/editPropertiesSale/:id"
 					render={() => (
 						<Protected
-							component={EditPropertySalePageWithDrawer}
+							component={HOC(EditPropertySalePageWithDrawer, [
+								{
+									type: 'propertyAccess',
+									value: 'rent',
+								},
+							])}
 							{...props}
 						/>
 					)}

@@ -1,5 +1,10 @@
 import { CityActionTypes } from './city.types';
 
+export const searchCities = (payload) => ({
+	type: CityActionTypes.SEARCH_CITY_START,
+	payload,
+});
+
 export const fetchAllStatesStart = () => ({
 	type: CityActionTypes.FETCH_ALL_STATES_START,
 });
@@ -139,4 +144,9 @@ export const deleteLocationStart = (callback) => ({
 export const deleteLocationLoading = (status) => ({
 	type: CityActionTypes.DELETE_LOCATION_LOADING,
 	payload: status,
+});
+
+export const searchCitiesLoading = (payload) => ({
+	type: CityActionTypes.SEARCH_CITY_LOADING,
+	payload,
 });

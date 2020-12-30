@@ -1,5 +1,10 @@
 {
-    "workbench.colorCustomizations": {
-        "editor.background": "#101214"
-    }
+    "workbench.colorTheme": "One Dark Pro",
+    "workbench.tree.indent": 10,
+    "zenMode.hideTabs": false,
+    "zenMode.hideLineNumbers": false,
+    "editor.cursorBlinking": "solid",
+    "editor.cursorStyle": "underline",
+    "editor.cursorWidth": 3,
+    "problems.showCurrentInStatus": true
 }

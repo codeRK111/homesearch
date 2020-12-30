@@ -153,6 +153,7 @@ function* addPropertySale({ payload: { property, callback } }) {
 
 export function* getProperties({ payload: { callback, param = {} } }) {
 	try {
+		const jwt = localStorage.getItem('JWT');
 		yield put(toggleLoading(true));
 		let a = Object.keys(param);
 		let b = '';
@@ -166,7 +167,14 @@ export function* getProperties({ payload: { callback, param = {} } }) {
 			}
 		});
 		let url = `/api/v1/properties${b}`;
-		const response = yield axios.get(url);
+		const response = yield axios({
+			method: 'get',
+			url,
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				Authorization: `Bearer ${jwt}`,
+			},
+		});
 		const responseData = response.data;
 		if (responseData.status === 'fail') {
 			yield put(toggleLoading(false));

@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	searchWrapper: {
 		display: 'flex',
-		border: '1px solid #cccccc',
+		// border: '1px solid #cccccc',
 		margin: '0.3rem',
 		alignItems: 'center',
 		boxSizing: 'border-box',
@@ -170,7 +170,7 @@ function MenuListComposition({
 									<input
 										type="text"
 										className={classes.input}
-										placeholder="Enter 4 letter 0f the city"
+										placeholder="Enter 4 letter of the city"
 										value={cityText}
 										onChange={handleChange}
 										onKeyUp={onKeyUp}

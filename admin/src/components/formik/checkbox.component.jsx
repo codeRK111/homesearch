@@ -11,17 +11,7 @@ const RowSelect = ({ formLabel, ...otherProps }) => {
 		<Box>
 			<Box mt="0.3rem">
 				<FormControlLabel
-					classes={{
-						label: classes.label,
-					}}
-					control={
-						<Checkbox
-							classes={{ root: classes.root }}
-							size="small"
-							{...field}
-							{...otherProps}
-						/>
-					}
+					control={<Checkbox {...field} {...otherProps} />}
 					label={formLabel}
 				/>
 			</Box>

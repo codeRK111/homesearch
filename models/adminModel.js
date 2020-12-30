@@ -72,6 +72,10 @@ const adminSchema = new Schema(
 				ref: 'City',
 			},
 		],
+		city: {
+				type: mongoose.Schema.ObjectId,
+				ref: 'City',
+			},
 		password: {
 			type: String,
 			minlength: [6, 'Minimum 6 characters required'],
@@ -100,6 +104,12 @@ const adminSchema = new Schema(
 			},
 			default: 'staff',
 		},
+		propertyAccess: {type: [String],required: [true,'Property access required']},
+		userAccess: {type: [String],required: [true,'User access required']},
+		propertyActions: {type: [String],required: [true,'Property action required']},
+		userActions: {type: [String],required: [true,'User action required']},
+		propertyAccessCities: {type: [{type: mongoose.Schema.ObjectId,ref: 'City'}],required: [true,'Property access cities required']},
+		userAccessCities: {type: [{type: mongoose.Schema.ObjectId,ref: 'City'}],required: [true,'User access cities required']},
 
 		passwordChangedAt: Date,
 		// passwordResetToken: String,
@@ -110,6 +120,23 @@ const adminSchema = new Schema(
 
 adminSchema.index({
 	name: 1,
+});
+
+adminSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'propertyAccessCities',
+		select: 'id name',
+	})
+		.populate({
+			path: 'userAccessCities',
+			select: 'id name ',
+		}).populate({
+			path: 'city',
+			select: 'id name ',
+		})
+		
+
+	next();
 });
 
 // QUERY MIDDLEWARE

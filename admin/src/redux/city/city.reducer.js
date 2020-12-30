@@ -5,6 +5,7 @@ const INITIAL_STATE = {
 	states: [],
 	loading: false,
 	error: null,
+	searchCityLoading: false,
 	cityLoading: false,
 	locationLoading: false,
 	fetchLocationLoading: false,
@@ -20,6 +21,11 @@ const INITIAL_STATE = {
 
 const cityReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case CityActionTypes.SEARCH_CITY_LOADING:
+			return {
+				...state,
+				searchCityLoading: action.payload,
+			};
 		case CityActionTypes.SET_ALL_STATES:
 			return {
 				...state,

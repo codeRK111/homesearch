@@ -6,6 +6,8 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const ProjectProperty = require('./../models/projectPropertyModule');
 const Project = require('./../models/projectModule');
+const Admin = require('./../models/adminModel');
+const mongoose = require('mongoose');
 
 var fs = require('fs');
 const path = require('path');
@@ -765,6 +767,15 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 
 exports.getProperties = catchAsync(async (req, res, next) => {
 	let query = { ...req.query };
+	console.log(req.admin.id);
+	const admin = await Admin.findById(req.admin.id);
+	console.log(admin);
+	const cities = admin.propertyAccessCities.map((c) =>
+		mongoose.Types.ObjectId(c.id)
+	);
+	query['city'] = { $in: cities };
+	query['for'] = { $in: admin.propertyAccess };
+	console.log(query);
 	const page = query.page * 1 || 1;
 	const limit = query.limit * 1 || 100;
 	const excludeFields = ['page', 'limit'];
