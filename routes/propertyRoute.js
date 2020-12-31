@@ -63,6 +63,6 @@ router
 router
 	.route('/:id')
 	.get(propertyController.getPropertyDetails)
-	.patch(propertyController.updateProperty);
+	.patch(adminController.protect, propertyController.updateProperty);
 
 module.exports = router;

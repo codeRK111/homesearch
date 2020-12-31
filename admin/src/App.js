@@ -258,7 +258,16 @@ function App(props) {
 					path="/addProject"
 					render={() => (
 						<Protected
-							component={AddProjectPageWithDrawer}
+							component={HOC(AddProjectPageWithDrawer, [
+								{
+									type: 'propertyAccess',
+									value: 'project',
+								},
+								{
+									type: 'propertyActions',
+									value: 'create',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -283,6 +292,10 @@ function App(props) {
 									type: 'propertyAccess',
 									value: 'sale',
 								},
+								{
+									type: 'propertyActions',
+									value: 'create',
+								},
 							])}
 							{...props}
 						/>
@@ -297,6 +310,10 @@ function App(props) {
 								{
 									type: 'propertyAccess',
 									value: 'rent',
+								},
+								{
+									type: 'propertyActions',
+									value: 'view',
 								},
 							])}
 							{...props}
@@ -313,12 +330,22 @@ function App(props) {
 						/>
 					)}
 				/>
+
 				<Route
 					exact
 					path="/projects/:status"
 					render={() => (
 						<Protected
-							component={ProjectPageWithDrawer}
+							component={HOC(ProjectPageWithDrawer, [
+								{
+									type: 'propertyAccess',
+									value: 'project',
+								},
+								{
+									type: 'propertyActions',
+									value: 'view',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -328,7 +355,16 @@ function App(props) {
 					path="/edit-projects/:id"
 					render={() => (
 						<Protected
-							component={EditProjectPageWithDrawer}
+							component={HOC(EditProjectPageWithDrawer, [
+								{
+									type: 'propertyAccess',
+									value: 'project',
+								},
+								{
+									type: 'propertyActions',
+									value: 'update',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -351,7 +387,11 @@ function App(props) {
 							component={HOC(PropertySalePageWithDrawer, [
 								{
 									type: 'propertyAccess',
-									value: 'rent',
+									value: 'sale',
+								},
+								{
+									type: 'propertyActions',
+									value: 'view',
 								},
 							])}
 							{...props}
@@ -369,6 +409,10 @@ function App(props) {
 									type: 'propertyAccess',
 									value: 'rent',
 								},
+								{
+									type: 'propertyActions',
+									value: 'update',
+								},
 							])}
 							{...props}
 						/>
@@ -382,7 +426,11 @@ function App(props) {
 							component={HOC(EditPropertySalePageWithDrawer, [
 								{
 									type: 'propertyAccess',
-									value: 'rent',
+									value: 'sale',
+								},
+								{
+									type: 'propertyActions',
+									value: 'update',
 								},
 							])}
 							{...props}

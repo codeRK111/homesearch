@@ -25,6 +25,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import React from 'react';
 import Select from '@material-ui/core/Select';
+import Skeleton from '../skeleton/detailsStack.component';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -108,6 +109,7 @@ const EditUser = ({
 			</IconButton>
 			<div>
 				<h3>Edit admin / staff</h3>
+				{userLoading && <Skeleton />}
 				<p>{fetchAdminError || updateError}</p>
 				{userInfo ? (
 					<EditAdmin

@@ -1,26 +1,29 @@
-import React from 'react';
-import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import { createStructuredSelector } from 'reselect';
-import { makeStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
 import {
-	selectAmenities,
-	selectFurnishes,
-	selectLoading as resourcesLoading,
-	selectPropertyDetailsLoading as propertyDetailsLoading,
-	selectUpdatePropertyLoading as updateLoading,
-} from '../../redux/property/property.selector';
-import {
-	fetchPropertyDetails,
 	fetchAllPropertyResourcesStart,
+	fetchPropertyDetails,
 	updateProperty,
 } from '../../redux/property/property.actions';
-import FlatEdit from './flat-edit.component';
-import HostelEdit from './hostel-edit.component';
-import { useHistory } from 'react-router-dom';
+import {
+	selectPropertyDetailsLoading as propertyDetailsLoading,
+	selectLoading as resourcesLoading,
+	selectAmenities,
+	selectFurnishes,
+	selectUpdatePropertyLoading as updateLoading,
+} from '../../redux/property/property.selector';
+
+import Alert from '@material-ui/lab/Alert';
 import Backdrop from '@material-ui/core/Backdrop';
+import Box from '@material-ui/core/Box';
+import FlatEdit from './flat-edit.component';
+import Grid from '@material-ui/core/Grid';
+import HostelEdit from './hostel-edit.component';
+import Paper from '@material-ui/core/Paper';
+import React from 'react';
+import Snackbar from '@material-ui/core/Snackbar';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -81,6 +84,15 @@ const EditProperty = ({
 	const [property, setProperty] = React.useState(initialState);
 	const [asyncError, setAsyncError] = React.useState('');
 	const [loading, setLoading] = React.useState(false);
+	const [open, setOpen] = React.useState(false);
+
+	const handleClose = (_, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+
+		setOpen(false);
+	};
 
 	React.useEffect(() => {
 		const handleFetchResources = (type, data) => {
@@ -113,9 +125,11 @@ const EditProperty = ({
 	const handleEditProperty = (type, data) => {
 		if (type === 'success') {
 			setAsyncError('');
+			setOpen(false);
 			history.push(`/all-properties/${property.status}`);
 		} else {
 			setAsyncError(data);
+			setOpen(true);
 		}
 	};
 
@@ -131,6 +145,11 @@ const EditProperty = ({
 
 	return (
 		<Box p="1rem">
+			<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+				<Alert onClose={handleClose} severity="error">
+					{asyncError}
+				</Alert>
+			</Snackbar>
 			<Backdrop
 				className={classes.backdrop}
 				open={loading}

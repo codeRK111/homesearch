@@ -224,7 +224,10 @@ export function* updateProperty({
 		let data = JSON.stringify(property);
 		const response = yield axios({
 			method: 'patch',
-			headers: { 'Content-Type': 'application/json' },
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`,
+			},
 			url,
 			data,
 		});

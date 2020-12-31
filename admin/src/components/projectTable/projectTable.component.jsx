@@ -1,25 +1,28 @@
+import {
+	selectFetchProjectsLoading as fetchProjectsLoading,
+	selectProjects,
+} from '../../redux/project/project.selector';
+
+import Backdrop from '@material-ui/core/Backdrop';
+import Box from '@material-ui/core/Box';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CustomSelect from './selectBuilder.component';
+import { Link } from 'react-router-dom';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Backdrop from '@material-ui/core/Backdrop';
-import Box from '@material-ui/core/Box';
-import CustomSelect from './selectBuilder.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import {
-	selectProjects,
-	selectFetchProjectsLoading as fetchProjectsLoading,
-} from '../../redux/project/project.selector';
 import { fetchProjects } from '../../redux/project/project.action';
-import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
+import { renderBoolean } from '../../utils/render.utils';
+import renderByRole from '../roleRender/roleRender.component';
 import { withRouter } from 'react-router-dom';
-import TablePagination from '@material-ui/core/TablePagination';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -106,6 +109,70 @@ function Orders({
 
 	const classes = useStyles();
 
+	const StatusHeadingNode = renderByRole(
+		<TableCell style={{ color: '#ffffff' }}>Status</TableCell>,
+		[
+			{
+				type: 'propertyActions',
+				value: 'status',
+			},
+		]
+	);
+	const UpdateHeadingNode = renderByRole(
+		<TableCell align="right" style={{ color: '#ffffff' }}>
+			Action
+		</TableCell>,
+		[
+			{
+				type: 'propertyActions',
+				value: 'update',
+			},
+		]
+	);
+
+	const renderStatusDataNode = (c) => {
+		const Comp = renderByRole(
+			<TableCell>
+				{/* {c.status} */}
+				<CustomSelect
+					value={c.status}
+					builderId={c.id}
+					items={[
+						{
+							label: 'active',
+							value: 'active',
+						},
+						{
+							label: 'inactive',
+							value: 'inactive',
+						},
+					]}
+				/>
+			</TableCell>,
+			[
+				{
+					type: 'propertyActions',
+					value: 'status',
+				},
+			]
+		);
+		return <Comp />;
+	};
+	const renderActionDataNode = (c) => {
+		const Comp = renderByRole(
+			<TableCell align="right">
+				<Link to={`/edit-projects/${c.id}`}>Edit</Link>
+			</TableCell>,
+			[
+				{
+					type: 'propertyActions',
+					value: 'update',
+				},
+			]
+		);
+		return <Comp />;
+	};
+
 	return (
 		<React.Fragment>
 			<Backdrop
@@ -172,15 +239,8 @@ function Orders({
 							<TableCell style={{ color: '#ffffff' }}>
 								Created At
 							</TableCell>
-							<TableCell style={{ color: '#ffffff' }}>
-								Status
-							</TableCell>
-							<TableCell
-								align="right"
-								style={{ color: '#ffffff' }}
-							>
-								Action
-							</TableCell>
+							<StatusHeadingNode />
+							<UpdateHeadingNode />
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -201,29 +261,8 @@ function Orders({
 										)}
 									</span>
 								</TableCell>
-								<TableCell>
-									{/* {c.status} */}
-									<CustomSelect
-										value={c.status}
-										builderId={c.id}
-										items={[
-											{
-												label: 'active',
-												value: 'active',
-											},
-											{
-												label: 'inactive',
-												value: 'inactive',
-											},
-										]}
-									/>
-								</TableCell>
-
-								<TableCell align="right">
-									<Link to={`/edit-projects/${c.id}`}>
-										Edit
-									</Link>
-								</TableCell>
+								{renderStatusDataNode(c)}
+								{renderActionDataNode(c)}
 							</TableRow>
 						))}
 					</TableBody>

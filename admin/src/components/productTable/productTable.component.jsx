@@ -1,24 +1,27 @@
+import {
+	selectLoading,
+	selectProperties,
+} from '../../redux/property/property.selector';
+
+import Backdrop from '@material-ui/core/Backdrop';
+import Box from '@material-ui/core/Box';
+import CustomSelect from './select.component';
+import { Link } from 'react-router-dom';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import RoleRender from '../roleRender/roleRender.component';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Backdrop from '@material-ui/core/Backdrop';
-import CustomSelect from './select.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import {
-	selectProperties,
-	selectLoading,
-} from '../../redux/property/property.selector';
 import { fetchProperties } from '../../redux/property/property.actions';
-import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
+import { selectCurrentUser } from '../../redux/user/user.selector';
 import { withRouter } from 'react-router-dom';
-import TablePagination from '@material-ui/core/TablePagination';
-import Box from '@material-ui/core/Box';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -51,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Orders({
 	fetchProperties,
+	currentUser,
 	loading,
 	match: {
 		params: { status },
@@ -85,6 +89,74 @@ function Orders({
 	}, [fetchProperties, status, page, rowsPerPage]);
 
 	const classes = useStyles();
+
+	const UpdateStatusHeadingNode = RoleRender(
+		<TableCell style={{ color: '#ffffff' }}>Update Status</TableCell>,
+		[
+			{
+				type: 'propertyActions',
+				value: 'status',
+			},
+		]
+	);
+	const ActionHeadingNode = RoleRender(
+		<TableCell align="right" style={{ color: '#ffffff' }}>
+			Action
+		</TableCell>,
+		[
+			{
+				type: 'propertyActions',
+				value: 'update',
+			},
+		]
+	);
+	const dataNode = (c) => {
+		const Node = RoleRender(
+			<TableCell>
+				<CustomSelect
+					value={c.status}
+					propertyId={c.id}
+					items={[
+						{
+							label: 'active',
+							value: 'active',
+						},
+						{
+							label: 'expired',
+							value: 'expired',
+						},
+						{
+							label: 'underScreening',
+							value: 'underScreening',
+						},
+					]}
+				/>
+			</TableCell>,
+			[
+				{
+					type: 'propertyActions',
+					value: 'status',
+				},
+			]
+		);
+
+		return <Node />;
+	};
+	const actionDataNode = (c) => {
+		const Node = RoleRender(
+			<TableCell align="right">
+				<Link to={`/properties/editProperties/${c.id}`}>Edit</Link>
+			</TableCell>,
+			[
+				{
+					type: 'propertyActions',
+					value: 'update',
+				},
+			]
+		);
+
+		return <Node />;
+	};
 
 	return (
 		<React.Fragment>
@@ -140,23 +212,17 @@ function Orders({
 								Location
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
-								Status
+								Current Status
 							</TableCell>
+
 							<TableCell style={{ color: '#ffffff' }}>
 								User
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
 								Posted on
 							</TableCell>
-							<TableCell style={{ color: '#ffffff' }}>
-								Status
-							</TableCell>
-							<TableCell
-								align="right"
-								style={{ color: '#ffffff' }}
-							>
-								Action
-							</TableCell>
+							<UpdateStatusHeadingNode />
+							<ActionHeadingNode />
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -178,33 +244,8 @@ function Orders({
 										)}
 									</span>
 								</TableCell>
-								<TableCell>
-									<CustomSelect
-										value={c.status}
-										propertyId={c.id}
-										items={[
-											{
-												label: 'active',
-												value: 'active',
-											},
-											{
-												label: 'expired',
-												value: 'expired',
-											},
-											{
-												label: 'underScreening',
-												value: 'underScreening',
-											},
-										]}
-									/>
-								</TableCell>
-								<TableCell align="right">
-									<Link
-										to={`/properties/editProperties/${c.id}`}
-									>
-										Edit
-									</Link>
-								</TableCell>
+								{dataNode(c)}
+								{actionDataNode(c)}
 							</TableRow>
 						))}
 					</TableBody>
@@ -222,6 +263,7 @@ function Orders({
 const mapStateToProps = createStructuredSelector({
 	allProperties: selectProperties,
 	loading: selectLoading,
+	currentUser: selectCurrentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
