@@ -21,7 +21,7 @@ const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
 					: [],
 			userAccessCities:
 				values.userAccessCities.length > 0
-					? values.propertyAccessCities.map((c) => c.id)
+					? values.userAccessCities.map((c) => c.id)
 					: [],
 		};
 		onSubmit(data);

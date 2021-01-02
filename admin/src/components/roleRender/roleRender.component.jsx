@@ -20,8 +20,10 @@ const HOC = (Component, info, OtherComponent = null) => {
 			console.log(element);
 			if (user[element.type].includes(element.value)) {
 				showMain = true;
+				console.log(`${element.type},${element.value}---true`);
 			} else {
 				showMain = false;
+				console.log(`${element.type},${element.value}---false`);
 				break;
 			}
 		}

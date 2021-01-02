@@ -43,6 +43,15 @@ const userSchema = new Schema(
 			},
 			default: null,
 		},
+		facebookId: {
+			type: String,
+			required: false, // only required for facebook users
+			index: {
+				unique: true,
+				partialFilterExpression: { googleId: { $type: 'string' } },
+			},
+			default: null,
+		},
 		city: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'City',
@@ -50,23 +59,23 @@ const userSchema = new Schema(
 		},
 		photo: {
 			type: String,
-			default: null
+			default: null,
 		},
 		image1: {
 			type: String,
-			default: null
+			default: null,
 		},
 		image2: {
 			type: String,
-			default: null
+			default: null,
 		},
 		image3: {
 			type: String,
-			default: null
+			default: null,
 		},
 		image4: {
 			type: String,
-			default: null
+			default: null,
 		},
 		photoStatus: {
 			type: String,
@@ -135,6 +144,11 @@ const userSchema = new Schema(
 			},
 			required: true,
 		},
+		adminId: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Admin',
+			default: null,
+		},
 		createdBy: {
 			type: String,
 		},
@@ -187,7 +201,7 @@ userSchema.pre('save', function (next) {
 		console.log(this.isNew);
 		return next();
 	}
-	console.log(this.isModified(this.password))
+	console.log(this.isModified(this.password));
 	console.log('updated');
 	this.passwordChangedAt = Date.now() - 1000;
 	next();

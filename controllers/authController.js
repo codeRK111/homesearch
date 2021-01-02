@@ -9,6 +9,8 @@ const ApiFeatures = require('../utils/apiFeatures');
 const sendEmail = require('../utils/mail');
 const path = require('path');
 var fs = require('fs');
+const Admin = require('../models/adminModel');
+const mongoose = require('mongoose');
 // const sendEmail = require('./../utils/email');
 
 const getUserEssentials = (user) => ({
@@ -576,7 +578,38 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 // -------------------------------------------Admin------------------------------------------------
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-	const features = new ApiFeatures(User.find(), req.query)
+	const query = {};
+	const admin = await Admin.findById(req.admin.id);
+	if (admin.type !== 'super-admin') {
+		const cities = admin.propertyAccessCities.map((c) =>
+			mongoose.Types.ObjectId(c.id)
+		);
+		query['city'] = { $in: cities };
+		const or = [];
+		if (admin.userAccess.includes('self-users')) {
+			or.push({ adminId: mongoose.Types.ObjectId(req.admin.id) });
+		}
+		if (admin.userAccess.includes('other-staff-users')) {
+			or.push({
+				registerThrough: { $in: ['staff', 'admin', 'super-admin'] },
+			});
+		}
+		if (admin.userAccess.includes('site-users')) {
+			or.push({ registerThrough: 'site login' });
+		}
+		if (admin.userAccess.includes('google-users')) {
+			or.push({ googleId: { $ne: null } });
+		}
+		if (admin.userAccess.includes('facebook-users')) {
+			or.push({ facebookId: { $ne: null } });
+		}
+
+		query['$or'] = or;
+	}
+
+	console.log(query);
+
+	const features = new ApiFeatures(User.find(query), req.query)
 		.filter()
 		.sort()
 		.limit()
@@ -592,6 +625,14 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
+	const admin = await Admin.findById(req.admin.id);
+
+	if (admin.type !== 'super-admin' && !admin.userActions.includes('update')) {
+		return next(new AppError('You have no permissions', 401));
+	}
+	if (admin.type !== 'super-admin' && !admin.userActions.includes('status')) {
+		delete req.body.status;
+	}
 	const user = [
 		'name',
 		'email',
@@ -666,10 +707,11 @@ exports.addUser = catchAsync(async (req, res, next) => {
 		status: req.body.status,
 		mobileStatus: req.body.mobileStatus,
 		createdBy: req.body.createdBy,
-		registerThrough: req.body.registerThrough,
+		registerThrough: req.admin.type,
 		registerVia: req.body.registerVia,
 		paymentStatus: req.body.paymentStatus,
 		numberVerified: req.body.numberVerified,
+		adminId: req.admin.id,
 	});
 
 	res.status(201).json({

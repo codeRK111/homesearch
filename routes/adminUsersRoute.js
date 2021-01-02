@@ -1,6 +1,7 @@
 const express = require('express');
 // const userController = require('./../controllers/userController');
 const authController = require('../controllers/authController');
+const adminController = require('../controllers/adminController');
 
 const router = express.Router();
 
@@ -17,11 +18,14 @@ router.post('/filter-user', authController.filterUsers);
 // router.patch('/updateMe', authController.protect, userController.updateMe);
 // router.delete('/deleteMe', authController.protect, userController.deleteMe);
 
-router.route('/').get(authController.getAllUsers).post(authController.addUser);
+router
+	.route('/')
+	.get(adminController.protect, authController.getAllUsers)
+	.post(adminController.protect, authController.addUser);
 router
 	.route('/:id')
 	.get(authController.getUser)
-	.patch(authController.updateUser)
+	.patch(adminController.protect, authController.updateUser)
 	.delete(authController.deleteUser);
 
 // router

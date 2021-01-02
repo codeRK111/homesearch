@@ -773,8 +773,11 @@ exports.getProperties = catchAsync(async (req, res, next) => {
 	const cities = admin.propertyAccessCities.map((c) =>
 		mongoose.Types.ObjectId(c.id)
 	);
-	query['city'] = { $in: cities };
-	query['for'] = { $in: admin.propertyAccess };
+	if (admin.type !== 'super-admin') {
+		query['city'] = { $in: cities };
+		query['for'] = { $in: admin.propertyAccess };
+	}
+
 	console.log(query);
 	const page = query.page * 1 || 1;
 	const limit = query.limit * 1 || 100;
@@ -833,7 +836,11 @@ exports.addPropertyImage = catchAsync(async (req, res, next) => {
 
 exports.updateProperty = catchAsync(async (req, res, next) => {
 	const admin = await Admin.findById(req.admin.id);
-	if (!admin.propertyActions.includes('update')) {
+
+	if (
+		admin.type !== 'super-admin' &&
+		!admin.propertyActions.includes('update')
+	) {
 		return next(new AppError('You have no permissions', 401));
 	}
 	const property = await Property.findByIdAndUpdate(req.params.id, req.body, {

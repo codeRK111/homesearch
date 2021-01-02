@@ -1,32 +1,33 @@
-import React from 'react';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { green, red } from '@material-ui/core/colors';
-import Tooltip from '@material-ui/core/Tooltip';
-import AlertDialogue from '../alertDialogue/alertDialogue.component';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import {
-	selectAllUsers,
-	selectLoading,
-} from '../../redux/users/users.selector';
 import {
 	fetchAllUsersSTart,
 	removeUser,
 	toggleUserInfo,
 } from '../../redux/users/users.actions';
+import { green, red } from '@material-ui/core/colors';
+import {
+	selectAllUsers,
+	selectLoading,
+} from '../../redux/users/users.selector';
+
+import AlertDialogue from '../alertDialogue/alertDialogue.component';
 import Box from '@material-ui/core/Box';
-import { useHistory } from 'react-router-dom';
-import moment from 'moment';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CustomSelect from './select.component';
+import EditIcon from '@material-ui/icons/Edit';
+import Link from '@material-ui/core/Link';
+import React from 'react';
+import RenderByRole from '../roleRender/roleRender.component';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
+import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 		cursor: 'pointer',
 	},
 	tableWrapper: {
-		overflowX: 'scroll',
+		overflowX: 'auto',
 	},
 }));
 
@@ -100,6 +101,108 @@ function Orders({
 		console.log('object');
 		removeUser(userId, handleAlertClose);
 	};
+
+	const ActionHeadingNode = RenderByRole(
+		<TableCell align="right" style={{ color: '#ffffff' }}>
+			Action
+		</TableCell>,
+		[
+			{
+				type: 'userActions',
+				value: 'update',
+			},
+		]
+	);
+
+	const StatusNode = (row) => {
+		const Comp = RenderByRole(
+			<TableCell
+				width="6%"
+				className="pointer"
+				onClick={toggleStatus(row.id, row.status)}
+			>
+				<div>
+					<Tooltip title="Toggle" placement="left-start">
+						<Box>{row.status}</Box>
+					</Tooltip>
+				</div>
+			</TableCell>,
+			[
+				{
+					type: 'userActions',
+					value: 'status',
+				},
+			],
+			<TableCell width="6%" className="pointer">
+				<Box>{row.status}</Box>
+			</TableCell>
+		);
+
+		return <Comp />;
+	};
+	const mobileStatusNode = (row) => {
+		const Comp = RenderByRole(
+			<TableCell width="6%">
+				<CustomSelect
+					value={row.mobileStatus}
+					userId={row.id}
+					items={[
+						{
+							label: 'Public',
+							value: 'public',
+						},
+						{
+							label: 'Private',
+							value: 'private',
+						},
+						{
+							label: 'Semi Private',
+							value: 'semi-private',
+						},
+					]}
+				/>
+			</TableCell>,
+			[
+				{
+					type: 'userActions',
+					value: 'update',
+				},
+			],
+			<TableCell width="6%" className="pointer">
+				<Box>{row.mobileStatus}</Box>
+			</TableCell>
+		);
+
+		return <Comp />;
+	};
+	const ActionDataNode = (row) => {
+		const Comp = RenderByRole(
+			<TableCell align="right" width="6%">
+				<Box display="flex" justifyContent="flex-end">
+					<div className={classes.iconButton}>
+						<Tooltip title="Edit" placement="left-start">
+							<EditIcon
+								style={{
+									color: green[500],
+								}}
+								onClick={() =>
+									history.push(`/users/editUser/${row.id}`)
+								}
+							/>
+						</Tooltip>
+					</div>
+				</Box>
+			</TableCell>,
+			[
+				{
+					type: 'userActions',
+					value: 'update',
+				},
+			]
+		);
+
+		return <Comp />;
+	};
 	return (
 		<React.Fragment>
 			<AlertDialogue
@@ -146,7 +249,7 @@ function Orders({
 								User Status
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
-								Paid / Unpaid
+								Payment Status
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
 								Register Via
@@ -157,12 +260,7 @@ function Orders({
 							<TableCell style={{ color: '#ffffff' }}>
 								Role
 							</TableCell>
-							<TableCell
-								align="right"
-								style={{ color: '#ffffff' }}
-							>
-								Action
-							</TableCell>
+							<ActionHeadingNode />
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -199,43 +297,11 @@ function Orders({
 										</span>
 									)}
 								</TableCell>
-								<TableCell width="6%">
-									<CustomSelect
-										value={row.mobileStatus}
-										userId={row.id}
-										items={[
-											{
-												label: 'Public',
-												value: 'public',
-											},
-											{
-												label: 'Private',
-												value: 'private',
-											},
-											{
-												label: 'Semi Private',
-												value: 'semi-private',
-											},
-										]}
-									/>
-								</TableCell>
+								{mobileStatusNode(row)}
 								<TableCell width="6%">
 									{row.photoStatus}
 								</TableCell>
-								<TableCell
-									width="6%"
-									className="pointer"
-									onClick={toggleStatus(row.id, row.status)}
-								>
-									<div>
-										<Tooltip
-											title="Toggle"
-											placement="left-start"
-										>
-											<Box>{row.status}</Box>
-										</Tooltip>
-									</div>
-								</TableCell>
+								{StatusNode(row)}
 								<TableCell width="6%">
 									{row.paymentStatus}
 								</TableCell>
@@ -247,43 +313,7 @@ function Orders({
 								</TableCell>
 								<TableCell width="6%">{row.gender}</TableCell>
 								<TableCell width="6%">{row.role}</TableCell>
-								<TableCell align="right" width="6%">
-									<Box
-										display="flex"
-										justifyContent="flex-end"
-									>
-										<div className={classes.iconButton}>
-											<Tooltip
-												title="Edit"
-												placement="left-start"
-											>
-												<EditIcon
-													style={{
-														color: green[500],
-													}}
-													onClick={() =>
-														history.push(
-															`/users/editUser/${row.id}`
-														)
-													}
-												/>
-											</Tooltip>
-										</div>
-										{/* <div className={classes.iconButton}>
-											<Tooltip
-												title="Delete"
-												placement="left-start"
-											>
-												<DeleteIcon
-													style={{ color: red[500] }}
-													onClick={handleClickAlertOpen(
-														row.id
-													)}
-												/>
-											</Tooltip>
-										</div> */}
-									</Box>
-								</TableCell>
+								{ActionDataNode(row)}
 							</TableRow>
 						))}
 					</TableBody>

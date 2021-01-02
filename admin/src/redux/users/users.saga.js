@@ -1,26 +1,32 @@
-import { takeLatest, put, call, all, takeEvery } from 'redux-saga/effects';
-import { UserActionTypes as types } from './users.types';
-import axios from 'axios';
 import {
-	setAllUsers,
-	// setSelectedUser,
-	fetchAllUsersSTart,
-	// setError,
-	toggleLoading,
-	addUserSuccess,
 	addUserFailed,
+	addUserSuccess,
+	fetchAllUsersSTart,
+	setAllUsers,
 	toggleAddUserLoading,
+	toggleLoading,
 } from './users.actions';
+import { all, call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+
+import axios from 'axios';
+import { UserActionTypes as types } from './users.types';
 
 function* getAllUsers({ payload = null }) {
 	try {
+		const jwt = localStorage.getItem('JWT');
 		yield put(toggleLoading());
-
 		let url = `/api/v1/admin/users?sort=serialNumber&fields=number,googleId,photoStatus,createdAt,status,paymentStatus,numberVerified,name,email,serialNumber,gender,role,mobileStatus,registerThrough,registerVia,photo,createdBy${
 			payload && '&role=' + payload
 		}`;
 
-		const response = yield axios(url);
+		const response = yield axios({
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`,
+			},
+			url,
+		});
 		const responseData = response.data;
 		if (responseData.status === 'fail') {
 			yield put(toggleLoading());
@@ -69,14 +75,17 @@ function* filterUsers({ payload: { filterObj } }) {
 
 function* updateUser({ payload: { user, userId, callback } }) {
 	try {
-		console.log({ user, userId, callback });
+		const jwt = localStorage.getItem('JWT');
 		yield put(toggleLoading());
 		let data = JSON.stringify(user);
 		let url = `/api/v1/admin/users/${userId}`;
 
 		const response = yield axios({
 			method: 'patch',
-			headers: { 'Content-Type': 'application/json' },
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`,
+			},
 			url,
 			data,
 		});
@@ -115,13 +124,17 @@ function* updateUser({ payload: { user, userId, callback } }) {
 
 function* toggleStatus({ payload: { user, userId, callback } }) {
 	try {
+		const jwt = localStorage.getItem('JWT');
 		yield put(toggleLoading());
 		let data = JSON.stringify(user);
 		let url = `/api/v1/admin/users/${userId}`;
 
 		const response = yield axios({
 			method: 'patch',
-			headers: { 'Content-Type': 'application/json' },
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`,
+			},
 			url,
 			data,
 		});
@@ -164,16 +177,18 @@ function* removeUser({ payload: { userId, callback } }) {
 }
 
 function* addUser({ payload: { user, callback } }) {
-	console.log('object');
 	try {
-		console.log('object');
+		const jwt = localStorage.getItem('JWT');
 		yield put(toggleAddUserLoading());
 		let data = JSON.stringify(user);
 		let url = `/api/v1/admin/users`;
 
 		const response = yield axios({
 			method: 'post',
-			headers: { 'Content-Type': 'application/json' },
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`,
+			},
 			url,
 			data,
 		});

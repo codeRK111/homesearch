@@ -164,7 +164,15 @@ function App(props) {
 					exact
 					path="/users"
 					render={() => (
-						<Protected component={UsersPageWithDrawer} {...props} />
+						<Protected
+							component={HOC(UsersPageWithDrawer, [
+								{
+									type: 'userActions',
+									value: 'view',
+								},
+							])}
+							{...props}
+						/>
 					)}
 				/>
 				<Route
@@ -172,7 +180,12 @@ function App(props) {
 					path="/users/add"
 					render={() => (
 						<Protected
-							component={AddUsersPageWithDrawer}
+							component={HOC(AddUsersPageWithDrawer, [
+								{
+									type: 'userActions',
+									value: 'create',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -182,7 +195,12 @@ function App(props) {
 					path="/users/editUser/:id"
 					render={() => (
 						<Protected
-							component={EditUsersPageWithDrawer}
+							component={HOC(EditUsersPageWithDrawer, [
+								{
+									type: 'userActions',
+									value: 'update',
+								},
+							])}
 							{...props}
 						/>
 					)}
