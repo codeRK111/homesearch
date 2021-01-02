@@ -581,10 +581,10 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 	const query = {};
 	const admin = await Admin.findById(req.admin.id);
 	if (admin.type !== 'super-admin') {
-		const cities = admin.propertyAccessCities.map((c) =>
+		const cities = admin.userAccessCities.map((c) =>
 			mongoose.Types.ObjectId(c.id)
 		);
-		query['city'] = { $in: cities };
+
 		const or = [];
 		if (admin.userAccess.includes('self-users')) {
 			or.push({ adminId: mongoose.Types.ObjectId(req.admin.id) });
@@ -605,6 +605,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 		}
 
 		query['$or'] = or;
+		query['city'] = { $in: cities };
 	}
 
 	console.log(query);
