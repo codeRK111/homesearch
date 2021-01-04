@@ -1,31 +1,35 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import './addUser.styles.scss';
+
+import {
+	selectAddUserError,
+	selectAddUserLoading,
+} from '../../redux/users/users.selector';
+import { selectAllStates, selectLoading } from '../../redux/city/city.selector';
+
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Grid from '@material-ui/core/Grid';
-import './addUser.styles.scss';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import SnackBar from '../snackbar/snackbar.component';
-import { useHistory } from 'react-router-dom';
-import useForm from '../../hooks/useForm';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import React from 'react';
+import RenderByRole from '../../components/roleRender/renderByRole.component';
+import Select from '@material-ui/core/Select';
+import SnackBar from '../snackbar/snackbar.component';
+import TextField from '@material-ui/core/TextField';
+import { addUser } from '../../redux/users/users.actions';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectAllStates, selectLoading } from '../../redux/city/city.selector';
 import { fetchAllStatesStart } from '../../redux/city/city.actions';
-import { addUser } from '../../redux/users/users.actions';
-import {
-	selectAddUserLoading,
-	selectAddUserError,
-} from '../../redux/users/users.selector';
-import axios from 'axios';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import IconButton from '@material-ui/core/IconButton';
+import { selectCurrentUser } from '../../redux/user/user.selector';
+import useForm from '../../hooks/useForm';
+import { useHistory } from 'react-router-dom';
 
 const AddUser = ({
 	allSTates,
@@ -34,6 +38,7 @@ const AddUser = ({
 	addUserRequest,
 	addUserLoading,
 	addUserError,
+	currentUser,
 }) => {
 	const history = useHistory();
 	const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -44,7 +49,6 @@ const AddUser = ({
 		name: '',
 		email: '',
 		password: '',
-		state: '',
 		city: '',
 		number: '',
 		gender: 'male',
@@ -157,6 +161,152 @@ const AddUser = ({
 			}));
 		}
 	};
+
+	const StateNode = RenderByRole({
+		'super-admin': (
+			<Grid item xs={12} md={4}>
+				<FormControl
+					variant="outlined"
+					fullWidth
+					size="small"
+					error={!!formError.state}
+				>
+					<InputLabel htmlFor="outlined-age-native-simple">
+						State
+					</InputLabel>
+					<Select
+						labelId="demo-simple-select-outlined-label"
+						id="demo-simple-select-outlined"
+						onOpen={fetchStates}
+						value={form.state}
+						name="state"
+						onChange={setForm}
+						label="State"
+						variant="outlined"
+						fullWidth
+						size="small"
+					>
+						{loading && (
+							<MenuItem value="" disabled>
+								<em>Loading...</em>
+							</MenuItem>
+						)}
+						{allSTates.map((c, i) => (
+							<MenuItem key={i} value={c}>
+								{c}
+							</MenuItem>
+						))}
+					</Select>
+					<FormHelperText>{formError.state}</FormHelperText>
+				</FormControl>
+			</Grid>
+		),
+	});
+
+	const CityNode = RenderByRole({
+		'super-admin': (
+			<Grid item xs={12} md={4}>
+				<FormControl
+					variant="outlined"
+					fullWidth
+					size="small"
+					error={!!formError.city}
+				>
+					<InputLabel htmlFor="outlined-age-native-simple">
+						City
+					</InputLabel>
+					<Select
+						labelId="demo-simple-select-outlined-label"
+						id="demo-simple-select-outlined"
+						name="city"
+						value={form.city}
+						onChange={setForm}
+						onOpen={checkStateExist}
+						label="City"
+						variant="outlined"
+						fullWidth
+						size="small"
+					>
+						{cityLoading && (
+							<MenuItem value="" disabled>
+								<em>Loading...</em>
+							</MenuItem>
+						)}
+						{cities.map((c) => (
+							<MenuItem key={c.id} value={c.id}>
+								{c.name}
+							</MenuItem>
+						))}
+					</Select>
+					<FormHelperText>{formError.city}</FormHelperText>
+				</FormControl>
+			</Grid>
+		),
+		admin: (
+			<Grid item xs={12} md={4}>
+				<FormControl
+					variant="outlined"
+					fullWidth
+					size="small"
+					error={!!formError.city}
+				>
+					<InputLabel htmlFor="outlined-age-native-simple">
+						City
+					</InputLabel>
+					<Select
+						labelId="demo-simple-select-outlined-label"
+						id="demo-simple-select-outlined"
+						name="city"
+						value={form.city}
+						onChange={setForm}
+						label="City"
+						variant="outlined"
+						fullWidth
+						size="small"
+					>
+						{currentUser.userAccessCities.map((c) => (
+							<MenuItem key={c.id} value={c.id}>
+								{c.name}
+							</MenuItem>
+						))}
+					</Select>
+					<FormHelperText>{formError.city}</FormHelperText>
+				</FormControl>
+			</Grid>
+		),
+		staff: (
+			<Grid item xs={12} md={4}>
+				<FormControl
+					variant="outlined"
+					fullWidth
+					size="small"
+					error={!!formError.city}
+				>
+					<InputLabel htmlFor="outlined-age-native-simple">
+						City
+					</InputLabel>
+					<Select
+						labelId="demo-simple-select-outlined-label"
+						id="demo-simple-select-outlined"
+						name="city"
+						value={form.city}
+						onChange={setForm}
+						label="City"
+						variant="outlined"
+						fullWidth
+						size="small"
+					>
+						{currentUser.userAccessCities.map((c) => (
+							<MenuItem key={c.id} value={c.id}>
+								{c.name}
+							</MenuItem>
+						))}
+					</Select>
+					<FormHelperText>{formError.city}</FormHelperText>
+				</FormControl>
+			</Grid>
+		),
+	});
 	return (
 		<Box m="2rem">
 			<IconButton
@@ -168,7 +318,7 @@ const AddUser = ({
 			<Box m="1rem">
 				<h3>Add user</h3>
 			</Box>
-			<Grid container spacing={1}>
+			<Grid container spacing={2}>
 				{addUserError && (
 					<SnackBar
 						open={snackbarOpen}
@@ -189,9 +339,8 @@ const AddUser = ({
 						fullWidth
 						size="small"
 					/>
-					<Box mt="10px" mb="10px">
-						<Divider />
-					</Box>
+				</Grid>
+				<Grid item xs={12} md={4}>
 					<TextField
 						error={!!formError.email}
 						helperText={formError.email}
@@ -204,43 +353,6 @@ const AddUser = ({
 						fullWidth
 						size="small"
 					/>
-					<Box mt="10px" mb="10px">
-						<Divider />
-					</Box>
-					<FormControl
-						variant="outlined"
-						fullWidth
-						size="small"
-						error={!!formError.state}
-					>
-						<InputLabel htmlFor="outlined-age-native-simple">
-							State
-						</InputLabel>
-						<Select
-							labelId="demo-simple-select-outlined-label"
-							id="demo-simple-select-outlined"
-							onOpen={fetchStates}
-							value={form.state}
-							name="state"
-							onChange={setForm}
-							label="State"
-							variant="outlined"
-							fullWidth
-							size="small"
-						>
-							{loading && (
-								<MenuItem value="" disabled>
-									<em>Loading...</em>
-								</MenuItem>
-							)}
-							{allSTates.map((c, i) => (
-								<MenuItem key={i} value={c}>
-									{c}
-								</MenuItem>
-							))}
-						</Select>
-						<FormHelperText>{formError.state}</FormHelperText>
-					</FormControl>
 				</Grid>
 				<Grid item xs={12} md={4}>
 					<TextField
@@ -255,9 +367,8 @@ const AddUser = ({
 						fullWidth
 						size="small"
 					/>
-					<Box mt="10px" mb="10px">
-						<Divider />
-					</Box>
+				</Grid>
+				<Grid item xs={12} md={4}>
 					<TextField
 						error={!!formError.number}
 						helperText={formError.number}
@@ -271,44 +382,8 @@ const AddUser = ({
 						fullWidth
 						size="small"
 					/>
-					<Box mt="10px" mb="10px">
-						<Divider />
-					</Box>
-					<FormControl
-						variant="outlined"
-						fullWidth
-						size="small"
-						error={!!formError.city}
-					>
-						<InputLabel htmlFor="outlined-age-native-simple">
-							City
-						</InputLabel>
-						<Select
-							labelId="demo-simple-select-outlined-label"
-							id="demo-simple-select-outlined"
-							name="city"
-							value={form.city}
-							onChange={setForm}
-							onOpen={checkStateExist}
-							label="City"
-							variant="outlined"
-							fullWidth
-							size="small"
-						>
-							{cityLoading && (
-								<MenuItem value="" disabled>
-									<em>Loading...</em>
-								</MenuItem>
-							)}
-							{cities.map((c) => (
-								<MenuItem key={c.id} value={c.id}>
-									{c.name}
-								</MenuItem>
-							))}
-						</Select>
-						<FormHelperText>{formError.city}</FormHelperText>
-					</FormControl>
 				</Grid>
+
 				<Grid item xs={12} md={4}>
 					<FormControl variant="outlined" fullWidth size="small">
 						<InputLabel htmlFor="outlined-age-native-simple">
@@ -330,9 +405,11 @@ const AddUser = ({
 							<MenuItem value={'other'}>Other</MenuItem>
 						</Select>
 					</FormControl>
-					<Box mt="10px" mb="10px">
-						<Divider />
-					</Box>
+				</Grid>
+				<StateNode />
+				<CityNode />
+
+				<Grid item xs={12} md={4}>
 					<FormControl variant="outlined" fullWidth size="small">
 						<InputLabel htmlFor="outlined-age-native-simple">
 							Verified
@@ -352,9 +429,8 @@ const AddUser = ({
 							<MenuItem value={false}>No</MenuItem>
 						</Select>
 					</FormControl>
-					<Box mt="10px" mb="10px">
-						<Divider />
-					</Box>
+				</Grid>
+				<Grid item xs={12} md={4}>
 					<FormControl variant="outlined" fullWidth size="small">
 						<InputLabel htmlFor="outlined-age-native-simple">
 							User Role
@@ -377,83 +453,74 @@ const AddUser = ({
 						</Select>
 					</FormControl>
 				</Grid>
-				<Grid container spacing={1}>
-					<Grid item xs={12} md={4}>
-						<Box mt="10px" mb="10px">
-							<Divider />
-						</Box>
-						<FormControl variant="outlined" fullWidth size="small">
-							<InputLabel htmlFor="outlined-age-native-simple">
-								Payment Status
-							</InputLabel>
-							<Select
-								labelId="demo-simple-select-outlined-label"
-								id="demo-simple-select-outlined"
-								name="paymentStatus"
-								value={form.paymentStatus}
-								onChange={setForm}
-								variant="outlined"
-								fullWidth
-								size="small"
-								labelWidth={60}
-							>
-								<MenuItem value={'paid'}>Paid</MenuItem>
-								<MenuItem value={'unpaid'}>Unpaid</MenuItem>
-							</Select>
-						</FormControl>
-					</Grid>
-					<Grid item xs={12} md={4}>
-						<Box mt="10px" mb="10px">
-							<Divider />
-						</Box>
-						<FormControl variant="outlined" fullWidth size="small">
-							<InputLabel htmlFor="outlined-age-native-simple">
-								Status
-							</InputLabel>
-							<Select
-								labelId="demo-simple-select-outlined-label"
-								id="demo-simple-select-outlined"
-								name="status"
-								value={form.status}
-								onChange={setForm}
-								variant="outlined"
-								fullWidth
-								size="small"
-								labelWidth={60}
-							>
-								<MenuItem value={'active'}>Active</MenuItem>
-								<MenuItem value={'inactive'}>Inactive</MenuItem>
-							</Select>
-						</FormControl>
-					</Grid>
-					<Grid item xs={12} md={4}>
-						<Box mt="10px" mb="10px">
-							<Divider />
-						</Box>
-						<FormControl variant="outlined" fullWidth size="small">
-							<InputLabel htmlFor="outlined-age-native-simple">
-								Mobile Status
-							</InputLabel>
-							<Select
-								labelId="demo-simple-select-outlined-label"
-								id="demo-simple-select-outlined"
-								name="mobileStatus"
-								value={form.mobileStatus}
-								onChange={setForm}
-								variant="outlined"
-								fullWidth
-								size="small"
-								labelWidth={60}
-							>
-								<MenuItem value={'private'}>Private</MenuItem>
-								<MenuItem value={'semi-private'}>
-									Semiprivate
-								</MenuItem>
-								<MenuItem value={'public'}>Public</MenuItem>
-							</Select>
-						</FormControl>
-					</Grid>
+
+				<Grid item xs={12} md={4}>
+					<FormControl variant="outlined" fullWidth size="small">
+						<InputLabel htmlFor="outlined-age-native-simple">
+							Payment Status
+						</InputLabel>
+						<Select
+							labelId="demo-simple-select-outlined-label"
+							id="demo-simple-select-outlined"
+							name="paymentStatus"
+							value={form.paymentStatus}
+							onChange={setForm}
+							variant="outlined"
+							fullWidth
+							size="small"
+							labelWidth={60}
+						>
+							<MenuItem value={'paid'}>Paid</MenuItem>
+							<MenuItem value={'unpaid'}>Unpaid</MenuItem>
+						</Select>
+					</FormControl>
 				</Grid>
+				<Grid item xs={12} md={4}>
+					<FormControl variant="outlined" fullWidth size="small">
+						<InputLabel htmlFor="outlined-age-native-simple">
+							Status
+						</InputLabel>
+						<Select
+							labelId="demo-simple-select-outlined-label"
+							id="demo-simple-select-outlined"
+							name="status"
+							value={form.status}
+							onChange={setForm}
+							variant="outlined"
+							fullWidth
+							size="small"
+							labelWidth={60}
+						>
+							<MenuItem value={'active'}>Active</MenuItem>
+							<MenuItem value={'inactive'}>Inactive</MenuItem>
+						</Select>
+					</FormControl>
+				</Grid>
+				<Grid item xs={12} md={4}>
+					<FormControl variant="outlined" fullWidth size="small">
+						<InputLabel htmlFor="outlined-age-native-simple">
+							Mobile Status
+						</InputLabel>
+						<Select
+							labelId="demo-simple-select-outlined-label"
+							id="demo-simple-select-outlined"
+							name="mobileStatus"
+							value={form.mobileStatus}
+							onChange={setForm}
+							variant="outlined"
+							fullWidth
+							size="small"
+							labelWidth={60}
+						>
+							<MenuItem value={'private'}>Private</MenuItem>
+							<MenuItem value={'semi-private'}>
+								Semiprivate
+							</MenuItem>
+							<MenuItem value={'public'}>Public</MenuItem>
+						</Select>
+					</FormControl>
+				</Grid>
+
 				<Grid item xs={12}>
 					<Box mt="1rem">
 						<Box display="flex" flexDirection="column">
@@ -494,6 +561,7 @@ const mapStateToProps = createStructuredSelector({
 	loading: selectLoading,
 	addUserLoading: selectAddUserLoading,
 	addUserError: selectAddUserError,
+	currentUser: selectCurrentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({

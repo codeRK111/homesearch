@@ -147,10 +147,13 @@ exports.addAdmin = catchAsync(async (req, res, next) => {
 		type: req.body.type,
 		propertyAccess: req.body.propertyAccess,
 		userAccess: req.body.userAccess,
+		builderAccess: req.body.builderAccess,
 		propertyActions: req.body.propertyActions,
 		userActions: req.body.userActions,
+		builderActions: req.body.builderActions,
 		propertyAccessCities: req.body.propertyAccessCities,
 		userAccessCities: req.body.userAccessCities,
+		builderAccessCities: req.body.builderAccessCities,
 	});
 
 	res.status(201).json({
@@ -233,10 +236,10 @@ exports.addProfilePicture = catchAsync(async (req, res, next) => {
 
 exports.getAdmin = catchAsync(async (req, res, next) => {
 	const admin = await Admin.findById(req.params.id).select(
-		'name username email serialNumber password cities gender  status ableToSee type photo city propertyAccess userAccess propertyActions userActions'
+		'name username email serialNumber password cities gender  status ableToSee type photo city propertyAccess userAccess builderAccess propertyActions userActions builderActions'
 	);
 
-	res.status(201).json({
+	res.status(200).json({
 		status: 'success',
 		data: {
 			admin,
@@ -272,17 +275,18 @@ exports.deleteAdmin = catchAsync(async (req, res, next) => {
 	});
 });
 
-
 exports.getQueries = catchAsync(async (req, res, next) => {
 	const filter = {};
 	const page = req.body.page * 1 || 1;
 	const limit = req.body.limit * 1 || 10;
 	const skip = (page - 1) * limit;
 
+	console.log(filter);
 
-	console.log(filter)
-
-	const queries = await PropertyQuery.find(filter).skip(skip).limit(limit).sort('-createdAt');
+	const queries = await PropertyQuery.find(filter)
+		.skip(skip)
+		.limit(limit)
+		.sort('-createdAt');
 
 	res.status(200).json({
 		status: 'success',
@@ -293,7 +297,6 @@ exports.getQueries = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteQuery = catchAsync(async (req, res, next) => {
-
 	const queries = await PropertyQuery.findByIdAndRemove(req.params.id);
 
 	res.status(200).json({

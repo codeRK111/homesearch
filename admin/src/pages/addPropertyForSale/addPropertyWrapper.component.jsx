@@ -34,12 +34,14 @@ import LandSale from './addPropertySaleLand.component';
 import MuiAlert from '@material-ui/lab/Alert';
 import Paper from '@material-ui/core/Paper';
 import React from 'react';
+import RenderByRole from '../../components/roleRender/renderByRole.component';
 import RowSelect from '../../components/rowSelect/rowSelect.component';
 import Snackbar from '@material-ui/core/Snackbar';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fetchAllUsersSTart } from '../../redux/users/users.actions';
 import { makeStyles } from '@material-ui/core/styles';
+import { selectCurrentUser } from '../../redux/user/user.selector';
 import { useHistory } from 'react-router-dom';
 
 const initialState = {
@@ -89,6 +91,7 @@ const AddProperty = ({
 	fetchResourcesStart,
 	addPropertyLoading,
 	addProperty,
+	currentUser,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -249,6 +252,73 @@ const AddProperty = ({
 	};
 
 	const closeSnackbar = () => setAsyncError('');
+
+	const StateNode = RenderByRole({
+		'super-admin': (
+			<RowSelect
+				heading="State *"
+				loading={stateLoading}
+				name="type"
+				value={state}
+				onChange={(e) => setState(e.target.value)}
+				label="State"
+				onOpen={fetchState}
+				helperText="Select state for to see available cities"
+				menuItems={allStates.map((c) => ({
+					label: c,
+					value: c,
+				}))}
+			/>
+		),
+	});
+	const CityNode = RenderByRole({
+		'super-admin': (
+			<RowSelect
+				heading="City *"
+				name="type"
+				loading={cityLoading}
+				value={selectedCity}
+				onChange={(e) => setselectedCity(e.target.value)}
+				label="City"
+				onOpen={fetchCity}
+				helperText="Select state for to see available locations"
+				menuItems={cities.map((c) => ({
+					label: c.name,
+					value: c.id,
+				}))}
+			/>
+		),
+		admin: (
+			<RowSelect
+				heading="City *"
+				name="type"
+				loading={cityLoading}
+				value={selectedCity}
+				onChange={(e) => setselectedCity(e.target.value)}
+				label="City"
+				helperText="Select state for to see available locations"
+				menuItems={currentUser.propertyAccessCities.map((c) => ({
+					label: c.name,
+					value: c.id,
+				}))}
+			/>
+		),
+		staff: (
+			<RowSelect
+				heading="City *"
+				name="type"
+				loading={cityLoading}
+				value={selectedCity}
+				onChange={(e) => setselectedCity(e.target.value)}
+				label="City"
+				helperText="Select state for to see available locations"
+				menuItems={currentUser.propertyAccessCities.map((c) => ({
+					label: c.name,
+					value: c.id,
+				}))}
+			/>
+		),
+	});
 	return (
 		<Box p="1rem">
 			<Backdrop className={classes.backdrop} open={resourcesLoading}>
@@ -283,36 +353,9 @@ const AddProperty = ({
 									label="For"
 									menuItems={typeMenuItems}
 								/>
-								<RowSelect
-									heading="State *"
-									loading={stateLoading}
-									name="type"
-									value={state}
-									onChange={(e) => setState(e.target.value)}
-									label="State"
-									onOpen={fetchState}
-									helperText="Select state for to see available cities"
-									menuItems={allStates.map((c) => ({
-										label: c,
-										value: c,
-									}))}
-								/>
-								<RowSelect
-									heading="City *"
-									name="type"
-									loading={cityLoading}
-									value={selectedCity}
-									onChange={(e) =>
-										setselectedCity(e.target.value)
-									}
-									label="City"
-									onOpen={fetchCity}
-									helperText="Select state for to see available locations"
-									menuItems={cities.map((c) => ({
-										label: c.name,
-										value: c.id,
-									}))}
-								/>
+								<StateNode />
+								<CityNode />
+
 								<RowSelect
 									heading="Location *"
 									loading={locationLoading}
@@ -357,6 +400,7 @@ const mapStateToProps = createStructuredSelector({
 	allStates: selectAllStates,
 	furnishes: selectFurnishes,
 	amenities: selectAmenities,
+	currentUser: selectCurrentUser,
 	resourcesLoading,
 	stateLoading,
 	cityLoading,

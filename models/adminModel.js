@@ -73,9 +73,9 @@ const adminSchema = new Schema(
 			},
 		],
 		city: {
-				type: mongoose.Schema.ObjectId,
-				ref: 'City',
-			},
+			type: mongoose.Schema.ObjectId,
+			ref: 'City',
+		},
 		password: {
 			type: String,
 			minlength: [6, 'Minimum 6 characters required'],
@@ -104,12 +104,42 @@ const adminSchema = new Schema(
 			},
 			default: 'staff',
 		},
-		propertyAccess: {type: [String],required: [true,'Property access required']},
-		userAccess: {type: [String],required: [true,'User access required']},
-		propertyActions: {type: [String],required: [true,'Property action required']},
-		userActions: {type: [String],required: [true,'User action required']},
-		propertyAccessCities: {type: [{type: mongoose.Schema.ObjectId,ref: 'City'}],required: [true,'Property access cities required']},
-		userAccessCities: {type: [{type: mongoose.Schema.ObjectId,ref: 'City'}],required: [true,'User access cities required']},
+		propertyAccess: {
+			type: [String],
+			required: [true, 'Property access required'],
+		},
+		userAccess: {
+			type: [String],
+			required: [true, 'User access required'],
+		},
+		builderAccess: {
+			type: [String],
+			required: [true, 'Builder access required'],
+		},
+		propertyActions: {
+			type: [String],
+			required: [true, 'Property action required'],
+		},
+		userActions: {
+			type: [String],
+			required: [true, 'User action required'],
+		},
+		builderActions: {
+			type: [String],
+			required: [true, 'Builder action required'],
+		},
+		propertyAccessCities: {
+			type: [{ type: mongoose.Schema.ObjectId, ref: 'City' }],
+			required: [true, 'Property access cities required'],
+		},
+		userAccessCities: {
+			type: [{ type: mongoose.Schema.ObjectId, ref: 'City' }],
+			required: [true, 'User access cities required'],
+		},
+		builderAccessCities: {
+			type: [{ type: mongoose.Schema.ObjectId, ref: 'City' }],
+			required: [true, 'Builder access cities required'],
+		},
 
 		passwordChangedAt: Date,
 		// passwordResetToken: String,
@@ -130,11 +160,15 @@ adminSchema.pre(/^find/, function (next) {
 		.populate({
 			path: 'userAccessCities',
 			select: 'id name ',
-		}).populate({
-			path: 'city',
+		})
+		.populate({
+			path: 'builderAccessCities',
 			select: 'id name ',
 		})
-		
+		.populate({
+			path: 'city',
+			select: 'id name ',
+		});
 
 	next();
 });

@@ -13,6 +13,7 @@ import {
 	togglePropertySale,
 } from '../../redux/sidebar/sidebar.actions';
 
+import { AccordionDetails } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
@@ -32,6 +33,7 @@ import LockIcon from '@material-ui/icons/Lock';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import React from 'react';
+import RenderByRole from '../roleRender/roleRender.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { green } from '@material-ui/core/colors';
@@ -85,6 +87,227 @@ const MainListItems = ({
 	const handleSalePropertyClick = () => {
 		setOpenSaleProperty(!openSaleProperty);
 	};
+
+	// Add property Rent Node
+	const AddPropertyRentNode = RenderByRole(
+		<ListItem
+			button
+			className={classes.nested}
+			onClick={onUsersClick('/addProperty/rent')}
+		>
+			<ListItemIcon>
+				<AddBoxIcon style={{ color: green[500] }} />
+			</ListItemIcon>
+			<ListItemText primary="Add Property" />
+		</ListItem>,
+		[
+			{
+				type: 'propertyAccess',
+				value: 'rent',
+			},
+			{
+				type: 'propertyActions',
+				value: 'create',
+			},
+		]
+	);
+	// Add property Sale Node
+	const AddPropertySaleNode = RenderByRole(
+		<ListItem
+			button
+			className={classes.nested}
+			onClick={onUsersClick('/addProperty/sale')}
+		>
+			<ListItemIcon>
+				<AddBoxIcon style={{ color: green[500] }} />
+			</ListItemIcon>
+			<ListItemText primary="Add Property" />
+		</ListItem>,
+		[
+			{
+				type: 'propertyAccess',
+				value: 'sale',
+			},
+			{
+				type: 'propertyActions',
+				value: 'create',
+			},
+		]
+	);
+	// Add project Node
+	const AddProjectNode = RenderByRole(
+		<ListItem
+			button
+			className={classes.nested}
+			onClick={onUsersClick('/addProject')}
+		>
+			<ListItemIcon>
+				<AddBoxIcon style={{ color: green[500] }} />
+			</ListItemIcon>
+			<ListItemText primary="Add Project" />
+		</ListItem>,
+		[
+			{
+				type: 'propertyAccess',
+				value: 'project',
+			},
+			{
+				type: 'propertyActions',
+				value: 'create',
+			},
+		]
+	);
+
+	const ViewPermissionNode = (accessType, ...Node) => {
+		return (
+			<div>
+				{Node.map((N, i) => {
+					const Comp = RenderByRole(N, [
+						{
+							type: 'propertyAccess',
+							value: accessType,
+						},
+						{
+							type: 'propertyActions',
+							value: 'view',
+						},
+					]);
+
+					return <Comp key={i} />;
+				})}
+			</div>
+		);
+	};
+
+	// Rent Label
+	const PropertyForRentLabelNode = RenderByRole(
+		<ListItem button onClick={togglePropertyRent}>
+			<ListItemIcon>
+				<ApartmentIcon color="secondary" />
+			</ListItemIcon>
+			<ListItemText primary="Properties for rent" />
+			{propertyRentOpen ? <ExpandLess /> : <ExpandMore />}
+		</ListItem>,
+		[
+			{
+				type: 'propertyActions',
+				value: 'create',
+			},
+			{
+				type: 'propertyActions',
+				value: 'view',
+			},
+		],
+		null,
+		true
+	);
+
+	// Sale label
+	const PropertyForSaleLabelNode = RenderByRole(
+		<ListItem button onClick={togglePropertySale}>
+			<ListItemIcon>
+				<ApartmentIcon color="secondary" />
+			</ListItemIcon>
+			<ListItemText primary="Properties for sale" />
+			{propertySaleOpen ? <ExpandLess /> : <ExpandMore />}
+		</ListItem>,
+		[
+			{
+				type: 'propertyActions',
+				value: 'create',
+			},
+			{
+				type: 'propertyActions',
+				value: 'view',
+			},
+		],
+		null,
+		true
+	);
+	// Project label
+	const ProjectLabelNode = RenderByRole(
+		<ListItem button onClick={toggleProject}>
+			<ListItemIcon>
+				<ApartmentIcon color="secondary" />
+			</ListItemIcon>
+			<ListItemText primary="Projects" />
+			{selectProject ? <ExpandLess /> : <ExpandMore />}
+		</ListItem>,
+		[
+			{
+				type: 'propertyActions',
+				value: 'create',
+			},
+			{
+				type: 'propertyActions',
+				value: 'view',
+			},
+		],
+		null,
+		true
+	);
+	// User label
+	const UserLabelNode = RenderByRole(
+		<ListItem button onClick={onUsersClick('/users')}>
+			<ListItemIcon>
+				<PeopleAltIcon color="secondary" />
+			</ListItemIcon>
+			<ListItemText primary="Users" />
+		</ListItem>,
+		[
+			{
+				type: 'userActions',
+				value: 'create',
+			},
+			{
+				type: 'userActions',
+				value: 'view',
+			},
+		],
+		null,
+		true
+	);
+	// Builder label
+	const BuilderLabelNode = RenderByRole(
+		<ListItem button onClick={toggleBuilder}>
+			<ListItemIcon>
+				<PeopleAltIcon color="secondary" />
+			</ListItemIcon>
+			<ListItemText primary="Builders" />
+			{selectBuilder ? <ExpandLess /> : <ExpandMore />}
+		</ListItem>,
+		[
+			{
+				type: 'builderActions',
+				value: 'create',
+			},
+			{
+				type: 'builderActions',
+				value: 'view',
+			},
+		],
+		null,
+		true
+	);
+
+	const RentLabel = RenderByRole(<PropertyForRentLabelNode />, [
+		{
+			type: 'propertyAccess',
+			value: 'rent',
+		},
+	]);
+	const SaleLabel = RenderByRole(<PropertyForSaleLabelNode />, [
+		{
+			type: 'propertyAccess',
+			value: 'sale',
+		},
+	]);
+	const ProjectLabel = RenderByRole(<ProjectLabelNode />, [
+		{
+			type: 'propertyAccess',
+			value: 'project',
+		},
+	]);
 	return (
 		<div>
 			<h3
@@ -96,12 +319,7 @@ const MainListItems = ({
 				</ListItemIcon>
 				<ListItemText primary="Dashboard" />
 			</ListItem>
-			<ListItem button onClick={onUsersClick('/users')}>
-				<ListItemIcon>
-					<PeopleAltIcon color="secondary" />
-				</ListItemIcon>
-				<ListItemText primary="Users" />
-			</ListItem>
+			<UserLabelNode />
 			<Divider color="#fff" />
 			{selectCurrentUser.type === 'super-admin' && (
 				<ListItem button onClick={onUsersClick('/admins')}>
@@ -119,122 +337,93 @@ const MainListItems = ({
 				<ListItemText primary="Authentication" />
 			</ListItem>
 			<Divider color="#fff" />
-			<ListItem button onClick={togglePropertyRent}>
-				<ListItemIcon>
-					<ApartmentIcon color="secondary" />
-				</ListItemIcon>
-				<ListItemText primary="Properties for rent" />
-				{propertyRentOpen ? <ExpandLess /> : <ExpandMore />}
-			</ListItem>
+			<RentLabel />
 			<Collapse in={propertyRentOpen} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/addProperty/rent')}
-					>
-						<ListItemIcon>
-							<AddBoxIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Add Property" />
-					</ListItem>
-
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/all-properties/active')}
-					>
-						<ListItemIcon>
-							<ApartmentIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Active properties" />
-					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/all-properties/underScreening')}
-					>
-						<ListItemIcon>
-							<ApartmentIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Under screening properties" />
-					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/all-properties/expired')}
-					>
-						<ListItemIcon>
-							<ApartmentIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Expired properties" />
-					</ListItem>
+					<AddPropertyRentNode />
+					{ViewPermissionNode(
+						'rent',
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick('/all-properties/active')}
+						>
+							<ListItemIcon>
+								<ApartmentIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Active properties" />
+						</ListItem>,
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick(
+								'/all-properties/underScreening'
+							)}
+						>
+							<ListItemIcon>
+								<ApartmentIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Under screening properties" />
+						</ListItem>,
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick('/all-properties/expired')}
+						>
+							<ListItemIcon>
+								<ApartmentIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Expired properties" />
+						</ListItem>
+					)}
 				</List>
 			</Collapse>
-			<ListItem button onClick={togglePropertySale}>
-				<ListItemIcon>
-					<ApartmentIcon color="secondary" />
-				</ListItemIcon>
-				<ListItemText primary="Properties for sale" />
-				{propertySaleOpen ? <ExpandLess /> : <ExpandMore />}
-			</ListItem>
+			<SaleLabel />
 			<Collapse in={propertySaleOpen} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/addProperty/sale')}
-					>
-						<ListItemIcon>
-							<AddBoxIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Add Property" />
-					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick(
-							'/all-properties-sale/active/sale'
-						)}
-					>
-						<ListItemIcon>
-							<ApartmentIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Active properties" />
-					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick(
-							'/all-properties-sale/underScreening/sale'
-						)}
-					>
-						<ListItemIcon>
-							<ApartmentIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Under screening properties" />
-					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick(
-							'/all-properties-sale/expired/sale'
-						)}
-					>
-						<ListItemIcon>
-							<ApartmentIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Expired properties" />
-					</ListItem>
+					<AddPropertySaleNode />
+					{ViewPermissionNode(
+						'sale',
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick(
+								'/all-properties-sale/active/sale'
+							)}
+						>
+							<ListItemIcon>
+								<ApartmentIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Active properties" />
+						</ListItem>,
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick(
+								'/all-properties-sale/underScreening/sale'
+							)}
+						>
+							<ListItemIcon>
+								<ApartmentIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Under screening properties" />
+						</ListItem>,
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick(
+								'/all-properties-sale/expired/sale'
+							)}
+						>
+							<ListItemIcon>
+								<ApartmentIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Expired properties" />
+						</ListItem>
+					)}
 				</List>
 			</Collapse>
-			<ListItem button onClick={toggleBuilder}>
-				<ListItemIcon>
-					<PeopleAltIcon color="secondary" />
-				</ListItemIcon>
-				<ListItemText primary="Builders" />
-				{selectBuilder ? <ExpandLess /> : <ExpandMore />}
-			</ListItem>
+			<BuilderLabelNode />
 			<Collapse in={selectBuilder} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
 					<ListItem
@@ -270,45 +459,33 @@ const MainListItems = ({
 					</ListItem>
 				</List>
 			</Collapse>
-			<ListItem button onClick={toggleProject}>
-				<ListItemIcon>
-					<ApartmentIcon color="secondary" />
-				</ListItemIcon>
-				<ListItemText primary="Projects" />
-				{selectProject ? <ExpandLess /> : <ExpandMore />}
-			</ListItem>
+			<ProjectLabel />
 			<Collapse in={selectProject} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/addProject')}
-					>
-						<ListItemIcon>
-							<AddBoxIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Add Project" />
-					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/projects/active')}
-					>
-						<ListItemIcon>
-							<PeopleAltIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Active projects" />
-					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/projects/inactive')}
-					>
-						<ListItemIcon>
-							<PeopleAltIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Inactive projects" />
-					</ListItem>
+					<AddProjectNode />
+					{ViewPermissionNode(
+						'project',
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick('/projects/active')}
+						>
+							<ListItemIcon>
+								<PeopleAltIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Active projects" />
+						</ListItem>,
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick('/projects/inactive')}
+						>
+							<ListItemIcon>
+								<PeopleAltIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Inactive projects" />
+						</ListItem>
+					)}
 				</List>
 			</Collapse>
 			<ListItem button onClick={toggleLocation}>

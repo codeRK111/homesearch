@@ -33,7 +33,18 @@ const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
 	return (
 		<Box mt="1rem">
 			<Formik
-				initialValues={initialValues}
+				initialValues={{
+					...initialValues,
+					builderAccessCities: initialValues.builderAccessCities
+						? initialValues.builderAccessCities
+						: [],
+					builderActions: initialValues.builderActions
+						? initialValues.builderActions
+						: [],
+					builderAccess: initialValues.builderAccess
+						? initialValues.builderAccess
+						: [],
+				}}
 				onSubmit={submitForm}
 				enableReinitialize
 			>
@@ -343,6 +354,110 @@ const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
 											<Grid item xs={12} md={2}>
 												<CheckBox
 													name="userActions"
+													value="status"
+													formLabel="Change Status"
+													type="checkbox"
+												/>
+											</Grid>
+										</Grid>
+									</Box>
+								</Box>
+							</Grid>
+							<Grid item xs={12}>
+								<DividerHeading>
+									Builder Permissions
+								</DividerHeading>
+								<Box mt="2rem">
+									<FieldArray
+										name="builderAccessCities"
+										render={(arrayHelpers) => (
+											<Grid container>
+												<Grid item xs={12} md={2}>
+													<h5>Access Cities</h5>
+												</Grid>
+												<Grid item xs={12} md={4}>
+													<SearchCity
+														setSelectedCity={
+															arrayHelpers.push
+														}
+														showLabel={false}
+													/>
+													<Box mt="1rem">
+														{values.builderAccessCities.map(
+															(c, i) => (
+																<Chip
+																	key={i}
+																	label={
+																		c.name
+																	}
+																	onDelete={() =>
+																		arrayHelpers.remove(
+																			i
+																		)
+																	}
+																/>
+															)
+														)}
+													</Box>
+												</Grid>
+											</Grid>
+										)}
+									/>
+								</Box>
+								<Box>
+									<Grid container>
+										<Grid item xs={12} md={2}>
+											<h5>Access For</h5>
+										</Grid>
+										<Grid item xs={12} md={2}>
+											<CheckBox
+												name="builderAccess"
+												value="self-builders"
+												formLabel="Self created builders"
+												type="checkbox"
+											/>
+										</Grid>
+										<Grid item xs={12} md={2}>
+											<CheckBox
+												name="builderAccess"
+												value="other-staff-builders"
+												formLabel="Other staff created builders"
+												type="checkbox"
+											/>
+										</Grid>
+									</Grid>
+									<Box>
+										<Grid container>
+											<Grid item xs={12} md={2}>
+												<h5>Action</h5>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="builderActions"
+													value="create"
+													formLabel="Create"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="builderActions"
+													value="view"
+													formLabel="View"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="builderActions"
+													value="update"
+													formLabel="Update"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={2}>
+												<CheckBox
+													name="builderActions"
 													value="status"
 													formLabel="Change Status"
 													type="checkbox"

@@ -1,25 +1,27 @@
-import React from 'react';
+import { selectAllStates, selectLoading } from '../../redux/city/city.selector';
+
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Box from '@material-ui/core/Box';
-import axios from 'axios';
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import React from 'react';
+import RenderByRole from '../../components/roleRender/renderByRole.component';
 import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectAllStates, selectLoading } from '../../redux/city/city.selector';
-import { fetchAllStatesStart } from '../../redux/city/city.actions';
-import { updateUser } from '../../redux/users/users.actions';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import { selectLoading as editUserLoading } from '../../redux/users/users.selector';
-import IconButton from '@material-ui/core/IconButton';
+import { fetchAllStatesStart } from '../../redux/city/city.actions';
+import { selectCurrentUser } from '../../redux/user/user.selector';
+import { updateUser } from '../../redux/users/users.actions';
 import { useHistory } from 'react-router-dom';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const EditUser = ({
 	match,
@@ -28,6 +30,7 @@ const EditUser = ({
 	fetchStatesStart,
 	editUserLoading,
 	updateUser,
+	currentUser,
 }) => {
 	const history = useHistory();
 	const [userLoading, setuserLoading] = React.useState(false);
@@ -155,6 +158,130 @@ const EditUser = ({
 		// }
 	};
 
+	const StateNode = RenderByRole({
+		'super-admin': (
+			<Grid item xs={12} md={4}>
+				<FormControl variant="outlined" fullWidth size="small">
+					<InputLabel htmlFor="outlined-age-native-simple">
+						State
+					</InputLabel>
+					<Select
+						labelId="demo-simple-select-outlined-label"
+						id="demo-simple-select-outlined"
+						value={userInfo.city.state}
+						name="state"
+						onChange={setForm('state')}
+						label="State"
+						variant="outlined"
+						fullWidth
+						size="small"
+					>
+						{loading && (
+							<MenuItem value="" disabled>
+								<em>Loading...</em>
+							</MenuItem>
+						)}
+						{allSTates.map((c, i) => (
+							<MenuItem key={i} value={c}>
+								{c}
+							</MenuItem>
+						))}
+					</Select>
+					<FormHelperText>{userInfo.city.state}</FormHelperText>
+				</FormControl>
+			</Grid>
+		),
+	});
+	const CityNode = RenderByRole({
+		'super-admin': (
+			<Grid item xs={12} md={4}>
+				<FormControl variant="outlined" fullWidth size="small">
+					<InputLabel htmlFor="outlined-age-native-simple">
+						City
+					</InputLabel>
+					<Select
+						labelId="demo-simple-select-outlined-label"
+						id="demo-simple-select-outlined"
+						name="city"
+						value={userInfo.city}
+						onChange={setForm('city')}
+						onOpen={checkStateExist}
+						label="City"
+						variant="outlined"
+						fullWidth
+						size="small"
+					>
+						{cityLoading && (
+							<MenuItem value="" disabled>
+								<em>Loading...</em>
+							</MenuItem>
+						)}
+						{cities.map((c) => (
+							<MenuItem key={c.id} value={c.id}>
+								{c.name}
+							</MenuItem>
+						))}
+					</Select>
+					<FormHelperText>{userInfo.city.name}</FormHelperText>
+				</FormControl>
+			</Grid>
+		),
+		admin: (
+			<Grid item xs={12} md={4}>
+				<FormControl variant="outlined" fullWidth size="small">
+					<InputLabel htmlFor="outlined-age-native-simple">
+						City
+					</InputLabel>
+					<Select
+						labelId="demo-simple-select-outlined-label"
+						id="demo-simple-select-outlined"
+						name="city"
+						value={userInfo.city}
+						onChange={setForm('city')}
+						label="City"
+						variant="outlined"
+						fullWidth
+						size="small"
+					>
+						{currentUser.userAccessCities.map((c) => (
+							<MenuItem key={c.id} value={c.id}>
+								{c.name}
+							</MenuItem>
+						))}
+					</Select>
+					<FormHelperText>{userInfo.city.name}</FormHelperText>
+				</FormControl>
+			</Grid>
+		),
+		staff: (
+			<Grid item xs={12} md={4}>
+				<FormControl variant="outlined" fullWidth size="small">
+					<InputLabel htmlFor="outlined-age-native-simple">
+						City
+					</InputLabel>
+					<Select
+						labelId="demo-simple-select-outlined-label"
+						id="demo-simple-select-outlined"
+						name="city"
+						value={userInfo.city}
+						onChange={setForm('city')}
+						label="City"
+						variant="outlined"
+						fullWidth
+						size="small"
+					>
+						{currentUser.userAccessCities.map((c) => (
+							<MenuItem key={c.id} value={c.id}>
+								{c.name}
+							</MenuItem>
+						))}
+					</Select>
+					<FormHelperText>{userInfo.city.name}</FormHelperText>
+				</FormControl>
+			</Grid>
+		),
+	});
+
 	return (
 		<Box p="1rem">
 			<IconButton
@@ -168,7 +295,7 @@ const EditUser = ({
 				{userLoading ? (
 					<CircularProgress />
 				) : (
-					<Grid container spacing={1}>
+					<Grid container spacing={2}>
 						<Grid item xs={12} md={4}>
 							<TextField
 								id="outlined-basic"
@@ -179,9 +306,8 @@ const EditUser = ({
 								fullWidth
 								size="small"
 							/>
-							<Box mt="10px" mb="10px">
-								<Divider />
-							</Box>
+						</Grid>
+						<Grid item xs={12} md={4}>
 							<TextField
 								id="outlined-basic"
 								label="Email"
@@ -192,44 +318,8 @@ const EditUser = ({
 								fullWidth
 								size="small"
 							/>
-							<Box mt="10px" mb="10px">
-								<Divider />
-							</Box>
-							<FormControl
-								variant="outlined"
-								fullWidth
-								size="small"
-							>
-								<InputLabel htmlFor="outlined-age-native-simple">
-									State
-								</InputLabel>
-								<Select
-									labelId="demo-simple-select-outlined-label"
-									id="demo-simple-select-outlined"
-									value={userInfo.city.state}
-									name="state"
-									onChange={setForm('state')}
-									label="State"
-									variant="outlined"
-									fullWidth
-									size="small"
-								>
-									{loading && (
-										<MenuItem value="" disabled>
-											<em>Loading...</em>
-										</MenuItem>
-									)}
-									{allSTates.map((c, i) => (
-										<MenuItem key={i} value={c}>
-											{c}
-										</MenuItem>
-									))}
-								</Select>
-								<FormHelperText>
-									{userInfo.city.state}
-								</FormHelperText>
-							</FormControl>
 						</Grid>
+
 						<Grid item xs={12} md={4}>
 							<TextField
 								id="outlined-basic"
@@ -242,9 +332,8 @@ const EditUser = ({
 								type="password"
 								size="small"
 							/>
-							<Box mt="10px" mb="10px">
-								<Divider />
-							</Box>
+						</Grid>
+						<Grid item xs={12} md={4}>
 							<TextField
 								id="outlined-basic"
 								label="Phone"
@@ -256,45 +345,9 @@ const EditUser = ({
 								fullWidth
 								size="small"
 							/>
-							<Box mt="10px" mb="10px">
-								<Divider />
-							</Box>
-							<FormControl
-								variant="outlined"
-								fullWidth
-								size="small"
-							>
-								<InputLabel htmlFor="outlined-age-native-simple">
-									City
-								</InputLabel>
-								<Select
-									labelId="demo-simple-select-outlined-label"
-									id="demo-simple-select-outlined"
-									name="city"
-									value={userInfo.city}
-									onChange={setForm('city')}
-									onOpen={checkStateExist}
-									label="City"
-									variant="outlined"
-									fullWidth
-									size="small"
-								>
-									{cityLoading && (
-										<MenuItem value="" disabled>
-											<em>Loading...</em>
-										</MenuItem>
-									)}
-									{cities.map((c) => (
-										<MenuItem key={c.id} value={c.id}>
-											{c.name}
-										</MenuItem>
-									))}
-								</Select>
-								<FormHelperText>
-									{userInfo.city.name}
-								</FormHelperText>
-							</FormControl>
 						</Grid>
+						<StateNode />
+						<CityNode />
 						<Grid item xs={12} md={4}>
 							<FormControl
 								variant="outlined"
@@ -321,9 +374,8 @@ const EditUser = ({
 									<MenuItem value={'other'}>Other</MenuItem>
 								</Select>
 							</FormControl>
-							<Box mt="10px" mb="10px">
-								<Divider />
-							</Box>
+						</Grid>
+						<Grid item xs={12} md={4}>
 							<FormControl
 								variant="outlined"
 								fullWidth
@@ -347,9 +399,8 @@ const EditUser = ({
 									<MenuItem value={false}>No</MenuItem>
 								</Select>
 							</FormControl>
-							<Box mt="10px" mb="10px">
-								<Divider />
-							</Box>
+						</Grid>
+						<Grid item xs={12} md={4}>
 							<FormControl
 								variant="outlined"
 								fullWidth
@@ -378,102 +429,88 @@ const EditUser = ({
 								</Select>
 							</FormControl>
 						</Grid>
-						<Grid container spacing={1}>
-							<Grid item xs={12} md={4}>
-								<Box mt="10px" mb="10px">
-									<Divider />
-								</Box>
-								<FormControl
+						<Grid item xs={12} md={4}>
+							<FormControl
+								variant="outlined"
+								fullWidth
+								size="small"
+							>
+								<InputLabel htmlFor="outlined-age-native-simple">
+									Payment Status
+								</InputLabel>
+								<Select
+									labelId="demo-simple-select-outlined-label"
+									id="demo-simple-select-outlined"
+									name="paymentStatus"
+									value={userInfo.paymentStatus}
+									onChange={setForm('paymentStatus')}
 									variant="outlined"
 									fullWidth
 									size="small"
+									labelWidth={60}
 								>
-									<InputLabel htmlFor="outlined-age-native-simple">
-										Payment Status
-									</InputLabel>
-									<Select
-										labelId="demo-simple-select-outlined-label"
-										id="demo-simple-select-outlined"
-										name="paymentStatus"
-										value={userInfo.paymentStatus}
-										onChange={setForm('paymentStatus')}
-										variant="outlined"
-										fullWidth
-										size="small"
-										labelWidth={60}
-									>
-										<MenuItem value={'paid'}>Paid</MenuItem>
-										<MenuItem value={'unpaid'}>
-											Unpaid
-										</MenuItem>
-									</Select>
-								</FormControl>
-							</Grid>
-							<Grid item xs={12} md={4}>
-								<Box mt="10px" mb="10px">
-									<Divider />
-								</Box>
-								<FormControl
-									variant="outlined"
-									fullWidth
-									size="small"
-								>
-									<InputLabel htmlFor="outlined-age-native-simple">
-										Status
-									</InputLabel>
-									<Select
-										labelId="demo-simple-select-outlined-label"
-										id="demo-simple-select-outlined"
-										name="status"
-										value={userInfo.status}
-										onChange={setForm('status')}
-										variant="outlined"
-										fullWidth
-										size="small"
-										labelWidth={60}
-									>
-										<MenuItem value={'active'}>
-											Active
-										</MenuItem>
-										<MenuItem value={'inactive'}>
-											Inactive
-										</MenuItem>
-									</Select>
-								</FormControl>
-							</Grid>
-							<Grid item xs={12} md={4}>
-								<Box mt="10px" mb="10px">
-									<Divider />
-								</Box>
-								<FormControl
-									variant="outlined"
-									fullWidth
-									size="small"
-								>
-									<InputLabel htmlFor="outlined-age-native-simple">
-										Mobile Status
-									</InputLabel>
-									<Select
-										labelId="demo-simple-select-outlined-label"
-										id="demo-simple-select-outlined"
-										name="mobileStatus"
-										value={userInfo.mobileStatus}
-										onChange={setForm('mobileStatus')}
-										variant="outlined"
-										fullWidth
-										size="small"
-										labelWidth={60}
-									>
-										<MenuItem value={'private'}>
-											Private
-										</MenuItem>
-										<MenuItem value={'semi-private'}>
-											Semiprivate
-										</MenuItem>
-									</Select>
-								</FormControl>
-							</Grid>
+									<MenuItem value={'paid'}>Paid</MenuItem>
+									<MenuItem value={'unpaid'}>Unpaid</MenuItem>
+								</Select>
+							</FormControl>
 						</Grid>
+						<Grid item xs={12} md={4}>
+							<FormControl
+								variant="outlined"
+								fullWidth
+								size="small"
+							>
+								<InputLabel htmlFor="outlined-age-native-simple">
+									Status
+								</InputLabel>
+								<Select
+									labelId="demo-simple-select-outlined-label"
+									id="demo-simple-select-outlined"
+									name="status"
+									value={userInfo.status}
+									onChange={setForm('status')}
+									variant="outlined"
+									fullWidth
+									size="small"
+									labelWidth={60}
+								>
+									<MenuItem value={'active'}>Active</MenuItem>
+									<MenuItem value={'inactive'}>
+										Inactive
+									</MenuItem>
+								</Select>
+							</FormControl>
+						</Grid>
+						<Grid item xs={12} md={4}>
+							<FormControl
+								variant="outlined"
+								fullWidth
+								size="small"
+							>
+								<InputLabel htmlFor="outlined-age-native-simple">
+									Mobile Status
+								</InputLabel>
+								<Select
+									labelId="demo-simple-select-outlined-label"
+									id="demo-simple-select-outlined"
+									name="mobileStatus"
+									value={userInfo.mobileStatus}
+									onChange={setForm('mobileStatus')}
+									variant="outlined"
+									fullWidth
+									size="small"
+									labelWidth={60}
+								>
+									<MenuItem value={'private'}>
+										Private
+									</MenuItem>
+									<MenuItem value={'semi-private'}>
+										Semiprivate
+									</MenuItem>
+								</Select>
+							</FormControl>
+						</Grid>
+
 						<Grid item xs={12}>
 							<Box mt="1rem">
 								<Box display="flex" flexDirection="column">
@@ -485,8 +522,8 @@ const EditUser = ({
 									{file && (
 										<img
 											src={file}
-											height="300px"
-											width="500px"
+											height="100px"
+											width="100px"
 										/>
 									)}
 								</Box>
@@ -519,6 +556,7 @@ const mapStateToProps = createStructuredSelector({
 	allSTates: selectAllStates,
 	loading: selectLoading,
 	editUserLoading,
+	currentUser: selectCurrentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({

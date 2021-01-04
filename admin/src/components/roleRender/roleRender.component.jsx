@@ -12,7 +12,7 @@ import withDrawer from '../drawer/drawer.component';
 
 const NoPermissionWithDrawer = withDrawer(NoPermissions);
 
-const HOC = (Component, info, OtherComponent = null) => {
+const HOC = (Component, info, OtherComponent = null, anyOf = false) => {
 	const Comp = ({ isAuthenticated, user, ...otherProps }) => {
 		let showMain = true;
 		for (let index = 0; index < info.length; index++) {
@@ -21,13 +21,17 @@ const HOC = (Component, info, OtherComponent = null) => {
 			if (user[element.type].includes(element.value)) {
 				showMain = true;
 				console.log(`${element.type},${element.value}---true`);
+				if (anyOf) {
+					break;
+				}
 			} else {
 				showMain = false;
 				console.log(`${element.type},${element.value}---false`);
-				break;
+				if (!anyOf) {
+					break;
+				}
 			}
 		}
-		console.log('role', showMain);
 
 		const renderPage = () => {
 			// Check login status

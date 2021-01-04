@@ -1,6 +1,7 @@
 const express = require('express');
 // const userController = require('./../controllers/userController');
 const cityController = require('../controllers/cityController');
+// const adminController = require('../controllers/adminController')
 
 const router = express.Router();
 router.route('/searchCity').post(cityController.searchCity);
