@@ -1,24 +1,26 @@
+import {
+	selectFetchBuildersLoading as fetchBuildersLoading,
+	selectBuilders,
+} from '../../redux/builder/builder.selector';
+
+import Backdrop from '@material-ui/core/Backdrop';
+import Box from '@material-ui/core/Box';
+import CustomSelect from './selectBuilder.component';
+import { Link } from 'react-router-dom';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import RenderByAccess from '../roleRender/roleRender.component';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Backdrop from '@material-ui/core/Backdrop';
-import Box from '@material-ui/core/Box';
-import CustomSelect from './selectBuilder.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import {
-	selectBuilders,
-	selectFetchBuildersLoading as fetchBuildersLoading,
-} from '../../redux/builder/builder.selector';
 import { fetchBuilders } from '../../redux/builder/builder.action';
-import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
-import TablePagination from '@material-ui/core/TablePagination';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -105,6 +107,63 @@ function Orders({
 
 	const classes = useStyles();
 
+	const ActionHeadingNode = RenderByAccess(
+		<TableCell align="right" style={{ color: '#ffffff' }}>
+			Action
+		</TableCell>,
+		[
+			{
+				type: 'builderActions',
+				value: 'update',
+			},
+		]
+	);
+
+	const ActionDataNode = (c) => {
+		const Comp = RenderByAccess(
+			<TableCell align="right">
+				<Link to={`/edit-builder/${c.id}`}>Edit</Link>
+			</TableCell>,
+			[
+				{
+					type: 'builderActions',
+					value: 'update',
+				},
+			]
+		);
+
+		return <Comp />;
+	};
+	const StatusDataNode = (c) => {
+		const Comp = RenderByAccess(
+			<TableCell>
+				<CustomSelect
+					value={c.status}
+					builderId={c.id}
+					items={[
+						{
+							label: 'active',
+							value: 'active',
+						},
+						{
+							label: 'inactive',
+							value: 'inactive',
+						},
+					]}
+				/>
+			</TableCell>,
+			[
+				{
+					type: 'builderActions',
+					value: 'status',
+				},
+			],
+			<TableCell>{c.status}</TableCell>
+		);
+
+		return <Comp />;
+	};
+
 	return (
 		<React.Fragment>
 			<Backdrop
@@ -168,12 +227,7 @@ function Orders({
 							<TableCell style={{ color: '#ffffff' }}>
 								Status
 							</TableCell>
-							<TableCell
-								align="right"
-								style={{ color: '#ffffff' }}
-							>
-								Action
-							</TableCell>
+							<ActionHeadingNode />
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -193,27 +247,9 @@ function Orders({
 										)}
 									</span>
 								</TableCell>
-								<TableCell>
-									<CustomSelect
-										value={c.status}
-										builderId={c.id}
-										items={[
-											{
-												label: 'active',
-												value: 'active',
-											},
-											{
-												label: 'inactive',
-												value: 'inactive',
-											},
-										]}
-									/>
-								</TableCell>
-								<TableCell align="right">
-									<Link to={`/edit-builder/${c.id}`}>
-										Edit
-									</Link>
-								</TableCell>
+								{StatusDataNode(c)}
+
+								{ActionDataNode(c)}
 							</TableRow>
 						))}
 					</TableBody>

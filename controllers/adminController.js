@@ -148,9 +148,13 @@ exports.addAdmin = catchAsync(async (req, res, next) => {
 		propertyAccess: req.body.propertyAccess,
 		userAccess: req.body.userAccess,
 		builderAccess: req.body.builderAccess,
+		expertQueryAccess: req.body.expertQueryAccess,
 		propertyActions: req.body.propertyActions,
 		userActions: req.body.userActions,
 		builderActions: req.body.builderActions,
+		cityActions: req.body.cityActions,
+		locationActions: req.body.locationActions,
+		expertQueryActions: req.body.expertQueryActions,
 		propertyAccessCities: req.body.propertyAccessCities,
 		userAccessCities: req.body.userAccessCities,
 		builderAccessCities: req.body.builderAccessCities,
@@ -236,7 +240,7 @@ exports.addProfilePicture = catchAsync(async (req, res, next) => {
 
 exports.getAdmin = catchAsync(async (req, res, next) => {
 	const admin = await Admin.findById(req.params.id).select(
-		'name username email serialNumber password cities gender  status ableToSee type photo city propertyAccess userAccess builderAccess propertyActions userActions builderActions'
+		'name username email serialNumber password cities gender  status ableToSee type photo city propertyAccess userAccess builderAccess expertQueryAccess propertyActions userActions expertQueryActions cityActions locationActions'
 	);
 
 	res.status(200).json({

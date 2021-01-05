@@ -4,6 +4,8 @@ const AppError = require('./../utils/appError');
 const ApiFeatures = require('../utils/apiFeatures');
 const path = require('path');
 const fs = require('fs');
+const Admin = require('../models/adminModel');
+const mongoose = require('mongoose');
 
 exports.addBuilder = catchAsync(async (req, res, next) => {
 	const removeFieldArray = [
@@ -16,13 +18,21 @@ exports.addBuilder = catchAsync(async (req, res, next) => {
 		'image6',
 	];
 
+	const admin = await Admin.findById(req.admin.id);
+	if (
+		!admin.builderActions.includes('create') &&
+		admin.type !== 'super-admin'
+	) {
+		return next(new AppError('You are not authorized', 401));
+	}
+
 	let clone = { ...req.body };
 	removeFieldArray.forEach((c) => {
 		if (clone[c] !== null || clone[c] !== undefined) {
 			delete clone[c];
 		}
 	});
-
+	clone.adminId = admin.id;
 	const builder = await Builder.create(clone);
 
 	res.status(201).json({
@@ -35,6 +45,42 @@ exports.addBuilder = catchAsync(async (req, res, next) => {
 
 exports.getAllBuilder = catchAsync(async (req, res, next) => {
 	let query = { ...req.query };
+	const admin = await Admin.findById(req.admin.id);
+	console.log(admin);
+	if (admin.type !== 'super-admin') {
+		if (!admin.builderActions.includes('view')) {
+			return next(new AppError('You are not authorized', 401));
+		}
+		const or = [];
+		const cities = admin.builderAccessCities.map((c) => c.id);
+
+		if (admin.builderAccess.includes('self-builders')) {
+			or.push({
+				adminId: mongoose.Types.ObjectId(admin.id),
+			});
+		}
+		if (admin.builderAccess.includes('other-staff-builders')) {
+			or.push({
+				adminId: { $ne: null },
+			});
+		}
+
+		if (or.length === 0) {
+			return next(
+				new AppError('You are not authorized to see any builders', 401)
+			);
+		} else {
+			query['$or'] = or;
+		}
+
+		if (cities.length === 0) {
+			return next(
+				new AppError('You have no permissions for any cities', 401)
+			);
+		} else {
+			query['cities'] = { $in: cities };
+		}
+	}
 	const page = query.page * 1 || 1;
 	const limit = query.limit * 1 || 100;
 	const excludeFields = ['page', 'limit'];

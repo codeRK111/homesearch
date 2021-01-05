@@ -157,6 +157,101 @@ const MainListItems = ({
 			},
 		]
 	);
+	// Add project Node
+	const AddBuilderNode = RenderByRole(
+		<ListItem
+			button
+			className={classes.nested}
+			onClick={onUsersClick('/addBuilder')}
+		>
+			<ListItemIcon>
+				<AddBoxIcon style={{ color: green[500] }} />
+			</ListItemIcon>
+			<ListItemText primary="Add builder" />
+		</ListItem>,
+		[
+			{
+				type: 'builderActions',
+				value: 'create',
+			},
+		]
+	);
+	// Add City Node
+	const AddCityNode = RenderByRole(
+		<ListItem
+			button
+			className={classes.nested}
+			onClick={onUsersClick('/addCity')}
+		>
+			<ListItemIcon>
+				<AddBoxIcon style={{ color: green[500] }} />
+			</ListItemIcon>
+			<ListItemText primary="Add City" />
+		</ListItem>,
+		[
+			{
+				type: 'cityActions',
+				value: 'create',
+			},
+		]
+	);
+	// Add City Node
+	const AddLocationNode = RenderByRole(
+		<ListItem
+			button
+			className={classes.nested}
+			onClick={onUsersClick('/addLocation')}
+		>
+			<ListItemIcon>
+				<AddBoxIcon style={{ color: green[500] }} />
+			</ListItemIcon>
+			<ListItemText primary="Add Location" />
+		</ListItem>,
+		[
+			{
+				type: 'locationActions',
+				value: 'create',
+			},
+		]
+	);
+	// View City Node
+	const ViewCityNode = RenderByRole(
+		<ListItem
+			button
+			className={classes.nested}
+			onClick={onUsersClick('/cities/Odisha')}
+		>
+			<ListItemIcon>
+				<ApartmentIcon style={{ color: green[500] }} />
+			</ListItemIcon>
+			<ListItemText primary="All Cities" />
+		</ListItem>,
+		[
+			{
+				type: 'cityActions',
+				value: 'view',
+			},
+		]
+	);
+	// View City Node
+	const ViewLocationNode = RenderByRole(
+		<ListItem
+			button
+			className={classes.nested}
+			onClick={onUsersClick('/locations/Odisha')}
+		>
+			<ListItemIcon>
+				<ApartmentIcon style={{ color: green[500] }} />
+			</ListItemIcon>
+			<ListItemText primary="All Locations" />
+		</ListItem>,
+		[
+			{
+				type: 'locationActions',
+				value: 'view',
+			},
+		]
+	);
 
 	const ViewPermissionNode = (accessType, ...Node) => {
 		return (
@@ -169,6 +264,22 @@ const MainListItems = ({
 						},
 						{
 							type: 'propertyActions',
+							value: 'view',
+						},
+					]);
+
+					return <Comp key={i} />;
+				})}
+			</div>
+		);
+	};
+	const BuilderViewPermissionNode = (...Node) => {
+		return (
+			<div>
+				{Node.map((N, i) => {
+					const Comp = RenderByRole(N, [
+						{
+							type: 'builderActions',
 							value: 'view',
 						},
 					]);
@@ -195,6 +306,27 @@ const MainListItems = ({
 			},
 			{
 				type: 'propertyActions',
+				value: 'view',
+			},
+		],
+		null,
+		true
+	);
+	// Expert Queries
+	const ExpertQueriesLabelNode = RenderByRole(
+		<ListItem button onClick={onUsersClick('/expert-queries')}>
+			<ListItemIcon>
+				<ChatIcon color="secondary" />
+			</ListItemIcon>
+			<ListItemText primary="Queries for experts" />
+		</ListItem>,
+		[
+			{
+				type: 'expertQueryActions',
+				value: 'create',
+			},
+			{
+				type: 'expertQueryActions',
 				value: 'view',
 			},
 		],
@@ -283,6 +415,36 @@ const MainListItems = ({
 			},
 			{
 				type: 'builderActions',
+				value: 'view',
+			},
+		],
+		null,
+		true
+	);
+	// City & Location label
+	const CityAndLocationHeadingNode = RenderByRole(
+		<ListItem button onClick={toggleLocation}>
+			<ListItemIcon>
+				<LocationCityIcon color="secondary" />
+			</ListItemIcon>
+			<ListItemText primary="Cities And Locations" />
+			{locationOpen ? <ExpandLess /> : <ExpandMore />}
+		</ListItem>,
+		[
+			{
+				type: 'cityActions',
+				value: 'create',
+			},
+			{
+				type: 'cityActions',
+				value: 'view',
+			},
+			{
+				type: 'locationActions',
+				value: 'create',
+			},
+			{
+				type: 'locationActions',
 				value: 'view',
 			},
 		],
@@ -426,37 +588,29 @@ const MainListItems = ({
 			<BuilderLabelNode />
 			<Collapse in={selectBuilder} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/addBuilder')}
-					>
-						<ListItemIcon>
-							<AddBoxIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Add builder" />
-					</ListItem>
-
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/builders/active')}
-					>
-						<ListItemIcon>
-							<PeopleAltIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Active builders" />
-					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/builders/inactive')}
-					>
-						<ListItemIcon>
-							<PeopleAltIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Inactive builders" />
-					</ListItem>
+					<AddBuilderNode />
+					{BuilderViewPermissionNode(
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick('/builders/active')}
+						>
+							<ListItemIcon>
+								<PeopleAltIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Active builders" />
+						</ListItem>,
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick('/builders/inactive')}
+						>
+							<ListItemIcon>
+								<PeopleAltIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Inactive builders" />
+						</ListItem>
+					)}
 				</List>
 			</Collapse>
 			<ProjectLabel />
@@ -488,55 +642,14 @@ const MainListItems = ({
 					)}
 				</List>
 			</Collapse>
-			<ListItem button onClick={toggleLocation}>
-				<ListItemIcon>
-					<LocationCityIcon color="secondary" />
-				</ListItemIcon>
-				<ListItemText primary="Cities And Locations" />
-				{locationOpen ? <ExpandLess /> : <ExpandMore />}
-			</ListItem>
+			<CityAndLocationHeadingNode />
+
 			<Collapse in={locationOpen} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/addCity')}
-					>
-						<ListItemIcon>
-							<AddBoxIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Add City" />
-					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/addLocation')}
-					>
-						<ListItemIcon>
-							<AddBoxIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Add Location" />
-					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/cities/Odisha')}
-					>
-						<ListItemIcon>
-							<ApartmentIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="All Cities" />
-					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/locations/Odisha')}
-					>
-						<ListItemIcon>
-							<ApartmentIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="All Locations" />
-					</ListItem>
+					<AddCityNode />
+					<AddLocationNode />
+					<ViewCityNode />
+					<ViewLocationNode />
 				</List>
 			</Collapse>
 			<ListItem button onClick={onUsersClick('/queries')}>
@@ -545,12 +658,7 @@ const MainListItems = ({
 				</ListItemIcon>
 				<ListItemText primary="Property queries" />
 			</ListItem>
-			<ListItem button onClick={onUsersClick('/expert-queries')}>
-				<ListItemIcon>
-					<ChatIcon color="secondary" />
-				</ListItemIcon>
-				<ListItemText primary="Queries for experts" />
-			</ListItem>
+			<ExpertQueriesLabelNode />
 			<ListItem button onClick={onUsersClick('/feedbacks')}>
 				<ListItemIcon>
 					<FeedbackIcon color="secondary" />

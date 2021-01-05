@@ -1,30 +1,32 @@
+import { Link, useHistory, withRouter } from 'react-router-dom';
+import {
+	selectAllStates as allStates,
+	selectCityLoading as cityLoading,
+	selectFetchLocationLoading as locationLoading,
+	selectLoading as stateLoading,
+} from '../../redux/city/city.selector';
+import {
+	fetchCitiesStart as fetchCities,
+	fetchLocationssStart as fetchLocations,
+	fetchAllStatesStart as fetchStates,
+} from '../../redux/city/city.actions';
+
+import Backdrop from '@material-ui/core/Backdrop';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import RenderByAccess from '../roleRender/roleRender.component';
+import Select from '../select/select.component';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Backdrop from '@material-ui/core/Backdrop';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import {
-	selectCityLoading as cityLoading,
-	selectLoading as stateLoading,
-	selectAllStates as allStates,
-	selectFetchLocationLoading as locationLoading,
-} from '../../redux/city/city.selector';
-import {
-	fetchAllStatesStart as fetchStates,
-	fetchCitiesStart as fetchCities,
-	fetchLocationssStart as fetchLocations,
-} from '../../redux/city/city.actions';
-import Box from '@material-ui/core/Box';
-import { useHistory, Link, withRouter } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
-import Select from '../select/select.component';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -121,6 +123,78 @@ function Orders({
 		// history.push(`/locations/${params.state}/djkhskfj`);
 	};
 
+	const ActionHeadingNode = RenderByAccess(
+		<TableCell align="right" style={{ color: '#ffffff' }}>
+			Action
+		</TableCell>,
+		[
+			{
+				type: 'locationActions',
+				value: 'update',
+			},
+			{
+				type: 'locationActions',
+				value: 'delete',
+			},
+		],
+		null,
+		true
+	);
+
+	const actionDataEditNode = (c) => {
+		const Comp = RenderByAccess(
+			<Link to={`/locations/manage/edit/${c.id}`}>Edit</Link>,
+			[
+				{
+					type: 'locationActions',
+					value: 'update',
+				},
+			]
+		);
+
+		return <Comp />;
+	};
+	const actionDatadeleteNode = (c) => {
+		const Comp = RenderByAccess(
+			<Box ml="0.5rem">
+				<Link to={`/locations/manage/delete/${c.id}`}>Delete</Link>
+			</Box>,
+			[
+				{
+					type: 'locationActions',
+					value: 'delete',
+				},
+			]
+		);
+
+		return <Comp />;
+	};
+
+	const actionDataParentNode = (c) => {
+		const Comp = RenderByAccess(
+			<TableCell align="right">
+				<Box display="flex" justifyContent="flex-end">
+					{actionDataEditNode(c)}
+					{actionDatadeleteNode(c)}
+				</Box>
+			</TableCell>,
+			[
+				{
+					type: 'locationActions',
+					value: 'update',
+				},
+				{
+					type: 'locationActions',
+					value: 'delete',
+				},
+			],
+			null,
+			true
+		);
+
+		return <Comp />;
+	};
+
 	return (
 		<React.Fragment>
 			<Backdrop
@@ -203,12 +277,7 @@ function Orders({
 								State
 							</TableCell>
 
-							<TableCell
-								align="right"
-								style={{ color: '#ffffff' }}
-							>
-								Action
-							</TableCell>
+							<ActionHeadingNode />
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -218,25 +287,7 @@ function Orders({
 								<TableCell>{c.name}</TableCell>
 								<TableCell>{c.city.name}</TableCell>
 								<TableCell>{c.city.state}</TableCell>
-								<TableCell align="right">
-									<Box
-										display="flex"
-										justifyContent="flex-end"
-									>
-										<Link
-											to={`/locations/manage/edit/${c.id}`}
-										>
-											Edit
-										</Link>
-										<Box ml="0.5rem">
-											<Link
-												to={`/locations/manage/delete/${c.id}`}
-											>
-												Delete
-											</Link>
-										</Box>
-									</Box>
-								</TableCell>
+								{actionDataParentNode(c)}
 							</TableRow>
 						))}
 					</TableBody>

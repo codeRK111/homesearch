@@ -23,9 +23,13 @@ const AddAdminForm = ({ loading, onSubmit }) => {
 		propertyAccess: [],
 		userAccess: [],
 		builderAccess: [],
+		expertQueryAccess: [],
 		propertyActions: [],
 		userActions: [],
 		builderActions: [],
+		expertQueryActions: [],
+		cityActions: [],
+		locationActions: [],
 		propertyAccessCities: [],
 		userAccessCities: [],
 		builderAccessCities: [],
@@ -473,6 +477,168 @@ const AddAdminForm = ({ loading, onSubmit }) => {
 													name="userActions"
 													value="status"
 													formLabel="Change Status"
+													type="checkbox"
+												/>
+											</Grid>
+										</Grid>
+									</Box>
+								</Box>
+							</Grid>
+							<Grid item xs={12}>
+								<DividerHeading>
+									Manage Expert Query Permissions
+								</DividerHeading>
+								<Box mt="2rem"></Box>
+								<Box>
+									<Grid container>
+										<Grid item xs={12} md={2}>
+											<h5>Access For</h5>
+										</Grid>
+										<Grid item xs={12} md={2}>
+											<CheckBox
+												name="expertQueryAccess"
+												value="self-expert-queries"
+												formLabel="Self created queries"
+												type="checkbox"
+											/>
+										</Grid>
+										<Grid item xs={12} md={2}>
+											<CheckBox
+												name="expertQueryAccess"
+												value="other-staff-expert-queries"
+												formLabel="Other staff created queries"
+												type="checkbox"
+											/>
+										</Grid>
+									</Grid>
+									<Box>
+										<Grid container>
+											<Grid item xs={12} md={2}>
+												<h5>Action</h5>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="expertQueryActions"
+													value="create"
+													formLabel="Create"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="expertQueryActions"
+													value="view"
+													formLabel="View"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="expertQueryActions"
+													value="update"
+													formLabel="Update"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={2}>
+												<CheckBox
+													name="expertQueryActions"
+													value="delete"
+													formLabel="Delete"
+													type="checkbox"
+												/>
+											</Grid>
+										</Grid>
+									</Box>
+								</Box>
+							</Grid>
+							<Grid item xs={12}>
+								<DividerHeading>
+									Manage Cities Permissions
+								</DividerHeading>
+								<Box mt="2rem"></Box>
+								<Box>
+									<Box>
+										<Grid container>
+											<Grid item xs={12} md={2}>
+												<h5>Action</h5>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="cityActions"
+													value="create"
+													formLabel="Create"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="cityActions"
+													value="view"
+													formLabel="View"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="cityActions"
+													value="update"
+													formLabel="Update"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={2}>
+												<CheckBox
+													name="cityActions"
+													value="delete"
+													formLabel="Delete"
+													type="checkbox"
+												/>
+											</Grid>
+										</Grid>
+									</Box>
+								</Box>
+							</Grid>
+							<Grid item xs={12}>
+								<DividerHeading>
+									Manage Locations Permissions
+								</DividerHeading>
+								<Box mt="2rem"></Box>
+								<Box>
+									<Box>
+										<Grid container>
+											<Grid item xs={12} md={2}>
+												<h5>Action</h5>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="locationActions"
+													value="create"
+													formLabel="Create"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="locationActions"
+													value="view"
+													formLabel="View"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={1}>
+												<CheckBox
+													name="locationActions"
+													value="update"
+													formLabel="Update"
+													type="checkbox"
+												/>
+											</Grid>
+											<Grid item xs={12} md={2}>
+												<CheckBox
+													name="locationActions"
+													value="delete"
+													formLabel="Delete"
 													type="checkbox"
 												/>
 											</Grid>

@@ -1,39 +1,42 @@
-import React from 'react';
-import RowTextField from '../../components/rowTextField/rowTextField.component';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
-import FormHeader from '../../components/formHeader/formHeader.component';
-import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
 import {
 	Box,
 	Button,
+	Checkbox,
+	FormControl,
+	FormControlLabel,
 	Grid,
 	Paper,
 	Radio,
 	RadioGroup,
-	FormControlLabel,
-	FormControl,
-	Checkbox,
 } from '@material-ui/core';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { selectAddBuilderLoading as addBuilderLoading } from '../../redux/builder/builder.selector';
 import {
+	selectCityLoading as cityLoading,
 	selectAllStates,
 	selectLoading as stateLoading,
-	selectCityLoading as cityLoading,
 } from '../../redux/city/city.selector';
 import {
 	fetchAllStatesStart,
 	fetchCitiesStart as fetchCities,
 } from '../../redux/city/city.actions';
-import { addBuilder } from '../../redux/builder/builder.action';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+
 import Backdrop from '@material-ui/core/Backdrop';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import FormHeader from '../../components/formHeader/formHeader.component';
 import ProgressBar from '../../components/asyncProgressBar/asyncProgressBar.component';
+import PropTypes from 'prop-types';
+import React from 'react';
+import RenderByRole from '../../components/roleRender/renderByRole.component';
+import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
+import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import RowTextField from '../../components/rowTextField/rowTextField.component';
+import { addBuilder } from '../../redux/builder/builder.action';
+import { selectAddBuilderLoading as addBuilderLoading } from '../../redux/builder/builder.selector';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
+import { selectCurrentUser } from '../../redux/user/user.selector';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -50,6 +53,7 @@ const PropertySale = ({
 	fetchCities,
 	addBuilderLoading,
 	addBuilder,
+	currentUser,
 }) => {
 	const history = useHistory();
 	const [cities, setCities] = React.useState([]);
@@ -138,8 +142,15 @@ const PropertySale = ({
 	};
 
 	React.useEffect(() => {
-		if (selectedState) {
+		if (selectedState && currentUser.role === 'super-admin') {
 			fetchCities(selectedState, handleFetchCity);
+		} else {
+			setCities(
+				currentUser.builderAccessCities.map((c) => ({
+					...c,
+					value: false,
+				}))
+			);
 		}
 	}, [selectedState]);
 
@@ -235,7 +246,94 @@ const PropertySale = ({
 		));
 	};
 
-	console.log(cities);
+	const StateNode = RenderByRole({
+		'super-admin': (
+			<RowSelect
+				heading="State"
+				loading={stateLoading}
+				name="state"
+				label="State"
+				onChange={handleChange}
+				onOpen={fetchState}
+				onClose={setState}
+				menuItems={allStates.map((c) => ({
+					label: c,
+					value: c,
+				}))}
+			/>
+		),
+	});
+	const CityNode = RenderByRole({
+		'super-admin': selectedState && (
+			<RowHOC heading="Cities">
+				<Grid container>
+					{cities.map((c, i) => {
+						return (
+							<Grid item xs={6} lg={4} key={i}>
+								<FormControlLabel
+									control={
+										<Checkbox
+											checked={c.value}
+											onChange={(e) =>
+												handleCityCheckbox(e, c)
+											}
+										/>
+									}
+									label={c.name}
+								/>
+							</Grid>
+						);
+					})}
+				</Grid>
+			</RowHOC>
+		),
+		admin: (
+			<RowHOC heading="Cities">
+				<Grid container>
+					{cities.map((c, i) => {
+						return (
+							<Grid item xs={6} lg={4} key={i}>
+								<FormControlLabel
+									control={
+										<Checkbox
+											checked={c.value}
+											onChange={(e) =>
+												handleCityCheckbox(e, c)
+											}
+										/>
+									}
+									label={c.name}
+								/>
+							</Grid>
+						);
+					})}
+				</Grid>
+			</RowHOC>
+		),
+		staff: (
+			<RowHOC heading="Cities">
+				<Grid container>
+					{cities.map((c, i) => {
+						return (
+							<Grid item xs={6} lg={4} key={i}>
+								<FormControlLabel
+									control={
+										<Checkbox
+											checked={c.value}
+											onChange={(e) =>
+												handleCityCheckbox(e, c)
+											}
+										/>
+									}
+									label={c.name}
+								/>
+							</Grid>
+						);
+					})}
+				</Grid>
+			</RowHOC>
+		),
+	});
 	return (
 		<Box p="1rem">
 			{addBuilderLoading && (
@@ -286,45 +384,9 @@ const PropertySale = ({
 						onChange={handleChange}
 						label="Enter email"
 					/>
-					<RowSelect
-						heading="State"
-						loading={stateLoading}
-						name="state"
-						label="State"
-						onChange={handleChange}
-						onOpen={fetchState}
-						onClose={setState}
-						menuItems={allStates.map((c) => ({
-							label: c,
-							value: c,
-						}))}
-					/>
-					{selectedState && (
-						<RowHOC heading="Cities">
-							<Grid container>
-								{cities.map((c, i) => {
-									return (
-										<Grid item xs={6} lg={4} key={i}>
-											<FormControlLabel
-												control={
-													<Checkbox
-														checked={c.value}
-														onChange={(e) =>
-															handleCityCheckbox(
-																e,
-																c
-															)
-														}
-													/>
-												}
-												label={c.name}
-											/>
-										</Grid>
-									);
-								})}
-							</Grid>
-						</RowHOC>
-					)}
+					<StateNode />
+					<CityNode />
+					{}
 					<RowTextField
 						heading="Office Address"
 						name="officeAddress"
@@ -426,6 +488,7 @@ const PropertySale = ({
 
 const mapStateToProps = createStructuredSelector({
 	allStates: selectAllStates,
+	currentUser: selectCurrentUser,
 	stateLoading,
 	cityLoading,
 	addBuilderLoading,

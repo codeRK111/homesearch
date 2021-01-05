@@ -116,6 +116,10 @@ const adminSchema = new Schema(
 			type: [String],
 			required: [true, 'Builder access required'],
 		},
+		expertQueryAccess: {
+			type: [String],
+			required: [true, 'Builder access required'],
+		},
 		propertyActions: {
 			type: [String],
 			required: [true, 'Property action required'],
@@ -125,6 +129,18 @@ const adminSchema = new Schema(
 			required: [true, 'User action required'],
 		},
 		builderActions: {
+			type: [String],
+			required: [true, 'Builder action required'],
+		},
+		cityActions: {
+			type: [String],
+			required: [true, 'Builder action required'],
+		},
+		locationActions: {
+			type: [String],
+			required: [true, 'Builder action required'],
+		},
+		expertQueryActions: {
 			type: [String],
 			required: [true, 'Builder action required'],
 		},

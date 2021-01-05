@@ -2,9 +2,40 @@ const AppError = require('./../utils/appError');
 const Contact = require('./../models/contactModel');
 const catchAsync = require('./../utils/catchAsync');
 const sendOtpMessage = require('../utils/sendOtp');
+const Admin = require('../models/adminModel');
+const mongoose = require('mongoose');
 
 exports.getContacts = catchAsync(async (req, res, next) => {
+	const admin = await Admin.findById(req.admin.id);
+	if (
+		!admin.expertQueryActions.includes('view') &&
+		admin.type !== 'super-admin'
+	) {
+		return next(new AppError('You are not authorized', 401));
+	}
+
 	const filter = {};
+	if (admin.type !== 'super-admin') {
+		const or = [];
+		if (admin.expertQueryAccess.includes('self-expert-queries')) {
+			or.push({
+				adminId: mongoose.Types.ObjectId(admin.id),
+			});
+		}
+		if (admin.expertQueryAccess.includes('other-staff-expert-queries')) {
+			or.push({
+				adminId: { $ne: null },
+			});
+		}
+
+		if (or.length === 0) {
+			return next(
+				new AppError('You are not authorized to see any queries', 401)
+			);
+		} else {
+			filter['$or'] = or;
+		}
+	}
 	const page = req.body.page * 1 || 1;
 	const limit = req.body.limit * 1 || 10;
 	const skip = (page - 1) * limit;
@@ -45,7 +76,18 @@ exports.addContact = catchAsync(async (req, res, next) => {
 });
 
 exports.addContactByAdmin = catchAsync(async (req, res, next) => {
-	let contact = await Contact.create(req.body);
+	const admin = await Admin.findById(req.admin.id);
+	if (
+		!admin.expertQueryActions.includes('create') &&
+		admin.type !== 'super-admin'
+	) {
+		return next(new AppError('You are not authorized', 401));
+	}
+
+	const body = { ...req.body };
+
+	body.adminId = admin.id;
+	let contact = await Contact.create(body);
 	res.status(200).json({
 		status: 'success',
 		data: {

@@ -1,6 +1,7 @@
 const express = require('express');
 // const userController = require('./../controllers/userController');
 const builderController = require('../controllers/builderController');
+const adminController = require('../controllers/adminController');
 
 const router = express.Router();
 
@@ -8,8 +9,8 @@ router.patch('/handle-image/:id', builderController.handleImage);
 
 router
 	.route('/')
-	.get(builderController.getAllBuilder)
-	.post(builderController.addBuilder);
+	.get(adminController.protect, builderController.getAllBuilder)
+	.post(adminController.protect, builderController.addBuilder);
 
 router
 	.route('/:id')

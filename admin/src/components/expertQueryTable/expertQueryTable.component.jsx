@@ -6,6 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Paper from '@material-ui/core/Paper';
 import React from 'react';
+import RenderByAccess from '../../components/roleRender/roleRender.component';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -96,6 +97,88 @@ function CustomizedTables({
 
 	const classes = useStyles();
 
+	const StatusHeadingNode = RenderByAccess(
+		<StyledTableCell align="center">Actions</StyledTableCell>,
+		[
+			{
+				type: 'expertQueryActions',
+				value: 'update',
+			},
+			{
+				type: 'expertQueryActions',
+				value: 'delete',
+			},
+		],
+		null,
+		true
+	);
+
+	const editNode = (row) => {
+		const Comp = RenderByAccess(
+			<Tooltip title="Edit">
+				<Box className="pointer" onClick={onEdit(row.id)}>
+					<EditIcon
+						style={{
+							fontSize: '1.2rem',
+						}}
+					/>
+				</Box>
+			</Tooltip>,
+			[
+				{
+					type: 'expertQueryActions',
+					value: 'update',
+				},
+			]
+		);
+
+		return <Comp />;
+	};
+	const deleteNode = (row) => {
+		const Comp = RenderByAccess(
+			<Tooltip title="Delete">
+				<Box className="pointer" onClick={onDelete(row.id)}>
+					<DeleteIcon
+						style={{
+							fontSize: '1.3rem',
+						}}
+					/>
+				</Box>
+			</Tooltip>,
+			[
+				{
+					type: 'expertQueryActions',
+					value: 'delete',
+				},
+			]
+		);
+
+		return <Comp />;
+	};
+	const actionDataNode = (row) => {
+		const Comp = RenderByAccess(
+			<StyledTableCell>
+				<Box display="flex" alignItems="center" justifyContent="center">
+					{editNode(row)}
+					{deleteNode(row)}
+				</Box>
+			</StyledTableCell>,
+			[
+				{
+					type: 'expertQueryActions',
+					value: 'update',
+				},
+				{
+					type: 'expertQueryActions',
+					value: 'delete',
+				},
+			],
+			null,
+			true
+		);
+
+		return <Comp />;
+	};
 	return (
 		<Box>
 			{loading && queries.length === 0 ? (
@@ -123,9 +206,7 @@ function CustomizedTables({
 								<StyledTableCell>
 									Number verified
 								</StyledTableCell>
-								<StyledTableCell align="center">
-									Actions
-								</StyledTableCell>
+								<StatusHeadingNode />
 							</TableRow>
 						</TableHead>
 
@@ -149,38 +230,7 @@ function CustomizedTables({
 									<StyledTableCell>
 										{renderBoolean(row.verified)}
 									</StyledTableCell>
-									<StyledTableCell>
-										<Box
-											display="flex"
-											alignItems="center"
-											justifyContent="center"
-										>
-											<Tooltip title="Edit">
-												<Box
-													className="pointer"
-													onClick={onEdit(row.id)}
-												>
-													<EditIcon
-														style={{
-															fontSize: '1.2rem',
-														}}
-													/>
-												</Box>
-											</Tooltip>
-											<Tooltip title="Delete">
-												<Box
-													className="pointer"
-													onClick={onDelete(row.id)}
-												>
-													<DeleteIcon
-														style={{
-															fontSize: '1.3rem',
-														}}
-													/>
-												</Box>
-											</Tooltip>
-										</Box>
-									</StyledTableCell>
+									{actionDataNode(row)}
 								</StyledTableRow>
 							))}
 						</TableBody>

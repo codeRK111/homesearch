@@ -38,6 +38,11 @@ const contactSchema = new Schema(
 
 			default: false,
 		},
+		adminId: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Admin',
+			default: null,
+		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

@@ -104,7 +104,12 @@ function App(props) {
 					path="/locations/:state/:city?/"
 					render={() => (
 						<Protected
-							component={LocationsPageWithDrawer}
+							component={HOC(LocationsPageWithDrawer, [
+								{
+									type: 'locationActions',
+									value: 'view',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -155,7 +160,12 @@ function App(props) {
 					path="/update-expert-query/:id"
 					render={() => (
 						<Protected
-							component={EditExpertQueryPageWithDrawer}
+							component={HOC(EditExpertQueryPageWithDrawer, [
+								{
+									type: 'expertQueryActions',
+									value: 'update',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -295,7 +305,12 @@ function App(props) {
 					path="/addBuilder"
 					render={() => (
 						<Protected
-							component={AddBuilderPageWithDrawer}
+							component={HOC(AddBuilderPageWithDrawer, [
+								{
+									type: 'builderActions',
+									value: 'create',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -343,7 +358,12 @@ function App(props) {
 					path="/builders/:status"
 					render={() => (
 						<Protected
-							component={BuilderPageWithDrawer}
+							component={HOC(BuilderPageWithDrawer, [
+								{
+									type: 'builderActions',
+									value: 'view',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -392,8 +412,12 @@ function App(props) {
 					path="/edit-builder/:id"
 					render={() => (
 						<Protected
-							component={EditBuilderPageWithDrawer}
-							{...props}
+							component={HOC(EditBuilderPageWithDrawer, [
+								{
+									type: 'builderActions',
+									value: 'update',
+								},
+							])}
 						/>
 					)}
 				/>
@@ -460,7 +484,12 @@ function App(props) {
 					path="/addCity"
 					render={() => (
 						<Protected
-							component={AddCityPageWithDrawer}
+							component={HOC(AddCityPageWithDrawer, [
+								{
+									type: 'cityActions',
+									value: 'create',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -471,12 +500,22 @@ function App(props) {
 					render={(props) =>
 						props.match.params.action === 'edit' ? (
 							<Protected
-								component={EditCityPageWithDrawer}
+								component={HOC(EditCityPageWithDrawer, [
+									{
+										type: 'cityActions',
+										value: 'update',
+									},
+								])}
 								{...props}
 							/>
 						) : (
 							<Protected
-								component={DeleteCityPageWithDrawer}
+								component={HOC(DeleteCityPageWithDrawer, [
+									{
+										type: 'cityActions',
+										value: 'delete',
+									},
+								])}
 								{...props}
 							/>
 						)
@@ -488,12 +527,22 @@ function App(props) {
 					render={(props) =>
 						props.match.params.action === 'edit' ? (
 							<Protected
-								component={EditLocationPageWithDrawer}
+								component={HOC(EditLocationPageWithDrawer, [
+									{
+										type: 'locationActions',
+										value: 'update',
+									},
+								])}
 								{...props}
 							/>
 						) : (
 							<Protected
-								component={DeleteLocationPageWithDrawer}
+								component={HOC(DeleteLocationPageWithDrawer, [
+									{
+										type: 'locationActions',
+										value: 'delete',
+									},
+								])}
 								{...props}
 							/>
 						)
@@ -503,7 +552,12 @@ function App(props) {
 					path="/cities/:state"
 					render={() => (
 						<Protected
-							component={ViewCitiesPageWithDrawer}
+							component={HOC(ViewCitiesPageWithDrawer, [
+								{
+									type: 'cityActions',
+									value: 'view',
+								},
+							])}
 							{...props}
 						/>
 					)}
@@ -513,7 +567,12 @@ function App(props) {
 					path="/addLocation"
 					render={() => (
 						<Protected
-							component={AddLocationPageWithDrawer}
+							component={HOC(AddLocationPageWithDrawer, [
+								{
+									type: 'locationActions',
+									value: 'create',
+								},
+							])}
 							{...props}
 						/>
 					)}

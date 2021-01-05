@@ -1,16 +1,18 @@
-import { takeLatest, put, call, all } from 'redux-saga/effects';
-import { builderActionTypes as types } from './builder.types';
-import axios from 'axios';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import {
+	setBuilders,
 	toggleAddBuilderLoading,
+	toggleFetchBuilderInfoLoading,
 	toggleFetchBuildersLoading,
 	toggleUpdateBuilderLoading,
-	toggleFetchBuilderInfoLoading,
-	setBuilders,
 } from './builder.action';
+
+import axios from 'axios';
+import { builderActionTypes as types } from './builder.types';
 
 function* addBuilder({ payload: { builder, callback } }) {
 	try {
+		const jwt = localStorage.getItem('JWT');
 		yield put(toggleAddBuilderLoading(true));
 		let data = JSON.stringify(builder);
 		let url = `/api/v1/builders`;
@@ -18,6 +20,7 @@ function* addBuilder({ payload: { builder, callback } }) {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`,
 			},
 			url,
 			data,
@@ -64,6 +67,7 @@ function* addBuilder({ payload: { builder, callback } }) {
 
 export function* getBuilders({ payload: { callback, param = {} } }) {
 	try {
+		const jwt = localStorage.getItem('JWT');
 		yield put(toggleFetchBuildersLoading(true));
 		let a = Object.keys(param);
 		let b = '';
@@ -77,7 +81,14 @@ export function* getBuilders({ payload: { callback, param = {} } }) {
 			}
 		});
 		let url = `/api/v1/builders${b}`;
-		const response = yield axios.get(url);
+		const response = yield axios({
+			method: 'get',
+			url,
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`,
+			},
+		});
 		const responseData = response.data;
 		if (responseData.status === 'fail') {
 			yield put(toggleFetchBuildersLoading(false));
