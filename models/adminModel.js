@@ -156,6 +156,23 @@ const adminSchema = new Schema(
 			type: [{ type: mongoose.Schema.ObjectId, ref: 'City' }],
 			required: [true, 'Builder access cities required'],
 		},
+		kras: [
+			{
+				kraType: {
+					type: String,
+					enum: ['projectAdvertisement'],
+				},
+				id: {
+					type: String,
+				},
+			},
+		],
+		staffAccess: [
+			{
+				type: mongoose.Schema.ObjectId,
+				ref: 'Admin',
+			},
+		],
 
 		passwordChangedAt: Date,
 		// passwordResetToken: String,

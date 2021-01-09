@@ -1,5 +1,6 @@
 import {
 	selectBuilder,
+	selectKRA,
 	selectLocation,
 	selectProject,
 	selectPropertyRent,
@@ -7,6 +8,7 @@ import {
 } from '../../redux/sidebar/sidebar.selector';
 import {
 	toggleBuilder,
+	toggleKRA,
 	toggleLocation,
 	toggleProject,
 	togglePropertyRent,
@@ -32,8 +34,11 @@ import LocationCityIcon from '@material-ui/icons/LocationCity';
 import LockIcon from '@material-ui/icons/Lock';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
+import PhoneIcon from '@material-ui/icons/Phone';
 import React from 'react';
+import RenderByAdminType from '../roleRender/renderByRole.component';
 import RenderByRole from '../roleRender/roleRender.component';
+import WorkIcon from '@material-ui/icons/Work';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { green } from '@material-ui/core/colors';
@@ -68,6 +73,8 @@ const MainListItems = ({
 	selectBuilder,
 	toggleBuilder,
 	selectCurrentUser,
+	selectKRA,
+	toggleKRA,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -470,11 +477,76 @@ const MainListItems = ({
 			value: 'project',
 		},
 	]);
+
+	const KRA = RenderByAdminType({
+		'super-admin': (
+			<div>
+				<ListItem button onClick={toggleKRA}>
+					<ListItemIcon>
+						<WorkIcon color="secondary" />
+					</ListItemIcon>
+					<ListItemText primary="KRA" />
+					{selectKRA ? <ExpandLess /> : <ExpandMore />}
+				</ListItem>
+				<Collapse in={selectKRA} timeout="auto" unmountOnExit>
+					<List component="div" disablePadding>
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick('/project-advertisement')}
+						>
+							<ListItemIcon>
+								<PhoneIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Project Advertisement" />
+						</ListItem>
+					</List>
+				</Collapse>
+			</div>
+		),
+		admin: (
+			<div>
+				<ListItem button onClick={toggleKRA}>
+					<ListItemIcon>
+						<WorkIcon color="secondary" />
+					</ListItemIcon>
+					<ListItemText primary="KRA" />
+					{selectKRA ? <ExpandLess /> : <ExpandMore />}
+				</ListItem>
+				<Collapse in={selectKRA} timeout="auto" unmountOnExit>
+					<List component="div" disablePadding>
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick('/project-advertisement')}
+						>
+							<ListItemIcon>
+								<PhoneIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Project Advertisement" />
+						</ListItem>
+					</List>
+				</Collapse>
+			</div>
+		),
+	});
+
+	const Workspace = RenderByAdminType({
+		staff: (
+			<ListItem button onClick={onUsersClick('/workspace')}>
+				<ListItemIcon>
+					<WorkIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Workspace" />
+			</ListItem>
+		),
+	});
 	return (
 		<div>
 			<h3
 				className={classes.name}
 			>{`Hello ${selectCurrentUser.name}`}</h3>
+			<Workspace />
 			<ListItem button onClick={onUsersClick('/dashboard')}>
 				<ListItemIcon>
 					<DashboardIcon color="secondary" />
@@ -671,6 +743,7 @@ const MainListItems = ({
 				</ListItemIcon>
 				<ListItemText primary="Photo Requests" />
 			</ListItem>
+			<KRA />
 		</div>
 	);
 };
@@ -682,6 +755,7 @@ const mapStateToProps = createStructuredSelector({
 	selectProject: selectProject,
 	selectBuilder,
 	selectCurrentUser,
+	selectKRA,
 });
 
 const dispatchStateToProps = (dispatch) => ({
@@ -690,6 +764,7 @@ const dispatchStateToProps = (dispatch) => ({
 	toggleLocation: () => dispatch(toggleLocation()),
 	toggleProject: () => dispatch(toggleProject()),
 	toggleBuilder: () => dispatch(toggleBuilder()),
+	toggleKRA: () => dispatch(toggleKRA()),
 });
 
 export default connect(mapStateToProps, dispatchStateToProps)(MainListItems);

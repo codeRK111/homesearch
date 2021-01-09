@@ -10,8 +10,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import withDrawer from '../drawer/drawer.component';
 
-const NoPermissionWithDrawer = withDrawer(NoPermissions);
-
 const HOC = (components) => {
 	const Comp = ({ isAuthenticated, user }) => {
 		const renderComp = () => {

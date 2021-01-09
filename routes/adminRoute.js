@@ -32,6 +32,11 @@ router.get(
 	authController.protect,
 	authController.getAdminInfo
 );
+router.get(
+	'/get-my-staffs',
+	authController.protect,
+	authController.getMyStaffs
+);
 router.post(
 	'/get-expert-queries',
 	authController.protect,

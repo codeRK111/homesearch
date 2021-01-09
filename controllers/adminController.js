@@ -158,6 +158,7 @@ exports.addAdmin = catchAsync(async (req, res, next) => {
 		propertyAccessCities: req.body.propertyAccessCities,
 		userAccessCities: req.body.userAccessCities,
 		builderAccessCities: req.body.builderAccessCities,
+		staffAccess: req.body.staffAccess,
 	});
 
 	res.status(201).json({
@@ -240,13 +241,37 @@ exports.addProfilePicture = catchAsync(async (req, res, next) => {
 
 exports.getAdmin = catchAsync(async (req, res, next) => {
 	const admin = await Admin.findById(req.params.id).select(
-		'name username email serialNumber password cities gender  status ableToSee type photo city propertyAccess userAccess builderAccess expertQueryAccess propertyActions userActions expertQueryActions cityActions locationActions builderActions'
+		'name username email serialNumber password cities gender  status ableToSee type photo city propertyAccess userAccess builderAccess expertQueryAccess staffAccess propertyActions userActions expertQueryActions cityActions locationActions builderActions'
 	);
 
 	res.status(200).json({
 		status: 'success',
 		data: {
 			admin,
+		},
+	});
+});
+
+exports.getMyStaffs = catchAsync(async (req, res, next) => {
+	const ids = req.admin.staffAccess;
+	const filter = {};
+	if (req.admin.type === 'staff') {
+		return next(new AppError('You are not authorized to this task', 401));
+	}
+	if (req.admin.type !== 'super-admin') {
+		if (ids.length === 0) {
+			return next(new AppError('No staff asigned to you', 401));
+		}
+		filter['_id'] = { $in: ids };
+	}
+	filter['type'] = 'staff';
+
+	const staffs = await Admin.find(filter);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			staffs,
 		},
 	});
 });

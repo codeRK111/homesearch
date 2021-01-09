@@ -6,6 +6,7 @@ import DividerHeading from '../dividerHeadinng/dividerHeading.component';
 import React from 'react';
 import SearchCity from '../search/city.component';
 import Select from '../formik/select.component';
+import StaffManagement from './staffManagement.component';
 import TextField from '../formik/textField.component';
 
 const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
@@ -629,6 +630,15 @@ const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
 									</Box>
 								</Box>
 							</Grid>
+							{(values.type === 'super-admin' ||
+								values.type === 'admin') && (
+								<Box width="100%">
+									<DividerHeading>
+										Staff Access
+									</DividerHeading>
+									<StaffManagement id={values.id} />
+								</Box>
+							)}
 
 							<Grid item xs={12}>
 								<Button

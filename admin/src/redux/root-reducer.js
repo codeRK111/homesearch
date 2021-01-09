@@ -3,6 +3,7 @@ import builderReducer from './builder/builder.reducer';
 import cityReducer from './city/city.reducer';
 import { combineReducers } from 'redux';
 import feedbackReducer from './feedback/feedbacj.reducer';
+import kraReducer from './kra/kra.reducer';
 import projectReducer from './project/project.reducer';
 import propertyReducer from './property/property.reducer';
 import queryReducer from './query/query.reducer';
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
 	project: projectReducer,
 	query: queryReducer,
 	feedback: feedbackReducer,
+	kra: kraReducer,
 });
 
 // export default persistReducer(persistConfig, rootReducer);

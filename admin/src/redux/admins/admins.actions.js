@@ -3,6 +3,10 @@ import { AdminActionTypes } from './admins.types';
 export const fetchAllAdminsStart = () => ({
 	type: AdminActionTypes.FETCH_ALL_ADMINS_START,
 });
+export const fetchMyStaffsStart = (payload) => ({
+	type: AdminActionTypes.FETCH_MY_STAFFS_START,
+	payload,
+});
 
 export const setAllAdmins = (admins) => ({
 	type: AdminActionTypes.SET_ALL_ADMINS,
@@ -38,6 +42,10 @@ export const setAddAdminError = (error) => ({
 });
 export const toggleAddAdminLoading = () => ({
 	type: AdminActionTypes.TOGGLE_ADD_ADMIN_LOADING,
+});
+export const toggleFetchMyStaffLoading = (status) => ({
+	type: AdminActionTypes.TOGGLE_FETCH_MY_STAFFS_LOADING,
+	payload: status,
 });
 export const toggleAdminInfo = (status) => ({
 	type: AdminActionTypes.TOGGLE_ADMIN_STATUS,

@@ -17,6 +17,7 @@ const featureRouter = require('./routes/siteFeaturesRoute');
 const userFeatureRouter = require('./routes/userFeatureRoute');
 const builderRouter = require('./routes/builderRoute');
 const projectRoute = require('./routes/projectRoute');
+const kraRoute = require('./routes/kraRoute');
 const queryRoute = require('./routes/propertyQueryRoute');
 const feedbackRoute = require('./routes/feedbackRoute');
 const requestPhotoRoute = require('./routes/requestPhotoRoute');
@@ -132,6 +133,7 @@ app.use('/api/v1/feedbacks', feedbackRoute);
 app.use('/api/v1/requests', requestPhotoRoute);
 app.use('/api/v1/contacts', contactRoute);
 app.use('/api/v1/features', userFeatureRouter);
+app.use('/api/v1/kra', kraRoute);
 
 app.all('*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));

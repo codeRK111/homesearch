@@ -27,6 +27,10 @@ export const selectAddAdminError = createSelector(
 	[selectAdmins],
 	(u) => u.admin_add_error
 );
+export const selectFetchMyStaffLoading = createSelector(
+	[selectAdmins],
+	(u) => u.fetch_my_staffs_loading
+);
 
 // export const selectLoading = createSelector(
 // 	[selectUser],

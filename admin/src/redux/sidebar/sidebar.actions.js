@@ -17,3 +17,6 @@ export const toggleProject = () => ({
 export const toggleBuilder = () => ({
 	type: SidebarActionTypes.TOGGLE_BUILDER,
 });
+export const toggleKRA = () => ({
+	type: SidebarActionTypes.TOGGLE_KRA,
+});

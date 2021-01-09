@@ -8,6 +8,7 @@ const INITIAL_STATE = {
 	admin_update_loading: false,
 	admin_add_error: null,
 	admin_add_loading: false,
+	fetch_my_staffs_loading: false,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -54,6 +55,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				admin_add_loading: !state.admin_add_loading,
+			};
+		case AdminActionTypes.TOGGLE_FETCH_MY_STAFFS_LOADING:
+			return {
+				...state,
+				fetch_my_staffs_loading: action.payload,
 			};
 
 		default:

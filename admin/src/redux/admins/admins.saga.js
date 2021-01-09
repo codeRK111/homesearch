@@ -1,16 +1,18 @@
-import { takeLatest, put, call, all, takeEvery } from 'redux-saga/effects';
-import { AdminActionTypes as types } from './admins.types';
-import axios from 'axios';
+import { all, call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
+	fetchAllAdminsStart,
+	setAddAdminError,
 	setAllAdmins,
 	setAllAdminsError,
 	setUpdateAdminError,
-	setAddAdminError,
-	toggleAllAdminsLoading,
-	toggleUpdateAdminLoading,
 	toggleAddAdminLoading,
-	fetchAllAdminsStart,
+	toggleAllAdminsLoading,
+	toggleFetchMyStaffLoading,
+	toggleUpdateAdminLoading,
 } from './admins.actions';
+
+import axios from 'axios';
+import { AdminActionTypes as types } from './admins.types';
 
 function* getAllAdmins() {
 	try {
@@ -31,6 +33,35 @@ function* getAllAdmins() {
 		const errorResponse = error.response.data;
 
 		yield put(setAllAdminsError(errorResponse.message));
+	}
+	// console.log({ email, password });
+}
+function* fetchMyStaffs({ payload: { callback } }) {
+	try {
+		const jwt = localStorage.getItem('JWT');
+		yield put(toggleFetchMyStaffLoading(true));
+
+		let url = '/api/v1/admins/get-my-staffs';
+		const response = yield axios({
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`,
+			},
+			url,
+		});
+		const responseData = response.data;
+		if (responseData.status === 'fail') {
+			yield put(toggleFetchMyStaffLoading(false));
+		} else {
+			yield put(toggleFetchMyStaffLoading(false));
+			callback('success', responseData.data.staffs);
+		}
+	} catch (error) {
+		yield put(toggleFetchMyStaffLoading(false));
+		const errorResponse = error.response.data;
+
+		callback('fail', errorResponse.message);
 	}
 	// console.log({ email, password });
 }
@@ -190,6 +221,9 @@ export function* onRemoveAdmin() {
 export function* onToggleAdminStatus() {
 	yield takeEvery(types.TOGGLE_ADMIN_STATUS, toggleAdminStatus);
 }
+export function* onFetchMyStaffs() {
+	yield takeEvery(types.FETCH_MY_STAFFS_START, fetchMyStaffs);
+}
 
 export function* adminsSagas() {
 	yield all([
@@ -198,5 +232,6 @@ export function* adminsSagas() {
 		call(onAddAdmin),
 		call(onRemoveAdmin),
 		call(onToggleAdminStatus),
+		call(onFetchMyStaffs),
 	]);
 }
