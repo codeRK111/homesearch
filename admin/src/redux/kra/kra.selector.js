@@ -6,9 +6,17 @@ export const selectAddProjectAdvertisementLoading = createSelector(
 	[selectProperty],
 	(c) => c.addProjectAdvertisementLoading
 );
+export const selectAddProjectAdvertisementLeadLoading = createSelector(
+	[selectProperty],
+	(c) => c.addProjectAdvertisementLeadLoading
+);
 export const selectfetchProjectAdvertisementsLoading = createSelector(
 	[selectProperty],
 	(c) => c.fetchProjectAdvertisementsLoading
+);
+export const selectfetchProjectAdvertisementLeadsLoading = createSelector(
+	[selectProperty],
+	(c) => c.fetchProjectAdvertisementLeadsLoading
 );
 export const selectfetchProjectAdvertisementDetailsLoading = createSelector(
 	[selectProperty],

@@ -1,7 +1,9 @@
 import {
+	addProjectAdvertisementLeadLoading,
 	addProjectAdvertisementLoading,
 	deleteProjectAdvertisementLoading,
 	fetchProjectAdvertisementDetailsLoading,
+	fetchProjectAdvertisementLeadsLoading,
 	fetchProjectAdvertisementsLoading,
 	updateProjectAdvertisementDetailsLoading,
 } from './kra.actions';
@@ -13,7 +15,7 @@ import { kraActionTypes as types } from './kra.types';
 function* onAddProjectAdvertisementSaga({ payload: { body, callback } }) {
 	const token = localStorage.getItem('JWT');
 	yield put(addProjectAdvertisementLoading(true));
-	const url = `/api/v1/kra/project-magements`;
+	const url = `/api/v1/kra/project-advertisements`;
 	try {
 		const response = yield axios({
 			method: 'post',
@@ -38,10 +40,65 @@ function* onAddProjectAdvertisementSaga({ payload: { body, callback } }) {
 		callback('fail', errorResponse.message);
 	}
 }
+function* onAddProjectAdvertisementLeadSaga({ payload: { body, callback } }) {
+	const token = localStorage.getItem('JWT');
+	yield put(addProjectAdvertisementLeadLoading(true));
+	const url = `/api/v1/kra/project-advertisements/leads`;
+	try {
+		const response = yield axios({
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+			data: JSON.stringify(body),
+		});
+		const responseData = response.data;
+		yield put(addProjectAdvertisementLeadLoading(false));
+
+		callback('success', responseData.data.lead);
+	} catch (error) {
+		yield put(addProjectAdvertisementLeadLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+function* onFetchProjectAdvertisementLeadsSaga({ payload: { id, callback } }) {
+	const token = localStorage.getItem('JWT');
+	yield put(fetchProjectAdvertisementLeadsLoading(true));
+	const url = `/api/v1/kra/project-advertisements/leads?id=${id}`;
+	try {
+		const response = yield axios({
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+		});
+		const responseData = response.data;
+		yield put(fetchProjectAdvertisementLeadsLoading(false));
+
+		callback('success', responseData.data.leads);
+	} catch (error) {
+		yield put(fetchProjectAdvertisementLeadsLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
 function* onFetchProjectAdvertisementsSaga({ payload: { page, callback } }) {
 	const token = localStorage.getItem('JWT');
 	yield put(fetchProjectAdvertisementsLoading(true));
-	const url = `/api/v1/kra/project-magements?page=${page}`;
+	const url = `/api/v1/kra/project-advertisements?page=${page}`;
 	try {
 		const response = yield axios({
 			method: 'get',
@@ -73,7 +130,7 @@ function* onFetchProjectAdvertisementDetailsSaga({
 }) {
 	const token = localStorage.getItem('JWT');
 	yield put(fetchProjectAdvertisementDetailsLoading(true));
-	const url = `/api/v1/kra/project-magements/${id}`;
+	const url = `/api/v1/kra/project-advertisements/${id}`;
 	try {
 		const response = yield axios({
 			method: 'get',
@@ -105,7 +162,7 @@ function* onUpdateProjectAdvertisementDetailsSaga({
 }) {
 	const token = localStorage.getItem('JWT');
 	yield put(updateProjectAdvertisementDetailsLoading(true));
-	const url = `/api/v1/kra/project-magements/${id}`;
+	const url = `/api/v1/kra/project-advertisements/${id}`;
 	try {
 		const response = yield axios({
 			method: 'patch',
@@ -133,7 +190,7 @@ function* onUpdateProjectAdvertisementDetailsSaga({
 function* onDeleteProjectAdvertisementSaga({ payload: { id, callback } }) {
 	const token = localStorage.getItem('JWT');
 	yield put(deleteProjectAdvertisementLoading(true));
-	const url = `/api/v1/kra/project-magements/${id}`;
+	const url = `/api/v1/kra/project-advertisements/${id}`;
 	try {
 		const response = yield axios({
 			method: 'delete',
@@ -164,10 +221,22 @@ function* onAddProjectAdvertisement() {
 		onAddProjectAdvertisementSaga
 	);
 }
+function* onAddProjectAdvertisementLead() {
+	yield takeEvery(
+		types.ADD_PROJECT_ADVERTISEMENT_LEAD,
+		onAddProjectAdvertisementLeadSaga
+	);
+}
 function* onFetchProjectAdvertisements() {
 	yield takeEvery(
 		types.FETCH_PROJECT_ADVERTISEMENTS,
 		onFetchProjectAdvertisementsSaga
+	);
+}
+function* onFetchProjectAdvertisementLeads() {
+	yield takeEvery(
+		types.FETCH_PROJECT_ADVERTISEMENT_LEADS,
+		onFetchProjectAdvertisementLeadsSaga
 	);
 }
 function* onFetchProjectAdvertisementDetails() {
@@ -192,7 +261,9 @@ function* onDeleteProjectAdvertisement() {
 export function* kraSagas() {
 	yield all([
 		call(onAddProjectAdvertisement),
+		call(onAddProjectAdvertisementLead),
 		call(onFetchProjectAdvertisements),
+		call(onFetchProjectAdvertisementLeads),
 		call(onFetchProjectAdvertisementDetails),
 		call(onUpdateProjectAdvertisementDetails),
 		call(onDeleteProjectAdvertisement),

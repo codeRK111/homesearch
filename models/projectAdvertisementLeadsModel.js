@@ -72,6 +72,9 @@ const projectAdvertisementLeadsSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		scheduleTime: {
+			type: Date,
+		},
 		scheduleMessage: {
 			type: String,
 			default: null,
@@ -81,6 +84,15 @@ const projectAdvertisementLeadsSchema = new Schema(
 			enum: ['open', 'closed', 'denied'],
 			required: [true, 'status required '],
 		},
+		deniedResponse: [
+			{
+				message: String,
+				date: {
+					type: Date,
+					default: Date.now(),
+				},
+			},
+		],
 
 		createdAt: {
 			type: Date,
@@ -95,7 +107,7 @@ projectAdvertisementLeadsSchema.pre(/^find/, function (next) {
 		path: 'staff',
 		select: 'id name',
 	}).populate({
-		path: 'admin',
+		path: 'city',
 		select: 'id name ',
 	});
 

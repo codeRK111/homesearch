@@ -2,6 +2,7 @@ import { Box, Button, Grid } from '@material-ui/core';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import React from 'react';
+import Table from './leadsTable.component';
 import { useHistory } from 'react-router-dom';
 
 const ManageTask = ({
@@ -31,6 +32,7 @@ const ManageTask = ({
 					</Button>
 				</Grid>
 			</Grid>
+			<Table />
 		</Box>
 	);
 };

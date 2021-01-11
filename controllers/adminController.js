@@ -115,6 +115,12 @@ exports.protect = catchAsync(async (req, res, next) => {
 	next();
 });
 
+exports.autorizartion = (...type) => (req, res, next) => {
+	if (!type.includes(req.admin.type)) {
+		return next(new AppError('You are not authorized', 401));
+	}
+};
+
 exports.getAdminInfo = catchAsync(async (req, res, next) => {
 	if (!req.admin) {
 		return next(new AppError('admin not found', 401));
