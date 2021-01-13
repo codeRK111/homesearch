@@ -26,6 +26,7 @@ import EditCityPage from './pages/editCity/editCity.component';
 import EditExpertQuery from './pages/queries/expertQueriesEdit.component';
 import EditLocationPage from './pages/editLocation/editLocation.component';
 import EditProjectAdvertisement from './pages/projectAdvertisement/editProjectAdvertisement.page';
+import EditProjectAdvertisementLeads from './pages/editProjectAdvertisementLead/editLeads.page';
 import EditProjectPage from './pages/editProject/editProject.component';
 import EditPropertyPage from './pages/editProperty/editProperty.component';
 import EditPropertySalePage from './pages/editProperty/editPropertySale.component';
@@ -57,6 +58,9 @@ import Workspace from './pages/workspace/workspace.page';
 const ManageTaskPageWithDrawer = Drawer(ManageTask);
 const AddProjectAdvertisementLeadsPageWithDrawer = Drawer(
 	AddProjectAdvertisementLeads
+);
+const EditProjectAdvertisementLeadsPageWithDrawer = Drawer(
+	EditProjectAdvertisementLeads
 );
 const WorkspacePageWithDrawer = Drawer(Workspace);
 const QueriesPageWithDrawer = Drawer(Query);
@@ -662,6 +666,19 @@ function App(props) {
 						<Protected
 							component={TypeHOC(
 								AddProjectAdvertisementLeadsPageWithDrawer,
+								['staff']
+							)}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/edit-project-advertisement-leads/:id"
+					render={(props) => (
+						<Protected
+							component={TypeHOC(
+								EditProjectAdvertisementLeadsPageWithDrawer,
 								['staff']
 							)}
 							{...props}

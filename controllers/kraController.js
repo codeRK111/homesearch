@@ -24,11 +24,10 @@ exports.addProjectAdvertisement = catchAsync(async (req, res, next) => {
 	});
 });
 exports.getAllProjectAdvertisements = catchAsync(async (req, res, next) => {
-	if (req.admin.type === 'staff') {
-		return next(new AppError('You are not authorized.', 401));
-	}
-
 	const filter = {};
+	if (req.admin.type === 'staff') {
+		filter.staff = req.admin.id;
+	}
 
 	if (req.admin.type === 'admin') {
 		filter.admin = req.admin.id;
@@ -128,3 +127,15 @@ exports.deleteProjectAdvertisementDetails = catchAsync(
 		});
 	}
 );
+
+exports.fetchMyTasks = catchAsync(async (req, res, next) => {
+	const projectAdvertisement = await ProjectAdvertisement.find({
+		staff: req.admin.id,
+	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			projectAdvertisement,
+		},
+	});
+});

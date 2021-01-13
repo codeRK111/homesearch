@@ -1,11 +1,16 @@
 import {
 	addProjectAdvertisementLeadLoading,
 	addProjectAdvertisementLoading,
+	deleteProjectAdvertisementLeadLoading,
 	deleteProjectAdvertisementLoading,
+	fetchMyTasksLoading,
 	fetchProjectAdvertisementDetailsLoading,
+	fetchProjectAdvertisementLeadDetailsLoading,
 	fetchProjectAdvertisementLeadsLoading,
+	fetchProjectAdvertisementLeadsScheduleLoading,
 	fetchProjectAdvertisementsLoading,
 	updateProjectAdvertisementDetailsLoading,
+	updateProjectAdvertisementLeadDetailsLoading,
 } from './kra.actions';
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 
@@ -68,10 +73,16 @@ function* onAddProjectAdvertisementLeadSaga({ payload: { body, callback } }) {
 		callback('fail', errorResponse.message);
 	}
 }
-function* onFetchProjectAdvertisementLeadsSaga({ payload: { id, callback } }) {
+function* onFetchProjectAdvertisementLeadsSaga({
+	payload: { id, filter, callback },
+}) {
 	const token = localStorage.getItem('JWT');
 	yield put(fetchProjectAdvertisementLeadsLoading(true));
-	const url = `/api/v1/kra/project-advertisements/leads?id=${id}`;
+	let url = `/api/v1/kra/project-advertisements/leads?id=${id}`;
+	for (const key in filter) {
+		url += `&${key}=${filter[key]}`;
+	}
+
 	try {
 		const response = yield axios({
 			method: 'get',
@@ -87,6 +98,94 @@ function* onFetchProjectAdvertisementLeadsSaga({ payload: { id, callback } }) {
 		callback('success', responseData.data.leads);
 	} catch (error) {
 		yield put(fetchProjectAdvertisementLeadsLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+function* onFetchProjectAdvertisementLeadDetailsSaga({
+	payload: { id, callback },
+}) {
+	const token = localStorage.getItem('JWT');
+	yield put(fetchProjectAdvertisementLeadDetailsLoading(true));
+	const url = `/api/v1/kra/project-advertisements/leads/${id}`;
+	try {
+		const response = yield axios({
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+		});
+		const responseData = response.data;
+		yield put(fetchProjectAdvertisementLeadDetailsLoading(false));
+
+		callback('success', responseData.data.lead);
+	} catch (error) {
+		yield put(fetchProjectAdvertisementLeadDetailsLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+function* onFetchProjectAdvertisementLeadsScheduleSaga({
+	payload: { id, callback },
+}) {
+	const token = localStorage.getItem('JWT');
+	yield put(fetchProjectAdvertisementLeadsScheduleLoading(true));
+	const url = `/api/v1/kra/project-advertisements/leads/schedule?id=${id}`;
+	try {
+		const response = yield axios({
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+		});
+		const responseData = response.data;
+		yield put(fetchProjectAdvertisementLeadsScheduleLoading(false));
+
+		callback('success', responseData.data.leads);
+	} catch (error) {
+		yield put(fetchProjectAdvertisementLeadsScheduleLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+function* onUpdateProjectAdvertisementLeadDetailsSaga({
+	payload: { id, body, callback },
+}) {
+	const token = localStorage.getItem('JWT');
+	yield put(updateProjectAdvertisementLeadDetailsLoading(true));
+	const url = `/api/v1/kra/project-advertisements/leads/${id}`;
+	try {
+		const response = yield axios({
+			method: 'patch',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+			data: body,
+		});
+		const responseData = response.data;
+		yield put(updateProjectAdvertisementLeadDetailsLoading(false));
+
+		callback('success', responseData.data.lead);
+	} catch (error) {
+		yield put(updateProjectAdvertisementLeadDetailsLoading(false));
 		const errorResponse = error.response.data;
 		if (typeof errorResponse === 'string') {
 			callback('fail', errorResponse);
@@ -157,6 +256,33 @@ function* onFetchProjectAdvertisementDetailsSaga({
 		callback('fail', errorResponse.message);
 	}
 }
+function* onFetchMyTasksSaga({ payload: { callback } }) {
+	const token = localStorage.getItem('JWT');
+	yield put(fetchMyTasksLoading(true));
+	const url = `/api/v1/kra/my-tasks`;
+	try {
+		const response = yield axios({
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+		});
+		const responseData = response.data;
+		yield put(fetchMyTasksLoading(false));
+
+		callback('success', responseData.data);
+	} catch (error) {
+		yield put(fetchMyTasksLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
 function* onUpdateProjectAdvertisementDetailsSaga({
 	payload: { id, body, callback },
 }) {
@@ -215,6 +341,34 @@ function* onDeleteProjectAdvertisementSaga({ payload: { id, callback } }) {
 	}
 }
 
+function* onDeleteProjectAdvertisementLeadSaga({ payload: { id, callback } }) {
+	const token = localStorage.getItem('JWT');
+	yield put(deleteProjectAdvertisementLeadLoading(true));
+	const url = `/api/v1/kra/project-advertisements/leads/${id}`;
+	try {
+		const response = yield axios({
+			method: 'delete',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			url,
+		});
+		const responseData = response.data;
+		yield put(deleteProjectAdvertisementLeadLoading(false));
+
+		callback('success', responseData.data.lead);
+	} catch (error) {
+		yield put(deleteProjectAdvertisementLeadLoading(false));
+		const errorResponse = error.response.data;
+		if (typeof errorResponse === 'string') {
+			callback('fail', errorResponse);
+			return;
+		}
+		callback('fail', errorResponse.message);
+	}
+}
+
 function* onAddProjectAdvertisement() {
 	yield takeEvery(
 		types.ADD_PROJECT_ADVERTISEMENT,
@@ -239,6 +393,24 @@ function* onFetchProjectAdvertisementLeads() {
 		onFetchProjectAdvertisementLeadsSaga
 	);
 }
+function* onFetchProjectAdvertisementLeadsSchedule() {
+	yield takeEvery(
+		types.FETCH_PROJECT_ADVERTISEMENT_LEADS_SCHEDULE,
+		onFetchProjectAdvertisementLeadsScheduleSaga
+	);
+}
+function* onFetchProjectAdvertisementLeadDetails() {
+	yield takeEvery(
+		types.FETCH_PROJECT_ADVERTISEMENT_LEAD_DETAILS,
+		onFetchProjectAdvertisementLeadDetailsSaga
+	);
+}
+function* onUpdateProjectAdvertisementLeadDetails() {
+	yield takeEvery(
+		types.UPDATE_PROJECT_ADVERTISEMENT_LEAD_DETAILS,
+		onUpdateProjectAdvertisementLeadDetailsSaga
+	);
+}
 function* onFetchProjectAdvertisementDetails() {
 	yield takeEvery(
 		types.FETCH_PROJECT_ADVERTISEMENT_DETAILS,
@@ -257,6 +429,15 @@ function* onDeleteProjectAdvertisement() {
 		onDeleteProjectAdvertisementSaga
 	);
 }
+function* onDeleteProjectAdvertisementLead() {
+	yield takeEvery(
+		types.DELETE_PROJECT_ADVERTISEMENT_LEAD,
+		onDeleteProjectAdvertisementLeadSaga
+	);
+}
+function* onFetchMyTasks() {
+	yield takeEvery(types.FETCH_MY_TASKS, onFetchMyTasksSaga);
+}
 
 export function* kraSagas() {
 	yield all([
@@ -264,8 +445,13 @@ export function* kraSagas() {
 		call(onAddProjectAdvertisementLead),
 		call(onFetchProjectAdvertisements),
 		call(onFetchProjectAdvertisementLeads),
+		call(onFetchProjectAdvertisementLeadDetails),
 		call(onFetchProjectAdvertisementDetails),
 		call(onUpdateProjectAdvertisementDetails),
 		call(onDeleteProjectAdvertisement),
+		call(onUpdateProjectAdvertisementLeadDetails),
+		call(onDeleteProjectAdvertisementLead),
+		call(onFetchProjectAdvertisementLeadsSchedule),
+		call(onFetchMyTasks),
 	]);
 }

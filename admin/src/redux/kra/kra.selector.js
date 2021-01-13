@@ -14,9 +14,25 @@ export const selectfetchProjectAdvertisementsLoading = createSelector(
 	[selectProperty],
 	(c) => c.fetchProjectAdvertisementsLoading
 );
+export const selectfetchMyTasksLoading = createSelector(
+	[selectProperty],
+	(c) => c.fetchMyTasksLoading
+);
 export const selectfetchProjectAdvertisementLeadsLoading = createSelector(
 	[selectProperty],
 	(c) => c.fetchProjectAdvertisementLeadsLoading
+);
+export const selectfetchProjectAdvertisementLeadsScheduleLoading = createSelector(
+	[selectProperty],
+	(c) => c.fetchProjectAdvertisementLeadsScheduleLoading
+);
+export const selectfetchProjectAdvertisementLeadDetailsLoading = createSelector(
+	[selectProperty],
+	(c) => c.fetchProjectAdvertisementLeadDetailsLoading
+);
+export const selectUpdateProjectAdvertisementLeadDetailsLoading = createSelector(
+	[selectProperty],
+	(c) => c.updateProjectAdvertisementLeadDetailsLoading
 );
 export const selectfetchProjectAdvertisementDetailsLoading = createSelector(
 	[selectProperty],
@@ -29,6 +45,10 @@ export const selectUpdateProjectAdvertisementDetailsLoading = createSelector(
 export const selectDeleteProjectAdvertisementLoading = createSelector(
 	[selectProperty],
 	(c) => c.deleteProjectAdvertisementLoading
+);
+export const selectDeleteProjectAdvertisementLeadLoading = createSelector(
+	[selectProperty],
+	(c) => c.deleteProjectAdvertisementLeadLoading
 );
 
 // Select Errors

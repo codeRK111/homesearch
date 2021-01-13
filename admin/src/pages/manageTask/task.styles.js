@@ -12,5 +12,10 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: '#e74c3c',
 		color: '#ffffff',
 	},
+	addButtonWrapper: {
+		display: 'flex',
+		width: '100%',
+		justifyContent: 'flex-end',
+	},
 }));
 export default useStyles;

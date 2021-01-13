@@ -1,8 +1,23 @@
-import { Box, Grid } from '@material-ui/core';
+import {
+	Box,
+	Checkbox,
+	FormControlLabel,
+	FormGroup,
+	Grid,
+} from '@material-ui/core';
+import {
+	deleteProjectAdvertisementLead,
+	fetchProjectAdvertisementLeads,
+} from '../../redux/kra/kra.actions';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {
+	selectDeleteProjectAdvertisementLeadLoading,
+	selectfetchProjectAdvertisementLeadsLoading,
+} from '../../redux/kra/kra.selector';
 
 import DeleteAlert from '../../components/deleteAlert/deleteAlert.component';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -18,11 +33,9 @@ import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { deleteQuery } from '../../redux/query/query.actions';
-import { fetchProjectAdvertisementLeads } from '../../redux/kra/kra.actions';
 import moment from 'moment';
 import { renderBoolean } from '../../utils/render.utils';
 import { selectDeleteQueryLoading } from '../../redux/query/query.selector';
-import { selectfetchProjectAdvertisementLeadsLoading } from '../../redux/kra/kra.selector';
 import { useHistory } from 'react-router-dom';
 
 // import EditIcon from '@material-ui/icons/Edit';
@@ -78,12 +91,24 @@ function CustomizedTables({
 	loading,
 	fetchLeads,
 	fetchLoading,
+	deleteLead,
+	projectAdvertisementId,
 }) {
 	const [open, setOpen] = React.useState(false);
+	const [filter, setFilter] = React.useState({
+		scheduleCall: false,
+		open: false,
+		closed: false,
+		denied: false,
+	});
 	const [leads, setLeads] = React.useState([]);
 	const [asyncError, setAsyncError] = React.useState(null);
 	const [id, setId] = React.useState(null);
 	const history = useHistory();
+
+	const handleChangeFilter = (event) => {
+		setFilter({ ...filter, [event.target.name]: event.target.checked });
+	};
 
 	const renderStyle = (c) => {
 		if (c.scheduleCall) {
@@ -115,14 +140,32 @@ function CustomizedTables({
 	}, [open]);
 
 	React.useEffect(() => {
-		fetchLeads('5ff834ad527c84098cfedb87', fetchCallBack);
-	}, []);
+		const filterInfo = {};
+		let status = [];
+		if (filter.scheduleCall) {
+			filterInfo.scheduleCall = true;
+		}
+		if (filter.open) {
+			status.push('open');
+		}
+		if (filter.closed) {
+			status.push('closed');
+		}
+		if (filter.denied) {
+			status.push('denied');
+		}
+
+		if (status.length > 0) {
+			filterInfo.status = status.join(',');
+		}
+		fetchLeads(projectAdvertisementId, filterInfo, fetchCallBack);
+	}, [filter, projectAdvertisementId]);
 
 	const handleClose = () => {
 		setOpen(false);
 	};
 	const onYes = () => {
-		// deleteQuery(id, handleDeleteQuery);
+		deleteLead(id, handleDeleteQuery);
 	};
 
 	const onDelete = (id) => (_) => {
@@ -130,16 +173,16 @@ function CustomizedTables({
 		setOpen(true);
 	};
 
-	// const handleDeleteQuery = (status, data) => {
-	// 	if (status === 'success') {
-	// 		handleClose();
-	// 		setAllQueries(queries.filter((c) => c.id !== data.id));
-	// 	}
-	// };
+	const handleDeleteQuery = (status, data) => {
+		if (status === 'success') {
+			handleClose();
+			setLeads(leads.filter((c) => c.id !== data.id));
+		}
+	};
 
-	// const onRedirect = (data) => (_) => {
-	// 	history.push(redirectUrl(data));
-	// };
+	const onRedirect = (data) => (_) => {
+		history.push(`/edit-project-advertisement-leads/${data.id}`);
+	};
 
 	const classes = useStyles();
 
@@ -159,33 +202,49 @@ function CustomizedTables({
 
 	return (
 		<Box>
-			<Box>
-				<Grid container spacing={2} justify="center">
-					<Grid item xs={12} md={1}>
-						<Box display="flex" alignItems="center">
-							<Box
-								className={clsx(classes.schedule, classes.info)}
-							></Box>
-							<Box className={classes.bf}>Schedule</Box>
-						</Box>
-					</Grid>
-					<Grid item xs={12} md={1}>
-						<Box display="flex" alignItems="center">
-							<Box
-								className={clsx(classes.closed, classes.info)}
-							></Box>
-							<Box className={classes.bf}>Closed</Box>
-						</Box>
-					</Grid>
-					<Grid item xs={12} md={1}>
-						<Box display="flex" alignItems="center">
-							<Box
-								className={clsx(classes.denied, classes.info)}
-							></Box>
-							<Box className={classes.bf}>Denied</Box>
-						</Box>
-					</Grid>
-				</Grid>
+			<Box m="1rem">
+				<FormGroup row>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={filter.scheduleCall}
+								onChange={handleChangeFilter}
+								name="scheduleCall"
+							/>
+						}
+						label="Schedule Call"
+					/>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={filter.open}
+								onChange={handleChangeFilter}
+								name="open"
+							/>
+						}
+						label="Open"
+					/>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={filter.closed}
+								onChange={handleChangeFilter}
+								name="closed"
+							/>
+						}
+						label="Closed"
+					/>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={filter.denied}
+								onChange={handleChangeFilter}
+								name="denied"
+							/>
+						}
+						label="Denied"
+					/>
+				</FormGroup>
 			</Box>
 			{fetchLoading ? (
 				<Skeleton variant="rect" width={'100%'} height={'30vh'} />
@@ -277,25 +336,84 @@ function CustomizedTables({
 													c.deniedResponse.length - 1
 											  ]['message']}
 									</StyledTableCell>
+									<StyledTableCell>
+										<Box
+											display="flex"
+											alignItems="center"
+											justifyContent="space-around"
+										>
+											<Tooltip title="View">
+												<Box
+													className="pointer"
+													onClick={onRedirect(c)}
+												>
+													<EditIcon size="small" />
+												</Box>
+											</Tooltip>
+
+											<Tooltip title="Delete">
+												<Box
+													className="pointer"
+													onClick={onDelete(c.id)}
+												>
+													<DeleteIcon
+														style={{
+															fontSize: '1.3rem',
+														}}
+													/>
+												</Box>
+											</Tooltip>
+										</Box>
+									</StyledTableCell>
 								</TableRow>
 							))}
 						</TableBody>
 					</Table>
 				</TableContainer>
 			)}
+			<Box mt="1rem">
+				<Grid container spacing={2} justify="center">
+					<Grid item xs={12} md={1}>
+						<Box display="flex" alignItems="center">
+							<Box
+								className={clsx(classes.schedule, classes.info)}
+							></Box>
+							<Box className={classes.bf}>Schedule</Box>
+						</Box>
+					</Grid>
+					<Grid item xs={12} md={1}>
+						<Box display="flex" alignItems="center">
+							<Box
+								className={clsx(classes.closed, classes.info)}
+							></Box>
+							<Box className={classes.bf}>Closed</Box>
+						</Box>
+					</Grid>
+					<Grid item xs={12} md={1}>
+						<Box display="flex" alignItems="center">
+							<Box
+								className={clsx(classes.denied, classes.info)}
+							></Box>
+							<Box className={classes.bf}>Denied</Box>
+						</Box>
+					</Grid>
+				</Grid>
+			</Box>
 		</Box>
 	);
 }
 
 const mapStateToProps = createStructuredSelector({
-	deleteLoading: selectDeleteQueryLoading,
+	deleteLoading: selectDeleteProjectAdvertisementLeadLoading,
 	fetchLoading: selectfetchProjectAdvertisementLeadsLoading,
 });
 
 const dispatchStateToProps = (dispatch) => ({
 	deleteQuery: (id, callback) => dispatch(deleteQuery({ id, callback })),
-	fetchLeads: (id, callback) =>
-		dispatch(fetchProjectAdvertisementLeads({ id, callback })),
+	deleteLead: (id, callback) =>
+		dispatch(deleteProjectAdvertisementLead({ id, callback })),
+	fetchLeads: (id, filter, callback) =>
+		dispatch(fetchProjectAdvertisementLeads({ id, filter, callback })),
 });
 
 export default connect(mapStateToProps, dispatchStateToProps)(CustomizedTables);
