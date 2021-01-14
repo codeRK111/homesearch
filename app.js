@@ -30,116 +30,122 @@ const basicAuth = require('express-basic-auth');
 
 const app = express();
 
-app.use(cors());
-
-// enable files upload
-app.use(
-	fileUpload({
-		createParentPath: true,
-		limits: {
-			fileSize: 2 * 1024 * 1024 * 1024, //2MB max file(s) size
-		},
-	})
-);
-
-// SET HTTP SECURITY HEADER
-// app.use(helmet());
-
-// RESPONSE TIMEOUT
-// app.use(timeout('30s'));
-
-// function haltOnTimedout(req, res, next) {
-//   if (!req.timedout) return next();
-// }
-
-// LIMIT NUMBER OF REQUESTS
-const limiter = rateLimit({
-	max: 10000,
-	windowMs: 60 * 60 * 60 * 1000,
-	message: 'Too many request',
+app.get('/test', (req, res, next) => {
+	res.json({
+		status: 'success',
+	});
 });
 
-app.use('/api', limiter);
+// app.use(cors());
 
-// SET NODE_ENV
-if (process.env.NODE_ENV === 'development') {
-	app.use(morgan('dev'));
-}
-
-// ADD REQUEST BODY TO <req.body> AND LIMIT SIZE OF INCOMING DATA
-app.use(express.json({ limit: '10kb' }));
-
-// SANITIZE DATA AGAINST NOSQL QUERY INJECTION
-app.use(mongoSanitize());
-// SANITIZE DATA AGAINST XSS
-app.use(xss());
-// PREVENT PARAMETER POLLUTION
-app.use(
-	hpp({
-		whitelist: [
-			'duration',
-			'ratingsAverage',
-			'ratingsQuantity',
-			'maxGroupSize',
-			'price',
-			'difficulty',
-		],
-	})
-);
-
-app.use(compression());
-
-app.use(
-	'/profile',
-	express.static(path.join(__dirname, 'images', 'profile_images'))
-);
-app.use(
-	'/assets/builders',
-	express.static(path.join(__dirname, 'images', 'builder_images'))
-);
-app.use(
-	'/assets/projects',
-	express.static(path.join(__dirname, 'images', 'project_images'))
-);
-app.use(
-	'/assets/properties',
-	express.static(path.join(__dirname, 'images', 'property_images'))
-);
+// // enable files upload
 // app.use(
-// 	basicAuth({
-// 		users: { admin: 'admin@123' },
-// 		challenge: true,
-// 		realm: 'Imb4T3st4pp',
+// 	fileUpload({
+// 		createParentPath: true,
+// 		limits: {
+// 			fileSize: 2 * 1024 * 1024 * 1024, //2MB max file(s) size
+// 		},
 // 	})
 // );
-app.use('/admin', express.static(path.join(__dirname, 'admin', 'build')));
-app.use(
-	'/homesearchIndia',
-	express.static(path.join(__dirname, 'homesearchIndia', 'build'))
-);
-app.use('/', express.static(path.join(__dirname, 'client', 'build')));
 
-// 3) ROUTES
-app.use('/api/v1/admin/users', adminUserRoute);
-app.use('/api/v1/admin/features', featureRouter);
-app.use('/api/v1/admins', adminRoute);
-app.use('/api/v1/users', userRouter);
-app.use('/api/v1/cities', cityRouter);
-app.use('/api/v1/properties', propertyRoute);
-app.use('/api/v1/builders', builderRouter);
-app.use('/api/v1/projects', projectRoute);
-app.use('/api/v1/queries', queryRoute);
-app.use('/api/v1/feedbacks', feedbackRoute);
-app.use('/api/v1/requests', requestPhotoRoute);
-app.use('/api/v1/contacts', contactRoute);
-app.use('/api/v1/features', userFeatureRouter);
-app.use('/api/v1/kra', kraRoute);
+// // SET HTTP SECURITY HEADER
+// // app.use(helmet());
 
-app.all('*', (req, res, next) => {
-	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));
-});
+// // RESPONSE TIMEOUT
+// // app.use(timeout('30s'));
 
-// GLOBAL ERROR HANDLING MIDDLEWARE
-app.use(globalErrorHandler);
+// // function haltOnTimedout(req, res, next) {
+// //   if (!req.timedout) return next();
+// // }
+
+// // LIMIT NUMBER OF REQUESTS
+// const limiter = rateLimit({
+// 	max: 10000,
+// 	windowMs: 60 * 60 * 60 * 1000,
+// 	message: 'Too many request',
+// });
+
+// app.use('/api', limiter);
+
+// // SET NODE_ENV
+// if (process.env.NODE_ENV === 'development') {
+// 	app.use(morgan('dev'));
+// }
+
+// // ADD REQUEST BODY TO <req.body> AND LIMIT SIZE OF INCOMING DATA
+// app.use(express.json({ limit: '10kb' }));
+
+// // SANITIZE DATA AGAINST NOSQL QUERY INJECTION
+// app.use(mongoSanitize());
+// // SANITIZE DATA AGAINST XSS
+// app.use(xss());
+// // PREVENT PARAMETER POLLUTION
+// app.use(
+// 	hpp({
+// 		whitelist: [
+// 			'duration',
+// 			'ratingsAverage',
+// 			'ratingsQuantity',
+// 			'maxGroupSize',
+// 			'price',
+// 			'difficulty',
+// 		],
+// 	})
+// );
+
+// app.use(compression());
+
+// app.use(
+// 	'/profile',
+// 	express.static(path.join(__dirname, 'images', 'profile_images'))
+// );
+// app.use(
+// 	'/assets/builders',
+// 	express.static(path.join(__dirname, 'images', 'builder_images'))
+// );
+// app.use(
+// 	'/assets/projects',
+// 	express.static(path.join(__dirname, 'images', 'project_images'))
+// );
+// app.use(
+// 	'/assets/properties',
+// 	express.static(path.join(__dirname, 'images', 'property_images'))
+// );
+// // app.use(
+// // 	basicAuth({
+// // 		users: { admin: 'admin@123' },
+// // 		challenge: true,
+// // 		realm: 'Imb4T3st4pp',
+// // 	})
+// // );
+// app.use('/admin', express.static(path.join(__dirname, 'admin', 'build')));
+// app.use(
+// 	'/homesearchIndia',
+// 	express.static(path.join(__dirname, 'homesearchIndia', 'build'))
+// );
+// app.use('/', express.static(path.join(__dirname, 'client', 'build')));
+
+// // 3) ROUTES
+// app.use('/api/v1/admin/users', adminUserRoute);
+// app.use('/api/v1/admin/features', featureRouter);
+// app.use('/api/v1/admins', adminRoute);
+// app.use('/api/v1/users', userRouter);
+// app.use('/api/v1/cities', cityRouter);
+// app.use('/api/v1/properties', propertyRoute);
+// app.use('/api/v1/builders', builderRouter);
+// app.use('/api/v1/projects', projectRoute);
+// app.use('/api/v1/queries', queryRoute);
+// app.use('/api/v1/feedbacks', feedbackRoute);
+// app.use('/api/v1/requests', requestPhotoRoute);
+// app.use('/api/v1/contacts', contactRoute);
+// app.use('/api/v1/features', userFeatureRouter);
+// app.use('/api/v1/kra', kraRoute);
+
+// app.all('*', (req, res, next) => {
+// 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));
+// });
+
+// // GLOBAL ERROR HANDLING MIDDLEWARE
+// app.use(globalErrorHandler);
 
 module.exports = app;
