@@ -1,5 +1,6 @@
 import {
 	selectBuilder,
+	selectKPI,
 	selectKRA,
 	selectLocation,
 	selectProject,
@@ -8,6 +9,7 @@ import {
 } from '../../redux/sidebar/sidebar.selector';
 import {
 	toggleBuilder,
+	toggleKPI,
 	toggleKRA,
 	toggleLocation,
 	toggleProject,
@@ -75,6 +77,8 @@ const MainListItems = ({
 	selectCurrentUser,
 	selectKRA,
 	toggleKRA,
+	selectKPI,
+	toggleKPI,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -530,6 +534,60 @@ const MainListItems = ({
 			</div>
 		),
 	});
+	const KPI = RenderByAdminType({
+		'super-admin': (
+			<div>
+				<ListItem button onClick={toggleKPI}>
+					<ListItemIcon>
+						<WorkIcon color="secondary" />
+					</ListItemIcon>
+					<ListItemText primary="KPI" />
+					{selectKPI ? <ExpandLess /> : <ExpandMore />}
+				</ListItem>
+				<Collapse in={selectKPI} timeout="auto" unmountOnExit>
+					<List component="div" disablePadding>
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick(
+								'/kpi/project-advertisement/overview'
+							)}
+						>
+							<ListItemIcon>
+								<PhoneIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Project Advertisement" />
+						</ListItem>
+					</List>
+				</Collapse>
+			</div>
+		),
+		admin: (
+			<div>
+				<ListItem button onClick={toggleKPI}>
+					<ListItemIcon>
+						<WorkIcon color="secondary" />
+					</ListItemIcon>
+					<ListItemText primary="KPI" />
+					{selectKPI ? <ExpandLess /> : <ExpandMore />}
+				</ListItem>
+				<Collapse in={selectKPI} timeout="auto" unmountOnExit>
+					<List component="div" disablePadding>
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick('/kpi/project-advertisement')}
+						>
+							<ListItemIcon>
+								<PhoneIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Project Advertisement" />
+						</ListItem>
+					</List>
+				</Collapse>
+			</div>
+		),
+	});
 
 	const Workspace = RenderByAdminType({
 		staff: (
@@ -744,6 +802,7 @@ const MainListItems = ({
 				<ListItemText primary="Photo Requests" />
 			</ListItem>
 			<KRA />
+			<KPI />
 		</div>
 	);
 };
@@ -756,6 +815,7 @@ const mapStateToProps = createStructuredSelector({
 	selectBuilder,
 	selectCurrentUser,
 	selectKRA,
+	selectKPI,
 });
 
 const dispatchStateToProps = (dispatch) => ({
@@ -765,6 +825,7 @@ const dispatchStateToProps = (dispatch) => ({
 	toggleProject: () => dispatch(toggleProject()),
 	toggleBuilder: () => dispatch(toggleBuilder()),
 	toggleKRA: () => dispatch(toggleKRA()),
+	toggleKPI: () => dispatch(toggleKPI()),
 });
 
 export default connect(mapStateToProps, dispatchStateToProps)(MainListItems);

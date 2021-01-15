@@ -120,7 +120,7 @@ const AddLeads = ({
 	const callback = (status, data) => {
 		if (status === 'success') {
 			setAsyncError(null);
-			history.push('/manage-task/123');
+			history.push(`/manage-task/${data.projectAdvertisement}`);
 		} else {
 			setAsyncError(data);
 		}

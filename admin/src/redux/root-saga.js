@@ -4,6 +4,7 @@ import { adminsSagas } from './admins/admins.saga';
 import { builderSagas } from './builder/builder.saga';
 import { citySagas } from './city/city.saga';
 import { feedbackSagas } from './feedback/feedback.sagas';
+import { kpiSagas } from './kpi/kpi.sagas';
 import { kraSagas } from './kra/kra.sagas';
 import { projectSagas } from './project/project.saga';
 import { propertySagas } from './property/property.saga';
@@ -23,5 +24,6 @@ export default function* () {
 		call(querySagas),
 		call(feedbackSagas),
 		call(kraSagas),
+		call(kpiSagas),
 	]);
 }

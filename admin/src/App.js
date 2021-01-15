@@ -35,6 +35,7 @@ import ExpertQuery from './pages/queries/expertQueries.component';
 import Feedback from './pages/feedback/feedback.component';
 import HOC from './components/hoc/hoc.component';
 import HomePage from './pages/home/home.component';
+import KPIPage from './pages/kpi/index.page';
 import LocationsPage from './pages/getLocations/getLocations.componet';
 import LogIn from './pages/login/login.component';
 import ManageTask from './pages/manageTask/manageTask.page';
@@ -63,6 +64,7 @@ const EditProjectAdvertisementLeadsPageWithDrawer = Drawer(
 	EditProjectAdvertisementLeads
 );
 const WorkspacePageWithDrawer = Drawer(Workspace);
+const KPIPageWithDrawer = Drawer(KPIPage);
 const QueriesPageWithDrawer = Drawer(Query);
 const ProjectAdvertisementPageWithDrawer = Drawer(ProjectAdvertisement);
 const EditProjectAdvertisementPageWithDrawer = Drawer(EditProjectAdvertisement);
@@ -681,6 +683,19 @@ function App(props) {
 								EditProjectAdvertisementLeadsPageWithDrawer,
 								['staff']
 							)}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/kpi/:type/:action/:details?"
+					render={(props) => (
+						<Protected
+							component={TypeHOC(KPIPageWithDrawer, [
+								'super-admin',
+								'admin',
+							])}
 							{...props}
 						/>
 					)}

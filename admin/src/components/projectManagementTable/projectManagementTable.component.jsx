@@ -169,7 +169,7 @@ function CustomizedTables({
 								<StyledTableCell>
 									Min calls / month
 								</StyledTableCell>
-								<StyledTableCell>Call Attended</StyledTableCell>
+								{/* <StyledTableCell>Call Attended</StyledTableCell> */}
 								<StyledTableCell>Message</StyledTableCell>
 								<StyledTableCell>Created By</StyledTableCell>
 								<StyledTableCell>Created At</StyledTableCell>
@@ -192,7 +192,7 @@ function CustomizedTables({
 									<StyledTableCell>
 										{row.minCallsPerMonth}
 									</StyledTableCell>
-									<StyledTableCell>{0}</StyledTableCell>
+									{/* <StyledTableCell>{0}</StyledTableCell> */}
 									<StyledTableCell>
 										{row.message}
 									</StyledTableCell>
