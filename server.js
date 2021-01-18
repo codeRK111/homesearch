@@ -58,9 +58,11 @@
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
+app.use(cors());
 
 app.get('/test', (req, res, next) => {
-	res.status(200).json({ s: 'success' });
+	res.send('<h1>Hello</h1>');
 });
 
 app.listen(5000, () => {
