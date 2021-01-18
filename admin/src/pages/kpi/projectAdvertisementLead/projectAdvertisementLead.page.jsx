@@ -3,6 +3,7 @@ import { Box, Grid, Paper } from '@material-ui/core';
 import CallMadeIcon from '@material-ui/icons/CallMade';
 import CallMissedIcon from '@material-ui/icons/CallMissed';
 import CallReceivedIcon from '@material-ui/icons/CallReceived';
+import Chart from 'react-google-charts';
 import DeleteIcon from '@material-ui/icons/Delete';
 import OpenedIcon from '@material-ui/icons/PhonePaused';
 import PeopleIcon from '@material-ui/icons/People';
@@ -78,7 +79,7 @@ const KPI = ({ loading, fetchAllLeads }) => {
 													Total call
 												</span>
 												<span className={classes.info}>
-													Project Advertisement
+													5000
 												</span>
 											</Box>
 										</Grid>
@@ -117,7 +118,7 @@ const KPI = ({ loading, fetchAllLeads }) => {
 													Call Received
 												</span>
 												<span className={classes.info}>
-													Project Advertisement
+													400
 												</span>
 											</Box>
 										</Grid>
@@ -156,7 +157,7 @@ const KPI = ({ loading, fetchAllLeads }) => {
 													Call Missed
 												</span>
 												<span className={classes.info}>
-													Project Advertisement
+													250
 												</span>
 											</Box>
 										</Grid>
@@ -195,7 +196,7 @@ const KPI = ({ loading, fetchAllLeads }) => {
 													Call Scheduled
 												</span>
 												<span className={classes.info}>
-													Project Advertisement
+													400
 												</span>
 											</Box>
 										</Grid>
@@ -234,7 +235,7 @@ const KPI = ({ loading, fetchAllLeads }) => {
 													Deal Closed
 												</span>
 												<span className={classes.info}>
-													Project Advertisement
+													350
 												</span>
 											</Box>
 										</Grid>
@@ -273,7 +274,7 @@ const KPI = ({ loading, fetchAllLeads }) => {
 													Deal Opened
 												</span>
 												<span className={classes.info}>
-													Project Advertisement
+													3000
 												</span>
 											</Box>
 										</Grid>
@@ -312,7 +313,7 @@ const KPI = ({ loading, fetchAllLeads }) => {
 													Deal Rejected
 												</span>
 												<span className={classes.info}>
-													Project Advertisement
+													100
 												</span>
 											</Box>
 										</Grid>
@@ -351,12 +352,94 @@ const KPI = ({ loading, fetchAllLeads }) => {
 													Total Staffs
 												</span>
 												<span className={classes.info}>
-													Project Advertisement
+													10
 												</span>
 											</Box>
 										</Grid>
 									</Grid>
 								</Box>
+							</Paper>
+						</Grid>
+						<Grid item xs={12} md={6}>
+							<Paper>
+								<Box className={kpiClasses.tableCardHeader}>
+									Deal Opened
+								</Box>
+								<Chart
+									width={'500px'}
+									height={'300px'}
+									chartType="BarChart"
+									loader={<div>Loading Chart</div>}
+									data={[
+										['Month', 'Number'],
+										['Jan', 817],
+										['Feb', 417],
+										['Mar', 517],
+										['Apr', 500],
+										['May', 617],
+										['June', 317],
+										['July', 217],
+										['Aug', 617],
+										['Sept', 717],
+										['Oct', 1000],
+										['Nov', 300],
+										['Dec', 700],
+									]}
+									options={{
+										chartArea: { width: '50%' },
+										hAxis: {
+											title: 'Number',
+											minValue: 0,
+										},
+										vAxis: {
+											title: 'Month',
+										},
+										// pieHole: 0.5,
+									}}
+									// For tests
+									rootProps={{ 'data-testid': '1' }}
+								/>
+							</Paper>
+						</Grid>
+						<Grid item xs={12} md={6}>
+							<Paper>
+								<Box className={kpiClasses.tableCardHeader}>
+									Deal Closed
+								</Box>
+								<Chart
+									width={'500px'}
+									height={'300px'}
+									chartType="BarChart"
+									loader={<div>Loading Chart</div>}
+									data={[
+										['Month', 'Number'],
+										['Jan', 817],
+										['Feb', 417],
+										['Mar', 517],
+										['Apr', 500],
+										['May', 617],
+										['June', 317],
+										['July', 217],
+										['Aug', 617],
+										['Sept', 717],
+										['Oct', 1000],
+										['Nov', 300],
+										['Dec', 700],
+									]}
+									options={{
+										chartArea: { width: '50%' },
+										hAxis: {
+											title: 'Number',
+											minValue: 0,
+										},
+										vAxis: {
+											title: 'Month',
+										},
+										// pieHole: 0.5,
+									}}
+									// For tests
+									rootProps={{ 'data-testid': '1' }}
+								/>
 							</Paper>
 						</Grid>
 						<Grid item xs={12} md={6}>
