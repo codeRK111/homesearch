@@ -23,6 +23,7 @@ const queryRoute = require('./routes/propertyQueryRoute');
 const feedbackRoute = require('./routes/feedbackRoute');
 const requestPhotoRoute = require('./routes/requestPhotoRoute');
 const contactRoute = require('./routes/contactRoute');
+const testRoute = require('./routes/testRoute');
 const AppError = require('./utils/appError');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
@@ -136,6 +137,7 @@ app.use('/api/v1/contacts', contactRoute);
 app.use('/api/v1/features', userFeatureRouter);
 app.use('/api/v1/kra', kraRoute);
 app.use('/api/v1/kpi', kpiRoute);
+app.use('/api/v1/api-test', testRoute);
 
 app.all('*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));
