@@ -65,6 +65,6 @@ app.get('/test', (req, res, next) => {
 	res.send('<h1>Hello</h1>');
 });
 
-app.listen(3000, '0.0.0.0', () => {
+app.listen(8080, '0.0.0.0', () => {
 	console.log(`App running on port 5000...`);
 });
