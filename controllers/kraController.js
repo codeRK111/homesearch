@@ -2,7 +2,7 @@ const Admin = require('./../models/adminModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const ProjectAdvertisement = require('./../models/projectAdvertisementModel');
-const PropertyAdvertisement = require('./../models/propertyAdvertisementModel');
+// const PropertyAdvertisement = require('./../models/propertyAdvertisementModel');
 const mongoose = require('mongoose');
 
 // Create KRA
@@ -24,23 +24,23 @@ exports.addProjectAdvertisement = catchAsync(async (req, res, next) => {
 		},
 	});
 });
-exports.addPropertyAdvertisement = catchAsync(async (req, res, next) => {
-	if (req.admin.type === 'staff') {
-		return next(new AppError('You are not authorized.', 401));
-	}
+// exports.addPropertyAdvertisement = catchAsync(async (req, res, next) => {
+// 	if (req.admin.type === 'staff') {
+// 		return next(new AppError('You are not authorized.', 401));
+// 	}
 
-	const body = { ...req.body };
-	body.admin = req.admin.id;
+// 	const body = { ...req.body };
+// 	body.admin = req.admin.id;
 
-	const propertyAdvertisement = await PropertyAdvertisement.create(body);
+// 	const propertyAdvertisement = await PropertyAdvertisement.create(body);
 
-	res.status(201).json({
-		status: 'success',
-		data: {
-			propertyAdvertisement,
-		},
-	});
-});
+// 	res.status(201).json({
+// 		status: 'success',
+// 		data: {
+// 			propertyAdvertisement,
+// 		},
+// 	});
+// });
 exports.getAllProjectAdvertisements = catchAsync(async (req, res, next) => {
 	const filter = {};
 	if (req.admin.type === 'staff') {

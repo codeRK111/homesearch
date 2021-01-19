@@ -12,9 +12,9 @@ router
 	.route('/project-advertisements')
 	.get(adminController.protect, kraController.getAllProjectAdvertisements)
 	.post(adminController.protect, kraController.addProjectAdvertisement);
-router
-	.route('/property-advertisements')
-	.post(adminController.protect, kraController.addPropertyAdvertisement);
+// router
+// 	.route('/property-advertisements')
+// 	.post(adminController.protect, kraController.addPropertyAdvertisement);
 router
 	.route('/project-advertisements/leads')
 	.get(adminController.protect, lead.getAllLeads)
