@@ -3,7 +3,7 @@ import { Box, Button, Grid } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Pagination from '@material-ui/lab/Pagination';
 import React from 'react';
-import Table from '../../components/projectManagementTable/projectManagementTable.component';
+import Table from '../../components/propertyManagementTable/propertyManagementTable.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fetchProjectAdvertisements } from '../../redux/kra/kra.actions';
@@ -38,13 +38,13 @@ const ProjectAdvertisement = ({ loading, fetchProjectAdvertisements }) => {
 	}, [fetchProjectAdvertisements, page]);
 
 	const onAddStaff = (_) => {
-		history.push('/project-advertisement/add');
+		history.push('/property-advertisement/add');
 	};
 	return (
 		<Box p="1rem">
 			<Grid container spacing={2}>
 				<Grid item xs={12} md={10}>
-					<h3>Project Advertisement</h3>
+					<h3>Property Advertisement</h3>
 				</Grid>
 				<Grid item xs={12} md={2}>
 					<Button
@@ -80,7 +80,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
 	fetchProjectAdvertisements: (page, callback) =>
 		dispatch(
-			fetchProjectAdvertisements({ page, callback, pType: 'project' })
+			fetchProjectAdvertisements({ page, callback, pType: 'property' })
 		),
 });
 

@@ -28,6 +28,16 @@ const projectAdvertisementSchema = new Schema(
 			type: Date,
 			default: Date.now(),
 		},
+		pType: {
+			type: String,
+			enum: ['project', 'property'],
+			default: 'project',
+		},
+		pFor: {
+			type: String,
+			enum: ['rent', 'sale'],
+			default: null,
+		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

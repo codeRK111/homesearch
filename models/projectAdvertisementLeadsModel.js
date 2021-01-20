@@ -55,6 +55,14 @@ const projectAdvertisementLeadsSchema = new Schema(
 			type: String,
 			default: null,
 		},
+		propertyName: {
+			type: String,
+			default: null,
+		},
+		pCategory: {
+			type: String,
+			enum: ['flat', 'land', 'independenthouse', 'hostel', 'pg'],
+		},
 		city: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'City',

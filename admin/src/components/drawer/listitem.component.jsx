@@ -504,6 +504,16 @@ const MainListItems = ({
 							</ListItemIcon>
 							<ListItemText primary="Project Advertisement" />
 						</ListItem>
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick('/property-advertisement')}
+						>
+							<ListItemIcon>
+								<PhoneIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Property Advertisement" />
+						</ListItem>
 					</List>
 				</Collapse>
 			</div>

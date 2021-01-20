@@ -50,9 +50,12 @@ exports.getAllProjectAdvertisements = catchAsync(async (req, res, next) => {
 	if (req.admin.type === 'admin') {
 		filter.admin = req.admin.id;
 	}
-	const page = req.params.page || 1;
-	const limit = req.params.limit || 10;
+	const page = req.query.page || 1;
+	const limit = req.query.limit || 10;
 	const skip = (page - 1) * limit;
+	if (req.query.pType) {
+		filter.pType = req.query.pType;
+	}
 
 	const totalDocs = await ProjectAdvertisement.countDocuments(filter);
 

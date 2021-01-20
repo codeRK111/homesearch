@@ -10,6 +10,7 @@ import AddLocationPage from './pages/addLocation/addLocation.component';
 import AddProjectAdvertisementLeads from './pages/addProjectAdvertisementLeads/addLeads.page';
 import AddProjectPage from './pages/addProject/addProject.component';
 import AddProperty from './pages/addProperty/addProperty.component';
+import AddPropertyAdvertisement from './pages/propertyAdvertisement/AddStaff.page';
 import AddPropertyForSale from './pages/addPropertyForSale/addPropertyWrapper.component';
 import AddStaff from './pages/projectAdvertisement/AddStaff.page';
 import AddUser from './components/addUser/addUser.component';
@@ -28,6 +29,7 @@ import EditLocationPage from './pages/editLocation/editLocation.component';
 import EditProjectAdvertisement from './pages/projectAdvertisement/editProjectAdvertisement.page';
 import EditProjectAdvertisementLeads from './pages/editProjectAdvertisementLead/editLeads.page';
 import EditProjectPage from './pages/editProject/editProject.component';
+import EditPropertyAdvertisement from './pages/propertyAdvertisement/editPropertyAdvertisement.page';
 import EditPropertyPage from './pages/editProperty/editProperty.component';
 import EditPropertySalePage from './pages/editProperty/editPropertySale.component';
 import EditUser from './components/editUser/editUser.component';
@@ -39,8 +41,10 @@ import KPIPage from './pages/kpi/index.page';
 import LocationsPage from './pages/getLocations/getLocations.componet';
 import LogIn from './pages/login/login.component';
 import ManageTask from './pages/manageTask/manageTask.page';
+import ManageTaskProperty from './pages/manageTaskProperty/manageTask.page';
 import ProjectAdvertisement from './pages/projectAdvertisement/projectAdvertisement.page';
 import ProjectPage from './pages/projects/projects.component';
+import PropertyAdvertisement from './pages/propertyAdvertisement/propertyAdvertisement.page';
 import PropertySale from './pages/properties/propertiesSale.component';
 import Protected from './components/protected/protected.component';
 import Query from './pages/queries/queries.component';
@@ -56,7 +60,13 @@ import Workspace from './pages/workspace/workspace.page';
 
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
+const ManageTaskPropertyPageWithDrawer = Drawer(ManageTaskProperty);
+const EditPropertyAdvertisementPageWithDrawer = Drawer(
+	EditPropertyAdvertisement
+);
 const ManageTaskPageWithDrawer = Drawer(ManageTask);
+const AddPropertyAdvertisementPageWithDrawer = Drawer(AddPropertyAdvertisement);
+const PropertyAdvertisementPageWithDrawer = Drawer(PropertyAdvertisement);
 const AddProjectAdvertisementLeadsPageWithDrawer = Drawer(
 	AddProjectAdvertisementLeads
 );
@@ -624,11 +634,37 @@ function App(props) {
 				/>
 				<Route
 					exact
+					path="/manage-task-property/:id"
+					render={() => (
+						<Protected
+							component={TypeHOC(
+								ManageTaskPropertyPageWithDrawer,
+								['staff']
+							)}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
 					path="/project-advertisement"
 					render={() => (
 						<Protected
 							component={TypeHOC(
 								ProjectAdvertisementPageWithDrawer,
+								['super-admin', 'admin']
+							)}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/property-advertisement"
+					render={() => (
+						<Protected
+							component={TypeHOC(
+								PropertyAdvertisementPageWithDrawer,
 								['super-admin', 'admin']
 							)}
 							{...props}
@@ -650,6 +686,19 @@ function App(props) {
 				/>
 				<Route
 					exact
+					path="/edit-property-advertisement/:id"
+					render={() => (
+						<Protected
+							component={TypeHOC(
+								EditPropertyAdvertisementPageWithDrawer,
+								['super-admin', 'admin']
+							)}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
 					path="/project-advertisement/:action"
 					render={(props) => (
 						<Protected
@@ -657,6 +706,19 @@ function App(props) {
 								'super-admin',
 								'admin',
 							])}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/property-advertisement/:action"
+					render={(props) => (
+						<Protected
+							component={TypeHOC(
+								AddPropertyAdvertisementPageWithDrawer,
+								['super-admin', 'admin']
+							)}
 							{...props}
 						/>
 					)}

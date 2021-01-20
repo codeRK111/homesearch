@@ -194,10 +194,18 @@ function* onUpdateProjectAdvertisementLeadDetailsSaga({
 		callback('fail', errorResponse.message);
 	}
 }
-function* onFetchProjectAdvertisementsSaga({ payload: { page, callback } }) {
+function* onFetchProjectAdvertisementsSaga({
+	payload: { page, pType = null, pFor = null, callback },
+}) {
 	const token = localStorage.getItem('JWT');
 	yield put(fetchProjectAdvertisementsLoading(true));
-	const url = `/api/v1/kra/project-advertisements?page=${page}`;
+	let url = `/api/v1/kra/project-advertisements?page=${page}`;
+	if (pType) {
+		url += `&pType=${pType}`;
+	}
+	if (pFor) {
+		url += `&pFor=${pFor}`;
+	}
 	try {
 		const response = yield axios({
 			method: 'get',
