@@ -106,12 +106,12 @@ exports.sendResetPasswordOtp = catchAsync(async (req, res, next) => {
 		if (user.number) {
 			await sendOtpMessage(user.number, randomNumber);
 		}
-		const test = await sendEmail(
-			email,
-			'Reset password',
-			`Your homesearch18 reset password otp is ${randomNumber}`
-		);
-		console.log(test);
+		// const test = await sendEmail(
+		// 	email,
+		// 	'Reset password',
+		// 	`Your homesearch18 reset password otp is ${randomNumber}`
+		// );
+		// console.log(test);
 		const updatedUser = await User.findByIdAndUpdate(
 			user.id,
 			{ otp: randomNumber },
@@ -121,6 +121,7 @@ exports.sendResetPasswordOtp = catchAsync(async (req, res, next) => {
 				useFindAndModify: false,
 			}
 		);
+		console.log(updatedUser);
 		res.status(200).json({
 			status: 'success',
 			data: updatedUser,

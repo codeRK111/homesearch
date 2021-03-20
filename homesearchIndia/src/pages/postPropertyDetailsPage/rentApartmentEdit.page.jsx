@@ -120,7 +120,10 @@ const RentApartment = ({
 		if (!values.description) {
 			error.description = 'Invalid value';
 		}
-		if (values['type'] === 'flat' && values.noOfFloors < values.floor) {
+		if (
+			values['type'] === 'flat' &&
+			Number(values.noOfFloors) < Number(values.floor)
+		) {
 			error.floor =
 				'Property on floor cannot be greater than total floors';
 		}

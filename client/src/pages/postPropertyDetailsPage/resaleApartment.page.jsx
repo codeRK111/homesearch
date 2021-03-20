@@ -23,6 +23,7 @@ import Success from '../../components/propertySuccess/propertySuccess.component'
 import TextField from '../../components/formik/textField.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { handleImageUpload } from '../../utils/configure.utils';
 import { postProperty } from '../../redux/property/property.actions';
 import { selectPostPropertyLoading } from '../../redux/property/property.selectors';
 import useStyles from './postPropertyDetails.styles';
@@ -151,50 +152,53 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 	const validateForm = (values) => {
 		const error = {};
 		if (!validateNumber(values.numberOfBedRooms)) {
-			error.numberOfBedRooms = 'Invalid value';
+			error.numberOfBedRooms = 'Please enter a number';
 		}
 		if (!validateNumber(values.superBuiltupArea)) {
-			error.superBuiltupArea = 'Invalid value';
+			error.superBuiltupArea = 'Please enter a number';
 		}
 		if (!validateNumber(values.carpetArea)) {
-			error.carpetArea = 'Invalid value';
+			error.carpetArea = 'Please enter a number';
 		}
 		if (!validateNumber(values.landArea)) {
-			error.landArea = 'Invalid value';
+			error.landArea = 'Please enter a number';
 		}
 		if (!validateNumber(values.toiletIndian)) {
-			error.toiletIndian = 'Invalid value';
+			error.toiletIndian = 'Please enter a number';
 		}
 		if (!validateNumber(values.toiletWestern)) {
-			error.toiletWestern = 'Invalid value';
+			error.toiletWestern = 'Please enter a number';
 		}
 		if (pType === 'flat' && !validateNumber(values.floor)) {
-			error.floor = 'Invalid value';
+			error.floor = 'Please enter a number';
 		}
-		if (pType === 'flat' && values.noOfFloors < values.floor) {
+		if (
+			pType === 'flat' &&
+			Number(values.noOfFloors) < Number(values.floor)
+		) {
 			error.floor =
 				'Property on floor cannot be greater than total floors';
 		}
 		if (!validateNumber(values.distanceSchool)) {
-			error.distanceSchool = 'Invalid value';
+			error.distanceSchool = 'Please enter a number';
 		}
 		if (!validateNumber(values.distanceRailwayStation)) {
-			error.distanceRailwayStation = 'Invalid value';
+			error.distanceRailwayStation = 'Please enter a number';
 		}
 		if (!validateNumber(values.distanceAirport)) {
-			error.distanceAirport = 'Invalid value';
+			error.distanceAirport = 'Please enter a number';
 		}
 		if (!validateNumber(values.distanceBusStop)) {
-			error.distanceBusStop = 'Invalid value';
+			error.distanceBusStop = 'Please enter a number';
 		}
 		if (!validateNumber(values.distanceHospital)) {
-			error.distanceHospital = 'Invalid value';
+			error.distanceHospital = 'Please enter a number';
 		}
 		if (!validateNumber(values.salePrice)) {
-			error.salePrice = 'Invalid value';
+			error.salePrice = 'Please enter a number';
 		}
 		if (!values.description) {
-			error.description = 'Invalid value';
+			error.description = 'Please mention some description';
 		}
 		if (
 			values.legalClearance.find((c) => c.name === 'reraapproved')[
@@ -205,7 +209,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 			error.reraapproveId = 'required';
 		}
 
-		if (values.noOfFloors < values.floor) {
+		if (Number(values.noOfFloors) < Number(values.floor)) {
 			error.floor =
 				'Property on floor cannot be greater than total floors';
 		}
@@ -274,10 +278,16 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 
 	const handleImage = (e) => {
 		const { name, files } = e.target;
-		setImages((prevState) => ({
-			...prevState,
-			[name]: files[0],
-		}));
+		handleImageUpload(files[0], 2)
+			.then((data) => {
+				setImages((prevState) => ({
+					...prevState,
+					[name]: data,
+				}));
+			})
+			.catch((err) => {
+				console.log(err.message);
+			});
 	};
 	return (
 		<Box>

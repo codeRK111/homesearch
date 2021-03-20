@@ -9,6 +9,7 @@ import React from 'react';
 import { changeProfilePicture } from '../../redux/auth/auth.actions';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { handleImageUpload } from '../../utils/configure.utils';
 import useStyles from './profile.styles';
 
 const ImageUpload = ({ user, profilePictureLoading, changeProfilePicture }) => {
@@ -16,7 +17,13 @@ const ImageUpload = ({ user, profilePictureLoading, changeProfilePicture }) => {
 	const [photo, setPhoto] = React.useState(null);
 	const handleImage = (e) => {
 		const { files } = e.target;
-		setPhoto(files[0]);
+		handleImageUpload(files[0])
+			.then((data) => {
+				setPhoto(data);
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
 	};
 	React.useEffect(() => {
 		if (photo) {

@@ -59,6 +59,7 @@ const AddStaff = ({
 		minCallsPerDay: 10,
 		minCallsPerMonth: 300,
 		message: '',
+		pFor: 'project',
 	};
 	const classes = useStyles();
 	const buttonProps = {};

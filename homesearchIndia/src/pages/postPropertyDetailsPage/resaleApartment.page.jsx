@@ -171,7 +171,10 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		if (pType === 'flat' && !validateNumber(values.floor)) {
 			error.floor = 'Invalid value';
 		}
-		if (pType === 'flat' && values.noOfFloors < values.floor) {
+		if (
+			pType === 'flat' &&
+			Number(values.noOfFloors) < Number(values.floor)
+		) {
 			error.floor =
 				'Property on floor cannot be greater than total floors';
 		}
@@ -205,7 +208,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 			error.reraapproveId = 'required';
 		}
 
-		if (values.noOfFloors < values.floor) {
+		if (Number(values.noOfFloors) < Number(values.floor)) {
 			error.floor =
 				'Property on floor cannot be greater than total floors';
 		}

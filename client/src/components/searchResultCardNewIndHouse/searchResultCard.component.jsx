@@ -53,7 +53,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 	};
 
 	const handleContactClose = (_) => {
-		setContactOpen(false); 
+		setContactOpen(false);
 	};
 	const justifyContent = mobile
 		? { justifyContent: 'flex-start' }
@@ -197,7 +197,7 @@ const ResultCard = ({ independent, property, edit = false }) => {
 										</Box>
 									</Box>
 								</Grid>
-								
+
 								<Grid item xs={6} md={3}>
 									<Box>
 										<Box className={classes.info}>

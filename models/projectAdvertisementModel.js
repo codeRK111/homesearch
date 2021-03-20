@@ -36,7 +36,7 @@ const projectAdvertisementSchema = new Schema(
 		pFor: {
 			type: String,
 			enum: ['rent', 'sale'],
-			default: null,
+			required: false,
 		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }

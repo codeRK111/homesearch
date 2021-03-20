@@ -20,6 +20,7 @@ import Success from '../../components/propertySuccess/propertySuccess.component'
 import TextField from '../../components/formik/textField.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { handleImageUpload } from '../../utils/configure.utils';
 import { postProperty } from '../../redux/property/property.actions';
 import { selectPostPropertyLoading } from '../../redux/property/property.selectors';
 import useStyles from './postPropertyDetails.styles';
@@ -116,44 +117,44 @@ const RentApartment = ({ propertyLoading, postProperty }) => {
 	const validateForm = (values) => {
 		const error = {};
 		if (!validateNumber(values['length'])) {
-			error['length'] = 'Invalid value';
+			error['length'] = 'Please enter a number';
 		}
 		if (!validateNumber(values.width)) {
-			error.width = 'Invalid value';
+			error.width = 'Please enter a number';
 		}
 		if (!validateNumber(values.plotFrontage)) {
-			error.plotFrontage = 'Invalid value';
+			error.plotFrontage = 'Please enter a number';
 		}
 		if (!validateNumber(values.plotArea)) {
-			error.plotArea = 'Invalid value';
+			error.plotArea = 'Please enter a number';
 		}
 		if (!validateNumber(values.widthOfRoad)) {
-			error.widthOfRoad = 'Invalid value';
+			error.widthOfRoad = 'Please enter a number';
 		}
 		if (!validateNumber(values.govermentValuation)) {
-			error.govermentValuation = 'Invalid value';
+			error.govermentValuation = 'Please enter a number';
 		}
 
 		if (!validateNumber(values.distanceSchool)) {
-			error.distanceSchool = 'Invalid value';
+			error.distanceSchool = 'Please enter a number';
 		}
 		if (!validateNumber(values.distanceRailwayStation)) {
-			error.distanceRailwayStation = 'Invalid value';
+			error.distanceRailwayStation = 'Please enter a number';
 		}
 		if (!validateNumber(values.distanceAirport)) {
-			error.distanceAirport = 'Invalid value';
+			error.distanceAirport = 'Please enter a number';
 		}
 		if (!validateNumber(values.distanceBusStop)) {
-			error.distanceBusStop = 'Invalid value';
+			error.distanceBusStop = 'Please enter a number';
 		}
 		if (!validateNumber(values.distanceHospital)) {
-			error.distanceHospital = 'Invalid value';
+			error.distanceHospital = 'Please enter a number';
 		}
 		if (!validateNumber(values.salePrice)) {
-			error.salePrice = 'Invalid value';
+			error.salePrice = 'Please enter a number';
 		}
 		if (!values.description) {
-			error.description = 'Invalid value';
+			error.description = 'Please mention some description';
 		}
 
 		if (
@@ -220,10 +221,16 @@ const RentApartment = ({ propertyLoading, postProperty }) => {
 
 	const handleImage = (e) => {
 		const { name, files } = e.target;
-		setImages((prevState) => ({
-			...prevState,
-			[name]: files[0],
-		}));
+		handleImageUpload(files[0], 2)
+			.then((data) => {
+				setImages((prevState) => ({
+					...prevState,
+					[name]: data,
+				}));
+			})
+			.catch((err) => {
+				console.log(err.message);
+			});
 	};
 	return (
 		<Box>

@@ -129,7 +129,7 @@ const RentApartment = ({
 
 		if (
 			values['sale_type'] === 'flat' &&
-			values.noOfFloors < values.floor
+			Number(values.noOfFloors) < Number(values.floor)
 		) {
 			error.floor =
 				'Property on floor cannot be greater than total floors';

@@ -150,6 +150,9 @@ const PropertyShare = ({
 			phoneNumber: values.phoneNumber,
 			message: values.message,
 		};
+		if (property.for) {
+			data.type = property.for;
+		}
 		queryOnProperty(data, handleQuery);
 		// showSnackbar('We will get back to you soon');
 	};

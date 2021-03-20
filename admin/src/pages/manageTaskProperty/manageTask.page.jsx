@@ -16,7 +16,7 @@ const ManageTask = ({
 	const classes = useStyles();
 
 	const onClick = () => {
-		history.push('/add-project-advertisement-leads');
+		history.push('/add-property-advertisement-leads');
 	};
 	return (
 		<Box p="1rem">
