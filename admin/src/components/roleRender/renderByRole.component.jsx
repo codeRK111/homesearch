@@ -15,6 +15,7 @@ const HOC = (components) => {
 		const renderComp = () => {
 			switch (user.type) {
 				case 'super-admin':
+					console.log('yes admin');
 					return components['super-admin']
 						? components['super-admin']
 						: null;

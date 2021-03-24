@@ -59,8 +59,6 @@ exports.addProjectFlat = catchAsync(async (req, res, next) => {
 		});
 	}
 
-	console.log(properties);
-
 	const pr = await ProjectProperty.insertMany(properties);
 
 	res.status(201).json({
@@ -476,6 +474,15 @@ exports.getProjectDetails = catchAsync(async (req, res, next) => {
 		data: { project, properties },
 	});
 });
+exports.getProjectDetailsBySlug = catchAsync(async (req, res, next) => {
+	const project = await Project.findOne({ slug: req.params.slug });
+	if (!project) return next(new AppError('project not found', 404));
+	const properties = await ProjectProperty.find({ project: project.id });
+	res.status(200).json({
+		status: 'success',
+		data: { project, properties },
+	});
+});
 
 exports.getAllProjectInfo = catchAsync(async (req, res, next) => {
 	const project = await Project.findById(req.params.id);
@@ -536,9 +543,9 @@ exports.updateProjectProperty = catchAsync(async (req, res, next) => {
 });
 
 exports.getProjectPropertyDetails = catchAsync(async (req, res, next) => {
-	const property = await ProjectProperty.findById(
-		req.params.id
-	).populate('project');
+	const property = await ProjectProperty.findById(req.params.id).populate(
+		'project'
+	);
 
 	res.status(200).json({
 		status: 'success',

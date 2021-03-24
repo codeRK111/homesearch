@@ -4,15 +4,16 @@ const projectController = require('../controllers/projectController');
 const router = express.Router();
 
 router.route('/get-all-details/:id').get(projectController.getAllProjectInfo);
-router.route('/get-project-property-details/:id').get(projectController.getProjectPropertyDetails);
+router
+	.route('/get-project-property-details/:id')
+	.get(projectController.getProjectPropertyDetails);
 router.route('/flat').post(projectController.addProjectFlat);
 router
 	.route('/independenthouse')
 	.post(projectController.addProjectIndependentHouse);
 router.route('/land').post(projectController.addProjectLand);
 router.route('/properties/:id').patch(projectController.updateProjectProperty);
-router
-	.route('/handle-image/remove-image/:image/:id') 
+router.route('/handle-image/remove-image/:image/:id');
 router
 	.route('/handle-image/property/remove-floorplan/:image/:id')
 	.get(projectController.removePropertyImage);
@@ -24,6 +25,10 @@ router
 	.patch(projectController.handlePropertyImage);
 router.route('/handle-image/:id').patch(projectController.handleImage);
 router.route('/').get(projectController.getAllProjects);
+
+router
+	.route('/get-details-by-slug/:slug')
+	.get(projectController.getProjectDetailsBySlug);
 
 router
 	.route('/:id')

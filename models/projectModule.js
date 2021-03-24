@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const ProjectProperty = require('./projectPropertyModule');
 const PropertyModel = require('./propertyModel');
+const slugify = require('slugify');
 
 const { Schema, model } = mongoose;
 const projectSchema = new Schema(
@@ -8,6 +9,10 @@ const projectSchema = new Schema(
 		title: {
 			type: String,
 			required: [true, 'Missing parameter title'],
+		},
+		slug: {
+			type: String,
+			unique: [true, 'slug already exists'],
 		},
 		description: {
 			type: String,
@@ -148,6 +153,14 @@ projectSchema.pre(/^find/, function (next) {
 			select: 'id developerName phoneNumber',
 		});
 
+	next();
+});
+
+projectSchema.pre('save', async function (next) {
+	this.slug = slugify(this.title, {
+		replacement: '-',
+		lower: true,
+	});
 	next();
 });
 const ProjectModel = model('Project', projectSchema);

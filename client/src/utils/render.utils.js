@@ -6,6 +6,11 @@ export const parseDate = (date) => {
 	const m = moment(date);
 	return m.format('Do MMM YYYY');
 };
+
+export const apiUrl = (url) => {
+	return `/api/v1${url}`;
+	// return `/api${url}`;
+};
 export const parseDateOnlyMonth = (date) => {
 	const m = moment(date);
 	return m.format(' MMM YYYY');

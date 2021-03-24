@@ -43,6 +43,7 @@ const propertyQuerySchema = new Schema(
 		owner: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
+			default: null,
 		},
 		user: {
 			type: mongoose.Schema.ObjectId,
@@ -107,7 +108,9 @@ propertyQuerySchema.pre(/^find/, function (next) {
 });
 
 propertyQuerySchema.methods.correctOtp = function (otp) {
-	return String(otp) === this.otp;
+	console.log(otp);
+	console.log(this.otp);
+	return Number(otp) === Number(this.otp);
 };
 
 const propertyQuery = model('PropertyQuery', propertyQuerySchema);

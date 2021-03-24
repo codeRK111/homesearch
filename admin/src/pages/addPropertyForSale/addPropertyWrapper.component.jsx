@@ -253,24 +253,38 @@ const AddProperty = ({
 
 	const closeSnackbar = () => setAsyncError('');
 
-	const StateNode = RenderByRole({
-		'super-admin': (
-			<RowSelect
-				heading="State *"
-				loading={stateLoading}
-				name="type"
-				value={state}
-				onChange={(e) => setState(e.target.value)}
-				label="State"
-				onOpen={fetchState}
-				helperText="Select state for to see available cities"
-				menuItems={allStates.map((c) => ({
-					label: c,
-					value: c,
-				}))}
-			/>
-		),
-	});
+	// const StateNode = RenderByRole({
+	// 	'super-admin': (
+	// 		<RowSelect
+	// 			heading="State *"
+	// 			loading={stateLoading}
+	// 			name="type"
+	// 			value={state}
+	// 			onChange={(e) => setState(e.target.value)}
+	// 			label="State"
+	// 			onOpen={fetchState}
+	// 			menuItems={allStates.map((c) => ({
+	// 				label: c,
+	// 				value: c,
+	// 			}))}
+	// 		/>
+	// 	),
+	// });
+	const StateNode = (
+		<RowSelect
+			heading="State *"
+			loading={stateLoading}
+			name="type"
+			value={state}
+			onChange={(e) => setState(e.target.value)}
+			label="State"
+			onOpen={fetchState}
+			menuItems={allStates.map((c) => ({
+				label: c,
+				value: c,
+			}))}
+		/>
+	);
 	const CityNode = RenderByRole({
 		'super-admin': (
 			<RowSelect
@@ -353,9 +367,8 @@ const AddProperty = ({
 									label="For"
 									menuItems={typeMenuItems}
 								/>
-								<StateNode />
+								{StateNode}
 								<CityNode />
-
 								<RowSelect
 									heading="Location *"
 									loading={locationLoading}

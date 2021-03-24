@@ -19,6 +19,7 @@ import React from 'react';
 import ResetPassword from './pages/resetPasswordPage/resetPassword.page';
 import SearchPage from './pages/searchResultPage/searchResultPage.page';
 import SignUpForm from './pages/signup/signup.page';
+import ProjectPage from './pages/projectPage/project.page';
 import { store } from './redux/store';
 
 function App() {
@@ -136,6 +137,11 @@ function App() {
 									{...props}
 								/>
 							)}
+						/>
+						<Route
+							exact
+							path="/:projectId"
+							render={(props) => <ProjectPage {...props} />}
 						/>
 					</Switch>
 				</HashRouter>

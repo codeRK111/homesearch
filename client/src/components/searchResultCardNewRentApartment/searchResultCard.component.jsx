@@ -7,7 +7,7 @@ import {
 	renderStatus,
 } from '../../utils/render.utils';
 
-import ContactDialogueWithMessage from '../contactOwner/contactOwnerWithMessage.component';
+import ContactDialogueWithMessage from '../contactOwner/getOwnerPropertyDetails.component';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -54,6 +54,7 @@ const ResultCard = ({ property, edit = false }) => {
 				handleClose={handleContactClose}
 				title={`Contact ${capitalizeFirstLetter(property.postedBy)}`}
 				property={property}
+				queryOn="property"
 			/>
 			<PropertyShare
 				status={open}

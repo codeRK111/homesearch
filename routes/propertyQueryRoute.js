@@ -7,6 +7,7 @@ router.route('/test-sms').get(queryController.sendTest);
 router
 	.route('/get-queries')
 	.post(authController.protect, queryController.getQueries);
+router.route('/validate-otp').post(queryController.validateOTP);
 router.route('/').post(queryController.addQuery);
 
 module.exports = router;

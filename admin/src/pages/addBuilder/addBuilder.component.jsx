@@ -142,7 +142,11 @@ const PropertySale = ({
 	};
 
 	React.useEffect(() => {
-		if (selectedState && currentUser.role === 'super-admin') {
+		console.log({
+			selectedState,
+			role: currentUser.role,
+		});
+		if (selectedState && currentUser.type === 'super-admin') {
 			fetchCities(selectedState, handleFetchCity);
 		} else {
 			setCities(
@@ -384,8 +388,42 @@ const PropertySale = ({
 						onChange={handleChange}
 						label="Enter email"
 					/>
-					<StateNode />
-					<CityNode />
+					{/* <StateNode />
+					<CityNode /> */}
+					<RowSelect
+						heading="State"
+						loading={stateLoading}
+						name="state"
+						label="State"
+						onChange={handleChange}
+						onOpen={fetchState}
+						onClose={setState}
+						menuItems={allStates.map((c) => ({
+							label: c,
+							value: c,
+						}))}
+					/>
+					<RowHOC heading="Cities">
+						<Grid container>
+							{cities.map((c, i) => {
+								return (
+									<Grid item xs={6} lg={4} key={i}>
+										<FormControlLabel
+											control={
+												<Checkbox
+													checked={c.value}
+													onChange={(e) =>
+														handleCityCheckbox(e, c)
+													}
+												/>
+											}
+											label={c.name}
+										/>
+									</Grid>
+								);
+							})}
+						</Grid>
+					</RowHOC>
 					{}
 					<RowTextField
 						heading="Office Address"
