@@ -1,6 +1,7 @@
 .container > div {
 	font-size: 2em;
 	position: relative;
+	border-radius: 10px;
 }
 .container > div > .absolute {
 	position: absolute;
@@ -27,7 +28,7 @@
 	display: grid;
 	grid-gap: 10px;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-template-rows: 50vh 30vh;
+	grid-template-rows: 40vh 30vh;
 }
 
 .horizontal {
