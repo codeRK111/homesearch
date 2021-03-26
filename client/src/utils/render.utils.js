@@ -203,6 +203,10 @@ export const renderFloorPlans = (property) => {
 			: defaultImage,
 	};
 };
+export const renderImage = (image, dir = 'projects') => {
+	const defaultImage = require('../assets/no-image.jpg');
+	return image ? `/assets/${dir}/${image}` : defaultImage;
+};
 
 export const handleRERA = (clearance) => {
 	const reraDetails = clearance.find((c) => c.name === 'reraapproved');
@@ -211,4 +215,24 @@ export const handleRERA = (clearance) => {
 		show: reraDetails && reraDetails.value,
 		value: reraDetails && reraDetails.details,
 	};
+};
+export const renderPriceRange = (price, amount = 1) => {
+	let l = '';
+	switch (amount) {
+		case 1000:
+			l = 'K';
+			break;
+		case 100000:
+			l = 'L';
+			break;
+
+		default:
+			l = '';
+			break;
+	}
+	if (price.min === price.max) {
+		return `${price.min / amount}${l}`;
+	} else {
+		return `${price.min / amount} - ${price.max / amount}${l}`;
+	}
 };

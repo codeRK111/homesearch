@@ -478,9 +478,25 @@ exports.getProjectDetailsBySlug = catchAsync(async (req, res, next) => {
 	const project = await Project.findOne({ slug: req.params.slug });
 	if (!project) return next(new AppError('project not found', 404));
 	const properties = await ProjectProperty.find({ project: project.id });
+	const projectInfo = await ProjectProperty.aggregate([
+		{ $match: { project: ObjectId(project.id) } },
+		{
+			$group: {
+				_id: null,
+				minPrice: { $min: '$minPrice' },
+				maxPrice: { $max: '$maxPrice' },
+				totalUnits: { $sum: '$numberOfUnits' },
+				minArea: { $min: '$superBuiltupArea' },
+				maxArea: { $max: '$superBuiltupArea' },
+				minAreaLand: { $min: '$plotArea' },
+				maxAreaLand: { $max: '$plotArea' },
+				bedRooms: { $push: '$numberOfBedrooms' },
+			},
+		},
+	]);
 	res.status(200).json({
 		status: 'success',
-		data: { project, properties },
+		data: { project, properties, projectInfo },
 	});
 });
 

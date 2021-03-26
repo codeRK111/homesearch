@@ -12,9 +12,14 @@ export const useStyles = makeStyles((theme) => ({
 		width: '100%',
 		height: '100%',
 		display: 'grid',
-		gap: '10px',
+		gap: '20px',
 		gridTemplateColumns: '1fr 1fr 1fr 1fr',
 		gridTemplateRows: '40vh 30vh',
+		[theme.breakpoints.down('sm')]: {
+			gridTemplateColumns: '1fr',
+			gridTemplateRows: '20vh 20vh 20vh 20vh',
+			gap: '10px',
+		},
 
 		'& > div': {
 			fontSize: '2rem',
@@ -32,23 +37,31 @@ export const useStyles = makeStyles((theme) => ({
 			justifyContent: 'center',
 			alignItems: 'center',
 			color: '#ffffff',
+			borderRadius: '20px',
 		},
 		'& > div > img': {
 			width: '100%',
 			height: '100%',
 			objectFit: 'cover',
+			borderRadius: '20px',
 		},
 	},
 
 	horizontal: {
-		gridColumn: 'span 3',
+		[theme.breakpoints.up('md')]: {
+			gridColumn: 'span 3',
+		},
 	},
 	vertical: {
-		gridRow: 'span 2',
+		[theme.breakpoints.up('md')]: {
+			gridRow: 'span 2',
+		},
 	},
 	big: {
-		gridColumn: 'span 2',
-		gridRow: 'span 2',
+		[theme.breakpoints.up('md')]: {
+			gridColumn: 'span 2',
+			gridRow: 'span 2',
+		},
 	},
 	garyColor: {
 		color: grayColor,
@@ -81,6 +94,10 @@ export const useStyles = makeStyles((theme) => ({
 		border: 'none',
 		borderRadius: '5px',
 		fontSize: '1.2rem',
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.8rem 1.8rem',
+			fontSize: '1rem',
+		},
 	},
 	textBlock: {
 		color: grayColor,
@@ -90,9 +107,9 @@ export const useStyles = makeStyles((theme) => ({
 	gridContainer: {
 		display: 'grid',
 		height: '100%',
-		gridTemplateColumns: ' repeat( auto-fill, minmax(100px, 1fr) )',
-		gap: '2rem',
-		gridAutoRows: '6rem',
+		gridTemplateColumns: ' repeat( auto-fill, minmax(150px, 1fr) )',
+		gap: '1rem',
+		gridAutoRows: '1fr',
 	},
 	gridContainerSmallGap: {
 		display: 'grid',
@@ -119,5 +136,13 @@ export const useStyles = makeStyles((theme) => ({
 		padding: '0.5rem 1rem',
 		border: 'none',
 		borderRadius: '5px',
+	},
+	formWrapper: {
+		width: '500px',
+		padding: '1rem',
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
+			padding: 0,
+		},
 	},
 }));

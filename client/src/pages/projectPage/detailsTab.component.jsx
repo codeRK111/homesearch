@@ -13,6 +13,14 @@ import BedIcon from '@material-ui/icons/SingleBed';
 import ListIcon from '@material-ui/icons/ListAlt';
 import AirplaneIcon from '@material-ui/icons/AirplanemodeActive';
 import { CardHeader, Avatar } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { getPropertyResources } from '../../redux/property/property.actions';
+import {
+	selectAmenities,
+	selectGetPropertyResourcesLoading,
+} from '../../redux/property/property.selectors';
+import NearByPlaces from '../detailsPageNew/nearByPlaces.component';
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -74,13 +82,27 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function ScrollableTabsButtonForce() {
+function ScrollableTabsButtonForce({
+	property,
+	amenities,
+	getPropertyResources,
+}) {
+	const isSelected = (id) => {
+		const isPresent = property.amenities.find((c) => c === id);
+		return isPresent ? true : false;
+	};
 	const classes = useStyles();
 	const [value, setValue] = React.useState(0);
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
+
+	React.useEffect(() => {
+		if (amenities.length === 0) {
+			getPropertyResources(console.log);
+		}
+	}, [amenities, getPropertyResources]);
 
 	return (
 		<div className={classes.root}>
@@ -113,93 +135,45 @@ export default function ScrollableTabsButtonForce() {
 			</AppBar>
 			<TabPanel value={value} index={0}>
 				<div className={classes.gridContainer}>
-					{Array.from({ length: 10 }, (_, idx) => `${++idx}`).map(
-						(c) => (
-							<div key={c} className={classes.gridItem}>
-								Lorem, ipsum dolor.
-							</div>
-						)
-					)}
+					{amenities &&
+						amenities
+							.filter((b) => isSelected(b.id))
+							.map((c) => (
+								<div key={c} className={classes.gridItem}>
+									{c.name}
+								</div>
+							))}
 				</div>
 			</TabPanel>
 			<TabPanel value={value} index={1}>
 				<div className={classes.gridContainer}>
-					{Array.from({ length: 10 }, (_, idx) => `${++idx}`).map(
-						(c) => (
-							<div key={c} className={classes.gridItem}>
-								Lorem, ipsum dolor.
-							</div>
-						)
-					)}
+					{property.amenities &&
+						property.legalClearance
+							.filter((b) => b.value)
+							.map((c) => (
+								<div key={c} className={classes.gridItem}>
+									{c.label}
+								</div>
+							))}
 				</div>
 			</TabPanel>
 			<TabPanel value={value} index={2}>
-				<CardHeader
-					classes={{
-						root: classes.cardHeader,
-					}}
-					avatar={
-						<Avatar aria-label="recipe" className={classes.avatar}>
-							R
-						</Avatar>
-					}
-					action={<h2>2KM</h2>}
-					title="School"
-					subheader="From the apartment"
-				/>
-				<CardHeader
-					classes={{
-						root: classes.cardHeader,
-					}}
-					avatar={
-						<Avatar aria-label="recipe" className={classes.avatar}>
-							R
-						</Avatar>
-					}
-					action={<h2>2KM</h2>}
-					title="School"
-					subheader="From the apartment"
-				/>
-				<CardHeader
-					classes={{
-						root: classes.cardHeader,
-					}}
-					avatar={
-						<Avatar aria-label="recipe" className={classes.avatar}>
-							R
-						</Avatar>
-					}
-					action={<h2>2KM</h2>}
-					title="School"
-					subheader="From the apartment"
-				/>
-				<CardHeader
-					classes={{
-						root: classes.cardHeader,
-					}}
-					avatar={
-						<Avatar aria-label="recipe" className={classes.avatar}>
-							R
-						</Avatar>
-					}
-					action={<h2>2KM</h2>}
-					title="School"
-					subheader="From the apartment"
-				/>
-				<CardHeader
-					classes={{
-						root: classes.cardHeader,
-					}}
-					avatar={
-						<Avatar aria-label="recipe" className={classes.avatar}>
-							R
-						</Avatar>
-					}
-					action={<h2>2KM</h2>}
-					title="School"
-					subheader="From the apartment"
-				/>
+				<NearByPlaces property={property} />
 			</TabPanel>
 		</div>
 	);
 }
+
+const mapStateToProps = createStructuredSelector({
+	propertyResourcesLoading: selectGetPropertyResourcesLoading,
+	amenities: selectAmenities,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	getPropertyResources: (callback) =>
+		dispatch(getPropertyResources({ callback })),
+});
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ScrollableTabsButtonForce);

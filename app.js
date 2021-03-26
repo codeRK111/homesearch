@@ -140,6 +140,7 @@ app.use('/api/v1/kpi', kpiRoute);
 app.use('/api/v1/api-test', testRoute);
 
 app.all('*', (req, res, next) => {
+	console.log(req);
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));
 });
 

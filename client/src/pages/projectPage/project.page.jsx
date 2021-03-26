@@ -13,6 +13,9 @@ import clsx from 'clsx';
 import ViewImage from './viewImage.component';
 import TalkToOurExpert from '../../components/talkToExpert/talkToExpert.component';
 import Footer from '../../components/footer/footer.component';
+import ContactDialog from './contactModal.component';
+import { renderPriceRange, renderImage } from '../../utils/render.utils';
+import BasicDetails from './basicDetails';
 
 const ProjectPage = ({
 	match: {
@@ -33,6 +36,8 @@ const ProjectPage = ({
 		properties: [],
 	});
 	const [open, setOpen] = React.useState(false);
+	const [contactDialogopen, setContactDialogOpen] = React.useState(false);
+
 	const [src, setSrc] = React.useState('');
 
 	const handleClickOpen = () => {
@@ -41,6 +46,14 @@ const ProjectPage = ({
 
 	const handleClose = () => {
 		setOpen(false);
+	};
+
+	const handleContactDialogClickOpen = () => {
+		setContactDialogOpen(true);
+	};
+
+	const handleContactDialogClose = () => {
+		setContactDialogOpen(false);
 	};
 
 	const onView = (src) => () => {
@@ -96,18 +109,24 @@ const ProjectPage = ({
 			{/* Page Wrapper  */}
 			<div className={classes.wrapper}>
 				<BackDrop open={asyncState.loading} />
+
 				<ViewImage src={src} open={open} handleClose={handleClose} />
 				{!!asyncState.error && <ErrorCard message={asyncState.error} />}
 				{!!data.project && (
 					<>
+						<ContactDialog
+							open={contactDialogopen}
+							handleClose={handleContactDialogClose}
+							name={data.project.title}
+						/>
 						<Box mb="1rem">
 							<div className={classes.detailsContainer}>
 								<div>
 									<h1 className={classes.noSpace}>
-										BK Projects
+										{data.project.title}
 									</h1>
 									<span className={classes.garyColor}>
-										Jaydev Bihar Bhubaneswar
+										{`${data.project.location.name}, ${data.project.city.name}`}
 									</span>
 
 									<p
@@ -116,7 +135,10 @@ const ProjectPage = ({
 											classes.noSpace
 										)}
 									>
-										By <b>BK Builders</b>{' '}
+										By{' '}
+										<b>
+											{data.project.builder.developerName}
+										</b>{' '}
 									</p>
 								</div>
 
@@ -127,12 +149,26 @@ const ProjectPage = ({
 										alignItems="center"
 									>
 										<h3 className={classes.noSpace}>
-											Price 50L - 70L
+											Price{' '}
+											{renderPriceRange(
+												{
+													min:
+														data.projectInfo[0]
+															.minPrice,
+													max:
+														data.projectInfo[0]
+															.maxPrice,
+												},
+												100000
+											)}
 										</h3>
 										<Box mt="1rem">
 											<button
 												className={
 													classes.contactButton
+												}
+												onClick={
+													handleContactDialogClickOpen
 												}
 											>
 												Contact Now
@@ -148,30 +184,38 @@ const ProjectPage = ({
 								className={classes.horizontal}
 							>
 								<div className="absolute">
-									<button
-										className={classes.viewButton}
-										onClick={onView(
-											'https://source.unsplash.com/600x600/?sig=1'
-										)}
-									>
-										View Image
-									</button>
+									{data.project.image1 ? (
+										<button
+											className={classes.viewButton}
+											onClick={onView(
+												renderImage(data.project.image1)
+											)}
+										>
+											View Image
+										</button>
+									) : (
+										'No Image'
+									)}
 								</div>
-								<img src="https://source.unsplash.com/600x600/?sig=1" />
+								<img src={renderImage(data.project.image1)} />
 							</div>
 
 							<div data-lightbox="homePortfolio">
 								<div className="absolute">
-									<button
-										className={classes.viewButton}
-										onClick={onView(
-											'https://source.unsplash.com/600x800/?sig=12'
-										)}
-									>
-										View Image
-									</button>
+									{data.project.image2 ? (
+										<button
+											className={classes.viewButton}
+											onClick={onView(
+												renderImage(data.project.image2)
+											)}
+										>
+											View Image
+										</button>
+									) : (
+										'No Image'
+									)}
 								</div>
-								<img src="https://source.unsplash.com/600x800/?sig=12" />
+								<img src={renderImage(data.project.image2)} />
 							</div>
 
 							<div
@@ -179,91 +223,42 @@ const ProjectPage = ({
 								className={classes.horizontal}
 							>
 								<div className="absolute">
-									<button
-										className={classes.viewButton}
-										onClick={onView(
-											'https://source.unsplash.com/800x600/?sig=71'
-										)}
-									>
-										View Image
-									</button>
+									{data.project.image3 ? (
+										<button
+											className={classes.viewButton}
+											onClick={onView(
+												renderImage(data.project.image3)
+											)}
+										>
+											View Image
+										</button>
+									) : (
+										'No Image'
+									)}
 								</div>
-								<img src="https://source.unsplash.com/800x600/?sig=71" />
+								<img src={renderImage(data.project.image3)} />
 							</div>
 
 							<div data-lightbox="homePortfolio">
 								<div className="absolute">
-									<button
-										className={classes.viewButton}
-										onClick={onView(
-											'https://source.unsplash.com/600x600/?sig=40'
-										)}
-									>
-										View Image
-									</button>
+									{data.project.image4 ? (
+										<button
+											className={classes.viewButton}
+											onClick={onView(
+												renderImage(data.project.image4)
+											)}
+										>
+											View Image
+										</button>
+									) : (
+										'No Image'
+									)}
 								</div>
-								<img src="https://source.unsplash.com/600x600/?sig=40" />
+								<img src={renderImage(data.project.image3)} />
 							</div>
 						</div>
 						{/* <DetailsTab /> */}
 
-						<Box mt="2rem">
-							<Grid container spacing={3}>
-								<Grid item xs={12} md={9}>
-									<h2>About BK Projects</h2>
-									<span className={classes.textBlock}>
-										Lorem ipsum dolor sit amet consectetur
-										adipisicing elit. Sequi, maiores
-										temporibus nisi cum corporis, laudantium
-										consequatur quas nostrum reiciendis
-										aspernatur enim! Placeat pariatur ab eos
-										iste animi quod rerum. Nobis libero
-										architecto laudantium numquam explicabo
-										ipsa saepe nesciunt maxime accusantium
-										ratione, voluptatem molestiae autem esse
-										nostrum enim maiores accusamus inventore
-										quod consequuntur aperiam animi, vero
-										voluptates aut laboriosam! Expedita
-										pariatur repudiandae voluptatem laborum
-										dolore, quod at ratione dolorum quae
-										provident fuga? Itaque excepturi nihil
-										ducimus earum, nobis maxime! Maiores est
-										itaque nemo. Maxime sequi iure fugiat
-										cumque quos aut est, amet facilis odit
-										optio ea perspiciatis nesciunt,
-										similique, a neque?
-									</span>
-								</Grid>
-								<Grid item xs={12} md={3}>
-									<Card>
-										<Box
-											width="100%"
-											padding="1rem"
-											className={globalClasses.flexCenter}
-										>
-											<Box
-												display="flex"
-												flexDirection="column"
-												alignItems="center"
-											>
-												<h1 className={classes.noSpace}>
-													Ongoing
-												</h1>
-												<Box mt="1rem">
-													<button
-														className={
-															classes.contactButton
-														}
-													>
-														Book a tour guide
-													</button>
-												</Box>
-											</Box>
-										</Box>
-									</Card>
-								</Grid>
-							</Grid>
-						</Box>
 						<Box mt="2rem">
 							<Grid container spacing={3}>
 								<Grid item xs={12} md={9}>
@@ -273,160 +268,20 @@ const ProjectPage = ({
 										</h3>
 									</Box>
 									<Card variant="outlined">
-										<Box width="100%" padding="1rem">
-											<div
-												className={
-													classes.gridContainer
-												}
-											>
-												<Box
-													display="flex"
-													flexDirection="column"
-													alignItems="center"
+										<Box padding={'1rem'}>
+											<BasicDetails
+												project={data.project}
+												info={data.projectInfo[0]}
+											/>
+											<Box mt="1rem">
+												<span
+													className={
+														classes.garyColor
+													}
 												>
-													<p
-														className={clsx(
-															classes.noSpace,
-															classes.garyColor
-														)}
-													>
-														Total Units
-													</p>
-													<h3
-														className={
-															classes.noSpace
-														}
-													>
-														500
-													</h3>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-													alignItems="center"
-												>
-													<p
-														className={clsx(
-															classes.noSpace,
-															classes.garyColor
-														)}
-													>
-														Area(Sq. FT)
-													</p>
-													<h3
-														className={
-															classes.noSpace
-														}
-													>
-														1000 - 2000
-													</h3>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-													alignItems="center"
-												>
-													<p
-														className={clsx(
-															classes.noSpace,
-															classes.garyColor
-														)}
-													>
-														Price Range
-													</p>
-													<h3
-														className={
-															classes.noSpace
-														}
-													>
-														40L - 50L
-													</h3>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-													alignItems="center"
-												>
-													<p
-														className={clsx(
-															classes.noSpace,
-															classes.garyColor
-														)}
-													>
-														Status
-													</p>
-													<h3
-														className={
-															classes.noSpace
-														}
-													>
-														Ongoing
-													</h3>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-													alignItems="center"
-												>
-													<p
-														className={clsx(
-															classes.noSpace,
-															classes.garyColor
-														)}
-													>
-														Property Type
-													</p>
-													<h3
-														className={
-															classes.noSpace
-														}
-													>
-														Apartment
-													</h3>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-													alignItems="center"
-												>
-													<p
-														className={clsx(
-															classes.noSpace,
-															classes.garyColor
-														)}
-													>
-														Unit Types
-													</p>
-													<h3
-														className={
-															classes.noSpace
-														}
-													>
-														Apartment
-													</h3>
-												</Box>
-												<Box
-													display="flex"
-													flexDirection="column"
-													alignItems="center"
-												>
-													<p
-														className={clsx(
-															classes.noSpace,
-															classes.garyColor
-														)}
-													>
-														Unit Types
-													</p>
-													<h3
-														className={
-															classes.noSpace
-														}
-													>
-														Apartment
-													</h3>
-												</Box>
-											</div>
+													{data.project.description}
+												</span>
+											</Box>
 										</Box>
 									</Card>
 									<Box mb="1rem" mt="2rem">
@@ -606,14 +461,44 @@ const ProjectPage = ({
 									</Box>
 									<Card variant="outlined">
 										<Box p="1rem">
-											<DetailsTab />
+											<DetailsTab
+												property={data.project}
+											/>
 										</Box>
 									</Card>
 								</Grid>
 								<Grid item xs={12} md={3}>
-									<Paper>
-										<TalkToOurExpert />
-									</Paper>
+									<Card>
+										<Box
+											width="100%"
+											padding="1rem"
+											className={globalClasses.flexCenter}
+										>
+											<Box
+												display="flex"
+												flexDirection="column"
+												alignItems="center"
+											>
+												<h1 className={classes.noSpace}>
+													Ongoing
+												</h1>
+												<Box mt="1rem">
+													<button
+														className={
+															classes.contactButton
+														}
+													>
+														Book a tour guide
+													</button>
+												</Box>
+											</Box>
+										</Box>
+									</Card>
+									<Box mt="1rem">
+										<Paper>
+											<TalkToOurExpert />
+										</Paper>
+									</Box>
 								</Grid>
 							</Grid>
 						</Box>
