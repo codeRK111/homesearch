@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-
+const slugify = require('slugify');
 const { Schema, model } = mongoose;
 const builderSchema = new Schema(
 	{
@@ -93,12 +93,24 @@ const builderSchema = new Schema(
 			ref: 'Admin',
 			default: null,
 		},
+		slug: {
+			type: String,
+			unique: [true, 'slug already exists'],
+		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 builderSchema.pre(/^find/, function (next) {
 	this.populate('cities');
+	next();
+});
+
+builderSchema.pre('save', async function (next) {
+	this.slug = slugify(this.title, {
+		replacement: '-',
+		lower: true,
+	});
 	next();
 });
 

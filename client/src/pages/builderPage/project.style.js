@@ -13,12 +13,12 @@ export const useStyles = makeStyles((theme) => ({
 		height: '100%',
 		display: 'grid',
 		gap: '20px',
-		gridTemplateColumns: '1fr 1fr 1fr 1fr',
-		gridTemplateRows: '40vh 30vh',
+		gridTemplateColumns: '1fr 1fr 1fr',
+		gridTemplateRows: '35vh 35vh',
 		[theme.breakpoints.down('sm')]: {
 			gridTemplateColumns: '1fr',
-			gridTemplateRows: '20vh 20vh 20vh 20vh',
-			gap: '10px',
+			gridTemplateRows: '13vh 13vh 13vh 13vh 13vh 13vh',
+			gap: '5px',
 		},
 
 		'& > div': {

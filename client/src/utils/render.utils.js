@@ -216,6 +216,22 @@ export const handleRERA = (clearance) => {
 		value: reraDetails && reraDetails.details,
 	};
 };
+
+export const returnValidImage = (c) => {
+	switch (true) {
+		case !!c.image1:
+			return c.image1;
+		case !!c.image2:
+			return c.image2;
+		case !!c.image3:
+			return c.image3;
+		case !!c.image4:
+			return c.image4;
+
+		default:
+			return null;
+	}
+};
 export const renderPriceRange = (price, amount = 1) => {
 	let l = '';
 	switch (amount) {

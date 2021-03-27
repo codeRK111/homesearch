@@ -14,8 +14,15 @@ import ViewImage from './viewImage.component';
 import TalkToOurExpert from '../../components/talkToExpert/talkToExpert.component';
 import Footer from '../../components/footer/footer.component';
 import ContactDialog from './contactModal.component';
-import { renderPriceRange, renderImage } from '../../utils/render.utils';
+import {
+	renderPriceRange,
+	renderImage,
+	capitalizeFirstLetter,
+	handleRERA,
+} from '../../utils/render.utils';
 import BasicDetails from './basicDetails';
+import UnitConfig from './unitConfig/unitConfig.component';
+import { Link } from 'react-router-dom';
 
 const ProjectPage = ({
 	match: {
@@ -25,6 +32,7 @@ const ProjectPage = ({
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
 	let cancelToken;
+	// const rera = handleRERA(project.legalClearance);
 
 	// States
 	const [asyncState, setAsyncState] = React.useState({
@@ -137,7 +145,14 @@ const ProjectPage = ({
 									>
 										By{' '}
 										<b>
-											{data.project.builder.developerName}
+											<Link
+												to={`/builder/${data.project.builder.slug}`}
+											>
+												{
+													data.project.builder
+														.developerName
+												}
+											</Link>
 										</b>{' '}
 									</p>
 								</div>
@@ -148,6 +163,28 @@ const ProjectPage = ({
 										flexDirection="column"
 										alignItems="center"
 									>
+										{/* {rera['show'] && (
+											<Box mt="0.3rem">
+												<span>
+													{rera['show'] && (
+														<Box>
+															<span>
+																RERA ID:
+															</span>{' '}
+															<a
+																href={
+																	rera[
+																		'value'
+																	]
+																}
+															>
+																{rera['value']}
+															</a>
+														</Box>
+													)}
+												</span>
+											</Box>
+										)} */}
 										<h3 className={classes.noSpace}>
 											Price{' '}
 											{renderPriceRange(
@@ -289,171 +326,10 @@ const ProjectPage = ({
 											Unit Configuration
 										</h3>
 									</Box>
-									<Card variant="outlined">
-										<Box padding="1rem">
-											<Grid container spacing={3}>
-												<Grid item xs={12} md={4}>
-													<Card variant="outlined">
-														<Grid
-															container
-															spacing={1}
-														>
-															<Grid item xs={12}>
-																<Box
-																	className={
-																		classes.unitImageWrapper
-																	}
-																>
-																	<img
-																		src="https://source.unsplash.com/600x600/?sig=1"
-																		alt="Property"
-																		className={
-																			classes.unitImage
-																		}
-																	/>
-																</Box>
-															</Grid>
-															<Grid item xs={12}>
-																<div
-																	className={
-																		classes.gridContainerSmallGap
-																	}
-																>
-																	<Box
-																		display="flex"
-																		flexDirection="column"
-																		alignItems="center"
-																	>
-																		<p
-																			className={clsx(
-																				classes.noSpace,
-																				classes.garyColor
-																			)}
-																		>
-																			Total
-																			Units
-																		</p>
-																		<h3
-																			className={
-																				classes.noSpace
-																			}
-																		>
-																			500
-																		</h3>
-																	</Box>
-																	<Box
-																		display="flex"
-																		flexDirection="column"
-																		alignItems="center"
-																	>
-																		<p
-																			className={clsx(
-																				classes.noSpace,
-																				classes.garyColor
-																			)}
-																		>
-																			Area(Sq.
-																			FT)
-																		</p>
-																		<h3
-																			className={
-																				classes.noSpace
-																			}
-																		>
-																			1000
-																			-
-																			2000
-																		</h3>
-																	</Box>
-																	<Box
-																		display="flex"
-																		flexDirection="column"
-																		alignItems="center"
-																	>
-																		<p
-																			className={clsx(
-																				classes.noSpace,
-																				classes.garyColor
-																			)}
-																		>
-																			Price
-																			Range
-																		</p>
-																		<h3
-																			className={
-																				classes.noSpace
-																			}
-																		>
-																			40L
-																			-
-																			50L
-																		</h3>
-																	</Box>
-																	<Box
-																		display="flex"
-																		flexDirection="column"
-																		alignItems="center"
-																	>
-																		<p
-																			className={clsx(
-																				classes.noSpace,
-																				classes.garyColor
-																			)}
-																		>
-																			Status
-																		</p>
-																		<h3
-																			className={
-																				classes.noSpace
-																			}
-																		>
-																			Ongoing
-																		</h3>
-																	</Box>
-																	<Box
-																		display="flex"
-																		flexDirection="column"
-																		alignItems="center"
-																	>
-																		<p
-																			className={clsx(
-																				classes.noSpace,
-																				classes.garyColor
-																			)}
-																		>
-																			Property
-																			Type
-																		</p>
-																		<h3
-																			className={
-																				classes.noSpace
-																			}
-																		>
-																			Apartment
-																		</h3>
-																	</Box>
-																</div>
-															</Grid>
-														</Grid>
-														<Box
-															mt="1rem"
-															className={
-																globalClasses.flexCenter
-															}
-														>
-															<Button
-																size="small"
-																color="primary"
-																fullWidth
-															>
-																View Details
-															</Button>
-														</Box>
-													</Card>
-												</Grid>
-											</Grid>
-										</Box>
-									</Card>
+									<UnitConfig
+										project={data.project}
+										properties={data.properties}
+									/>
 									<Box mb="1rem" mt="2rem">
 										<h3 className={classes.noSpace}>
 											Other Details
@@ -480,7 +356,10 @@ const ProjectPage = ({
 												alignItems="center"
 											>
 												<h1 className={classes.noSpace}>
-													Ongoing
+													{capitalizeFirstLetter(
+														data.project
+															.complitionStatus
+													)}
 												</h1>
 												<Box mt="1rem">
 													<button

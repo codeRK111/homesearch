@@ -13,6 +13,9 @@ router
 	.post(adminController.protect, builderController.addBuilder);
 
 router
+	.route('/get-details-by-slug/:slug')
+	.get(builderController.builderDetailsBySlug);
+router
 	.route('/:id')
 	.get(builderController.builderDetails)
 	.patch(builderController.updateBuilder);

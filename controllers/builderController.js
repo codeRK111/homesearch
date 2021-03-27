@@ -1,4 +1,5 @@
 const Builder = require('./../models/builderModel');
+const Project = require('./../models/projectModule');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const ApiFeatures = require('../utils/apiFeatures');
@@ -122,6 +123,21 @@ exports.builderDetails = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			builder,
+		},
+	});
+});
+exports.builderDetailsBySlug = catchAsync(async (req, res, next) => {
+	const builder = await Builder.findOne({ slug: req.params.slug });
+	if (!builder) return next(new AppError('project not found', 404));
+	const projects = await Project.find({ builder: builder.id }).select(
+		'-builder'
+	);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			builder,
+			projects,
 		},
 	});
 });
