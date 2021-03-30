@@ -8,6 +8,7 @@ router
 	.route('/get-queries')
 	.post(authController.protect, queryController.getQueries);
 router.route('/validate-otp').post(queryController.validateOTP);
+router.route('/project').post(queryController.addProjectQuery);
 router.route('/').post(queryController.addQuery);
 
 module.exports = router;

@@ -5,7 +5,7 @@ import {
 } from '../../utils/render.utils';
 
 import { AlignCenter } from '../flexContainer/flexContainer.component';
-import ContactDialogueWithMessage from '../contactOwner/contactOwnerProject.component';
+import ContactDialogueWithMessage from '../query/projectQuery.component';
 import DoneIcon from '@material-ui/icons/Done';
 import { Link } from 'react-router-dom';
 import PropertyShare from '../propertyShare/propertyShare.component';
@@ -59,10 +59,10 @@ const ResultCard = ({ property, propertyItems }) => {
 				project={true}
 			/>
 			<ContactDialogueWithMessage
-				status={contactOpen}
+				open={contactOpen}
 				handleClose={handleContactClose}
 				title={'Get offer'}
-				property={property}
+				id={property.id}
 				type="project"
 			/>
 			<Grid container spacing={1}>
@@ -274,7 +274,7 @@ const ResultCard = ({ property, propertyItems }) => {
 												className={classes.details}
 												onClick={handleContactOpen}
 											>
-												Get Offer
+												Inquiry Now
 											</button>
 										</Box>
 									</Box>

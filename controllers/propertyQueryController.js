@@ -3,7 +3,8 @@ const PropertyQuery = require('./../models/propertyQueryModel');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const sendOtpMessage = require('../utils/sendOtp');
-// const sendQueryMessage = require('../utils/sendQueryMessage');
+const { sendOtpMessageTest } = require('../utils/test');
+const validateBody = require('../utils/validation');
 const sms = require('./../utils/sms');
 
 exports.addQuery = catchAsync(async (req, res, next) => {
@@ -22,21 +23,63 @@ exports.addQuery = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.addProjectQuery = catchAsync(async (req, res, next) => {
+	try {
+		// const fields = [
+		// 	{
+		// 		name: 'type',
+		// 		label: 'Property type',
+		// 	},
+		// ];
+		// switch (req.body.type) {
+		// 	case 'project':
+		// 		fields.push({
+		// 			name: 'project',
+		// 			label: 'Project',
+		// 		});
+		// 		break;
+		// 	case 'projectproperty':
+		// 		fields.push({
+		// 			name: 'projectproperty',
+		// 			label: 'Project property',
+		// 		});
+		// 		break;
+
+		// 	default:
+		// 		break;
+		// }
+		// console.log(validateBody(fields, req.body, next));
+		const body = req.body;
+		if (req.body.sendOTP) {
+			let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+			await sendOtpMessageTest(body.phoneNumber, randomNumber);
+			body.otp = randomNumber;
+		}
+		let query = await PropertyQuery.create(body);
+		res.status(200).json({
+			status: 'success',
+			data: {
+				query,
+			},
+		});
+	} catch (error) {
+		console.log('error--->', error);
+		return next(new AppError(error.message));
+	}
+});
 exports.sendTest = catchAsync(async (req, res, next) => {
 	try {
-		const resp = await sms.sendQueryToOwner(
-			{
-				name: 'Rakesh Chandra Dash',
-				number: '9853325956',
-				property: 'Test Property',
-				price: '45000',
-				city: 'Bhubaneswar',
-			},
-			'8458059528'
-		);
+		const resp = await sendOtpMessageTest();
 		console.log(resp.data);
+		res.status(200).json({
+			status: 'success',
+			data: {
+				resp,
+			},
+		});
 	} catch (error) {
-		console.log(error);
+		console.log('error--->', error);
+		return next(new AppError(error.message));
 	}
 });
 exports.validateOTP = catchAsync(async (req, res, next) => {

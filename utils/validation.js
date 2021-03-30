@@ -1,3 +1,5 @@
+const AppError = require('./appError');
+
 const validateBody = (fields, body, next) => {
 	fields.forEach((c) => {
 		if (!body[c.name]) {
@@ -6,4 +8,4 @@ const validateBody = (fields, body, next) => {
 	});
 };
 
-module.exports = validateBody
+module.exports = validateBody;
