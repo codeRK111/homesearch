@@ -20,7 +20,7 @@ import { deleteQuery } from '../../redux/query/query.actions';
 import moment from 'moment';
 import { selectDeleteQueryLoading } from '../../redux/query/query.selector';
 import { useHistory } from 'react-router-dom';
-
+import ForumIcon from '@material-ui/icons/Forum';
 // import EditIcon from '@material-ui/icons/Edit';
 
 export const parseDate = (date) => {
@@ -85,6 +85,9 @@ function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
 
 	const onRedirect = (data) => (_) => {
 		history.push(redirectUrl(data));
+	};
+	const redirectToQueryConvo = (id) => (_) => {
+		history.push(`/queries/${id}`);
 	};
 
 	const classes = useStyles();
@@ -182,6 +185,16 @@ function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
 													onClick={onRedirect(row)}
 												>
 													<VisibilityIcon size="small" />
+												</Box>
+											</Tooltip>
+											<Tooltip title="Conversations">
+												<Box
+													className="pointer"
+													onClick={redirectToQueryConvo(
+														row.id
+													)}
+												>
+													<ForumIcon size="small" />
 												</Box>
 											</Tooltip>
 

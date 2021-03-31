@@ -9,6 +9,7 @@ import { useStyles as usePageStyle } from '../../pages/projectPage/project.style
 import { Formik, Form } from 'formik';
 import TextField from '../../components/formik/textField.component';
 import { selectUser } from '../../redux/auth/auth.selectors';
+import useGlobalStyle from '../../common.style';
 import {
 	Button,
 	Box,
@@ -65,10 +66,8 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const classes = usePageStyle();
+	const globalClasses = useGlobalStyle();
 	let cancelToken;
-
-	// Weather to send otp or not
-	const [sendOtp, setSendOtp] = React.useState(false);
 
 	// Async State
 	const [asyncState, setAsyncState] = React.useState({
@@ -78,6 +77,7 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 
 	// Query ID
 	const [queryId, setQueryID] = React.useState(null);
+	const [successMessage, setSuccessMessage] = React.useState(null);
 
 	const validationSchema = Yup.object({
 		name: Yup.string('Invalid name')
@@ -92,6 +92,13 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 			.required('Phone number required'),
 	});
 
+	const validationSchemaOTP = Yup.object({
+		otp: Yup.string('Invalid OTP')
+			.length(4, '4 digits required')
+			.matches(/^[0-9]+$/, 'Invalid OTP')
+			.required('OTP Required'),
+	});
+
 	const initialValues = {
 		name: user.name,
 		email: user.email,
@@ -102,6 +109,8 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 
 	React.useEffect(() => {
 		if (!open) {
+			setSuccessMessage(null);
+			setQueryID(null);
 			if (typeof cancelToken != typeof undefined) {
 				cancelToken.cancel('Operation canceled due to new request');
 			}
@@ -109,28 +118,80 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 	}, [open]);
 
 	const submitForm = async (values) => {
-		if (values.phoneNumber !== user.number) {
-			setSendOtp(true);
-		} else {
-			setSendOtp(false);
-		}
-
 		try {
 			setAsyncState({
 				error: null,
 				loading: true,
 			});
 			cancelToken = axios.CancelToken.source();
-			const res = await axios.get(apiUrl('/queries/project'), {
-				cancelToken: cancelToken.token,
-			});
-			setQueryID(res.data.query.id);
+			const res = await axios.post(
+				apiUrl('/queries/project'),
+				{
+					userName: values.name,
+					email: values.email,
+					phoneNumber: values.phoneNumber,
+					sendOTP: values.phoneNumber !== user.number,
+					type,
+					project: id,
+				},
+				{
+					cancelToken: cancelToken.token,
+				}
+			);
+			if (values.phoneNumber !== user.number) {
+				setQueryID(res.data.data.query.id);
+			} else {
+				setSuccessMessage(
+					'Thank you for showing interest, we will get back to you soon'
+				);
+			}
 			setAsyncState({
 				error: null,
 				loading: false,
 			});
 		} catch (error) {
 			setQueryID(null);
+			if (error.response) {
+				setAsyncState({
+					error: error.response.data.message,
+					loading: false,
+				});
+			} else {
+				setAsyncState({
+					error: 'We are having some issues, please try again later',
+					loading: false,
+				});
+			}
+		}
+	};
+	const submitFormOTP = async (values) => {
+		try {
+			setAsyncState({
+				error: null,
+				loading: true,
+			});
+			cancelToken = axios.CancelToken.source();
+			await axios.post(
+				apiUrl('/queries/project/validate-otp'),
+				{
+					id: queryId,
+					otp: values.otp,
+				},
+				{
+					cancelToken: cancelToken.token,
+				}
+			);
+
+			setAsyncState({
+				error: null,
+				loading: false,
+			});
+			setSuccessMessage(
+				'Thank you for showing interest, we will get back to you soon'
+			);
+		} catch (error) {
+			// setQueryID(null);
+			setSuccessMessage(null);
 			if (error.response) {
 				setAsyncState({
 					error: error.response.data.message,
@@ -165,47 +226,99 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 					Please tell us something about yourself
 				</DialogTitle>
 				<div className={classes.formWrapper}>
-					<Formik
-						initialValues={initialValues}
-						validationSchema={validationSchema}
-						onSubmit={submitForm}
-						enableReinitialize
-					>
-						{() => (
-							<Form>
-								<TextField
-									name="name"
-									formLabel="Name *"
-									type="text"
-								/>
-								<TextField name="email" formLabel="Email *" />
-								<TextField
-									formLabel="Phone Number *"
-									name="phoneNumber"
-								/>
-								<TextField
-									formLabel="Message (Optional)"
-									name="message"
-									rows={4}
-									multiline
-								/>
-								<Box
-									mt="1rem"
-									display="flex"
-									justifyContent="center"
-								>
-									<Button
-										color="primary"
-										variant="contained"
-										type="submit"
-										{...buttonProps}
+					{asyncState.error && (
+						<p className={globalClasses.errorMessage}>
+							{asyncState.error}
+						</p>
+					)}
+					{successMessage ? (
+						<p className={globalClasses.successMessage}>
+							{successMessage}
+						</p>
+					) : queryId ? (
+						<Formik
+							initialValues={{ otp: '' }}
+							validationSchema={validationSchemaOTP}
+							onSubmit={submitFormOTP}
+							enableReinitialize
+						>
+							{() => (
+								<Form>
+									<TextField
+										name="otp"
+										formLabel="OTP *"
+										type="text"
+										disabled={asyncState.loading}
+									/>
+
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="center"
 									>
-										Submit
-									</Button>
-								</Box>
-							</Form>
-						)}
-					</Formik>
+										<Button
+											color="primary"
+											variant="contained"
+											type="submit"
+											{...buttonProps}
+										>
+											Submit
+										</Button>
+									</Box>
+								</Form>
+							)}
+						</Formik>
+					) : (
+						<Formik
+							initialValues={initialValues}
+							validationSchema={validationSchema}
+							onSubmit={submitForm}
+							enableReinitialize
+						>
+							{() => (
+								<Form>
+									<TextField
+										name="name"
+										formLabel="Name *"
+										type="text"
+										disabled={asyncState.loading}
+									/>
+									<TextField
+										name="email"
+										formLabel="Email *"
+										disabled={asyncState.loading}
+									/>
+									<TextField
+										formLabel="Phone Number *"
+										name="phoneNumber"
+										disabled={asyncState.loading}
+									/>
+									<TextField
+										formLabel="Message (Optional)"
+										name="message"
+										rows={4}
+										multiline
+										disabled={asyncState.loading}
+									/>
+									<Box
+										mt="1rem"
+										display="flex"
+										justifyContent="center"
+									>
+										<Button
+											color="primary"
+											variant="contained"
+											type="submit"
+											{...buttonProps}
+											disabled={asyncState.loading}
+										>
+											Submit
+										</Button>
+									</Box>
+								</Form>
+							)}
+						</Formik>
+					)}
 				</div>
 			</Dialog>
 		</div>

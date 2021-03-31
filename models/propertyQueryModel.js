@@ -78,6 +78,15 @@ const propertyQuerySchema = new Schema(
 			default: null,
 			select: false,
 		},
+		conversation: [
+			{
+				message: String,
+				date: {
+					type: Date,
+					default: Date.now(),
+				},
+			},
+		],
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

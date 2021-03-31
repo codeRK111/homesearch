@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, Paper } from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
-import PropertyShare from '../propertyShare/propertyShare.component';
+import PropertyShare from '../query/projectQuery.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import useStyles from './searchResultCard.styles';
@@ -24,10 +24,10 @@ const ResultCard = ({ independent, property }) => {
 	return (
 		<Paper>
 			<PropertyShare
-				status={open}
+				open={open}
 				handleClose={handleClose}
-				data={property}
-				project={true}
+				id={property.id}
+				type={'project'}
 			/>
 			<Grid container spacing={1}>
 				<Grid item xs={12} md={4}>

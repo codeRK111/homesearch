@@ -48,6 +48,7 @@ import PropertyAdvertisement from './pages/propertyAdvertisement/propertyAdverti
 import PropertySale from './pages/properties/propertiesSale.component';
 import Protected from './components/protected/protected.component';
 import Query from './pages/queries/queries.component';
+import QueryConversation from './pages/queries/conversationPage';
 import React from 'react';
 import RequestsPage from './pages/requestPhotosPage/requestPhotos.page';
 import TypeHOC from './components/hoc/hocForAdminTYpe.component';
@@ -76,6 +77,7 @@ const EditProjectAdvertisementLeadsPageWithDrawer = Drawer(
 const WorkspacePageWithDrawer = Drawer(Workspace);
 const KPIPageWithDrawer = Drawer(KPIPage);
 const QueriesPageWithDrawer = Drawer(Query);
+const QueryConversationPageWithDrawer = Drawer(QueryConversation);
 const ProjectAdvertisementPageWithDrawer = Drawer(ProjectAdvertisement);
 const EditProjectAdvertisementPageWithDrawer = Drawer(EditProjectAdvertisement);
 const AddStaffPageWithDrawer = Drawer(AddStaff);
@@ -146,6 +148,16 @@ function App(props) {
 					)}
 				/>
 				<Route exact path="/" render={() => <LogIn />} />
+				<Route
+					exact
+					path="/queries/:id"
+					render={() => (
+						<Protected
+							component={QueryConversationPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
 				<Route
 					exact
 					path="/queries"

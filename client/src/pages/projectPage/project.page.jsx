@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import ViewImage from './viewImage.component';
 import TalkToOurExpert from '../../components/talkToExpert/talkToExpert.component';
 import Footer from '../../components/footer/footer.component';
-import ContactDialog from './contactModal.component';
+import ContactDialog from '../../components/query/projectQuery.component';
 import {
 	renderPriceRange,
 	renderImage,
@@ -125,7 +125,8 @@ const ProjectPage = ({
 						<ContactDialog
 							open={contactDialogopen}
 							handleClose={handleContactDialogClose}
-							name={data.project.title}
+							id={data.project.id}
+							type="project"
 						/>
 						<Box mb="1rem">
 							<div className={classes.detailsContainer}>

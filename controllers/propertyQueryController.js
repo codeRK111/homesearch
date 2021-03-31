@@ -6,6 +6,7 @@ const sendOtpMessage = require('../utils/sendOtp');
 const { sendOtpMessageTest } = require('../utils/test');
 const validateBody = require('../utils/validation');
 const sms = require('./../utils/sms');
+const sendEmail = require('./../utils/sendMail');
 
 exports.addQuery = catchAsync(async (req, res, next) => {
 	const body = req.body;
@@ -21,6 +22,40 @@ exports.addQuery = catchAsync(async (req, res, next) => {
 			query,
 		},
 	});
+});
+exports.updateQueryConversation = catchAsync(async (req, res, next) => {
+	try {
+		if (!req.body.message) {
+			return next(new AppError('Message Required'));
+		}
+		const query = await PropertyQuery.findOneAndUpdate(
+			{ _id: req.params.id },
+			{ $push: { conversation: { message: req.body.message } } }
+		);
+		res.status(200).json({
+			status: 'success',
+			data: {
+				conversation: query.conversation,
+			},
+		});
+	} catch (error) {
+		return next(new AppError(error.message));
+	}
+});
+exports.getQueryConversation = catchAsync(async (req, res, next) => {
+	try {
+		const query = await PropertyQuery.findById(req.params.id).select(
+			'+conversation'
+		);
+		res.status(200).json({
+			status: 'success',
+			data: {
+				conversations: query.conversation,
+			},
+		});
+	} catch (error) {
+		return next(new AppError(error.message));
+	}
 });
 
 exports.addProjectQuery = catchAsync(async (req, res, next) => {
@@ -54,6 +89,8 @@ exports.addProjectQuery = catchAsync(async (req, res, next) => {
 			let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
 			await sendOtpMessageTest(body.phoneNumber, randomNumber);
 			body.otp = randomNumber;
+		} else {
+			body.verified = true;
 		}
 		let query = await PropertyQuery.create(body);
 		res.status(200).json({
@@ -69,7 +106,11 @@ exports.addProjectQuery = catchAsync(async (req, res, next) => {
 });
 exports.sendTest = catchAsync(async (req, res, next) => {
 	try {
-		const resp = await sendOtpMessageTest();
+		const resp = await sendEmail(
+			'rakeshchandrra@gmail.com',
+			'Test sms',
+			'This is for test'
+		);
 		console.log(resp.data);
 		res.status(200).json({
 			status: 'success',
@@ -116,6 +157,31 @@ exports.validateOTP = catchAsync(async (req, res, next) => {
 			status: 'success',
 			data: {
 				...info,
+			},
+		});
+	} else {
+		return next(new AppError('OTP Not matched', 404));
+	}
+});
+exports.validateProjectOTP = catchAsync(async (req, res, next) => {
+	const resp = await PropertyQuery.findById(req.body.id).select('+otp');
+	if (!resp) {
+		return next(new AppError('Query does not exists', 404));
+	}
+	if (resp.correctOtp(req.body.otp)) {
+		const updatedData = await PropertyQuery.findByIdAndUpdate(
+			req.body.id,
+			{ verified: true },
+			{
+				new: true,
+				runValidators: true,
+			}
+		);
+
+		res.status(200).json({
+			status: 'success',
+			data: {
+				query: updatedData,
 			},
 		});
 	} else {

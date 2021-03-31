@@ -4,7 +4,7 @@ import Amenities from '../detailsPageNew/amenities.component';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { Center } from '../../components/flexContainer/flexContainer.component';
 import ContactDialogue from '../../components/contactOwner/contactOwner.component';
-import ContactDialogueWithMessage from '../../components/contactOwner/contactOwnerProject.component';
+import ContactDialogueWithMessage from '../../components/query/projectQuery.component';
 import FlagIcon from '@material-ui/icons/Flag';
 import Header from './header/header.component';
 import HighLights from './highlightsWrapper.component';
@@ -74,10 +74,9 @@ const PropertyDetails = ({ project, properties, info }) => {
 				project={true}
 			/>
 			<ContactDialogueWithMessage
-				status={open}
+				open={open}
 				handleClose={handleClose}
-				title={'Get offer'}
-				property={project}
+				id={project.id}
 				type="project"
 			/>
 			<ContactDialogue
@@ -248,7 +247,7 @@ const PropertyDetails = ({ project, properties, info }) => {
 																		classes.cWhite
 																	}
 																/>
-																Get offer
+																Inquiry Now
 															</Box>
 														</button>
 													</Box>
