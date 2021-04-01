@@ -8,13 +8,14 @@ import { sendOtp, validateOtp } from '../../redux/auth/auth.actions';
 
 import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import ErrorMessage from '../errorMessage/errorMessage.component';
 import FormInput from '../formik/textField.component';
 import { JustifyCenter } from '../flexContainer/flexContainer.component';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import makeStyles from './otp.styles';
+import * as Yup from 'yup';
+import { yupValidation } from '../../utils/validation.utils';
 
 // Custom components
 
@@ -26,43 +27,41 @@ const LoginForm = ({
 	sendOtp,
 	validateOtp,
 }) => {
+	const phoneValidation = Yup.object({
+		number: yupValidation.mobileNumber,
+	});
+	const otpValidation = Yup.object({
+		otp: yupValidation.OTP,
+	});
 	const classes = makeStyles();
 	const history = useHistory();
-	const [asyncError, setAsyncError] = React.useState(null);
+	const [phoneNumber, setPhoneNumber] = React.useState(null);
 	const [otpSent, setOtpSent] = React.useState(false);
 
-	const handleSendOtp = (status, data = null) => {
+	const handleSendOtp = (number, setErrors) => (status, data = null) => {
 		if (status === 'success') {
-			setAsyncError(null);
 			setOtpSent(true);
+			setPhoneNumber(number);
 		} else {
-			setAsyncError(data);
+			setPhoneNumber('');
 			setOtpSent(false);
+			setErrors({ number: data });
 		}
 	};
 
-	const handleValidateOtp = (status, data = null) => {
+	const handleValidateOtp = (setErrors) => (status, data = null) => {
 		if (status === 'success') {
-			setAsyncError(null);
 			history.push('/profile');
 		} else {
-			setAsyncError(data);
+			setErrors({ otp: data });
 		}
 	};
 
-	const onSubmit = (values) => {
-		if (!otpSent) {
-			if(values.number){
-
-			sendOtp(handleSendOtp, values.number);
-			}
-		} else {
-			if(values.otp){
-
-			validateOtp(handleValidateOtp, values.number, values.otp);
-			}
-			
-		}
+	const onSendOtp = (values, { setErrors }) => {
+		sendOtp(handleSendOtp(values.number, setErrors), values.number);
+	};
+	const onValidateOtp = (values, { setErrors }) => {
+		validateOtp(handleValidateOtp(setErrors), phoneNumber, values.otp);
 	};
 
 	const buttonProps = {};
@@ -72,63 +71,76 @@ const LoginForm = ({
 	}
 
 	return (
-		<Formik
-			initialValues={{
-				number: '',
-				otp: '',
-			}}
-			validate={(values) => {
-				const errors = {};
-				if (otpSent) {
-					if (!values.number) {
-						errors.number = 'Number required';
-					}
-				} else {
-					if (!values.number) {
-						errors.number = 'Number required';
-					}
-					if (!values.otp) {
-						errors.otp = 'OTP required';
-					}
-				}
-			}}
-			onSubmit={onSubmit}
-		>
-			{() => (
-				<Form className={classes.form}>
-					{asyncError && (
-						<ErrorMessage
-							message={asyncError}
-							onClear={() => setAsyncError(null)}
-						/>
+		<div>
+			{otpSent ? (
+				<Formik
+					initialValues={{
+						number: phoneNumber,
+						otp: '',
+					}}
+					validationSchema={otpValidation}
+					enableReinitialize
+					onSubmit={onValidateOtp}
+				>
+					{() => (
+						<Form className={classes.form}>
+							<FormInput
+								name="number"
+								formLabel="Phone Number"
+								disabled
+							/>
+							<FormInput name="otp" formLabel="OTP" />
+							<Button
+								type="submit"
+								fullWidth
+								variant="contained"
+								color="primary"
+								className={classes.submit}
+								{...buttonProps}
+							>
+								{otpSent ? 'Sign In' : 'Send OTP'}
+							</Button>
+							<JustifyCenter mt="1rem">
+								<Link to="/signup" variant="body2">
+									{"Don't have an account? Sign Up"}
+								</Link>
+							</JustifyCenter>
+						</Form>
 					)}
+				</Formik>
+			) : (
+				<Formik
+					initialValues={{
+						number: '',
+						otp: '',
+					}}
+					validationSchema={phoneValidation}
+					onSubmit={onSendOtp}
+				>
+					{() => (
+						<Form className={classes.form}>
+							<FormInput name="number" formLabel="Phone Number" />
 
-					<FormInput
-						name="number"
-						type="number"
-						formLabel="Phone Number"
-					/>
-					{otpSent && (
-						<FormInput name="otp" type="number" formLabel="OTP" />
+							<Button
+								type="submit"
+								fullWidth
+								variant="contained"
+								color="primary"
+								className={classes.submit}
+								{...buttonProps}
+							>
+								{otpSent ? 'Sign In' : 'Send OTP'}
+							</Button>
+							<JustifyCenter mt="1rem">
+								<Link to="/signup" variant="body2">
+									{"Don't have an account? Sign Up"}
+								</Link>
+							</JustifyCenter>
+						</Form>
 					)}
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-						{...buttonProps}
-					>
-						{otpSent ? 'Sign In' : 'Send OTP'}
-					</Button>
-					<JustifyCenter mt="1rem">
-						<Link to="/signup" variant="body2">
-							{"Don't have an account? Sign Up"}
-						</Link>
-					</JustifyCenter>
-				</Form>
+				</Formik>
 			)}
-		</Formik>
+		</div>
 	);
 };
 

@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-
+const moment = require('moment');
 const { Schema, model } = mongoose;
 const userSchema = new Schema(
 	{
@@ -112,6 +112,11 @@ const userSchema = new Schema(
 		},
 		otp: {
 			type: String,
+			default: null,
+			select: false,
+		},
+		otpExpiresAt: {
+			type: Date,
 			default: null,
 			select: false,
 		},
@@ -226,6 +231,11 @@ userSchema.methods.correctPassword = async function (userPassword, dbPassword) {
 userSchema.methods.correctOtp = function (otp) {
 	return String(otp) === this.otp;
 };
+
+userSchema.methods.otpExpired = function () {
+	return !(moment().isSameOrAfter(this.otpExpiresAt));
+};
+
 
 userSchema.methods.passwordChanged = function (jwtCreated) {
 	if (this.passwordChangedAt) {

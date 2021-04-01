@@ -7,26 +7,18 @@ import {
 } from '../../redux/auth/auth.selectors';
 import { sendOtp, validateOtp } from '../../redux/auth/auth.actions';
 import { useHistory, withRouter } from 'react-router-dom';
-
+import * as Yup from 'yup';
 import BackDrop from '../backdrop/backdrop.component';
 import { Button } from '@material-ui/core';
-import ErrorMessage from '../errorMessage/errorMessage.component';
-import FormInput from '../../components/forminput/forminput.component';
+import FormInput from '../../components/formik/textField.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import makeStyles from '../loginform/loginform.styles';
+import { yupValidation } from '../../utils/validation.utils';
 
 // Custom components
 
-
-
-
-
 // Redux
-
-
-
-
 
 const ValidateNumber = ({
 	match: {
@@ -40,6 +32,9 @@ const ValidateNumber = ({
 }) => {
 	const classes = makeStyles();
 	const history = useHistory();
+	const validationSchema = Yup.object({
+		otp: yupValidation.OTP,
+	});
 	const [asyncError, setAsyncError] = React.useState(null);
 
 	const handleSendOtp = useCallback((status, data = null) => {
@@ -50,12 +45,13 @@ const ValidateNumber = ({
 		}
 	}, []);
 
-	const handleValidateOtp = (status, data = null) => {
+	const handleValidateOtp = (setErrors) => (status, data = null) => {
 		if (status === 'success') {
 			setAsyncError(null);
 			history.push('/profile');
 		} else {
 			setAsyncError(data);
+			setErrors({ otp: data });
 		}
 	};
 
@@ -70,9 +66,9 @@ const ValidateNumber = ({
 		}
 	}, [number, sendOtp, handleSendOtp]);
 
-	const onSubmit = (values) => {
+	const onSubmit = (values, { setErrors }) => {
 		const otp = values.otp;
-		validateOtp(handleValidateOtp, number, otp);
+		validateOtp(handleValidateOtp(setErrors), number, otp);
 	};
 	return (
 		<div>
@@ -81,23 +77,12 @@ const ValidateNumber = ({
 				initialValues={{
 					otp: '',
 				}}
-				validate={(values) => {
-					const error = {};
-					if (!values.otp) {
-						error.otp = 'OTP Required';
-					}
-					return error;
-				}}
+				validationSchema={validationSchema}
 				onSubmit={onSubmit}
 			>
 				{({ values, isValid }) => (
 					<Form className={classes.form}>
-						{asyncError && (
-							<ErrorMessage
-								message={asyncError}
-								onClear={() => setAsyncError(null)}
-							/>
-						)}
+						<p>Plese enter OTP sent to {number}</p>
 						<FormInput
 							variant="outlined"
 							margin="normal"

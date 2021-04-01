@@ -11,6 +11,8 @@ const path = require('path');
 var fs = require('fs');
 const Admin = require('../models/adminModel');
 const mongoose = require('mongoose');
+const moment = require('moment');
+const ObjectId = mongoose.Types.ObjectId;
 // const sendEmail = require('./../utils/email');
 
 const getUserEssentials = (user) => ({
@@ -83,14 +85,57 @@ exports.login = catchAsync(async (req, res, next) => {
 		return next(new AppError('Please provide email and password!', 400));
 	}
 	// 2) Check if user exists && password is correct
-	const user = await User.findOne({ email }).select('+password');
+	const user = await User.findOne({ email }).select('+password ');
+	if (user.status !== 'active') {
+		return next(new AppError('Your account has been dactivated.Please contact support team : 9090-91-7676', 401));
+	}
 
 	if (!user || !(await user.correctPassword(password, user.password))) {
 		return next(new AppError('Incorrect email or password', 401));
 	}
 
+
 	// 3) If everything ok, send token to client
 	createSendToken(user, 200, res);
+});
+
+exports.checkExists = catchAsync(async (req, res, next) => {
+	const dataCount = await User.countDocuments({[req.params.resource]: req.body.data});
+	res.status(200).json({
+			status: 'success',
+			data: !!dataCount,
+		});
+});
+
+exports.sendUpdateNumberOTP = catchAsync(async (req, res, next) => {
+	const dataCount = await User.countDocuments({number: req.body.number,_id: {$ne: ObjectId(req.body.id)}});
+	if(dataCount > 0){
+		return next(new AppError('This number is already registered with us',400))
+	}
+		let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+	const updatedUser = await User.findByIdAndUpdate(
+		req.body.id,
+		{ otp: randomNumber,
+		  otpExpiresAt: moment().add(1, 'm')
+
+		 },
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	const otpResponse = await sendOtpMessage(req.body.number, randomNumber);
+	if (otpResponse.data.startsWith('OK')) {
+		res.status(200).json({
+			status: 'success',
+			data: {
+				userId: updatedUser._id,
+			},
+		});
+	} else {
+		return next(new AppError('Unable to send otp', 500));
+	}
 });
 
 exports.sendResetPasswordOtp = catchAsync(async (req, res, next) => {
@@ -298,6 +343,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 	createSendToken(getUserEssentials(user), 200, res);
 });
 
+// Legacy
 exports.sendOtp = catchAsync(async (req, res, next) => {
 	// 1) Get user based on the id
 	const user = await User.findOne({ number: req.params.number }).select(
@@ -331,6 +377,51 @@ exports.sendOtp = catchAsync(async (req, res, next) => {
 		return next(new AppError('Unable to send otp', 500));
 	}
 	console.log();
+});
+
+
+exports.sendOtpNew = catchAsync(async (req, res, next) => {
+	if (!req.params.number) {
+		return next(new AppError('Phone number required', 400));
+	}
+
+
+	// 1) Get user based on the id
+	const user = await User.findOne({ number: req.params.number }).select(
+		'+otp +status'
+	);
+
+	// 2) If token has not expired, and there is user, set the new password
+	if (!user) {
+		return next(new AppError('You are not registered with us.Please sign up', 404));
+	}
+	if (user.status !== 'active'){
+		return next(new AppError('Your account has been dactivated.Please contact support team : 9090-91-7676', 401));
+	}
+	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+	const updatedUser = await User.findByIdAndUpdate(
+		user.id,
+		{ otp: randomNumber,
+		  otpExpiresAt: moment().add(1, 'm')
+
+		 },
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	const otpResponse = await sendOtpMessage(req.params.number, randomNumber);
+	if (otpResponse.data.startsWith('OK')) {
+		res.status(200).json({
+			status: 'success',
+			data: {
+				userId: updatedUser._id,
+			},
+		});
+	} else {
+		return next(new AppError('Unable to send otp', 500));
+	}
 });
 
 exports.sendOtpWithoutVerfication = catchAsync(async (req, res, next) => {
@@ -367,7 +458,10 @@ exports.validateOtp = catchAsync(async (req, res, next) => {
 	);
 
 	if (!user.correctOtp(req.params.otp)) {
-		return next(new AppError('otp not matched', 401));
+		return next(new AppError('Please enter correct OTP', 401));
+	}
+	if (user.otpExpired()) {
+		return next(new AppError('Your OTP has been expired', 401));
 	}
 	user.numberVerified = true;
 	await user.save();

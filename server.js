@@ -12,6 +12,7 @@ process.on('uncaughtException', (error) => {
 });
 
 dotenv.config({ path: './config.env' });
+console.log(moment().add(7, 'days').format())
 
 const dbString = process.env.REMOTE_DATABASE_URL;
 const agenda = new Agenda({ db: { address: dbString } });

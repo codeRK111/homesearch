@@ -1,11 +1,18 @@
 import * as Yup from 'yup';
 
-import { Button, Grid } from '@material-ui/core';
+import {
+	Button,
+	Grid,
+	Box,
+	CircularProgress,
+	FormControlLabel,
+	Checkbox,
+} from '@material-ui/core';
 import { Form, Formik } from 'formik';
-
+import axios from 'axios';
 import City from '../../pages/postPropertyDetailsPage/city.component';
 import ErrorMessage from '../errorMessage/errorMessage.component';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import React from 'react';
 import SearchCity from '../searchCity/serachCity.component';
 import Select from '../formik/select.component';
@@ -16,8 +23,8 @@ import makeStyles from './signup.styles';
 import { selectSignUpLoading } from '../../redux/auth/auth.selectors';
 import { signUp } from '../../redux/auth/auth.actions';
 import { signupSchema } from './signup.utils';
-import { useHistory } from 'react-router-dom';
 import { yupValidation } from '../../utils/validation.utils';
+import { apiUrl } from '../../utils/render.utils';
 
 // import FormInput from '../forminput/forminput.component';
 // import FormSelect from '../formik/selectDefault.component';
@@ -29,10 +36,11 @@ import { yupValidation } from '../../utils/validation.utils';
 const LoginForm = ({ signUp, signUpLoading }) => {
 	const classes = makeStyles();
 	const history = useHistory();
+	let cancelToken;
 	const validationSchema = Yup.object({
 		name: yupValidation.name,
 		email: yupValidation.email,
-		password: yupValidation.password,
+		password: yupValidation.passwordNew,
 		number: yupValidation.phoneNumber,
 	});
 	const [selectedCity, setSelectedCity] = React.useState({
@@ -40,6 +48,116 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 		name: '',
 	});
 	const [asyncError, setAsyncError] = React.useState(null);
+	const [emailStatus, setEmailStatus] = React.useState({
+		validated: false,
+		loading: false,
+	});
+	const [numberStatus, setNumberStatus] = React.useState({
+		validated: false,
+		loading: false,
+	});
+	const [terms, setTerms] = React.useState(false);
+
+	const handleChange = (event) => {
+		setTerms(event.target.checked);
+	};
+
+	const checkEmail = async (value, setError, errors) => {
+		try {
+			setEmailStatus({
+				validated: null,
+				loading: true,
+			});
+			cancelToken = axios.CancelToken.source();
+			const res = await axios.post(
+				apiUrl(`/users/exists/email`),
+				{
+					data: value,
+				},
+				{
+					cancelToken: cancelToken.token,
+				}
+			);
+			if (res.data.data) {
+				setEmailStatus({
+					validated: false,
+					loading: false,
+				});
+				setError({
+					...errors,
+					email: (
+						<div>
+							You are already registered with us.Please{' '}
+							<Link to="/login">sign in</Link>
+						</div>
+					),
+				});
+			} else {
+				setEmailStatus({
+					validated: true,
+					loading: false,
+				});
+			}
+		} catch (error) {
+			setEmailStatus({
+				validated: false,
+				loading: false,
+			});
+			setError({
+				...errors,
+				email:
+					'We are having some problems to verify your email.Please try again later',
+			});
+		}
+	};
+	const checkNumber = async (value, setError, errors) => {
+		try {
+			setNumberStatus({
+				validated: null,
+				loading: true,
+			});
+			cancelToken = axios.CancelToken.source();
+			const res = await axios.post(
+				apiUrl(`/users/exists/number`),
+				{
+					data: value,
+				},
+				{
+					cancelToken: cancelToken.token,
+				}
+			);
+			if (res.data.data) {
+				setNumberStatus({
+					validated: false,
+					loading: false,
+				});
+				setError({
+					...errors,
+					number: (
+						<div>
+							You are already registered with us.Please{' '}
+							<Link to="/login">sign in</Link>
+						</div>
+					),
+				});
+			} else {
+				setNumberStatus({
+					validated: true,
+					loading: false,
+				});
+			}
+		} catch (error) {
+			setNumberStatus({
+				validated: false,
+				loading: false,
+			});
+			setError({
+				...errors,
+				number:
+					'We are having some problems to verify your number.Please try again later',
+			});
+		}
+	};
 
 	const handlesignUp = (status, data = null) => {
 		if (status === 'success') {
@@ -54,6 +172,14 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 		const data = { ...values, city: selectedCity.id };
 		signUp(handlesignUp, data);
 	};
+
+	React.useEffect(() => {
+		return () => {
+			if (typeof cancelToken != typeof undefined) {
+				cancelToken.cancel('Operation canceled due to new request');
+			}
+		};
+	}, []);
 	return (
 		<Formik
 			initialValues={{
@@ -66,28 +192,63 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 			validationSchema={validationSchema}
 			onSubmit={onSubmit}
 		>
-			{({ values, isValid }) => (
+			{({ values, isValid, setErrors, errors, status }) => (
 				<Form className={classes.form}>
+					{/* <h3>{JSON.stringify(status)}</h3>   */}
 					<TextField
 						name="name"
 						formLabel="Full name *"
 						type="text"
 					/>
-					<TextField
-						name="email"
-						formLabel="Email Address *"
-						type="email"
-					/>
+					<Box width="100%" display="flex" alignItems="center">
+						<Box flex={1}>
+							<TextField
+								name="email"
+								formLabel="Email Address *"
+								type="email"
+								disabled={emailStatus.loading}
+								onBlur={() => {
+									if (!errors.email && values.email) {
+										checkEmail(
+											values.email,
+											setErrors,
+											errors
+										);
+									}
+								}}
+							/>
+						</Box>
+						{emailStatus.loading && (
+							<CircularProgress size={20} color="primary" />
+						)}
+					</Box>
 					<TextField
 						name="password"
 						formLabel="Password *"
 						type="text"
 					/>
-					<TextField
-						name="number"
-						formLabel="Phone number *"
-						type="text"
-					/>
+					<Box width="100%" display="flex" alignItems="center">
+						<Box flex={1}>
+							<TextField
+								name="number"
+								formLabel="Phone number *"
+								type="text"
+								onBlur={() => {
+									if (!errors.number && values.number) {
+										checkNumber(
+											values.number,
+											setErrors,
+											errors
+										);
+									}
+								}}
+							/>
+						</Box>
+						{numberStatus.loading && (
+							<CircularProgress size={20} color="primary" />
+						)}
+					</Box>
+
 					<Select
 						name="role"
 						formLabel="Type"
@@ -108,6 +269,22 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 							onClear={() => setAsyncError(null)}
 						/>
 					)}
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={terms}
+								onChange={handleChange}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label={
+							<div>
+								Please accept{' '}
+								<Link to="/">Terms and Conditions</Link>
+							</div>
+						}
+					/>
 					{signUpLoading ? (
 						<p>Please wait ...</p>
 					) : (
@@ -118,7 +295,10 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 							color="primary"
 							className={classes.submit}
 							disabled={
-								!values.email || !values.password || !isValid
+								!values.email ||
+								!values.password ||
+								!isValid ||
+								!terms
 							}
 						>
 							Next

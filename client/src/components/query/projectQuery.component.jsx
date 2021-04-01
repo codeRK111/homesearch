@@ -35,12 +35,17 @@ const styles = (theme) => ({
 	root: {
 		margin: 0,
 		padding: theme.spacing(2),
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
 	},
 	closeButton: {
-		position: 'absolute',
-		right: theme.spacing(1),
-		top: theme.spacing(1),
 		color: theme.palette.grey[500],
+	},
+	heading: {
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1rem',
+		},
 	},
 });
 
@@ -48,7 +53,9 @@ const DialogTitle = withStyles(styles)((props) => {
 	const { children, classes, onClose, ...other } = props;
 	return (
 		<MuiDialogTitle disableTypography className={classes.root} {...other}>
-			<Typography variant="h6">{children}</Typography>
+			<Typography variant="h6" className={classes.heading}>
+				{children}
+			</Typography>
 			{onClose ? (
 				<IconButton
 					aria-label="close"

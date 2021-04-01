@@ -19,6 +19,7 @@ const RowSelect = ({ formLabel, ...otherProps }) => {
 					variant="filled"
 					error={!!helperText}
 					helperText={helperText}
+					onBlur={() => {}}
 					{...field}
 					{...otherProps}
 				/>

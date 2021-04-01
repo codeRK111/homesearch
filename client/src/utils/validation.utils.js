@@ -11,10 +11,25 @@ export const yupValidation = {
 		.length(10, '10 digits required')
 		.matches(/^\d{10}$/, 'Invalid Number')
 		.required('Phone number required'),
+	mobileNumber: Yup.string('Invalid number')
+		.matches(/^[0-9]+$/, 'Only digits')
+		.length(10, '10 digits required')
+		.required('Phone number required'),
+	OTP: Yup.string('Invalid number')
+		.matches(/^[0-9]+$/, 'Only digits')
+		.length(4, '4 digits required')
+		.required('OTP required'),
 	password: Yup.string()
 		.trim()
 		.min(6, 'Minimum 6 character required')
 		.required('password required'),
+	passwordNew: Yup.string()
+		.trim()
+		.required('Please Enter your password')
+		.matches(
+			/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+			'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
+		),
 };
 
 export const validateProfile = (values) => {

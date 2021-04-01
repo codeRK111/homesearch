@@ -4,6 +4,7 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 router.post('/signup', authController.signup);
+router.post('/exists/:resource', authController.checkExists);
 router.post('/send-reset-password-otp', authController.sendResetPasswordOtp);
 router.post('/reset-my-password', authController.resetMyPassword);
 router.post('/login', authController.login);
@@ -13,7 +14,7 @@ router
 	.patch(authController.updateProfilePicture);
 router.post('/googleLogin', authController.googleLogIn);
 router.patch('/resetPassword/:id', authController.resetPassword);
-router.get('/sendOtp/:number', authController.sendOtp);
+router.get('/sendOtp/:number', authController.sendOtpNew);
 router.get(
 	'/validateOtpAndLogIn/number/:number/otp/:otp',
 	authController.validateOtp
