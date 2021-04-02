@@ -6,7 +6,7 @@ const router = express.Router();
 router.post('/signup', authController.signup);
 router.post('/exists/:resource', authController.checkExists);
 router.post('/send-reset-password-otp', authController.sendResetPasswordOtp);
-router.post('/reset-my-password', authController.resetMyPassword);
+router.post('/reset-my-password', authController.resetMyPassword); 
 router.post('/login', authController.login);
 router
 	.route('/profile-picture/:id')
@@ -23,6 +23,21 @@ router.get(
 router
 	.route('/reset-my-password')
 	.patch(authController.protect, authController.updateMyPassword);
+	router
+	.route('/reset-my-number-otp')
+	.post(authController.protect, authController.sendUpdateNumberOTP);
+	router
+	.route('/forgot-my-password-otp')
+	.post( authController.sendUpdatePasswordOTP);
+	router
+	.route('/change-password')
+	.post( authController.resetMyPassword);
+	router
+	.route('/update-my-number')
+	.post(authController.protect, authController.updateMyNumber);
+	router
+	.route('/update-my-password')
+	.post(authController.protect, authController.updateMyPassword);
 router
 	.route('/handle-profile-image')
 	.patch(authController.protect, authController.handleProfileImage);

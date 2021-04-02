@@ -68,7 +68,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 		role: req.body.role,
 		registerThrough: 'site login',
 		registerVia: 'Web',
-		mobileStatus: 'semi-private',
+		mobileStatus: req.body.mobileStatus ? req.body.mobileStatus :'semi-private',
 		paymentStatus: 'unpaid',
 		status: 'active',
 		serialNumber: lastDocSerialNumber + 1,
@@ -108,13 +108,45 @@ exports.checkExists = catchAsync(async (req, res, next) => {
 });
 
 exports.sendUpdateNumberOTP = catchAsync(async (req, res, next) => {
-	const dataCount = await User.countDocuments({number: req.body.number,_id: {$ne: ObjectId(req.body.id)}});
+	const dataCount = await User.countDocuments({number: req.body.number,_id: {$ne: ObjectId(req.user.id)}});
 	if(dataCount > 0){
 		return next(new AppError('This number is already registered with us',400))
 	}
 		let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
 	const updatedUser = await User.findByIdAndUpdate(
-		req.body.id,
+		req.user.id,
+		{ otp: randomNumber,
+		  otpExpiresAt: moment().add(1, 'm')
+
+		 },
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	const otpResponse = await sendOtpMessage(req.body.number, randomNumber);
+	if (otpResponse.data.startsWith('OK')) {
+		res.status(200).json({
+			status: 'success',
+			data: {
+				userId: updatedUser._id,
+			},
+		});
+	} else {
+		return next(new AppError('Unable to send otp', 500));
+	}
+});
+
+
+exports.sendUpdatePasswordOTP = catchAsync(async (req, res, next) => {
+	const user = await User.findOne({number: req.body.number});
+	if(!user){
+		return next(new AppError('You are not registered with us.Please sign up',404))
+	}
+		let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+	const updatedUser = await User.findByIdAndUpdate(
+		user.id,
 		{ otp: randomNumber,
 		  otpExpiresAt: moment().add(1, 'm')
 
@@ -216,7 +248,7 @@ exports.updateMyPassword = catchAsync(async (req, res, next) => {
 	const user = await User.findById(req.user.id).select('+password');
 
 	if (!user || !(await user.correctPassword(oldPassword, user.password))) {
-		return next(new AppError('Incorrect email or password', 401));
+		return next(new AppError('Incorrect current password', 401));
 	}
 	user.password = newPassword;
 	const newUser = await user.save();
@@ -224,6 +256,8 @@ exports.updateMyPassword = catchAsync(async (req, res, next) => {
 	// 3) If everything ok, send token to client
 	createSendToken(newUser, 200, res);
 });
+
+
 
 exports.googleLogIn = catchAsync(async (req, res, next) => {
 	let inputError = false;
@@ -467,6 +501,44 @@ exports.validateOtp = catchAsync(async (req, res, next) => {
 	await user.save();
 	createSendToken(user, 200, res);
 });
+
+exports.updateMyNumber = catchAsync(async (req, res, next) => {
+	// 1) Get user based on the id
+	const user = await User.findById(req.user.id).select(
+		'+otp'
+	);
+
+	if (!user.correctOtp(req.body.otp)) {
+		return next(new AppError('Please enter correct OTP', 401));
+	}
+	if (user.otpExpired()) {
+		return next(new AppError('Your OTP has been expired', 401));
+	}
+	user.numberVerified = true;
+	user.number = req.body.number;
+	await user.save();
+	createSendToken(user, 200, res);
+});
+
+
+exports.resetMyPassword = catchAsync(async (req, res, next) => {
+	// 1) Get user based on the id
+	const user = await User.findById(req.body.id).select(
+		'+otp'
+	);
+
+	if (!user.correctOtp(req.body.otp)) {
+		return next(new AppError('Please enter correct OTP', 401));
+	}
+	if (user.otpExpired()) {
+		return next(new AppError('Your OTP has been expired', 401));
+	}
+	user.password = req.body.password;
+	await user.save();
+	createSendToken(user, 200, res);
+});
+
+
 
 exports.addProfilePicture = catchAsync(async (req, res, next) => {
 	if (!req.files) {

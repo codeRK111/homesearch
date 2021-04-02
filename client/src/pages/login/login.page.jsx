@@ -13,9 +13,6 @@ import useStyles from './login.styles';
 
 // Custom
 
-
-
-
 export default function SignInSide() {
 	const classes = useStyles();
 	const matches = useMediaQuery('(min-width:600px)');
@@ -65,7 +62,7 @@ export default function SignInSide() {
 						<div className={classes.signInText}>Sign in</div>
 					</Box>
 					<LoginWrapper />
-					<Box mt={5} width="100%">
+					{/* <Box mt={5} width="100%">
 						<Button
 							type="submit"
 							fullWidth
@@ -105,7 +102,7 @@ export default function SignInSide() {
 						>
 							Login via facebook
 						</Button>
-					</Box>
+					</Box> */}
 					<Box mt={5}>
 						<Copyright />
 					</Box>

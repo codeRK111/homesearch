@@ -43,6 +43,8 @@ import { createStructuredSelector } from 'reselect';
 import { searchCities } from '../../redux/city/city.actions';
 import { selectSearchCityLoading } from '../../redux/city/city.selectors';
 import useStyles from './profile.styles';
+import UpdateMobileNumber from './updateMobileNumber.component';
+import UpdatePassword from './updatePasword.component';
 
 const UpdateProfile = ({
 	user,
@@ -368,66 +370,10 @@ const UpdateProfile = ({
 									<h3>Update Mobile Number</h3>
 								</DividerHeading>
 								<JustifyCenter width="100%">
-									<Box>
-										<Box className={classes.cRed}>
-											{asyncError.number}
-										</Box>
-										<Formik
-											initialValues={{
-												number: user.number,
-												otp: '',
-											}}
-											enableReinitialize
-											validate={validateOtpForm}
-											onSubmit={updateMobile}
-										>
-											{({ values, setFieldValue }) => (
-												<Form>
-													<Grid container spacing={1}>
-														<Grid
-															item
-															xs={12}
-															md={12}
-														>
-															<TextField
-																name="number"
-																formLabel="Mobile Number *"
-															/>
-														</Grid>
-														{otpHandler.show && (
-															<Grid
-																item
-																xs={12}
-																md={12}
-															>
-																<TextField
-																	name="otp"
-																	formLabel="Otp *"
-																/>
-															</Grid>
-														)}
-
-														<Grid item xs={12}>
-															<Button
-																fullWidth
-																variant="contained"
-																color="primary"
-																size="large"
-																className={
-																	classes.uploadButton
-																}
-																type="submit"
-															>
-																{
-																	otpHandler.buttonLabel
-																}
-															</Button>
-														</Grid>
-													</Grid>
-												</Form>
-											)}
-										</Formik>
-									</Box>
+									<UpdateMobileNumber
+										existingNumber={user.number}
+										showMessage={showSnackbar}
+									/>
 								</JustifyCenter>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -435,60 +381,9 @@ const UpdateProfile = ({
 									<h3>Update Password</h3>
 								</DividerHeading>
 								<JustifyCenter width="100%">
-									<Box>
-										<Box>{asyncError.password}</Box>
-										<Formik
-											initialValues={{
-												oldPassword: '',
-												newPassword: '',
-											}}
-											enableReinitialize
-											validate={validatePasswordForm}
-											onSubmit={updatePassword}
-										>
-											{({ values, setFieldValue }) => (
-												<Form>
-													<Grid container spacing={1}>
-														<Grid
-															item
-															xs={12}
-															md={12}
-														>
-															<TextField
-																name="oldPassword"
-																formLabel="Current Password *"
-															/>
-														</Grid>
-														<Grid
-															item
-															xs={12}
-															md={12}
-														>
-															<TextField
-																name="newPassword"
-																formLabel="New Password *"
-															/>
-														</Grid>
-
-														<Grid item xs={12}>
-															<Button
-																fullWidth
-																variant="contained"
-																color="primary"
-																size="large"
-																className={
-																	classes.uploadButton
-																}
-																type="submit"
-															>
-																Update password
-															</Button>
-														</Grid>
-													</Grid>
-												</Form>
-											)}
-										</Formik>
-									</Box>
+									<UpdatePassword
+										showMessage={showSnackbar}
+									/>
 								</JustifyCenter>
 							</Grid>
 						</Grid>

@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { parseDate } from '../../utils/render.utils';
 import { selectUser } from '../../redux/auth/auth.selectors';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import useStyles from './profile.styles';
 
 const ProfilePage = ({ user }) => {
@@ -133,6 +133,9 @@ const ProfilePage = ({ user }) => {
 										{parseDate(user.createdAt)}
 									</Typography>
 								</AlignCenter>
+							</Box>
+							<Box mt="0.3rem" mb="0.3rem">
+								<Link to="/post-property">Post Property</Link>
 							</Box>
 						</Grid>
 					</Grid>

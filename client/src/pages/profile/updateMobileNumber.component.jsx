@@ -8,17 +8,10 @@ import TextField from '../../components/formik/textField.component';
 import { yupValidation } from '../../utils/validation.utils';
 import { connect } from 'react-redux';
 import { setUser } from '../../redux/auth/auth.actions';
-import AppBar from '../../components/appBar/appBar.component';
-import Footer from '../../components/footer/footer.component';
-import useGlobalStyles from '../../common.style';
-import { Link } from 'react-router-dom';
 
-const UpdateMobileNumber = ({ existingNumber, setUser }) => {
+const UpdateMobileNumber = ({ existingNumber, setUser, showMessage }) => {
 	// Cancel Axios Token
 	let cancelToken;
-
-	// Global class
-	const globalClass = useGlobalStyles();
 
 	// Phone Number Validation
 	const numberValidationSchema = Yup.object({
@@ -34,7 +27,6 @@ const UpdateMobileNumber = ({ existingNumber, setUser }) => {
 	// OTP Validation
 	const otpValidationSchema = Yup.object({
 		otp: yupValidation.OTP,
-		password: yupValidation.passwordNew,
 	});
 
 	// Async Error
@@ -44,7 +36,7 @@ const UpdateMobileNumber = ({ existingNumber, setUser }) => {
 	});
 
 	// Mobile Number
-	const [userID, setUserID] = React.useState(null);
+	const [mobileNumber, setMobileNumber] = React.useState(null);
 
 	// Success Message
 	const [successMessage, setSuccessMessage] = React.useState(null);
@@ -56,25 +48,27 @@ const UpdateMobileNumber = ({ existingNumber, setUser }) => {
 				error: null,
 				loading: true,
 			});
+			const token = localStorage.getItem('JWT_CLIENT');
 			cancelToken = axios.CancelToken.source();
-			const resp = await axios.post(
-				apiUrl('/users/forgot-my-password-otp'),
+			await axios.post(
+				apiUrl('/users/reset-my-number-otp'),
 				{
 					number: values.number,
 				},
 				{
 					cancelToken: cancelToken.token,
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
 				}
 			);
 
-			const respData = resp.data.data;
 			setAsyncState({
 				error: null,
 				loading: false,
 			});
-			setUserID(respData.userId);
+			setMobileNumber(values.number);
 		} catch (error) {
-			setUserID(null);
 			if (error.response) {
 				setErrors({ number: error.response.data.message });
 				setAsyncState({
@@ -98,25 +92,35 @@ const UpdateMobileNumber = ({ existingNumber, setUser }) => {
 				error: null,
 				loading: true,
 			});
+			const token = localStorage.getItem('JWT_CLIENT');
 			cancelToken = axios.CancelToken.source();
-			await axios.post(
-				apiUrl('/users/change-password'),
+			const response = await axios.post(
+				apiUrl('/users/update-my-number'),
 				{
-					id: userID,
+					number: mobileNumber,
 					otp: values.otp,
-					password: values.password,
 				},
 				{
 					cancelToken: cancelToken.token,
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
 				}
 			);
+
+			const responseData = response.data;
+			localStorage.setItem('JWT_CLIENT', responseData.token);
+			setUser({
+				token: responseData.token,
+				user: responseData.data.user,
+			});
 
 			setAsyncState({
 				error: null,
 				loading: false,
 			});
-
-			setSuccessMessage('Password updated successfully');
+			setMobileNumber(null);
+			showMessage('Phone number updated successfully');
 		} catch (error) {
 			if (error.response) {
 				setErrors({ otp: error.response.data.message });
@@ -125,7 +129,6 @@ const UpdateMobileNumber = ({ existingNumber, setUser }) => {
 					loading: false,
 				});
 			} else {
-				setSuccessMessage(null);
 				setErrors({
 					otp: 'We are having some issues, please try again later',
 				});
@@ -153,94 +156,69 @@ const UpdateMobileNumber = ({ existingNumber, setUser }) => {
 	}
 	return (
 		<Box width="100%">
-			<AppBar />
-			<Box p="1rem" display="flex" justifyContent="center">
-				{successMessage ? (
-					<Box
-						display="flex"
-						alignItems="center"
-						flexDirection="column"
-					>
-						<p className={globalClass.successMessage}>
-							{successMessage}
-						</p>
-						<p>
-							Go to <Link to="/login">login page</Link>{' '}
-						</p>
-					</Box>
-				) : !userID ? (
-					<Formik
-						initialValues={{
-							number: existingNumber,
-						}}
-						enableReinitialize
-						validationSchema={numberValidationSchema}
-						onSubmit={onNumberSubmit}
-					>
-						{() => (
-							<Form>
-								<TextField
-									formLabel="Please Enter Your Phone Number"
-									name="number"
-								/>
-								<Box mt="1rem">
-									<Button
-										color="primary"
-										variant="contained"
-										type="submit"
-										fullWidth
-										{...buttonProps}
-									>
-										Next
-									</Button>
-								</Box>
-							</Form>
-						)}
-					</Formik>
-				) : (
-					<Formik
-						initialValues={{
-							otp: '',
-							password: '',
-						}}
-						enableReinitialize
-						validationSchema={otpValidationSchema}
-						onSubmit={onOTPSubmit}
-					>
-						{() => (
-							<Form>
-								<TextField
-									formLabel="OTP"
-									name="otp"
-									type="text"
-									inputProps={{
-										autocomplete: 'new-password',
-										form: {
-											autocomplete: 'off',
-										},
-									}}
-								/>
-								<TextField
-									formLabel="New Password"
-									name="password"
-								/>
-								<Box mt="1rem">
-									<Button
-										color="primary"
-										variant="contained"
-										type="submit"
-										{...buttonProps}
-										fullWidth
-									>
-										Submit
-									</Button>
-								</Box>
-							</Form>
-						)}
-					</Formik>
-				)}
-			</Box>
-			<Footer />
+			{!mobileNumber ? (
+				<Formik
+					initialValues={{
+						number: existingNumber,
+					}}
+					enableReinitialize
+					validationSchema={numberValidationSchema}
+					onSubmit={onNumberSubmit}
+				>
+					{() => (
+						<Form>
+							<TextField formLabel="Phone Number" name="number" />
+							<Box mt="1rem">
+								<Button
+									color="primary"
+									variant="contained"
+									type="submit"
+									fullWidth
+									{...buttonProps}
+								>
+									Next
+								</Button>
+							</Box>
+						</Form>
+					)}
+				</Formik>
+			) : (
+				<Formik
+					initialValues={{
+						otp: '',
+					}}
+					enableReinitialize
+					validationSchema={otpValidationSchema}
+					onSubmit={onOTPSubmit}
+				>
+					{() => (
+						<Form>
+							<TextField
+								formLabel="OTP"
+								name="otp"
+								type="text"
+								inputProps={{
+									autocomplete: 'new-password',
+									form: {
+										autocomplete: 'off',
+									},
+								}}
+							/>
+							<Box mt="1rem">
+								<Button
+									color="primary"
+									variant="contained"
+									type="submit"
+									{...buttonProps}
+									fullWidth
+								>
+									Submit
+								</Button>
+							</Box>
+						</Form>
+					)}
+				</Formik>
+			)}
 		</Box>
 	);
 };

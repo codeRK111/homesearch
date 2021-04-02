@@ -188,6 +188,7 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 				password: '',
 				number: '',
 				role: 'tenant',
+				mobileStatus: 'semi-private',
 			}}
 			validationSchema={validationSchema}
 			onSubmit={onSubmit}
@@ -222,11 +223,7 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 							<CircularProgress size={20} color="primary" />
 						)}
 					</Box>
-					<TextField
-						name="password"
-						formLabel="Password *"
-						type="text"
-					/>
+
 					<Box width="100%" display="flex" alignItems="center">
 						<Box flex={1}>
 							<TextField
@@ -248,6 +245,11 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 							<CircularProgress size={20} color="primary" />
 						)}
 					</Box>
+					<TextField
+						name="password"
+						formLabel="Password *"
+						type="text"
+					/>
 
 					<Select
 						name="role"
@@ -258,6 +260,16 @@ const LoginForm = ({ signUp, signUpLoading }) => {
 							{ value: 'agent', label: 'Agent' },
 							{ value: 'owner', label: 'Owner' },
 							{ value: 'tenant', label: 'Tenant' },
+						]}
+					/>
+					<Select
+						name="mobileStatus"
+						formLabel="Mobile Status"
+						label="Mobile Status"
+						options={[
+							{ value: 'semi-private', label: 'Semi Private' },
+							{ value: 'private', label: 'Private' },
+							{ value: 'public', label: 'Public' },
 						]}
 					/>
 
