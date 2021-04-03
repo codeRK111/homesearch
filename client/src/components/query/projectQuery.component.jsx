@@ -25,7 +25,6 @@ import { apiUrl } from '../../utils/render.utils';
 // Redux
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { bool } from 'yup';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;

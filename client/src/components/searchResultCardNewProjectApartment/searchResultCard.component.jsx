@@ -113,7 +113,11 @@ const ResultCard = ({ property, propertyItems }) => {
 									<b>
 										By{' '}
 										<span className={classes.dName}>
-											{property.builder.developerName}
+											<Link
+												to={`/builder/${property.builder.slug}`}
+											>
+												{property.builder.developerName}
+											</Link>
 										</span>
 									</b>
 								</Box>

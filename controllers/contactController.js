@@ -52,27 +52,38 @@ exports.getContacts = catchAsync(async (req, res, next) => {
 });
 
 exports.addContact = catchAsync(async (req, res, next) => {
-	const { phoneNumber } = req.body;
+	const { phoneNumber, sendOTP } = req.body;
 
 	if (!phoneNumber) {
 		return next(new AppError('Please provide Phone Number!', 400));
 	}
-	const body = { ...req.body };
-	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
-	body.otp = randomNumber;
-	const otpResponse = await sendOtpMessage(body.phoneNumber, randomNumber);
-	console.log(otpResponse);
-	if (otpResponse.data.startsWith('OK')) {
-		let contact = await Contact.create(body);
-		res.status(200).json({
-			status: 'success',
-			data: {
-				contact,
-			},
-		});
-	} else {
-		return next(new AppError('Unable to send otp', 500));
+
+	const count = await Contact.countDocuments({
+		phoneNumber: phoneNumber,
+	});
+	if (count > 0) {
+		return next(
+			new AppError(
+				'You have already requested callback.For more help contact our support team: 9090-91-7676'
+			)
+		);
 	}
+	const body = { ...req.body };
+	if (sendOTP) {
+		let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+		body.otp = randomNumber;
+		await sendOtpMessage(body.phoneNumber, randomNumber);
+		body.otp = randomNumber;
+	} else {
+		body.verified = true;
+	}
+	let contact = await Contact.create(body);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			contact,
+		},
+	});
 });
 
 exports.addContactByAdmin = catchAsync(async (req, res, next) => {
@@ -145,4 +156,23 @@ exports.updateQuery = catchAsync(async (req, res, next) => {
 			query,
 		},
 	});
+});
+
+// Check Query Exists
+exports.checkExists = catchAsync(async (req, res, next) => {
+	const count = await Contact.countDocuments({
+		phoneNumber: req.params.number,
+	});
+	if (count > 0) {
+		return next(
+			new AppError(
+				'You have already requested callback.For more help contact our support team: 9090-91-7676'
+			)
+		);
+	} else {
+		res.status(200).json({
+			status: 'success',
+			data: false,
+		});
+	}
 });

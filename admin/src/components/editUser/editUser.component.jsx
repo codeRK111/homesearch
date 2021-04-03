@@ -1,5 +1,6 @@
 import { selectAllStates, selectLoading } from '../../redux/city/city.selector';
-
+import Alert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -22,6 +23,7 @@ import { fetchAllStatesStart } from '../../redux/city/city.actions';
 import { selectCurrentUser } from '../../redux/user/user.selector';
 import { updateUser } from '../../redux/users/users.actions';
 import { useHistory } from 'react-router-dom';
+import Collapse from '@material-ui/core/Collapse';
 
 const EditUser = ({
 	match,
@@ -34,6 +36,7 @@ const EditUser = ({
 }) => {
 	const history = useHistory();
 	const [userLoading, setuserLoading] = React.useState(false);
+	const [alert, showAlert] = React.useState(false);
 	const [isPasswordChanged, setIspasswordChanged] = React.useState(false);
 	const [userInfo, setUserInfo] = React.useState({
 		name: '',
@@ -58,10 +61,14 @@ const EditUser = ({
 		setFile(URL.createObjectURL(event.target.files[0]));
 	};
 
+	const toggleAlert = (status) => {
+		showAlert(status);
+	};
+
 	React.useEffect(() => {
-		if (userInfo.state) {
+		if (userInfo.city.state) {
 			setCityLoading(true);
-			const url = `/api/v1/cities/states/${userInfo.state}`;
+			const url = `/api/v1/cities/states/${userInfo.city.state}`;
 			axios
 				.get(url)
 				.then((resp) => {
@@ -81,7 +88,7 @@ const EditUser = ({
 					// }));
 				});
 		}
-	}, [userInfo.state]);
+	}, [userInfo.city.state]);
 	React.useEffect(() => {
 		console.log(match);
 		fetchStatesStart();
@@ -109,6 +116,7 @@ const EditUser = ({
 
 	const printMessage = (msg) => {
 		console.error(msg);
+		showAlert(true);
 	};
 
 	const buttonClick = () => {
@@ -203,7 +211,7 @@ const EditUser = ({
 						labelId="demo-simple-select-outlined-label"
 						id="demo-simple-select-outlined"
 						name="city"
-						value={userInfo.city}
+						value={userInfo.city.id}
 						onChange={setForm('city')}
 						onOpen={checkStateExist}
 						label="City"
@@ -236,7 +244,7 @@ const EditUser = ({
 						labelId="demo-simple-select-outlined-label"
 						id="demo-simple-select-outlined"
 						name="city"
-						value={userInfo.city}
+						value={userInfo.city.id}
 						onChange={setForm('city')}
 						label="City"
 						variant="outlined"
@@ -292,6 +300,26 @@ const EditUser = ({
 			</IconButton>
 			<div>
 				<h3>Edit user</h3>
+				<Box mb="1rem">
+					<Collapse in={alert}>
+						<Alert
+							action={
+								<IconButton
+									aria-label="close"
+									color="inherit"
+									size="small"
+									onClick={() => {
+										showAlert(false);
+									}}
+								>
+									<CloseIcon fontSize="inherit" />
+								</IconButton>
+							}
+						>
+							User updated succesfully
+						</Alert>
+					</Collapse>
+				</Box>
 				{userLoading ? (
 					<CircularProgress />
 				) : (
@@ -348,33 +376,7 @@ const EditUser = ({
 						</Grid>
 						<StateNode />
 						<CityNode />
-						<Grid item xs={12} md={4}>
-							<FormControl
-								variant="outlined"
-								fullWidth
-								size="small"
-							>
-								<InputLabel htmlFor="outlined-age-native-simple">
-									Gender
-								</InputLabel>
-								<Select
-									labelId="demo-simple-select-outlined-label"
-									id="demo-simple-select-outlined"
-									name="gender"
-									value={userInfo.gender}
-									defaultValue={userInfo.gender}
-									onChange={setForm('gender')}
-									label="Gender"
-									variant="outlined"
-									fullWidth
-									size="small"
-								>
-									<MenuItem value={'male'}>Male</MenuItem>
-									<MenuItem value={'female'}>Female</MenuItem>
-									<MenuItem value={'other'}>Other</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
+
 						<Grid item xs={12} md={4}>
 							<FormControl
 								variant="outlined"
@@ -504,6 +506,7 @@ const EditUser = ({
 									<MenuItem value={'private'}>
 										Private
 									</MenuItem>
+									<MenuItem value={'public'}>Public</MenuItem>
 									<MenuItem value={'semi-private'}>
 										Semiprivate
 									</MenuItem>

@@ -166,7 +166,7 @@ const PropertyShare = ({
 									value={
 										url
 											? url
-											: `www.homesearch18.com/#/${
+											: `https://homesearch18.com/#/${
 													project
 														? 'project'
 														: 'property-details'

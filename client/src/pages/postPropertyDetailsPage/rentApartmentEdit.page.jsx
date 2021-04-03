@@ -115,6 +115,9 @@ const RentApartment = ({
 		if (!validateNumber(values.securityDeposit)) {
 			error.securityDeposit = 'Please enter a number';
 		}
+		if (Number(values.securityDeposit) < Number(values.rent)) {
+			error.securityDeposit = 'Security deposit cannot be less than rent';
+		}
 		if (!validateNumber(values.noticePeriod)) {
 			error.noticePeriod = 'Please enter a number';
 		}

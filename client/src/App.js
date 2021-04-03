@@ -21,6 +21,7 @@ import SearchPage from './pages/searchResultPage/searchResultPage.page';
 import SignUpForm from './pages/signup/signup.page';
 import ProjectPage from './pages/projectPage/project.page';
 import BuilderPage from './pages/builderPage/builder.page';
+import NotFound from './pages/notFoundPage/notFound.page';
 import { store } from './redux/store';
 
 function App() {
@@ -148,6 +149,10 @@ function App() {
 							exact
 							path="/:projectId"
 							render={(props) => <ProjectPage {...props} />}
+						/>
+						<Route
+							path="*"
+							render={(props) => <NotFound {...props} />}
 						/>
 					</Switch>
 				</HashRouter>
