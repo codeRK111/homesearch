@@ -5,6 +5,7 @@ import {
 	parseDate,
 	renderInfo,
 	renderStatus,
+	shortLength,
 } from '../../utils/render.utils';
 
 import ContactDialogueWithMessage from '../contactOwner/getOwnerPropertyDetails.component';
@@ -238,7 +239,7 @@ const ResultCard = ({ property, edit = false }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<p className={classes.info}>
-									{property.description}
+									{shortLength(property.description, 100)}
 								</p>
 							</Grid>
 							<Grid item xs={12} md={6}>

@@ -97,6 +97,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 
 	const validateForm = (values) => {
 		const error = {};
+		// console.log({ test: validateNumber(values.toiletIndian) });
 		if (!validateNumber(values.numberOfBedRooms)) {
 			error.numberOfBedRooms = 'Please enter a number';
 		}
@@ -104,6 +105,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		if (!validateNumber(values.numberOfBalconies)) {
 			error.numberOfBalconies = 'Please enter a number';
 		}
+
 		if (!validateNumber(values.superBuiltupArea)) {
 			error.superBuiltupArea = 'Please enter a number';
 		}
@@ -117,13 +119,25 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		if (!validateNumber(values.toiletIndian)) {
 			error.toiletIndian = 'Please enter a number';
 		}
+		if (Number(values.toiletIndian) > 10) {
+			error.toiletIndian = 'Cannot be graeter than 10';
+		}
 		if (!validateNumber(values.toiletWestern)) {
 			error.toiletWestern = 'Please enter a number';
+		}
+		if (Number(values.toiletWestern) > 10) {
+			error.toiletWestern = 'Cannot be graeter than 10';
 		}
 		if (!validateNumber(values.noOfFloors)) {
 			error.noOfFloors = 'Please enter a number';
 		}
 
+		if (pType === 'flat' && Number(values.noOfFloors) > 99) {
+			error.noOfFloors = "Can't be greater than 99";
+		}
+		if (pType === 'independenthouse' && Number(values.noOfFloors) > 4) {
+			error.noOfFloors = "Can't be greater than 4";
+		}
 		if (pType === 'flat' && !validateNumber(values.floor)) {
 			error.floor = 'Please enter a number';
 		}
@@ -172,6 +186,10 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 			error.numberOfBalconies = '1 digit allowed';
 		}
 
+		if (!values.description) {
+			error.description = 'Please add some description';
+		}
+
 		return error;
 	};
 
@@ -185,7 +203,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		}
 	};
 
-	const submitForm = (values) => {
+	const submitForm = (values, { setErrors }) => {
 		console.log(values);
 		const type = pType === 'flat' ? 'apartment' : 'villa';
 		const data = {
@@ -215,9 +233,9 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		if (i > 0) {
 			data['propertyImages'] = propertyImages;
 		} else {
-			data['propertyImages'] = null;
+			setErrors({ image: 'Please upload atleast one image' });
+			return;
 		}
-		console.log(data);
 
 		postProperty(handlePostProperty, data);
 	};
@@ -253,7 +271,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 					validate={validateForm}
 					onSubmit={submitForm}
 				>
-					{({ values, setFieldValue }) => (
+					{({ values, setFieldValue, errors }) => (
 						<Form>
 							<Grid container spacing={1}>
 								<Grid item xs={12} md={12}>
@@ -261,11 +279,11 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 										routes={[
 											{
 												label: 'Post property',
-												path: '/post-property',
+												path: '/#/post-property',
 											},
 											{
 												label: 'Rent',
-												path: '/post-property',
+												path: '/#/post-property',
 											},
 										]}
 										currentText={
@@ -578,6 +596,11 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 										<h3>Images</h3>
 									</DividerHeading>
 								</Grid>
+								{errors.image && (
+									<p style={{ color: 'red' }}>
+										{errors.image}
+									</p>
+								)}
 								<Grid container spacing={3}>
 									<Grid item xs={6} lg={3}>
 										<Box className={classes.imageWrapper}>

@@ -2,6 +2,7 @@ import { Box, Divider, Grid, Paper } from '@material-ui/core';
 import {
 	capitalizeFirstLetter,
 	renderMinAndMax,
+	shortLength,
 } from '../../utils/render.utils';
 
 import { AlignCenter } from '../flexContainer/flexContainer.component';
@@ -223,7 +224,7 @@ const ResultCard = ({ independent, property, propertyItems }) => {
 						<Grid container>
 							<Grid item xs={12} md={6}>
 								<p className={classes.info}>
-									{property.description}
+									{shortLength(property.description, 100)}
 								</p>
 							</Grid>
 							<Grid item xs={12} md={6}>

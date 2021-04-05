@@ -31,7 +31,7 @@ import Hostel from './hostel.component';
 import MuiAlert from '@material-ui/lab/Alert';
 import Paper from '@material-ui/core/Paper';
 import React from 'react';
-import RenderByRole from '../../components/roleRender/renderByRole.component';
+import RenderByRole from '../../components/roleRender/renderByRoleNew.component';
 import RowSelect from '../../components/rowSelect/rowSelect.component';
 import Snackbar from '@material-ui/core/Snackbar';
 import { connect } from 'react-redux';
@@ -188,6 +188,7 @@ const AddProperty = ({
 		propertyDetails['userId'] = selectedUser;
 		addProperty(propertyDetails, handleAddProperty);
 	};
+	console.log({ allStates });
 
 	const closeSnackbar = () => setAsyncError('');
 	const State = RenderByRole({
@@ -288,9 +289,9 @@ const AddProperty = ({
 									helperText="Select property for to see more"
 									menuItems={typeMenuItems}
 								/>
-								<State />
+								{State}
 
-								<City />
+								{City}
 
 								<RowSelect
 									heading="Location *"

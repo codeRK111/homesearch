@@ -24,7 +24,8 @@ const City = ({
 }) => {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
-
+	const [fetchCompleted, setFetchComplted] = React.useState(false);
+	const [errorText, setErrorText] = React.useState('');
 	const anchorRef = React.useRef(null);
 	const [cityText, setCityText] = React.useState(defaultValue.name);
 
@@ -34,7 +35,9 @@ const City = ({
 			setCities(data);
 			console.log(data);
 			setOpen(true);
+			setFetchComplted(true);
 		} else {
+			setFetchComplted(false);
 		}
 	};
 	const handleChange = (e) => setCityText(e.target.value);
@@ -68,18 +71,27 @@ const City = ({
 
 		prevOpen.current = open;
 	}, [open]);
+	React.useEffect(() => {
+		if (fetchCompleted && cities.length === 0) {
+			setErrorText('No City Found');
+		} else if (fetchCompleted && cities.length !== 0) {
+			setErrorText('');
+		}
+	}, [fetchCompleted, cities]);
 	return (
 		<div>
 			<Box p="0.5rem" ref={anchorRef}>
 				<Box className={classes.label}>City *</Box>
 				<Box mt="0.3rem">
 					<MTextField
+						error={!!errorText}
 						fullWidth
 						size="small"
 						variant="filled"
-						placeholder="Enter 4 letter 0f the city"
+						placeholder="Enter 4 letter of the city"
 						value={cityText}
 						onChange={handleChange}
+						helperText={errorText}
 						onKeyUp={onKeyUp}
 						inputProps={{
 							autocomplete: 'new-password',

@@ -479,7 +479,7 @@ const RentApartment = ({
 									<Grid item xs={6} md={3}>
 										<CheckBox
 											name="availableFor"
-											value="family"
+											value="Family"
 											formLabel="Family"
 											type="checkbox"
 										/>

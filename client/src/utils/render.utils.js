@@ -252,3 +252,11 @@ export const renderPriceRange = (price, amount = 1) => {
 		return `${price.min / amount} - ${price.max / amount}${l}`;
 	}
 };
+
+export const shortLength = (sentence, length) => {
+	if (sentence.length > length) {
+		return `${sentence.substr(0, length)} ...`;
+	} else {
+		return sentence;
+	}
+};

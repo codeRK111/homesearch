@@ -73,8 +73,9 @@ export const validateLength = (value, length) => {
 	}
 };
 
-export const validateNumber = (value) => {
-	if (Number(value)) {
+export const validateNumber = (v) => {
+	const value = String(v);
+	if (value.match(/^[0-9]+$/)) {
 		return true;
 	} else {
 		if (value === 0 || value === '0') {

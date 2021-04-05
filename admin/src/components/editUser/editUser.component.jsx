@@ -61,10 +61,6 @@ const EditUser = ({
 		setFile(URL.createObjectURL(event.target.files[0]));
 	};
 
-	const toggleAlert = (status) => {
-		showAlert(status);
-	};
-
 	React.useEffect(() => {
 		if (userInfo.city.state) {
 			setCityLoading(true);

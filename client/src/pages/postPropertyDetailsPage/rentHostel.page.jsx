@@ -233,11 +233,11 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 										routes={[
 											{
 												label: 'Post property',
-												path: '/post-property',
+												path: '/#/post-property',
 											},
 											{
 												label: 'Rent',
-												path: '/post-property',
+												path: '/#/post-property',
 											},
 										]}
 										currentText={
