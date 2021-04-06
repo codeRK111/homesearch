@@ -7,6 +7,7 @@ const { sendOtpMessageTest } = require('../utils/test');
 const validateBody = require('../utils/validation');
 const sms = require('./../utils/sms');
 const sendEmail = require('./../utils/sendMail');
+const moment = require('moment');
 
 exports.addQuery = catchAsync(async (req, res, next) => {
 	const body = req.body;
@@ -23,6 +24,123 @@ exports.addQuery = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+
+exports.addQueryNew = catchAsync(async (req, res, next) => {
+	try {
+		const body = req.body;
+		if (req.body.sendOTP) {
+			let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+			await sendOtpMessageTest(body.phoneNumber, randomNumber);
+			body.otp = randomNumber;
+			 body.otpExpiresAt = moment().add(1, 'minutes')
+		} else {
+			body.verified = true; 
+		}
+		let query = await PropertyQuery.create(body);
+		
+
+		if(req.body.sendOTP){
+				res.status(200).json({
+					status: 'success',
+					data: {
+						query,
+					},
+				});
+		} else {
+			console.log(body.owner)
+			const user = await User.findById(body.owner);
+			console.log(user)
+			const info = {
+				name: user ? user.name : 'Not specified',
+				email: user ? user.email : 'Not specified',
+				phoneNumber: user ? user.number : 'Not specified',
+			};
+				res.status(200).json({
+				status: 'success',
+				data: {
+					...info,
+				},
+			});
+		}
+
+		
+		
+	} catch (error) {
+		console.log('error--->', error);
+		return next(new AppError(error.message));
+	}
+}); 
+
+exports.getTennantDetails = catchAsync(async (req, res, next) => { 
+	const resp = await PropertyQuery.findById(req.body.id).select('+otp');
+	if (!resp) {
+		return next(new AppError('Query does not exists', 404));
+	}
+	if (resp.correctOtp(req.body.otp)) {
+		if(!resp.otpExpired()){
+			const updatedData = await PropertyQuery.findByIdAndUpdate(
+			req.body.id,
+			{ verified: true },
+			{
+				new: true,
+				runValidators: true,
+			}
+		);
+		} else {
+			return next(new AppError('OTP Expired', 404));
+		}
+		
+
+		const user = await User.findById(updatedData.owner.id);
+		const info = {
+			name: user ? user.name : 'Not specified',
+			email: user ? user.email : 'Not specified',
+			phoneNumber: user ? user.number : 'Not specified',
+		};
+
+		res.status(200).json({
+			status: 'success',
+			data: {
+				...info,
+			},
+		});
+	} else {
+		return next(new AppError('OTP Not matched', 404));
+	}
+});
+exports.getTennantDetails = catchAsync(async (req, res, next) => {
+	
+	const resp = await PropertyQuery.findById(req.body.id).select('+otp');
+	if (!resp) {
+		return next(new AppError('Query does not exists', 404));
+	}
+	if (resp.correctOtp(req.body.otp)) {
+		const updatedData = await PropertyQuery.findByIdAndUpdate(
+			req.body.id,
+			{ verified: true },
+			{
+				new: true,
+				runValidators: true,
+			}
+		);
+
+		const user = await User.findById(updatedData.owner.id);
+		const info = {
+			name: user ? user.name : 'Not specified',
+			email: user ? user.email : 'Not specified',
+			phoneNumber: user ? user.number : 'Not specified',
+		};
+
+		res.status(200).json({
+			status: 'success',
+			data: {
+				...info,
+			},
+		});
+	} else {
+		return next(new AppError('OTP Not matched', 404));
+	}
+});     
 exports.updateQueryConversation = catchAsync(async (req, res, next) => {
 	try {
 		if (!req.body.message) {
@@ -60,30 +178,6 @@ exports.getQueryConversation = catchAsync(async (req, res, next) => {
 
 exports.addProjectQuery = catchAsync(async (req, res, next) => {
 	try {
-		// const fields = [
-		// 	{
-		// 		name: 'type',
-		// 		label: 'Property type',
-		// 	},
-		// ];
-		// switch (req.body.type) {
-		// 	case 'project':
-		// 		fields.push({
-		// 			name: 'project',
-		// 			label: 'Project',
-		// 		});
-		// 		break;
-		// 	case 'projectproperty':
-		// 		fields.push({
-		// 			name: 'projectproperty',
-		// 			label: 'Project property',
-		// 		});
-		// 		break;
-
-		// 	default:
-		// 		break;
-		// }
-		// console.log(validateBody(fields, req.body, next));
 		const body = req.body;
 		if (req.body.sendOTP) {
 			let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;

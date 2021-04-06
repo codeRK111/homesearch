@@ -19,7 +19,7 @@ const initialState = {
 	location: '',
 	title: '',
 	availableFor: [],
-	numberOfRoomMates: '',
+	numberOfRoomMates: 1,
 	typeOfToilets: '',
 	toiletTypes: '',
 	toiletIndian: '',
@@ -300,14 +300,7 @@ const Hostel = ({
 					/>
 				</Grid>
 			</RowChildren>
-			<RowTextField
-				heading="Number of roommates"
-				name="numberOfRoomMates"
-				label="Roommates"
-				value={hostel.numberOfRoomMates}
-				onChange={handleChange}
-				type="number"
-			/>
+
 			<RowSelect
 				heading="Type of Toilets"
 				name="typeOfToilets"
@@ -478,6 +471,16 @@ const Hostel = ({
 					},
 				]}
 			/>
+			{hostel.roomType === 'shared' && (
+				<RowTextField
+					heading="Number of roommates"
+					name="numberOfRoomMates"
+					label="Roommates"
+					value={hostel.numberOfRoomMates}
+					onChange={handleChange}
+					type="number"
+				/>
+			)}
 			<RowTextField
 				heading="Distance from school"
 				name="distanceSchool"

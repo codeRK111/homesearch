@@ -9,7 +9,7 @@ import AppBar from '../../components/appBar/appBar.component';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { Center } from '../../components/flexContainer/flexContainer.component';
 import ContactDialogue from '../../components/contactOwner/contactOwner.component';
-import ContactDialogueWithMessage from '../../components/contactOwner/contactOwnerWithMessage.component';
+import ContactDialogueWithMessage from '../../components/query/propertyQuery.component';
 import ErrorCard from '../../components/errorCard/errorCard.component';
 import FlagIcon from '@material-ui/icons/Flag';
 import Footer from '../../components/footer/footer.component';
@@ -169,12 +169,13 @@ const DetailsPage = ({
 								data={data}
 							/>
 							<ContactDialogueWithMessage
-								status={open}
+								open={open}
 								handleClose={handleClose}
 								title={`Contact ${capitalizeFirstLetter(
 									data.userId.role
 								)}`}
-								property={data}
+								id={data.id}
+								owner={data.userId.id}
 							/>
 							<RequestPhoto
 								status={propertyActions === 'photo'}

@@ -110,6 +110,12 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		if (!validateNumber(values.toiletWestern)) {
 			error.toiletWestern = 'Please enter a number';
 		}
+		if (Number(values.toiletIndian) > 10) {
+			error.toiletIndian = 'Cannot be graeter than 10';
+		}
+		if (Number(values.toiletWestern) > 10) {
+			error.toiletWestern = 'Cannot be graeter than 10';
+		}
 		if (!validateNumber(values.distanceSchool)) {
 			error.distanceSchool = 'Please enter a number';
 		}
@@ -134,6 +140,9 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		if (!validateNumber(values.noticePeriod)) {
 			error.noticePeriod = 'Please enter a number';
 		}
+		if (Number(values.securityDeposit) < Number(values.rent)) {
+			error.securityDeposit = 'Security deposit cannot be less than rent';
+		}
 		if (!values.description) {
 			error.description = 'Please mention some description';
 		}
@@ -156,7 +165,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		}
 	};
 
-	const submitForm = (values) => {
+	const submitForm = (values, { setErrors }) => {
 		console.log(values);
 		const type = pType === 'hostel' ? 'Hostel' : 'PG';
 		const data = {
@@ -187,7 +196,8 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		if (i > 0) {
 			data['propertyImages'] = propertyImages;
 		} else {
-			data['propertyImages'] = null;
+			setErrors({ image: 'Please upload atleast one image' });
+			return;
 		}
 		console.log(data);
 
@@ -225,7 +235,7 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 					validate={validateForm}
 					onSubmit={submitForm}
 				>
-					{({ values, setFieldValue }) => (
+					{({ values, setFieldValue, errors }) => (
 						<Form>
 							<Grid container spacing={1}>
 								<Grid item xs={12} md={12}>
@@ -639,6 +649,11 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 										<h3>Images</h3>
 									</DividerHeading>
 								</Grid>
+								{errors.image && (
+									<p style={{ color: 'red' }}>
+										{errors.image}
+									</p>
+								)}
 								<Grid container spacing={3}>
 									<Grid item xs={6} lg={3}>
 										<Box className={classes.imageWrapper}>

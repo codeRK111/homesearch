@@ -100,7 +100,7 @@ const DetailsPage = ({
 			case 'independenthouse':
 				return (
 					<ResaleApartment
-						pType={params.pType}
+						pType={property.sale_type}
 						initialValues={property}
 					/>
 				);
@@ -118,14 +118,17 @@ const DetailsPage = ({
 			case 'independenthouse':
 				return (
 					<RentApartment
-						pType={params.pType}
+						pType={property.type}
 						initialValues={property}
 					/>
 				);
 			case 'hostel':
 			case 'pg':
 				return (
-					<RentHostel pType={params.pType} initialValues={property} />
+					<RentHostel
+						pType={property.type}
+						initialValues={property}
+					/>
 				);
 
 			default:

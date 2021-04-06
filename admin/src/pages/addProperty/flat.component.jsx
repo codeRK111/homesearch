@@ -178,13 +178,13 @@ const Flat = ({
 
 	return (
 		<>
-			<RowTextField
+			{/* <RowTextField
 				heading="Title"
 				name="title"
 				label="Title"
 				value={flat.title}
 				onChange={handleChange}
-			/>
+			/> */}
 			<RowTextField
 				heading="Description"
 				name="description"

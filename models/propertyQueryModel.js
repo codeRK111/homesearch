@@ -122,5 +122,10 @@ propertyQuerySchema.methods.correctOtp = function (otp) {
 	return Number(otp) === Number(this.otp);
 };
 
+propertyQuerySchema.methods.otpExpired = function () {
+	return moment().isSameOrAfter(this.otpExpiresAt);
+};
+
+
 const propertyQuery = model('PropertyQuery', propertyQuerySchema);
 module.exports = propertyQuery;

@@ -1,32 +1,48 @@
+import React, { lazy, Suspense } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
-
-import BrowsePage from './pages/browsePage/browse.page';
-import DetailsPage from './pages/detailsPageNew/detailsPage.component';
-import EditProperty from './pages/postPropertyDetailsPage/editWrapper.page';
-import HomePage from './pages/home/home.page';
-import LoginPage from './pages/login/login.page';
-import MobileSearch from './pages/mobileSearch/mobileSearch.page';
-import OTPPage from './pages/otp/otp.page';
-import PostProperty from './pages/postProperty';
-import PostPropertyDetailsPage from './pages/postPropertyDetailsPage';
-import ProfilePage from './pages/profile/profile.page';
-import ProfileUpdate from './pages/profile/profileUpdate.page';
-import ProjectDetailsPage from './pages/projectDetails/index.component';
-import ProjectProperty from './pages/projectDetails/projectPropertyWrapper.component';
 import Protected from './components/protected/protected.component';
 import { Provider } from 'react-redux';
-import React from 'react';
-import ResetPassword from './pages/resetPasswordPage/resetPassword.page';
-import SearchPage from './pages/searchResultPage/searchResultPage.page';
-import SignUpForm from './pages/signup/signup.page';
-import ProjectPage from './pages/projectPage/project.page';
-import BuilderPage from './pages/builderPage/builder.page';
-import NotFound from './pages/notFoundPage/notFound.page';
 import { store } from './redux/store';
+import SuspenseLoader from './components/suspenseLoader/susPenseLoader.component';
+const BrowsePage = lazy(() => import('./pages/browsePage/browse.page'));
+const DetailsPage = lazy(() =>
+	import('./pages/detailsPageNew/detailsPage.component')
+);
+const EditProperty = lazy(() =>
+	import('./pages/postPropertyDetailsPage/editWrapper.page')
+);
+const HomePage = lazy(() => import('./pages/home/home.page'));
+const LoginPage = lazy(() => import('./pages/login/login.page'));
+const MobileSearch = lazy(() =>
+	import('./pages/mobileSearch/mobileSearch.page')
+);
+const OTPPage = lazy(() => import('./pages/otp/otp.page'));
+const PostProperty = lazy(() => import('./pages/postProperty'));
+const PostPropertyDetailsPage = lazy(() =>
+	import('./pages/postPropertyDetailsPage')
+);
+const ProfilePage = lazy(() => import('./pages/profile/profile.page'));
+const ProfileUpdate = lazy(() => import('./pages/profile/profileUpdate.page'));
+const ProjectDetailsPage = lazy(() =>
+	import('./pages/projectDetails/index.component')
+);
+const ProjectProperty = lazy(() =>
+	import('./pages/projectDetails/projectPropertyWrapper.component')
+);
+const ResetPassword = lazy(() =>
+	import('./pages/resetPasswordPage/resetPassword.page')
+);
+const SearchPage = lazy(() =>
+	import('./pages/searchResultPage/searchResultPage.page')
+);
+const SignUpForm = lazy(() => import('./pages/signup/signup.page'));
+const ProjectPage = lazy(() => import('./pages/projectPage/project.page'));
+const BuilderPage = lazy(() => import('./pages/builderPage/builder.page'));
+const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
 
 function App() {
 	return (
-		<div>
+		<Suspense fallback={<SuspenseLoader />}>
 			<Provider store={store}>
 				<HashRouter>
 					<Switch>
@@ -157,7 +173,7 @@ function App() {
 					</Switch>
 				</HashRouter>
 			</Provider>
-		</div>
+		</Suspense>
 	);
 }
 

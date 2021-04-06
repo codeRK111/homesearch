@@ -1371,7 +1371,7 @@ exports.updatePropertyByUserForRent = catchAsync(async (req, res, next) => {
 			delete propertyFlat['toiletWestern'];
 
 			// manage furnished
-			if (req.body.furnished === 'unfurnished') {
+			if (req.body.furnished === 'unfurnished') { 
 				propertyFlat['furnishes'] = [];
 			}
 
@@ -1395,6 +1395,7 @@ exports.updatePropertyByUserForRent = catchAsync(async (req, res, next) => {
 			});
 
 			console.log(propertyFlat);
+			propertyFlat['status'] = 'underScreening';
 
 			const docFlat = await Property.findByIdAndUpdate(
 				req.params.id,
@@ -1481,6 +1482,7 @@ exports.updatePropertyByUserForRent = catchAsync(async (req, res, next) => {
 					);
 				propertyLand['numberOfRoomMates'] = req.body.numberOfRoomMates;
 			}
+			propertyLand['status'] = 'underScreening';
 
 			const docLand = await Property.findByIdAndUpdate(
 				req.params.id,
@@ -1670,6 +1672,9 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 			propertyHostel['status'] = 'underScreening';
 			propertyHostel['userId'] = req.user.id;
 			propertyHostel['postedBy'] = req.user.role;
+			propertyHostel['restrictions'] = req.body.restrictions
+				? req.body.restrictions
+				: '';
 
 			console.log(propertyHostel);
 

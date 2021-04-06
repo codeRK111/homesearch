@@ -13,7 +13,9 @@ router
 	.get(queryController.getQueryConversation)
 	.patch(queryController.updateQueryConversation);
 router.route('/project/validate-otp').post(queryController.validateProjectOTP);
+router.route('/property/validate-otp').post(queryController.getTennantDetails);
 router.route('/project').post(queryController.addProjectQuery);
+router.route('/property').post(queryController.addQueryNew);
 router.route('/test-route').get(queryController.sendTest);
 router.route('/').post(queryController.addQuery);
 

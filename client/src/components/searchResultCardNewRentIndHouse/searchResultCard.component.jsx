@@ -2,7 +2,7 @@ import { Box, Divider, Grid, Paper } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 import { capitalizeFirstLetter, renderStatus } from '../../utils/render.utils';
 
-import ContactDialogueWithMessage from '../contactOwner/contactOwnerWithMessage.component';
+import ContactDialogueWithMessage from '../query/propertyQuery.component';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -43,10 +43,10 @@ const ResultCard = ({ independent, property, edit = false }) => {
 	return (
 		<Paper className={classes.fontAbel}>
 			<ContactDialogueWithMessage
-				status={contactOpen}
+				open={contactOpen}
 				handleClose={handleContactClose}
-				title={`Contact ${capitalizeFirstLetter(property.postedBy)}`}
-				property={property}
+				id={property.id}
+				owner={property.userId.id}
 			/>
 			<PropertyShare
 				status={open}
