@@ -44,10 +44,19 @@ const UpdateMobileNumber = ({ existingNumber, setUser }) => {
 	});
 
 	// Mobile Number
+	const [mobileNumber, setMobileNumber] = React.useState(null);
+
+	// Mobile Number
 	const [userID, setUserID] = React.useState(null);
 
 	// Success Message
 	const [successMessage, setSuccessMessage] = React.useState(null);
+
+	// On Resend
+	const reset = () => {
+		setMobileNumber(null);
+		setUserID(null);
+	};
 
 	// Formik submit
 	const onNumberSubmit = async (values, { setErrors }) => {
@@ -73,8 +82,10 @@ const UpdateMobileNumber = ({ existingNumber, setUser }) => {
 				loading: false,
 			});
 			setUserID(respData.userId);
+			setMobileNumber(values.number);
 		} catch (error) {
 			setUserID(null);
+			setMobileNumber(null);
 			if (error.response) {
 				setErrors({ number: error.response.data.message });
 				setAsyncState({
@@ -182,6 +193,13 @@ const UpdateMobileNumber = ({ existingNumber, setUser }) => {
 								<TextField
 									formLabel="Please Enter Your Phone Number"
 									name="number"
+									type="text"
+									inputProps={{
+										autocomplete: 'new-password',
+										form: {
+											autocomplete: 'off',
+										},
+									}}
 								/>
 								<Box mt="1rem">
 									<Button
@@ -207,10 +225,10 @@ const UpdateMobileNumber = ({ existingNumber, setUser }) => {
 						validationSchema={otpValidationSchema}
 						onSubmit={onOTPSubmit}
 					>
-						{() => (
+						{({ errors }) => (
 							<Form>
 								<TextField
-									formLabel="OTP"
+									formLabel={`Enter OTP sent to ${mobileNumber}`}
 									name="otp"
 									type="text"
 									inputProps={{
@@ -224,6 +242,11 @@ const UpdateMobileNumber = ({ existingNumber, setUser }) => {
 									formLabel="New Password"
 									name="password"
 								/>
+								{errors.otp && (
+									<Button type="button" onClick={reset}>
+										resend OTP
+									</Button>
+								)}
 								<Box mt="1rem">
 									<Button
 										color="primary"

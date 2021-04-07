@@ -8,7 +8,7 @@ import TextField from '../../components/formik/textField.component';
 import { yupValidation } from '../../utils/validation.utils';
 import { connect } from 'react-redux';
 import { setUser } from '../../redux/auth/auth.actions';
-
+import Alert from '../../components/alert/alert.component';
 const UpdatePassword = ({ setUser, showMessage }) => {
 	// Cancel Axios Token
 	let cancelToken;
@@ -18,6 +18,9 @@ const UpdatePassword = ({ setUser, showMessage }) => {
 		loading: false,
 		error: null,
 	});
+
+	// Success Message
+	const [successMessage, setSuccessMessage] = React.useState(null);
 
 	// Validation Schema
 	const validationSchema = Yup.object({
@@ -64,7 +67,9 @@ const UpdatePassword = ({ setUser, showMessage }) => {
 				loading: false,
 			});
 			showMessage('Password updated successfully');
+			setSuccessMessage('Password updated successfully');
 		} catch (error) {
+			setSuccessMessage(null);
 			if (error.response) {
 				if (error.response.data.message.includes('Incorrect')) {
 					setErrors({ password: error.response.data.message });
@@ -103,39 +108,47 @@ const UpdatePassword = ({ setUser, showMessage }) => {
 	}
 	return (
 		<Box width="100%">
-			<Formik
-				initialValues={{
-					password: '',
-					newPassword: '',
-				}}
-				enableReinitialize
-				validationSchema={validationSchema}
-				onSubmit={onSubmit}
-			>
-				{() => (
-					<Form>
-						<TextField
-							formLabel="Current Password"
-							name="password"
-						/>
-						<TextField
-							formLabel="New Password"
-							name="newPassword"
-						/>
-						<Box mt="1rem">
-							<Button
-								color="primary"
-								variant="contained"
-								type="submit"
-								fullWidth
-								{...buttonProps}
-							>
-								Next
-							</Button>
-						</Box>
-					</Form>
-				)}
-			</Formik>
+			{successMessage ? (
+				<Alert
+					showAction={false}
+					open={!!successMessage}
+					message={successMessage}
+				/>
+			) : (
+				<Formik
+					initialValues={{
+						password: '',
+						newPassword: '',
+					}}
+					enableReinitialize
+					validationSchema={validationSchema}
+					onSubmit={onSubmit}
+				>
+					{() => (
+						<Form>
+							<TextField
+								formLabel="Current Password"
+								name="password"
+							/>
+							<TextField
+								formLabel="New Password"
+								name="newPassword"
+							/>
+							<Box mt="1rem">
+								<Button
+									color="primary"
+									variant="contained"
+									type="submit"
+									fullWidth
+									{...buttonProps}
+								>
+									Next
+								</Button>
+							</Box>
+						</Form>
+					)}
+				</Formik>
+			)}
 		</Box>
 	);
 };

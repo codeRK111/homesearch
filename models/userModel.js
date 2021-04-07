@@ -233,7 +233,8 @@ userSchema.methods.correctOtp = function (otp) {
 };
 
 userSchema.methods.otpExpired = function () {
-	return !(moment().isSameOrAfter(this.otpExpiresAt));
+	console.log(this.otpExpiresAt);
+	return moment().isSameOrAfter(this.otpExpiresAt);
 };
 
 

@@ -22,7 +22,7 @@ const Apartment = ({
 		if (status === 'success') {
 			setAsyncError(null);
 			console.log(data.properties);
-			setData(data.properties);
+			setData(data.properties.filter((b) => b.id !== exclude));
 		} else {
 			setAsyncError(data);
 		}
@@ -62,9 +62,7 @@ const Apartment = ({
 			) : (
 				!asyncError && (
 					<Grid container spacing={3}>
-						{data
-							.filter((b) => b.id !== exclude)
-							.map((c) => renderRentItems(c))}
+						{data.map((c) => renderRentItems(c))}
 					</Grid>
 				)
 			)}

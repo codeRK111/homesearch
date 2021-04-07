@@ -522,9 +522,14 @@ const DetailsPage = ({
 											</Grid>
 										</Box>
 										<Box mt="1rem">
-											<h3>Similar Properties</h3>
-											{data &&
-												renderSimilarProperties(data)}
+											{data && (
+												<>
+													<h3>Similar Properties</h3>
+													{renderSimilarProperties(
+														data
+													)}
+												</>
+											)}
 										</Box>
 									</Paper>
 								</Box>

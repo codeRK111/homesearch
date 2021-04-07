@@ -82,7 +82,7 @@ const LoginForm = ({
 					enableReinitialize
 					onSubmit={onValidateOtp}
 				>
-					{() => (
+					{({ errors }) => (
 						<Form className={classes.form}>
 							<FormInput
 								name="number"
@@ -90,6 +90,14 @@ const LoginForm = ({
 								disabled
 							/>
 							<FormInput name="otp" formLabel="OTP" />
+							{errors.otp && (
+								<Button
+									size="small"
+									onClick={() => setOtpSent(null)}
+								>
+									Send OTP
+								</Button>
+							)}
 							<Button
 								type="submit"
 								fullWidth
@@ -117,10 +125,17 @@ const LoginForm = ({
 					validationSchema={phoneValidation}
 					onSubmit={onSendOtp}
 				>
-					{() => (
+					{({ errors }) => (
 						<Form className={classes.form}>
 							<FormInput name="number" formLabel="Phone Number" />
-
+							{errors.otp && (
+								<Button
+									size="small"
+									onClick={() => setOtpSent(null)}
+								>
+									Send OTP
+								</Button>
+							)}
 							<Button
 								type="submit"
 								fullWidth

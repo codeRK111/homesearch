@@ -110,7 +110,7 @@ exports.checkExists = catchAsync(async (req, res, next) => {
 exports.sendUpdateNumberOTP = catchAsync(async (req, res, next) => {
 	const dataCount = await User.countDocuments({number: req.body.number,_id: {$ne: ObjectId(req.user.id)}});
 	if(dataCount > 0){
-		return next(new AppError('This number is already registered with us',400))
+		return next(new AppError('This number is already registered with us,Please use another one',400))
 	}
 		let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
 	const updatedUser = await User.findByIdAndUpdate(
@@ -488,7 +488,7 @@ exports.sendOtpWithoutVerfication = catchAsync(async (req, res, next) => {
 exports.validateOtp = catchAsync(async (req, res, next) => {
 	// 1) Get user based on the id
 	const user = await User.findOne({ number: req.params.number }).select(
-		'+otp'
+		'+otp +otpExpiresAt'
 	);
 
 	if (!user.correctOtp(req.params.otp)) {
@@ -498,6 +498,8 @@ exports.validateOtp = catchAsync(async (req, res, next) => {
 		return next(new AppError('Your OTP has been expired', 401));
 	}
 	user.numberVerified = true;
+	user.otp = null;
+	user.otpExpiresAt = null;
 	await user.save();
 	createSendToken(user, 200, res);
 });
@@ -505,7 +507,7 @@ exports.validateOtp = catchAsync(async (req, res, next) => {
 exports.updateMyNumber = catchAsync(async (req, res, next) => {
 	// 1) Get user based on the id
 	const user = await User.findById(req.user.id).select(
-		'+otp'
+		'+otp +otpExpiresAt'
 	);
 
 	if (!user.correctOtp(req.body.otp)) {
@@ -524,7 +526,7 @@ exports.updateMyNumber = catchAsync(async (req, res, next) => {
 exports.resetMyPassword = catchAsync(async (req, res, next) => {
 	// 1) Get user based on the id
 	const user = await User.findById(req.body.id).select(
-		'+otp'
+		'+otp +otpExpiresAt'
 	);
 
 	if (!user.correctOtp(req.body.otp)) {

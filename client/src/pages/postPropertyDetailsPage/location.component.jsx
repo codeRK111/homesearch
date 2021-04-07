@@ -1,12 +1,5 @@
-import {
-	Box,
-	ClickAwayListener,
-	TextField as MTextField,
-	Paper,
-	Popper,
-	Typography,
-} from '@material-ui/core';
-
+import { Box, TextField as MTextField } from '@material-ui/core';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -14,7 +7,9 @@ import { searchLocations } from '../../redux/city/city.actions';
 import { selectSearchLocationLoading } from '../../redux/city/city.selectors';
 import { selectUser } from '../../redux/auth/auth.selectors';
 import useStyles from '../profile/profile.styles';
-
+import { ControlledMenu, MenuItem } from '@szhsin/react-menu';
+import '@szhsin/react-menu/dist/index.css';
+import './menu.css';
 const City = ({
 	searchLocations,
 	searchCityLoading,
@@ -103,30 +98,29 @@ const City = ({
 							},
 						}}
 					/>
+					<ControlledMenu
+						anchorRef={anchorRef}
+						isOpen={open || searchCityLoading}
+						onClose={handleClose}
+						styles={{
+							border: '1px solid #c1c1c1',
+							width: '100%',
+						}}
+						arrow={true}
+					>
+						<MenuItem disabled>Select Location</MenuItem>
+						{cities.map((c) => (
+							<MenuItem key={c.id} onClick={onClick(c)}>
+								<LocationOnIcon
+									fontSize="small"
+									color="primary"
+								/>
+								{c.name}
+							</MenuItem>
+						))}
+					</ControlledMenu>
 				</Box>
 			</Box>
-			<Popper open={open} anchorEl={anchorRef.current} keepMounted={true}>
-				<Paper elevation={3} className={classes.parent}>
-					<ClickAwayListener onClickAway={handleClose}>
-						<Box id="menu-list-grow">
-							{searchCityLoading && (
-								<Typography component="h5" align="center">
-									Loading...
-								</Typography>
-							)}
-							{cities.map((c) => (
-								<div
-									key={c.id}
-									onClick={onClick(c)}
-									className={classes.item}
-								>
-									{c.name}
-								</div>
-							))}
-						</Box>
-					</ClickAwayListener>
-				</Paper>
-			</Popper>
 		</div>
 	);
 };

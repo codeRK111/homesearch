@@ -8,6 +8,7 @@ import TextField from '../../components/formik/textField.component';
 import { yupValidation } from '../../utils/validation.utils';
 import { connect } from 'react-redux';
 import { setUser } from '../../redux/auth/auth.actions';
+import Alert from '../../components/alert/alert.component';
 
 const UpdateMobileNumber = ({ existingNumber, setUser, showMessage }) => {
 	// Cancel Axios Token
@@ -40,6 +41,12 @@ const UpdateMobileNumber = ({ existingNumber, setUser, showMessage }) => {
 
 	// Success Message
 	const [successMessage, setSuccessMessage] = React.useState(null);
+
+	// On resend Click
+	const resendOTP = () => {
+		setMobileNumber(null);
+		setSuccessMessage(null);
+	};
 
 	// Formik submit
 	const onNumberSubmit = async (values, { setErrors }) => {
@@ -121,7 +128,9 @@ const UpdateMobileNumber = ({ existingNumber, setUser, showMessage }) => {
 			});
 			setMobileNumber(null);
 			showMessage('Phone number updated successfully');
+			setSuccessMessage('Phone number updated successfully');
 		} catch (error) {
+			setSuccessMessage(null);
 			if (error.response) {
 				setErrors({ otp: error.response.data.message });
 				setAsyncState({
@@ -156,7 +165,13 @@ const UpdateMobileNumber = ({ existingNumber, setUser, showMessage }) => {
 	}
 	return (
 		<Box width="100%">
-			{!mobileNumber ? (
+			{successMessage ? (
+				<Alert
+					open={!!successMessage}
+					showAction={false}
+					message={successMessage}
+				/>
+			) : !mobileNumber ? (
 				<Formik
 					initialValues={{
 						number: existingNumber,
@@ -191,10 +206,10 @@ const UpdateMobileNumber = ({ existingNumber, setUser, showMessage }) => {
 					validationSchema={otpValidationSchema}
 					onSubmit={onOTPSubmit}
 				>
-					{() => (
+					{({ errors }) => (
 						<Form>
 							<TextField
-								formLabel="OTP"
+								formLabel={`Enter OTP sent to ${mobileNumber}`}
 								name="otp"
 								type="text"
 								inputProps={{
@@ -204,6 +219,15 @@ const UpdateMobileNumber = ({ existingNumber, setUser, showMessage }) => {
 									},
 								}}
 							/>
+							{errors.otp && (
+								<Button
+									type="button"
+									onClick={resendOTP}
+									size="small"
+								>
+									Resend OTP
+								</Button>
+							)}
 							<Box mt="1rem">
 								<Button
 									color="primary"
@@ -212,7 +236,7 @@ const UpdateMobileNumber = ({ existingNumber, setUser, showMessage }) => {
 									{...buttonProps}
 									fullWidth
 								>
-									Submit
+									Update Number
 								</Button>
 							</Box>
 						</Form>

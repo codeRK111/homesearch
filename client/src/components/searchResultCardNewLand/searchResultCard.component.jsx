@@ -7,7 +7,7 @@ import {
 	shortLength,
 } from '../../utils/render.utils';
 
-import ContactDialogueWithMessage from '../contactOwner/getOwnerPropertyDetails.component';
+import ContactDialogueWithMessage from '../query/propertyQuery.component';
 import DoneIcon from '@material-ui/icons/Done';
 import PropertyShare from '../propertyShare/propertyShare.component';
 import React from 'react';
@@ -57,11 +57,10 @@ const ResultCard = ({ independent, property, edit = false }) => {
 	return (
 		<Paper className={classes.fontAbel}>
 			<ContactDialogueWithMessage
-				status={contactOpen}
+				open={contactOpen}
 				handleClose={handleContactClose}
-				title={`Contact ${capitalizeFirstLetter(property.postedBy)}`}
-				property={property}
-				queryOn="property"
+				id={property.id}
+				owner={property.userId.id}
 			/>
 			<PropertyShare
 				status={open}

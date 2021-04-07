@@ -169,8 +169,17 @@ const RentApartment = ({ propertyLoading, postProperty, pType }) => {
 		if (!validateNumber(values.toiletWestern)) {
 			error.toiletWestern = 'Please enter a number';
 		}
+		if (Number(values.toiletIndian) > 10) {
+			error.toiletIndian = 'Cannot be graeter than 10';
+		}
+		if (Number(values.toiletWestern) > 10) {
+			error.toiletWestern = 'Cannot be graeter than 10';
+		}
 		if (pType === 'flat' && !validateNumber(values.floor)) {
 			error.floor = 'Please enter a number';
+		}
+		if (Number(values.noOfFloors) > 99) {
+			error.toiletWestern = 'Cannot be graeter than 99';
 		}
 		if (
 			pType === 'flat' &&

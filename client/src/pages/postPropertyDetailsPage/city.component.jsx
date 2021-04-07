@@ -1,12 +1,5 @@
-import {
-	Box,
-	ClickAwayListener,
-	TextField as MTextField,
-	Paper,
-	Popper,
-	Typography,
-} from '@material-ui/core';
-
+import { Box, TextField as MTextField } from '@material-ui/core';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -14,9 +7,10 @@ import { searchCities } from '../../redux/city/city.actions';
 import { selectSearchCityLoading } from '../../redux/city/city.selectors';
 import { selectUser } from '../../redux/auth/auth.selectors';
 import useStyles from '../profile/profile.styles';
-
+import { ControlledMenu, MenuItem } from '@szhsin/react-menu';
+import '@szhsin/react-menu/dist/index.css';
+import './menu.css';
 const City = ({
-	user,
 	searchCities,
 	searchCityLoading,
 	setSelectedCity,
@@ -100,9 +94,34 @@ const City = ({
 							},
 						}}
 					/>
+					<ControlledMenu
+						anchorRef={anchorRef}
+						isOpen={open || searchCityLoading}
+						onClose={handleClose}
+						styles={{
+							border: '1px solid #c1c1c1',
+							width: '100%',
+						}}
+						arrow={true}
+					>
+						<MenuItem disabled>Select City</MenuItem>
+						{cities.map((c) => (
+							<MenuItem key={c.id} onClick={onClick(c)}>
+								<LocationOnIcon
+									fontSize="small"
+									color="primary"
+								/>
+								{c.name}
+							</MenuItem>
+						))}
+						{/* <MenuItem>New File</MenuItem>
+						<MenuItem>Save</MenuItem>
+						<MenuItem>Close Window</MenuItem> */}
+					</ControlledMenu>
 				</Box>
 			</Box>
-			<Popper
+
+			{/* <Popper
 				open={open || searchCityLoading}
 				anchorEl={anchorRef.current}
 			>
@@ -128,7 +147,7 @@ const City = ({
 						</Box>
 					</ClickAwayListener>
 				</Paper>
-			</Popper>
+			</Popper> */}
 		</div>
 	);
 };

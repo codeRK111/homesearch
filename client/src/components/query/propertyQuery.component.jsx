@@ -275,7 +275,13 @@ function AlertDialogSlide({ open, handleClose, id, user, owner }) {
 											</Avatar>
 										</ListItemAvatar>
 										<ListItemText
-											primary={details.phoneNumber}
+											primary={
+												<a
+													href={`tel:${details.phoneNumber}`}
+												>
+													{details.phoneNumber}
+												</a>
+											}
 										/>
 									</ListItem>
 								</List>
