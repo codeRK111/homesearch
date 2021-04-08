@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-
+const moment = require('moment');
 const { Schema, model } = mongoose;
-const propertyQuerySchema = new Schema(
+const whatsappQuerySchema = new Schema(
 	{
 		userName: {
 			type: String,
@@ -45,6 +45,11 @@ const propertyQuerySchema = new Schema(
 			ref: 'User',
 			default: null,
 		},
+		builder: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Builder',
+			default: null,
+		},
 		user: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
@@ -64,9 +69,16 @@ const propertyQuerySchema = new Schema(
 		type: {
 			type: String,
 			enum: {
-				values: ['property', 'project', 'projectproperty'],
+				values: ['property', 'project', 'projectProperty'],
 			},
 			default: 'property',
+		},
+		propertyFor: {
+			type: String,
+			enum: {
+				values: ['rent', 'sale'],
+			},
+			default: null,
 		},
 		verified: {
 			type: Boolean,
@@ -78,51 +90,47 @@ const propertyQuerySchema = new Schema(
 			default: null,
 			select: false,
 		},
-		conversation: [
-			{
-				message: String,
-				date: {
-					type: Date,
-					default: Date.now(),
-				},
-			},
-		],
+		otpExpiresAt: {
+			type: Date,
+			default: null,
+			select: false,
+		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-propertyQuerySchema.pre(/^find/, function (next) {
+whatsappQuerySchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'property',
 		select: 'id title',
 	})
 		.populate({
 			path: 'owner',
-			select: 'id name ',
+			select: 'id name number',
 		})
 		.populate({
 			path: 'user',
-			select: 'id name',
+			select: 'id name number',
+		})
+		.populate({
+			path: 'builder',
+			select: 'id developerName phoneNumber',
 		})
 		.populate({
 			path: 'project',
 			select: 'id title ',
-		})
-		.populate({
-			path: 'projectProperty',
-			select: 'id title project',
 		});
 
 	next();
 });
 
-propertyQuerySchema.methods.correctOtp = function (otp) {
+whatsappQuerySchema.methods.correctOtp = function (otp) {
 	return Number(otp) === Number(this.otp);
 };
 
-propertyQuerySchema.methods.otpExpired = function () {
+whatsappQuerySchema.methods.otpExpired = function () {
 	return moment().isSameOrAfter(this.otpExpiresAt);
 };
 
-const propertyQuery = model('PropertyQuery', propertyQuerySchema);
+const propertyQuery = model('WhatsappQuery', whatsappQuerySchema);
 module.exports = propertyQuery;

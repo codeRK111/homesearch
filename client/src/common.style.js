@@ -29,4 +29,7 @@ export default makeStyles((theme) => ({
 		fontWeight: 500,
 		textAlign: 'center',
 	},
+	lightBackground: {
+		backgroundColor: '#ecf0f1',
+	},
 }));

@@ -1,38 +1,42 @@
-import React from 'react';
 import * as Yup from 'yup';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import { withStyles, useTheme } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useStyles as usePageStyle } from '../../pages/projectPage/project.style';
-import { Formik, Form } from 'formik';
-import TextField from '../../components/formik/textField.component';
-import { selectUser } from '../../redux/auth/auth.selectors';
-import useGlobalStyle from '../../common.style';
-import PersonIcon from '@material-ui/icons/Person';
-import EmailIcon from '@material-ui/icons/Email';
-import PhoneIcon from '@material-ui/icons/Phone';
+
 import {
-	Button,
+	Avatar,
 	Box,
-	Typography,
-	DialogTitle as MuiDialogTitle,
-	Slide,
-	Dialog,
+	Button,
 	CircularProgress,
+	Dialog,
 	List,
 	ListItem,
-	Avatar,
 	ListItemAvatar,
 	ListItemText,
+	DialogTitle as MuiDialogTitle,
+	Slide,
+	Typography,
 } from '@material-ui/core';
-import axios from 'axios';
-import { apiUrl } from '../../utils/render.utils';
+import { Form, Formik } from 'formik';
+import { useTheme, withStyles } from '@material-ui/core/styles';
 
-// Redux
+import CloseIcon from '@material-ui/icons/Close';
+import EmailIcon from '@material-ui/icons/Email';
+import IconButton from '@material-ui/core/IconButton';
+import PersonIcon from '@material-ui/icons/Person';
+import PhoneIcon from '@material-ui/icons/Phone';
+import PropTypes from 'prop-types';
+import React from 'react';
+import TextField from '../../components/formik/textField.component';
+import { apiUrl } from '../../utils/render.utils';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { selectUser } from '../../redux/auth/auth.selectors';
+import useGlobalStyle from '../../common.style';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useStyles as usePageStyle } from '../../pages/projectPage/project.style';
+
+// Redux
+
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
@@ -91,6 +95,7 @@ function AlertDialogSlide({ open, handleClose, id, user, owner }) {
 
 	// Query ID
 	const [queryId, setQueryID] = React.useState(null);
+	const [phoneNumber, setPhoneNumber] = React.useState(null);
 	const [details, setDetails] = React.useState(null);
 	const [successMessage, setSuccessMessage] = React.useState(null);
 
@@ -127,6 +132,7 @@ function AlertDialogSlide({ open, handleClose, id, user, owner }) {
 			setSuccessMessage(null);
 			setQueryID(null);
 			setDetails(null);
+			setPhoneNumber(null);
 			if (typeof cancelToken != typeof undefined) {
 				cancelToken.cancel('Operation canceled due to new request');
 			}
@@ -165,9 +171,11 @@ function AlertDialogSlide({ open, handleClose, id, user, owner }) {
 				error: null,
 				loading: false,
 			});
+			setPhoneNumber(values.phoneNumber);
 		} catch (error) {
 			setQueryID(null);
 			setDetails(null);
+			setPhoneNumber(null);
 			if (error.response) {
 				setAsyncState({
 					error: error.response.data.message,
@@ -298,7 +306,7 @@ function AlertDialogSlide({ open, handleClose, id, user, owner }) {
 								<Form>
 									<TextField
 										name="otp"
-										formLabel="OTP *"
+										formLabel={`Enter OTP sent to ${phoneNumber}`}
 										type="text"
 										disabled={asyncState.loading}
 									/>

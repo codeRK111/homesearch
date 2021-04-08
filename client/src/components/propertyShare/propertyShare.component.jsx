@@ -128,7 +128,8 @@ const PropertyShare = ({
 			? data.builder.phoneNumber
 			: data.userId.number;
 		const number = `91${userNumber}`;
-		let text = `Hello, I am ${values.name} and I am interested for ${data.title}`;
+		let text = `Hello, I am ${values.name} (Homesearch User) and I am interested for ${data.title} <a>Test</a>`;
+
 		if (projectInfo) {
 			text += ` in ${projectInfo.title}`;
 		}

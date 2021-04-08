@@ -9,7 +9,7 @@ import {
 } from '../../utils/render.utils';
 
 import ContactDialogueWithMessage from '../query/propertyQuery.component';
-import PropertyShare from '../propertyShare/propertyShare.component';
+import PropertyShare from '../query/whatsappQuery.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -57,9 +57,14 @@ const ResultCard = ({ property, edit = false }) => {
 				owner={property.userId.id}
 			/>
 			<PropertyShare
-				status={open}
+				open={open}
 				handleClose={handleClose}
-				data={property}
+				id={property.id}
+				propertyFor={property['for']}
+				type={'property'}
+				title={property.title}
+				whatsAppNumber={property.userId.number}
+				role={property.userId.role}
 			/>
 			<Grid container spacing={1}>
 				<Grid item xs={12} md={4}>

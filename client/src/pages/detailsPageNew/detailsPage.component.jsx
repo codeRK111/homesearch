@@ -23,7 +23,7 @@ import NearByPlaces from './nearByPlaces.component';
 import PersonIcon from '@material-ui/icons/Person';
 import PropTypes from 'prop-types';
 import PropertyImages from '../../components/propertyImages/propertyImages.component';
-import PropertyShare from '../../components/propertyShare/propertyShare.component';
+import PropertyShare from '../../components/query/whatsappQuery.component';
 import React from 'react';
 import RentApartment from '../../components/similarProjects/rentApartment.component';
 import RequestPhoto from '../../components/requestPhoto/requestPhoto.component';
@@ -164,9 +164,14 @@ const DetailsPage = ({
 						<Box className={classes.pageWrapper}>
 							<AppBar />
 							<PropertyShare
-								status={propertyShareOpen}
+								open={propertyShareOpen}
 								handleClose={handlePropertyShareClose}
-								data={data}
+								id={data.id}
+								propertyFor={data['for']}
+								type={'property'}
+								title={data.title}
+								whatsAppNumber={data.userId.number}
+								role={data.userId.role}
 							/>
 							<ContactDialogueWithMessage
 								open={open}

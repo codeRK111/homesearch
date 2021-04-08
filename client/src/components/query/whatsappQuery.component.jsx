@@ -2,7 +2,6 @@ import * as Yup from 'yup';
 
 import {
 	Box,
-	Button,
 	CircularProgress,
 	Dialog,
 	DialogTitle as MuiDialogTitle,
@@ -12,13 +11,19 @@ import {
 import { Form, Formik } from 'formik';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 
+import { Button } from '../customMaterialComponents/button.component';
 import CloseIcon from '@material-ui/icons/Close';
+import DividerHeading from '../DividerHeadinng/dividerHeading.component';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import IconButton from '@material-ui/core/IconButton';
+import PhoneLockedIcon from '@material-ui/icons/PhoneLocked';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from '../../components/formik/textField.component';
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { apiUrl } from '../../utils/render.utils';
 import axios from 'axios';
+import { capitalizeFirstLetter } from '../../utils/render.utils';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectUser } from '../../redux/auth/auth.selectors';
@@ -28,8 +33,6 @@ import { useStyles as usePageStyle } from '../../pages/projectPage/project.style
 
 // Redux
 
-
-
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -37,7 +40,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const styles = (theme) => ({
 	root: {
 		margin: 0,
-		padding: theme.spacing(2),
+		padding: theme.spacing(1),
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
@@ -72,7 +75,19 @@ const DialogTitle = withStyles(styles)((props) => {
 	);
 });
 
-function AlertDialogSlide({ open, handleClose, id, user, type }) {
+function AlertDialogSlide({
+	open,
+	handleClose,
+	id,
+	user,
+	type,
+	propertyFor,
+	url,
+	whatsAppNumber,
+	title,
+	projectTitle,
+	role,
+}) {
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const classes = usePageStyle();
@@ -85,9 +100,15 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 		error: null,
 	});
 
+	// Copy Status
+	const [copySuccess, setCopySuccess] = React.useState('Copy');
+
 	// Query ID
 	const [queryId, setQueryID] = React.useState(null);
-	const [phoneNumber, setPhoneNumber] = React.useState(null);
+	const [details, setDetails] = React.useState({
+		name: '',
+		phoneNumber: '',
+	});
 	const [successMessage, setSuccessMessage] = React.useState(null);
 
 	const validationSchema = Yup.object({
@@ -114,7 +135,6 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 		name: user.name,
 		email: user.email,
 		phoneNumber: user.number,
-		message: '',
 		open,
 	};
 
@@ -122,12 +142,51 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 		if (!open) {
 			setSuccessMessage(null);
 			setQueryID(null);
-			setPhoneNumber(null);
+			setDetails({
+				name: '',
+				phoneNumber: '',
+			});
+			setAsyncState({
+				loading: false,
+				error: null,
+			});
 			if (typeof cancelToken != typeof undefined) {
 				cancelToken.cancel('Operation canceled due to new request');
 			}
 		}
 	}, [open]);
+
+	const renderPostedBy = () => {
+		if (type === 'project' || type === 'projectProperty') {
+			return 'Builder';
+		} else {
+			return capitalizeFirstLetter(role);
+		}
+	};
+
+	const redirectToWhatsapp = (values) => {
+		const number = `91${whatsAppNumber}`;
+		let text = `Hello, I am ${values.name} (Homesearch User) and I am interested for ${title}`;
+
+		if (type === 'projectProperty') {
+			text += ` in ${projectTitle}`;
+		}
+		console.log(`https://wa.me/${number}?text=${encodeURI(text)}`);
+		window.location.href = `https://wa.me/${number}?text=${encodeURI(
+			text
+		)}`;
+		// showSnackbar('We will get back to you soon');
+	};
+
+	// Copy To Clipboard
+	const copyToClipBoard = (copyMe) => async () => {
+		try {
+			await navigator.clipboard.writeText(copyMe);
+			setCopySuccess('Copied!');
+		} catch (err) {
+			setCopySuccess('Failed to copy!');
+		}
+	};
 
 	const submitForm = async (values) => {
 		try {
@@ -137,26 +196,29 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 			});
 			cancelToken = axios.CancelToken.source();
 			const res = await axios.post(
-				apiUrl('/queries/project'),
+				apiUrl('/wh-queries'),
 				{
 					userName: values.name,
 					email: values.email,
 					phoneNumber: values.phoneNumber,
 					sendOTP: values.phoneNumber !== user.number,
 					type,
-					project: id,
+					[type]: id,
+					propertyFor,
 				},
 				{
 					cancelToken: cancelToken.token,
 				}
 			);
 			if (values.phoneNumber !== user.number) {
-				setPhoneNumber(values.phoneNumber);
 				setQueryID(res.data.data.query.id);
+				setDetails({
+					name: values.name,
+					phoneNumber: values.phoneNumber,
+				});
 			} else {
-				setSuccessMessage(
-					'Thank you for showing interest, we will get back to you soon'
-				);
+				setSuccessMessage('Thank you for showing interest');
+				redirectToWhatsapp({ name: values.name });
 			}
 			setAsyncState({
 				error: null,
@@ -164,7 +226,7 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 			});
 		} catch (error) {
 			setQueryID(null);
-			setPhoneNumber(null);
+			setDetails(null);
 			if (error.response) {
 				setAsyncState({
 					error: error.response.data.message,
@@ -185,8 +247,8 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 				loading: true,
 			});
 			cancelToken = axios.CancelToken.source();
-			await axios.post(
-				apiUrl('/queries/project/validate-otp'),
+			const resp = await axios.post(
+				apiUrl('/wh-queries/validate-query'),
 				{
 					id: queryId,
 					otp: values.otp,
@@ -200,10 +262,9 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 				error: null,
 				loading: false,
 			});
-			setSuccessMessage(
-				'Thank you for showing interest, we will get back to you soon'
-			);
+			redirectToWhatsapp(details);
 		} catch (error) {
+			setDetails(null);
 			// setQueryID(null);
 			setSuccessMessage(null);
 			if (error.response) {
@@ -219,6 +280,12 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 			}
 		}
 	};
+
+	const shareUrl = url
+		? url
+		: `https://homesearch18.com/#/${
+				type === 'project' ? 'project' : 'property-details'
+		  }/${id}`;
 
 	const buttonProps = {};
 
@@ -237,19 +304,45 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 				aria-describedby="alert-dialog-slide-description"
 			>
 				<DialogTitle id="customized-dialog-title" onClose={handleClose}>
-					Please tell us something about yourself
+					Chat with {renderPostedBy()}
 				</DialogTitle>
+
 				<div className={classes.formWrapper}>
 					{asyncState.error && (
 						<p className={globalClasses.errorMessage}>
 							{asyncState.error}
 						</p>
 					)}
-					{successMessage ? (
-						<p className={globalClasses.successMessage}>
-							{successMessage}
-						</p>
-					) : queryId ? (
+					<Box mb="1rem">
+						<DividerHeading>Copy Link</DividerHeading>
+					</Box>
+					<Box width="100%" display="flex" alignItems="stretch">
+						<Box
+							flex={1}
+							className={globalClasses.lightBackground}
+							display="flex"
+							alignItems="center"
+							p="0.5rem"
+						>
+							<span style={{ wordBreak: 'break-all' }}>
+								{shareUrl}
+							</span>
+						</Box>
+						<Button
+							variant="contained"
+							color="primary"
+							className={classes.button}
+							startIcon={<FileCopyIcon />}
+							onClick={copyToClipBoard(shareUrl)}
+						>
+							{copySuccess}
+						</Button>
+					</Box>
+					<Box mt="1rem" mb="1rem">
+						<DividerHeading>Chat On Whatsapp</DividerHeading>
+					</Box>
+
+					{queryId ? (
 						<Formik
 							initialValues={{ otp: '' }}
 							validationSchema={validationSchemaOTP}
@@ -260,7 +353,7 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 								<Form>
 									<TextField
 										name="otp"
-										formLabel={`Enter OTP sent to ${phoneNumber}`}
+										formLabel={`Enter OTP sent to ${details.phoneNumber}`}
 										type="text"
 										disabled={asyncState.loading}
 									/>
@@ -274,9 +367,11 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 											color="primary"
 											variant="contained"
 											type="submit"
+											size="large"
+											startIcon={<WhatsAppIcon />}
 											{...buttonProps}
 										>
-											Submit
+											Chat Now
 										</Button>
 									</Box>
 								</Form>
@@ -307,13 +402,7 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 										name="phoneNumber"
 										disabled={asyncState.loading}
 									/>
-									<TextField
-										formLabel="Message (Optional)"
-										name="message"
-										rows={4}
-										multiline
-										disabled={asyncState.loading}
-									/>
+
 									<Box
 										mt="1rem"
 										display="flex"
@@ -323,10 +412,12 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 											color="primary"
 											variant="contained"
 											type="submit"
-											{...buttonProps}
 											disabled={asyncState.loading}
+											size="large"
+											startIcon={<PhoneLockedIcon />}
+											{...buttonProps}
 										>
-											Submit
+											Validate Number
 										</Button>
 									</Box>
 								</Form>
@@ -341,14 +432,16 @@ function AlertDialogSlide({ open, handleClose, id, user, type }) {
 
 AlertDialogSlide.propTypes = {
 	open: PropTypes.bool.isRequired,
+	url: PropTypes.string,
+	whatsAppNumber: PropTypes.string,
+	projectTitle: PropTypes.string,
+	role: PropTypes.string,
+	title: PropTypes.string,
 	handleClose: PropTypes.func.isRequired,
 	id: PropTypes.number.isRequired,
-	user: PropTypes.shape({
-		name: PropTypes.string,
-		email: PropTypes.string.isRequired,
-		number: PropTypes.string.isRequired,
-	}),
-	type: PropTypes.oneOf(['project', 'projectproperty']),
+	type: PropTypes.oneOf(['property', 'project', 'projectProperty'])
+		.isRequired,
+	propertyFor: PropTypes.oneOf(['rent', 'resale']),
 };
 
 const mapStateToProps = createStructuredSelector({
