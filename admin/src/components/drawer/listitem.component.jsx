@@ -676,6 +676,16 @@ const MainListItems = ({
 								<ApartmentIcon style={{ color: green[500] }} />
 							</ListItemIcon>
 							<ListItemText primary="Expired properties" />
+						</ListItem>,
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={onUsersClick('/wh-queries/rent')}
+						>
+							<ListItemIcon>
+								<ApartmentIcon style={{ color: green[500] }} />
+							</ListItemIcon>
+							<ListItemText primary="Whatsapp Queries" />
 						</ListItem>
 					)}
 				</List>

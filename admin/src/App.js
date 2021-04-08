@@ -55,6 +55,7 @@ import TypeHOC from './components/hoc/hocForAdminTYpe.component';
 import TypeProtected from './components/typeProtected/typeProtected.component';
 import Users from './pages/users/users.component';
 import ViewCitiesPage from './pages/getCities/getCities.componet';
+import WhQueries from './pages/whQueries/whQueries.component';
 import Workspace from './pages/workspace/workspace.page';
 
 // components
@@ -62,6 +63,7 @@ import Workspace from './pages/workspace/workspace.page';
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const ManageTaskPropertyPageWithDrawer = Drawer(ManageTaskProperty);
+const WhQueriesPageWithDrawer = Drawer(WhQueries);
 const EditPropertyAdvertisementPageWithDrawer = Drawer(
 	EditPropertyAdvertisement
 );
@@ -128,6 +130,16 @@ function App(props) {
 					render={() => (
 						<Protected
 							component={DashboardPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/wh-queries/:type"
+					render={() => (
+						<Protected
+							component={WhQueriesPageWithDrawer}
 							{...props}
 						/>
 					)}
