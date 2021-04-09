@@ -8,7 +8,7 @@ import { AlignCenter } from '../flexContainer/flexContainer.component';
 import ContactDialogueWithMessage from '../query/projectQuery.component';
 import DoneIcon from '@material-ui/icons/Done';
 import { Link } from 'react-router-dom';
-import PropertyShare from '../propertyShare/propertyShare.component';
+import PropertyShare from '../query/whatsappQuery.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { handleRERA } from '../../utils/render.utils';
@@ -53,10 +53,14 @@ const ResultCard = ({ property, propertyItems }) => {
 	return (
 		<Paper>
 			<PropertyShare
-				status={open}
+				open={open}
 				handleClose={handleClose}
-				data={property}
-				project={true}
+				id={property.id}
+				propertyFor={null}
+				type={'project'}
+				title={property.title}
+				whatsAppNumber={property.builder.phoneNumber}
+				role={null}
 			/>
 			<ContactDialogueWithMessage
 				open={contactOpen}

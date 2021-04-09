@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
-		backgroundColor: theme.fontColorThree,
 		color: '#000000',
 	},
 	link: {

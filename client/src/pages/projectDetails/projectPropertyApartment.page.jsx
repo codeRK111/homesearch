@@ -13,7 +13,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import PersonIcon from '@material-ui/icons/Person';
 import PropertyImages from '../../components/propertyImages/propertyImages.component';
-import PropertyShare from '../../components/propertyShare/propertyShare.component';
+import PropertyShare from '../../components/query/whatsappQuery.component';
 import React from 'react';
 import SearchFeedbackForm from '../../components/searchFeedbackForm/searchFeedBackForm.component';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
@@ -62,13 +62,16 @@ const PropertyDetails = ({ property }) => {
 	return (
 		<Box className={classes.pageWrapper}>
 			<PropertyShare
-				status={propertyShareOpen}
+				open={propertyShareOpen}
 				handleClose={handlePropertyShareClose}
-				data={property}
-				projectInfo={property.project}
-				project={true}
+				id={property.id}
+				propertyFor={null}
+				type={'projectProperty'}
+				title={property.title}
 				whatsAppNumber={property['project']['builder']['phoneNumber']}
-				url={`www.homesearch18.com/#/project-property/${property.id}`}
+				role={null}
+				url={`https://homesearch18.com/#/project-property/${property.id}`}
+				projectTitle={property['project']['title']}
 			/>
 			<ContactDialogueWithMessage
 				status={open}

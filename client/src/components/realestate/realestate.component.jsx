@@ -1,4 +1,4 @@
-import { Box, Grid } from '@material-ui/core';
+import { Avatar, Box, Button, Card, CardHeader, Grid } from '@material-ui/core';
 import {
 	selectGetPropertyCountLoading,
 	selectProjectCount,
@@ -7,7 +7,6 @@ import {
 } from '../../redux/property/property.selectors';
 
 import BusinessIcon from '@material-ui/icons/Business';
-import Counter from '../propertyCounter/propertyCounter.component';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import React from 'react';
@@ -38,12 +37,7 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: 'none',
 	},
 	avatar: {
-		width: '6rem',
-		height: '6rem',
-		backgroundColor: 'transparent',
-		marginBottom: '0.5rem',
-		boxShadow:
-			'0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
+		backgroundColor: '#8e44ad',
 	},
 	icon: {
 		fontSize: '3rem',
@@ -64,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
 			width: '100%',
 			marginTop: '1rem',
 		},
+	},
+	fullHeight: {
+		height: '100%',
 	},
 }));
 
@@ -88,135 +85,256 @@ const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 				praesentium, atque alias impedit quia. Modi quibusdam ducimus ea
 				repellat quod.
 			</p>
-			<Box mt="4rem">
-				<Grid container spacing={0}>
+			<Box mt="4rem" p="1rem">
+				<Grid container spacing={3}>
 					<Grid item xs={12} md={4}>
-						<Box
-							display="flex"
-							flexDirection="column"
-							alignItems="center"
-							className={classes.benifitWrapper}
-						>
-							<EmojiTransportationIcon className={classes.icon} />
-
-							<b>Project in {defaultCity.name}</b>
-							<Box mt="2rem" width="100%">
-								{loading && <Skeleton count={3} />}
-								{!loading && project && (
-									<Counter
-										pFor="project"
-										city={defaultCity}
-										details={[
-											{
-												label: 'Apartment',
-												value: project.apartment,
-												type: 'flat',
-											},
-											{
-												label: 'Independent House',
-												value: project.villa,
-												type: 'independenthouse',
-											},
-											{
-												label: 'Land',
-												value: project.land,
-												type: 'land',
-											},
-										]}
-									/>
-								)}
+						<Card className={classes.fullHeight} elevation={1}>
+							<Box
+								display="flex"
+								flexDirection="column"
+								alignItems="center"
+							>
+								<EmojiTransportationIcon
+									className={classes.icon}
+								/>
+								<b>Project in {defaultCity.name}</b>
+								<Box mt="2rem" width="100%">
+									{loading && <Skeleton count={3} />}
+									{!loading && project && (
+										<div>
+											<CardHeader
+												avatar={
+													<Avatar
+														aria-label="recipe"
+														className={
+															classes.avatar
+														}
+													>
+														A
+													</Avatar>
+												}
+												action={
+													<Button size="small">
+														View All
+													</Button>
+												}
+												title="Apartment"
+												subheader={`${project.apartment} properties`}
+											/>
+											<CardHeader
+												avatar={
+													<Avatar
+														aria-label="recipe"
+														className={
+															classes.avatar
+														}
+													>
+														I
+													</Avatar>
+												}
+												action={
+													<Button size="small">
+														View All
+													</Button>
+												}
+												title="Independent House"
+												subheader={`${project.villa} properties`}
+											/>
+											<CardHeader
+												avatar={
+													<Avatar
+														aria-label="recipe"
+														className={
+															classes.avatar
+														}
+													>
+														L
+													</Avatar>
+												}
+												action={
+													<Button size="small">
+														View All
+													</Button>
+												}
+												title="Land"
+												subheader={`${project.land} properties`}
+											/>
+										</div>
+									)}
+								</Box>
 							</Box>
-							{/* <p className={classes.description}>
-								Lorem ipsum dolor sit amet consectetur,
-								adipisicing elit. Quae ut eum, nisi eveniet unde
-							</p>
-							<Box>
-								<Link className={classes.link} to="/">
-									View all &#8594;
-								</Link>
-							</Box> */}
-						</Box>
+						</Card>
 					</Grid>
 					<Grid item xs={12} md={4}>
-						<Box
-							display="flex"
-							flexDirection="column"
-							alignItems="center"
-							className={classes.benifitWrapper}
-						>
-							<BusinessIcon className={classes.icon} />
-
-							<b>Resale property in {defaultCity.name}</b>
-							<Box mt="2rem" width="100%">
-								{loading && <Skeleton count={3} />}
-								{!loading && sale && (
-									<Counter
-										pFor="sale"
-										city={defaultCity}
-										details={[
-											{
-												label: 'Apartment',
-												value: sale.apartment,
-												type: 'flat',
-											},
-											{
-												label: 'Independent House',
-												value: sale.villa,
-												type: 'independenthouse',
-											},
-											{
-												label: 'Land',
-												value: sale.land,
-												type: 'land',
-											},
-										]}
-									/>
-								)}
+						<Card className={classes.fullHeight}>
+							<Box
+								display="flex"
+								flexDirection="column"
+								alignItems="center"
+							>
+								<BusinessIcon className={classes.icon} />
+								<b>Resale property in {defaultCity.name}</b>
+								<Box mt="2rem" width="100%">
+									{loading && <Skeleton count={3} />}
+									{!loading && sale && (
+										<div>
+											<CardHeader
+												avatar={
+													<Avatar
+														aria-label="recipe"
+														className={
+															classes.avatar
+														}
+													>
+														A
+													</Avatar>
+												}
+												action={
+													<Button size="small">
+														View All
+													</Button>
+												}
+												title="Apartment"
+												subheader={`${sale.apartment} properties`}
+											/>
+											<CardHeader
+												avatar={
+													<Avatar
+														aria-label="recipe"
+														className={
+															classes.avatar
+														}
+													>
+														I
+													</Avatar>
+												}
+												action={
+													<Button size="small">
+														View All
+													</Button>
+												}
+												title="Independent House"
+												subheader={`${sale.villa} properties`}
+											/>
+											<CardHeader
+												avatar={
+													<Avatar
+														aria-label="recipe"
+														className={
+															classes.avatar
+														}
+													>
+														L
+													</Avatar>
+												}
+												action={
+													<Button size="small">
+														View All
+													</Button>
+												}
+												title="Land"
+												subheader={`${sale.land} properties`}
+											/>
+										</div>
+									)}
+								</Box>
 							</Box>
-						</Box>
+						</Card>
 					</Grid>
 					<Grid item xs={12} md={4}>
-						<Box
-							display="flex"
-							flexDirection="column"
-							alignItems="center"
-							className={classes.benifitWrapper}
-						>
-							<LocationCityIcon className={classes.icon} />
-
-							<b>Rental property in {defaultCity.name}</b>
-							<Box mt="2rem" width="100%">
-								{loading && <Skeleton count={3} />}
-								{!loading && rent && (
-									<Counter
-										pFor="rent"
-										city={defaultCity}
-										details={[
-											{
-												label: 'Apartment',
-												value: rent.apartment,
-												type: 'flat',
-											},
-											{
-												label: 'Independent House',
-												value: rent.villa,
-												type: 'independenthouse',
-											},
-											{
-												label: 'Hostel',
-												value: rent.hostel,
-												type: 'hostel',
-											},
-											{
-												label: 'PG',
-												value: rent.PG,
-												type: 'pg',
-											},
-										]}
-									/>
-								)}
+						<Card className={classes.fullHeight}>
+							<Box
+								display="flex"
+								flexDirection="column"
+								alignItems="center"
+							>
+								<LocationCityIcon className={classes.icon} />
+								<b>Rental property in {defaultCity.name}</b>
+								<Box mt="2rem" width="100%">
+									{loading && <Skeleton count={3} />}
+									{!loading && rent && (
+										<div>
+											<CardHeader
+												avatar={
+													<Avatar
+														aria-label="recipe"
+														className={
+															classes.avatar
+														}
+													>
+														A
+													</Avatar>
+												}
+												action={
+													<Button size="small">
+														View All
+													</Button>
+												}
+												title="Apartment"
+												subheader={`${rent.apartment} properties`}
+											/>
+											<CardHeader
+												avatar={
+													<Avatar
+														aria-label="recipe"
+														className={
+															classes.avatar
+														}
+													>
+														I
+													</Avatar>
+												}
+												action={
+													<Button size="small">
+														View All
+													</Button>
+												}
+												title="Independent House"
+												subheader={`${rent.villa} properties`}
+											/>
+											<CardHeader
+												avatar={
+													<Avatar
+														aria-label="recipe"
+														className={
+															classes.avatar
+														}
+													>
+														H
+													</Avatar>
+												}
+												action={
+													<Button size="small">
+														View All
+													</Button>
+												}
+												title="Hostel"
+												subheader={`${rent.hostel} properties`}
+											/>
+											<CardHeader
+												avatar={
+													<Avatar
+														aria-label="recipe"
+														className={
+															classes.avatar
+														}
+													>
+														P
+													</Avatar>
+												}
+												action={
+													<Button size="small">
+														View All
+													</Button>
+												}
+												title="PG"
+												subheader={`${rent.PG} properties`}
+											/>
+										</div>
+									)}
+								</Box>
 							</Box>
-						</Box>
+						</Card>
 					</Grid>
 				</Grid>
 			</Box>

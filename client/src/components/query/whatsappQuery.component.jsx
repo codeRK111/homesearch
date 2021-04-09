@@ -195,17 +195,22 @@ function AlertDialogSlide({
 				loading: true,
 			});
 			cancelToken = axios.CancelToken.source();
+			const requestPayload = {
+				userName: values.name,
+				email: values.email,
+				phoneNumber: values.phoneNumber,
+				sendOTP: values.phoneNumber !== user.number,
+				type,
+				[type]: id,
+			};
+			if (type !== 'project' && type !== 'projectProperty') {
+				requestPayload.propertyFor = propertyFor;
+			} else {
+				requestPayload.propertyFor = type;
+			}
 			const res = await axios.post(
 				apiUrl('/wh-queries'),
-				{
-					userName: values.name,
-					email: values.email,
-					phoneNumber: values.phoneNumber,
-					sendOTP: values.phoneNumber !== user.number,
-					type,
-					[type]: id,
-					propertyFor,
-				},
+				requestPayload,
 				{
 					cancelToken: cancelToken.token,
 				}
@@ -417,7 +422,7 @@ function AlertDialogSlide({
 											startIcon={<PhoneLockedIcon />}
 											{...buttonProps}
 										>
-											Validate Number
+											Validate Number And Chat
 										</Button>
 									</Box>
 								</Form>

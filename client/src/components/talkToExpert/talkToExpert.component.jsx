@@ -12,16 +12,16 @@ import {
 } from '../../redux/contact/contact.selectors';
 
 import React from 'react';
+import Skeleton from '@material-ui/lab/Skeleton';
 import Snackbar from '../snackbar/snackbar.component';
 import TextField from '../../components/formik/textField.component';
+import { apiUrl } from '../../utils/render.utils';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectUser } from '../../redux/auth/auth.selectors';
-import useStyles from './talkToExport.styles';
-import axios from 'axios';
-import { apiUrl } from '../../utils/render.utils';
 import useGlobalStyle from '../../common.style';
-import Skeleton from '@material-ui/lab/Skeleton';
+import useStyles from './talkToExport.styles';
 
 const Loader = () => {
 	return (

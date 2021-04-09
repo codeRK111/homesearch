@@ -8,7 +8,7 @@ import {
 import { AlignCenter } from '../flexContainer/flexContainer.component';
 import ContactDialogueWithMessage from '../query/projectQuery.component';
 import { Link } from 'react-router-dom';
-import PropertyShare from '../propertyShare/propertyShare.component';
+import PropertyShare from '../query/projectQuery.component';
 import React from 'react';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import useStyles from './searchResultCard.styles';
@@ -53,10 +53,14 @@ const ResultCard = ({ independent, property, propertyItems }) => {
 	return (
 		<Paper>
 			<PropertyShare
-				status={open}
+				open={open}
 				handleClose={handleClose}
-				data={property}
-				project={true}
+				id={property.id}
+				propertyFor={null}
+				type={'project'}
+				title={property.title}
+				whatsAppNumber={property.builder.phoneNumber}
+				role={null}
 			/>
 			<ContactDialogueWithMessage
 				open={contactOpen}

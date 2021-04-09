@@ -14,7 +14,7 @@ import LegalClearance from '../detailsPageNew/legalClearance.component';
 import NearByPlaces from '../detailsPageNew/nearByPlaces.component';
 import PersonIcon from '@material-ui/icons/Person';
 import PropertyImages from '../../components/propertyImages/propertyImages.component';
-import PropertyShare from '../../components/propertyShare/propertyShare.component';
+import PropertyShare from '../../components/query/whatsappQuery.component';
 import React from 'react';
 import SearchFeedbackForm from '../../components/searchFeedbackForm/searchFeedBackForm.component';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
@@ -68,10 +68,14 @@ const PropertyDetails = ({ project, properties, info }) => {
 	return (
 		<Box>
 			<PropertyShare
-				status={propertyShareOpen}
+				open={propertyShareOpen}
 				handleClose={handlePropertyShareClose}
-				data={project}
-				project={true}
+				id={project.id}
+				propertyFor={null}
+				type={'project'}
+				title={project.title}
+				whatsAppNumber={project.builder.phoneNumber}
+				role={null}
 			/>
 			<ContactDialogueWithMessage
 				open={open}

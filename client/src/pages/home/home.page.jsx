@@ -9,27 +9,28 @@ import Realestate from '../../components/realestate/realestate.component';
 import Row from '../../components/row/row.component';
 import Search from '../../components/searches/searches.component';
 import SearchProperty from '../../components/searchProperty/searchProperty.component';
-import Testimonial from '../../components/testimonial/testimonial.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectDefaultCity } from '../../redux/city/city.selectors';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useStyles from './home.style';
 
 // External components
 
 const HomePage = ({ defaultCity }) => {
 	const mobile = useMediaQuery('(max-width:600px)');
+	const classes = useStyles();
 
 	const spacing = {
 		p: mobile ? '1rem' : '2rem',
 		mt: mobile ? '1rem' : '2rem',
 	};
 	const spacing3 = {
-		p: mobile ? '0' : '3rem',
-		mt: mobile ? '1rem' : '3rem',
+		p: mobile ? '0' : '1rem',
+		mt: mobile ? '1rem' : '1rem',
 	};
 	return (
-		<div>
+		<div className={classes.bg}>
 			<Appbar />
 			<SearchProperty />
 
@@ -52,12 +53,7 @@ const HomePage = ({ defaultCity }) => {
 			<Box>
 				<Enquiery />
 			</Box>
-			<Box {...spacing3}>
-				<Heading title="What our client say ?" />
-			</Box>
-			<Box p={mobile ? '0 1rem' : '2rem'} mb="1rem">
-				<Testimonial />
-			</Box>
+
 			<Search />
 			<Footer />
 		</div>
