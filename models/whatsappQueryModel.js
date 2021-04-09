@@ -76,7 +76,7 @@ const whatsappQuerySchema = new Schema(
 		propertyFor: {
 			type: String,
 			enum: {
-				values: ['rent', 'sale'],
+				values: ['rent', 'sale', 'project', 'projectProperty'],
 			},
 			default: null,
 		},
