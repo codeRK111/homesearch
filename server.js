@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const Agenda = require('agenda');
 const Property = require('./models/propertyModel');
+const WhatsappQuery = require('./models/whatsappQueryModel');
 const moment = require('moment');
 
 // HANDLE GLOBAL UNHANDLED EXCEPTION
@@ -12,7 +13,6 @@ process.on('uncaughtException', (error) => {
 });
 
 dotenv.config({ path: './config.env' });
-console.log(moment().add(7, 'days').format())
 
 const dbString = process.env.REMOTE_DATABASE_URL;
 const agenda = new Agenda({ db: { address: dbString } });
@@ -36,6 +36,7 @@ agenda.define('handleExpired', async (job) => {
 		},
 		{ status: 'expired' }
 	);
+	await WhatsappQuery.deleteMany({ verified: false });
 });
 
 (async function () {

@@ -1,15 +1,17 @@
-import { Box, Grid, Paper } from '@material-ui/core';
+import { Box, Button, Divider, Grid, Paper } from '@material-ui/core';
 
 import { AlignCenter } from '../flexContainer/flexContainer.component';
-import ContactDialogueWithMessage from '../contactOwner/contactOwnerProject.component';
+import ContactDialogueWithMessage from '../query/propertyQuery.component';
+import { Button as CustomButton } from '../customMaterialComponents/button.component';
 import { Link } from 'react-router-dom';
-import PropertyShare from '../propertyShare/propertyShare.component';
+import PropertyShare from '../query/whatsappQuery.component';
 import React from 'react';
 import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { capitalizeFirstLetter } from '../../utils/render.utils';
 import useStyles from './similarProjects.styles';
 
+// import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 const imgSrc = (property) => {
 	if (property.image1) {
 		return `/assets/properties/${property.image1}`;
@@ -45,15 +47,20 @@ const Apartment = ({ data }) => {
 	return (
 		<Grid item xs={12} md={3}>
 			<PropertyShare
-				status={open}
+				open={open}
 				handleClose={handleClose}
-				data={data}
+				id={data.id}
+				propertyFor={data['for']}
+				type={'property'}
+				title={data.title}
+				whatsAppNumber={data.userId.number}
+				role={data.userId.role}
 			/>
 			<ContactDialogueWithMessage
-				status={contactOpen}
+				open={contactOpen}
 				handleClose={handleContactClose}
-				title={'Get offer'}
-				property={data}
+				id={data.id}
+				owner={data.userId.id}
 			/>
 			<Paper className={classes.cardWrapper} elevation={5}>
 				<Box
@@ -112,26 +119,35 @@ const Apartment = ({ data }) => {
 							</span>
 						</b>
 					</Box>
-					<Box
-						mt="1rem"
-						display="flex"
-						justifyContent="space-between"
-					>
-						<button
-							className={classes.shortlist}
-							onClick={handleOpen}
-						>
-							<AlignCenter>
-								<WhatsAppIcon className={classes.shareIcon} />{' '}
-								Chat now
-							</AlignCenter>
-						</button>
-						<button
-							className={classes.details}
-							onClick={handleContactOpen}
-						>
-							Get {capitalizeFirstLetter(data.postedBy)} Details
-						</button>
+					<Box p="0.5rem">
+						<Divider />
+					</Box>
+					<Box>
+						<Grid container>
+							<Grid item xs={12} md={5}>
+								<Button
+									fullWidth
+									variant="text"
+									color="primary"
+									size="small"
+									onClick={handleOpen}
+								>
+									Chat Now
+								</Button>
+							</Grid>
+							<Grid item xs={12} md={7}>
+								<Button
+									fullWidth
+									variant="text"
+									color="primary"
+									size="small"
+									onClick={handleContactOpen}
+								>
+									Get {capitalizeFirstLetter(data.postedBy)}{' '}
+									Details
+								</Button>
+							</Grid>
+						</Grid>
 					</Box>
 				</Box>
 			</Paper>

@@ -26,6 +26,7 @@ import PropertyImages from '../../components/propertyImages/propertyImages.compo
 import PropertyShare from '../../components/query/whatsappQuery.component';
 import React from 'react';
 import RentApartment from '../../components/similarProjects/rentApartment.component';
+import Report from '../../components/report/report.component';
 import RequestPhoto from '../../components/requestPhoto/requestPhoto.component';
 import SearchFeedbackForm from '../../components/searchFeedbackForm/searchFeedBackForm.component';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
@@ -119,7 +120,13 @@ const DetailsPage = ({
 			case 'independenthouse':
 			case 'hostel':
 			case 'pg':
-				return <RentApartment city={data.city.id} type={data.type} />;
+				return (
+					<RentApartment
+						city={data.city.id}
+						type={data.type}
+						exclude={data.id}
+					/>
+				);
 
 			default:
 				break;
@@ -163,6 +170,15 @@ const DetailsPage = ({
 					data && (
 						<Box className={classes.pageWrapper}>
 							<AppBar />
+							{/* <div
+								style={{
+									position: 'fixed',
+									bottom: 0,
+									right: 0,
+								}}
+							>
+								<Report />
+							</div> */}
 							<PropertyShare
 								open={propertyShareOpen}
 								handleClose={handlePropertyShareClose}
@@ -529,7 +545,6 @@ const DetailsPage = ({
 										<Box mt="1rem">
 											{data && (
 												<>
-													<h3>Similar Properties</h3>
 													{renderSimilarProperties(
 														data
 													)}

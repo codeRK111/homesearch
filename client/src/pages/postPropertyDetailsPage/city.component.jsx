@@ -1,4 +1,9 @@
+import '@szhsin/react-menu/dist/index.css';
+import './menu.css';
+
 import { Box, TextField as MTextField } from '@material-ui/core';
+import { ControlledMenu, MenuItem } from '@szhsin/react-menu';
+
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -7,9 +12,7 @@ import { searchCities } from '../../redux/city/city.actions';
 import { selectSearchCityLoading } from '../../redux/city/city.selectors';
 import { selectUser } from '../../redux/auth/auth.selectors';
 import useStyles from '../profile/profile.styles';
-import { ControlledMenu, MenuItem } from '@szhsin/react-menu';
-import '@szhsin/react-menu/dist/index.css';
-import './menu.css';
+
 const City = ({
 	searchCities,
 	searchCityLoading,

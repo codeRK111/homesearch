@@ -60,10 +60,14 @@ const Apartment = ({
 					<Skeleton />
 				</Box>
 			) : (
-				!asyncError && (
-					<Grid container spacing={3}>
-						{data.map((c) => renderRentItems(c))}
-					</Grid>
+				!asyncError &&
+				data.length > 0 && (
+					<div>
+						<h3>Similar Properties</h3>
+						<Grid container spacing={3}>
+							{data.map((c) => renderRentItems(c))}
+						</Grid>
+					</div>
 				)
 			)}
 		</Box>

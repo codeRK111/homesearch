@@ -16,6 +16,7 @@ import { createStructuredSelector } from 'reselect';
 import { getPropertyCount } from '../../redux/property/property.actions';
 import { makeStyles } from '@material-ui/core/styles';
 import { selectDefaultCity } from '../../redux/city/city.selectors';
+import { useHistory } from 'react-router-dom';
 
 // Custom Components
 
@@ -66,6 +67,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 	const classes = useStyles();
+	const history = useHistory();
+
+	const viewAll = (pFor, type) => () => {
+		history.push(
+			`/browse?f=${pFor}&c=${defaultCity.id}&cn=${encodeURIComponent(
+				defaultCity.name
+			)}&t=${type}&p=1`
+		);
+	};
 	React.useEffect(() => {
 		getCount(defaultCity.id, () => {});
 	}, [defaultCity.id, getCount]);
@@ -114,7 +124,13 @@ const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 													</Avatar>
 												}
 												action={
-													<Button size="small">
+													<Button
+														size="small"
+														onClick={viewAll(
+															'project',
+															'flat'
+														)}
+													>
 														View All
 													</Button>
 												}
@@ -133,7 +149,13 @@ const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 													</Avatar>
 												}
 												action={
-													<Button size="small">
+													<Button
+														size="small"
+														onClick={viewAll(
+															'project',
+															'independenthouse'
+														)}
+													>
 														View All
 													</Button>
 												}
@@ -152,7 +174,13 @@ const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 													</Avatar>
 												}
 												action={
-													<Button size="small">
+													<Button
+														size="small"
+														onClick={viewAll(
+															'project',
+															'land'
+														)}
+													>
 														View All
 													</Button>
 												}
@@ -190,7 +218,13 @@ const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 													</Avatar>
 												}
 												action={
-													<Button size="small">
+													<Button
+														size="small"
+														onClick={viewAll(
+															'sale',
+															'flat'
+														)}
+													>
 														View All
 													</Button>
 												}
@@ -209,7 +243,13 @@ const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 													</Avatar>
 												}
 												action={
-													<Button size="small">
+													<Button
+														size="small"
+														onClick={viewAll(
+															'sale',
+															'independenthouse'
+														)}
+													>
 														View All
 													</Button>
 												}
@@ -228,7 +268,13 @@ const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 													</Avatar>
 												}
 												action={
-													<Button size="small">
+													<Button
+														size="small"
+														onClick={viewAll(
+															'sale',
+															'land'
+														)}
+													>
 														View All
 													</Button>
 												}
@@ -266,7 +312,13 @@ const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 													</Avatar>
 												}
 												action={
-													<Button size="small">
+													<Button
+														size="small"
+														onClick={viewAll(
+															'rent',
+															'flat'
+														)}
+													>
 														View All
 													</Button>
 												}
@@ -285,7 +337,13 @@ const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 													</Avatar>
 												}
 												action={
-													<Button size="small">
+													<Button
+														size="small"
+														onClick={viewAll(
+															'rent',
+															'independenthouse'
+														)}
+													>
 														View All
 													</Button>
 												}
@@ -304,7 +362,13 @@ const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 													</Avatar>
 												}
 												action={
-													<Button size="small">
+													<Button
+														size="small"
+														onClick={viewAll(
+															'rent',
+															'hostel'
+														)}
+													>
 														View All
 													</Button>
 												}
@@ -323,7 +387,13 @@ const Benifits = ({ defaultCity, loading, project, rent, sale, getCount }) => {
 													</Avatar>
 												}
 												action={
-													<Button size="small">
+													<Button
+														size="small"
+														onClick={viewAll(
+															'rent',
+															'pg'
+														)}
+													>
 														View All
 													</Button>
 												}

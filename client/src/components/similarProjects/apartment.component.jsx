@@ -3,7 +3,7 @@ import { Box, Grid, Paper } from '@material-ui/core';
 import { AlignCenter } from '../flexContainer/flexContainer.component';
 import ContactDialogueWithMessage from '../query/projectQuery.component';
 import { Link } from 'react-router-dom';
-import PropertyShare from '../propertyShare/propertyShare.component';
+import PropertyShare from '../query/whatsappQuery.component';
 import React from 'react';
 import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -45,10 +45,14 @@ const Apartment = ({ property, propertyItems }) => {
 	return (
 		<Grid item xs={12} md={3}>
 			<PropertyShare
-				status={open}
+				open={open}
 				handleClose={handleClose}
-				data={property}
-				project={true}
+				id={property.id}
+				propertyFor={null}
+				type={'project'}
+				title={property.title}
+				whatsAppNumber={property.builder.phoneNumber}
+				role={null}
 			/>
 			<ContactDialogueWithMessage
 				open={contactOpen}

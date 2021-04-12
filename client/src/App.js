@@ -3,7 +3,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import Protected from './components/protected/protected.component';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import SuspenseLoader from './components/suspenseLoader/susPenseLoader.component';
+import SuspenseLoader from './components/initialLoader/initialLoader.component';
 const BrowsePage = lazy(() => import('./pages/browsePage/browse.page'));
 const DetailsPage = lazy(() =>
 	import('./pages/detailsPageNew/detailsPage.component')

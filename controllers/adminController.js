@@ -57,10 +57,14 @@ exports.login = catchAsync(async (req, res, next) => {
 		return next(new AppError('otp not matched', 401));
 	}
 	// 2) Check if user exists && password is correct
-	const admin = await Admin.findOne({ username }).select('+password');
+	const admin = await Admin.findOne({ username }).select('+password +status');
 
 	if (!admin || !(await admin.correctPassword(password, admin.password))) {
 		return next(new AppError('Incorrect email or password', 401));
+	}
+
+	if(admin.status !== 'active'){
+		return next(new AppError('Your account has been disabled', 401));
 	}
 
 	// 3) If everything ok, send token to client

@@ -329,7 +329,7 @@ const MainListItems = ({
 			<ListItemIcon>
 				<ChatIcon color="secondary" />
 			</ListItemIcon>
-			<ListItemText primary="Queries for experts" />
+			<ListItemText primary="Callback requests" />
 		</ListItem>,
 		[
 			{
@@ -815,14 +815,14 @@ const MainListItems = ({
 				</ListItemIcon>
 				<ListItemText primary="Search Feedbacks" />
 			</ListItem>
-			<ListItem button onClick={onUsersClick('/photo-requests')}>
+			{/* <ListItem button onClick={onUsersClick('/photo-requests')}>
 				<ListItemIcon>
 					<CameraAltIcon color="secondary" />
 				</ListItemIcon>
 				<ListItemText primary="Photo Requests" />
 			</ListItem>
 			<KRA />
-			<KPI />
+			<KPI /> */}
 		</div>
 	);
 };

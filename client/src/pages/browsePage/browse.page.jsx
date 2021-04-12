@@ -204,7 +204,7 @@ const SearchPage = ({
 										justifyContent="center"
 									>
 										<Pagination
-											count={Math.round(totalDos / 10)}
+											count={Math.ceil(totalDos / 10)}
 											color="primary"
 											page={Number(parsed.p)}
 											onChange={handleChange}

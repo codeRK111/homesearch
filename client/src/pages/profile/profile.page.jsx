@@ -4,6 +4,7 @@ import {
 	JustifyCenter,
 } from '../../components/flexContainer/flexContainer.component';
 import { Avatar, Box, Button, Grid, Typography } from '@material-ui/core';
+import { Link, useHistory } from 'react-router-dom';
 import {
 	faCalendarAlt,
 	faCheck,
@@ -20,7 +21,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { parseDate } from '../../utils/render.utils';
 import { selectUser } from '../../redux/auth/auth.selectors';
-import { useHistory, Link } from 'react-router-dom';
 import useStyles from './profile.styles';
 
 const ProfilePage = ({ user }) => {
@@ -60,7 +60,7 @@ const ProfilePage = ({ user }) => {
 									size="small"
 									onClick={redirectToProfileUpdatepage}
 								>
-									Edit Profile
+									Update Profile
 								</Button>
 							</Flex>
 

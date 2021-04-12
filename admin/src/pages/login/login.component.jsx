@@ -28,16 +28,7 @@ import { withRouter } from 'react-router-dom';
 
 // import { withRouter } from 'react-router-dom';
 
-
-
-
-
-
-
-
 // import ReCAPTCHA from 'react-google-recaptcha';
-
-
 
 function Alert(props) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -65,8 +56,8 @@ const useStyles = makeStyles((theme) => ({
 function SignIn({ signInStart, isAuthenticated, loading }) {
 	const classes = useStyles();
 	const [errorMessage, setErrorMessage] = React.useState('');
-	const [otpLoading, setOtpLoading] = React.useState(false);
-	const [otpOpen, setOtpOpen] = React.useState(false);
+	const [otpSent, setOTPSent] = React.useState(false);
+	const [otpLoading, setOTPLoading] = React.useState(false);
 	const [buttonDisable, setButtonDisable] = React.useState(true);
 	const [validationError, setValidationError] = React.useState({
 		email: '',
@@ -101,18 +92,19 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 		setOpen(false);
 	};
 
-	const focusOut = (e) => {
-		// axios
-		// 	.get('/api/v1/admin/features/send-otp')
-		// 	.then()
-		// 	.catch((error) => {
-		// 		handleClick('somethink goes wrong');
-		// 	});
-		// setOtpOpen(true);
-	};
-
-	const closeOtpModal = () => {
-		setOtpOpen(false);
+	const sendOTP = (e) => {
+		setOTPLoading(true);
+		axios
+			.get('/api/v1/admin/features/send-otp')
+			.then((_) => {
+				setOTPSent(true);
+				setOTPLoading(false);
+			})
+			.catch((error) => {
+				setOTPLoading(false);
+				setOTPSent(true);
+				handleClick('somethink goes wrong');
+			});
 	};
 
 	const onSubmit = (e) => {
@@ -141,26 +133,28 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 			}));
 		}
 
-		if (!values.otp) {
-			setValidationError((prevState) => ({
-				...prevState,
-				otp: 'Please enter otp',
-			}));
+		if (otpSent) {
+			if (!values.otp) {
+				setValidationError((prevState) => ({
+					...prevState,
+					otp: 'Please enter otp',
+				}));
+			} else {
+				setValidationError((prevState) => ({
+					...prevState,
+					otp: '',
+				}));
+			}
+			if (!values.email || !values.password) return;
+			signInStart(values.email, values.password, values.otp, handleClick);
 		} else {
-			setValidationError((prevState) => ({
-				...prevState,
-				otp: '',
-			}));
+			sendOTP();
 		}
-
-		if (!values.email || !values.password) return;
-		signInStart(values.email, values.password, values.otp, handleClick);
 	};
 
 	return (
 		<Container component="main" maxWidth="xs">
 			{isAuthenticated && <Redirect to="/dashboard" />}
-			<OTPAlert open={otpOpen} handleClose={closeOtpModal} />
 			<Snackbar
 				open={open}
 				autoHideDuration={6000}
@@ -203,6 +197,7 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 									autoComplete="email"
 									autoFocus
 									size="small"
+									disabled={otpSent}
 								/>
 								<TextField
 									error={!!validationError.password}
@@ -220,30 +215,32 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 									type="password"
 									id="password"
 									autoComplete="current-password"
-									onBlur={focusOut}
+									disabled={otpSent}
 									size="small"
 								/>
-								<TextField
-									error={!!validationError.otp}
-									margin="normal"
-									required
-									fullWidth
-									name="otp"
-									onChange={handleChange('otp')}
-									label={
-										validationError.password
-											? 'Error'
-											: 'OTP'
-									}
-									helperText={validationError.password}
-									size="small"
-								/>
+								{otpSent && (
+									<TextField
+										error={!!validationError.otp}
+										margin="normal"
+										required
+										fullWidth
+										name="otp"
+										onChange={handleChange('otp')}
+										label={
+											validationError.password
+												? 'Error'
+												: 'OTP'
+										}
+										helperText={validationError.password}
+										size="small"
+									/>
+								)}
 								{/* <ReCAPTCHA
 									sitekey="6LcK_b0ZAAAAAKH_Ze3nUOw5u200KWzoC22DKFso"
 									onChange={onvalidate}
 								/> */}
 
-								{loading ? (
+								{loading || otpLoading ? (
 									<div className="loading-wrapper">
 										<CircularProgress />
 									</div>
@@ -259,7 +256,7 @@ function SignIn({ signInStart, isAuthenticated, loading }) {
 										// disabled={buttonDisable}
 										className={classes.submit}
 									>
-										Sign In
+										{otpSent ? 'Sign In' : 'Send OTP'}
 									</Button>
 								)}
 							</form>
