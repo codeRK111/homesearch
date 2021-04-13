@@ -4,14 +4,22 @@ import React from 'react';
 import { useField } from 'formik';
 import useStyles from './formik.styles';
 
-const RowSelect = ({ formLabel, ...otherProps }) => {
+const RowSelect = ({ formLabel, spacing = true, ...otherProps }) => {
 	const classes = useStyles();
 	const [field, meta] = useField(otherProps);
 	let helperText = (meta.value || meta.touched) && meta.error;
+
+	const padding = {};
+	const margin = {};
+	if (spacing) {
+		padding.p = '0.5rem';
+		margin.mt = '0.3rem';
+	}
+
 	return (
-		<Box p="0.5rem">
+		<Box {...padding}>
 			<Box className={classes.label}>{formLabel}</Box>
-			<Box mt="0.3rem">
+			<Box {...margin}>
 				<TextField
 					focused={Boolean(helperText)}
 					fullWidth

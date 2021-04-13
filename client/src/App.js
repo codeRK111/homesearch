@@ -1,9 +1,18 @@
-import React, { lazy, Suspense } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import React, { Suspense, lazy } from 'react';
+import {
+	selectAuthenticated,
+	selectUserProfileLoading,
+} from './redux/auth/auth.selectors';
+
+import LogIn from './components/logInDialog/logInDialog.component';
 import Protected from './components/protected/protected.component';
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
 import SuspenseLoader from './components/initialLoader/initialLoader.component';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { loginDialogStatus } from './redux/ui/ui.selectors';
+import { toggleLoginPopup } from './redux/ui/ui.actions';
+
 const BrowsePage = lazy(() => import('./pages/browsePage/browse.page'));
 const DetailsPage = lazy(() =>
 	import('./pages/detailsPageNew/detailsPage.component')
@@ -40,143 +49,165 @@ const ProjectPage = lazy(() => import('./pages/projectPage/project.page'));
 const BuilderPage = lazy(() => import('./pages/builderPage/builder.page'));
 const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
 
-function App() {
+function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
+	const timer = React.useRef(undefined);
+	React.useEffect(() => {
+		console.log({
+			profileLoading,
+			authenticated,
+		});
+		if (!authenticated && !profileLoading && !open) {
+			timer.current = setTimeout(() => {
+				console.log({
+					profileLoading,
+					authenticated,
+				});
+				if (!authenticated && !profileLoading && !open) {
+					toggleLoginPopup(true);
+				}
+			}, 5000);
+		} else {
+			if (typeof timer.current !== undefined) {
+				window.clearTimeout(timer.current);
+				toggleLoginPopup(false);
+			}
+		}
+
+		// I will be deleted while component is unmounting.
+	}, [authenticated, profileLoading]);
+
 	return (
 		<Suspense fallback={<SuspenseLoader />}>
-			<Provider store={store}>
-				<HashRouter>
-					<Switch>
-						<Route
-							exact
-							path="/"
-							render={(props) => <HomePage {...props} />}
-						/>
-						<Route
-							exact
-							path="/login"
-							render={() => <LoginPage />}
-						/>
-						<Route
-							exact
-							path="/reset-password"
-							render={() => <ResetPassword />}
-						/>
-						<Route
-							exact
-							path="/signup"
-							render={() => <SignUpForm />}
-						/>
-						<Route
-							exact
-							path="/otp/:number"
-							render={() => <OTPPage />}
-						/>
-						<Route
-							exact
-							path="/profile"
-							render={(props) => (
-								<Protected
-									component={ProfilePage}
-									{...props}
-									redirect={true}
-								/>
-							)}
-						/>
-						<Route
-							exact
-							path="/update-profile"
-							render={(props) => (
-								<Protected
-									component={ProfileUpdate}
-									redirect
-									{...props}
-								/>
-							)}
-						/>
-						<Route
-							exact
-							path="/m/search"
-							render={() => <MobileSearch />}
-						/>
-						<Route
-							exact
-							path="/search-results"
-							render={(props) => <SearchPage {...props} />}
-						/>
-						<Route
-							exact
-							path="/browse"
-							render={(props) => <BrowsePage {...props} />}
-						/>
-						<Route
-							exact
-							path="/project/:id"
-							render={(props) => (
-								<ProjectDetailsPage {...props} />
-							)}
-						/>
-						<Route
-							exact
-							path="/property-details/:id"
-							render={(props) => <DetailsPage {...props} />}
-						/>
-						<Route
-							exact
-							path="/edit-property/:id"
-							render={(props) => (
-								<Protected
-									component={EditProperty}
-									{...props}
-								/>
-							)}
-						/>
-						<Route
-							exact
-							path="/project-property/:id"
-							render={(props) => <ProjectProperty {...props} />}
-						/>
-						<Route
-							exact
-							path="/post-property"
-							render={(props) => (
-								<Protected
-									component={PostProperty}
-									redirectTo="post-property"
-									{...props}
-								/>
-							)}
-						/>
-						<Route
-							exact
-							path="/post-property-details/:pFor/:pType"
-							render={(props) => (
-								<Protected
-									component={PostPropertyDetailsPage}
-									{...props}
-								/>
-							)}
-						/>
-						<Route
-							exact
-							path="/builder/:slug"
-							render={(props) => <BuilderPage {...props} />}
-						/>
-						<Route
-							exact
-							path="/:projectId"
-							render={(props) => <ProjectPage {...props} />}
-						/>
-						<Route
-							path="*"
-							render={(props) => <NotFound {...props} />}
-						/>
-					</Switch>
-				</HashRouter>
-			</Provider>
+			<LogIn />
+			<HashRouter>
+				<Switch>
+					<Route
+						exact
+						path="/"
+						render={(props) => <HomePage {...props} />}
+					/>
+					<Route exact path="/login" render={() => <LoginPage />} />
+					<Route
+						exact
+						path="/reset-password"
+						render={() => <ResetPassword />}
+					/>
+					<Route exact path="/signup" render={() => <SignUpForm />} />
+					<Route
+						exact
+						path="/otp/:number"
+						render={() => <OTPPage />}
+					/>
+					<Route
+						exact
+						path="/profile"
+						render={(props) => (
+							<Protected
+								component={ProfilePage}
+								{...props}
+								redirect={true}
+							/>
+						)}
+					/>
+					<Route
+						exact
+						path="/update-profile"
+						render={(props) => (
+							<Protected
+								component={ProfileUpdate}
+								redirect
+								{...props}
+							/>
+						)}
+					/>
+					<Route
+						exact
+						path="/m/search"
+						render={() => <MobileSearch />}
+					/>
+					<Route
+						exact
+						path="/search-results"
+						render={(props) => <SearchPage {...props} />}
+					/>
+					<Route
+						exact
+						path="/browse"
+						render={(props) => <BrowsePage {...props} />}
+					/>
+					<Route
+						exact
+						path="/project/:id"
+						render={(props) => <ProjectDetailsPage {...props} />}
+					/>
+					<Route
+						exact
+						path="/property-details/:id"
+						render={(props) => <DetailsPage {...props} />}
+					/>
+					<Route
+						exact
+						path="/edit-property/:id"
+						render={(props) => (
+							<Protected component={EditProperty} {...props} />
+						)}
+					/>
+					<Route
+						exact
+						path="/project-property/:id"
+						render={(props) => <ProjectProperty {...props} />}
+					/>
+					<Route
+						exact
+						path="/post-property"
+						render={(props) => (
+							<Protected
+								component={PostProperty}
+								redirectTo="post-property"
+								{...props}
+							/>
+						)}
+					/>
+					<Route
+						exact
+						path="/post-property-details/:pFor/:pType"
+						render={(props) => (
+							<Protected
+								component={PostPropertyDetailsPage}
+								{...props}
+							/>
+						)}
+					/>
+					<Route
+						exact
+						path="/builder/:slug"
+						render={(props) => <BuilderPage {...props} />}
+					/>
+					<Route
+						exact
+						path="/:projectId"
+						render={(props) => <ProjectPage {...props} />}
+					/>
+					<Route
+						path="*"
+						render={(props) => <NotFound {...props} />}
+					/>
+				</Switch>
+			</HashRouter>
 		</Suspense>
 	);
 }
 
 // export default App
 
-export default App;
+const mapStateToProps = createStructuredSelector({
+	authenticated: selectAuthenticated,
+	open: loginDialogStatus,
+	profileLoading: selectUserProfileLoading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	toggleLoginPopup: (status) => dispatch(toggleLoginPopup(status)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -6,6 +6,7 @@ import contactReducer from './contact/contact.reducer';
 import feedbackReducer from './feedback/feedbacj.reducer';
 import propertyReducer from './property/property.reducer';
 import requestReducer from './request/request.reducer';
+import uiReducer from './ui/ui.reducer';
 
 const rootReducer = combineReducers({
 	city: cityReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
 	contact: contactReducer,
 	feedback: feedbackReducer,
 	request: requestReducer,
+	ui: uiReducer,
 });
 
 export default rootReducer;

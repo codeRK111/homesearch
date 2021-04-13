@@ -2,7 +2,7 @@ import './index.css';
 
 import * as serviceWorker from './serviceWorker';
 
-import App from './App';
+import App from './reduxWrapper';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/core/styles';

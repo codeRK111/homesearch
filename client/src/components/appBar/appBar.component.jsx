@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import Button from '../appBarButton/appBarButton.component';
 import City from '../cityMenu/cityMenu.component';
 import IconButton from '@material-ui/core/IconButton';
+import LogIn from '../logInDialog/logInDialog.component';
 import Menu from '../menu/menu.component';
 import MenuIcon from '@material-ui/icons/Menu';
 import Protected from '../protected/protectedComponent.component';
@@ -13,15 +14,14 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectAuthenticated } from '../../redux/auth/auth.selectors';
+import { toggleLoginPopup } from '../../redux/ui/ui.actions';
 import { useHistory } from 'react-router-dom';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useStyles } from './appBar.styles';
 
-// Custom components
-
 // Styles
 
-const Appbar = ({ isAuthenticated }) => {
+const Appbar = ({ isAuthenticated, toggleLoginPopup }) => {
 	const classes = useStyles();
 	const history = useHistory();
 	const matches = useMediaQuery('(max-width:600px)');
@@ -38,7 +38,9 @@ const Appbar = ({ isAuthenticated }) => {
 	};
 	const goToHomePage = (_) => history.push('/');
 	const redirectToPostProperty = (_) => history.push('/post-property');
-	const redirectToLogIn = (_) => history.push('/login');
+	const redirectToLogIn = (_) => {
+		toggleLoginPopup(true);
+	};
 	return (
 		<div className={classes.root}>
 			<AppDrawer open={open} handleDrawer={handleDrawer(false)} />
@@ -80,7 +82,7 @@ const Appbar = ({ isAuthenticated }) => {
 						) : (
 							<Box ml="1rem">
 								<Button
-									text="Login / Signup"
+									text="Login"
 									onClick={redirectToLogIn}
 								/>
 							</Box>
@@ -95,7 +97,11 @@ const mapStateToProps = createStructuredSelector({
 	isAuthenticated: selectAuthenticated,
 });
 
-const Test = connect(mapStateToProps)(Appbar);
+const mapDispatchToProps = (dispatch) => ({
+	toggleLoginPopup: (status) => dispatch(toggleLoginPopup(status)),
+});
+
+const Test = connect(mapStateToProps, mapDispatchToProps)(Appbar);
 
 const Hoc = (props) => {
 	return <Protected component={Test} {...props} />;
