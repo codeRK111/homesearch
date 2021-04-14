@@ -7,7 +7,6 @@ import {
 	Grid,
 	IconButton,
 	Typography,
-	useMe,
 } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 import {
@@ -18,12 +17,15 @@ import { sendOtp, validateOtp } from '../../redux/auth/auth.actions';
 
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
+import Countdown from './timer.component';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormInput from '../formik/textField.component';
 import OtpInput from 'react-otp-input';
 import React from 'react';
 import Slide from '@material-ui/core/Slide';
+import { apiUrl } from '../../utils/render.utils';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { loginDialogStatus } from '../../redux/ui/ui.selectors';
@@ -85,26 +87,36 @@ function AlertDialogSlide({
 	toggleLoginPopup,
 	open,
 }) {
-	const history = useHistory();
+	const cancelToken = React.useRef(undefined);
+
 	const [otp, setOTP] = React.useState(false);
+	const [counterKey, setCounterKey] = React.useState(0);
 	const [phoneNumber, setPhoneNumber] = React.useState(null);
 	const [otpSent, setOtpSent] = React.useState(false);
-	const [otpStyle, setOTPStyle] = React.useState({
-		padding: '0.9rem',
-		margin: '0.9rem',
-		fontSize: '1.2rem',
-		border: '3px solid #c1c1c1',
-		borderRadius: '5px',
+
+	// Async State
+	const [asyncState, setAsyncState] = React.useState({
+		loading: false,
+		error: null,
 	});
+	const [resendState, setResendState] = React.useState({
+		loading: false,
+		error: null,
+	});
+
 	const phoneValidation = Yup.object({
 		number: yupValidation.mobileNumber,
 	});
 
 	const classes = useStyles();
 
-	const handleClickOpen = () => {
-		toggleLoginPopup(true);
-	};
+	React.useEffect(() => {
+		if (!open) {
+			setOTP(false);
+			setOtpSent(false);
+			setPhoneNumber(null);
+		}
+	}, [open]);
 
 	const handleClose = () => {
 		toggleLoginPopup(false);
@@ -123,14 +135,87 @@ function AlertDialogSlide({
 
 	const handleValidateOtp = (setErrors) => (status, data = null) => {
 		if (status === 'success') {
-			history.push('/profile');
+			handleClose();
 		} else {
 			setErrors({ otp: data });
 		}
 	};
 
-	const onSendOtp = (values, setErrors) => {
-		sendOtp(handleSendOtp(values.number, setErrors), values.number);
+	const onResendOTP = async () => {
+		try {
+			setResendState({
+				error: null,
+				loading: true,
+			});
+			cancelToken.current = axios.CancelToken.source();
+			await axios.get(apiUrl(`/users/sendOtp/${phoneNumber}`), {
+				cancelToken: cancelToken.current.token,
+			});
+			setOtpSent(true);
+			setResendState({
+				error: null,
+				loading: false,
+			});
+			setCounterKey(counterKey + 1);
+		} catch (error) {
+			setOtpSent(false);
+			setPhoneNumber(null);
+			if (error.response) {
+				setResendState({
+					error: error.response.data.message,
+					loading: false,
+				});
+			} else {
+				setResendState({
+					error: 'We are having some issues, please try again later',
+					loading: false,
+				});
+			}
+		}
+	};
+
+	const onSendOtp = async (values, setErrors) => {
+		try {
+			setAsyncState({
+				error: null,
+				loading: true,
+			});
+			cancelToken.current = axios.CancelToken.source();
+			await axios.post(
+				apiUrl('/users/signIn'),
+				{
+					number: values.number,
+					registerVia: 'web',
+				},
+				{
+					cancelToken: cancelToken.current.token,
+				}
+			);
+			setOtpSent(true);
+			setPhoneNumber(values.number);
+			setAsyncState({
+				error: null,
+				loading: false,
+			});
+		} catch (error) {
+			setOtpSent(false);
+			setPhoneNumber(null);
+			if (error.response) {
+				setAsyncState({
+					error: error.response.data.message,
+					loading: false,
+				});
+				setErrors({ number: error.response.data.message });
+			} else {
+				setAsyncState({
+					error: 'We are having some issues, please try again later',
+					loading: false,
+				});
+				setErrors({
+					number: 'We are having some issues, please try again later',
+				});
+			}
+		}
 	};
 	const onValidateOtp = (values, setErrors) => {
 		if (String(otp).length !== 4) {
@@ -148,8 +233,43 @@ function AlertDialogSlide({
 		}
 	};
 
+	const resendButtonProps = {};
+	if (resendState.loading) {
+		resendButtonProps.endIcon = (
+			<CircularProgress color="inherit" size={20} />
+		);
+		resendButtonProps.disabled = true;
+	}
+
+	const renderer = ({ hours, minutes, seconds, completed }) => {
+		if (completed) {
+			// Render a complete state
+			return (
+				<Button
+					variant="contained"
+					size="small"
+					onClick={onResendOTP}
+					{...resendButtonProps}
+				>
+					Resend OTP
+				</Button>
+			);
+		} else {
+			// Render a countdown
+			return (
+				<Typography variant="caption" align="center">
+					OTP will expire in &nbsp;
+					<b>
+						{minutes < 10 ? `0${minutes}` : minutes}:
+						{seconds < 10 ? `0${seconds}` : seconds}
+					</b>
+				</Typography>
+			);
+		}
+	};
+
 	const buttonProps = {};
-	if (sendOtpLoading || validateOtpLoading) {
+	if (asyncState.loading || validateOtpLoading) {
 		buttonProps.endIcon = <CircularProgress color="inherit" size={20} />;
 		buttonProps.disabled = true;
 	}
@@ -189,6 +309,7 @@ function AlertDialogSlide({
 												number: '',
 												otp: '',
 											}}
+											enableReinitialize
 											validationSchema={phoneValidation}
 											onSubmit={onSubmitForm}
 										>
@@ -234,12 +355,36 @@ function AlertDialogSlide({
 																	true
 																}
 															/>
+
+															<Countdown
+																initialMinute={
+																	2
+																}
+																initialSeconds={
+																	0
+																}
+																start={otpSent}
+																resentOTP={
+																	onResendOTP
+																}
+															/>
+
 															{errors.otp && (
 																<Typography
 																	variant="caption"
 																	color="error"
 																>
 																	{errors.otp}
+																</Typography>
+															)}
+															{asyncState.error && (
+																<Typography
+																	variant="caption"
+																	color="error"
+																>
+																	{
+																		asyncState.error
+																	}
 																</Typography>
 															)}
 														</Box>

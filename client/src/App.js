@@ -52,20 +52,12 @@ const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
 function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 	const timer = React.useRef(undefined);
 	React.useEffect(() => {
-		console.log({
-			profileLoading,
-			authenticated,
-		});
 		if (!authenticated && !profileLoading && !open) {
 			timer.current = setTimeout(() => {
-				console.log({
-					profileLoading,
-					authenticated,
-				});
 				if (!authenticated && !profileLoading && !open) {
 					toggleLoginPopup(true);
 				}
-			}, 5000);
+			}, 10000);
 		} else {
 			if (typeof timer.current !== undefined) {
 				window.clearTimeout(timer.current);
@@ -86,18 +78,7 @@ function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 						path="/"
 						render={(props) => <HomePage {...props} />}
 					/>
-					<Route exact path="/login" render={() => <LoginPage />} />
-					<Route
-						exact
-						path="/reset-password"
-						render={() => <ResetPassword />}
-					/>
-					<Route exact path="/signup" render={() => <SignUpForm />} />
-					<Route
-						exact
-						path="/otp/:number"
-						render={() => <OTPPage />}
-					/>
+
 					<Route
 						exact
 						path="/profile"

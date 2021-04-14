@@ -8,8 +8,8 @@ const userSchema = new Schema(
 	{
 		name: {
 			type: String,
-			required: [true, 'A name must be required'],
 			maxlength: [25, 'Max 25 chars allowed'],
+			default: null,
 		},
 		serialNumber: {
 			type: Number,
@@ -21,6 +21,7 @@ const userSchema = new Schema(
 		number: {
 			type: String,
 			maxlength: [10, 'Max 10 chars allowed'],
+			required: [true, 'A phone number must be required'],
 			index: {
 				unique: true,
 				partialFilterExpression: { number: { $type: 'string' } },
@@ -29,70 +30,31 @@ const userSchema = new Schema(
 		},
 		email: {
 			type: String,
-			unique: true,
+			
 			lowercase: true,
-			required: [true, 'A email must be required'],
-			validate: [validator.isEmail, 'Please use a valid email'],
-		},
-		googleId: {
-			type: String,
-			required: false, // only required for facebook users
 			index: {
 				unique: true,
-				partialFilterExpression: { googleId: { $type: 'string' } },
+				partialFilterExpression: { email: { $type: 'string' } },
 			},
 			default: null,
 		},
-		facebookId: {
-			type: String,
-			required: false, // only required for facebook users
-			index: {
-				unique: true,
-				partialFilterExpression: { googleId: { $type: 'string' } },
-			},
-			default: null,
-		},
+		
 		city: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'City',
-			required: [true, 'User must have a city'],
+			default: null
 		},
 		photo: {
 			type: String,
 			default: null,
 		},
-		image1: {
-			type: String,
-			default: null,
-		},
-		image2: {
-			type: String,
-			default: null,
-		},
-		image3: {
-			type: String,
-			default: null,
-		},
-		image4: {
-			type: String,
-			default: null,
-		},
-		photoStatus: {
-			type: String,
-			enum: {
-				values: ['uploaded', 'not-uploaded'],
-				message:
-					'gender must be between <uploaded> | <not-uploaded> | <other>',
-			},
-			default: 'not-uploaded',
-		},
+		
 		gender: {
 			type: String,
 			enum: {
 				values: ['male', 'female', 'other'],
 				message: 'gender must be between <male> | <female> | <other>',
 			},
-			required: true,
 		},
 		role: {
 			type: String,
@@ -102,13 +64,6 @@ const userSchema = new Schema(
 					'role must be between <builder> | <agent> | <owner> | <tenant>',
 			},
 			required: true,
-		},
-		password: {
-			type: String,
-			minlength: [6, 'Minimum 6 characters required'],
-			maxlength: [12, 'Minimum 12 characters required'],
-			default: null,
-			select: false,
 		},
 		otp: {
 			type: String,
@@ -143,9 +98,9 @@ const userSchema = new Schema(
 		registerThrough: {
 			type: String,
 			enum: {
-				values: ['google', 'facebook', 'site login', 'admin', 'staff'],
+				values: [ 'site login', 'admin', 'staff'],
 				message:
-					'role must be between <google> | <facebook> | <site-login>',
+					'registerThrough must be between <site login> | <admin> | <staff>',
 			},
 			required: true,
 		},
@@ -159,7 +114,12 @@ const userSchema = new Schema(
 		},
 		registerVia: {
 			type: String,
-			required: [true, 'Register via required'],
+			enum: {
+				values: [ 'web', 'app'],
+				message:
+					'registerVia must be between <web> | <app> ',
+			},
+			required: true,
 		},
 		paymentStatus: {
 			type: String,
@@ -172,7 +132,6 @@ const userSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
-		passwordChangedAt: Date,
 		// passwordResetToken: String,
 		// passwordResetTokenExipersAt: Date,
 	},
@@ -184,10 +143,10 @@ userSchema.index({
 });
 
 // QUERY MIDDLEWARE
-userSchema.pre(/^find/, function (next) {
-	this.find({ active: { $ne: false } });
-	next();
-});
+// userSchema.pre(/^find/, function (next) {
+// 	this.find({ active: { $ne: false } });
+// 	next();
+// });
 
 userSchema.pre(/^find/, function (next) {
 	this.populate('city');
@@ -195,38 +154,14 @@ userSchema.pre(/^find/, function (next) {
 });
 
 // DOCUMENT MIDDLEWARE
-userSchema.pre('save', async function (next) {
-	if (!this.isModified('password')) return next();
-	this.password = await bcrypt.hash(this.password, 12);
-});
 
-userSchema.pre('save', function (next) {
-	if (!this.isModified(this.password) || this.isNew) {
-		console.log('pass', this.isModified(this.password));
-		console.log(this.isNew);
-		return next();
-	}
-	console.log(this.isModified(this.password));
-	console.log('updated');
-	this.passwordChangedAt = Date.now() - 1000;
-	next();
-});
 
-userSchema.pre('save', function (next) {
-	if (
-		!this.isModified(this.password) ||
-		this.isNew ||
-		this.numberVerified == false
-	)
-		return next();
-	this.otp = null;
-	next();
-});
+
+
+
 
 // INSTANCE METHODS
-userSchema.methods.correctPassword = async function (userPassword, dbPassword) {
-	return await bcrypt.compare(userPassword, dbPassword);
-};
+
 
 userSchema.methods.correctOtp = function (otp) {
 	return String(otp) === this.otp;
@@ -238,17 +173,7 @@ userSchema.methods.otpExpired = function () {
 };
 
 
-userSchema.methods.passwordChanged = function (jwtCreated) {
-	if (this.passwordChangedAt) {
-		const passwordChangedAt = parseInt(
-			this.passwordChangedAt.getTime() / 1000,
-			10
-		);
-		if (jwtCreated < passwordChangedAt) return true;
-	}
 
-	return false;
-};
 
 const UserModel = model('User', userSchema);
 module.exports = UserModel;

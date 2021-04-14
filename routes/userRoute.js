@@ -4,6 +4,7 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 router.post('/signup', authController.signup);
+router.post('/signIn', authController.signIn);
 router.post('/exists/:resource', authController.checkExists);
 router.post('/send-reset-password-otp', authController.sendResetPasswordOtp);
 router.post('/reset-my-password', authController.resetMyPassword); 

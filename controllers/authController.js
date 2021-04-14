@@ -77,6 +77,32 @@ exports.signup = catchAsync(async (req, res, next) => {
 	createSendToken(getUserEssentials(newUser), 201, res);
 });
 
+exports.signIn = catchAsync(async (req, res, next) => {
+	const lastDoc = await User.find().sort({ createdAt: -1 }).limit(1);
+	const lastDocSerialNumber =
+	lastDoc.length === 0 ? 0 : lastDoc[0].serialNumber;
+	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+	const newUser = await User.create({
+		number: req.body.number,
+		role: 'tenant',
+		registerThrough: 'site login',
+		registerVia: req.body.registerVia,
+		mobileStatus: 'semi-private',
+		paymentStatus: 'unpaid',
+		status: 'active',
+		serialNumber: lastDocSerialNumber + 1,
+		otp: randomNumber,
+		otpExpiresAt: moment().add(2, 'm')
+	});
+	const otpResponse = await sendOtpMessage(req.body.number, randomNumber);
+	res.status(200).json({
+				status: 'success',
+				data: {
+					userId: newUser._id,
+				},
+			});
+});
+
 exports.login = catchAsync(async (req, res, next) => {
 	const { email, password } = req.body;
 
@@ -436,7 +462,7 @@ exports.sendOtpNew = catchAsync(async (req, res, next) => {
 	const updatedUser = await User.findByIdAndUpdate(
 		user.id,
 		{ otp: randomNumber,
-		  otpExpiresAt: moment().add(1, 'm')
+		  otpExpiresAt: moment().add(2, 'm')
 
 		 },
 		{
