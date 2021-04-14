@@ -15,10 +15,9 @@ function TemporaryDrawer({ open, handleDrawer, isAuthenticated, signOut }) {
 	const classes = useStyles();
 	const redirectToPostProperty = (_) => history.push('/post-property');
 	const goToHomePage = (_) => history.push('/');
-	const redirectToLogIn = (_) => history.push('/login');
+	const redirectToLogIn = (_) => history.push('/');
 	const logOut = () => {
 		signOut();
-		history.push('/login');
 	};
 	const goToProfilePage = (e) => {
 		history.push('/profile');
@@ -68,7 +67,7 @@ function TemporaryDrawer({ open, handleDrawer, isAuthenticated, signOut }) {
 							) : (
 								<Box>
 									<Button
-										text="Login / Signup"
+										text="Sign In / Sign Up"
 										onClick={redirectToLogIn}
 									/>
 								</Box>

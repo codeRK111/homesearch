@@ -68,7 +68,9 @@ exports.signup = catchAsync(async (req, res, next) => {
 		role: req.body.role,
 		registerThrough: 'site login',
 		registerVia: 'Web',
-		mobileStatus: req.body.mobileStatus ? req.body.mobileStatus :'semi-private',
+		mobileStatus: req.body.mobileStatus
+			? req.body.mobileStatus
+			: 'semi-private',
 		paymentStatus: 'unpaid',
 		status: 'active',
 		serialNumber: lastDocSerialNumber + 1,
@@ -78,29 +80,64 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 exports.signIn = catchAsync(async (req, res, next) => {
-	const lastDoc = await User.find().sort({ createdAt: -1 }).limit(1);
-	const lastDocSerialNumber =
-	lastDoc.length === 0 ? 0 : lastDoc[0].serialNumber;
+	const user = await User.findOne({ number: req.body.number }).select(
+		'+otp +status'
+	);
 	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
-	const newUser = await User.create({
-		number: req.body.number,
-		role: 'tenant',
-		registerThrough: 'site login',
-		registerVia: req.body.registerVia,
-		mobileStatus: 'semi-private',
-		paymentStatus: 'unpaid',
-		status: 'active',
-		serialNumber: lastDocSerialNumber + 1,
-		otp: randomNumber,
-		otpExpiresAt: moment().add(2, 'm')
-	});
-	const otpResponse = await sendOtpMessage(req.body.number, randomNumber);
-	res.status(200).json({
+
+	// 2) If token has not expired, and there is user, set the new password
+	if (!user) {
+		const newUser = await User.create({
+			number: req.body.number,
+			role: 'tenant',
+			registerThrough: 'site login',
+			registerVia: req.body.registerVia,
+			mobileStatus: 'semi-private',
+			paymentStatus: 'unpaid',
+			status: 'active',
+			otp: randomNumber,
+			otpExpiresAt: moment().add(2, 'm'),
+		});
+		await sendOtpMessage(req.body.number, randomNumber);
+		res.status(200).json({
+			status: 'success',
+			data: {
+				userId: newUser._id,
+			},
+		});
+	} else {
+		if (user.status !== 'active') {
+			return next(
+				new AppError(
+					'Your account has been dactivated.Please contact support team : 9090-91-7676',
+					401
+				)
+			);
+		}
+		const updatedUser = await User.findByIdAndUpdate(
+			user.id,
+			{ otp: randomNumber, otpExpiresAt: moment().add(2, 'm') },
+			{
+				new: true,
+				runValidators: true,
+			}
+		);
+
+		const otpResponse = await sendOtpMessage(
+			req.params.number,
+			randomNumber
+		);
+		if (otpResponse.data.startsWith('OK')) {
+			res.status(200).json({
 				status: 'success',
 				data: {
-					userId: newUser._id,
+					userId: updatedUser._id,
 				},
 			});
+		} else {
+			return next(new AppError('Unable to send otp', 500));
+		}
+	}
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -113,38 +150,49 @@ exports.login = catchAsync(async (req, res, next) => {
 	// 2) Check if user exists && password is correct
 	const user = await User.findOne({ email }).select('+password ');
 	if (user.status !== 'active') {
-		return next(new AppError('Your account has been dactivated.Please contact support team : 9090-91-7676', 401));
+		return next(
+			new AppError(
+				'Your account has been dactivated.Please contact support team : 9090-91-7676',
+				401
+			)
+		);
 	}
 
 	if (!user || !(await user.correctPassword(password, user.password))) {
 		return next(new AppError('Incorrect email or password', 401));
 	}
 
-
 	// 3) If everything ok, send token to client
 	createSendToken(user, 200, res);
 });
 
 exports.checkExists = catchAsync(async (req, res, next) => {
-	const dataCount = await User.countDocuments({[req.params.resource]: req.body.data});
+	const dataCount = await User.countDocuments({
+		[req.params.resource]: req.body.data,
+	});
 	res.status(200).json({
-			status: 'success',
-			data: !!dataCount,
-		});
+		status: 'success',
+		data: !!dataCount,
+	});
 });
 
 exports.sendUpdateNumberOTP = catchAsync(async (req, res, next) => {
-	const dataCount = await User.countDocuments({number: req.body.number,_id: {$ne: ObjectId(req.user.id)}});
-	if(dataCount > 0){
-		return next(new AppError('This number is already registered with us,Please use another one',400))
+	const dataCount = await User.countDocuments({
+		number: req.body.number,
+		_id: { $ne: ObjectId(req.user.id) },
+	});
+	if (dataCount > 0) {
+		return next(
+			new AppError(
+				'This number is already registered with us,Please use another one',
+				400
+			)
+		);
 	}
-		let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
 	const updatedUser = await User.findByIdAndUpdate(
 		req.user.id,
-		{ otp: randomNumber,
-		  otpExpiresAt: moment().add(1, 'm')
-
-		 },
+		{ otp: randomNumber, otpExpiresAt: moment().add(1, 'm') },
 		{
 			new: true,
 			runValidators: true,
@@ -164,19 +212,17 @@ exports.sendUpdateNumberOTP = catchAsync(async (req, res, next) => {
 	}
 });
 
-
 exports.sendUpdatePasswordOTP = catchAsync(async (req, res, next) => {
-	const user = await User.findOne({number: req.body.number});
-	if(!user){
-		return next(new AppError('You are not registered with us.Please sign up',404))
+	const user = await User.findOne({ number: req.body.number });
+	if (!user) {
+		return next(
+			new AppError('You are not registered with us.Please sign up', 404)
+		);
 	}
-		let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
 	const updatedUser = await User.findByIdAndUpdate(
 		user.id,
-		{ otp: randomNumber,
-		  otpExpiresAt: moment().add(1, 'm')
-
-		 },
+		{ otp: randomNumber, otpExpiresAt: moment().add(1, 'm') },
 		{
 			new: true,
 			runValidators: true,
@@ -283,8 +329,6 @@ exports.updateMyPassword = catchAsync(async (req, res, next) => {
 	createSendToken(newUser, 200, res);
 });
 
-
-
 exports.googleLogIn = catchAsync(async (req, res, next) => {
 	let inputError = false;
 	['name', 'email', 'googleId'].forEach((v) => {
@@ -336,16 +380,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 		return next(
 			new AppError(
 				'The user belonging to this token does no longer exist.',
-				401
-			)
-		);
-	}
-
-	// 4) Check if user changed password after the token was issued
-	if (currentUser.passwordChanged(decoded.iat)) {
-		return next(
-			new AppError(
-				'User recently changed password! Please log in again.',
 				401
 			)
 		);
@@ -439,12 +473,10 @@ exports.sendOtp = catchAsync(async (req, res, next) => {
 	console.log();
 });
 
-
 exports.sendOtpNew = catchAsync(async (req, res, next) => {
 	if (!req.params.number) {
 		return next(new AppError('Phone number required', 400));
 	}
-
 
 	// 1) Get user based on the id
 	const user = await User.findOne({ number: req.params.number }).select(
@@ -453,18 +485,22 @@ exports.sendOtpNew = catchAsync(async (req, res, next) => {
 
 	// 2) If token has not expired, and there is user, set the new password
 	if (!user) {
-		return next(new AppError('You are not registered with us.Please sign up', 404));
+		return next(
+			new AppError('You are not registered with us.Please sign up', 404)
+		);
 	}
-	if (user.status !== 'active'){
-		return next(new AppError('Your account has been dactivated.Please contact support team : 9090-91-7676', 401));
+	if (user.status !== 'active') {
+		return next(
+			new AppError(
+				'Your account has been dactivated.Please contact support team : 9090-91-7676',
+				401
+			)
+		);
 	}
 	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
 	const updatedUser = await User.findByIdAndUpdate(
 		user.id,
-		{ otp: randomNumber,
-		  otpExpiresAt: moment().add(2, 'm')
-
-		 },
+		{ otp: randomNumber, otpExpiresAt: moment().add(2, 'm') },
 		{
 			new: true,
 			runValidators: true,
@@ -532,9 +568,7 @@ exports.validateOtp = catchAsync(async (req, res, next) => {
 
 exports.updateMyNumber = catchAsync(async (req, res, next) => {
 	// 1) Get user based on the id
-	const user = await User.findById(req.user.id).select(
-		'+otp +otpExpiresAt'
-	);
+	const user = await User.findById(req.user.id).select('+otp +otpExpiresAt');
 
 	if (!user.correctOtp(req.body.otp)) {
 		return next(new AppError('Please enter correct OTP', 401));
@@ -548,12 +582,9 @@ exports.updateMyNumber = catchAsync(async (req, res, next) => {
 	createSendToken(user, 200, res);
 });
 
-
 exports.resetMyPassword = catchAsync(async (req, res, next) => {
 	// 1) Get user based on the id
-	const user = await User.findById(req.body.id).select(
-		'+otp +otpExpiresAt'
-	);
+	const user = await User.findById(req.body.id).select('+otp +otpExpiresAt');
 
 	if (!user.correctOtp(req.body.otp)) {
 		return next(new AppError('Please enter correct OTP', 401));
@@ -565,8 +596,6 @@ exports.resetMyPassword = catchAsync(async (req, res, next) => {
 	await user.save();
 	createSendToken(user, 200, res);
 });
-
-
 
 exports.addProfilePicture = catchAsync(async (req, res, next) => {
 	if (!req.files) {

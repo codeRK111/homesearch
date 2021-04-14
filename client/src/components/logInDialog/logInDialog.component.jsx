@@ -99,10 +99,6 @@ function AlertDialogSlide({
 		loading: false,
 		error: null,
 	});
-	const [resendState, setResendState] = React.useState({
-		loading: false,
-		error: null,
-	});
 
 	const phoneValidation = Yup.object({
 		number: yupValidation.mobileNumber,
@@ -138,39 +134,6 @@ function AlertDialogSlide({
 			handleClose();
 		} else {
 			setErrors({ otp: data });
-		}
-	};
-
-	const onResendOTP = async () => {
-		try {
-			setResendState({
-				error: null,
-				loading: true,
-			});
-			cancelToken.current = axios.CancelToken.source();
-			await axios.get(apiUrl(`/users/sendOtp/${phoneNumber}`), {
-				cancelToken: cancelToken.current.token,
-			});
-			setOtpSent(true);
-			setResendState({
-				error: null,
-				loading: false,
-			});
-			setCounterKey(counterKey + 1);
-		} catch (error) {
-			setOtpSent(false);
-			setPhoneNumber(null);
-			if (error.response) {
-				setResendState({
-					error: error.response.data.message,
-					loading: false,
-				});
-			} else {
-				setResendState({
-					error: 'We are having some issues, please try again later',
-					loading: false,
-				});
-			}
 		}
 	};
 
@@ -233,41 +196,6 @@ function AlertDialogSlide({
 		}
 	};
 
-	const resendButtonProps = {};
-	if (resendState.loading) {
-		resendButtonProps.endIcon = (
-			<CircularProgress color="inherit" size={20} />
-		);
-		resendButtonProps.disabled = true;
-	}
-
-	const renderer = ({ hours, minutes, seconds, completed }) => {
-		if (completed) {
-			// Render a complete state
-			return (
-				<Button
-					variant="contained"
-					size="small"
-					onClick={onResendOTP}
-					{...resendButtonProps}
-				>
-					Resend OTP
-				</Button>
-			);
-		} else {
-			// Render a countdown
-			return (
-				<Typography variant="caption" align="center">
-					OTP will expire in &nbsp;
-					<b>
-						{minutes < 10 ? `0${minutes}` : minutes}:
-						{seconds < 10 ? `0${seconds}` : seconds}
-					</b>
-				</Typography>
-			);
-		}
-	};
-
 	const buttonProps = {};
 	if (asyncState.loading || validateOtpLoading) {
 		buttonProps.endIcon = <CircularProgress color="inherit" size={20} />;
@@ -302,6 +230,7 @@ function AlertDialogSlide({
 								>
 									Login with your phone number
 								</CDialogTitle>
+
 								<Box className={classes.contentWrapper}>
 									<Box className={classes.content}>
 										<Formik
@@ -364,8 +293,8 @@ function AlertDialogSlide({
 																	0
 																}
 																start={otpSent}
-																resentOTP={
-																	onResendOTP
+																phoneNumber={
+																	phoneNumber
 																}
 															/>
 

@@ -62,7 +62,7 @@ function MenuListComposition({ signOut }) {
 
 	const logOut = () => {
 		signOut();
-		history.push('/login');
+		history.push('/');
 	};
 
 	function handleListKeyDown(event) {

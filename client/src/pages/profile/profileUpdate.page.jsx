@@ -38,13 +38,13 @@ import React from 'react';
 import Select from '../../components/formik/select.component';
 import Snackbar from '../../components/snackbar/snackbar.component';
 import TextField from '../../components/formik/textField.component';
+import UpdateMobileNumber from './updateMobileNumber.component';
+import UpdatePassword from './updatePasword.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { searchCities } from '../../redux/city/city.actions';
 import { selectSearchCityLoading } from '../../redux/city/city.selectors';
 import useStyles from './profile.styles';
-import UpdateMobileNumber from './updateMobileNumber.component';
-import UpdatePassword from './updatePasword.component';
 
 const UpdateProfile = ({
 	user,
@@ -78,8 +78,8 @@ const UpdateProfile = ({
 		info: null,
 	});
 	const anchorRef = React.useRef(null);
-	const [cityText, setCityText] = React.useState(user.city.name);
-	const [selectedCity, setSelectedCity] = React.useState(user.city.id);
+	const [cityText, setCityText] = React.useState(user.city?.name);
+	const [selectedCity, setSelectedCity] = React.useState(user.city?.id);
 	const [cities, setCities] = React.useState([]);
 	const handleFetchCities = (status, data = null) => {
 		if (status === 'success') {
@@ -365,23 +365,13 @@ const UpdateProfile = ({
 					</Formik>
 					<Box mt="2rem">
 						<Grid container spacing={3}>
-							<Grid item xs={12} md={6}>
+							<Grid item xs={12}>
 								<DividerHeading>
 									<h3>Update Mobile Number</h3>
 								</DividerHeading>
 								<JustifyCenter width="100%">
 									<UpdateMobileNumber
 										existingNumber={user.number}
-										showMessage={showSnackbar}
-									/>
-								</JustifyCenter>
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<DividerHeading>
-									<h3>Update Password</h3>
-								</DividerHeading>
-								<JustifyCenter width="100%">
-									<UpdatePassword
 										showMessage={showSnackbar}
 									/>
 								</JustifyCenter>

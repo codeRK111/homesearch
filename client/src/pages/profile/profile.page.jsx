@@ -52,7 +52,7 @@ const ProfilePage = ({ user }) => {
 								<Typography
 									className={[classes.title, classes.cBlack]}
 								>
-									{user.name}
+									{user.name ? user.name : 'Not available'}
 								</Typography>
 								<Button
 									variant="contained"
@@ -75,7 +75,11 @@ const ProfilePage = ({ user }) => {
 											].join(' ')}
 										/>
 									</Box>
-									<Typography>{user.email}</Typography>
+									<Typography>
+										{user.email
+											? user.email
+											: 'Not provided'}
+									</Typography>
 								</AlignCenter>
 							</Box>
 							<Box mt="0.3rem" mb="0.3rem">
@@ -113,7 +117,9 @@ const ProfilePage = ({ user }) => {
 										/>
 									</Box>
 									<Typography>
-										{user.city && user.city.name}
+										{user.city
+											? user.city.name
+											: 'Not Provided'}
 									</Typography>
 								</AlignCenter>
 							</Box>

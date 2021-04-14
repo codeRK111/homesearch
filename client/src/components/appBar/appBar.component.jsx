@@ -82,7 +82,7 @@ const Appbar = ({ isAuthenticated, toggleLoginPopup }) => {
 						) : (
 							<Box ml="1rem">
 								<Button
-									text="Sign In"
+									text="Sign In / Sign Up"
 									onClick={redirectToLogIn}
 								/>
 							</Box>

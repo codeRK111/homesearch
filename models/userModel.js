@@ -11,13 +11,7 @@ const userSchema = new Schema(
 			maxlength: [25, 'Max 25 chars allowed'],
 			default: null,
 		},
-		serialNumber: {
-			type: Number,
-			required: [true, 'A serialNumber must be required'],
-			index: {
-				unique: true,
-			},
-		},
+		
 		number: {
 			type: String,
 			maxlength: [10, 'Max 10 chars allowed'],
