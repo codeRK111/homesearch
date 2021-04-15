@@ -9,7 +9,11 @@ import { faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router-dom';
 import useStyles from './postProperty.styles';
 
-const PostProperty = () => {
+const PostProperty = ({
+	match: {
+		params: { propertyForParam },
+	},
+}) => {
 	const classes = useStyles();
 	const history = useHistory();
 	const [propertyFor, setPropertyFor] = React.useState('');
@@ -18,6 +22,10 @@ const PostProperty = () => {
 	const onPropertyTypeChange = (name) => setPropertyType(name);
 	const redirectToInfoPage = (_) =>
 		history.push(`/post-property-details/${propertyFor}/${propertyType}`);
+
+	React.useEffect(() => {
+		setPropertyFor(propertyForParam);
+	}, [propertyForParam]);
 
 	const renderTypes = () => {
 		let arr = [

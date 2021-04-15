@@ -24,3 +24,24 @@ export async function handleImageUpload(imageFile, maxSize = 0.5) {
 		console.log(error);
 	}
 }
+
+export const profileCompletedStatus = (user) => {
+	let defaultValue = 0;
+	const increaseStatus = 25;
+	for (const info in user) {
+		if (info === 'number' && user[info]) {
+			defaultValue += increaseStatus;
+		}
+		if (info === 'city' && user[info]) {
+			defaultValue += increaseStatus;
+		}
+		if (info === 'email' && user[info]) {
+			defaultValue += increaseStatus;
+		}
+		if (info === 'name' && user[info]) {
+			defaultValue += increaseStatus;
+		}
+	}
+
+	return defaultValue;
+};

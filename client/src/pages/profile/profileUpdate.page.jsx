@@ -24,10 +24,6 @@ import {
 	selectUser,
 	selectValidateOtpLoading,
 } from '../../redux/auth/auth.selectors';
-import {
-	validateMobileNumber,
-	validateProfile,
-} from '../../utils/validation.utils';
 
 import AppBar from '../../components/appBar/appBar.component';
 import DividerHeading from '../../components/DividerHeadinng/dividerHeading.component';
@@ -45,6 +41,7 @@ import { createStructuredSelector } from 'reselect';
 import { searchCities } from '../../redux/city/city.actions';
 import { selectSearchCityLoading } from '../../redux/city/city.selectors';
 import useStyles from './profile.styles';
+import { validateProfile } from '../../utils/validation.utils';
 
 const UpdateProfile = ({
 	user,
@@ -54,9 +51,6 @@ const UpdateProfile = ({
 	changeProfileInfo,
 	sendOtpLoading,
 	validateOtpLoading,
-	sendOtp,
-	validateOtp,
-	changePassword,
 	passwordLoading,
 }) => {
 	const initialValues = {
@@ -139,35 +133,6 @@ const UpdateProfile = ({
 		}
 	};
 
-	const handleSendOtp = (status, data = null) => {
-		if (status === 'success') {
-			setAsyncError((prevState) => ({ ...prevState, number: null }));
-			setOtpHandler({
-				show: true,
-				buttonLabel: 'Validate Otp',
-			});
-		} else {
-			setAsyncError((prevState) => ({ ...prevState, number: data }));
-		}
-	};
-	const handleValidateOtp = (status, data = null) => {
-		if (status === 'success') {
-			showSnackbar('Number updated successfulyy');
-			setAsyncError((prevState) => ({ ...prevState, number: null }));
-		} else {
-			setAsyncError((prevState) => ({ ...prevState, number: data }));
-		}
-	};
-
-	const handleUpdatePassword = (status, data = null) => {
-		if (status === 'success') {
-			showSnackbar('Password updated successfulyy');
-			setAsyncError((prevState) => ({ ...prevState, password: null }));
-		} else {
-			setAsyncError((prevState) => ({ ...prevState, password: data }));
-		}
-	};
-
 	const closeSnackbar = (event, reason) => {
 		if (reason === 'clickaway') {
 			return;
@@ -176,50 +141,6 @@ const UpdateProfile = ({
 		setOpenSnackBar(false);
 	};
 
-	const updateMobile = (data) => {
-		if (!otpHandler.show) {
-			sendOtp(handleSendOtp, data.number);
-		} else {
-			validateOtp(handleValidateOtp, data.number, data.otp);
-		}
-	};
-
-	const updatePassword = (data) => {
-		changePassword(data, handleUpdatePassword);
-	};
-
-	const validateOtpForm = (values) => {
-		const error = {};
-		if (!otpHandler.show) {
-			if (!values.number) {
-				error.number = 'Mobile number required';
-			}
-			if (values.number && !validateMobileNumber(values.number)) {
-				error.number = 'Not a valid number';
-			}
-			if (values.number && values.number === user.number) {
-				error.number = 'Same number';
-			}
-		} else {
-			if (!values.otp) {
-				error.otp = 'OTP required';
-			}
-		}
-		return error;
-	};
-	const validatePasswordForm = (values) => {
-		const error = {};
-		if (!values.oldPassword) {
-			error.oldPassword = 'Current password  required';
-		}
-		if (!values.newPassword) {
-			error.newPassword = 'New password  required';
-		}
-		if (values.oldPassword === values.newPassword) {
-			error.newPassword = 'Same password';
-		}
-		return error;
-	};
 	return (
 		<Box>
 			<Snackbar
@@ -252,7 +173,7 @@ const UpdateProfile = ({
 						validate={validateProfile}
 						onSubmit={updateProfile}
 					>
-						{({ values, setFieldValue }) => (
+						{() => (
 							<Form>
 								<Grid container spacing={1}>
 									<Grid item xs={12} md={6}>

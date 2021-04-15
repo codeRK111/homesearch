@@ -1,4 +1,5 @@
 import { authActionTypes } from './auth.types';
+import { profileCompletedStatus } from '../../utils/configure.utils';
 
 const defaultUser = {
 	email: '',
@@ -16,6 +17,7 @@ const initialState = {
 	authenticated: false,
 	token: null,
 	user: defaultUser,
+	profileCompleted: 0,
 	// Loading States
 	signUpLoading: false,
 	sendOtpLoading: false,
@@ -41,6 +43,7 @@ const authReducer = (state = initialState, { type, payload }) => {
 				token: payload.token,
 				user: { ...state.user, ...payload.user },
 				signInError: null,
+				profileCompleted: profileCompletedStatus(payload.user),
 			};
 		case authActionTypes.SIGN_OUT:
 			return {

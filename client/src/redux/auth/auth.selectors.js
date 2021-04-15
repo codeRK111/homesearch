@@ -54,3 +54,7 @@ export const selectSignInError = createSelector(
 	[selectAuth],
 	(c) => c.signInError
 );
+export const profileCompletePercentage = createSelector(
+	[selectAuth],
+	(c) => c.profileCompleted
+);

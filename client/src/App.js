@@ -7,6 +7,7 @@ import {
 
 import LogIn from './components/logInDialog/logInDialog.component';
 import Protected from './components/protected/protected.component';
+import SpeedDial from './components/speedDial/speedDial.component';
 import SuspenseLoader from './components/initialLoader/initialLoader.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -72,6 +73,7 @@ function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 		<Suspense fallback={<SuspenseLoader />}>
 			<LogIn />
 			<HashRouter>
+				<SpeedDial />
 				<Switch>
 					<Route
 						exact
@@ -140,7 +142,7 @@ function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 					/>
 					<Route
 						exact
-						path="/post-property"
+						path="/post-property/:propertyForParam"
 						render={(props) => (
 							<Protected
 								component={PostProperty}
