@@ -13,7 +13,7 @@ import { useStyles } from '../appBar/appBar.styles';
 function TemporaryDrawer({ open, handleDrawer, isAuthenticated, signOut }) {
 	const history = useHistory();
 	const classes = useStyles();
-	const redirectToPostProperty = (_) => history.push('/post-property');
+	const redirectToPostProperty = (_) => history.push('/post-property/rent');
 	const goToHomePage = (_) => history.push('/');
 	const redirectToLogIn = (_) => history.push('/');
 	const logOut = () => {

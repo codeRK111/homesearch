@@ -37,7 +37,7 @@ const Appbar = ({ isAuthenticated, toggleLoginPopup }) => {
 		setOpen(status);
 	};
 	const goToHomePage = (_) => history.push('/');
-	const redirectToPostProperty = (_) => history.push('/post-property');
+	const redirectToPostProperty = (_) => history.push('/post-property/rent');
 	const redirectToLogIn = (_) => {
 		toggleLoginPopup(true);
 	};

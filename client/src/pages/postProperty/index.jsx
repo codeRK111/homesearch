@@ -1,6 +1,7 @@
 import { Box, Button, Divider, Paper } from '@material-ui/core';
 
 import AppBar from '../../components/appBar/appBar.component';
+import CompleteProfile from '../../components/complteProfile/complteProfile.component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Footer from '../../components/footer/footer.component';
 import PostPropertyInfo from '../../components/postPropertyInfo/postPropertyInfo.component';
@@ -81,50 +82,52 @@ const PostProperty = ({
 				display="flex"
 				justifyContent="center"
 			>
-				<Paper className={classes.wrapper} elevation={1}>
-					<PostPropertyInfo
-						text="Post property For ?"
-						disable={false}
-						onChange={onPropertyForChange}
-						value={propertyFor}
-						buttons={[
-							{
-								label: 'Rent',
-								name: 'rent',
-								icon: <FontAwesomeIcon icon={faBuilding} />,
-							},
-							{
-								label: 'Resale',
-								name: 'sale',
-								icon: <FontAwesomeIcon icon={faBuilding} />,
-							},
-						]}
-					/>
-					<Box mt="2rem" mb="2rem">
-						<Divider />
-					</Box>
-					<Box>
+				<CompleteProfile>
+					<Paper className={classes.wrapper} elevation={1}>
 						<PostPropertyInfo
-							text="Please Select Property type"
-							disable={!propertyFor ? true : false}
-							onChange={onPropertyTypeChange}
-							value={propertyType}
-							buttons={renderTypes()}
+							text="Post property For ?"
+							disable={false}
+							onChange={onPropertyForChange}
+							value={propertyFor}
+							buttons={[
+								{
+									label: 'Rent',
+									name: 'rent',
+									icon: <FontAwesomeIcon icon={faBuilding} />,
+								},
+								{
+									label: 'Resale',
+									name: 'sale',
+									icon: <FontAwesomeIcon icon={faBuilding} />,
+								},
+							]}
 						/>
-					</Box>
-					<Box mt="5rem" width="100%">
-						<Button
-							fullWidth
-							color="primary"
-							variant="contained"
-							size="large"
-							disabled={!propertyFor || !propertyType}
-							onClick={redirectToInfoPage}
-						>
-							Next
-						</Button>
-					</Box>
-				</Paper>
+						<Box mt="2rem" mb="2rem">
+							<Divider />
+						</Box>
+						<Box>
+							<PostPropertyInfo
+								text="Please Select Property type"
+								disable={!propertyFor ? true : false}
+								onChange={onPropertyTypeChange}
+								value={propertyType}
+								buttons={renderTypes()}
+							/>
+						</Box>
+						<Box mt="5rem" width="100%">
+							<Button
+								fullWidth
+								color="primary"
+								variant="contained"
+								size="large"
+								disabled={!propertyFor || !propertyType}
+								onClick={redirectToInfoPage}
+							>
+								Next
+							</Button>
+						</Box>
+					</Paper>
+				</CompleteProfile>
 			</Box>
 			<Footer />
 		</div>
