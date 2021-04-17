@@ -96,7 +96,7 @@ const PostProperty = ({
 									icon: <FontAwesomeIcon icon={faBuilding} />,
 								},
 								{
-									label: 'Resale',
+									label: 'Sale',
 									name: 'sale',
 									icon: <FontAwesomeIcon icon={faBuilding} />,
 								},

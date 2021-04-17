@@ -3,8 +3,34 @@ const propertyController = require('../controllers/propertyController');
 const adminController = require('../controllers/adminController');
 const authController = require('../controllers/authController');
 
+// File Upload
+const multer = require('multer');
+const path = require('path');
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, path.join(__dirname, '../', 'images', 'test/'));
+	},
+	filename: (req, file, cb) => {
+		console.log(file);
+		cb(null, Date.now() + path.extname(file.originalname));
+	},
+});
+const fileFilter = (req, file, cb) => {
+	if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
+		cb(null, true);
+	} else {
+		cb(null, false);
+	}
+};
+const upload = multer({ storage: storage, fileFilter: fileFilter });
+
 const router = express.Router();
 
+router.post(
+	'/test-multer',
+	upload.array('images', 100),
+	propertyController.testMulter
+);
 router.post('/searchProperties', propertyController.searchProperties);
 router
 	.route('/handle-property-image/:id')

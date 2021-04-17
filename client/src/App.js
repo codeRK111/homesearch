@@ -15,6 +15,9 @@ import { loginDialogStatus } from './redux/ui/ui.selectors';
 import { toggleLoginPopup } from './redux/ui/ui.actions';
 
 const BrowsePage = lazy(() => import('./pages/browsePage/browse.page'));
+const PaymentPage = lazy(() =>
+	import('./pages/testPayment/testPayment.component')
+);
 const DetailsPage = lazy(() =>
 	import('./pages/detailsPageNew/detailsPage.component')
 );
@@ -79,6 +82,11 @@ function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 						exact
 						path="/"
 						render={(props) => <HomePage {...props} />}
+					/>
+					<Route
+						exact
+						path="/payment"
+						render={(props) => <PaymentPage {...props} />}
 					/>
 
 					<Route

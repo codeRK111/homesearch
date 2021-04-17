@@ -27,7 +27,7 @@ mongoose
 	.then((conn) => {
 		console.log('DB connected');
 	})
-	.catch((err) => console.log(err));
+	.catch((err) => console.log(err.message));
 
 agenda.define('handleExpired', async (job) => {
 	await Property.updateMany(

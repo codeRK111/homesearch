@@ -1371,7 +1371,7 @@ exports.updatePropertyByUserForRent = catchAsync(async (req, res, next) => {
 			delete propertyFlat['toiletWestern'];
 
 			// manage furnished
-			if (req.body.furnished === 'unfurnished') { 
+			if (req.body.furnished === 'unfurnished') {
 				propertyFlat['furnishes'] = [];
 			}
 
@@ -1795,5 +1795,12 @@ exports.getMyProperties = catchAsync(async (req, res, next) => {
 		data: {
 			properties,
 		},
+	});
+});
+exports.testMulter = catchAsync(async (req, res, next) => {
+	console.log(req.files);
+	console.log(req.body);
+	res.send({
+		status: 'success',
 	});
 });

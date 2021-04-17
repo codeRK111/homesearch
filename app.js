@@ -31,19 +31,22 @@ const fileUpload = require('express-fileupload');
 const path = require('path');
 const basicAuth = require('express-basic-auth');
 
+// V2 Routes
+const builderRouteV2 = require('./routesV2/builderRoute');
+
 const app = express();
 
 app.use(cors());
 
 // enable files upload
-app.use(
-	fileUpload({
-		createParentPath: true,
-		limits: {
-			fileSize: 2 * 1024 * 1024 * 1024, //2MB max file(s) size
-		},
-	})
-);
+// app.use(
+// 	fileUpload({
+// 		createParentPath: true,
+// 		limits: {
+// 			fileSize: 2 * 1024 * 1024 * 1024, //2MB max file(s) size
+// 		},
+// 	})
+// );
 
 // SET HTTP SECURITY HEADER
 // app.use(helmet());
@@ -122,7 +125,7 @@ app.use(
 );
 app.use('/', express.static(path.join(__dirname, 'client', 'build')));
 
-// 3) ROUTES
+// 3) ROUTES V!
 app.use('/api/v1/admin/users', adminUserRoute);
 app.use('/api/v1/admin/features', featureRouter);
 app.use('/api/v1/admins', adminRoute);
@@ -140,6 +143,9 @@ app.use('/api/v1/features', userFeatureRouter);
 app.use('/api/v1/kra', kraRoute);
 app.use('/api/v1/kpi', kpiRoute);
 app.use('/api/v1/api-test', testRoute);
+
+// v2 Routes
+app.use('/api/v2/builder', builderRouteV2);
 
 app.all('*', (req, res, next) => {
 	console.log(req);

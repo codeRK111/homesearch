@@ -48,39 +48,40 @@ const builderSchema = new Schema(
 				required: [true, 'Builder must have some cities'],
 			},
 		],
-		// location: {
-		// 	type: mongoose.Schema.ObjectId,
-		// 	ref: 'Location',
-		// 	required: [true, 'Missing location'],
-		// },
+		promoters: [
+			{
+				type: String,
+				unique: true,
+			},
+		],
+		totalProjects: {
+			type: Number,
+			required: [true, 'Please provide total number of projects'],
+		},
+		underConstructionProjects: {
+			type: Number,
+			required: [
+				true,
+				'Please provide total number of projects under construction',
+			],
+		},
+		completedProjects: {
+			type: Number,
+			required: [
+				true,
+				'Please provide total number of projects that are completed',
+			],
+		},
 		logo: {
 			type: String,
 			default: null,
 		},
-		image1: {
-			type: String,
-			default: null,
-		},
-		image2: {
-			type: String,
-			default: null,
-		},
-		image3: {
-			type: String,
-			default: null,
-		},
-		image4: {
-			type: String,
-			default: null,
-		},
-		image5: {
-			type: String,
-			default: null,
-		},
-		image6: {
-			type: String,
-			default: null,
-		},
+		images: [
+			{
+				type: String,
+			},
+		],
+
 		status: {
 			type: String,
 			enum: {
