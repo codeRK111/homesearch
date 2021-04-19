@@ -30,13 +30,14 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const path = require('path');
 const basicAuth = require('express-basic-auth');
-
 // V2 Routes
 const builderRouteV2 = require('./routesV2/builderRoute');
+const utilityRouteV2 = require('./routesV2/utilityRoute');
 
 const app = express();
 
 app.use(cors());
+// app.use(expressValidator());
 
 // enable files upload
 // app.use(
@@ -146,6 +147,7 @@ app.use('/api/v1/api-test', testRoute);
 
 // v2 Routes
 app.use('/api/v2/builder', builderRouteV2);
+app.use('/api/v2/utility', utilityRouteV2);
 
 app.all('*', (req, res, next) => {
 	console.log(req);

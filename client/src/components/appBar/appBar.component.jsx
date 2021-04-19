@@ -44,7 +44,7 @@ const Appbar = ({ isAuthenticated, toggleLoginPopup }) => {
 	return (
 		<div className={classes.root}>
 			<AppDrawer open={open} handleDrawer={handleDrawer(false)} />
-			<AppBar position="fixed" color="default" elevation={0}>
+			<AppBar position="fixed" color="default" elevation={1}>
 				<Toolbar variant="regular">
 					{matches && (
 						<IconButton

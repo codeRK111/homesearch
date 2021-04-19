@@ -27,6 +27,7 @@ import { handleImageUpload } from '../../utils/configure.utils';
 import { postProperty } from '../../redux/property/property.actions';
 import { selectPostPropertyLoading } from '../../redux/property/property.selectors';
 import useStyles from './postPropertyDetails.styles';
+import { status } from './index';
 
 const initialValues = {
 	for: 'rent',

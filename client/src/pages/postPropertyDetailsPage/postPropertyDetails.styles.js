@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
 			width: '90vw',
 		},
 	},
+
 	backdrop: {
 		zIndex: theme.zIndex.drawer + 1,
 		color: '#fff',
