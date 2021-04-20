@@ -3,6 +3,7 @@ import './App.css';
 import { Route, Switch } from 'react-router-dom';
 
 import ActiveProperties from './pages/properties/properties.component';
+import BuilderPackage from './pages/builderPackage/builderPackage.page';
 import AddAdmin from './components/addAdmin/addAdmin.component';
 import AddBuilderPage from './pages/addBuilder/addBuilder.component';
 import AddCityPage from './pages/addCity/addCity.component';
@@ -63,6 +64,7 @@ import Workspace from './pages/workspace/workspace.page';
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const ManageTaskPropertyPageWithDrawer = Drawer(ManageTaskProperty);
+const BuilderPackagePageWithDrawer = Drawer(BuilderPackage);
 const WhQueriesPageWithDrawer = Drawer(WhQueries);
 const EditPropertyAdvertisementPageWithDrawer = Drawer(
 	EditPropertyAdvertisement
@@ -130,6 +132,16 @@ function App(props) {
 					render={() => (
 						<Protected
 							component={DashboardPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/builder-packages"
+					render={() => (
+						<Protected
+							component={BuilderPackagePageWithDrawer}
 							{...props}
 						/>
 					)}

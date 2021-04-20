@@ -32,7 +32,7 @@ const path = require('path');
 const basicAuth = require('express-basic-auth');
 // V2 Routes
 const builderRouteV2 = require('./routesV2/builderRoute');
-const utilityRouteV2 = require('./routesV2/utilityRoute');
+const utilityRouteV2 = require('./routesV2/packageRoute');
 
 const app = express();
 

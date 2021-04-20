@@ -6,6 +6,7 @@ import {
 	selectProject,
 	selectPropertyRent,
 	selectPropertySale,
+	selectPackage,
 } from '../../redux/sidebar/sidebar.selector';
 import {
 	toggleBuilder,
@@ -15,8 +16,9 @@ import {
 	toggleProject,
 	togglePropertyRent,
 	togglePropertySale,
+	togglePackage,
 } from '../../redux/sidebar/sidebar.actions';
-
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import { AccordionDetails } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ApartmentIcon from '@material-ui/icons/Apartment';
@@ -78,7 +80,9 @@ const MainListItems = ({
 	selectKRA,
 	toggleKRA,
 	selectKPI,
+	selectPackage,
 	toggleKPI,
+	togglePackage,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -815,6 +819,28 @@ const MainListItems = ({
 				</ListItemIcon>
 				<ListItemText primary="Search Feedbacks" />
 			</ListItem>
+
+			<ListItem button onClick={togglePackage}>
+				<ListItemIcon>
+					<MonetizationOnIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Packages" />
+				{selectKRA ? <ExpandLess /> : <ExpandMore />}
+			</ListItem>
+			<Collapse in={selectPackage} timeout="auto" unmountOnExit>
+				<List component="div" disablePadding>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/builder-packages')}
+					>
+						<ListItemIcon>
+							<LocationCityIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Builder Packages" />
+					</ListItem>
+				</List>
+			</Collapse>
 			{/* <ListItem button onClick={onUsersClick('/photo-requests')}>
 				<ListItemIcon>
 					<CameraAltIcon color="secondary" />
@@ -836,6 +862,7 @@ const mapStateToProps = createStructuredSelector({
 	selectCurrentUser,
 	selectKRA,
 	selectKPI,
+	selectPackage,
 });
 
 const dispatchStateToProps = (dispatch) => ({
@@ -846,6 +873,7 @@ const dispatchStateToProps = (dispatch) => ({
 	toggleBuilder: () => dispatch(toggleBuilder()),
 	toggleKRA: () => dispatch(toggleKRA()),
 	toggleKPI: () => dispatch(toggleKPI()),
+	togglePackage: () => dispatch(togglePackage()),
 });
 
 export default connect(mapStateToProps, dispatchStateToProps)(MainListItems);

@@ -23,3 +23,6 @@ export const toggleKRA = () => ({
 export const toggleKPI = () => ({
 	type: SidebarActionTypes.TOGGLE_KPI,
 });
+export const togglePackage = () => ({
+	type: SidebarActionTypes.TOGGLE_PACKAGE,
+});

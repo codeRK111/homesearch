@@ -18,3 +18,4 @@ export const selectProject = createSelector([selectSidebar], (u) => u.project);
 export const selectBuilder = createSelector([selectSidebar], (u) => u.builder);
 export const selectKRA = createSelector([selectSidebar], (u) => u.kra);
 export const selectKPI = createSelector([selectSidebar], (u) => u.kpi);
+export const selectPackage = createSelector([selectSidebar], (u) => u.package);

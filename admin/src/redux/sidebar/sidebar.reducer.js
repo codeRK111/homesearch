@@ -8,6 +8,7 @@ const INITIAL_STATE = {
 	builder: false,
 	kra: false,
 	kpi: false,
+	package: false,
 };
 
 const sidebarReducer = (state = INITIAL_STATE, action) => {
@@ -46,6 +47,11 @@ const sidebarReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				kpi: !state.kpi,
+			};
+		case SidebarActionTypes.TOGGLE_PACKAGE:
+			return {
+				...state,
+				package: !state.package,
 			};
 
 		default:

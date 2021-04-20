@@ -7,5 +7,10 @@ export const parseDate = (date) => {
 	return m.format('Do MMM YYYY hh:mm a');
 };
 
+export const apiUrl = (url, version = null) => {
+	return `/api/${version ? version : 'v1'}${url}`;
+	// return `/api${url}`;
+};
+
 export const capitalizeFirstLetter = (string) =>
 	string.charAt(0).toUpperCase() + string.slice(1);

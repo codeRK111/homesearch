@@ -8,6 +8,7 @@ exports.validate = (method) => {
 				check('price', 'Price required')
 					.isInt()
 					.withMessage('Invalid price value'),
+				check('packageDetails', 'Package details required'),
 			];
 	}
 };

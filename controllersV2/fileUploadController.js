@@ -14,6 +14,18 @@ const builderStorage = multer.diskStorage({
 		cb(null, `${Date.now()}.${ext}`);
 	},
 });
+const builderPackageStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(
+			null,
+			path.join(__dirname, '../', 'images', 'builder_images', 'packages/')
+		);
+	},
+	filename: (req, file, cb) => {
+		const ext = file.mimetype.split('/')[1];
+		cb(null, `${Date.now()}.${ext}`);
+	},
+});
 const propertyStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(null, path.join(__dirname, '../', 'images', 'test/'));
@@ -38,6 +50,10 @@ const builder = multer({
 const properties = multer({
 	fileFilter: multerFilter,
 	storage: builderStorage,
+});
+const builderPackages = multer({
+	fileFilter: multerFilter,
+	storage: builderPackageStorage,
 });
 
 exports.resizeTourImages = catchAsync(async (req, res, next) => {
@@ -81,3 +97,4 @@ exports.uploadBuilderPhoto = builder.fields([
 	{ name: 'images', maxCount: 30 },
 ]);
 exports.uploadPropertiesPhoto = properties.array('images');
+exports.uploadBuilderPackagePhoto = builderPackages.single('photo');
