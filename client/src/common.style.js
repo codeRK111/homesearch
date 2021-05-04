@@ -32,4 +32,7 @@ export default makeStyles((theme) => ({
 	lightBackground: {
 		backgroundColor: '#ecf0f1',
 	},
+	textCenter: {
+		textAlign: 'center',
+	},
 }));

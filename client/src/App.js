@@ -52,36 +52,42 @@ const SignUpForm = lazy(() => import('./pages/signup/signup.page'));
 const ProjectPage = lazy(() => import('./pages/projectPage/project.page'));
 const BuilderPage = lazy(() => import('./pages/builderPage/builder.page'));
 const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
+const HomePageNew = lazy(() => import('./pages/v2/homePage/home.page'));
 
 function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 	const timer = React.useRef(undefined);
-	React.useEffect(() => {
-		if (!authenticated && !profileLoading && !open) {
-			timer.current = setTimeout(() => {
-				if (!authenticated && !profileLoading && !open) {
-					toggleLoginPopup(true);
-				}
-			}, 10000);
-		} else {
-			if (typeof timer.current !== undefined) {
-				window.clearTimeout(timer.current);
-				toggleLoginPopup(false);
-			}
-		}
+	// React.useEffect(() => {
+	// 	if (!authenticated && !profileLoading && !open) {
+	// 		timer.current = setTimeout(() => {
+	// 			if (!authenticated && !profileLoading && !open) {
+	// 				toggleLoginPopup(true);
+	// 			}
+	// 		}, 10000);
+	// 	} else {
+	// 		if (typeof timer.current !== undefined) {
+	// 			window.clearTimeout(timer.current);
+	// 			toggleLoginPopup(false);
+	// 		}
+	// 	}
 
-		// I will be deleted while component is unmounting.
-	}, [authenticated, profileLoading]);
+	// 	// I will be deleted while component is unmounting.
+	// }, [authenticated, profileLoading]);
 
 	return (
 		<Suspense fallback={<SuspenseLoader />}>
 			<LogIn />
 			<HashRouter>
-				<SpeedDial />
+				{/* <SpeedDial /> */}
 				<Switch>
 					<Route
 						exact
 						path="/"
 						render={(props) => <HomePage {...props} />}
+					/>
+					<Route
+						exact
+						path="/v2/home"
+						render={(props) => <HomePageNew {...props} />}
 					/>
 					<Route
 						exact
