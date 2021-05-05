@@ -11,5 +11,15 @@ const useStyles = makeStyles((theme) => ({
 	componentPadding: {
 		padding: `0 1rem 0 ${theme.leftPaddingMedium}`,
 	},
+	primaryHeading: {
+		textAlign: 'center',
+		color: theme.primaryHeadingColor,
+		fontWeight: 'bolder',
+	},
+	secondaryHeading: {
+		textAlign: 'center',
+		color: theme.secondaryHeadingColor,
+		fontWeight: 'bolder',
+	},
 }));
 export default useStyles;

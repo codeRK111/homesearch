@@ -1,5 +1,6 @@
 import './index.css';
 import './fonts/centuryGothic.ttf';
+import './fonts/centuryGothicBold.TTF';
 
 import * as serviceWorker from './serviceWorker';
 

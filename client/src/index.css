@@ -6,6 +6,12 @@
 		url('./fonts/centuryGothic.ttf') format('truetype');
 	font-weight: 500;
 }
+@font-face {
+	font-family: 'CenturyGothic';
+	src: local('CenturyGothic'),
+		url('./fonts/centuryGothicBold.TTF') format('truetype');
+	font-weight: bolder;
+}
 
 html,
 body {
