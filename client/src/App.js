@@ -53,6 +53,10 @@ const ProjectPage = lazy(() => import('./pages/projectPage/project.page'));
 const BuilderPage = lazy(() => import('./pages/builderPage/builder.page'));
 const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
 const HomePageNew = lazy(() => import('./pages/v2/homePage/home.page'));
+const SearchPageNew = lazy(() => import('./pages/v2/searchPage/search.page'));
+const PropertyDetailsPageNew = lazy(() =>
+	import('./pages/v2/propertyDetails/propertyDetails.page')
+);
 
 function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 	const timer = React.useRef(undefined);
@@ -88,6 +92,18 @@ function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 						exact
 						path="/v2/home"
 						render={(props) => <HomePageNew {...props} />}
+					/>
+					<Route
+						exact
+						path="/v2/property-details"
+						render={(props) => (
+							<PropertyDetailsPageNew {...props} />
+						)}
+					/>
+					<Route
+						exact
+						path="/v2/search"
+						render={(props) => <SearchPageNew {...props} />}
 					/>
 					<Route
 						exact

@@ -6,6 +6,11 @@ export default makeStyles((theme) => ({
 		justifyContent: 'center',
 		width: '100%',
 	},
+	justifySpaceBetween: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		width: '100%',
+	},
 	alignCenter: {
 		display: 'flex',
 		alignItems: 'center',
@@ -34,5 +39,18 @@ export default makeStyles((theme) => ({
 	},
 	textCenter: {
 		textAlign: 'center',
+	},
+	colorPrimary: {
+		color: theme.primaryHeadingColor,
+	},
+	colorSecondary: {
+		color: theme.secondaryHeadingColor,
+	},
+	noSpace: {
+		margin: 0,
+		padding: 0,
+	},
+	bold: {
+		fontWeight: 'bold',
 	},
 }));
