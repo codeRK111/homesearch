@@ -46,11 +46,20 @@ export default makeStyles((theme) => ({
 	colorSecondary: {
 		color: theme.secondaryHeadingColor,
 	},
+	colorWarning: {
+		color: '#FA9B0B',
+	},
 	noSpace: {
 		margin: 0,
 		padding: 0,
 	},
 	bold: {
 		fontWeight: 'bold',
+	},
+	smText: {
+		fontSize: '0.8rem',
+	},
+	xsText: {
+		fontSize: '0.7rem',
 	},
 }));
