@@ -49,6 +49,12 @@ export default makeStyles((theme) => ({
 	colorWarning: {
 		color: '#FA9B0B',
 	},
+	colorUtil: {
+		color: theme.utilColor,
+	},
+	colorGray: {
+		color: '#c1c1c1',
+	},
 	noSpace: {
 		margin: 0,
 		padding: 0,

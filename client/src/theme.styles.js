@@ -15,6 +15,7 @@ const customTheme = {
 	shadowColor: '#e0e0e0',
 	primaryHeadingColor: '#224C7C',
 	secondaryHeadingColor: '#398496',
+	utilColor: '#2AAAAC',
 	leftPadding: '10vw',
 	leftPaddingMedium: '3vw',
 };

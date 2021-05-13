@@ -57,6 +57,7 @@ const SearchPageNew = lazy(() => import('./pages/v2/searchPage/search.page'));
 const PropertyDetailsPageNew = lazy(() =>
 	import('./pages/v2/propertyDetails/propertyDetails.page')
 );
+const AgentPageNew = lazy(() => import('./pages/v2/agentPage/agent.page'));
 
 function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 	const timer = React.useRef(undefined);
@@ -104,6 +105,11 @@ function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 						exact
 						path="/v2/search"
 						render={(props) => <SearchPageNew {...props} />}
+					/>
+					<Route
+						exact
+						path="/v2/agent"
+						render={(props) => <AgentPageNew {...props} />}
 					/>
 					<Route
 						exact
