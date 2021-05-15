@@ -43,6 +43,9 @@ export default makeStyles((theme) => ({
 	colorPrimary: {
 		color: theme.primaryHeadingColor,
 	},
+	colorLink: {
+		color: theme.linkColor,
+	},
 	colorSecondary: {
 		color: theme.secondaryHeadingColor,
 	},

@@ -1,6 +1,10 @@
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
-let theme = createMuiTheme();
+let theme = createMuiTheme({
+	typography: {
+		fontFamily: ['CenturyGothic'],
+	},
+});
 theme = responsiveFontSizes(theme);
 const customTheme = {
 	...theme,
@@ -13,6 +17,7 @@ const customTheme = {
 	bgColor: '#dfe6e9',
 	appBarColor: '#f5f5f5',
 	shadowColor: '#e0e0e0',
+	linkColor: '#FA9B0B',
 	primaryHeadingColor: '#224C7C',
 	secondaryHeadingColor: '#398496',
 	utilColor: '#2AAAAC',

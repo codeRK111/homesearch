@@ -58,6 +58,9 @@ const PropertyDetailsPageNew = lazy(() =>
 	import('./pages/v2/propertyDetails/propertyDetails.page')
 );
 const AgentPageNew = lazy(() => import('./pages/v2/agentPage/agent.page'));
+const PostPropertyPageNew = lazy(() =>
+	import('./pages/v2/postPage/postProperty.page')
+);
 
 function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 	const timer = React.useRef(undefined);
@@ -110,6 +113,11 @@ function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 						exact
 						path="/v2/agent"
 						render={(props) => <AgentPageNew {...props} />}
+					/>
+					<Route
+						exact
+						path="/v2/post-property"
+						render={(props) => <PostPropertyPageNew {...props} />}
 					/>
 					<Route
 						exact
