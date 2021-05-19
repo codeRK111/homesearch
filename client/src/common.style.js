@@ -11,6 +11,11 @@ export default makeStyles((theme) => ({
 		justifyContent: 'space-between',
 		width: '100%',
 	},
+	justifySpaceAround: {
+		display: 'flex',
+		justifyContent: 'space-around',
+		width: '100%',
+	},
 	alignCenter: {
 		display: 'flex',
 		alignItems: 'center',

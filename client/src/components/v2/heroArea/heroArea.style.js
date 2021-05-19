@@ -17,13 +17,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 	searchWrapper: {
 		width: '70rem',
-		padding: '1rem',
+		padding: '1rem 2rem',
 		background: theme.shadowColor,
 		borderRadius: '25px',
 		display: 'flex',
 		justifyContent: 'space-between',
-		boxShadow:
-			'inset 13px 13px 29px #cacaca,inset -13px -13px 29px #f6f6f6',
+		boxShadow: 'inset 3px 3px 5px #b5b5b5,inset -3px -3px 5px #ffffff',
 		'&>input': {
 			border: 'none',
 			width: '100%',

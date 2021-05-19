@@ -57,6 +57,9 @@ const SearchPageNew = lazy(() => import('./pages/v2/searchPage/search.page'));
 const PropertyDetailsPageNew = lazy(() =>
 	import('./pages/v2/propertyDetails/propertyDetails.page')
 );
+const ProjectDetailsPageNew = lazy(() =>
+	import('./pages/v2/projectDetailsPage/projectDetails.page')
+);
 const AgentPageNew = lazy(() => import('./pages/v2/agentPage/agent.page'));
 const PostPropertyPageNew = lazy(() =>
 	import('./pages/v2/postPage/postProperty.page')
@@ -103,6 +106,11 @@ function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 						render={(props) => (
 							<PropertyDetailsPageNew {...props} />
 						)}
+					/>
+					<Route
+						exact
+						path="/v2/project-details"
+						render={(props) => <ProjectDetailsPageNew {...props} />}
 					/>
 					<Route
 						exact

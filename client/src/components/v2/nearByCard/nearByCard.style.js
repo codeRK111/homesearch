@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 		'& h4': {
 			padding: '0.4rem 0',
 			margin: 0,
-			fontSize: '0.9rem',
 		},
 		'& h6': {
 			padding: 0,
@@ -66,6 +65,8 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		margin: 0,
 		padding: 0,
+		fontSize: '1vw',
+		textAlign: 'center',
 	},
 	description: {
 		fontSize: '0.7rem',

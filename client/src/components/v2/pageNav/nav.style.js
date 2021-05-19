@@ -78,5 +78,8 @@ const useStyles = makeStyles((theme) => ({
 	searchLogo: {
 		height: 25,
 	},
+	menuIcon: {
+		width: 35,
+	},
 }));
 export default useStyles;

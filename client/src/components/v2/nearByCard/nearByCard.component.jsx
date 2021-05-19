@@ -1,4 +1,5 @@
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
+
 import React from 'react';
 import admin from '../../../assets/icons/admin.svg';
 import car from '../../../assets/icons/car.svg';
@@ -16,8 +17,10 @@ const PropertyCard = () => {
 		<div className={classes.wrapper}>
 			<div className={classes.imageWrapper}></div>
 			<div className={classes.contentWrapper}>
-				<h4>Grovis Food Village</h4>
-				<h6>Restaurant & Food Court</h6>
+				<h4 className={classes.title}>Grovis Food Village</h4>
+				<Typography variant="caption" align="center" display="block">
+					Restaurant & Food Court
+				</Typography>
 			</div>
 		</div>
 	);

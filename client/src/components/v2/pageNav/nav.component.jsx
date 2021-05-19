@@ -78,7 +78,11 @@ const NavBar = () => {
 					<img src={profile} alt="Profile" />
 				</div>
 				<div className={classes.profileWrapper}>
-					<img src={menuIcon} alt="Menu" />
+					<img
+						src={menuIcon}
+						alt="Menu"
+						className={classes.menuIcon}
+					/>
 				</div>
 			</div>
 		</Box>

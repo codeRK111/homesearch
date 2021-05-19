@@ -53,5 +53,8 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		alignItems: 'center',
 	},
+	menuIcon: {
+		width: 35,
+	},
 }));
 export default useStyles;
