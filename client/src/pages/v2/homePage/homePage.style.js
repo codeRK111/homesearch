@@ -4,9 +4,15 @@ const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		backgroundColor: theme.shadowColor,
 		padding: '1.5rem',
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.5rem',
+		},
 	},
 	componentSpacer: {
 		marginTop: '10vh',
+		[theme.breakpoints.down('sm')]: {
+			marginTop: '5vh',
+		},
 	},
 	componentPadding: {
 		padding: `0 1rem 0 ${theme.leftPaddingMedium}`,

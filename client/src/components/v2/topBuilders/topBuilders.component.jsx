@@ -5,6 +5,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Chip from '../chip/chip.component';
 import React from 'react';
+import clsx from 'clsx';
+import useGlobalStyles from '../../../common.style';
 import useStyles from './topBuilders.style';
 
 const cities = [
@@ -22,18 +24,19 @@ const cities = [
 
 const RentProperties = () => {
 	const classes = useStyles();
+	const gClasses = useGlobalStyles();
 	return (
 		<div>
 			<div className={classes.listWrapper}>
 				{cities.map((c, i) => (
-					<Box mr="1.5rem">
+					<Box className={classes.chipWrapper}>
 						<Chip title={c} key={i} />
 					</Box>
 				))}
 			</div>
 			<Box mt="3rem">
 				<div className={classes.propertiesWrapper}>
-					<div className={classes.scrollbar}>
+					<div className={clsx(classes.scrollbar, gClasses.smHide)}>
 						<div className={classes.scrollWrapper}>
 							<ChevronLeftIcon style={{ fontSize: 40 }} />
 						</div>
@@ -50,7 +53,12 @@ const RentProperties = () => {
 							))}
 						</Grid>
 					</div>
-					<div className={classes.scrollbarRight}>
+					<div
+						className={clsx(
+							classes.scrollbarRight,
+							gClasses.smHide
+						)}
+					>
 						<div className={classes.scrollWrapper}>
 							<ChevronRightIcon style={{ fontSize: 40 }} />
 						</div>

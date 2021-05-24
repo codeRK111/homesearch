@@ -7,6 +7,11 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: '25vh',
 		paddingLeft: theme.leftPadding,
 		boxSizing: 'border-box',
+		[theme.breakpoints.down('sm')]: {
+			marginTop: 50,
+			paddingLeft: 0,
+			paddingRight: '2rem',
+		},
 	},
 	iconsContainer: {
 		width: '100%',
@@ -14,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: '5vh',
 		// paddingLeft: theme.leftPadding,
 		boxSizing: 'border-box',
+		[theme.breakpoints.down('sm')]: {
+			marginTop: 40,
+		},
 	},
 	searchWrapper: {
 		width: '70rem',
@@ -34,12 +42,23 @@ const useStyles = makeStyles((theme) => ({
 			'&::placeholder': {
 				color: theme.primaryHeadingColor,
 				fontWeight: 700,
+				[theme.breakpoints.down('sm')]: {
+					fontSize: '0.6rem',
+				},
 			},
+		},
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
+			padding: '1rem',
 		},
 	},
 	svgWrapper: {
 		height: '30px',
 		width: '30px',
+		[theme.breakpoints.down('sm')]: {
+			height: '20px',
+			width: '20px',
+		},
 	},
 	whatsappIcon: {
 		height: '50px',
@@ -60,6 +79,14 @@ const useStyles = makeStyles((theme) => ({
 				fontWeight: 'bold',
 			},
 		},
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
+			justifyContent: 'space-evenly',
+			marginLeft: 0,
+			'&>div': {
+				marginLeft: 0,
+			},
+		},
 	},
 	iconShadow: {
 		background: theme.shadowColor,
@@ -67,6 +94,9 @@ const useStyles = makeStyles((theme) => ({
 		padding: '1rem',
 		boxShadow: '10px 5px 10px #a4a4a4,-10px -10px 20px #ffffff',
 		display: 'inline-block',
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.5rem',
+		},
 	},
 	whatsappShadow: {
 		background: theme.shadowColor,
@@ -80,6 +110,11 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'flex-end',
 		paddingRight: '4rem',
+		[theme.breakpoints.down('sm')]: {
+			marginTop: '6vh',
+			justifyContent: 'center',
+			paddingRight: 0,
+		},
 	},
 	tabWrapper: {
 		padding: '1rem',

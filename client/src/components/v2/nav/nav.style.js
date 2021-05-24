@@ -55,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	menuIcon: {
 		width: 35,
+		[theme.breakpoints.down('sm')]: {
+			height: '15px',
+		},
 	},
 }));
 export default useStyles;

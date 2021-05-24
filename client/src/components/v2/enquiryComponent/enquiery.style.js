@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	image: {
 		height: '15rem',
+		[theme.breakpoints.down('sm')]: {
+			height: '10rem',
+		},
 	},
 	imageWrapper: {
 		width: '100%',

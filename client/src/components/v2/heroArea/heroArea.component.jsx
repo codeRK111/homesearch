@@ -1,3 +1,4 @@
+import { Box } from '@material-ui/core';
 import React from 'react';
 import agentIcon from '../../../assets/icons/agent.svg';
 import clsx from 'clsx';
@@ -15,7 +16,7 @@ const HeroArea = () => {
 	return (
 		<div>
 			<div className={classes.wrapper}>
-				<div>
+				<Box width="100%">
 					<div className={classes.tabWrapper}>
 						<span
 							className={clsx(
@@ -42,7 +43,7 @@ const HeroArea = () => {
 							className={classes.svgWrapper}
 						/>
 					</div>
-				</div>
+				</Box>
 			</div>
 			<div className={classes.whatsAppWrapper}>
 				<div className={classes.whatsappShadow}>
@@ -64,7 +65,7 @@ const HeroArea = () => {
 							/>
 						</div>
 						<p className={globalClasses.textCenter}>
-							Property Valuation
+							Property <br /> Valuation
 						</p>
 					</div>
 					<div>

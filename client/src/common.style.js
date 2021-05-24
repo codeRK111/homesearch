@@ -76,4 +76,9 @@ export default makeStyles((theme) => ({
 	xsText: {
 		fontSize: '0.7rem',
 	},
+	smHide: {
+		[theme.breakpoints.down('sm')]: {
+			display: 'none !important',
+		},
+	},
 }));

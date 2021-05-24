@@ -22,17 +22,21 @@ const About = () => {
 					</i>
 				</span>
 			</Box>
-			<Box mt="5rem">
+			<Box className={classes.spacer}>
 				<Grid container spacing={5}>
 					<Grid item xs={12} md={6}>
-						<img src={app} alt="App" />
+						<img src={app} alt="App" className={classes.appImage} />
 					</Grid>
 					<Grid item xs={12} md={6}>
 						<h1 className={classes.title}>
 							Find A New Home In Some Clicks
 						</h1>
 						<h2>Download our app</h2>
-						<img src={store} alt="Store" />
+						<img
+							src={store}
+							alt="Store"
+							className={classes.storeImage}
+						/>
 					</Grid>
 				</Grid>
 			</Box>

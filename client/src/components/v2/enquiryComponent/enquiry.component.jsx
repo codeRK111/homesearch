@@ -8,12 +8,12 @@ const Enquiry = () => {
 	return (
 		<div className={classes.wrapper}>
 			<Grid container spacing={5}>
-				<Grid item xs={3}>
+				<Grid item xs={12} md={3}>
 					<div className={classes.imageWrapper}>
 						<img src={image} alt="" className={classes.image} />
 					</div>
 				</Grid>
-				<Grid item xs={9}>
+				<Grid item xs={12} md={9}>
 					<div className={classes.flexWrapper}>
 						<h1>
 							HomesearchIndia Business Assist Plan For Builders

@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
 		padding: '0.5rem',
 		margin: 0,
 		fontSize: '1.2vw',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1rem',
+		},
 	},
 
 	feature: {

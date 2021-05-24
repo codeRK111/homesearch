@@ -6,6 +6,9 @@ const useStyles = makeStyles((theme) => ({
 		background: theme.shadowColor,
 		boxShadow: '23px 23px 33px #acacac,-23px -23px 33px #ffffff',
 		padding: `2rem 2rem 2rem ${theme.leftPadding}`,
+		[theme.breakpoints.down('sm')]: {
+			padding: '1rem',
+		},
 	},
 	image: {
 		maxWidth: '100%',
@@ -17,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: 'bold',
 		lineHeight: 1.5,
 		marginBottom: '3rem',
+		[theme.breakpoints.down('sm')]: {
+			marginBottom: '1rem',
+		},
 	},
 	link: {
 		color: theme.secondaryHeadingColor,

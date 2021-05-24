@@ -4,6 +4,8 @@ const useStyles = makeStyles((theme) => ({
 	listWrapper: {
 		display: 'flex',
 		alignItems: 'center',
+		width: '100%',
+		flexWrap: 'wrap',
 	},
 	propertiesWrapper: {
 		display: 'flex',
@@ -32,6 +34,13 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	chipWrapper: {
+		marginRight: '1.5rem',
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.2rem',
+			marginRight: '0.5rem',
+		},
 	},
 }));
 export default useStyles;
