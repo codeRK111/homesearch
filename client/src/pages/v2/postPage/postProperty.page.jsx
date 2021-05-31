@@ -27,7 +27,7 @@ const PostProperty = () => {
 					<Typography variant="h4" gutterBottom>
 						Post Property
 					</Typography>
-					<Typography>
+					<Typography align={"center"}>
 						Sell/Rent your property in just some clicks
 					</Typography>
 					<Box mt="2rem">
@@ -44,9 +44,9 @@ const PostProperty = () => {
 							<Select>Rent</Select>
 						</Box>
 					</Box>
-					<Box className={classes.alignCenter} mt="2rem">
+					<Box className={clsx(gClasses.smFullWidth,classes.alignCenter,gClasses.smJustifyBetween)} mt="2rem">
 						<DropDown size="md" label="City" />
-						<Box ml="2rem">
+						<Box className={classes.leftSpacer}>
 							<DropDown size="md" label="Location" />
 						</Box>
 					</Box>
@@ -55,30 +55,32 @@ const PostProperty = () => {
 						<Typography variant="h5" gutterBottom align="center">
 							Property Type
 						</Typography>
-						<Box mt="1rem" className={classes.alignCenter}>
-							<Select>Apartment</Select>
-							<Box ml="1rem">
+						<Box mt="1rem" className={clsx(classes.alignCenter,gClasses.smFlexWrap)}>
+							<Box className={classes.selectChip}>
+								<Select>Apartment</Select>
+							</Box>
+							<Box className={classes.selectChip}>
 								<Select>Duplex</Select>
 							</Box>
-							<Box ml="1rem">
+							<Box className={classes.selectChip}>
 								<Select>Triplex</Select>
 							</Box>
-							<Box ml="1rem">
+							<Box className={classes.selectChip}>
 								<Select>Simplex</Select>
 							</Box>
-							<Box ml="1rem">
+							<Box className={classes.selectChip}>
 								<Select>Penthouse</Select>
 							</Box>
-							<Box ml="1rem">
+							<Box className={classes.selectChip}>
 								<Select>Plot</Select>
 							</Box>
 						</Box>
 					</Box>
 					{/* Basic Details  */}
-					<Box mt="3rem" className={classes.alignCenter}>
-						<Box className={classes.alignCenter}>
+					<Box mt="3rem" p={"1rem"} style={{boxSizing: 'border-box'}} className={clsx(gClasses.smFullWidth,classes.alignCenter,gClasses.smFlexColumn)}>
+						<Box className={clsx(classes.alignCenter,gClasses.smFlexColumn)}>
 							<Typography variant="h6">Project Name</Typography>
-							<Box ml="1rem">
+							<Box className={clsx(classes.leftSpacer,gClasses.smFullWidth)}>
 								<input
 									type="text"
 									className={clsx(
@@ -88,11 +90,11 @@ const PostProperty = () => {
 								/>
 							</Box>
 						</Box>
-						<Box className={classes.alignCenter} ml="1rem">
+						<Box className={clsx(gClasses.smFullWidth,classes.alignCenter,gClasses.smFlexColumn,classes.leftSpacer)} >
 							<Typography variant="h6">
 								Property On Floor
 							</Typography>
-							<Box ml="1rem">
+							<Box className={clsx(classes.leftSpacer,gClasses.smFullWidth)}>
 								<input
 									type="text"
 									className={clsx(
@@ -102,9 +104,9 @@ const PostProperty = () => {
 								/>
 							</Box>
 						</Box>
-						<Box className={classes.alignCenter} ml="1rem">
+						<Box className={clsx(classes.alignCenter,gClasses.smFlexColumn,classes.leftSpacer)} >
 							<Typography variant="h6">TotalFloors</Typography>
-							<Box ml="1rem">
+							<Box className={clsx(classes.leftSpacer,gClasses.smFullWidth)}>
 								<input
 									type="text"
 									className={clsx(
@@ -120,21 +122,24 @@ const PostProperty = () => {
 						<Typography variant="h5" gutterBottom align="center">
 							Unit Type
 						</Typography>
-						<Box mt="1rem" className={classes.alignCenter}>
-							<Select>Studio</Select>
-							<Box ml="1rem">
+						<Box mt="1rem" className={clsx(classes.alignCenter,gClasses.smFlexWrap)}>
+
+							<Box className={classes.selectChip}>
+								<Select>Studio</Select>
+							</Box>
+							<Box className={classes.selectChip}>
 								<Select>1BHK</Select>
 							</Box>
-							<Box ml="1rem">
+							<Box className={classes.selectChip}>
 								<Select>2BHK</Select>
 							</Box>
-							<Box ml="1rem">
+							<Box className={classes.selectChip}>
 								<Select>3BHK</Select>
 							</Box>
-							<Box ml="1rem">
+							<Box className={classes.selectChip}>
 								<Select>4BHK</Select>
 							</Box>
-							<Box ml="1rem">
+							<Box className={classes.selectChip}>
 								<Select>4BHK+</Select>
 							</Box>
 						</Box>
@@ -158,7 +163,7 @@ const PostProperty = () => {
 									</Typography>
 									<Box className={classes.alignCenter}>
 										<DropDown
-											size="sm"
+											size="md"
 											label=" ₹0 - 2 Cr"
 										/>
 										<Box
@@ -335,12 +340,15 @@ const PostProperty = () => {
 						<Typography variant="h5" gutterBottom align="center">
 							Furnishing
 						</Typography>
-						<Box mt="1rem" className={classes.alignCenter}>
-							<Select>Unfurnished</Select>
-							<Box ml="1rem">
+						<Box mt="1rem" className={clsx(classes.alignCenter,gClasses.smFlexWrap)}>
+							<Box className={classes.selectChip}>
+								<Select>Unfurnished</Select>
+							</Box>
+
+							<Box className={classes.selectChip}>
 								<Select>Semi furnished</Select>
 							</Box>
-							<Box ml="1rem">
+							<Box className={classes.selectChip}>
 								<Select>Fully furnished</Select>
 							</Box>
 						</Box>
@@ -406,12 +414,15 @@ const PostProperty = () => {
 						<Typography gutterBottom align="center">
 							You are
 						</Typography>
-						<Box mt="1rem" className={classes.alignCenter}>
-							<Select>Owner</Select>
-							<Box ml="1rem">
+						<Box mt="1rem" className={clsx(classes.alignCenter,gClasses.smFlexWrap)}>
+							<Box className={classes.selectChip}>
+								<Select>Owner</Select>
+							</Box>
+
+							<Box className={classes.selectChip}>
 								<Select>Agent</Select>
 							</Box>
-							<Box ml="1rem">
+							<Box className={classes.selectChip}>
 								<Select>Builder</Select>
 							</Box>
 						</Box>

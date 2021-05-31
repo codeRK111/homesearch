@@ -4,12 +4,18 @@ const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		padding: `2rem 2rem 2rem ${theme.leftPaddingMedium}`,
 		boxSizing: 'border-box',
+		[theme.breakpoints.down('sm')]: {
+			padding: '1rem !important',
+		},
 	},
 	contentWrapper: {
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center',
+		[theme.breakpoints.down('sm')]: {
+			marginTop: '1rem !important',
+		},
 	},
 	alignCenter: {
 		display: 'flex',
@@ -27,12 +33,21 @@ const useStyles = makeStyles((theme) => ({
 	},
 	widthLG: {
 		width: 300,
+		[theme.breakpoints.down('sm')]: {
+			width: '100% !important',
+		},
 	},
 	widthMD: {
 		width: 200,
+		[theme.breakpoints.down('sm')]: {
+			width: '100% !important',
+		},
 	},
 	widthSM: {
 		width: 100,
+		[theme.breakpoints.down('sm')]: {
+			width: '100% !important',
+		},
 	},
 	widthFull: {
 		width: '100%',
@@ -64,5 +79,18 @@ const useStyles = makeStyles((theme) => ({
 		background: theme.utilColor,
 		boxShadow: '2px 2px 2px #249192,-2px -2px 2px #30c4c6',
 	},
+	leftSpacer: {
+		marginLeft: '2rem',
+		[theme.breakpoints.down('sm')]: {
+			marginLeft: '0 !important',
+		},
+	},
+	selectChip: {
+		marginLeft: '1rem',
+		[theme.breakpoints.down('sm')]: {
+			marginTop: '0.8rem !important',
+		},
+	}
+
 }));
 export default useStyles;

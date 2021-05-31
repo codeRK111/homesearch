@@ -87,6 +87,16 @@ export default makeStyles((theme) => ({
 			flexDirection: 'column !important',
 		},
 	},
+	smJustifyBetween: {
+		[theme.breakpoints.down('sm')]: {
+			justifyContent: 'space-between !important',
+		},
+	},
+	smFullWidth: {
+		[theme.breakpoints.down('sm')]: {
+			width: '100% !important',
+		},
+	},
 	smWrap: {
 		[theme.breakpoints.down('sm')]: {
 			flexWrap: 'wrap !important',
@@ -105,6 +115,11 @@ export default makeStyles((theme) => ({
 	smXsText: {
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '0.8rem',
+		},
+	},
+	smFlexWrap: {
+		[theme.breakpoints.down('sm')]: {
+			flexWrap: 'wrap !important',
 		},
 	},
 }));

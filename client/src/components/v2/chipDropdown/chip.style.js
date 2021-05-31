@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
 		'&>span': {
 			fontWeight: '600',
 		},
+		[theme.breakpoints.down('sm')]: {
+			width: props.size-30
+		},
 	}),
 }));
 export default useStyles;
