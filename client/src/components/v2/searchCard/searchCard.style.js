@@ -91,6 +91,9 @@ const useStyles = makeStyles((theme) => ({
 	locationText: {
 		margin: '0 0 0 0.5rem',
 		padding: '0.3rem',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '0.8rem',
+		},
 	},
 	keyValue: {
 		minHeight: '60px',
@@ -103,6 +106,15 @@ const useStyles = makeStyles((theme) => ({
 		'& span': {
 			fontSize: '1.8rem',
 			fontWeight: 'bolder',
+
+			[theme.breakpoints.down('sm')]: {
+				fontSize: '1.2rem',
+			},
+		},
+	},
+	iconImage: {
+		[theme.breakpoints.down('sm')]: {
+			height: '1rem',
 		},
 	},
 }));

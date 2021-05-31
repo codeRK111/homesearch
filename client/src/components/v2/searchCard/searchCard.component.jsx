@@ -40,18 +40,22 @@ const PropertyCard = () => {
 							<span
 								className={clsx(
 									classes.smallText,
-									classes.colorPrimary
+									classes.colorPrimary,
+									globalClasses.textCenter
 								)}
 							>
 								New Property
 							</span>
 						</div>
 						<div>
-							<h2>Casa Living Villa</h2>
+							<h2 className={globalClasses.textCenter}>
+								Casa Living Villa
+							</h2>
 							<span
 								className={clsx(
 									classes.smallText,
-									classes.colorGray
+									classes.colorGray,
+									globalClasses.textCenter
 								)}
 							>
 								3BHK Apartment For Rent
@@ -83,7 +87,7 @@ const PropertyCard = () => {
 						</div>
 					</Box>
 					<Box mt="2rem">
-						<Grid container spacing={5}>
+						<Grid container spacing={3}>
 							<Grid item xs={6}>
 								<Grid container spacing={1}>
 									<Grid
@@ -172,7 +176,11 @@ const PropertyCard = () => {
 					<Grid container spacing={3}>
 						<Grid item xs={3}>
 							<div className={globalClasses.alignCenter}>
-								<img src={area} alt="Area" />
+								<img
+									src={area}
+									alt="Area"
+									className={classes.iconImage}
+								/>
 								<Box ml="0.2rem">
 									<span
 										className={clsx(
@@ -187,7 +195,11 @@ const PropertyCard = () => {
 						</Grid>
 						<Grid item xs={3}>
 							<div className={globalClasses.alignCenter}>
-								<img src={bed} alt="Bed" />
+								<img
+									src={bed}
+									alt="Bed"
+									className={classes.iconImage}
+								/>
 								<Box ml="0.2rem">
 									<span
 										className={clsx(
@@ -202,7 +214,11 @@ const PropertyCard = () => {
 						</Grid>
 						<Grid item xs={3}>
 							<div className={globalClasses.alignCenter}>
-								<img src={tub} alt="Tub" />
+								<img
+									src={tub}
+									alt="Tub"
+									className={classes.iconImage}
+								/>
 								<Box ml="0.2rem">
 									<span
 										className={clsx(
@@ -217,7 +233,11 @@ const PropertyCard = () => {
 						</Grid>
 						<Grid item xs={3}>
 							<div className={globalClasses.alignCenter}>
-								<img src={car} alt="Car" />
+								<img
+									src={car}
+									alt="Car"
+									className={classes.iconImage}
+								/>
 								<Box ml="0.2rem">
 									<span
 										className={clsx(
@@ -232,7 +252,11 @@ const PropertyCard = () => {
 						</Grid>
 						<Grid item xs={3}>
 							<div className={globalClasses.alignCenter}>
-								<img src={area} alt="Area" />
+								<img
+									src={area}
+									alt="Area"
+									className={classes.iconImage}
+								/>
 								<Box ml="0.2rem">
 									<span
 										className={clsx(
@@ -247,7 +271,11 @@ const PropertyCard = () => {
 						</Grid>
 						<Grid item xs={3}>
 							<div className={globalClasses.alignCenter}>
-								<img src={bed} alt="Bed" />
+								<img
+									src={bed}
+									alt="Bed"
+									className={classes.iconImage}
+								/>
 								<Box ml="0.2rem">
 									<span
 										className={clsx(
@@ -262,7 +290,11 @@ const PropertyCard = () => {
 						</Grid>
 						<Grid item xs={3}>
 							<div className={globalClasses.alignCenter}>
-								<img src={tub} alt="Tub" />
+								<img
+									src={tub}
+									alt="Tub"
+									className={classes.iconImage}
+								/>
 								<Box ml="0.2rem">
 									<span
 										className={clsx(
@@ -277,7 +309,11 @@ const PropertyCard = () => {
 						</Grid>
 						<Grid item xs={3}>
 							<div className={globalClasses.alignCenter}>
-								<img src={car} alt="Car" />
+								<img
+									src={car}
+									alt="Car"
+									className={classes.iconImage}
+								/>
 								<Box ml="0.2rem">
 									<span
 										className={clsx(

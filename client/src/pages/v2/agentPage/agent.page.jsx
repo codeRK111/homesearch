@@ -20,13 +20,13 @@ const AgentPage = () => {
 			<Nav />
 			<div className={classes.wrapper}>
 				<Box>
-					<span>Home/ Owner Profile / Sumitra00102</span>
+					<span className={globalClasses.smXsText}>Home/ Owner Profile / Sumitra00102</span>
 				</Box>
 			</div>
 			<div className={classes.profileWrapper}>
 				<div className={classes.overlay}>
 					<Box className={classes.heroWrapper}>
-						<Grid container spacing={5}>
+						<Grid container spacing={3}>
 							<Grid item xs={12} md={2}>
 								<Box className={globalClasses.justifyCenter}>
 									<div className={classes.avatarWrapper}>
@@ -146,7 +146,7 @@ const AgentPage = () => {
 									</Box>
 								</Box>
 								<Box
-									className={clsx(globalClasses.alignCenter)}
+									className={clsx(globalClasses.alignCenter,globalClasses.smFlexColumn)}
 									mt="1rem"
 								>
 									<Box className={globalClasses.alignCenter}>
@@ -165,8 +165,8 @@ const AgentPage = () => {
 										</span>
 									</Box>
 									<Box
-										className={globalClasses.alignCenter}
-										ml="2rem"
+										className={clsx(classes.keyNumberSpacer,globalClasses.alignCenter)}
+
 									>
 										<Box
 											className={classes.numberHiglight}
@@ -183,7 +183,7 @@ const AgentPage = () => {
 										</span>
 									</Box>
 									<Box
-										className={globalClasses.alignCenter}
+										className={clsx(classes.keyNumberSpacer,globalClasses.alignCenter)}
 										ml="2rem"
 									>
 										<Box
@@ -294,8 +294,8 @@ const AgentPage = () => {
 					</Box>
 				</div>
 			</div>
-
 			<Box className={classes.pagePadding}>
+
 				<Box
 					className={clsx(
 						globalClasses.alignCenter,
@@ -334,7 +334,7 @@ const AgentPage = () => {
 								))}
 							</Grid>
 						</div>
-						<div className={classes.scrollbarRight}>
+						<div className={clsx(classes.scrollWrapper,globalClasses.smHide)}>
 							<div className={classes.scrollWrapper}>
 								<ChevronRightIcon style={{ fontSize: 40 }} />
 							</div>
@@ -371,7 +371,7 @@ const AgentPage = () => {
 								))}
 							</Grid>
 						</div>
-						<div className={classes.scrollbarRight}>
+						<div className={clsx(classes.scrollWrapper,globalClasses.smHide)}>
 							<div className={classes.scrollWrapper}>
 								<ChevronRightIcon style={{ fontSize: 40 }} />
 							</div>
@@ -409,7 +409,7 @@ const AgentPage = () => {
 							</Grid>
 						</div>
 						<div className={classes.scrollbarRight}>
-							<div className={classes.scrollWrapper}>
+							<div className={clsx(classes.scrollWrapper,globalClasses.smHide)}>
 								<ChevronRightIcon style={{ fontSize: 40 }} />
 							</div>
 						</div>

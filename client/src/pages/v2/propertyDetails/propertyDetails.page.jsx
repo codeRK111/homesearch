@@ -1,4 +1,4 @@
-import { AppBar, Avatar, Box, Grid } from '@material-ui/core';
+import {AppBar, Avatar, Box, Grid, Typography} from '@material-ui/core';
 
 import Amenity from '../../../components/v2/amenity/amenity.component';
 import Card from '../../../components/v2/nearByCard/nearByCard.component';
@@ -102,9 +102,9 @@ const SearchPage = () => {
 									Explore Nearby Area
 								</h2>
 							</Box>
-							<Box className={globalClasses.alignCenter}>
+							<Box className={clsx(globalClasses.alignCenter, globalClasses.smWrap)}>
 								{nearByAreas.map((c, i) => (
-									<Box ml="0.5rem" key={i}>
+									<Box ml="0.5rem" key={i} className={globalClasses.smTopMargin}>
 										<Chip title={c} selected={i === 0} />
 									</Box>
 								))}
@@ -112,7 +112,7 @@ const SearchPage = () => {
 							<div className={classes.mapWrapper}></div>
 							<Box mt="3rem">
 								<div className={classes.propertiesWrapper}>
-									<div className={classes.scrollbar}>
+									<div className={clsx(classes.scrollbar,globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronLeftIcon
 												style={{ fontSize: 40 }}
@@ -131,7 +131,7 @@ const SearchPage = () => {
 											))}
 										</Grid>
 									</div>
-									<div className={classes.scrollbarRight}>
+									<div className={clsx(classes.scrollbarRight,globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronRightIcon
 												style={{ fontSize: 40 }}
@@ -162,7 +162,7 @@ const SearchPage = () => {
 							</Box>
 							<Grid container spacing={3}>
 								{locals.map((c, i) => (
-									<Grid key={i} item xs={6} md={4}>
+									<Grid key={i} item xs={12} md={4}>
 										<div
 											className={
 												globalClasses.alignCenter
@@ -208,7 +208,7 @@ const SearchPage = () => {
 										</div>
 									</Grid>
 								))}
-								<Grid item xs={6} md={4}>
+								<Grid item xs={12} md={4}>
 									<div className={globalClasses.alignCenter}>
 										<ChipWrapper>
 											<div
@@ -289,48 +289,57 @@ const SearchPage = () => {
 								/>
 							</Box>
 							<Box mt="3rem">
-								<div className={classes.commentWrapper}>
-									<div className={classes.avatarWrapper}>
-										<Avatar
-											alt="Remy Sharp"
-											src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100"
-											className={classes.avatar}
-										/>
-										<div className={classes.commentIcon}>
-											<span>&#8220;</span>
+								<Grid container spacing={1}>
+									<Grid item xs={12} md={1} justify="center">
+										<div className={classes.avatarWrapper}>
+											<Avatar
+												alt="Remy Sharp"
+												src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100"
+												className={classes.avatar}
+											/>
+											<div className={classes.commentIcon}>
+												<span>&#8220;</span>
+											</div>
 										</div>
-									</div>
-									<p>
-										Z1 is a very beautiful and peaceful
-										society. The place is really amazing.
-										Gardens are well maintained and roads
-										are really cleaned all the time. The
-										management has always ,maintained the
-										decorum.
-									</p>
-								</div>
+									</Grid>
+									<Grid item xs={12} md={6}>
+										<Typography variant={"caption"}>
+											Z1 is a very beautiful and peaceful
+											society. The place is really amazing.
+											Gardens are well maintained and roads
+											are really cleaned all the time. The
+											management has always ,maintained the
+											decorum.
+										</Typography>
+									</Grid>
+								</Grid>
 							</Box>
 							<Box mt="1rem">
-								<div className={classes.commentWrapper}>
-									<div className={classes.avatarWrapper}>
-										<Avatar
-											alt="Remy Sharp"
-											src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100"
-											className={classes.avatar}
-										/>
-										<div className={classes.commentIcon}>
-											<span>&#8220;</span>
+								<Grid container spacing={1}>
+									<Grid item xs={12} md={1}>
+										<div className={classes.avatarWrapper}>
+											<Avatar
+												alt="Remy Sharp"
+												src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100"
+												className={classes.avatar}
+											/>
+											<div className={classes.commentIcon}>
+												<span>&#8220;</span>
+											</div>
 										</div>
-									</div>
-									<p>
-										Z1 is a very beautiful and peaceful
-										society. The place is really amazing.
-										Gardens are well maintained and roads
-										are really cleaned all the time. The
-										management has always ,maintained the
-										decorum.
-									</p>
-								</div>
+									</Grid>
+									<Grid item xs={12} md={6}>
+										<Typography variant={"caption"}>
+											Z1 is a very beautiful and peaceful
+											society. The place is really amazing.
+											Gardens are well maintained and roads
+											are really cleaned all the time. The
+											management has always ,maintained the
+											decorum.
+										</Typography>
+									</Grid>
+								</Grid>
+
 							</Box>
 							<Box mt="2rem" mb="2rem">
 								<h2>Similar Properties For Rent</h2>
@@ -356,7 +365,7 @@ const SearchPage = () => {
 											))}
 										</Grid>
 									</div>
-									<div className={classes.scrollbarRight}>
+									<div className={clsx(classes.scrollbarRight,globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronRightIcon
 												style={{ fontSize: 40 }}
@@ -389,7 +398,7 @@ const SearchPage = () => {
 											))}
 										</Grid>
 									</div>
-									<div className={classes.scrollbarRight}>
+									<div className={clsx(classes.scrollbarRight,globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronRightIcon
 												style={{ fontSize: 40 }}

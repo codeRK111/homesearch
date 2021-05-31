@@ -103,6 +103,9 @@ const useStyles = makeStyles((theme) => ({
 		'& span': {
 			fontSize: '1.8rem',
 			fontWeight: 'bolder',
+			[theme.breakpoints.down('sm')]: {
+				fontSize: '1.2rem',
+			},
 		},
 	},
 	overviewIcon: {

@@ -19,7 +19,7 @@ const NavBar = () => {
 					HOMESEARCH<span>18</span>.COM
 				</span>
 			</div>
-			<div className={classes.logoWrapper}>
+			<div className={clsx(classes.logoWrapper, globalClasses.smHide)}>
 				<Box
 					className={clsx(
 						globalClasses.colorSecondary,
@@ -71,7 +71,7 @@ const NavBar = () => {
 				</Box>
 			</div>
 			<div className={classes.rightSide}>
-				<div className={classes.listButton}>
+				<div className={clsx(classes.listButton, globalClasses.smHide)}>
 					List Property & Projects
 				</div>
 				<div className={classes.profileWrapper}>

@@ -81,4 +81,30 @@ export default makeStyles((theme) => ({
 			display: 'none !important',
 		},
 	},
+	smFlexColumn: {
+		[theme.breakpoints.down('sm')]: {
+			display: 'flex !important',
+			flexDirection: 'column !important',
+		},
+	},
+	smWrap: {
+		[theme.breakpoints.down('sm')]: {
+			flexWrap: 'wrap !important',
+		},
+	},
+	smAlignCenter: {
+		[theme.breakpoints.down('sm')]: {
+			alignItems: 'center !important',
+		},
+	},
+	smTopMargin: {
+		[theme.breakpoints.down('sm')]: {
+			marginTop: '1rem !important',
+		},
+	},
+	smXsText: {
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '0.8rem',
+		},
+	},
 }));

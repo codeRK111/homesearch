@@ -68,14 +68,15 @@ const PropertyCard = () => {
 							<span
 								className={clsx(
 									classes.smallText,
-									classes.colorPrimary
+									classes.colorPrimary,
+									globalClasses.textCenter
 								)}
 							>
 								New Property
 							</span>
 						</div>
 						<div>
-							<h2>Casa Living Villa</h2>
+							<h2 className={globalClasses.textCenter}>Casa Living Villa</h2>
 							<span
 								className={clsx(
 									classes.smallText,

@@ -15,23 +15,24 @@ const SearchPage = () => {
 		<div>
 			<Nav />
 			<div className={classes.wrapper}>
-				<Box mb="1rem">
-					<Filter />
-				</Box>
+				<Box mb="1rem">{/* <Filter /> */}</Box>
 				<Grid container>
 					<Grid items xs={12} md={8}>
 						<Box
 							p="1rem"
 							className={clsx(
 								globalClasses.justifySpaceBetween,
-								globalClasses.alignCenter
+								globalClasses.alignCenter,
+								globalClasses.smFlexColumn,
+								globalClasses.smAlignCenter
 							)}
 						>
 							<span>Home/ Project/ Bhubaneswar/ Patia</span>
 							<h3
 								className={clsx(
 									globalClasses.colorPrimary,
-									globalClasses.noSpace
+									globalClasses.noSpace,
+									globalClasses.smTopMargin
 								)}
 							>
 								Projects Near Patia Area In Bhubaneswar

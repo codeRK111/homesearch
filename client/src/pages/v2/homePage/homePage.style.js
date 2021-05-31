@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'center',
 		color: theme.primaryHeadingColor,
 		fontWeight: 'bolder',
+
 	},
 	secondaryHeading: {
 		textAlign: 'center',

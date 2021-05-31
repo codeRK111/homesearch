@@ -5,6 +5,9 @@ const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		padding: `2rem 2rem 2rem ${theme.leftPaddingMedium}`,
 		boxSizing: 'border-box',
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.8rem',
+		},
 	},
 	pagePadding: {
 		padding: `2rem 2rem 2rem ${theme.leftPaddingMedium}`,
@@ -22,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
 		backgroundPosition: 'center',
 		minHeight: '70vh',
 		width: '100%',
+		[theme.breakpoints.down('sm')]: {
+			// minHeight: '300vh',
+			height: '210vh !important',
+		},
 	},
 	overlay: {
 		position: 'absolute',
@@ -35,9 +42,17 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 2,
 		padding: '0 1rem 0 0',
 		boxSizing: 'border-box',
+		[theme.breakpoints.down('sm')]: {
+			minHeight: '100vh',
+			height: '100%',
+		},
 	},
 	heroWrapper: {
 		padding: `4rem 2rem 2rem ${theme.leftPaddingMedium}`,
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.8rem',
+			height: '100%',
+		},
 	},
 	avatarWrapper: {
 		position: 'relative',
@@ -197,6 +212,14 @@ const useStyles = makeStyles((theme) => ({
 		background: '#ffffff',
 		boxShadow: '5px 5px 14px #a6a6a6,-5px -5px 14px #ffffff',
 		padding: '1rem',
+		width: '100%'
 	},
+	keyNumberSpacer: {
+		marginLeft: '2rem',
+		[theme.breakpoints.down('sm')]: {
+			marginTop: '0.8rem',
+			marginLeft: 0
+		},
+	}
 }));
 export default useStyles;

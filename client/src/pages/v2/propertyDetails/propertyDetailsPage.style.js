@@ -72,6 +72,9 @@ const useStyles = makeStyles((theme) => ({
 		background: theme.shadowColor,
 		boxShadow: '9px 9px 18px #9f9f9f, -9px -9px 18px #ffffff',
 		borderRadius: 30,
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
+		},
 	},
 	utilsIcon: {
 		height: '2rem',
@@ -86,6 +89,12 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 50,
 		fontSize: '1rem',
 		padding: '1rem 1rem 1rem 2rem',
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.5rem',
+			borderRadius: 20,
+			boxShadow:
+				'inset 6px 6px 11px #b3b3b3,inset -6px -6px 11px #ffffff',
+		},
 		'&:focus': {
 			outline: 'none',
 		},
@@ -93,6 +102,10 @@ const useStyles = makeStyles((theme) => ({
 			color: theme.primaryHeadingColor,
 			fontWeight: 700,
 			fontSize: '1.5rem',
+			[theme.breakpoints.down('sm')]: {
+				fontWeight: 600,
+				fontSize: '1rem',
+			},
 		},
 	},
 	commentWrapper: {
@@ -106,23 +119,23 @@ const useStyles = makeStyles((theme) => ({
 	},
 	avatarWrapper: {
 		position: 'relative',
-		height: '75px',
-		width: '92px',
+		height: '50px',
+		width: '65px',
 		display: 'inline-block',
 	},
 	avatar: {
-		height: '80px',
-		width: '80px',
+		height: '60px',
+		width: '60px',
 		position: 'absolute',
 	},
 	commentIcon: {
 		position: 'absolute',
-		height: 30,
-		width: 30,
+		height: 20,
+		width: 20,
 
 		borderRadius: '50%',
 		background: '#FA9B0B',
-		fontSize: '2rem',
+		fontSize: '1.5rem',
 		fontWeight: 'bolder',
 		color: '#ffffff',
 		display: 'flex',

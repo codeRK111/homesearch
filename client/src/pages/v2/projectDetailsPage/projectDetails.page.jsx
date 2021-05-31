@@ -2,9 +2,9 @@ import {
 	AppBar,
 	Avatar,
 	Box,
-	CardMedia,
+	CardMedia, 
 	Grid,
-	Typography,
+	Typography
 } from '@material-ui/core';
 
 import Amenity from '../../../components/v2/amenity/amenity.component';
@@ -13,7 +13,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Chip from '../../../components/v2/chip/chip.component';
 import ChipWrapper from '../../../components/v2/chipWrapper/chipWrapper.component';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import PropertyCard from '../../../components/v2/propertyCard/propertyCard.component';
 import React from 'react';
@@ -44,7 +44,7 @@ const amenities = [
 	'Lounge',
 	'Lap Pool',
 	'Tennis Court',
-	'Playground',
+	'Playground'
 ];
 const locals = [
 	'Parking is easy',
@@ -52,7 +52,7 @@ const locals = [
 	"It's a student area",
 	"It's dog friendly",
 	"It's a family area",
-	"It's a safe area",
+	"It's a safe area"
 ];
 const nearByAreas = [
 	'Highlights',
@@ -64,7 +64,7 @@ const nearByAreas = [
 	'TGym',
 	'School',
 	'College',
-	'Petrol Pump',
+	'Petrol Pump'
 ];
 
 const SearchPage = () => {
@@ -72,12 +72,12 @@ const SearchPage = () => {
 	const globalClasses = useGlobalStyles();
 	return (
 		<div>
-			<Nav />
+			<Nav/>
 			<div className={classes.wrapper}>
 				<Box mb="1rem">
 					<span>Home/ Project/ Bhubaneswar/ Patia</span>
 				</Box>
-				<SearchCard />
+				<SearchCard/>
 				<Box mt="2rem">
 					<Grid container spacing={3}>
 						<Grid item xs={12} md={9}>
@@ -87,7 +87,7 @@ const SearchPage = () => {
 							<Grid container spacing={3}>
 								{amenities.map((c, i) => (
 									<Grid item xs={6} md={3} key={i}>
-										<Amenity text={c} />
+										<Amenity text={c}/>
 									</Grid>
 								))}
 							</Grid>
@@ -242,7 +242,7 @@ const SearchPage = () => {
 							</Box>
 							<Box mt="2rem" className={classes.floorPlanWrapper}>
 								<Grid container spacing={1}>
-									<Grid item xs={6} md={5}>
+									<Grid item xs={12} md={5}>
 										<Box
 											className={
 												globalClasses.justifySpaceAround
@@ -253,7 +253,7 @@ const SearchPage = () => {
 													classes.planTypeWrapper
 												}
 											>
-												<img src={byType} alt="Unit" />
+												<img src={byType} alt="Unit"/>
 												<Typography
 													variant="caption"
 													className={
@@ -268,7 +268,7 @@ const SearchPage = () => {
 													classes.planTypeWrapper
 												}
 											>
-												<img src={byUnit} alt="Unit" />
+												<img src={byUnit} alt="Unit"/>
 												<Typography
 													variant="caption"
 													className={
@@ -283,7 +283,7 @@ const SearchPage = () => {
 													classes.planTypeWrapper
 												}
 											>
-												<img src={byBHK} alt="Unit" />
+												<img src={byBHK} alt="Unit"/>
 												<Typography
 													variant="caption"
 													className={
@@ -394,7 +394,7 @@ const SearchPage = () => {
 										</Box>
 									</Grid>
 									<Grid item xs={false} md={1}></Grid>
-									<Grid item xs={6} md={5}>
+									<Grid item xs={12} md={5}>
 										<CardMedia
 											image={fPlan}
 											className={classes.fPlan}
@@ -403,43 +403,43 @@ const SearchPage = () => {
 								</Grid>
 							</Box>
 							<Box mt="3rem">
-								<h2 className={globalClasses.colorPrimary}>
+								<h2 className={clsx(globalClasses.colorPrimary)}>
 									Explore Nearby Area
 								</h2>
 							</Box>
-							<Box className={globalClasses.alignCenter}>
+							<Box className={clsx(globalClasses.alignCenter, globalClasses.smWrap)}>
 								{nearByAreas.map((c, i) => (
-									<Box ml="0.5rem" key={i}>
-										<Chip title={c} selected={i === 0} />
+									<Box ml="0.5rem" key={i} className={globalClasses.smTopMargin}>
+										<Chip title={c} selected={i === 0}/>
 									</Box>
 								))}
 							</Box>
 							<div className={classes.mapWrapper}></div>
 							<Box mt="3rem">
 								<div className={classes.propertiesWrapper}>
-									<div className={classes.scrollbar}>
+									<div className={clsx(classes.scrollbar,globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronLeftIcon
-												style={{ fontSize: 40 }}
+												style={{fontSize: 40}}
 											/>
 										</div>
 									</div>
 									<div className={classes.content}>
 										<Grid container spacing={3}>
 											{Array.from(
-												{ length: 4 },
+												{length: 4},
 												(_, idx) => `${++idx}`
 											).map((c) => (
 												<Grid item xs={12} md={3}>
-													<Card key={c} />
+													<Card key={c}/>
 												</Grid>
 											))}
 										</Grid>
 									</div>
-									<div className={classes.scrollbarRight}>
+									<div className={clsx(classes.scrollbarRight,globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronRightIcon
-												style={{ fontSize: 40 }}
+												style={{fontSize: 40}}
 											/>
 										</div>
 									</div>
@@ -452,11 +452,11 @@ const SearchPage = () => {
 							</Box>
 							<Grid container spacing={3}>
 								{Array.from(
-									{ length: 6 },
+									{length: 6},
 									(_, idx) => `${++idx}`
 								).map((c) => (
 									<Grid item xs={12} md={2}>
-										<Card key={c} />
+										<Card key={c}/>
 									</Grid>
 								))}
 							</Grid>
@@ -467,7 +467,7 @@ const SearchPage = () => {
 							</Box>
 							<Grid container spacing={3}>
 								{locals.map((c, i) => (
-									<Grid key={i} item xs={6} md={4}>
+									<Grid key={i} item xs={12} md={4}>
 										<div
 											className={
 												globalClasses.alignCenter
@@ -513,7 +513,7 @@ const SearchPage = () => {
 										</div>
 									</Grid>
 								))}
-								<Grid item xs={6} md={4}>
+								<Grid item xs={12} md={4}>
 									<div className={globalClasses.alignCenter}>
 										<ChipWrapper>
 											<div
@@ -594,48 +594,57 @@ const SearchPage = () => {
 								/>
 							</Box>
 							<Box mt="3rem">
-								<div className={classes.commentWrapper}>
-									<div className={classes.avatarWrapper}>
-										<Avatar
-											alt="Remy Sharp"
-											src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100"
-											className={classes.avatar}
-										/>
-										<div className={classes.commentIcon}>
-											<span>&#8220;</span>
+								<Grid container spacing={1}>
+									<Grid item xs={12} md={1} justify="center">
+										<div className={classes.avatarWrapper}>
+											<Avatar
+												alt="Remy Sharp"
+												src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100"
+												className={classes.avatar}
+											/>
+											<div className={classes.commentIcon}>
+												<span>&#8220;</span>
+											</div>
 										</div>
-									</div>
-									<p>
-										Z1 is a very beautiful and peaceful
-										society. The place is really amazing.
-										Gardens are well maintained and roads
-										are really cleaned all the time. The
-										management has always ,maintained the
-										decorum.
-									</p>
-								</div>
+									</Grid>
+									<Grid item xs={12} md={6}>
+										<Typography variant={"caption"}>
+											Z1 is a very beautiful and peaceful
+											society. The place is really amazing.
+											Gardens are well maintained and roads
+											are really cleaned all the time. The
+											management has always ,maintained the
+											decorum.
+										</Typography>
+									</Grid>
+								</Grid>
 							</Box>
 							<Box mt="1rem">
-								<div className={classes.commentWrapper}>
-									<div className={classes.avatarWrapper}>
-										<Avatar
-											alt="Remy Sharp"
-											src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100"
-											className={classes.avatar}
-										/>
-										<div className={classes.commentIcon}>
-											<span>&#8220;</span>
+								<Grid container spacing={1}>
+									<Grid item xs={12} md={1}>
+										<div className={classes.avatarWrapper}>
+											<Avatar
+												alt="Remy Sharp"
+												src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100"
+												className={classes.avatar}
+											/>
+											<div className={classes.commentIcon}>
+												<span>&#8220;</span>
+											</div>
 										</div>
-									</div>
-									<p>
-										Z1 is a very beautiful and peaceful
-										society. The place is really amazing.
-										Gardens are well maintained and roads
-										are really cleaned all the time. The
-										management has always ,maintained the
-										decorum.
-									</p>
-								</div>
+									</Grid>
+									<Grid item xs={12} md={6}>
+										<Typography variant={"caption"}>
+											Z1 is a very beautiful and peaceful
+											society. The place is really amazing.
+											Gardens are well maintained and roads
+											are really cleaned all the time. The
+											management has always ,maintained the
+											decorum.
+										</Typography>
+									</Grid>
+								</Grid>
+
 							</Box>
 							<Box mt="2rem" mb="2rem">
 								<h2>Similar Properties For Rent</h2>
@@ -652,19 +661,19 @@ const SearchPage = () => {
 									<div className={classes.content}>
 										<Grid container spacing={3}>
 											{Array.from(
-												{ length: 8 },
+												{length: 8},
 												(_, idx) => `${++idx}`
 											).map((c) => (
 												<Grid item xs={12} md={3}>
-													<PropertyCard key={c} />
+													<PropertyCard key={c}/>
 												</Grid>
 											))}
 										</Grid>
 									</div>
-									<div className={classes.scrollbarRight}>
+									<div className={clsx(classes.scrollbarRight,globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronRightIcon
-												style={{ fontSize: 40 }}
+												style={{fontSize: 40}}
 											/>
 										</div>
 									</div>
@@ -685,19 +694,19 @@ const SearchPage = () => {
 									<div className={classes.content}>
 										<Grid container spacing={1}>
 											{Array.from(
-												{ length: 4 },
+												{length: 4},
 												(_, idx) => `${++idx}`
 											).map((c) => (
 												<Grid item xs={12} md={3}>
-													<PropertyCard key={c} />
+													<PropertyCard key={c}/>
 												</Grid>
 											))}
 										</Grid>
 									</div>
-									<div className={classes.scrollbarRight}>
+									<div className={clsx(classes.scrollbarRight,globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronRightIcon
-												style={{ fontSize: 40 }}
+												style={{fontSize: 40}}
 											/>
 										</div>
 									</div>

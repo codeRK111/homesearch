@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
 		'&>span': {
 			color: theme.secondaryHeadingColor,
 		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '0.8rem',
+		},
 	},
 	logo: {
 		height: '25px',
@@ -79,7 +82,10 @@ const useStyles = makeStyles((theme) => ({
 		height: 25,
 	},
 	menuIcon: {
-		width: 35,
+		width: 30,
+		[theme.breakpoints.down('sm')]: {
+			width: 25,
+		},
 	},
 }));
 export default useStyles;

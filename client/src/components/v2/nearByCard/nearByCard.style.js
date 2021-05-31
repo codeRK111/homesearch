@@ -67,6 +67,9 @@ const useStyles = makeStyles((theme) => ({
 		padding: 0,
 		fontSize: '1vw',
 		textAlign: 'center',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1rem',
+		},
 	},
 	description: {
 		fontSize: '0.7rem',
