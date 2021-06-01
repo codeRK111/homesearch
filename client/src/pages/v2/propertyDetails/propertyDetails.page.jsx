@@ -23,7 +23,12 @@ import useGlobalStyles from '../../../common.style';
 import useStyles from './propertyDetailsPage.style';
 import whatsappDefaultIcon from '../../../assets/icons/whatsapp.svg';
 import whatsappIcon from '../../../assets/icons/whatsappOutline.svg';
-
+import Map from '../../../components/v2/map/map.component';
+const location = {
+	address: '1600 Amphitheatre Parkway, Mountain View, california.',
+	lat: 37.42216,
+	lng: -122.08427,
+}
 const amenities = [
 	'Clubhouse',
 	'Jacuzzi',
@@ -109,7 +114,9 @@ const SearchPage = () => {
 									</Box>
 								))}
 							</Box>
-							<div className={classes.mapWrapper}></div>
+							<div>
+								<Map  location={location} zoomLevel={17} className={classes.mapWrapper}/>
+							</div>
 							<Box mt="3rem">
 								<div className={classes.propertiesWrapper}>
 									<div className={clsx(classes.scrollbar,globalClasses.smHide)}>

@@ -2,7 +2,7 @@ import {
 	AppBar,
 	Avatar,
 	Box,
-	CardMedia, 
+	CardMedia,
 	Grid,
 	Typography
 } from '@material-ui/core';
@@ -35,6 +35,8 @@ import useGlobalStyles from '../../../common.style';
 import useStyles from './projectDetailsPage.style';
 import whatsappDefaultIcon from '../../../assets/icons/whatsapp.svg';
 import whatsappIcon from '../../../assets/icons/whatsappOutline.svg';
+import Map from '../../../components/v2/map/map.component';
+
 
 const amenities = [
 	'Clubhouse',
@@ -70,6 +72,55 @@ const nearByAreas = [
 const SearchPage = () => {
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
+	const [location, setLocation] = React.useState({
+		address: '',
+		lat: 0,
+		lng: 0
+	});
+
+	const success = (pos) => {
+		const crd = pos.coords;
+		console.log({crd})
+		setLocation({
+			...location,
+			lat: crd.latitude,
+			lng: crd.longitude
+		});
+
+	};
+
+	const options = {
+		enableHighAccuracy: true,
+		timeout: 5000,
+		maximumAge: 0
+	};
+
+	const errors = (err) => {
+		console.warn(`ERROR(${err.code}): ${err.message}`);
+	};
+
+	React.useEffect(() => {
+		if (navigator.geolocation) {
+			navigator.permissions
+				.query({name: "geolocation"})
+				.then(function (result) {
+					if (result.state === "granted") {
+						console.log(result.state);
+						//If granted then you can directly call your function here
+						navigator.geolocation.getCurrentPosition(success);
+					} else if (result.state === "prompt") {
+						navigator.geolocation.getCurrentPosition(success, errors, options);
+					} else if (result.state === "denied") {
+						//If denied then you have to show instructions to enable location
+					}
+					result.onchange = function () {
+						console.log(result.state);
+					};
+				});
+		} else {
+			alert("Sorry Not available!");
+		}
+	}, []);
 	return (
 		<div>
 			<Nav/>
@@ -414,10 +465,12 @@ const SearchPage = () => {
 									</Box>
 								))}
 							</Box>
-							<div className={classes.mapWrapper}></div>
+							<div>
+								<Map location={location} zoomLevel={17} className={classes.mapWrapper}/>
+							</div>
 							<Box mt="3rem">
 								<div className={classes.propertiesWrapper}>
-									<div className={clsx(classes.scrollbar,globalClasses.smHide)}>
+									<div className={clsx(classes.scrollbar, globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronLeftIcon
 												style={{fontSize: 40}}
@@ -436,7 +489,7 @@ const SearchPage = () => {
 											))}
 										</Grid>
 									</div>
-									<div className={clsx(classes.scrollbarRight,globalClasses.smHide)}>
+									<div className={clsx(classes.scrollbarRight, globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronRightIcon
 												style={{fontSize: 40}}
@@ -670,7 +723,7 @@ const SearchPage = () => {
 											))}
 										</Grid>
 									</div>
-									<div className={clsx(classes.scrollbarRight,globalClasses.smHide)}>
+									<div className={clsx(classes.scrollbarRight, globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronRightIcon
 												style={{fontSize: 40}}
@@ -703,7 +756,7 @@ const SearchPage = () => {
 											))}
 										</Grid>
 									</div>
-									<div className={clsx(classes.scrollbarRight,globalClasses.smHide)}>
+									<div className={clsx(classes.scrollbarRight, globalClasses.smHide)}>
 										<div className={classes.scrollWrapper}>
 											<ChevronRightIcon
 												style={{fontSize: 40}}

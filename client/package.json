@@ -21,6 +21,7 @@
 		"date-fns": "2.8.1",
 		"formik": "^2.1.5",
 		"formik-error-focus": "^1.1.0",
+		"google-map-react": "^2.1.9",
 		"moment": "^2.27.0",
 		"prop-types": "^15.7.2",
 		"query-string": "^6.13.6",
