@@ -20,7 +20,8 @@ const RowSelect = ({ formLabel, spacing = true, ...otherProps }) => {
 		<Box {...padding}>
 			<Box className={classes.label}>{formLabel}</Box>
 			<Box {...margin}>
-				<TextField
+				<input
+					className={classes.input}
 					focused={Boolean(helperText)}
 					fullWidth
 					size="small"

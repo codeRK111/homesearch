@@ -8,13 +8,59 @@ import NavBar from '../../../components/v2/nav/nav.component';
 import React from 'react';
 import RecentBlogs from '../../../components/v2/recentBlogs/recentBlogs.component';
 import RentProperties from '../../../components/v2/rentProperties/rentProperties.component';
+import SaleProperties from '../../../components/v2/saleProperties/saleProperties.component';
 import TopBuilders from '../../../components/v2/topBuilders/topBuilders.component';
 import VirtualTour from '../../../components/v2/virtualTour/virtualTour.component';
+import { apiUrl } from '../../../utils/render.utils';
+import axios from 'axios';
 import clsx from 'clsx';
 import useStyles from './homePage.style';
 
 const HomePage = () => {
 	const classes = useStyles();
+	let cancelToken = React.useRef();
+	const [asyncState, setAsyncState] = React.useState({
+		loading: false,
+		error: null,
+	});
+	const [data, setData] = React.useState(null);
+	React.useEffect(() => {
+		return () => {
+			if (typeof cancelToken.current != typeof undefined) {
+				cancelToken.current.cancel('Operation canceled');
+			}
+		};
+	}, []);
+
+	React.useEffect(() => {
+		(async () => {
+			try {
+				setAsyncState({
+					error: null,
+					loading: true,
+				});
+				cancelToken.current = axios.CancelToken.source();
+
+				const res = await axios.get(apiUrl('/page/homePage', 'v1'), {
+					cancelToken: cancelToken.current.token,
+				});
+
+				setAsyncState({
+					error: null,
+					loading: false,
+				});
+				console.log(res.data.data);
+				setData(res.data.data);
+			} catch (error) {
+				setData(null);
+				console.log(error);
+				setAsyncState({
+					error: error.response.data.message,
+					loading: false,
+				});
+			}
+		})();
+	}, []);
 	return (
 		<Box className={classes.wrapper}>
 			<NavBar />
@@ -30,11 +76,18 @@ const HomePage = () => {
 			>
 				<h2>Exclusive Properties For Rent</h2>
 				<Box mt="3rem">
-					<RentProperties />
+					{!!data && (
+						<RentProperties
+							data={{
+								cities: data.cities,
+								properties: data.rentProperties,
+							}}
+						/>
+					)}
 				</Box>
 			</Box>
 			<Box className={classes.componentSpacer}>
-				<CustomerCount />
+				{data && <CustomerCount counts={data.counts} />}
 			</Box>
 			<Box
 				className={clsx(
@@ -42,9 +95,16 @@ const HomePage = () => {
 					classes.componentPadding
 				)}
 			>
-				<h2>Latest Properties For Rent</h2>
+				<h2>Latest Properties For Sale</h2>
 				<Box mt="3rem">
-					<LatestRentProperties />
+					{!!data && (
+						<SaleProperties
+							data={{
+								cities: data.cities,
+								properties: data.saleProperties,
+							}}
+						/>
+					)}
 				</Box>
 			</Box>
 			<Box className={classes.componentSpacer}>
@@ -58,7 +118,14 @@ const HomePage = () => {
 			>
 				<h2>Top Builders of India</h2>
 				<Box mt="3rem">
-					<TopBuilders />
+					{!!data && (
+						<TopBuilders
+							data={{
+								cities: data.cities,
+								builders: data.builders,
+							}}
+						/>
+					)}
 				</Box>
 			</Box>
 			<Box

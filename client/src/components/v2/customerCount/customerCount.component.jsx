@@ -2,24 +2,26 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 import useStyles from './customerCount.style';
 
-const CustomerCount = () => {
+const CustomerCount = ({ counts }) => {
 	const classes = useStyles();
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.flexWrapper}>
-				<span className={classes.number}>18,000 +</span>
+				<span className={classes.number}>{counts.userCounts} +</span>
 				<Typography className={classes.text}>
 					Happy Customers
 				</Typography>
 			</div>
 			<div className={classes.flexWrapper}>
-				<span className={classes.number}>24,000 +</span>
+				<span className={classes.number}>
+					{counts.propertyCounts} +
+				</span>
 				<Typography className={classes.text}>
 					Houses across India
 				</Typography>
 			</div>
 			<div className={classes.flexWrapper}>
-				<span className={classes.number}>6</span>
+				<span className={classes.number}>{counts.citiesCounts}</span>
 				<Typography className={classes.text}>
 					Cities in India
 				</Typography>

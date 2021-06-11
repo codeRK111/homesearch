@@ -22,48 +22,59 @@ const cities = [
 	'Chandigarh',
 ];
 
-const RentProperties = () => {
+const RentProperties = ({ data }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
+	const [selected, setSelected] = React.useState(null);
+	console.log({ data });
+
+	const onClick = (c) => {
+		setSelected(c);
+	};
 	return (
 		<div>
-			<div className={classes.listWrapper}>
-				{cities.map((c, i) => (
-					<Box className={classes.chipWrapper}>
-						<Chip title={c} key={i} />
-					</Box>
-				))}
-			</div>
-			<Box mt="3rem">
-				<div className={classes.propertiesWrapper}>
-					<div className={clsx(classes.scrollbar, gClasses.smHide)}>
-						<div className={classes.scrollWrapper}>
-							<ChevronLeftIcon style={{ fontSize: 40 }} />
-						</div>
-					</div>
-					<div className={classes.content}>
-						<Grid container spacing={3}>
-							{Array.from(
-								{ length: 3 },
-								(_, idx) => `${++idx}`
-							).map((c) => (
-								<Grid item xs={12} md={4}>
-									<Card key={c} />
-								</Grid>
-							))}
-						</Grid>
-					</div>
-					<div
-						className={clsx(
-							classes.scrollbarRight,
-							gClasses.smHide
-						)}
-					>
-						<div className={classes.scrollWrapper}>
-							<ChevronRightIcon style={{ fontSize: 40 }} />
-						</div>
-					</div>
+			{!!data && (
+				<div className={classes.listWrapper}>
+					{data.cities.map((c, i) => (
+						<Box className={classes.chipWrapper}>
+							<Chip
+								title={c.name}
+								key={c._id}
+								onClick={() => onClick(c._id)}
+								selected={!!selected && c._id === selected}
+							/>
+						</Box>
+					))}
 				</div>
+			)}
+			<Box mt="3rem">
+				{!!data && (
+					<div className={classes.propertiesWrapper}>
+						<div className={classes.content}>
+							<Grid container spacing={3}>
+								{data.properties.map((c) => (
+									<Grid item xs={12} md={4}>
+										<Card key={c.id} data={c} />
+									</Grid>
+								))}
+							</Grid>
+						</div>
+						{data.properties.length > 3 && (
+							<div
+								className={clsx(
+									classes.scrollbarRight,
+									gClasses.smHide
+								)}
+							>
+								<div className={classes.scrollWrapper}>
+									<ChevronRightIcon
+										style={{ fontSize: 40 }}
+									/>
+								</div>
+							</div>
+						)}
+					</div>
+				)}
 			</Box>
 		</div>
 	);

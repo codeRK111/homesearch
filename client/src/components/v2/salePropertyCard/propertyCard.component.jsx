@@ -60,7 +60,7 @@ const PropertyCard = ({ data }) => {
 									className={classes.img}
 								/>
 								<span className={classes.contentText}>
-									{TYPES[data.type]}
+									{TYPES[data.sale_type]}
 								</span>
 							</div>
 						</div>
@@ -70,7 +70,7 @@ const PropertyCard = ({ data }) => {
 								classes.title
 							)}
 						>
-							Rs. {data.rent / 1000}K/Month
+							Rs. {(data.salePrice / 100000).toFixed(2)}L
 						</h5>
 						<div className={classes.flexParentWrapper}>
 							<div className={classes.flexWrapper}>

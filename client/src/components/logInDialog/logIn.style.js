@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
 		width: '60vw',
 		height: '60vh',
 		boxSizing: 'border-box',
+		background: '#e0e0e0',
 		[theme.breakpoints.down('xs')]: {
 			width: '100%',
 		},
@@ -55,6 +56,17 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down('xs')]: {
 			width: '100vw',
 		},
+	},
+	button: {
+		cursor: 'pointer',
+		background: theme.shadowColor,
+		display: 'flex',
+		minWidth: '75px',
+		justifyContent: 'center',
+		borderRadius: '20px',
+		boxShadow: '10px 10px 20px #acacac,-10px -10px 20px #ffffff',
+		padding: '1rem 3rem',
+		border: 'none',
 	},
 }));
 export default useStyles;

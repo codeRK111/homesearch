@@ -118,24 +118,28 @@ function AlertDialogSlide({
 		toggleLoginPopup(false);
 	};
 
-	const handleSendOtp = (number, setErrors) => (status, data = null) => {
-		if (status === 'success') {
-			setOtpSent(true);
-			setPhoneNumber(number);
-		} else {
-			setPhoneNumber('');
-			setOtpSent(false);
-			setErrors({ number: data });
-		}
-	};
+	const handleSendOtp =
+		(number, setErrors) =>
+		(status, data = null) => {
+			if (status === 'success') {
+				setOtpSent(true);
+				setPhoneNumber(number);
+			} else {
+				setPhoneNumber('');
+				setOtpSent(false);
+				setErrors({ number: data });
+			}
+		};
 
-	const handleValidateOtp = (setErrors) => (status, data = null) => {
-		if (status === 'success') {
-			handleClose();
-		} else {
-			setErrors({ otp: data });
-		}
-	};
+	const handleValidateOtp =
+		(setErrors) =>
+		(status, data = null) => {
+			if (status === 'success') {
+				handleClose();
+			} else {
+				setErrors({ otp: data });
+			}
+		};
 
 	const onSendOtp = async (values, setErrors) => {
 		try {
@@ -320,13 +324,13 @@ function AlertDialogSlide({
 													)}
 
 													<Box mt="1rem">
-														<Button
+														<button
 															type="submit"
 															fullWidth
 															variant="contained"
 															color="primary"
 															className={
-																classes.submit
+																classes.button
 															}
 															{...buttonProps}
 															size="large"
@@ -334,7 +338,7 @@ function AlertDialogSlide({
 															{otpSent
 																? 'Sign In'
 																: 'Send OTP'}
-														</Button>
+														</button>
 													</Box>
 												</Form>
 											)}

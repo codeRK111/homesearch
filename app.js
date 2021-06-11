@@ -19,6 +19,7 @@ const builderRouter = require('./routes/builderRoute');
 const projectRoute = require('./routes/projectRoute');
 const kraRoute = require('./routes/kraRoute');
 const kpiRoute = require('./routes/kpiRoute');
+const pageRoute = require('./routes/pageRoute');
 const queryRoute = require('./routes/propertyQueryRoute');
 const whatsappQueryRoute = require('./routes/whatsappQueryRoute');
 const feedbackRoute = require('./routes/feedbackRoute');
@@ -143,6 +144,7 @@ app.use('/api/v1/contacts', contactRoute);
 app.use('/api/v1/features', userFeatureRouter);
 app.use('/api/v1/kra', kraRoute);
 app.use('/api/v1/kpi', kpiRoute);
+app.use('/api/v1/page', pageRoute);
 app.use('/api/v1/api-test', testRoute);
 
 // v2 Routes

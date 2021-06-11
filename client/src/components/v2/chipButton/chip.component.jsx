@@ -4,17 +4,17 @@ import clsx from 'clsx';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './chip.style';
 
-const Chip = ({ title, selected = false, ...otherProps }) => {
+const Chip = ({ title, selected = false }) => {
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
 	return (
-		<div className={classes.wrapper} {...otherProps}>
+		<button className={classes.wrapper}>
 			<span
 				className={clsx({ [globalClasses.colorSecondary]: selected })}
 			>
 				{title}
 			</span>
-		</div>
+		</button>
 	);
 };
 

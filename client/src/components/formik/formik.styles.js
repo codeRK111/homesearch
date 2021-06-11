@@ -11,5 +11,17 @@ const useStyles = makeStyles((theme) => ({
 	checkboxRoot: {
 		padding: 0,
 	},
+	input: {
+		padding: '1rem',
+		width: '100%',
+		border: 'none',
+		background: theme.shadowColor,
+		borderRadius: 10,
+		boxSizing: 'border-box',
+		boxShadow: 'inset 3px 3px 5px #b5b5b5,inset -3px -3px 5px #ffffff',
+		'&:focus': {
+			outline: 'none',
+		},
+	},
 }));
 export default useStyles;

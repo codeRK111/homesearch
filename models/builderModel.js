@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Project = require('./projectModule');
 const validator = require('validator');
 const slugify = require('slugify');
 const { Schema, model } = mongoose;

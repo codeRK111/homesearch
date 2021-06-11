@@ -36,9 +36,7 @@ const PropertyCard = () => {
 					</Box>
 				</div>
 				<Box mt="0.5rem" mb="0.5rem">
-					<h2 className={classes.title}>
-						Biggest Construction in Mumbai, India
-					</h2>
+					<h2 className={classes.title}>Coming Soon..</h2>
 				</Box>
 				<div className={classes.basicWrapper}>
 					<div className={classes.basic}>
@@ -47,11 +45,7 @@ const PropertyCard = () => {
 					</div>
 				</div>
 				<Box mt="2rem">
-					<p className={classes.description}>
-						A new project is coming up in the financial city of
-						India. The long waited project is financed by India
-						bulls and constructed by Lodha Group.
-					</p>
+					<p className={classes.description}>Coming Soon..</p>
 				</Box>
 			</div>
 		</div>
