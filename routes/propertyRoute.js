@@ -2,6 +2,7 @@ const express = require('express');
 const propertyController = require('../controllers/propertyController');
 const adminController = require('../controllers/adminController');
 const authController = require('../controllers/authController');
+const uploadController = require('../controllersV2/fileUploadController');
 
 // File Upload
 const multer = require('multer');
@@ -35,6 +36,12 @@ router.post('/searchProperties', propertyController.searchProperties);
 router
 	.route('/handle-property-image/:id')
 	.patch(authController.protect, propertyController.handlePropertyImage);
+router
+	.route('/add-property-image/:id')
+	.post(
+		uploadController.uploadPropertiesPhoto,
+		propertyController.handlePropertyImage
+	);
 router
 	.route('/handle-property-image-by-admin/:id')
 	.patch(adminController.protect, propertyController.handlePropertyImage);

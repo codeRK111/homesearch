@@ -49,7 +49,7 @@ const builder = multer({
 });
 const properties = multer({
 	fileFilter: multerFilter,
-	storage: builderStorage,
+	storage: propertyStorage,
 });
 const builderPackages = multer({
 	fileFilter: multerFilter,

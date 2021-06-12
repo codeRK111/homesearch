@@ -1693,95 +1693,19 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 });
 
 exports.handlePropertyImage = catchAsync(async (req, res, next) => {
-	if (!req.files) {
-		return next(new AppError('No image found', 400));
-	} else {
-		const project = await Property.findById(req.params.id);
-		if (!project) return next(new AppError('project not found', 404));
-
-		if (req.files.image1) {
-			if (project.image1) {
-				fs.unlinkSync(
-					path.join(__dirname, '../', 'images', 'property_images/') +
-						project.image1
-				);
-			}
-			let image1 =
-				Math.floor(10000000 + Math.random() * 90000000) +
-				'-' +
-				req.files.image1.name;
-			await req.files.image1.mv(
-				path.join(__dirname, '../', 'images', 'property_images/') +
-					image1
-			);
-			project.image1 = image1;
+	console.log(req.files);
+	const images = req.files.map((c) => ({ image: c.filename }));
+	const property = await Property.findByIdAndUpdate(
+		req.params.id,
+		{ $push: { photos: { $each: images } } },
+		{
+			new: true,
+			runValidators: true,
 		}
-
-		if (req.files.image2) {
-			if (project.image2) {
-				fs.unlinkSync(
-					path.join(__dirname, '../', 'images', 'property_images/') +
-						project.image2
-				);
-			}
-			let image2 =
-				Math.floor(10000000 + Math.random() * 90000000) +
-				'-' +
-				req.files.image2.name;
-			await req.files.image2.mv(
-				path.join(__dirname, '../', 'images', 'property_images/') +
-					image2
-			);
-			project.image2 = image2;
-		}
-
-		if (req.files.image3) {
-			if (project.image3) {
-				fs.unlinkSync(
-					path.join(__dirname, '../', 'images', 'property_images/') +
-						project.image3
-				);
-			}
-			let image3 =
-				Math.floor(10000000 + Math.random() * 90000000) +
-				'-' +
-				req.files.image3.name;
-			await req.files.image3.mv(
-				path.join(__dirname, '../', 'images', 'property_images/') +
-					image3
-			);
-			project.image3 = image3;
-		}
-
-		if (req.files.image4) {
-			if (project.image4) {
-				fs.unlinkSync(
-					path.join(__dirname, '../', 'images', 'property_images/') +
-						project.image4
-				);
-			}
-			let image4 =
-				Math.floor(10000000 + Math.random() * 90000000) +
-				'-' +
-				req.files.image4.name;
-			await req.files.image4.mv(
-				path.join(__dirname, '../', 'images', 'property_images/') +
-					image4
-			);
-			project.image4 = image4;
-		}
-
-		const projectUpdated = await project.save();
-
-		//send response
-		res.send({
-			status: 'success',
-			message: 'File is uploaded',
-			data: {
-				property: projectUpdated,
-			},
-		});
-	}
+	);
+	res.json({
+		property,
+	});
 });
 
 exports.getMyProperties = catchAsync(async (req, res, next) => {
