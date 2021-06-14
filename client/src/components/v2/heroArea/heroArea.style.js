@@ -133,5 +133,54 @@ const useStyles = makeStyles((theme) => ({
 	selected: {
 		color: theme.secondaryHeadingColor,
 	},
+	menuWrapper: {
+		width: '70rem',
+		height: 200,
+		overflow: 'auto',
+		[theme.breakpoints.down('sm')]: {
+			width: '70vw',
+		},
+	},
+	selectedLocation: {
+		padding: '0.5rem 1rem',
+		display: 'flex',
+		alignItems: 'center',
+		background: '#FFD609',
+		borderRadius: 20,
+
+		'& span': {
+			fontWeight: 'bold',
+			fontSize: '0.8rem',
+		},
+	},
+	cityWrapper: {
+		display: 'flex',
+		alignItems: 'center',
+		cursor: 'pointer',
+		padding: '0.5rem',
+		margin: '1rem',
+		background: '#e3e3e3',
+		boxShadow: '6px 6px 12px #bfbfbf,-6px -6px 12px #ffffff',
+		borderRadius: 10,
+	},
+	locationIcon: {
+		color: theme.secondaryHeadingColor,
+	},
+	clearIcon: {
+		cursor: 'pointer',
+	},
+	searchButton: {
+		background: theme.shadowColor,
+		padding: '0.5rem',
+		boxShadow: '10px 5px 10px #a4a4a4,-10px -10px 20px #ffffff',
+		display: 'inline-block',
+		cursor: 'pointer',
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.5rem',
+		},
+		'&>img': {
+			height: '1.5rem',
+		},
+	},
 }));
 export default useStyles;

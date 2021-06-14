@@ -14,5 +14,8 @@ const useStyles = makeStyles((theme) => ({
 		minHeight: '50px',
 		borderRight: '2px solid #b9b9b9',
 	},
+	pagination: {
+		backgroundColor: theme.shadowColor,
+	},
 }));
 export default useStyles;

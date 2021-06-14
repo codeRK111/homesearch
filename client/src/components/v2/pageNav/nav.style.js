@@ -87,5 +87,8 @@ const useStyles = makeStyles((theme) => ({
 			width: 25,
 		},
 	},
+	searchButton: {
+		padding: '1rem',
+	},
 }));
 export default useStyles;

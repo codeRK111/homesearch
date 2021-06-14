@@ -1,18 +1,118 @@
-import { Box } from '@material-ui/core';
+import { Box, CircularProgress, Menu, Typography } from '@material-ui/core';
+
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import React from 'react';
 import agentIcon from '../../../assets/icons/agent.svg';
 import clsx from 'clsx';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import loanIcon from '../../../assets/icons/loan.svg';
 import newsIcon from '../../../assets/icons/news.svg';
+import queryString from 'query-string';
+import { searchCities } from '../../../redux/city/city.actions';
 import searchIcon from '../../../assets/search.svg';
+import { selectSearchCityLoading } from '../../../redux/city/city.selectors';
 import useGlobalStyles from '../../../common.style';
+import { useHistory } from 'react-router-dom';
 import useStyles from './heroArea.style';
 import valuationIcon from '../../../assets/icons/valuation.svg';
 import whatsappIcon from '../../../assets/icons/whatsapp.svg';
+import { withStyles } from '@material-ui/core/styles';
 
-const HeroArea = () => {
+const StyledMenu = withStyles({
+	paper: {
+		background: '#e3e3e3',
+		boxShadow: '20px 20px 35px #9f9f9f,-20px -20px 35px #ffffff',
+		borderRadius: 30,
+	},
+})((props) => (
+	<Menu
+		elevation={0}
+		getContentAnchorEl={null}
+		anchorOrigin={{
+			vertical: 'bottom',
+			horizontal: 'center',
+		}}
+		transformOrigin={{
+			vertical: 'top',
+			horizontal: 'center',
+		}}
+		{...props}
+	/>
+));
+
+const HeroArea = ({ searchCityLoading, searchCities, setCity }) => {
+	const history = useHistory();
+	const menuParrent = React.useRef(null);
+	const input = React.useRef(null);
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [userTypedCity, setUserTypedCity] = React.useState('');
+	const [selectedCity, setSelectedCity] = React.useState('');
+	const [assetType, setAssetType] = React.useState('project');
+	const [cities, setCities] = React.useState([]);
+	const [asyncError, setAsyncError] = React.useState('null');
+	const [noResults, setNoResults] = React.useState(false);
+	const handleClick = () => {
+		setAnchorEl(menuParrent.current);
+	};
+
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+	const handleFetchCities = (status, data = null) => {
+		if (status === 'success') {
+			setAsyncError(null);
+			setCities(data);
+			if (data.length === 0) {
+				setNoResults(true);
+			} else {
+				setNoResults(false);
+			}
+			handleClick();
+			input.current.focus();
+		} else {
+			setNoResults(false);
+			setAsyncError(data);
+			handleClose();
+		}
+	};
+
+	const handleCity = (e) => {
+		const { value } = e.target;
+		setUserTypedCity(value);
+		if (value.length === 3 || value.length >= 5) {
+			searchCities(handleFetchCities, value);
+		}
+	};
+
+	const handleSelectedCity = (city) => (e) => {
+		setSelectedCity(city);
+		handleClose();
+	};
+
+	const handleAssetType = (asset) => (e) => {
+		setAssetType(asset);
+	};
+
+	const clearSelectedCity = () => {
+		setSelectedCity(null);
+		setUserTypedCity('');
+	};
+
+	const onSearch = () => {
+		if (!selectedCity) return;
+		const data = {
+			city: selectedCity.id,
+			cityName: selectedCity.name,
+		};
+		let link = `/v2/search?f=${assetType}&c=${
+			data.city
+		}&cn=${encodeURIComponent(data.cityName)}`;
+		history.push(link);
+	};
+
 	return (
 		<div>
 			<div className={classes.wrapper}>
@@ -22,27 +122,104 @@ const HeroArea = () => {
 							className={clsx(
 								classes.tabText,
 								classes.mr,
-								classes.selected
+								assetType === 'project' && classes.selected
 							)}
+							onClick={handleAssetType('project')}
 						>
 							Project
 						</span>
-						<span className={clsx(classes.tabText, classes.mr)}>
+						<span
+							className={clsx(
+								classes.tabText,
+								classes.mr,
+								assetType === 'sale' && classes.selected
+							)}
+							onClick={handleAssetType('sale')}
+						>
 							Resale
 						</span>
-						<span className={clsx(classes.tabText)}>Rent</span>
+						<span
+							className={clsx(
+								classes.tabText,
+								assetType === 'rent' && classes.selected
+							)}
+							onClick={handleAssetType('rent')}
+						>
+							Rent
+						</span>
 					</div>
-					<div className={classes.searchWrapper}>
-						<input
-							type="text"
-							placeholder="Search For Locality, City, project Or Builder"
-						/>
-						<img
-							src={searchIcon}
-							alt=""
-							className={classes.svgWrapper}
-						/>
-					</div>
+					<Box
+						className={classes.searchWrapper}
+						// onClick={handleClick}
+						ref={menuParrent}
+					>
+						{selectedCity ? (
+							<div className={classes.selectedLocation}>
+								<span>{selectedCity.name}</span>
+								<Box ml="1rem" onClick={clearSelectedCity}>
+									<span className={classes.clearIcon}>X</span>
+								</Box>
+							</div>
+						) : (
+							<input
+								type="text"
+								placeholder="Search For City"
+								onChange={handleCity}
+								value={userTypedCity}
+								ref={input}
+							/>
+						)}
+						{searchCityLoading ? (
+							<Box className={classes.searchButton}>
+								<CircularProgress size={20} />
+							</Box>
+						) : (
+							<Box
+								className={classes.searchButton}
+								onClick={onSearch}
+							>
+								<img src={searchIcon} alt="" />
+							</Box>
+						)}
+					</Box>
+					<StyledMenu
+						id="customized-menu"
+						anchorEl={anchorEl}
+						keepMounted
+						open={Boolean(anchorEl)}
+						onClose={handleClose}
+					>
+						<Box className={classes.menuWrapper}>
+							{!!asyncError && (
+								<Typography
+									align="center"
+									className={globalClasses.colorWarning}
+								>
+									{asyncError}
+								</Typography>
+							)}
+							{!!noResults ? (
+								<Typography align="center">
+									No City Found
+								</Typography>
+							) : (
+								cities.map((c) => (
+									<Box
+										key={c.id}
+										className={classes.cityWrapper}
+										onClick={handleSelectedCity(c)}
+									>
+										<LocationOnIcon
+											className={classes.locationIcon}
+										/>
+										<Typography variant="subtitle2">
+											{c.name}
+										</Typography>
+									</Box>
+								))
+							)}
+						</Box>
+					</StyledMenu>
 				</Box>
 			</div>
 			<div className={classes.whatsAppWrapper}>
@@ -104,4 +281,13 @@ const HeroArea = () => {
 	);
 };
 
-export default HeroArea;
+const mapStateToProps = createStructuredSelector({
+	searchCityLoading: selectSearchCityLoading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	searchCities: (callback, name) =>
+		dispatch(searchCities({ name, callback })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeroArea);
