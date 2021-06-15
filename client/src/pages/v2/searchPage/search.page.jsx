@@ -35,6 +35,41 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 	const parsed = queryString.parse(props.location.search, {
 		arrayFormat: 'comma',
 	});
+	const [rentItems, setRentItems] = React.useState(
+		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
+			name: `${(c - 1) * 5}-${c * 5}K`,
+			val: { min: (c - 1) * 5 * 1000, max: c * 5 * 1000 },
+			checked: false,
+		}))
+	);
+
+	const [otherItems, setOtherItems] = React.useState(
+		Array.from({ length: 20 }, (_, i) => i + 1).map((c) => ({
+			name: `${(c - 1) * 5}-${c === 20 ? 'Above' : `${c * 5}L`}`,
+			val: {
+				min: (c - 1) * 5 * 100000,
+				max: c * 5 * (c === 20 ? 10000000 : 100000),
+			},
+			checked: false,
+		}))
+	);
+	const [pFor, setPFor] = React.useState('rent');
+	const [types, setTypes] = React.useState({
+		flat: false,
+		independenthouse: false,
+		land: false,
+		guesthouse: false,
+		hostel: false,
+		pg: false,
+	});
+	const [locations, setLocations] = React.useState([]);
+	const [locationData, setLocationData] = React.useState([]);
+	const [city, setCity] = React.useState({
+		id: null,
+		name: null,
+	});
+
+	const handleCity = (data) => setCity(data);
 
 	const handleChangePage = (event, value) => {
 		setPage(value);
@@ -135,21 +170,42 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 	};
 
 	React.useEffect(() => {
+		setPFor(parsed.f);
 		const body = {
 			for: parsed.f,
 			city: parsed.c,
 			page,
 		};
+		if (locations.length > 0) {
+			body.locations = locations;
+		}
+		handleCity({
+			id: parsed.c,
+			name: parsed.cn,
+		});
 
 		searchProperties(handleFetchCities, body);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchProperties, page, props.location.search]);
+	}, [searchProperties, page, props.location.search, locations]);
 	return (
 		<div>
 			<Nav />
 			<div className={classes.wrapper}>
 				<Box mb="1rem">
-					<Filter />
+					<Filter
+						city={city.id}
+						existingLocations={locations}
+						handleLocations={setLocations}
+						setLocationData={setLocationData}
+						pFor={pFor}
+						types={types}
+						setTypes={setTypes}
+						pFor={pFor}
+						rentItems={rentItems}
+						setRentItems={setRentItems}
+						otherItems={otherItems}
+						setOtherItems={setOtherItems}
+					/>
 				</Box>
 				<Grid container>
 					<Grid items xs={12} md={8}>

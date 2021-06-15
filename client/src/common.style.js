@@ -122,4 +122,7 @@ export default makeStyles((theme) => ({
 			flexWrap: 'wrap !important',
 		},
 	},
+	pointer: {
+		cursor: 'pointer',
+	},
 }));

@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
 	filterWrapper: {
 		borderRadius: '20px',
 		boxShadow: '12px 12px 24px #bcbcbc,-12px -12px 24px #ffffff',
-		padding: '1rem',
+		// padding: '1rem',
 	},
 	filter: {
 		minHeight: '50px',
@@ -16,6 +16,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 	pagination: {
 		backgroundColor: theme.shadowColor,
+	},
+	locationWrapper: {
+		height: 300,
+		overflow: 'auto',
+		padding: '1rem',
 	},
 }));
 export default useStyles;
