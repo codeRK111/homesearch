@@ -22,6 +22,7 @@ const kpiRoute = require('./routes/kpiRoute');
 const pageRoute = require('./routes/pageRoute');
 const queryRoute = require('./routes/propertyQueryRoute');
 const whatsappQueryRoute = require('./routes/whatsappQueryRoute');
+const propertyReviewRoute = require('./routes/propertyReviewRoute');
 const feedbackRoute = require('./routes/feedbackRoute');
 const requestPhotoRoute = require('./routes/requestPhotoRoute');
 const contactRoute = require('./routes/contactRoute');
@@ -34,10 +35,12 @@ const basicAuth = require('express-basic-auth');
 // V2 Routes
 const builderRouteV2 = require('./routesV2/builderRoute');
 const utilityRouteV2 = require('./routesV2/packageRoute');
+const nocache = require('nocache');
 
 const app = express();
 
 app.use(cors());
+app.use(nocache());
 // app.use(expressValidator());
 
 // enable files upload
@@ -134,6 +137,7 @@ app.use('/api/v1/admins', adminRoute);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/cities', cityRouter);
 app.use('/api/v1/properties', propertyRoute);
+app.use('/api/v1/reviews', propertyReviewRoute);
 app.use('/api/v1/builders', builderRouter);
 app.use('/api/v1/projects', projectRoute);
 app.use('/api/v1/queries', queryRoute);

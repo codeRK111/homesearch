@@ -1,0 +1,96 @@
+<Box mt="3rem">
+									<h2 className={globalClasses.colorPrimary}>
+										Explore Nearby Area
+									</h2>
+								</Box>
+								<Box
+									className={clsx(
+										globalClasses.alignCenter,
+										globalClasses.smWrap
+									)}
+								>
+									{nearByAreas.map((c, i) => (
+										<Box
+											ml="0.5rem"
+											key={i}
+											className={
+												globalClasses.smTopMargin
+											}
+										>
+											<Chip
+												title={c}
+												selected={i === 0}
+											/>
+										</Box>
+									))}
+								</Box>
+								<div>
+									<Map
+										location={location}
+										zoomLevel={17}
+										className={classes.mapWrapper}
+									/>
+								</div>
+								<Box mt="3rem">
+									<div className={classes.propertiesWrapper}>
+										<div
+											className={clsx(
+												classes.scrollbar,
+												globalClasses.smHide
+											)}
+										>
+											<div
+												className={
+													classes.scrollWrapper
+												}
+											>
+												<ChevronLeftIcon
+													style={{ fontSize: 40 }}
+												/>
+											</div>
+										</div>
+										<div className={classes.content}>
+											<Grid container spacing={1}>
+												{Array.from(
+													{ length: 4 },
+													(_, idx) => `${++idx}`
+												).map((c) => (
+													<Grid item xs={12} md={3}>
+														<Card key={c} />
+													</Grid>
+												))}
+											</Grid>
+										</div>
+										<div
+											className={clsx(
+												classes.scrollbarRight,
+												globalClasses.smHide
+											)}
+										>
+											<div
+												className={
+													classes.scrollWrapper
+												}
+											>
+												<ChevronRightIcon
+													style={{ fontSize: 40 }}
+												/>
+											</div>
+										</div>
+									</div>
+								</Box>
+								<Box mt="3rem" mb="3rem">
+									<h2 className={globalClasses.colorPrimary}>
+										Schools & Colleges Near By
+									</h2>
+								</Box>
+								<Grid container spacing={1}>
+									{Array.from(
+										{ length: 6 },
+										(_, idx) => `${++idx}`
+									).map((c) => (
+										<Grid item xs={12} md={2}>
+											<Card key={c} />
+										</Grid>
+									))}
+								</Grid>

@@ -165,8 +165,10 @@ function AlertDialogSlide({
 				loading: false,
 			});
 		} catch (error) {
-			setOtpSent(false);
-			setPhoneNumber(null);
+			// setOtpSent(false);
+			// setPhoneNumber(null);
+			setOtpSent(true);
+			setPhoneNumber(values.number);
 			if (error.response) {
 				setAsyncState({
 					error: error.response.data.message,

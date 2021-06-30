@@ -1,18 +1,20 @@
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
+import { loginDialogStatus, snackbarDetails } from './redux/ui/ui.selectors';
 import {
 	selectAuthenticated,
 	selectUserProfileLoading,
 } from './redux/auth/auth.selectors';
+import { setSnackbar, toggleLoginPopup } from './redux/ui/ui.actions';
 
 import LogIn from './components/logInDialog/logInDialog.component';
+import MuiAlert from '@material-ui/lab/Alert';
 import Protected from './components/protected/protected.component';
+import Snackbar from '@material-ui/core/Snackbar';
 import SpeedDial from './components/speedDial/speedDial.component';
 import SuspenseLoader from './components/initialLoader/initialLoader.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { loginDialogStatus } from './redux/ui/ui.selectors';
-import { toggleLoginPopup } from './redux/ui/ui.actions';
 
 const BrowsePage = lazy(() => import('./pages/browsePage/browse.page'));
 const PaymentPage = lazy(() =>
@@ -65,7 +67,18 @@ const PostPropertyPageNew = lazy(() =>
 	import('./pages/v2/postPage/postProperty.page')
 );
 
-function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
+function Alert(props) {
+	return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+function App({
+	toggleLoginPopup,
+	open,
+	authenticated,
+	profileLoading,
+	setSnackbar,
+	snackbarDetails,
+}) {
 	const timer = React.useRef(undefined);
 	// React.useEffect(() => {
 	// 	if (!authenticated && !profileLoading && !open) {
@@ -84,8 +97,26 @@ function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 	// 	// I will be deleted while component is unmounting.
 	// }, [authenticated, profileLoading]);
 
+	const handleClose = () => {
+		setSnackbar({
+			open: false,
+		});
+	};
+
 	return (
 		<Suspense fallback={<SuspenseLoader />}>
+			<Snackbar
+				open={snackbarDetails.open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+			>
+				<Alert
+					onClose={handleClose}
+					severity={snackbarDetails.severity}
+				>
+					{snackbarDetails.message}
+				</Alert>
+			</Snackbar>
 			<LogIn />
 			<HashRouter>
 				{/* <SpeedDial /> */}
@@ -102,7 +133,7 @@ function App({ toggleLoginPopup, open, authenticated, profileLoading }) {
 					/>
 					<Route
 						exact
-						path="/v2/property-details"
+						path="/v2/property-details/:id"
 						render={(props) => (
 							<PropertyDetailsPageNew {...props} />
 						)}
@@ -239,10 +270,12 @@ const mapStateToProps = createStructuredSelector({
 	authenticated: selectAuthenticated,
 	open: loginDialogStatus,
 	profileLoading: selectUserProfileLoading,
+	snackbarDetails,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	toggleLoginPopup: (status) => dispatch(toggleLoginPopup(status)),
+	setSnackbar: (config) => dispatch(setSnackbar(config)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

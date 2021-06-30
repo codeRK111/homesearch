@@ -6,6 +6,7 @@ import Nav from '../../../components/v2/pageNav/nav.component';
 import Pagination from '@material-ui/lab/Pagination';
 import React from 'react';
 import SearchCardRentFlat from '../../../components/v2/searchCard2/rent/flat.component';
+import SearchCardRentHostel from '../../../components/v2/searchCard2/rent/hostel.component';
 import SearchCardSaleFlat from '../../../components/v2/searchCard2/sale/flat.component';
 import SearchCardSaleIndependent from '../../../components/v2/searchCard2/sale/independent.component';
 import Skeleton from '../../../components/searchCardSkeleton/searchCardSkeleton.component';
@@ -92,15 +93,24 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 		}
 	};
 
+	const type = Object.keys(types).filter(function (c) {
+		if (types[c]) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+
 	const filterTypes = (property) => {
 		switch (property.type) {
 			case 'flat':
+			case 'independenthouse':
 				return <SearchCardRentFlat property={property} />;
 			// case 'independenthouse':
 			// 	return <RentApartment property={property} />;
-			// case 'hostel':
-			// case 'pg':
-			// 	return <RentHostel property={property} />;
+			case 'hostel':
+			case 'pg':
+				return <SearchCardRentHostel property={property} />;
 
 			default:
 				break;
@@ -165,7 +175,7 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 				return filterTypesSale(property);
 
 			// default:
-			// 	return filterTypesProject(property);
+			// 	return filterTypesProject(property); 
 		}
 	};
 
@@ -175,7 +185,11 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 			for: parsed.f,
 			city: parsed.c,
 			page,
+			
 		};
+		if(type.length > 0){
+			body.type = type
+		}
 		if (locations.length > 0) {
 			body.locations = locations;
 		}
@@ -186,7 +200,7 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 
 		searchProperties(handleFetchCities, body);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchProperties, page, props.location.search, locations]);
+	}, [searchProperties, page, props.location.search, locations,type.length]);
 	return (
 		<div>
 			<Nav />

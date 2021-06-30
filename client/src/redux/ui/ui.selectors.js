@@ -8,5 +8,6 @@ export const loginDialogStatus = createSelector(
 	[selectUI],
 	(c) => c.loginPopup
 );
+export const snackbarDetails = createSelector([selectUI], (c) => c.snackbar);
 
 // Select Errors

@@ -4,6 +4,15 @@ const initialState = {
 	// Initial Values
 	// Loading States
 	loginPopup: false,
+	snackbar: {
+		open: false,
+		message: 'Posted Successfully',
+		severity: 'success',
+		anchorOrigin: {
+			vertical: 'top',
+			horizontal: 'right',
+		},
+	},
 	// Errors
 };
 
@@ -13,6 +22,14 @@ const uiReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				loginPopup: payload,
+			};
+		case uiActionTypes.SET_SNACKBAR:
+			return {
+				...state,
+				snackbar: {
+					...state.snackbar,
+					...payload,
+				},
 			};
 
 		default:
