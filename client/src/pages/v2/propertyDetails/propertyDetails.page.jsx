@@ -231,7 +231,6 @@ const SearchPage = ({
 						)}`}</span>
 					</Box>
 					<SearchCard />
-					<h1>{`${isAuthenticated}`}</h1>
 					<Box mt="2rem">
 						<Grid container spacing={3}>
 							<Grid item xs={12} md={9}>

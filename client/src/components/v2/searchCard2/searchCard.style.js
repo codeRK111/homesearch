@@ -117,5 +117,12 @@ const useStyles = makeStyles((theme) => ({
 			height: '1rem',
 		},
 	},
+	link: {
+		color: '#000000',
+		textDecoration: 'none',
+		'&:hover': {
+			textDecoration: 'underline',
+		},
+	},
 }));
 export default useStyles;

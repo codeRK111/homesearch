@@ -35,13 +35,20 @@ const basicAuth = require('express-basic-auth');
 // V2 Routes
 const builderRouteV2 = require('./routesV2/builderRoute');
 const utilityRouteV2 = require('./routesV2/packageRoute');
-const nocache = require('nocache');
 
 const app = express();
 
 app.use(cors());
-app.use(nocache());
+
 // app.use(expressValidator());
+const options = {
+	setHeaders: function (res, path, stat) {
+		res.set(
+			'Cache-Control',
+			'no-store, no-cache, must-revalidate, proxy-revalidate'
+		);
+	},
+};
 
 // enable files upload
 // app.use(
@@ -128,7 +135,7 @@ app.use(
 	'/homesearchIndia',
 	express.static(path.join(__dirname, 'homesearchIndia', 'build'))
 );
-app.use('/', express.static(path.join(__dirname, 'client', 'build')));
+app.use('/', express.static(path.join(__dirname, 'client', 'build'), options));
 
 // 3) ROUTES V!
 app.use('/api/v1/admin/users', adminUserRoute);

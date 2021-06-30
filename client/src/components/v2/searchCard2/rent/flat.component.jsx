@@ -5,6 +5,7 @@ import {
 	renderTransactionType,
 	shortLength,
 } from '../../../../utils/render.utils';
+
 import { Link } from 'react-router-dom';
 import React from 'react';
 import area from '../../../../assets/icons/area.svg';
@@ -60,6 +61,7 @@ const PropertyCard = ({ property, edit = false }) => {
 							<h2 className={globalClasses.textCenter}>
 								<Link
 									to={`/v2/property-details/${property.id}`}
+									className={classes.link}
 								>
 									{property.title}
 								</Link>
