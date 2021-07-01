@@ -2,7 +2,6 @@ import { Box, Grid } from '@material-ui/core';
 import {
 	renderBool,
 	renderToilets,
-	renderTransactionType,
 	shortLength,
 } from '../../../../utils/render.utils';
 
@@ -16,17 +15,20 @@ import clsx from 'clsx';
 import location from '../../../../assets/icons/location2.svg';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
-import tag from '../../../../assets/icons/tag2.svg';
 import tub from '../../../../assets/icons/tub.svg';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../searchCard.style';
 
 const PropertyCard = ({ property, edit = false }) => {
 	const m = moment(property.createdAt);
-	const classes = useStyles({ img: city });
+	const img = property.photos[0]
+		? `/assets/properties/${property.photos[0].image}`
+		: city;
+	const classes = useStyles({ img });
 	const globalClasses = useGlobalStyles({ img: city });
 	return (
 		<div className={classes.wrapper}>
+			{/* <pre>{JSON.stringify(property, null, 2)}</pre> */}
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={7}>
 					<div className={classes.imageWrapper}>

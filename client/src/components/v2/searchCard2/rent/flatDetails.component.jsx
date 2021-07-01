@@ -5,7 +5,9 @@ import {
 	shortLength,
 } from '../../../../utils/render.utils';
 
+import { Link } from 'react-router-dom';
 import React from 'react';
+import SwipablePhotos from '../../swipableViews';
 import area from '../../../../assets/icons/area.svg';
 import bed from '../../../../assets/icons/bed.svg';
 import car from '../../../../assets/icons/car.svg';
@@ -21,15 +23,20 @@ import useStyles from '../searchCard.style';
 const PropertyCard = ({ property, edit = false }) => {
 	const m = moment(property.createdAt);
 	const img = property.photos[0]
-		? `/assets/properties/${property.photos[0].image}`
-		: city;
-	const classes = useStyles({ img });
-	const globalClasses = useGlobalStyles();
+		? property.photos[0]
+		: {
+				id: null,
+				image: city,
+		  };
+	const [defaultImage, setDefaultImage] = React.useState(img);
+	const classes = useStyles({
+		img: `/assets/properties/${defaultImage.image}`,
+	});
+	const globalClasses = useGlobalStyles({ img: city });
 	return (
 		<div className={classes.wrapper}>
-			{/* <pre>{JSON.stringify(property, null, 2)}</pre> */}
 			<Grid container spacing={5}>
-				<Grid item xs={12} md={7}>
+				<Grid item xs={12} md={8}>
 					<div className={classes.imageWrapper}>
 						<div className={classes.overlay}>
 							<div className={classes.dateWrapper}>
@@ -38,8 +45,15 @@ const PropertyCard = ({ property, edit = false }) => {
 							</div>
 						</div>
 					</div>
+					<Box mt="1rem">
+						<SwipablePhotos
+							photos={property.photos}
+							selected={defaultImage}
+							setSelected={setDefaultImage}
+						/>
+					</Box>
 				</Grid>
-				<Grid item xs={12} md={5}>
+				<Grid item xs={12} md={4}>
 					<div className={classes.titleWrapper}>
 						<div className={classes.mr1}>
 							<img
@@ -60,7 +74,12 @@ const PropertyCard = ({ property, edit = false }) => {
 						</div>
 						<div>
 							<h2 className={globalClasses.textCenter}>
-								{property.title}
+								<Link
+									to={`/v2/property-details/${property.id}`}
+									className={classes.link}
+								>
+									{property.title}
+								</Link>
 							</h2>
 							<span
 								className={clsx(
@@ -101,53 +120,24 @@ const PropertyCard = ({ property, edit = false }) => {
 					<Box mt="2rem">
 						<Grid container spacing={3}>
 							<Grid item xs={6}>
-								{property.roomType === 'shared' ? (
-									<Grid container spacing={1}>
-										<Grid
-											item
-											xs={5}
-											className={classes.keyValue}
-										>
-											<span
-												style={{
-													fontSize: '0.9rem',
-												}}
-											>
-												Shared
-											</span>
-										</Grid>
-										<Grid
-											item
-											xs={7}
-											className={globalClasses.flexCenter}
-										>
-											<span className={classes.smallText}>
-												Room Type
-											</span>
-										</Grid>
+								<Grid container spacing={1}>
+									<Grid
+										item
+										xs={5}
+										className={classes.keyValue}
+									>
+										<span>{property.superBuiltupArea}</span>
 									</Grid>
-								) : (
-									<Grid container spacing={1}>
-										<Grid
-											item
-											xs={5}
-											className={classes.keyValue}
-										>
-											<span>
-												{property.numberOfRoomMates}
-											</span>
-										</Grid>
-										<Grid
-											item
-											xs={7}
-											className={globalClasses.flexCenter}
-										>
-											<span className={classes.smallText}>
-												Roommates
-											</span>
-										</Grid>
+									<Grid
+										item
+										xs={7}
+										className={globalClasses.flexCenter}
+									>
+										<span className={classes.smallText}>
+											Sq. Ft Super Built Up Area
+										</span>
 									</Grid>
-								)}
+								</Grid>
 							</Grid>
 							<Grid item xs={6}>
 								<Grid container spacing={1}>

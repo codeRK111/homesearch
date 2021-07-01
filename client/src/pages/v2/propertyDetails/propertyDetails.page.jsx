@@ -12,6 +12,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Chip from '../../../components/v2/chip/chip.component';
 import ChipWrapper from '../../../components/v2/chipWrapper/chipWrapper.component';
 import ErrorMessage from '../../../components/v2/backdropMessage';
+import FlatHeader from '../../../components/v2/searchCard2/rent/flatDetails.component';
 import { Link } from 'react-router-dom';
 import Loading from '../../../components/v2/loadingAnimation';
 import Map from '../../../components/v2/map/map.component';
@@ -57,16 +58,19 @@ const SearchPage = ({
 	const [review, setReview] = React.useState('');
 	const [reviews, setReviews] = React.useState([]);
 	const [postReview, setPostReview] = React.useState(false);
+	const [feedback, setFeedBack] = React.useState({
+		status: false,
+		positive: true,
+	});
+	const [postReviewLoading, setPostReviewLoading] = React.useState(false);
 	let cancelToken = React.useRef();
-	const classes = useStyles();
-	const globalClasses = useGlobalStyles();
-
 	const [asyncState, setAsyncState] = React.useState({
 		property: null,
 		loading: false,
 		error: null,
 	});
-	const [postReviewLoading, setPostReviewLoading] = React.useState(false);
+	const classes = useStyles();
+	const globalClasses = useGlobalStyles();
 
 	const handleChange = (e) => {
 		setReview(e.target.value);
@@ -213,6 +217,35 @@ const SearchPage = ({
 			alert('review posted successfully');
 		}
 	}, [isAuthenticated]);
+
+	//Render Header
+
+	const renderTypeRent = (property) => {
+		switch (property.type) {
+			case 'flat':
+			case 'independenthouse':
+				return <FlatHeader property={property} />;
+			case 'hostel':
+				return 'hostel';
+			case 'pg':
+				return 'pg';
+
+			default:
+				break;
+		}
+	};
+	const renderFor = (property) => {
+		switch (property.for) {
+			case 'rent':
+				return renderTypeRent(property);
+			case 'sale':
+				return 'sale';
+
+			default:
+				break;
+		}
+	};
+
 	return (
 		<div>
 			<ErrorMessage
@@ -221,6 +254,7 @@ const SearchPage = ({
 			/>
 			<Loading open={!!asyncState.loading || postReviewLoading} />
 			<Nav />
+			{/* <pre>{JSON.stringify(asyncState.property, null, 2)}</pre> */}
 			{asyncState.property && (
 				<div className={classes.wrapper}>
 					<Box mb="1rem">
@@ -230,7 +264,8 @@ const SearchPage = ({
 							asyncState.property.location.name
 						)}`}</span>
 					</Box>
-					<SearchCard />
+					{/* <SearchCard /> */}
+					{renderFor(asyncState.property)}
 					<Box mt="2rem">
 						<Grid container spacing={3}>
 							<Grid item xs={12} md={9}>
@@ -257,6 +292,50 @@ const SearchPage = ({
 											);
 										})}
 								</Grid>
+								<Box mt="1rem">
+									{asyncState.property.furnished ===
+										'furnished' ||
+									asyncState.property.furnished ===
+										'semifurnished' ? (
+										<>
+											<h2
+												className={
+													globalClasses.colorPrimary
+												}
+											>
+												Furnishes
+											</h2>
+											<Grid container spacing={3}>
+												{asyncState.property.furnishes.map(
+													(b) => {
+														return (
+															<Grid
+																item
+																xs={6}
+																md={3}
+																key={b.id}
+															>
+																<Amenity
+																	text={
+																		b.name
+																	}
+																/>
+															</Grid>
+														);
+													}
+												)}
+											</Grid>
+										</>
+									) : (
+										<h2
+											className={
+												globalClasses.colorPrimary
+											}
+										>
+											Unfurnished
+										</h2>
+									)}
+								</Box>
 								<Box mt="3rem">
 									<h2 className={globalClasses.colorPrimary}>
 										About The Property
