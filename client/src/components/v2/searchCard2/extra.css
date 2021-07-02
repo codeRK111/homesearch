@@ -1,0 +1,16 @@
+.fullImageButton {
+	position: absolute;
+	text-align: center;
+	left: 50%;
+	bottom: 50%;
+	transform: translateX(-50%);
+	display: none;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+.parentImage:hover + .fullImageButton,
+.fullImageButton:hover {
+	display: inline-block;
+}

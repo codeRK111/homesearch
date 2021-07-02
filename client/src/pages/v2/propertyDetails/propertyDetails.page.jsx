@@ -20,6 +20,7 @@ import Nav from '../../../components/v2/pageNav/nav.component';
 import PropertyCard from '../../../components/v2/propertyCard/propertyCard.component';
 import React from 'react';
 import SearchCard from '../../../components/v2/searchCard/searchCard.component';
+import SimilarProperties from '../../../components/v2/similarProperties';
 import axios from 'axios';
 import badgeIcon from '../../../assets/icons/badge.svg';
 import bookmarkIcon from '../../../assets/icons/bookmark.svg';
@@ -404,7 +405,7 @@ const SearchPage = ({
 												globalClasses.alignCenter
 											}
 										>
-											<ChipWrapper>
+											{/* <ChipWrapper>
 												<div
 													className={clsx(
 														globalClasses.justifyCenter
@@ -419,8 +420,8 @@ const SearchPage = ({
 														See All
 													</h4>
 												</div>
-											</ChipWrapper>
-											<Box ml="1rem">
+											</ChipWrapper> */}
+											<Box>
 												<Link
 													className={clsx(
 														globalClasses.colorPrimary,
@@ -534,91 +535,6 @@ const SearchPage = ({
 											</Grid>
 										</Box>
 									))}
-								</Box>
-
-								<Box mt="2rem" mb="2rem">
-									<h2>Similar Properties For Rent</h2>
-								</Box>
-								<Box mt="1rem">
-									<div className={classes.propertiesWrapper}>
-										{/* <div className={classes.scrollbar}>
-										<div className={classes.scrollWrapper}>
-											<ChevronLeftIcon
-												style={{ fontSize: 40 }}
-											/>
-										</div>
-									</div> */}
-										<div className={classes.content}>
-											<Grid container spacing={1}>
-												{Array.from(
-													{ length: 8 },
-													(_, idx) => `${++idx}`
-												).map((c) => (
-													<Grid item xs={12} md={3}>
-														<PropertyCard key={c} />
-													</Grid>
-												))}
-											</Grid>
-										</div>
-										<div
-											className={clsx(
-												classes.scrollbarRight,
-												globalClasses.smHide
-											)}
-										>
-											<div
-												className={
-													classes.scrollWrapper
-												}
-											>
-												<ChevronRightIcon
-													style={{ fontSize: 40 }}
-												/>
-											</div>
-										</div>
-									</div>
-								</Box>
-								<Box mt="3rem" mb="2rem">
-									<h2>Recently Viewed Properties For Rent</h2>
-								</Box>
-								<Box mt="1rem">
-									<div className={classes.propertiesWrapper}>
-										{/* <div className={classes.scrollbar}>
-										<div className={classes.scrollWrapper}>
-											<ChevronLeftIcon
-												style={{ fontSize: 40 }}
-											/>
-										</div>
-									</div> */}
-										<div className={classes.content}>
-											<Grid container spacing={1}>
-												{Array.from(
-													{ length: 4 },
-													(_, idx) => `${++idx}`
-												).map((c) => (
-													<Grid item xs={12} md={3}>
-														<PropertyCard key={c} />
-													</Grid>
-												))}
-											</Grid>
-										</div>
-										<div
-											className={clsx(
-												classes.scrollbarRight,
-												globalClasses.smHide
-											)}
-										>
-											<div
-												className={
-													classes.scrollWrapper
-												}
-											>
-												<ChevronRightIcon
-													style={{ fontSize: 40 }}
-												/>
-											</div>
-										</div>
-									</div>
 								</Box>
 							</Grid>
 							<Grid item xs={12} md={3}>
@@ -752,6 +668,21 @@ const SearchPage = ({
 									</div>
 								</AppBar>
 							</Grid>
+							{asyncState.property && (
+								<>
+									<Box>
+										<h2>Similar Properties For Rent</h2>
+									</Box>
+									<SimilarProperties
+										pFor={asyncState.property.for}
+										type={asyncState.property.type}
+										city={asyncState.property.city.id}
+										location={
+											asyncState.property.location.id
+										}
+									/>
+								</>
+							)}
 						</Grid>
 					</Box>
 				</div>

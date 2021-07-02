@@ -1,3 +1,5 @@
+import '../extra.css';
+
 import { Box, Grid } from '@material-ui/core';
 import {
 	renderBool,
@@ -8,6 +10,7 @@ import {
 import { Link } from 'react-router-dom';
 import React from 'react';
 import SwipablePhotos from '../../swipableViews';
+import ViewFullImage from '../../viewFullImage';
 import area from '../../../../assets/icons/area.svg';
 import bed from '../../../../assets/icons/bed.svg';
 import car from '../../../../assets/icons/car.svg';
@@ -21,6 +24,7 @@ import useGlobalStyles from '../../../../common.style';
 import useStyles from '../searchCard.style';
 
 const PropertyCard = ({ property, edit = false }) => {
+	const [fullImageOpen, setFullImageOpen] = React.useState(false);
 	const m = moment(property.createdAt);
 	const img = property.photos[0]
 		? property.photos[0]
@@ -33,16 +37,32 @@ const PropertyCard = ({ property, edit = false }) => {
 		img: `/assets/properties/${defaultImage.image}`,
 	});
 	const globalClasses = useGlobalStyles({ img: city });
+
+	const toggleFullImage = (status) => () => {
+		setFullImageOpen(status);
+	};
 	return (
 		<div className={classes.wrapper}>
+			<ViewFullImage
+				open={fullImageOpen}
+				handleClose={toggleFullImage(false)}
+				title={property.title}
+				image={`/assets/properties/${defaultImage.image}`}
+			/>
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={8}>
-					<div className={classes.imageWrapper}>
-						<div className={classes.overlay}>
+					<div className={clsx(classes.imageWrapper)}>
+						<div className={clsx(classes.overlay, 'parentImage')}>
 							<div className={classes.dateWrapper}>
 								<span>{m.format('D')}</span>
 								<span>{m.format('MMM')}</span>
 							</div>
+							<button
+								className={'fullImageButton'}
+								onClick={toggleFullImage(true)}
+							>
+								View Full Image
+							</button>
 						</div>
 					</div>
 					<Box mt="1rem">

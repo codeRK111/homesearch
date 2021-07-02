@@ -39,16 +39,34 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 30,
 		padding: '0 1rem 0 0',
 		boxSizing: 'border-box',
+
+		'&>button': {
+			padding: '1rem 2rem',
+			background: '#FFD609',
+			color: '#000000',
+			fontWeight: 'bold',
+		},
+
+		'&:hover': {
+			'&>button': {
+				display: 'inline-block',
+			},
+		},
 	},
 	dateWrapper: {
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
-		background: theme.secondaryHeadingColor,
+		background: theme.utilColor,
 		padding: '0.5rem 1rem',
 		color: '#ffffff',
 		maxHeight: '50px',
 		borderRadius: 10,
+
+		'& >span': {
+			fontWeight: 'bolder',
+			fontSize: '1.4rem',
+		},
 	},
 
 	rotate: {

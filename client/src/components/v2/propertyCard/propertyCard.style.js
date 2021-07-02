@@ -20,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
 		background: theme.shadowColor,
 		borderRadius: '32px',
 		boxShadow: '5px 5px 12px #b3b3b3,-5px -5px 12px #ffffff',
+		height: '100%',
+		boxSizing: 'border-box'
 	},
 	img: {
 		height: '15px',
