@@ -138,7 +138,7 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={classes.keyValue}
 									>
 										<Box className="test">
-											<h1>{property.rent / 1000}K</h1>
+											<h1>₹{property.rent / 1000}K</h1>
 										</Box>
 									</Grid>
 									<Grid

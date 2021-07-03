@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
 		cursor: 'pointer',
 	},
 	scrollWrapper: {
-		height: '50px',
-		width: '50px',
+		height: '30px',
+		width: '30px',
 		borderRadius: '50%',
 		background: theme.utilColor,
 		display: 'flex',

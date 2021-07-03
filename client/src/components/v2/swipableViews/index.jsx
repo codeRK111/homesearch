@@ -37,7 +37,7 @@ const SwipableViews = ({ photos, selected, setSelected }) => {
 			{index > 0 && totalImages > 4 && (
 				<div className={classes.scrollbar} onClick={onPrevious}>
 					<div className={classes.scrollWrapper}>
-						<ChevronLeftIcon style={{ fontSize: 40 }} />
+						<ChevronLeftIcon style={{ fontSize: 30 }} />
 					</div>
 				</div>
 			)}
@@ -92,7 +92,7 @@ const SwipableViews = ({ photos, selected, setSelected }) => {
 			{index < maxIndex && totalImages > 4 && (
 				<div className={classes.scrollbarRight} onClick={onNext}>
 					<div className={classes.scrollWrapper}>
-						<ChevronRightIcon style={{ fontSize: 40 }} />
+						<ChevronRightIcon style={{ fontSize: 30 }} />
 					</div>
 				</div>
 			)}
