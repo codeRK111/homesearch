@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundSize: 'cover',
 		backgroundPosition: 'center',
 		minHeight: '20rem',
-		// height: '100%',
+		height: '100%',
 		width: '100%',
 		borderRadius: 30,
 	}),
@@ -114,21 +114,8 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	keyValue: {
-		minHeight: '60px',
-		width: '100%',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		background: '#b9b9b9',
-
-		'& span': {
-			fontSize: '1.8rem',
-			fontWeight: 'bolder',
-
-			[theme.breakpoints.down('sm')]: {
-				fontSize: '1.2rem',
-			},
-		},
+		position: 'relative',
+		height: '80px',
 	},
 	iconImage: {
 		[theme.breakpoints.down('sm')]: {
@@ -141,6 +128,10 @@ const useStyles = makeStyles((theme) => ({
 		'&:hover': {
 			textDecoration: 'underline',
 		},
+	},
+	swipableWrapper: {
+		position: 'absolute',
+		bottom: 0,
 	},
 }));
 export default useStyles;

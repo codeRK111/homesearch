@@ -1,3 +1,5 @@
+import '../extra.css';
+
 import { Box, Grid } from '@material-ui/core';
 import {
 	renderBool,
@@ -113,7 +115,9 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>{property.superBuiltupArea}</span>
+										<Box className="test">
+											<h1>{property.superBuiltupArea}</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item
@@ -133,7 +137,9 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>{property.rent / 1000}K</span>
+										<Box className="test">
+											<h1>{property.rent / 1000}K</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item
@@ -153,7 +159,9 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>{property.noticePeriod}</span>
+										<Box className="test">
+											<h1>{property.noticePeriod}</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item
@@ -173,7 +181,9 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>1.5K</span>
+										<Box className="test">
+											<h1>1.5K</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item

@@ -1,3 +1,5 @@
+import '../extra.css';
+
 import { Box, Grid } from '@material-ui/core';
 import {
 	renderBool,

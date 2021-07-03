@@ -123,10 +123,7 @@ exports.signIn = catchAsync(async (req, res, next) => {
 			}
 		);
 
-		const otpResponse = await sendOtpMessage(
-			req.params.number,
-			randomNumber
-		);
+		const otpResponse = await sendOtpMessage(req.body.number, randomNumber);
 		if (otpResponse.data.startsWith('OK')) {
 			res.status(200).json({
 				status: 'success',

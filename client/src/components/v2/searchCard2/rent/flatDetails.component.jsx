@@ -63,15 +63,15 @@ const PropertyCard = ({ property, edit = false }) => {
 							>
 								View Full Image
 							</button>
+							<Box className={classes.swipableWrapper}>
+								<SwipablePhotos
+									photos={property.photos}
+									selected={defaultImage}
+									setSelected={setDefaultImage}
+								/>
+							</Box>
 						</div>
 					</div>
-					<Box mt="1rem">
-						<SwipablePhotos
-							photos={property.photos}
-							selected={defaultImage}
-							setSelected={setDefaultImage}
-						/>
-					</Box>
 				</Grid>
 				<Grid item xs={12} md={4}>
 					<div className={classes.titleWrapper}>
@@ -140,13 +140,18 @@ const PropertyCard = ({ property, edit = false }) => {
 					<Box mt="2rem">
 						<Grid container spacing={3}>
 							<Grid item xs={6}>
-								<Grid container spacing={1}>
+								<Grid container spacing={0}>
 									<Grid
 										item
 										xs={5}
-										className={classes.keyValue}
+										style={{
+											position: 'relative',
+											height: '80px',
+										}}
 									>
-										<span>{property.superBuiltupArea}</span>
+										<Box className="test">
+											<h1>{property.superBuiltupArea}</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item
@@ -166,12 +171,17 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>{property.rent / 1000}K</span>
+										<Box className="test">
+											<h1>{property.rent / 1000}K</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item
 										xs={7}
-										className={globalClasses.flexCenter}
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
 									>
 										<span className={classes.smallText}>
 											Rent / Month
@@ -186,7 +196,9 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>{property.noticePeriod}</span>
+										<Box className="test">
+											<h1>{property.noticePeriod}</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item
@@ -206,7 +218,9 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>1.5K</span>
+										<Box className="test">
+											<h1>1.5K</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item

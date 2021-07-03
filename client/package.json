@@ -34,6 +34,7 @@
 		"react-redux": "^7.2.1",
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "3.4.1",
+		"react-share": "^4.4.0",
 		"react-swipeable-views": "^0.13.9",
 		"redux": "^4.0.5",
 		"redux-logger": "^3.0.6",
@@ -44,6 +45,8 @@
 		"yup": "^0.29.3"
 	},
 	"scripts": {
+		"prebuild": "npm run generate-build-version",
+		"generate-build-version": "node generate-build-version",
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",

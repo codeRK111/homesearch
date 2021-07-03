@@ -436,7 +436,7 @@ propertySchema.pre(/^find/, function (next) {
 		.populate('location')
 		.populate({
 			path: 'userId',
-			select: '-city -googleId -photoStatus -createdAt -paymentStatus -email -serialNumber -gender -createdBy -registerThrough -registerVia -passwordChangedAt -__v -photo',
+			select: '-city -googleId -photoStatus -createdAt -paymentStatus  -serialNumber -gender -createdBy -registerThrough -registerVia -passwordChangedAt -__v ',
 		})
 		.populate('city');
 	next();

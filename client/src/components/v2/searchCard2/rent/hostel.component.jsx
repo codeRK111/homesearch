@@ -1,3 +1,5 @@
+import '../extra.css';
+
 import { Box, Grid } from '@material-ui/core';
 import {
 	renderBool,
@@ -108,18 +110,23 @@ const PropertyCard = ({ property, edit = false }) => {
 											xs={5}
 											className={classes.keyValue}
 										>
-											<span
-												style={{
-													fontSize: '0.9rem',
-												}}
-											>
-												Shared
-											</span>
+											<Box className="test">
+												<h1
+													style={{
+														fontSize: '1rem',
+													}}
+												>
+													Shared
+												</h1>
+											</Box>
 										</Grid>
 										<Grid
 											item
 											xs={7}
-											className={globalClasses.flexCenter}
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+											}}
 										>
 											<span className={classes.smallText}>
 												Room Type
@@ -133,9 +140,11 @@ const PropertyCard = ({ property, edit = false }) => {
 											xs={5}
 											className={classes.keyValue}
 										>
-											<span>
-												{property.numberOfRoomMates}
-											</span>
+											<Box className="test">
+												<h1>
+													{property.numberOfRoomMates}
+												</h1>
+											</Box>
 										</Grid>
 										<Grid
 											item
@@ -156,12 +165,18 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>{property.rent / 1000}K</span>
+										<Box className="test">
+											<h1>1.5K</h1>
+										</Box>
+										<span>{property.noticePeriod}</span>
 									</Grid>
 									<Grid
 										item
 										xs={7}
-										className={globalClasses.flexCenter}
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
 									>
 										<span className={classes.smallText}>
 											Rent / Month
@@ -176,7 +191,9 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>{property.noticePeriod}</span>
+										<Box className="test">
+											<h1>{property.noticePeriod}</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item
@@ -196,7 +213,9 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>1.5K</span>
+										<Box className="test">
+											<h1>1.5K</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item

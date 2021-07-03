@@ -1,4 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+
+import { Tooltip } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
@@ -117,16 +119,32 @@ const useStyles = makeStyles((theme) => ({
 			maxWidth: 400,
 		},
 	},
+
+	avatar: {
+		height: '60px',
+		width: '60px',
+		position: 'absolute',
+	},
+
+	rightWrapper: {
+		background: theme.shadowColor,
+		borderRadius: 50,
+		boxShadow: '20px 20px 40px #969696,-20px -20px 40px #ffffff',
+		padding: '1rem',
+		// position: 'fixed',
+	},
+
+	ownerId: {
+		fontWeight: 600,
+		textTransform: 'uppercase',
+		color: '#c1c1c1',
+	},
 	avatarWrapper: {
 		position: 'relative',
 		height: '50px',
 		width: '65px',
 		display: 'inline-block',
-	},
-	avatar: {
-		height: '60px',
-		width: '60px',
-		position: 'absolute',
+		marginRight: '1rem',
 	},
 	commentIcon: {
 		position: 'absolute',
@@ -143,44 +161,17 @@ const useStyles = makeStyles((theme) => ({
 		right: 0,
 		bottom: 0,
 	},
-	rightWrapper: {
-		background: theme.shadowColor,
-		borderRadius: 50,
-		boxShadow: '20px 20px 40px #969696,-20px -20px 40px #ffffff',
-		padding: '1rem',
-		// position: 'fixed',
-	},
-	ownerInfo: {
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		'& h2': {
-			margin: 0,
-			padding: '0.5rem 0',
-			fontSize: '1.2rem',
-		},
-	},
-	ownerType: {
-		background: theme.secondaryHeadingColor,
-		color: '#ffffff',
-		fontSize: '0.7rem',
-		padding: '0.5rem 1rem',
-		borderRadius: 15,
-	},
-	ownerId: {
-		fontWeight: 600,
-		textTransform: 'uppercase',
-		color: '#c1c1c1',
-	},
-	borderRight: {
-		borderRight: '2px solid #c1c1c1',
-		padding: '0 0.7rem',
-	},
-	ownerIcon: {
-		height: 20,
-	},
-	iconPadding: {
-		padding: '0 0.7rem',
+	shareIcon: {
+		color: theme.primaryHeadingColor,
+		fontSize: '2rem',
 	},
 }));
+export const LightTooltip = withStyles((theme) => ({
+	tooltip: {
+		backgroundColor: theme.shadowColor,
+		color: 'rgba(0, 0, 0, 0.87)',
+		boxShadow: theme.shadows[3],
+		fontSize: 11,
+	},
+}))(Tooltip);
 export default useStyles;

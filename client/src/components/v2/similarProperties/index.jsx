@@ -2,7 +2,6 @@ import { Box, Grid } from '@material-ui/core';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import FlatHeader from '../searchCard2/rent/flatDetails.component';
 import React from 'react';
 import RentApartment from '../../../components/v2/propertyCard/rent/flat.component';
 import RentHostel from '../../../components/v2/propertyCard/rent/hostel.component';

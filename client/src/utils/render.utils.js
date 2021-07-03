@@ -7,6 +7,19 @@ export const parseDate = (date) => {
 	return m.format('Do MMM YYYY');
 };
 
+export const renderByPropertyFor = (property, pFor, component) => {
+	if (property.for === pFor) {
+		return component;
+	}
+	return null;
+};
+export const renderByPropertyType = (property, type, component) => {
+	if (property.type === type) {
+		return component;
+	}
+	return null;
+};
+
 export const apiUrl = (url) => {
 	return `/api/v1${url}`;
 	// return `/api${url}`;

@@ -1,51 +1,45 @@
-import { AppBar, Avatar, Box, Grid, Typography } from '@material-ui/core';
+import { Avatar, Box, Grid, Typography } from '@material-ui/core';
+import {
+	FacebookShareButton,
+	LinkedinShareButton,
+	TwitterShareButton,
+	WhatsappShareButton,
+} from 'react-share';
+import { LinkedinIcon, WhatsappIcon } from '../../../components/v2/createIcon';
+import {
+	capitalizeFirstLetter,
+	renderByPropertyFor,
+} from '../../../utils/render.utils';
 import {
 	selectAuthenticated,
 	selectUser,
 } from '../../../redux/auth/auth.selectors';
 import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
+import useStyles, { LightTooltip } from './propertyDetailsPage.style';
 
 import Amenity from '../../../components/v2/amenity/amenity.component';
-import Card from '../../../components/v2/nearByCard/nearByCard.component';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Chip from '../../../components/v2/chip/chip.component';
 import ChipWrapper from '../../../components/v2/chipWrapper/chipWrapper.component';
 import ErrorMessage from '../../../components/v2/backdropMessage';
+import FacebookIcon from '@material-ui/icons/Facebook';
 import FlatHeader from '../../../components/v2/searchCard2/rent/flatDetails.component';
 import { Link } from 'react-router-dom';
 import Loading from '../../../components/v2/loadingAnimation';
-import Map from '../../../components/v2/map/map.component';
 import Nav from '../../../components/v2/pageNav/nav.component';
-import PropertyCard from '../../../components/v2/propertyCard/propertyCard.component';
+import OwnerCard from '../../../components/v2/ownerCard';
 import React from 'react';
-import SearchCard from '../../../components/v2/searchCard/searchCard.component';
+import ShareIcon from '@material-ui/icons/Share';
 import SimilarProperties from '../../../components/v2/similarProperties';
+import TwitterIcon from '@material-ui/icons/Twitter';
 import axios from 'axios';
-import badgeIcon from '../../../assets/icons/badge.svg';
 import bookmarkIcon from '../../../assets/icons/bookmark.svg';
-import callIcon from '../../../assets/icons/call.svg';
-import { capitalizeFirstLetter } from '../../../utils/render.utils';
 import clsx from 'clsx';
-import commentIcon from '../../../assets/icons/comment.svg';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import fingerLikeIcon from '../../../assets/icons/fingerLike.svg';
 import likeIcon from '../../../assets/icons/like.svg';
 import rocketIcon from '../../../assets/icons/rocket.svg';
 import useGlobalStyles from '../../../common.style';
-import useStyles from './propertyDetailsPage.style';
-import whatsappDefaultIcon from '../../../assets/icons/whatsapp.svg';
 import whatsappIcon from '../../../assets/icons/whatsappOutline.svg';
-
-const locals = [
-	'Parking is easy',
-	'Walkable distance from market',
-	"It's a student area",
-	"It's dog friendly",
-	"It's a family area",
-	"It's a safe area",
-];
 
 const SearchPage = ({
 	match: {
@@ -59,10 +53,7 @@ const SearchPage = ({
 	const [review, setReview] = React.useState('');
 	const [reviews, setReviews] = React.useState([]);
 	const [postReview, setPostReview] = React.useState(false);
-	const [feedback, setFeedBack] = React.useState({
-		status: false,
-		positive: true,
-	});
+
 	const [postReviewLoading, setPostReviewLoading] = React.useState(false);
 	let cancelToken = React.useRef();
 	const [asyncState, setAsyncState] = React.useState({
@@ -337,6 +328,62 @@ const SearchPage = ({
 										</h2>
 									)}
 								</Box>
+								{renderByPropertyFor(
+									asyncState.property,
+									'rent',
+									<>
+										<Box mt="3rem">
+											<h2
+												className={
+													globalClasses.colorPrimary
+												}
+											>
+												Available For
+											</h2>
+											<Grid container spacing={3}>
+												{asyncState.property.availableFor.map(
+													(b, i) => {
+														return (
+															<Grid
+																item
+																xs={6}
+																md={3}
+																key={i}
+															>
+																<Amenity
+																	text={b}
+																/>
+															</Grid>
+														);
+													}
+												)}
+											</Grid>
+										</Box>
+									</>
+								)}
+								{renderByPropertyFor(
+									asyncState.property,
+									'rent',
+									<>
+										<Box mt="3rem">
+											<h2
+												className={
+													globalClasses.colorPrimary
+												}
+											>
+												Restrictions
+											</h2>
+											<p>
+												<i>
+													{
+														asyncState.property
+															.restrictions
+													}
+												</i>
+											</p>
+										</Box>
+									</>
+								)}
 								<Box mt="3rem">
 									<h2 className={globalClasses.colorPrimary}>
 										About The Property
@@ -346,95 +393,6 @@ const SearchPage = ({
 									<i>{asyncState.property.description}</i>
 								</p>
 
-								<Box mt="3rem" mb="2rem">
-									<h2 className={globalClasses.colorPrimary}>
-										What Locals Say About The Area
-									</h2>
-								</Box>
-								<Grid container spacing={3}>
-									{locals.map((c, i) => (
-										<Grid key={i} item xs={12} md={4}>
-											<div
-												className={
-													globalClasses.alignCenter
-												}
-											>
-												<ChipWrapper>
-													<div
-														className={clsx(
-															globalClasses.alignCenter,
-															globalClasses.justifyCenter
-														)}
-													>
-														<img
-															src={likeIcon}
-															alt="Like"
-															className={
-																classes.likeIcon
-															}
-														/>
-														<Box ml="0.5rem">
-															<h4
-																className={clsx(
-																	globalClasses.colorPrimary,
-																	globalClasses.noSpace,
-																	classes.likeValue
-																)}
-															>
-																92%
-															</h4>
-														</Box>
-													</div>
-												</ChipWrapper>
-												<Box ml="1rem">
-													<h4
-														className={clsx(
-															globalClasses.colorPrimary,
-															globalClasses.noSpace
-														)}
-													>
-														{c}
-													</h4>
-												</Box>
-											</div>
-										</Grid>
-									))}
-									<Grid item xs={12} md={4}>
-										<div
-											className={
-												globalClasses.alignCenter
-											}
-										>
-											{/* <ChipWrapper>
-												<div
-													className={clsx(
-														globalClasses.justifyCenter
-													)}
-												>
-													<h4
-														className={clsx(
-															globalClasses.colorPrimary,
-															globalClasses.noSpace
-														)}
-													>
-														See All
-													</h4>
-												</div>
-											</ChipWrapper> */}
-											<Box>
-												<Link
-													className={clsx(
-														globalClasses.colorPrimary,
-														globalClasses.bold,
-														globalClasses.xsText
-													)}
-												>
-													Take Part In The Survey
-												</Link>
-											</Box>
-										</div>
-									</Grid>
-								</Grid>
 								<div className={classes.divider}></div>
 								<div className={classes.utilsWrapper}>
 									<div className={globalClasses.alignCenter}>
@@ -449,26 +407,81 @@ const SearchPage = ({
 											/>
 										</Box>
 									</div>
-									<div className={globalClasses.alignCenter}>
-										<span className={globalClasses.smText}>
-											0.1K
-										</span>
-										<Box ml="0.5rem">
-											<img
+									<div className={globalClasses.flexCenter}>
+										<LightTooltip
+											placement="top"
+											arrow
+											interactive
+											title={
+												<Box
+													className={
+														globalClasses.alignCenter
+													}
+												>
+													<FacebookShareButton
+														url="https://homesearch18.com/#/"
+														quote="Homesearch18"
+													>
+														<FacebookIcon color="primary" />
+													</FacebookShareButton>
+													<Box ml="1rem">
+														<TwitterShareButton
+															url="https://homesearch18.com/#/"
+															title="Homesearch18"
+														>
+															<TwitterIcon color="primary" />
+														</TwitterShareButton>
+													</Box>
+													<Box ml="1rem">
+														<LinkedinShareButton
+															url="https://homesearch18.com/#/"
+															title="Homesearch18"
+														>
+															<LinkedinIcon
+																size={32}
+																round
+															/>
+														</LinkedinShareButton>
+													</Box>
+													<Box ml="1rem">
+														<WhatsappShareButton
+															url="https://homesearch18.com/#/"
+															title="Homesearch18"
+															separator=":: "
+														>
+															<WhatsappIcon
+																size={32}
+																round
+															/>
+														</WhatsappShareButton>
+													</Box>
+												</Box>
+											}
+										>
+											{/* <img
 												src={rocketIcon}
 												alt="Rocket"
 												className={classes.utilsIcon}
+											/> */}
+											<ShareIcon
+												className={classes.shareIcon}
 											/>
-										</Box>
+										</LightTooltip>
 									</div>
 									<div
 										className={globalClasses.justifyCenter}
 									>
-										<img
-											src={whatsappIcon}
-											alt="WhatsApp"
-											className={classes.utilsIcon}
-										/>
+										<WhatsappShareButton
+											url="https://homesearch18.com/#/"
+											title="Homesearch18"
+											separator=":: "
+										>
+											<img
+												src={whatsappIcon}
+												alt="WhatsApp"
+												className={classes.utilsIcon}
+											/>
+										</WhatsappShareButton>
 									</div>
 									<div
 										className={globalClasses.justifyCenter}
@@ -538,135 +551,10 @@ const SearchPage = ({
 								</Box>
 							</Grid>
 							<Grid item xs={12} md={3}>
-								<AppBar
-									position="sticky"
-									color="transparent"
-									elevation={0}
-								>
-									<div className={classes.rightWrapper}>
-										<Grid container spacing={3}>
-											<Grid item xs={3}>
-												<div
-													className={
-														classes.avatarWrapper
-													}
-												>
-													<Avatar
-														alt="Remy Sharp"
-														src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100"
-														className={
-															classes.avatar
-														}
-													/>
-													<img
-														src={badgeIcon}
-														alt="Badge"
-														className={
-															classes.commentIcon
-														}
-													/>
-												</div>
-											</Grid>
-											<Grid item xs={9}>
-												<div
-													className={
-														globalClasses.justifyCenter
-													}
-												>
-													<div
-														className={
-															classes.ownerInfo
-														}
-													>
-														<div
-															className={
-																classes.ownerType
-															}
-														>
-															Property Owner
-														</div>
-														<h2>PRIYANKARI JENA</h2>
-														<Box
-															className={clsx(
-																globalClasses.justifySpaceBetween,
-																globalClasses.alignCenter
-															)}
-														>
-															<span
-																className={clsx(
-																	classes.ownerId,
-																	globalClasses.xsText,
-																	globalClasses.bold
-																)}
-															>
-																ID : R04913231c
-															</span>
-															<Link
-																className={clsx(
-																	globalClasses.colorWarning,
-																	globalClasses.xsText,
-																	globalClasses.bold
-																)}
-															>
-																{' '}
-																View Listing
-															</Link>
-														</Box>
-														<Box
-															p="0.4rem"
-															className={clsx(
-																globalClasses.alignCenter
-															)}
-														>
-															<Box
-																className={
-																	classes.borderRight
-																}
-															>
-																<img
-																	src={
-																		callIcon
-																	}
-																	alt="Call"
-																	className={
-																		classes.ownerIcon
-																	}
-																/>
-															</Box>
-															<Box
-																className={
-																	classes.borderRight
-																}
-															>
-																<img
-																	src={
-																		commentIcon
-																	}
-																	alt="Comment"
-																	className={
-																		classes.ownerIcon
-																	}
-																/>
-															</Box>
-															<Box>
-																<img
-																	src={
-																		whatsappDefaultIcon
-																	}
-																	alt="Whatsapp"
-																	className={clsx(
-																		classes.ownerIcon,
-																		classes.iconPadding
-																	)}
-																/>
-															</Box>
-														</Box>
-													</div>
-												</div>
-											</Grid>
-										</Grid>
-									</div>
-								</AppBar>
+								<OwnerCard
+									owner={asyncState.property.userId}
+									property={asyncState.property}
+								/>
 							</Grid>
 							{asyncState.property && (
 								<>
