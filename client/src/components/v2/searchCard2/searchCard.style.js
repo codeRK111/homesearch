@@ -84,6 +84,9 @@ const useStyles = makeStyles((theme) => ({
 				padding: '0.3rem',
 			},
 		},
+		[theme.breakpoints.down('sm')]: {
+			flexDirection: 'column',
+		},
 	},
 	smallText: {
 		fontSize: '0.7rem',
@@ -116,6 +119,9 @@ const useStyles = makeStyles((theme) => ({
 	keyValue: {
 		position: 'relative',
 		height: '80px',
+		[theme.breakpoints.down('sm')]: {
+			height: '60px',
+		},
 	},
 	iconImage: {
 		[theme.breakpoints.down('sm')]: {

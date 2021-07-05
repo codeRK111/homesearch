@@ -6,6 +6,9 @@ const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		padding: `2rem 2rem 2rem ${theme.leftPaddingMedium}`,
 		boxSizing: 'border-box',
+		[theme.breakpoints.down('sm')]: {
+			padding: '1rem',
+		},
 	},
 	filterWrapper: {
 		borderRadius: '20px',
@@ -76,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 30,
 		[theme.breakpoints.down('sm')]: {
 			width: '100%',
+			boxSizing: 'border-box',
 		},
 	},
 	utilsIcon: {

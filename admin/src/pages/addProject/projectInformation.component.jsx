@@ -1,56 +1,58 @@
-import React from 'react';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import RowTextField from '../../components/rowTextField/rowTextField.component';
+import '../../../node_modules/draft-js-static-toolbar-plugin/lib/plugin.css';
+import 'draft-js-static-toolbar-plugin/lib/plugin.css';
+
 import {
 	Box,
 	Button,
-	FormControlLabel,
 	Checkbox,
+	FormControlLabel,
 	Grid,
 } from '@material-ui/core';
-import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import {
-	selectAllStates,
-	selectLoading as stateLoading,
+	selectAddPropertySaleLoading as addPropertyLoading,
+	selectLoading as resourcesLoading,
+	selectAmenities,
+	selectFurnishes,
+} from '../../redux/property/property.selector';
+import {
+	addPropertySale,
+	fetchAllPropertyResourcesStart,
+} from '../../redux/property/property.actions';
+import {
 	selectCityLoading as cityLoading,
 	selectFetchLocationLoading as locationLoading,
+	selectAllStates,
+	selectLoading as stateLoading,
 } from '../../redux/city/city.selector';
-import { fetchBuilders } from '../../redux/builder/builder.action';
-import {
-	selectFetchBuildersLoading as fetchBuilderLoading,
-	selectBuilders,
-} from '../../redux/builder/builder.selector';
 import {
 	fetchAllStatesStart,
 	fetchCitiesStart as fetchCities,
 	fetchLocationssStart as fetchLocations,
 } from '../../redux/city/city.actions';
 import {
-	selectAmenities,
-	selectFurnishes,
-	selectLoading as resourcesLoading,
-	selectAddPropertySaleLoading as addPropertyLoading,
-} from '../../redux/property/property.selector';
-import {
-	fetchAllPropertyResourcesStart,
-	addPropertySale,
-} from '../../redux/property/property.actions';
+	selectFetchBuildersLoading as fetchBuilderLoading,
+	selectBuilders,
+} from '../../redux/builder/builder.selector';
 import {
 	selectAllUsers,
 	selectLoading as userLoading,
 } from '../../redux/users/users.selector';
-import { fetchAllUsersSTart } from '../../redux/users/users.actions';
-import { useHistory } from 'react-router-dom';
-import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
-import { EditorState } from 'draft-js';
-import '../../../node_modules/draft-js-static-toolbar-plugin/lib/plugin.css';
-import 'draft-js-static-toolbar-plugin/lib/plugin.css';
-import { makeStyles } from '@material-ui/core/styles';
+
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { EditorState } from 'draft-js';
+import React from 'react';
+import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
+import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import RowTextField from '../../components/rowTextField/rowTextField.component';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { fetchAllUsersSTart } from '../../redux/users/users.actions';
+import { fetchBuilders } from '../../redux/builder/builder.action';
+import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const typeMenuItems = [
 	{
@@ -183,6 +185,21 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: theme.zIndex.drawer + 1,
 		color: '#fff',
 	},
+	image: {
+		width: '100px',
+		height: '100px',
+	},
+	input: {
+		display: 'none',
+	},
+	label: {
+		padding: '0.5rem 1.7rem',
+		border: '1px solid #cccccc',
+		width: '100%',
+		borderRadius: '5px',
+		backgroundColor: '#cccccc',
+		cursor: 'pointer',
+	},
 }));
 
 const ProjectInformation = ({
@@ -226,13 +243,34 @@ const ProjectInformation = ({
 	const [legalClearance, setLegalClearance] = React.useState(
 		legalClearanceInitialValue
 	);
+	const [photos, setPhotos] = React.useState([]);
 	const [images, setImages] = React.useState({
 		image1: null,
 		image2: null,
 		image3: null,
 		image4: null,
 	});
-	console.log(legalClearance);
+	const addMore = () => {
+		setPhotos([
+			...photos,
+			{
+				id: photos.length + 1,
+				image: null,
+			},
+		]);
+	};
+	const handleImage = (img) => (e) => {
+		const { name, files } = e.target;
+		console.log({ name });
+		setPhotos((prevState) =>
+			prevState.map((c) => {
+				if (c.id === img.id) {
+					c.image = files[0];
+				}
+				return c;
+			})
+		);
+	};
 	const handleFetchResources = (type, data) => {
 		if (type === 'success') {
 			console.log(data);
@@ -309,21 +347,17 @@ const ProjectInformation = ({
 		});
 	};
 
-	const handleImage = (e) => {
-		const { name, files } = e.target;
-		setImages((prevState) => ({
-			...prevState,
-			[name]: files[0],
-		}));
-	};
-
 	const onNext = () => {
 		let propertyToSubmit = filter(property);
 		propertyToSubmit['state'] = state;
 		propertyToSubmit['city'] = selectedCity;
 		propertyToSubmit['location'] = selectedLocation;
 		propertyToSubmit['builder'] = selectedUser;
-		propertyToSubmit['image'] = images;
+		const propertyImages = photos
+			.filter((c) => !!c.image)
+			.map((b) => b.image);
+
+		propertyToSubmit['propertyImages'] = propertyImages;
 		if (sAmenities.filter((c) => c.value).length > 0) {
 			propertyToSubmit['amenities'] = sAmenities
 				.filter((c) => c.value)
@@ -569,20 +603,43 @@ const ProjectInformation = ({
 					Images
 				</Grid>
 			</Box>
-			<Grid container spacing={2}>
-				<Grid item xs={12} lg={3}>
-					<input type="file" name="image1" onChange={handleImage} />
+			<Box p="0.8rem">
+				<Grid container spacing={3}>
+					{photos.map((c, i) => (
+						<Grid key={c.id} item xs={6} lg={3}>
+							<Box className={classes.imageWrapper}>
+								<img
+									src={
+										c.image
+											? URL.createObjectURL(c.image)
+											: require('../../assets/no-image.jpg')
+									}
+									alt="project"
+									srcset=""
+									className={classes.image}
+								/>
+							</Box>
+							<input
+								type="file"
+								onChange={handleImage(c)}
+								id={`image-${c.id}`}
+								className={classes.input}
+							/>
+							<label
+								htmlFor={`image-${c.id}`}
+								className={classes.label}
+							>
+								Upload
+							</label>
+						</Grid>
+					))}
 				</Grid>
-				<Grid item xs={12} lg={3}>
-					<input type="file" name="image2" onChange={handleImage} />
-				</Grid>
-				<Grid item xs={12} lg={3}>
-					<input type="file" name="image3" onChange={handleImage} />
-				</Grid>
-				<Grid item xs={12} lg={3}>
-					<input type="file" name="image4" onChange={handleImage} />
-				</Grid>
-			</Grid>
+				<Box mt="2rem">
+					<button onClick={addMore} type="button">
+						Add More Image
+					</button>
+				</Box>
+			</Box>
 			<Box display="flex" justifyContent="flex-end">
 				<Button
 					variant="contained"

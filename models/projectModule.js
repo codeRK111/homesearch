@@ -120,6 +120,13 @@ const projectSchema = new Schema(
 			type: String,
 			default: null,
 		},
+		photos: [
+			{
+				image: {
+					type: String,
+				},
+			},
+		],
 		status: {
 			type: String,
 			enum: {

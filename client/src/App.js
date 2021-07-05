@@ -151,7 +151,7 @@ function App({
 								/>
 								<Route
 									exact
-									path="/v2/project-details"
+									path="/v2/project-details/:id"
 									render={(props) => (
 										<ProjectDetailsPageNew {...props} />
 									)}
@@ -341,7 +341,7 @@ function App({
 	// 				/>
 	// 				<Route
 	// 					exact
-	// 					path="/v2/project-details"
+	// 					path="/v2/project-details/:id"
 	// 					render={(props) => <ProjectDetailsPageNew {...props} />}
 	// 				/>
 	// 				<Route

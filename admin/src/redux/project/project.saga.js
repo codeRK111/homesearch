@@ -1,15 +1,16 @@
-import { takeLatest, put, call, all } from 'redux-saga/effects';
-import { projectActionTypes as types } from './project.types';
-import axios from 'axios';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import {
+	setProjects,
 	toggleAddProjectFlatLoading,
-	toggleFetchProjectsLoading,
 	toggleFetchProjectDetailsLoading,
+	toggleFetchProjectsLoading,
 	toggleUpdateProjectDetailsLoading,
 	toggleUpdateProjectPropertyDetailsLoading,
 	toggleremovePropertyFloorplansLoading,
-	setProjects,
 } from './project.action';
+
+import axios from 'axios';
+import { projectActionTypes as types } from './project.types';
 
 function* addProjectFlat({ payload: { project, callback, type = 'flat' } }) {
 	try {
@@ -29,31 +30,49 @@ function* addProjectFlat({ payload: { project, callback, type = 'flat' } }) {
 			yield put(toggleAddProjectFlatLoading(false));
 			console.log(responseData);
 		} else {
-			if (project.image) {
-				console.log(project.image);
-				let dataPresent = false;
-				var formData = new FormData();
-				for (const key in project.image) {
-					if (project.image[key]) {
-						dataPresent = true;
-						formData.append(key, project.image[key]);
-					}
-				}
-				if (dataPresent) {
-					console.log(responseData);
-					const imageResponse = yield axios.patch(
-						`/api/v1/projects/handle-image/${responseData.data.project.id}`,
-						formData,
-						{
-							headers: {
-								'Content-Type': 'multipart/form-data',
-							},
-						}
-					);
+			if (project.propertyImages.length > 0) {
+				console.log('object');
+				const formData = new FormData();
+				project.propertyImages.forEach((c) => {
+					formData.append('images', c);
+				});
 
-					console.log(imageResponse.data);
-				}
+				yield axios.post(
+					`/api/v1/projects/add-project-image/${responseData.data.project.id}`,
+					formData,
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					}
+				);
 			}
+
+			// if (project.image) {
+			// 	console.log(project.image);
+			// 	let dataPresent = false;
+			// 	var formData = new FormData();
+			// 	for (const key in project.image) {
+			// 		if (project.image[key]) {
+			// 			dataPresent = true;
+			// 			formData.append(key, project.image[key]);
+			// 		}
+			// 	}
+			// 	if (dataPresent) {
+			// 		console.log(responseData);
+			// 		const imageResponse = yield axios.patch(
+			// 			`/api/v1/projects/handle-image/${responseData.data.project.id}`,
+			// 			formData,
+			// 			{
+			// 				headers: {
+			// 					'Content-Type': 'multipart/form-data',
+			// 				},
+			// 			}
+			// 		);
+
+			// 		console.log(imageResponse.data);
+			// 	}
+			// }
 			yield put(toggleAddProjectFlatLoading(false));
 			callback('success');
 		}

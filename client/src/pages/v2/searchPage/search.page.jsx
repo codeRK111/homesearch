@@ -5,10 +5,12 @@ import Filter from './filter.component';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import Pagination from '@material-ui/lab/Pagination';
 import React from 'react';
+import SearchCardProjectFlat from '../../../components/v2/searchCard2/project/flat.component';
 import SearchCardRentFlat from '../../../components/v2/searchCard2/rent/flat.component';
 import SearchCardRentHostel from '../../../components/v2/searchCard2/rent/hostel.component';
 import SearchCardSaleFlat from '../../../components/v2/searchCard2/sale/flat.component';
 import SearchCardSaleIndependent from '../../../components/v2/searchCard2/sale/independent.component';
+import SearchCardSaleLand from '../../../components/v2/searchCard2/sale/land.component';
 import Skeleton from '../../../components/searchCardSkeleton/searchCardSkeleton.component';
 import { capitalizeFirstLetter } from '../../../utils/render.utils';
 import clsx from 'clsx';
@@ -119,12 +121,11 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 	const filterTypesSale = (property) => {
 		switch (property.sale_type) {
 			case 'flat':
-				return <SearchCardSaleFlat property={property} />;
 			case 'independenthouse':
-				return <SearchCardSaleIndependent property={property} />;
+				return <SearchCardSaleFlat property={property} />;
 
-			// case 'land':
-			// 	return <ResaleLand property={property} />;
+			case 'land':
+				return <SearchCardSaleLand property={property} />;
 
 			// case 'independenthouse':
 			// 	return <ResaleVilla property={property} />;
@@ -134,38 +135,23 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 		}
 	};
 
-	// const filterTypesProject = (property) => {
-	// 	switch (property.projectType) {
-	// 		case 'flat':
-	// 		case 'independenthouse':
-	// 			return (
-	// 				<ProjectApartment
-	// 					property={property}
-	// 					propertyItems={propertyItems.filter(
-	// 						(c) => c.project === property.id
-	// 					)}
-	// 				/>
-	// 			);
-	// 		case 'land':
-	// 			return (
-	// 				<ProjectLand
-	// 					property={property}
-	// 					propertyItems={propertyItems.filter(
-	// 						(c) => c.project === property.id
-	// 					)}
-	// 				/>
-	// 			);
+	const filterTypesProject = (property) => {
+		switch (property.projectType) {
+			case 'flat':
+			case 'independenthouse':
+				return (
+					<SearchCardProjectFlat
+						property={property}
+						propertyItems={propertyItems.filter(
+							(c) => c.project === property.id
+						)}
+					/>
+				);
 
-	// 		// case 'land':
-	// 		// 	return <ResaleLand property={property} />;
-
-	// 		// case 'independenthouse':
-	// 		// 	return <ResaleVilla property={property} />;
-
-	// 		default:
-	// 			break;
-	// 	}
-	// };
+			default:
+				break;
+		}
+	};
 
 	const renderProperties = (property) => {
 		switch (property.for) {
@@ -174,8 +160,8 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 			case 'sale':
 				return filterTypesSale(property);
 
-			// default:
-			// 	return filterTypesProject(property); 
+			default:
+				return filterTypesProject(property);
 		}
 	};
 
@@ -185,10 +171,9 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 			for: parsed.f,
 			city: parsed.c,
 			page,
-			
 		};
-		if(type.length > 0){
-			body.type = type
+		if (type.length > 0) {
+			body.type = type;
 		}
 		if (locations.length > 0) {
 			body.locations = locations;
@@ -200,7 +185,7 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 
 		searchProperties(handleFetchCities, body);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchProperties, page, props.location.search, locations,type.length]);
+	}, [searchProperties, page, props.location.search, locations, type.length]);
 	return (
 		<div>
 			<Nav />

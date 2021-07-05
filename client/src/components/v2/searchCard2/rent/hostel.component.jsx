@@ -7,6 +7,7 @@ import {
 	shortLength,
 } from '../../../../utils/render.utils';
 
+import { Link } from 'react-router-dom';
 import React from 'react';
 import area from '../../../../assets/icons/area.svg';
 import bed from '../../../../assets/icons/bed.svg';
@@ -62,7 +63,12 @@ const PropertyCard = ({ property, edit = false }) => {
 						</div>
 						<div>
 							<h2 className={globalClasses.textCenter}>
-								{property.title}
+								<Link
+									to={`/v2/property-details/${property.id}`}
+									className={classes.link}
+								>
+									{property.title}
+								</Link>
 							</h2>
 							<span
 								className={clsx(

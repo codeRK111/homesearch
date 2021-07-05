@@ -14,7 +14,7 @@ export const renderByPropertyFor = (property, pFor, component) => {
 	return null;
 };
 export const renderByPropertyType = (property, type, component) => {
-	if (property.type === type) {
+	if (type.includes(property.type)) {
 		return component;
 	}
 	return null;

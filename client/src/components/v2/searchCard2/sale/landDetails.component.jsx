@@ -4,13 +4,14 @@ import { Box, Grid } from '@material-ui/core';
 import {
 	capitalizeFirstLetter,
 	renderBool,
-	renderToilets,
-	renderTransactionType,
 	shortLength,
 } from '../../../../utils/render.utils';
 
+import ImageCarousel from '../../imageCarousel';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import SwipablePhotos from '../../swipableViews';
+import ViewFullImage from '../../viewFullImage';
 import area from '../../../../assets/icons/area.svg';
 import bed from '../../../../assets/icons/bed.svg';
 import car from '../../../../assets/icons/car.svg';
@@ -19,33 +20,81 @@ import clsx from 'clsx';
 import location from '../../../../assets/icons/location2.svg';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
-import tag from '../../../../assets/icons/tag2.svg';
 import tub from '../../../../assets/icons/tub.svg';
 import useGlobalStyles from '../../../../common.style';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from '../searchCard.style';
+import { useTheme } from '@material-ui/core/styles';
 
 const PropertyCard = ({ property, edit = false }) => {
+	const theme = useTheme();
+	const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+	const [fullImageOpen, setFullImageOpen] = React.useState(false);
 	const m = moment(property.createdAt);
 	const img = property.photos[0]
-		? `/assets/properties/${property.photos[0].image}`
-		: city;
-	const classes = useStyles({ img });
+		? property.photos[0]
+		: {
+				id: null,
+				image: city,
+		  };
+	const [defaultImage, setDefaultImage] = React.useState(img);
+	const classes = useStyles({
+		img: `/assets/properties/${defaultImage.image}`,
+	});
 	const globalClasses = useGlobalStyles({ img: city });
+
+	const toggleFullImage = (status) => () => {
+		setFullImageOpen(status);
+	};
 	return (
 		<div className={classes.wrapper}>
 			{/* <pre>{JSON.stringify(property, null, 2)}</pre> */}
+			<ViewFullImage
+				open={fullImageOpen}
+				handleClose={toggleFullImage(false)}
+				title={property.title}
+				image={`/assets/properties/${defaultImage.image}`}
+			/>
 			<Grid container spacing={5}>
-				<Grid item xs={12} md={7}>
-					<div className={classes.imageWrapper}>
-						<div className={classes.overlay}>
-							<div className={classes.dateWrapper}>
-								<span>{m.format('D')}</span>
-								<span>{m.format('MMM')}</span>
+				<Grid item xs={12} md={8}>
+					{smallScreen ? (
+						<ImageCarousel
+							photos={
+								property.photos[0]
+									? property.photos.map(
+											(c) =>
+												`/assets/properties/${c.image}`
+									  )
+									: [city]
+							}
+						/>
+					) : (
+						<div className={clsx(classes.imageWrapper)}>
+							<div
+								className={clsx(classes.overlay, 'parentImage')}
+							>
+								<div className={classes.dateWrapper}>
+									<span>{m.format('D')}</span>
+									<span>{m.format('MMM')}</span>
+								</div>
+								<button
+									className={'fullImageButton'}
+									onClick={toggleFullImage(true)}
+								>
+									View Full Image
+								</button>
+								<Box className={classes.swipableWrapper}>
+									<SwipablePhotos
+										photos={property.photos}
+										selected={defaultImage}
+										setSelected={setDefaultImage}
+									/>
+								</Box>
 							</div>
 						</div>
-					</div>
+					)}
 				</Grid>
-				<Grid item xs={12} md={5}>
+				<Grid item xs={12} md={4}>
 					<div className={classes.titleWrapper}>
 						<div className={classes.mr1}>
 							<img
@@ -61,13 +110,11 @@ const PropertyCard = ({ property, edit = false }) => {
 									globalClasses.textCenter
 								)}
 							>
-								{renderTransactionType(
-									property.transactionType
-								)}
+								For Resale
 							</span>
 						</div>
 						<div>
-							<h2 className={globalClasses.textCenter}>
+							<h2>
 								<Link
 									to={`/v2/property-details/${property.id}`}
 									className={classes.link}
@@ -78,8 +125,7 @@ const PropertyCard = ({ property, edit = false }) => {
 							<span
 								className={clsx(
 									classes.smallText,
-									classes.colorGray,
-									globalClasses.textCenter
+									classes.colorGray
 								)}
 							>
 								{shortLength(property.description, 50)}
@@ -106,7 +152,7 @@ const PropertyCard = ({ property, edit = false }) => {
 									className={clsx(classes.icon)}
 								/>
 								<h4 className={classes.locationText}>
-									Apartment,3BHK,Swimming Pool
+									Apartment,3BHK,Swimming Pool 
 								</h4>
 							</div> */}
 						</div>

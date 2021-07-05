@@ -8,6 +8,7 @@ import {
 	shortLength,
 } from '../../../../utils/render.utils';
 
+import { Link } from 'react-router-dom';
 import React from 'react';
 import area from '../../../../assets/icons/area.svg';
 import bed from '../../../../assets/icons/bed.svg';
@@ -24,7 +25,10 @@ import useStyles from '../searchCard.style';
 
 const PropertyCard = ({ property, edit = false }) => {
 	const m = moment(property.createdAt);
-	const classes = useStyles({ img: city });
+	const img = property.photos[0]
+		? `/assets/properties/${property.photos[0].image}`
+		: city;
+	const classes = useStyles({ img });
 	const globalClasses = useGlobalStyles({ img: city });
 	return (
 		<div className={classes.wrapper}>
@@ -62,7 +66,12 @@ const PropertyCard = ({ property, edit = false }) => {
 						</div>
 						<div>
 							<h2 className={globalClasses.textCenter}>
-								{property.title}
+								<Link
+									to={`/v2/property-details/${property.id}`}
+									className={classes.link}
+								>
+									{property.title}
+								</Link>
 							</h2>
 							<span
 								className={clsx(
@@ -109,7 +118,9 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>{property.superBuiltupArea}</span>
+										<Box className="test">
+											<h1>{property.superBuiltupArea}</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item
@@ -129,9 +140,11 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>
-											{property.salePrice / 100000}L
-										</span>
+										<Box className="test">
+											<h1>
+												{property.salePrice / 100000}L
+											</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item
@@ -151,7 +164,9 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>{property.landArea}</span>
+										<Box className="test">
+											<h1>{property.landArea}</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item
@@ -171,7 +186,9 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<span>1.5K</span>
+										<Box className="test">
+											<h1>1.5K</h1>
+										</Box>
 									</Grid>
 									<Grid
 										item

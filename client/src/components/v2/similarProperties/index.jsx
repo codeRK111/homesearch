@@ -5,6 +5,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import React from 'react';
 import RentApartment from '../../../components/v2/propertyCard/rent/flat.component';
 import RentHostel from '../../../components/v2/propertyCard/rent/hostel.component';
+import SaleApartment from '../../../components/v2/salePropertyCard/propertyCard.component';
+import SaleLand from '../../../components/v2/salePropertyCard/propertyCardLand.component';
 import SwipeableViews from 'react-swipeable-views';
 import axios from 'axios';
 import clsx from 'clsx';
@@ -44,12 +46,24 @@ const SimilarProperties = ({
 				break;
 		}
 	};
+	const renderTypeSale = (property) => {
+		switch (property.sale_type) {
+			case 'flat':
+			case 'independenthouse':
+				return <SaleApartment data={property} />;
+			case 'land':
+				return <SaleLand data={property} />;
+
+			default:
+				break;
+		}
+	};
 	const renderFor = (property) => {
 		switch (property.for) {
 			case 'rent':
 				return renderTypeRent(property);
 			case 'sale':
-				return 'sale';
+				return renderTypeSale(property);
 
 			default:
 				break;
@@ -65,7 +79,6 @@ const SimilarProperties = ({
 					error: null,
 				});
 				cancelToken.current = axios.CancelToken.source();
-				const token = localStorage.getItem('JWT_CLIENT');
 				const {
 					data: {
 						data: { properties },

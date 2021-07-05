@@ -124,14 +124,15 @@ function* addPropertySale({ payload: { property, callback } }) {
 			yield put(toggleAddPropertySaleLoading(false));
 			console.log(responseData);
 		} else {
-			if (property.propertyImages) {
+			if (property.propertyImages.length > 0) {
 				console.log('object');
 				const formData = new FormData();
-				for (const key in property.propertyImages) {
-					formData.append(key, property.propertyImages[key]);
-				}
-				yield axios.patch(
-					`/api/v1/properties/handle-property-image-by-admin/${responseData.data.property.id}`,
+				property.propertyImages.forEach((c) => {
+					formData.append('images', c);
+				});
+
+				yield axios.post(
+					`/api/v1/properties/add-property-image/${responseData.data.property.id}`,
 					formData,
 					{
 						headers: {
@@ -141,6 +142,23 @@ function* addPropertySale({ payload: { property, callback } }) {
 					}
 				);
 			}
+			// if (property.propertyImages) {
+			// 	console.log('object');
+			// 	const formData = new FormData();
+			// 	for (const key in property.propertyImages) {
+			// 		formData.append(key, property.propertyImages[key]);
+			// 	}
+			// 	yield axios.patch(
+			// 		`/api/v1/properties/handle-property-image-by-admin/${responseData.data.property.id}`,
+			// 		formData,
+			// 		{
+			// 			headers: {
+			// 				'Content-Type': 'multipart/form-data',
+			// 				Authorization: `Bearer ${jwt}`,
+			// 			},
+			// 		}
+			// 	);
+			// }
 			yield put(toggleAddPropertySaleLoading(false));
 			callback('success');
 		}

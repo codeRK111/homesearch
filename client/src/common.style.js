@@ -6,6 +6,11 @@ export default makeStyles((theme) => ({
 		justifyContent: 'center',
 		width: '100%',
 	},
+	justifyStart: {
+		display: 'flex',
+		justifyContent: 'flex-start',
+		width: '100%',
+	},
 	justifySpaceBetween: {
 		display: 'flex',
 		justifyContent: 'space-between',

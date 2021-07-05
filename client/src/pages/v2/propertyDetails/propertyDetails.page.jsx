@@ -9,6 +9,7 @@ import { LinkedinIcon, WhatsappIcon } from '../../../components/v2/createIcon';
 import {
 	capitalizeFirstLetter,
 	renderByPropertyFor,
+	renderByPropertyType,
 } from '../../../utils/render.utils';
 import {
 	selectAuthenticated,
@@ -18,11 +19,13 @@ import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
 import useStyles, { LightTooltip } from './propertyDetailsPage.style';
 
 import Amenity from '../../../components/v2/amenity/amenity.component';
-import ChipWrapper from '../../../components/v2/chipWrapper/chipWrapper.component';
 import ErrorMessage from '../../../components/v2/backdropMessage';
 import FacebookIcon from '@material-ui/icons/Facebook';
-import FlatHeader from '../../../components/v2/searchCard2/rent/flatDetails.component';
-import { Link } from 'react-router-dom';
+import FlatRentHeader from '../../../components/v2/searchCard2/rent/flatDetails.component';
+import FlatSaleHeader from '../../../components/v2/searchCard2/sale/flatDetails.component';
+import HostelRentHeader from '../../../components/v2/searchCard2/rent/hostelDetails.component';
+import LandSaleHeader from '../../../components/v2/searchCard2/sale/landDetails.component';
+import LegalClearance from './legalClearance.component';
 import Loading from '../../../components/v2/loadingAnimation';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import OwnerCard from '../../../components/v2/ownerCard';
@@ -32,14 +35,20 @@ import SimilarProperties from '../../../components/v2/similarProperties';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import axios from 'axios';
 import bookmarkIcon from '../../../assets/icons/bookmark.svg';
-import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import fingerLikeIcon from '../../../assets/icons/fingerLike.svg';
-import likeIcon from '../../../assets/icons/like.svg';
-import rocketIcon from '../../../assets/icons/rocket.svg';
 import useGlobalStyles from '../../../common.style';
 import whatsappIcon from '../../../assets/icons/whatsappOutline.svg';
+
+// import ChipWrapper from '../../../components/v2/chipWrapper/chipWrapper.component';
+
+// import { Link } from 'react-router-dom';
+
+// import clsx from 'clsx';
+
+// import likeIcon from '../../../assets/icons/like.svg';
+// import rocketIcon from '../../../assets/icons/rocket.svg';
 
 const SearchPage = ({
 	match: {
@@ -216,11 +225,22 @@ const SearchPage = ({
 		switch (property.type) {
 			case 'flat':
 			case 'independenthouse':
-				return <FlatHeader property={property} />;
+				return <FlatRentHeader property={property} />;
 			case 'hostel':
-				return 'hostel';
 			case 'pg':
-				return 'pg';
+				return <HostelRentHeader property={property} />;
+
+			default:
+				break;
+		}
+	};
+	const renderTypeSale = (property) => {
+		switch (property.sale_type) {
+			case 'flat':
+			case 'independenthouse':
+				return <FlatSaleHeader property={property} />;
+			case 'land':
+				return <LandSaleHeader property={property} />;
 
 			default:
 				break;
@@ -231,7 +251,7 @@ const SearchPage = ({
 			case 'rent':
 				return renderTypeRent(property);
 			case 'sale':
-				return 'sale';
+				return renderTypeSale(property);
 
 			default:
 				break;
@@ -261,73 +281,81 @@ const SearchPage = ({
 					<Box mt="2rem">
 						<Grid container spacing={3}>
 							<Grid item xs={12} md={9}>
-								<h2 className={globalClasses.colorPrimary}>
-									Amenities
-								</h2>
-								<Grid container spacing={3}>
-									{asyncState.property.allAmenities
-										.filter((c) =>
-											asyncState.property.amenities.includes(
-												c.id
-											)
-										)
-										.map((b) => {
-											return (
-												<Grid
-													item
-													xs={6}
-													md={3}
-													key={b.id}
-												>
-													<Amenity text={b.name} />
-												</Grid>
-											);
-										})}
-								</Grid>
-								<Box mt="1rem">
-									{asyncState.property.furnished ===
-										'furnished' ||
-									asyncState.property.furnished ===
-										'semifurnished' ? (
-										<>
-											<h2
-												className={
-													globalClasses.colorPrimary
-												}
-											>
-												Furnishes
-											</h2>
-											<Grid container spacing={3}>
-												{asyncState.property.furnishes.map(
-													(b) => {
-														return (
-															<Grid
-																item
-																xs={6}
-																md={3}
-																key={b.id}
-															>
-																<Amenity
-																	text={
-																		b.name
-																	}
-																/>
-															</Grid>
-														);
-													}
-												)}
-											</Grid>
-										</>
-									) : (
+								{asyncState.property.sale_type !== 'land' && (
+									<>
 										<h2
 											className={
 												globalClasses.colorPrimary
 											}
 										>
-											Unfurnished
+											Amenities
 										</h2>
-									)}
-								</Box>
+										<Grid container spacing={3}>
+											{asyncState.property.allAmenities
+												.filter((c) =>
+													asyncState.property.amenities.includes(
+														c.id
+													)
+												)
+												.map((b) => {
+													return (
+														<Grid
+															item
+															xs={6}
+															md={3}
+															key={b.id}
+														>
+															<Amenity
+																text={b.name}
+															/>
+														</Grid>
+													);
+												})}
+										</Grid>
+									</>
+								)}
+
+								{asyncState.property.sale_type !== 'land' && (
+									<Box mt="1rem">
+										<h2
+											className={
+												globalClasses.colorPrimary
+											}
+										>
+											Furnishes
+										</h2>
+										{asyncState.property.furnished ===
+											'furnished' ||
+										asyncState.property.furnished ===
+											'semifurnished' ? (
+											<>
+												<Grid container spacing={3}>
+													{asyncState.property.furnishes.map(
+														(b) => {
+															return (
+																<Grid
+																	item
+																	xs={6}
+																	md={3}
+																	key={b.id}
+																>
+																	<Amenity
+																		text={
+																			b.name
+																		}
+																	/>
+																</Grid>
+															);
+														}
+													)}
+												</Grid>
+											</>
+										) : (
+											<p>Unfurnished</p>
+										)}
+									</Box>
+								)}
+
 								{renderByPropertyFor(
 									asyncState.property,
 									'rent',
@@ -360,6 +388,86 @@ const SearchPage = ({
 											</Grid>
 										</Box>
 									</>
+								)}
+								<LegalClearance
+									property={asyncState.property}
+								/>
+								{renderByPropertyFor(
+									asyncState.property,
+									'rent',
+
+									renderByPropertyType(
+										asyncState.property,
+										['hostel', 'pg'],
+										<>
+											<Box mt="3rem">
+												<h2
+													className={
+														globalClasses.colorPrimary
+													}
+												>
+													Fooding
+												</h2>
+												{asyncState.property.fooding
+													.length > 0 ? (
+													<Grid container spacing={3}>
+														{asyncState.property.fooding.map(
+															(b, i) => {
+																return (
+																	<Grid
+																		item
+																		xs={6}
+																		md={3}
+																		key={i}
+																	>
+																		<Amenity
+																			text={capitalizeFirstLetter(
+																				b
+																			)}
+																		/>
+																	</Grid>
+																);
+															}
+														)}
+													</Grid>
+												) : (
+													<p>Not Available</p>
+												)}
+											</Box>
+											{asyncState.property.foodSchedule
+												.length > 0 && (
+												<Box mt="3rem">
+													<h2
+														className={
+															globalClasses.colorPrimary
+														}
+													>
+														Food Schedule
+													</h2>
+													<Grid container spacing={3}>
+														{asyncState.property.foodSchedule.map(
+															(b, i) => {
+																return (
+																	<Grid
+																		item
+																		xs={6}
+																		md={3}
+																		key={i}
+																	>
+																		<Amenity
+																			text={capitalizeFirstLetter(
+																				b
+																			)}
+																		/>
+																	</Grid>
+																);
+															}
+														)}
+													</Grid>
+												</Box>
+											)}
+										</>
+									)
 								)}
 								{renderByPropertyFor(
 									asyncState.property,
@@ -563,7 +671,11 @@ const SearchPage = ({
 									</Box>
 									<SimilarProperties
 										pFor={asyncState.property.for}
-										type={asyncState.property.type}
+										type={
+											asyncState.property.type
+												? asyncState.property.type
+												: asyncState.property.sale_type
+										}
 										city={asyncState.property.city.id}
 										location={
 											asyncState.property.location.id

@@ -230,36 +230,38 @@ const PropertySale = ({ furnishes, amenities, onSubmit, location, city }) => {
 		distanceBusStop: '',
 		distanceHospital: '',
 	});
-	const [images, setImages] = React.useState({
-		image1: null,
-		image2: null,
-		image3: null,
-		image4: null,
-	});
-	const handleImage = (e) => {
+	const [photos, setPhotos] = React.useState([]);
+
+	const addMore = () => {
+		setPhotos([
+			...photos,
+			{
+				id: photos.length + 1,
+				image: null,
+			},
+		]);
+	};
+	const handleImage = (img) => (e) => {
 		const { name, files } = e.target;
-		setImages((prevState) => ({
-			...prevState,
-			[name]: files[0],
-		}));
+		console.log({ name });
+		setPhotos((prevState) =>
+			prevState.map((c) => {
+				if (c.id === img.id) {
+					c.image = files[0];
+				}
+				return c;
+			})
+		);
 	};
 
 	const onSubmitForm = (data, { setSubmitting }) => {
 		setSubmitting(true);
 		let propertyDetails = filter(data);
-		let i = 0;
-		const propertyImages = {};
-		Object.keys(images).forEach((c) => {
-			if (images[c]) {
-				propertyImages[c] = images[c];
-				i++;
-			}
-		});
-		if (i > 0) {
-			propertyDetails['propertyImages'] = propertyImages;
-		} else {
-			propertyDetails['propertyImages'] = null;
-		}
+		const propertyImages = photos
+			.filter((c) => !!c.image)
+			.map((b) => b.image);
+
+		propertyDetails['propertyImages'] = propertyImages;
 		propertyDetails[
 			'title'
 		] = `${propertyDetails.plotArea} Sq.ft land for sale in ${location},${city} `;
@@ -479,123 +481,42 @@ const PropertySale = ({ furnishes, amenities, onSubmit, location, city }) => {
 					/>
 					<Box p="0.8rem">
 						<Grid container spacing={3}>
-							<Grid item xs={6} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image1
-												? URL.createObjectURL(
-														images.image1
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
+							{photos.map((c, i) => (
+								<Grid key={c.id} item xs={6} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												c.image
+													? URL.createObjectURL(
+															c.image
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										onChange={handleImage(c)}
+										id={`image-${c.id}`}
+										className={classes.input}
 									/>
-								</Box>
-								<input
-									type="file"
-									name="image1"
-									onChange={handleImage}
-									id="pimage1"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage1"
-									className={classes.label}
-								>
-									Upload
-								</label>
-							</Grid>
-							<Grid item xs={6} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image2
-												? URL.createObjectURL(
-														images.image2
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
-									/>
-								</Box>
-								<input
-									type="file"
-									name="image2"
-									onChange={handleImage}
-									id="pimage2"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage2"
-									className={classes.label}
-								>
-									Upload
-								</label>
-							</Grid>
-							<Grid item xs={6} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image3
-												? URL.createObjectURL(
-														images.image3
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
-									/>
-								</Box>
-								<input
-									type="file"
-									name="image3"
-									onChange={handleImage}
-									id="pimage3"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage3"
-									className={classes.label}
-								>
-									Upload
-								</label>
-							</Grid>
-							<Grid item xs={6} lg={3}>
-								<Box className={classes.imageWrapper}>
-									<img
-										src={
-											images.image4
-												? URL.createObjectURL(
-														images.image4
-												  )
-												: require('../../assets/no-image.jpg')
-										}
-										alt="project"
-										srcset=""
-										className={classes.image}
-									/>
-								</Box>
-								<input
-									type="file"
-									name="image4"
-									onChange={handleImage}
-									id="pimage4"
-									className={classes.input}
-								/>
-								<label
-									htmlFor="pimage4"
-									className={classes.label}
-								>
-									Upload
-								</label>
-							</Grid>
+									<label
+										htmlFor={`image-${c.id}`}
+										className={classes.label}
+									>
+										Upload
+									</label>
+								</Grid>
+							))}
 						</Grid>
+						<Box mt="2rem">
+							<button onClick={addMore} type="button">
+								Add More Image
+							</button>
+						</Box>
 					</Box>
 					<Box>
 						<Button

@@ -7,6 +7,7 @@ import {
 	shortLength,
 } from '../../../../utils/render.utils';
 
+import ImageCarousel from '../../imageCarousel';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import SwipablePhotos from '../../swipableViews';
@@ -21,9 +22,13 @@ import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
 import tub from '../../../../assets/icons/tub.svg';
 import useGlobalStyles from '../../../../common.style';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from '../searchCard.style';
+import { useTheme } from '@material-ui/core/styles';
 
 const PropertyCard = ({ property, edit = false }) => {
+	const theme = useTheme();
+	const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const [fullImageOpen, setFullImageOpen] = React.useState(false);
 	const m = moment(property.createdAt);
 	const img = property.photos[0]
@@ -51,27 +56,42 @@ const PropertyCard = ({ property, edit = false }) => {
 			/>
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={8}>
-					<div className={clsx(classes.imageWrapper)}>
-						<div className={clsx(classes.overlay, 'parentImage')}>
-							<div className={classes.dateWrapper}>
-								<span>{m.format('D')}</span>
-								<span>{m.format('MMM')}</span>
-							</div>
-							<button
-								className={'fullImageButton'}
-								onClick={toggleFullImage(true)}
+					{smallScreen ? (
+						<ImageCarousel
+							photos={
+								property.photos[0]
+									? property.photos.map(
+											(c) =>
+												`/assets/properties/${c.image}`
+									  )
+									: [city]
+							}
+						/>
+					) : (
+						<div className={clsx(classes.imageWrapper)}>
+							<div
+								className={clsx(classes.overlay, 'parentImage')}
 							>
-								View Full Image
-							</button>
-							<Box className={classes.swipableWrapper}>
-								<SwipablePhotos
-									photos={property.photos}
-									selected={defaultImage}
-									setSelected={setDefaultImage}
-								/>
-							</Box>
+								<div className={classes.dateWrapper}>
+									<span>{m.format('D')}</span>
+									<span>{m.format('MMM')}</span>
+								</div>
+								<button
+									className={'fullImageButton'}
+									onClick={toggleFullImage(true)}
+								>
+									View Full Image
+								</button>
+								<Box className={classes.swipableWrapper}>
+									<SwipablePhotos
+										photos={property.photos}
+										selected={defaultImage}
+										setSelected={setDefaultImage}
+									/>
+								</Box>
+							</div>
 						</div>
-					</div>
+					)}
 				</Grid>
 				<Grid item xs={12} md={4}>
 					<div className={classes.titleWrapper}>
@@ -144,10 +164,7 @@ const PropertyCard = ({ property, edit = false }) => {
 									<Grid
 										item
 										xs={5}
-										style={{
-											position: 'relative',
-											height: '80px',
-										}}
+										className={classes.keyValue}
 									>
 										<Box className="test">
 											<h1>{property.superBuiltupArea}</h1>

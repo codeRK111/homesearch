@@ -1,7 +1,15 @@
 const express = require('express');
 const projectController = require('../controllers/projectController');
+const uploadController = require('../controllersV2/fileUploadController');
 
 const router = express.Router();
+
+router
+	.route('/add-project-image/:id')
+	.post(
+		uploadController.uploadProjectPhotos,
+		projectController.handleProjectImage
+	);
 
 router.route('/get-all-details/:id').get(projectController.getAllProjectInfo);
 router

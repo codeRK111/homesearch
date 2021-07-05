@@ -37,7 +37,14 @@
 		width 200ms linear;
 }
 .test > h1 {
-	font-size: 1.7rem;
+	font-size: 1.4rem;
+	word-break: break-all;
+}
+
+@media screen and (max-width: 800px) {
+	.test > h1 {
+		font-size: 1.2rem;
+	}
 }
 
 .test:hover {
