@@ -135,7 +135,7 @@ app.use(
 	'/homesearchIndia',
 	express.static(path.join(__dirname, 'homesearchIndia', 'build'))
 );
-app.use('/', express.static(path.join(__dirname, 'client', 'build'), options));
+app.use('/', express.static(path.join(__dirname, 'client', 'ser'), options));
 
 // 3) ROUTES V!
 app.use('/api/v1/admin/users', adminUserRoute);
