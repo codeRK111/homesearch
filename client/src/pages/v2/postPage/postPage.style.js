@@ -8,6 +8,15 @@ const useStyles = makeStyles((theme) => ({
 			padding: '1rem !important',
 		},
 	},
+	shadow: {
+		background: theme.shadowColor,
+		display: 'flex',
+		justifyContent: 'center',
+		minWidth: '75px',
+		borderRadius: '20px',
+		boxShadow: '10px 10px 20px #acacac,-10px -10px 20px #ffffff',
+		padding: '0.6rem',
+	},
 	contentWrapper: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -30,21 +39,25 @@ const useStyles = makeStyles((theme) => ({
 		'&:focus': {
 			outline: 'none',
 		},
+		boxSizing: 'border-box',
 	},
 	widthLG: {
 		width: 300,
+		boxSizing: 'border-box',
 		[theme.breakpoints.down('sm')]: {
 			width: '100% !important',
 		},
 	},
 	widthMD: {
 		width: 200,
+		boxSizing: 'border-box',
 		[theme.breakpoints.down('sm')]: {
 			width: '100% !important',
 		},
 	},
 	widthSM: {
 		width: 100,
+		boxSizing: 'border-box',
 		[theme.breakpoints.down('sm')]: {
 			width: '100% !important',
 		},
@@ -90,7 +103,79 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down('sm')]: {
 			marginTop: '0.8rem !important',
 		},
-	}
+	},
+	rowWrapper2: {
+		width: '100%',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		boxSizing: 'border-box',
+		[theme.breakpoints.down('sm')]: {
+			flexDirection: 'column',
+		},
+	},
+	width80: {
+		width: '80%',
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
+		},
+	},
+	width70: {
+		width: '70%',
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
+		},
+	},
+	width60: {
+		width: '60%',
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
+		},
+	},
+	columnWrapper: {
+		display: 'flex',
+		alignItems: 'center',
+		boxSizing: 'border-box',
+		marginRight: '2rem',
 
+		'& > span': {
+			fontWeight: '600',
+			marginRight: '1rem',
+			[theme.breakpoints.down('sm')]: {
+				fontSize: '0.8rem',
+			},
+		},
+		[theme.breakpoints.down('sm')]: {
+			flexDirection: 'column',
+		},
+	},
+	columnWrapper2: {
+		display: 'flex',
+		alignItems: 'center',
+		flexDirection: 'column',
+		boxSizing: 'border-box',
+		marginRight: '2rem',
+
+		'& > span': {
+			fontWeight: '600',
+			[theme.breakpoints.down('sm')]: {
+				fontSize: '0.8rem',
+			},
+		},
+		[theme.breakpoints.down('sm')]: {
+			flexDirection: 'column',
+		},
+	},
+	width100: {
+		width: '100%',
+	},
+	select: {
+		border: 'none',
+		padding: '1rem 2rem',
+		borderRadius: '20px',
+		boxShadow: '10px 10px 20px #acacac,-10px -10px 20px #ffffff',
+		background: theme.shadowColor,
+		fontSize: '1.2rem',
+	},
 }));
 export default useStyles;

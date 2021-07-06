@@ -13,6 +13,15 @@ const useStyles = makeStyles((theme) => ({
 		'&>span': {
 			fontWeight: '600',
 		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '0.7rem',
+			minWidth: '50px',
+			borderRadius: '15px',
+			boxShadow: '7px 7px 15px #acacac,-7px -7px 15px #ffffff',
+		},
+	},
+	selected: {
+		background: theme.utilColor,
 	},
 }));
 export default useStyles;

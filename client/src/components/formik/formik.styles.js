@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
 	checkboxRoot: {
 		padding: 0,
 	},
+	colorSecondary: {},
 	input: {
 		padding: '1rem',
 		width: '100%',
