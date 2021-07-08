@@ -66,7 +66,11 @@ const Filter = ({
 		setBudgetAnchorEl(null);
 	};
 	const handleTypesClick = (event) => {
-		setTypesAnchorEl(event.currentTarget);
+		if (!!typesAnchorEl) {
+			setTypesAnchorEl(null);
+		} else {
+			setTypesAnchorEl(event.currentTarget);
+		}
 	};
 
 	const handleTypesClose = () => {

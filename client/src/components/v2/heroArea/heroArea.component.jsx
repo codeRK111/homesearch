@@ -48,11 +48,11 @@ const HeroArea = ({ searchCityLoading, searchCities, setCity }) => {
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
-	const [userTypedCity, setUserTypedCity] = React.useState('');
 	const [selectedCity, setSelectedCity] = React.useState('');
 	const [assetType, setAssetType] = React.useState('project');
 	const [cities, setCities] = React.useState([]);
-	const [asyncError, setAsyncError] = React.useState('null');
+	const [userTypedCity, setUserTypedCity] = React.useState('');
+	const [asyncError, setAsyncError] = React.useState(null);
 	const [noResults, setNoResults] = React.useState(false);
 	const handleClick = () => {
 		setAnchorEl(menuParrent.current);

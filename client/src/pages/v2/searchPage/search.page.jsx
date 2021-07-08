@@ -199,7 +199,6 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 						pFor={pFor}
 						types={types}
 						setTypes={setTypes}
-						pFor={pFor}
 						rentItems={rentItems}
 						setRentItems={setRentItems}
 						otherItems={otherItems}

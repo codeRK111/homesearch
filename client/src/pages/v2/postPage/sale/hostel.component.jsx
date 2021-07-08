@@ -22,15 +22,9 @@ import useStyles from '../postPage.style';
 const initialValues = {
 	for: 'rent',
 	availableFor: [],
-	numberOfBedRooms: 0,
-	numberOfBalconies: 1,
-	noOfFloors: 1,
-	floor: 1,
 	typeOfToilets: '',
 	toiletIndian: 1,
 	toiletWestern: 1,
-	superBuiltupArea: '',
-	carpetArea: '',
 	rent: '',
 	maintainanceFee: '',
 	securityDeposit: '',
@@ -49,7 +43,11 @@ const initialValues = {
 	description: '',
 	city: '',
 	location: '',
-	carParking: 'open',
+	carParking: '',
+	roomType: '',
+	fooding: [],
+	foodSchedule: [],
+	numberOfRoomMates: 1,
 	title: '',
 };
 
@@ -134,110 +132,9 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 									)}
 								/>
 							</Box>
-							<Box className={classes.columnWrapper}>
-								<span>Totla Floors</span>
-								<TextField
-									name="noOfFloors"
-									className={clsx(
-										classes.input,
-										classes.widthSM
-									)}
-								/>
-							</Box>
-							<Box className={classes.columnWrapper}>
-								<span>Property On Floor</span>
-								<TextField
-									name="floor"
-									className={clsx(
-										classes.input,
-										classes.widthSM
-									)}
-								/>
-							</Box>
 						</Box>
 						{/* Unit Type  */}
-						<Box mt="2rem" className={classes.contentWrapper}>
-							<Typography
-								variant="h5"
-								gutterBottom
-								align="center"
-							>
-								Unit Type
-							</Typography>
-							<Box
-								mt="1rem"
-								className={clsx(
-									classes.alignCenter,
-									gClasses.smFlexWrap
-								)}
-							>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={values.numberOfBedRooms === 1}
-										onClick={() => {
-											setFieldValue(
-												'numberOfBedRooms',
-												1
-											);
-										}}
-									>
-										1BHK
-									</Select>
-								</Box>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={values.numberOfBedRooms === 2}
-										onClick={() => {
-											setFieldValue(
-												'numberOfBedRooms',
-												2
-											);
-										}}
-									>
-										2BHK
-									</Select>
-								</Box>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={values.numberOfBedRooms === 3}
-										onClick={() => {
-											setFieldValue(
-												'numberOfBedRooms',
-												3
-											);
-										}}
-									>
-										3BHK
-									</Select>
-								</Box>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={values.numberOfBedRooms === 4}
-										onClick={() => {
-											setFieldValue(
-												'numberOfBedRooms',
-												4
-											);
-										}}
-									>
-										4BHK
-									</Select>
-								</Box>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={values.numberOfBedRooms === 5}
-										onClick={() => {
-											setFieldValue(
-												'numberOfBedRooms',
-												5
-											);
-										}}
-									>
-										4BHK+
-									</Select>
-								</Box>
-							</Box>
-						</Box>
+
 						{/* Price and area */}
 						<Box className={classes.rowWrapper2} mt="3rem">
 							<Box className={classes.columnWrapper2}>
@@ -289,33 +186,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 									)}
 								/>
 							</Box>
-							<Box className={classes.columnWrapper2}>
-								<span>Built up area</span>
-								<Box display="flex" alignItems="center">
-									<TextField
-										name="superBuiltupArea"
-										className={clsx(
-											classes.input,
-											classes.widthSM
-										)}
-									/>
-									<Typography>Sq.ft</Typography>
-								</Box>
-							</Box>
 
-							<Box className={classes.columnWrapper2}>
-								<span>Carpet Area</span>
-								<Box display="flex" alignItems="center">
-									<TextField
-										name="carpetArea"
-										className={clsx(
-											classes.input,
-											classes.widthSM
-										)}
-									/>
-									<Typography>Sq.ft</Typography>
-								</Box>
-							</Box>
 							<Box className={classes.columnWrapper2}>
 								<span>Notice Period</span>
 								<Box display="flex" alignItems="center">
@@ -445,7 +316,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								))}
 							</Grid>
 						</Box>
-
+						{/* Available For  */}
 						<Box mt="2rem">
 							<Typography
 								variant="h5"
@@ -497,6 +368,55 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								</Box>
 							</Box>
 						</Box>
+						{/* Types Of Toilet  */}
+						<Box mt="2rem" className={classes.contentWrapper}>
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Types Of Toilets
+							</Typography>
+							<Box
+								mt="1rem"
+								className={clsx(
+									classes.alignCenter,
+									gClasses.smFlexWrap
+								)}
+							>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.typeOfToilets === 'attached'
+										}
+										onClick={() => {
+											setFieldValue(
+												'typeOfToilets',
+												'attached'
+											);
+										}}
+									>
+										Attached
+									</Select>
+								</Box>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.typeOfToilets === 'common'
+										}
+										onClick={() => {
+											setFieldValue(
+												'typeOfToilets',
+												'common'
+											);
+										}}
+									>
+										Common
+									</Select>
+								</Box>
+							</Box>
+						</Box>
+
 						<Box mt="2rem">
 							<Box className={classes.rowWrapper2}>
 								<Box className={classes.columnWrapper}>
@@ -553,28 +473,108 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 										placeholder="0"
 									/>
 								</Box>
-								<Box className={classes.columnWrapper}>
-									<span>No. of balconies </span>
-									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
-										onSet={(val) => {
+							</Box>
+						</Box>
+						{/* Car Parking  */}
+						<Box mt="2rem" className={classes.contentWrapper}>
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Car Parking
+							</Typography>
+							<Box
+								mt="1rem"
+								className={clsx(
+									classes.alignCenter,
+									gClasses.smFlexWrap
+								)}
+							>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={values.carParking === 'open'}
+										onClick={() => {
+											setFieldValue('carParking', 'open');
+										}}
+									>
+										Open
+									</Select>
+								</Box>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.carParking === 'covered'
+										}
+										onClick={() => {
 											setFieldValue(
-												'numberOfBalconies',
-												val
+												'carParking',
+												'covered'
 											);
 										}}
-										value={values.numberOfBalconies}
-										placeholder="0"
-									/>
+									>
+										Covered
+									</Select>
 								</Box>
 							</Box>
 						</Box>
+						{/* Room Type */}
+						<Box mt="2rem" className={classes.contentWrapper}>
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Room Type
+							</Typography>
+							<Box
+								mt="1rem"
+								className={clsx(
+									classes.alignCenter,
+									gClasses.smFlexWrap
+								)}
+							>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={values.roomType === 'private'}
+										onClick={() => {
+											setFieldValue(
+												'roomType',
+												'private'
+											);
+										}}
+									>
+										Private
+									</Select>
+								</Box>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={values.roomType === 'shared'}
+										onClick={() => {
+											setFieldValue('roomType', 'shared');
+										}}
+									>
+										Shared
+									</Select>
+								</Box>
+							</Box>
+						</Box>
+						{/* Room Mates  */}
+						{values.roomType === 'shared' && (
+							<Box mt="2rem" className={classes.rowWrapper2}>
+								<Box className={classes.columnWrapper2}>
+									<span>Number of roommates</span>
+									<TextField
+										name="numberOfRoomMates"
+										className={clsx(
+											classes.input,
+											classes.widthMD
+										)}
+									/>
+								</Box>
+							</Box>
+						)}
+
 						<Box mt="2rem" className={classes.contentWrapper}>
 							<Typography
 								variant="h5"

@@ -19,9 +19,6 @@ import { createStructuredSelector } from 'reselect';
 
 // import SpeedDial from './components/speedDial/speedDial.component';
 
-
-
-
 // const BrowsePage = lazy(() => import('./pages/browsePage/browse.page'));
 // const PaymentPage = lazy(() =>
 // 	import('./pages/testPayment/testPayment.component')
@@ -103,371 +100,372 @@ function App({
 	// }, [authenticated, profileLoading]);
 
 	const handleClose = () => {
+		console.log('object 2');
 		setSnackbar({
 			open: false,
 		});
 	};
 
-	return (
-		<CacheBuster>
-			{({ loading, isLatestVersion, refreshCacheAndReload }) => {
-				if (loading) return null;
-				if (!loading && !isLatestVersion) {
-					refreshCacheAndReload();
-				}
-
-				return (
-					<Suspense fallback={<SuspenseLoader />}>
-						<Snackbar
-							open={snackbarDetails.open}
-							autoHideDuration={6000}
-							onClose={handleClose}
-						>
-							<Alert
-								onClose={handleClose}
-								severity={snackbarDetails.severity}
-							>
-								{snackbarDetails.message}
-							</Alert>
-						</Snackbar>
-						<LogIn />
-						<HashRouter>
-							{/* <SpeedDial /> */}
-							<Switch>
-								{/* <Route
-									exact
-									path="/"
-									render={(props) => <HomePage {...props} />}
-								/> */}
-								<Route
-									exact
-									path="/"
-									render={(props) => (
-										<HomePageNew {...props} />
-									)}
-								/>
-								<Route
-									exact
-									path="/v2/property-details/:id"
-									render={(props) => (
-										<PropertyDetailsPageNew {...props} />
-									)}
-								/>
-								<Route
-									exact
-									path="/v2/project-details/:id"
-									render={(props) => (
-										<ProjectDetailsPageNew {...props} />
-									)}
-								/>
-								<Route
-									exact
-									path="/v2/search"
-									render={(props) => (
-										<SearchPageNew {...props} />
-									)}
-								/>
-								{/* <Route
-									exact
-									path="/v2/agent"
-									render={(props) => (
-										<AgentPageNew {...props} />
-									)}
-								/> */}
-								<Route
-									exact
-									path="/v2/post-property"
-									render={(props) => (
-										<PostPropertyPageNew {...props} />
-									)}
-								/>
-								{/* <Route
-									exact
-									path="/payment"
-									render={(props) => (
-										<PaymentPage {...props} />
-									)}
-								/>
-
-								<Route
-									exact
-									path="/profile"
-									render={(props) => (
-										<Protected
-											component={ProfilePage}
-											{...props}
-											redirect={true}
-										/>
-									)}
-								/>
-								<Route
-									exact
-									path="/update-profile"
-									render={(props) => (
-										<Protected
-											component={ProfileUpdate}
-											redirect
-											{...props}
-										/>
-									)}
-								/>
-								<Route
-									exact
-									path="/m/search"
-									render={() => <MobileSearch />}
-								/>
-								<Route
-									exact
-									path="/search-results"
-									render={(props) => (
-										<SearchPage {...props} />
-									)}
-								/>
-								<Route
-									exact
-									path="/browse"
-									render={(props) => (
-										<BrowsePage {...props} />
-									)}
-								/>
-								<Route
-									exact
-									path="/project/:id"
-									render={(props) => (
-										<ProjectDetailsPage {...props} />
-									)}
-								/>
-								<Route
-									exact
-									path="/property-details/:id"
-									render={(props) => (
-										<DetailsPage {...props} />
-									)}
-								/>
-								<Route
-									exact
-									path="/edit-property/:id"
-									render={(props) => (
-										<Protected
-											component={EditProperty}
-											{...props}
-										/>
-									)}
-								/>
-								<Route
-									exact
-									path="/project-property/:id"
-									render={(props) => (
-										<ProjectProperty {...props} />
-									)}
-								/>
-								<Route
-									exact
-									path="/post-property/:propertyForParam"
-									render={(props) => (
-										<Protected
-											component={PostProperty}
-											redirectTo="post-property"
-											{...props}
-										/>
-									)}
-								/>
-								<Route
-									exact
-									path="/post-property-details/:pFor/:pType"
-									render={(props) => (
-										<Protected
-											component={PostPropertyDetailsPage}
-											{...props}
-										/>
-									)}
-								/>
-								<Route
-									exact
-									path="/builder/:slug"
-									render={(props) => (
-										<BuilderPage {...props} />
-									)}
-								/>
-								<Route
-									exact
-									path="/:projectId"
-									render={(props) => (
-										<ProjectPage {...props} />
-									)}
-								/> */}
-								<Route
-									path="*"
-									render={(props) => <NotFound {...props} />}
-								/>
-							</Switch>
-						</HashRouter>
-					</Suspense>
-				);
-			}}
-		</CacheBuster>
-	);
-
 	// return (
-	// 	<Suspense fallback={<SuspenseLoader />}>
-	// 		<Snackbar
-	// 			open={snackbarDetails.open}
-	// 			autoHideDuration={6000}
-	// 			onClose={handleClose}
-	// 		>
-	// 			<Alert
-	// 				onClose={handleClose}
-	// 				severity={snackbarDetails.severity}
-	// 			>
-	// 				{snackbarDetails.message}
-	// 			</Alert>
-	// 		</Snackbar>
-	// 		<LogIn />
-	// 		<HashRouter>
-	// 			{/* <SpeedDial /> */}
-	// 			<Switch>
-	// 				{/* <Route
-	// 					exact
-	// 					path="/"
-	// 					render={(props) => <HomePage {...props} />}
-	// 				/> */}
-	// 				<Route
-	// 					exact
-	// 					path="/"
-	// 					render={(props) => <HomePageNew {...props} />}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/v2/property-details/:id"
-	// 					render={(props) => (
-	// 						<PropertyDetailsPageNew {...props} />
-	// 					)}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/v2/project-details/:id"
-	// 					render={(props) => <ProjectDetailsPageNew {...props} />}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/v2/search"
-	// 					render={(props) => <SearchPageNew {...props} />}
-	// 				/>
-	// 				{/* <Route
-	// 					exact
-	// 					path="/v2/agent"
-	// 					render={(props) => <AgentPageNew {...props} />}
-	// 				/> */}
-	// 				<Route
-	// 					exact
-	// 					path="/v2/post-property"
-	// 					render={(props) => <PostPropertyPageNew {...props} />}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/post-property/:propertyForParam"
-	// 					render={(props) => (
-	// 						<Protected
-	// 							component={PostProperty}
-	// 							redirectTo="post-property"
-	// 							{...props}
-	// 						/>
-	// 					)}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/post-property-details/:pFor/:pType"
-	// 					render={(props) => (
-	// 						<Protected
-	// 							component={PostPropertyDetailsPage}
-	// 							{...props}
-	// 						/>
-	// 					)}
-	// 				/>
-	// 				{/* <Route
-	// 					exact
-	// 					path="/payment"
-	// 					render={(props) => <PaymentPage {...props} />}
-	// 				/>
+	// 	<CacheBuster>
+	// 		{({ loading, isLatestVersion, refreshCacheAndReload }) => {
+	// 			if (loading) return null;
+	// 			if (!loading && !isLatestVersion) {
+	// 				refreshCacheAndReload();
+	// 			}
 
-	// 				<Route
-	// 					exact
-	// 					path="/profile"
-	// 					render={(props) => (
-	// 						<Protected
-	// 							component={ProfilePage}
-	// 							{...props}
-	// 							redirect={true}
-	// 						/>
-	// 					)}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/update-profile"
-	// 					render={(props) => (
-	// 						<Protected
-	// 							component={ProfileUpdate}
-	// 							redirect
-	// 							{...props}
-	// 						/>
-	// 					)}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/m/search"
-	// 					render={() => <MobileSearch />}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/search-results"
-	// 					render={(props) => <SearchPage {...props} />}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/browse"
-	// 					render={(props) => <BrowsePage {...props} />}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/project/:id"
-	// 					render={(props) => <ProjectDetailsPage {...props} />}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/property-details/:id"
-	// 					render={(props) => <DetailsPage {...props} />}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/edit-property/:id"
-	// 					render={(props) => (
-	// 						<Protected component={EditProperty} {...props} />
-	// 					)}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/project-property/:id"
-	// 					render={(props) => <ProjectProperty {...props} />}
-	// 				/>
+	// 			return (
+	// 				<Suspense fallback={<SuspenseLoader />}>
+	// 					<Snackbar
+	// 						open={snackbarDetails.open}
+	// 						autoHideDuration={6000}
+	// 						onClose={handleClose}
+	// 					>
+	// 						<Alert
+	// 							onClose={handleClose}
+	// 							severity={snackbarDetails.severity}
+	// 						>
+	// 							{snackbarDetails.message}
+	// 						</Alert>
+	// 					</Snackbar>
+	// 					<LogIn />
+	// 					<HashRouter>
+	// 						{/* <SpeedDial /> */}
+	// 						<Switch>
+	// 							{/* <Route
+	// 								exact
+	// 								path="/"
+	// 								render={(props) => <HomePage {...props} />}
+	// 							/> */}
+	// 							<Route
+	// 								exact
+	// 								path="/"
+	// 								render={(props) => (
+	// 									<HomePageNew {...props} />
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/v2/property-details/:id"
+	// 								render={(props) => (
+	// 									<PropertyDetailsPageNew {...props} />
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/v2/project-details/:id"
+	// 								render={(props) => (
+	// 									<ProjectDetailsPageNew {...props} />
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/v2/search"
+	// 								render={(props) => (
+	// 									<SearchPageNew {...props} />
+	// 								)}
+	// 							/>
+	// 							{/* <Route
+	// 								exact
+	// 								path="/v2/agent"
+	// 								render={(props) => (
+	// 									<AgentPageNew {...props} />
+	// 								)}
+	// 							/> */}
+	// 							<Route
+	// 								exact
+	// 								path="/v2/post-property"
+	// 								render={(props) => (
+	// 									<PostPropertyPageNew {...props} />
+	// 								)}
+	// 							/>
+	// 							{/* <Route
+	// 								exact
+	// 								path="/payment"
+	// 								render={(props) => (
+	// 									<PaymentPage {...props} />
+	// 								)}
+	// 							/>
 
-	// 				<Route
-	// 					exact
-	// 					path="/builder/:slug"
-	// 					render={(props) => <BuilderPage {...props} />}
-	// 				/>
-	// 				<Route
-	// 					exact
-	// 					path="/:projectId"
-	// 					render={(props) => <ProjectPage {...props} />}
-	// 				/> */}
-	// 				<Route
-	// 					path="*"
-	// 					render={(props) => <NotFound {...props} />}
-	// 				/>
-	// 			</Switch>
-	// 		</HashRouter>
-	// 	</Suspense>
+	// 							<Route
+	// 								exact
+	// 								path="/profile"
+	// 								render={(props) => (
+	// 									<Protected
+	// 										component={ProfilePage}
+	// 										{...props}
+	// 										redirect={true}
+	// 									/>
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/update-profile"
+	// 								render={(props) => (
+	// 									<Protected
+	// 										component={ProfileUpdate}
+	// 										redirect
+	// 										{...props}
+	// 									/>
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/m/search"
+	// 								render={() => <MobileSearch />}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/search-results"
+	// 								render={(props) => (
+	// 									<SearchPage {...props} />
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/browse"
+	// 								render={(props) => (
+	// 									<BrowsePage {...props} />
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/project/:id"
+	// 								render={(props) => (
+	// 									<ProjectDetailsPage {...props} />
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/property-details/:id"
+	// 								render={(props) => (
+	// 									<DetailsPage {...props} />
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/edit-property/:id"
+	// 								render={(props) => (
+	// 									<Protected
+	// 										component={EditProperty}
+	// 										{...props}
+	// 									/>
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/project-property/:id"
+	// 								render={(props) => (
+	// 									<ProjectProperty {...props} />
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/post-property/:propertyForParam"
+	// 								render={(props) => (
+	// 									<Protected
+	// 										component={PostProperty}
+	// 										redirectTo="post-property"
+	// 										{...props}
+	// 									/>
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/post-property-details/:pFor/:pType"
+	// 								render={(props) => (
+	// 									<Protected
+	// 										component={PostPropertyDetailsPage}
+	// 										{...props}
+	// 									/>
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/builder/:slug"
+	// 								render={(props) => (
+	// 									<BuilderPage {...props} />
+	// 								)}
+	// 							/>
+	// 							<Route
+	// 								exact
+	// 								path="/:projectId"
+	// 								render={(props) => (
+	// 									<ProjectPage {...props} />
+	// 								)}
+	// 							/> */}
+	// 							<Route
+	// 								path="*"
+	// 								render={(props) => <NotFound {...props} />}
+	// 							/>
+	// 						</Switch>
+	// 					</HashRouter>
+	// 				</Suspense>
+	// 			);
+	// 		}}
+	// 	</CacheBuster>
 	// );
+
+	return (
+		<Suspense fallback={<SuspenseLoader />}>
+			<Snackbar
+				open={snackbarDetails.open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+			>
+				<Alert
+					onClose={handleClose}
+					severity={snackbarDetails.severity}
+				>
+					{snackbarDetails.message}
+				</Alert>
+			</Snackbar>
+			<LogIn />
+			<HashRouter>
+				{/* <SpeedDial /> */}
+				<Switch>
+					{/* <Route
+						exact
+						path="/"
+						render={(props) => <HomePage {...props} />}
+					/> */}
+					<Route
+						exact
+						path="/"
+						render={(props) => <HomePageNew {...props} />}
+					/>
+					<Route
+						exact
+						path="/v2/property-details/:id"
+						render={(props) => (
+							<PropertyDetailsPageNew {...props} />
+						)}
+					/>
+					<Route
+						exact
+						path="/v2/project-details/:id"
+						render={(props) => <ProjectDetailsPageNew {...props} />}
+					/>
+					<Route
+						exact
+						path="/v2/search"
+						render={(props) => <SearchPageNew {...props} />}
+					/>
+					{/* <Route
+						exact
+						path="/v2/agent"
+						render={(props) => <AgentPageNew {...props} />}
+					/> */}
+					<Route
+						exact
+						path="/v2/post-property"
+						render={(props) => <PostPropertyPageNew {...props} />}
+					/>
+					{/* <Route
+						exact
+						path="/post-property/:propertyForParam"
+						render={(props) => (
+							<Protected
+								component={PostProperty}
+								redirectTo="post-property"
+								{...props}
+							/>
+						)}
+					/>
+					<Route
+						exact
+						path="/post-property-details/:pFor/:pType"
+						render={(props) => (
+							<Protected
+								component={PostPropertyDetailsPage}
+								{...props}
+							/>
+						)}
+					/> */}
+					{/* <Route
+						exact
+						path="/payment"
+						render={(props) => <PaymentPage {...props} />}
+					/>
+
+					<Route
+						exact
+						path="/profile"
+						render={(props) => (
+							<Protected
+								component={ProfilePage}
+								{...props}
+								redirect={true}
+							/>
+						)}
+					/>
+					<Route
+						exact
+						path="/update-profile"
+						render={(props) => (
+							<Protected
+								component={ProfileUpdate}
+								redirect
+								{...props}
+							/>
+						)}
+					/>
+					<Route
+						exact
+						path="/m/search"
+						render={() => <MobileSearch />}
+					/>
+					<Route
+						exact
+						path="/search-results"
+						render={(props) => <SearchPage {...props} />}
+					/>
+					<Route
+						exact
+						path="/browse"
+						render={(props) => <BrowsePage {...props} />}
+					/>
+					<Route
+						exact
+						path="/project/:id"
+						render={(props) => <ProjectDetailsPage {...props} />}
+					/>
+					<Route
+						exact
+						path="/property-details/:id"
+						render={(props) => <DetailsPage {...props} />}
+					/>
+					<Route
+						exact
+						path="/edit-property/:id"
+						render={(props) => (
+							<Protected component={EditProperty} {...props} />
+						)}
+					/>
+					<Route
+						exact
+						path="/project-property/:id"
+						render={(props) => <ProjectProperty {...props} />}
+					/>
+
+					<Route
+						exact
+						path="/builder/:slug"
+						render={(props) => <BuilderPage {...props} />}
+					/>
+					<Route
+						exact
+						path="/:projectId"
+						render={(props) => <ProjectPage {...props} />}
+					/> */}
+					<Route
+						path="*"
+						render={(props) => <NotFound {...props} />}
+					/>
+				</Switch>
+			</HashRouter>
+		</Suspense>
+	);
 }
 
 // export default App

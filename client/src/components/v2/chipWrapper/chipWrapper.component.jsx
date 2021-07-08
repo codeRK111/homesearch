@@ -4,10 +4,14 @@ import clsx from 'clsx';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './chip.style';
 
-const Chip = ({ children }) => {
+const Chip = ({ children, ...otherProps }) => {
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
-	return <div className={classes.wrapper}>{children}</div>;
+	return (
+		<div className={classes.wrapper} {...otherProps}>
+			{children}
+		</div>
+	);
 };
 
 Chip.propTypes = {

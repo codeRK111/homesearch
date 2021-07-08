@@ -19,9 +19,56 @@ import clsx from 'clsx';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
 
+const legalClearance = [
+	{
+		name: 'approvalOfBuilding',
+		value: false,
+		label: 'Approval of building',
+	},
+	{
+		name: 'nocFromFireDepts',
+		value: false,
+		label: 'NOC from Fire depts',
+	},
+	{
+		name: 'electricityConnUse',
+		value: false,
+		label: 'Electricity Connection use',
+	},
+	{
+		name: 'StructuralStatbilityCertificate',
+		value: false,
+		label: 'Structural stability certificate',
+	},
+	{
+		name: 'nocFromPollutionDepts',
+		value: false,
+		label: 'NOC from Pollution deptt',
+	},
+	{
+		name: 'functionalCertificate',
+		value: false,
+		label: 'Occupation / functional certificate',
+	},
+	{
+		name: 'holdingTax',
+		value: false,
+		label: 'Municipal /Holding Tax',
+	},
+	{
+		name: 'completionCertificate',
+		value: false,
+		label: 'Completion Certificate',
+	},
+	{
+		name: 'reraapproved',
+		value: false,
+		label: 'RERA Approved',
+	},
+];
+
 const initialValues = {
 	for: 'rent',
-	availableFor: [],
 	numberOfBedRooms: 0,
 	numberOfBalconies: 1,
 	noOfFloors: 1,
@@ -31,10 +78,7 @@ const initialValues = {
 	toiletWestern: 1,
 	superBuiltupArea: '',
 	carpetArea: '',
-	rent: '',
-	maintainanceFee: '',
-	securityDeposit: '',
-	noticePeriod: '',
+	salePrice: '',
 	furnished: '',
 	furnishes: [],
 	amenities: [],
@@ -45,12 +89,18 @@ const initialValues = {
 	distanceHospital: 1,
 	availability: '',
 	availableDate: new Date(),
-	restrictions: '',
 	description: '',
 	city: '',
 	location: '',
 	carParking: 'open',
 	title: '',
+	landArea: '',
+	propertyOwnerShip: '',
+	salePriceOver: '',
+	legalClearance: legalClearance,
+	reraapproveId: '',
+	pricePerSqFt: '',
+	transactionType: '',
 };
 
 const RentApartment = ({ pType, furnishes, amenities }) => {
@@ -241,10 +291,10 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 						{/* Price and area */}
 						<Box className={classes.rowWrapper2} mt="3rem">
 							<Box className={classes.columnWrapper2}>
-								<span>Rent</span>
+								<span>Price</span>
 								<Box display="flex" alignItems="center">
 									<TextField
-										name="rent"
+										name="salePrice"
 										className={clsx(
 											classes.input,
 											classes.widthSM
@@ -279,16 +329,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 									)}
 								/>
 							</Box>
-							<Box className={classes.columnWrapper2}>
-								<span>Maintainance Fee (If any)</span>
-								<TextField
-									name="securityDeposit"
-									className={clsx(
-										classes.input,
-										classes.widthSM
-									)}
-								/>
-							</Box>
+
 							<Box className={classes.columnWrapper2}>
 								<span>Built up area</span>
 								<Box display="flex" alignItems="center">
@@ -307,7 +348,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								<span>Carpet Area</span>
 								<Box display="flex" alignItems="center">
 									<TextField
-										name="carpetArea"
+										name="landArea"
 										className={clsx(
 											classes.input,
 											classes.widthSM
@@ -317,16 +358,16 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								</Box>
 							</Box>
 							<Box className={classes.columnWrapper2}>
-								<span>Notice Period</span>
+								<span>Land Area</span>
 								<Box display="flex" alignItems="center">
 									<TextField
-										name="noticePeriod"
+										name="carpetArea"
 										className={clsx(
 											classes.input,
 											classes.widthSM
 										)}
 									/>
-									<Typography>Days</Typography>
+									<Typography>Sq.ft</Typography>
 								</Box>
 							</Box>
 						</Box>
@@ -447,57 +488,6 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 						</Box>
 
 						<Box mt="2rem">
-							<Typography
-								variant="h5"
-								gutterBottom
-								align="center"
-							>
-								Available For
-							</Typography>
-							<Box className={classes.rowWrapper2}>
-								<Box className={classes.columnWrapper2}>
-									<CheckBox
-										type="checkbox"
-										name="availableFor"
-										value={'Family'}
-										formLabel={'Family'}
-									/>
-								</Box>
-								<Box className={classes.columnWrapper2}>
-									<CheckBox
-										type="checkbox"
-										name="availableFor"
-										value="Bachelors (Men)"
-										formLabel="Bachelors (Men)"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper2}>
-									<CheckBox
-										type="checkbox"
-										name="availableFor"
-										value="Bachelors (Women)"
-										formLabel="Bachelors (Women)"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper2}>
-									<CheckBox
-										type="checkbox"
-										name="availableFor"
-										value="Job holder (Men)"
-										formLabel="Job holder (Men)"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper2}>
-									<CheckBox
-										type="checkbox"
-										name="availableFor"
-										value="Job holder (Women)"
-										formLabel="Job holder (Women)"
-									/>
-								</Box>
-							</Box>
-						</Box>
-						<Box mt="2rem">
 							<Box className={classes.rowWrapper2}>
 								<Box className={classes.columnWrapper}>
 									<span>No. of Bedroom</span>
@@ -572,6 +562,103 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 										value={values.numberOfBalconies}
 										placeholder="0"
 									/>
+								</Box>
+							</Box>
+						</Box>
+						<Box mt="2rem" className={classes.contentWrapper}>
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Property Ownership
+							</Typography>
+							<Box
+								mt="1rem"
+								className={clsx(
+									classes.alignCenter,
+									gClasses.smFlexWrap
+								)}
+							>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.propertyOwnerShip ===
+											'freehold'
+										}
+										onClick={() => {
+											setFieldValue(
+												'propertyOwnerShip',
+												'freehold'
+											);
+										}}
+									>
+										Freehold
+									</Select>
+								</Box>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.propertyOwnerShip ===
+											'leashed'
+										}
+										onClick={() => {
+											setFieldValue(
+												'propertyOwnerShip',
+												'leashed'
+											);
+										}}
+									>
+										Leashed
+									</Select>
+								</Box>
+							</Box>
+						</Box>
+						<Box mt="2rem" className={classes.contentWrapper}>
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Transaction Type
+							</Typography>
+							<Box
+								mt="1rem"
+								className={clsx(
+									classes.alignCenter,
+									gClasses.smFlexWrap
+								)}
+							>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.transactionType ===
+											'newbooking'
+										}
+										onClick={() => {
+											setFieldValue(
+												'transactionType',
+												'newbooking'
+											);
+										}}
+									>
+										New booking
+									</Select>
+								</Box>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.transactionType === 'resale'
+										}
+										onClick={() => {
+											setFieldValue(
+												'transactionType',
+												'resale'
+											);
+										}}
+									>
+										Resale
+									</Select>
 								</Box>
 							</Box>
 						</Box>
@@ -670,23 +757,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								</Box>
 							</Box>
 						)}
-						<Box mt="2rem">
-							<Typography
-								variant="h5"
-								gutterBottom
-								align="center"
-							>
-								Restrictions (If any)
-							</Typography>
-							<TextArea
-								name="restrictions"
-								rows={4}
-								className={clsx(
-									classes.input,
-									classes.width100
-								)}
-							/>
-						</Box>
+
 						<Box mt="2rem">
 							<Typography
 								variant="h5"

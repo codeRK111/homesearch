@@ -177,5 +177,35 @@ const useStyles = makeStyles((theme) => ({
 		background: theme.shadowColor,
 		fontSize: '1.2rem',
 	},
+	image: {
+		width: '100%',
+		height: '200px',
+	},
+	uploadButton: {
+		display: 'none',
+	},
+	label: {
+		padding: '0.5rem 0',
+		border: '1px solid #cccccc',
+		width: '100%',
+		borderRadius: '5px',
+		backgroundColor: '#cccccc',
+		cursor: 'pointer',
+		display: 'block',
+		boxSizing: 'border-box',
+		textAlign: 'center',
+	},
+	remove: {
+		padding: '0.5rem 0',
+		border: '1px solid #cccccc',
+		width: '100%',
+		borderRadius: '5px',
+		backgroundColor: 'red',
+		cursor: 'pointer',
+		display: 'block',
+		boxSizing: 'border-box',
+		textAlign: 'center',
+		color: '#ffffff',
+	},
 }));
 export default useStyles;

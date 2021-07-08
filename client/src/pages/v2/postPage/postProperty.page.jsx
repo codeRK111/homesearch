@@ -1,17 +1,16 @@
 import { Box, Grid, Typography } from '@material-ui/core';
+import { Link, Switch } from 'react-router-dom';
 
-import AddIcon from '@material-ui/icons/Add';
-import ChipWrapper from '../../../components/v2/chipWrapper/chipWrapper.component';
-import DropDown from '../../../components/v2/chipDropdown/chipDropdown.component';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import CitySearch from '../../../components/v2/cityDropDown';
 import FurnishHOC from '../../../components/furnishes/hoc';
-import { Link } from 'react-router-dom';
+import LocationSearch from '../../../components/v2/locationDropDown';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import PlanWrapper from '../../../components/v2/amenity/amenity.component';
 import React from 'react';
 import RentApartment from './rent/apartment.component';
+import RentHostel from './rent/hostel.component';
+import SaleApartment from './sale/apartment.component';
 import Select from '../../../components/v2/chipSelect/chipSelected.component';
-import TodayIcon from '@material-ui/icons/Today';
 import clsx from 'clsx';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './postPage.style';
@@ -19,8 +18,16 @@ import useStyles from './postPage.style';
 const PostProperty = () => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
-	const [pFor, setpFor] = React.useState('rent');
+	const [pFor, setpFor] = React.useState('');
 	const [type, setType] = React.useState('');
+	const [selectedCity, setSelectedCity] = React.useState({
+		id: null,
+		name: null,
+	});
+	const [selectedLocation, setSelectedLocation] = React.useState({
+		id: null,
+		name: null,
+	});
 
 	const handlePFor = (type) => () => {
 		setpFor(type);
@@ -63,6 +70,42 @@ const PostProperty = () => {
 		}
 
 		return arr;
+	};
+
+	const renderTypesComponent = () => {
+		switch (type) {
+			case 'flat':
+			case 'independenthouse':
+				return <FurnishHOC component={RentApartment} pType={type} />;
+			case 'hostel':
+			case 'pg':
+				return <FurnishHOC component={RentHostel} pType={type} />;
+
+			default:
+				break;
+		}
+	};
+	const renderSaleTypesComponent = () => {
+		switch (type) {
+			case 'flat':
+			case 'independenthouse':
+				return <FurnishHOC component={SaleApartment} pType={type} />;
+
+			default:
+				break;
+		}
+	};
+
+	const renderpFor = () => {
+		switch (pFor) {
+			case 'rent':
+				return renderTypesComponent();
+			case 'sale':
+				return renderSaleTypesComponent();
+
+			default:
+				break;
+		}
 	};
 	return (
 		<div>
@@ -109,9 +152,20 @@ const PostProperty = () => {
 						)}
 						mt="2rem"
 					>
-						<DropDown size="md" label="City" />
+						<CitySearch
+							placeholder="City"
+							size={200}
+							onSet={setSelectedCity}
+							value={selectedCity}
+						/>
 						<Box className={classes.leftSpacer}>
-							<DropDown size="md" label="Location" />
+							<LocationSearch
+								placeholder="Location"
+								size={200}
+								onSet={setSelectedLocation}
+								value={selectedLocation}
+								city={selectedCity}
+							/>
 						</Box>
 					</Box>
 
@@ -140,79 +194,13 @@ const PostProperty = () => {
 						</Box>
 					</Box>
 					<Box mt="2rem">
-						<FurnishHOC component={RentApartment} pType={type} />
+						{renderpFor()}
 						{/* <RentApartment  /> */}
 					</Box>
 
 					{/* Pricing And Area  */}
 
 					{/* Photos And Video  */}
-					<Box mt="3rem">
-						<Typography variant="h5" gutterBottom align="center">
-							Add visuals to your property
-						</Typography>
-					</Box>
-					<Box mt="3rem" className={classes.rowWrapper}>
-						<Grid container spacing={3}>
-							<Grid item xs={12} md={5}>
-								<Box className={classes.contentWrapper}>
-									<Box mb="1rem">
-										<ChipWrapper>
-											<Box
-												className={
-													classes.contentWrapper
-												}
-											>
-												<AddIcon />
-												<Typography variant="body2">
-													Add Photos
-												</Typography>
-											</Box>
-										</ChipWrapper>
-									</Box>
-									<Typography
-										variant="caption"
-										align="center"
-									>
-										Photos 0/15 increase your chances of
-										getting genuine leads by adding at least
-										5 photos of Hall, Bedrooms, Kitchen &
-										bathrooms.
-									</Typography>
-								</Box>
-							</Grid>
-							<Grid item xs={false} md={1}></Grid>
-							<Grid item xs={12} md={5}>
-								<Box className={classes.contentWrapper}>
-									<Box mb="1rem">
-										<ChipWrapper>
-											<Box
-												className={
-													classes.contentWrapper
-												}
-											>
-												<AddIcon />
-												<Typography variant="body2">
-													Add Video
-												</Typography>
-											</Box>
-										</ChipWrapper>
-									</Box>
-									<Typography
-										variant="caption"
-										align="center"
-									>
-										Virtual tour helps people visit the
-										property virtually, increase your
-										chances of getting the deal by adding a
-										walk through video from the entrance
-										road to inside your house till your
-										rooms and bathrooms
-									</Typography>
-								</Box>
-							</Grid>
-						</Grid>
-					</Box>
 
 					{/* Other Details  */}
 
