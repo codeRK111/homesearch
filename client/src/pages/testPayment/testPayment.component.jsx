@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import logo from '../../assets/logo.png';
+
+// import logo from '../../assets/logo.png';
 const TestPayment = () => {
 	function loadScript(src) {
 		return new Promise((resolve) => {
@@ -45,7 +46,6 @@ const TestPayment = () => {
 			currency: currency,
 			name: 'Soumya Corp.',
 			description: 'Test Transaction',
-			image: { logo },
 			order_id: order_id,
 			handler: async function (response) {
 				const data = {

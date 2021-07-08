@@ -1,4 +1,5 @@
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
+
 import React from 'react';
 import clsx from 'clsx';
 import { useField } from 'formik';
@@ -21,11 +22,9 @@ const RowSelect = ({ spacing = true, ...otherProps }) => {
 	return (
 		<Box {...padding}>
 			{!!helperText && (
-				<Box
-					className={clsx(classes.label, globalClasses.colorWarning)}
-				>
+				<Typography color="error" variant="caption">
 					{helperText}
-				</Box>
+				</Typography>
 			)}
 			<Box {...margin}>
 				<input

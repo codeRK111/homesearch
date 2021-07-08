@@ -41,18 +41,8 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup }) => {
 					>
 						List Property & Projects
 					</div>
-					<Box ml="1rem">
-						<div
-							className={clsx(
-								classes.listButton,
-								gClasses.smHide
-							)}
-							onClick={redirectToLogIn}
-						>
-							Sign In
-						</div>
-					</Box>
-					{!!isAuthenticated && (
+
+					{!!isAuthenticated ? (
 						<>
 							<div
 								className={clsx(
@@ -66,10 +56,22 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup }) => {
 									className={gClasses.smHide}
 								/>
 							</div>
-							<Box className={classes.profileWrapper}>
+							{/* <Box className={classes.profileWrapper}>
 								<Hamburger />
-							</Box>
+							</Box> */}
 						</>
+					) : (
+						<Box ml="1rem">
+							<div
+								className={clsx(
+									classes.listButton,
+									gClasses.smHide
+								)}
+								onClick={redirectToLogIn}
+							>
+								Sign In
+							</div>
+						</Box>
 					)}
 				</div>
 			</Box>

@@ -5,7 +5,6 @@ import {
 	validateNumber,
 } from '../../../../utils/validation.utils';
 
-import AddIcon from '@material-ui/icons/Add';
 import CheckBox from '../../../../components/formik/checkbox.component';
 import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
 import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
@@ -15,6 +14,7 @@ import Select from '../../../../components/v2/chipSelect/chipSelected.component'
 import TextArea from '../../../../components/formik/textArea.component';
 import TextField from '../../../../components/formik/textFieldDefault.component';
 import TodayIcon from '@material-ui/icons/Today';
+import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
@@ -704,91 +704,11 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								)}
 							/>
 						</Box>
-						<Box className={classes.rowWrapper2} mt="3rem">
-							<Box className={classes.columnWrapper2}>
-								<Box mb="1rem">
-									<ChipWrapper onClick={addMore}>
-										<Box className={classes.contentWrapper}>
-											<AddIcon />
-											<Typography variant="body2">
-												Add Photos
-											</Typography>
-										</Box>
-									</ChipWrapper>
-								</Box>
-								<Typography variant="caption" align="center">
-									Photos 0/15 increase your chances of getting
-									genuine leads by adding at least 5 photos of
-									Hall, Bedrooms, Kitchen & bathrooms.
-								</Typography>
-							</Box>
-						</Box>
 						<Box mt="2rem">
-							<Grid container spacing={3}>
-								{photos.map((c, i) => (
-									<Grid key={c.id} item xs={6} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													c.image
-														? URL.createObjectURL(
-																c.image
-														  )
-														: require('../../../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										<input
-											type="file"
-											onChange={handleImage(c)}
-											id={`image-${c.id}`}
-											className={classes.uploadButton}
-										/>
-										{c.image ? (
-											<Grid container>
-												<Grid item xs={6}>
-													<label
-														htmlFor={`image-${c.id}`}
-														className={
-															classes.label
-														}
-													>
-														Upload
-													</label>
-												</Grid>
-												<Grid item xs={6}>
-													<label
-														className={
-															classes.remove
-														}
-														onClick={() =>
-															removePhoto(c.id)
-														}
-													>
-														Remove
-													</label>
-												</Grid>
-											</Grid>
-										) : (
-											<Grid container>
-												<Grid item xs={12}>
-													<label
-														htmlFor={`image-${c.id}`}
-														className={
-															classes.label
-														}
-													>
-														Upload
-													</label>
-												</Grid>
-											</Grid>
-										)}
-									</Grid>
-								))}
-							</Grid>
+							<UploadPhoto
+								photos={photos}
+								setPhotos={setPhotos}
+							/>
 						</Box>
 					</Form>
 				)}

@@ -19,6 +19,7 @@ const RowSelect = ({ formLabel, ...otherProps }) => {
 							classes={{
 								root: classes.root,
 								colorSecondary: classes.colorSecondary,
+								checked: classes.checked,
 							}}
 							size="small"
 							{...field}

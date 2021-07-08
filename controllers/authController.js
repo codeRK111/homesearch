@@ -83,58 +83,89 @@ exports.signIn = catchAsync(async (req, res, next) => {
 	const user = await User.findOne({ number: req.body.number }).select(
 		'+otp +status'
 	);
-	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
-
-	// 2) If token has not expired, and there is user, set the new password
 	if (!user) {
-		const newUser = await User.create({
-			number: req.body.number,
-			role: 'tenant',
-			registerThrough: 'site login',
-			registerVia: req.body.registerVia,
-			mobileStatus: 'semi-private',
-			paymentStatus: 'unpaid',
-			status: 'active',
-			otp: randomNumber,
-			otpExpiresAt: moment().add(2, 'm'),
-		});
-		await sendOtpMessage(req.body.number, randomNumber);
+		return next(
+			new AppError('You are not registered with us, please sign up', 401)
+		);
+	}
+	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+	if (user.status !== 'active') {
+		return next(
+			new AppError(
+				'Your account has been dactivated.Please contact support team : 9090-91-7676',
+				401
+			)
+		);
+	}
+	const updatedUser = await User.findByIdAndUpdate(
+		user.id,
+		{ otp: randomNumber, otpExpiresAt: moment().add(2, 'm') },
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	const otpResponse = await sendOtpMessage(req.body.number, randomNumber);
+	if (otpResponse.data.startsWith('OK')) {
 		res.status(200).json({
 			status: 'success',
 			data: {
-				userId: newUser._id,
+				userId: updatedUser._id,
 			},
 		});
 	} else {
-		if (user.status !== 'active') {
-			return next(
-				new AppError(
-					'Your account has been dactivated.Please contact support team : 9090-91-7676',
-					401
-				)
-			);
-		}
-		const updatedUser = await User.findByIdAndUpdate(
-			user.id,
-			{ otp: randomNumber, otpExpiresAt: moment().add(2, 'm') },
-			{
-				new: true,
-				runValidators: true,
-			}
-		);
-
-		const otpResponse = await sendOtpMessage(req.body.number, randomNumber);
-		if (otpResponse.data.startsWith('OK')) {
-			res.status(200).json({
-				status: 'success',
-				data: {
-					userId: updatedUser._id,
-				},
-			});
-		} else {
-			return next(new AppError('Unable to send otp', 500));
-		}
+		return next(new AppError('Unable to send otp', 500));
 	}
+});
+
+exports.signupByUser = catchAsync(async (req, res, next) => {
+	const numberExists = await User.findOne(
+		{ number: req.body.number },
+		{ _id: 1 }
+	);
+	if (numberExists) {
+		return next(
+			new AppError(
+				'This phone number used by someone else,please use another one',
+				400
+			)
+		);
+	}
+	const emailExists = await User.findOne(
+		{ email: req.body.email },
+		{ _id: 1 }
+	);
+	if (emailExists) {
+		return next(
+			new AppError(
+				'This email used by someone else,please use another one',
+				400
+			)
+		);
+	}
+	let randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+	const newUser = await User.create({
+		number: req.body.number,
+		name: req.body.name,
+		role: req.body.role,
+		email: req.body.email,
+		registerThrough: 'site login',
+		registerVia: req.body.registerVia,
+		mobileStatus: 'semi-private',
+		paymentStatus: 'unpaid',
+		status: 'active',
+		otp: randomNumber,
+		otpExpiresAt: moment().add(2, 'm'),
+	});
+	const test = await sendOtpMessage(req.body.number, randomNumber);
+	console.log(test);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			userId: newUser._id,
+		},
+	});
 });
 
 exports.login = catchAsync(async (req, res, next) => {

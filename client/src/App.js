@@ -14,15 +14,16 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SuspenseLoader from './components/initialLoader/initialLoader.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { fetchUserProfile } from './redux/auth/auth.actions';
 
 // import Protected from './components/protected/protected.component';
 
 // import SpeedDial from './components/speedDial/speedDial.component';
 
 // const BrowsePage = lazy(() => import('./pages/browsePage/browse.page'));
-// const PaymentPage = lazy(() =>
-// 	import('./pages/testPayment/testPayment.component')
-// );
+const PaymentPage = lazy(() =>
+	import('./pages/testPayment/testPayment.component')
+);
 // const DetailsPage = lazy(() =>
 // 	import('./pages/detailsPageNew/detailsPage.component')
 // );
@@ -81,6 +82,7 @@ function App({
 	profileLoading,
 	setSnackbar,
 	snackbarDetails,
+	fetchUser,
 }) {
 	// React.useEffect(() => {
 	// 	if (!authenticated && !profileLoading && !open) {
@@ -98,6 +100,14 @@ function App({
 
 	// 	// I will be deleted while component is unmounting.
 	// }, [authenticated, profileLoading]);
+	React.useEffect(() => {
+		if (!authenticated) {
+			const jwt = localStorage.getItem('JWT_CLIENT');
+			if (jwt) {
+				fetchUser(jwt, console.log);
+			}
+		}
+	}, []);
 
 	const handleClose = () => {
 		console.log('object 2');
@@ -382,13 +392,13 @@ function App({
 							/>
 						)}
 					/> */}
-					{/* <Route
+					<Route
 						exact
 						path="/payment"
 						render={(props) => <PaymentPage {...props} />}
 					/>
 
-					<Route
+					{/*<Route
 						exact
 						path="/profile"
 						render={(props) => (
@@ -480,6 +490,8 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
 	toggleLoginPopup: (status) => dispatch(toggleLoginPopup(status)),
 	setSnackbar: (config) => dispatch(setSnackbar(config)),
+	fetchUser: (token, callback) =>
+		dispatch(fetchUserProfile({ token, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -18,8 +18,8 @@ import useStyles from './postPage.style';
 const PostProperty = () => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
-	const [pFor, setpFor] = React.useState('');
-	const [type, setType] = React.useState('');
+	const [pFor, setpFor] = React.useState('rent');
+	const [type, setType] = React.useState('flat');
 	const [selectedCity, setSelectedCity] = React.useState({
 		id: null,
 		name: null,

@@ -1,10 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const img = require('../../assets/living.jpg');
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
-		width: '60vw',
-		height: '60vh',
+		width: '30vw',
+		// minHeight: '60vh',
+		// height: '100%',
 		boxSizing: 'border-box',
 		background: '#e0e0e0',
 		[theme.breakpoints.down('xs')]: {
@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	bg: {
 		height: '100%',
-		backgroundImage: `url("${img}")`,
 		backgroundRepeat: 'no-repeat',
 		backgroundColor:
 			theme.palette.type === 'light'
@@ -32,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center',
+		padding: '1rem',
+		boxSizing: 'border-box',
 	},
 	content: {
 		marginTop: '1rem',

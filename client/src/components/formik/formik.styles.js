@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 	label: {
-		color: theme.fontColor,
 		fontSize: '0.8rem',
 	},
 	root: {
@@ -11,7 +10,9 @@ const useStyles = makeStyles((theme) => ({
 	checkboxRoot: {
 		padding: 0,
 	},
-	colorSecondary: {},
+	colorSecondary: {
+		color: theme.utilColor,
+	},
 	input: {
 		padding: '1rem',
 		width: '100%',
@@ -23,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
 		'&:focus': {
 			outline: 'none',
 		},
+	},
+	checked: {
+		color: `${theme.utilColor} !important`,
 	},
 }));
 export default useStyles;

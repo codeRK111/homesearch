@@ -60,7 +60,7 @@ export default makeStyles((theme) => ({
 		color: theme.secondaryHeadingColor,
 	},
 	colorWarning: {
-		color: '#FA9B0B',
+		color: 'red',
 	},
 	colorUtil: {
 		color: theme.utilColor,
