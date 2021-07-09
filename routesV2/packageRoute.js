@@ -16,5 +16,12 @@ router
 		UtilityController.addBuilderPackages
 	)
 	.get(UtilityController.getBuilderPackages);
+router
+	.route('/property-package')
+	.post(
+		UtilityValidator.validate('createPropertyPackages'),
+		UtilityController.addPropertyPackages
+	)
+	.get(UtilityController.getPropertyPackages);
 
 module.exports = router;

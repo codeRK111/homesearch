@@ -3,22 +3,22 @@ import {
 	selectKPI,
 	selectKRA,
 	selectLocation,
+	selectPackage,
 	selectProject,
 	selectPropertyRent,
 	selectPropertySale,
-	selectPackage,
 } from '../../redux/sidebar/sidebar.selector';
 import {
 	toggleBuilder,
 	toggleKPI,
 	toggleKRA,
 	toggleLocation,
+	togglePackage,
 	toggleProject,
 	togglePropertyRent,
 	togglePropertySale,
-	togglePackage,
 } from '../../redux/sidebar/sidebar.actions';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+
 import { AccordionDetails } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ApartmentIcon from '@material-ui/icons/Apartment';
@@ -36,6 +36,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import LockIcon from '@material-ui/icons/Lock';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import PhoneIcon from '@material-ui/icons/Phone';
@@ -838,6 +839,16 @@ const MainListItems = ({
 							<LocationCityIcon style={{ color: green[500] }} />
 						</ListItemIcon>
 						<ListItemText primary="Builder Packages" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/property-packages')}
+					>
+						<ListItemIcon>
+							<LocationCityIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Property Packages" />
 					</ListItem>
 				</List>
 			</Collapse>

@@ -3,7 +3,6 @@ import './App.css';
 import { Route, Switch } from 'react-router-dom';
 
 import ActiveProperties from './pages/properties/properties.component';
-import BuilderPackage from './pages/builderPackage/builderPackage.page';
 import AddAdmin from './components/addAdmin/addAdmin.component';
 import AddBuilderPage from './pages/addBuilder/addBuilder.component';
 import AddCityPage from './pages/addCity/addCity.component';
@@ -17,6 +16,7 @@ import AddStaff from './pages/projectAdvertisement/AddStaff.page';
 import AddUser from './components/addUser/addUser.component';
 import AdminPage from './pages/admins/admins.component';
 import Authentication from './pages/authpage/authentication.component';
+import BuilderPackage from './pages/builderPackage/builderPackage.page';
 import BuilderPage from './pages/builders/builders.component';
 import DashboardPage from './pages/dashboard/dashboatd.component';
 import DeleteCityPage from './pages/deleteCity/deleteCity.component';
@@ -46,6 +46,7 @@ import ManageTaskProperty from './pages/manageTaskProperty/manageTask.page';
 import ProjectAdvertisement from './pages/projectAdvertisement/projectAdvertisement.page';
 import ProjectPage from './pages/projects/projects.component';
 import PropertyAdvertisement from './pages/propertyAdvertisement/propertyAdvertisement.page';
+import PropertyPackage from './pages/propertyPackage/propertyPackage.page';
 import PropertySale from './pages/properties/propertiesSale.component';
 import Protected from './components/protected/protected.component';
 import Query from './pages/queries/queries.component';
@@ -65,6 +66,7 @@ import Workspace from './pages/workspace/workspace.page';
 // const HomePageWithDrawer = Drawer(HomePage);
 const ManageTaskPropertyPageWithDrawer = Drawer(ManageTaskProperty);
 const BuilderPackagePageWithDrawer = Drawer(BuilderPackage);
+const PropertyPackagePageWithDrawer = Drawer(PropertyPackage);
 const WhQueriesPageWithDrawer = Drawer(WhQueries);
 const EditPropertyAdvertisementPageWithDrawer = Drawer(
 	EditPropertyAdvertisement
@@ -142,6 +144,16 @@ function App(props) {
 					render={() => (
 						<Protected
 							component={BuilderPackagePageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/property-packages"
+					render={() => (
+						<Protected
+							component={PropertyPackagePageWithDrawer}
 							{...props}
 						/>
 					)}

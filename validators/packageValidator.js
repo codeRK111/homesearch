@@ -10,5 +10,16 @@ exports.validate = (method) => {
 					.withMessage('Invalid price value'),
 				check('packageDetails', 'Package details required'),
 			];
+		case 'createPropertyPackages':
+			return [
+				check('name', 'Property name required').exists(),
+				check('expiresAt', 'Expiry date required')
+					.isDate()
+					.withMessage('Please provide a date'),
+				check('price', 'Price required')
+					.isInt()
+					.withMessage('Invalid price value'),
+				check('packageDetails', 'Package details required'),
+			];
 	}
 };
