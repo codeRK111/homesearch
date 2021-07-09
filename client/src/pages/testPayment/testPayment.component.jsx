@@ -28,9 +28,7 @@ const TestPayment = () => {
 		}
 
 		// creating a new order
-		const result = await axios.post(
-			'http://localhost:5000/api/v1/api-test/payment-test'
-		);
+		const result = await axios.post('/api/v1/api-test/payment-test');
 
 		if (!result) {
 			alert('Server error. Are you online?');
@@ -60,7 +58,7 @@ const TestPayment = () => {
 				};
 
 				const result = await axios.post(
-					'http://localhost:5000/api/v1/api-test/success',
+					'/api/v1/api-test/success',
 					data
 				);
 
