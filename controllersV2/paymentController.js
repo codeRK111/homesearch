@@ -1,21 +1,34 @@
 const Razorpay = require('razorpay');
 const catchAsync = require('./../utils/catchAsync');
 const crypto = require('crypto');
+const { nanoid } = require('nanoid');
 
-exports.createBuilder = catchAsync(async (req, res, next) => {
+exports.createOrder = catchAsync(async (req, res, next) => {
 	try {
+		const key_id =
+			process.env.NODE_ENV === 'development'
+				? process.env.RAZORPAY_KEY_ID
+				: process.env.RAZORPAY_KEY_LIVE_ID;
+		const key_secret =
+			process.env.NODE_ENV === 'development'
+				? process.env.RAZORPAY_KEY_SECRET
+				: process.env.RAZORPAY_KEY_LIVE_SECRET;
 		const instance = new Razorpay({
-			key_id: process.env.RAZORPAY_KEY_ID,
-			key_secret: process.env.RAZORPAY_KEY_SECRET,
+			key_id,
+			key_secret,
 		});
 
 		const options = {
-			amount: 50000, // amount in smallest currency unit
+			amount: 500, // amount in smallest currency unit
 			currency: 'INR',
-			receipt: 'receipt_order_74394',
+			receipt: nanoid(),
 		};
 
 		const order = await instance.orders.create(options);
+		console.log({
+			key_id,
+			key_secret,
+		});
 
 		if (!order) return res.status(500).send('Some error occured');
 
@@ -37,7 +50,11 @@ exports.success = catchAsync(async (req, res, next) => {
 		// Creating our own digest
 		// The format should be like this:
 		// digest = hmac_sha256(orderCreationId + "|" + razorpayPaymentId, secret);
-		const shasum = crypto.createHmac('sha256', 'B7WM6Hj2l7x10pWReep4UVUP');
+		const key_secret =
+			process.env.NODE_ENV === 'development'
+				? process.env.RAZORPAY_KEY_SECRET
+				: process.env.RAZORPAY_KEY_LIVE_SECRET;
+		const shasum = crypto.createHmac('sha256', key_secret);
 		shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
 		const digest = shasum.digest('hex');
 

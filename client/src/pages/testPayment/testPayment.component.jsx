@@ -39,9 +39,13 @@ const TestPayment = () => {
 
 		// Getting the order details back
 		const { amount, id: order_id, currency } = result.data;
+		const rzTestKeyId =
+			process.env.NODE_ENV === 'development'
+				? process.env.REACT_APP_RZ_TEST_ID
+				: process.env.REACT_APP_RZ_LIVE_ID;
 
 		const options = {
-			key: 'rzp_test_KpIXcW7ekqmtMS', // Enter the Key ID generated from the Dashboard
+			key: rzTestKeyId, // Enter the Key ID generated from the Dashboard
 			amount: amount.toString(),
 			currency: currency,
 			name: 'Soumya Corp.',
@@ -81,8 +85,10 @@ const TestPayment = () => {
 	return (
 		<div>
 			<button className="App-link" onClick={displayRazorpay}>
-				Pay ₹500
+				Pay ₹5
 			</button>
+			<h1>{process.env.NODE_ENV}</h1>
+			<h1>{process.env.REACT_APP_RZ_TEST_ID}</h1>
 		</div>
 	);
 };

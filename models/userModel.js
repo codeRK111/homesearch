@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const moment = require('moment');
+
+const { customAlphabet } = require('nanoid');
+
 const { Schema, model } = mongoose;
 const userSchema = new Schema(
 	{
@@ -11,7 +14,15 @@ const userSchema = new Schema(
 			maxlength: [25, 'Max 25 chars allowed'],
 			default: null,
 		},
-		
+		hsID: {
+			type: String,
+			index: {
+				unique: true,
+				partialFilterExpression: { number: { $type: 'string' } },
+			},
+			default: null,
+		},
+
 		number: {
 			type: String,
 			maxlength: [10, 'Max 10 chars allowed'],
@@ -24,7 +35,7 @@ const userSchema = new Schema(
 		},
 		email: {
 			type: String,
-			
+
 			lowercase: true,
 			index: {
 				unique: true,
@@ -32,17 +43,17 @@ const userSchema = new Schema(
 			},
 			default: null,
 		},
-		
+
 		city: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'City',
-			default: null
+			default: null,
 		},
 		photo: {
 			type: String,
 			default: null,
 		},
-		
+
 		gender: {
 			type: String,
 			enum: {
@@ -92,7 +103,7 @@ const userSchema = new Schema(
 		registerThrough: {
 			type: String,
 			enum: {
-				values: [ 'site login', 'admin', 'staff'],
+				values: ['site login', 'admin', 'staff'],
 				message:
 					'registerThrough must be between <site login> | <admin> | <staff>',
 			},
@@ -109,9 +120,8 @@ const userSchema = new Schema(
 		registerVia: {
 			type: String,
 			enum: {
-				values: [ 'web', 'app'],
-				message:
-					'registerVia must be between <web> | <app> ',
+				values: ['web', 'app'],
+				message: 'registerVia must be between <web> | <app> ',
 			},
 			required: true,
 		},
@@ -149,13 +159,7 @@ userSchema.pre(/^find/, function (next) {
 
 // DOCUMENT MIDDLEWARE
 
-
-
-
-
-
 // INSTANCE METHODS
-
 
 userSchema.methods.correctOtp = function (otp) {
 	return String(otp) === this.otp;
@@ -166,8 +170,10 @@ userSchema.methods.otpExpired = function () {
 	return moment().isSameOrAfter(this.otpExpiresAt);
 };
 
-
-
+userSchema.pre('save', function (next) {
+	this.hsID = 'HS' + customAlphabet('1234567890abcdef', 8)();
+	next();
+});
 
 const UserModel = model('User', userSchema);
 module.exports = UserModel;
