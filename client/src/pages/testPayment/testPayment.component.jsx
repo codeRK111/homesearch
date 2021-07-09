@@ -78,7 +78,7 @@ const TestPayment = () => {
 		};
 
 		const paymentObject = new window.Razorpay(options);
-		paymentObject.open();
+		// paymentObject.open();
 	}
 	return (
 		<div>
