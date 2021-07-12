@@ -71,6 +71,7 @@ const PropertyCard = ({ property, edit = false }) => {
 								<Link
 									to={`/v2/property-details/${property.id}`}
 									className={classes.link}
+									target="_blank"
 								>
 									{property.title}
 								</Link>
