@@ -114,14 +114,7 @@ const PropertyCard = ({ property, edit = false }) => {
 							</span>
 						</div>
 						<div>
-							<h2>
-								<Link
-									to={`/v2/property-details/${property.id}`}
-									className={classes.link}
-								>
-									{property.title}
-								</Link>
-							</h2>
+							<h2>{property.title}</h2>
 							<span
 								className={clsx(
 									classes.smallText,

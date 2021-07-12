@@ -1,25 +1,30 @@
-import { Box, Grid, Typography } from '@material-ui/core';
-import { Link, Switch } from 'react-router-dom';
+import { Box, Typography } from '@material-ui/core';
 
+import ChoosePlan from '../../../components/v2/propertyPlans/choosePlan.component';
 import CitySearch from '../../../components/v2/cityDropDown';
 import FurnishHOC from '../../../components/furnishes/hoc';
 import LocationSearch from '../../../components/v2/locationDropDown';
 import Nav from '../../../components/v2/pageNav/nav.component';
-import PlanWrapper from '../../../components/v2/amenity/amenity.component';
 import React from 'react';
 import RentApartment from './rent/apartment.component';
 import RentHostel from './rent/hostel.component';
 import SaleApartment from './sale/apartment.component';
+import SaleLand from './sale/land.component';
 import Select from '../../../components/v2/chipSelect/chipSelected.component';
 import clsx from 'clsx';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectAuthenticated } from '../../../redux/auth/auth.selectors';
+import { toggleLoginPopup } from '../../../redux/ui/ui.actions';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './postPage.style';
 
-const PostProperty = () => {
+const PostProperty = ({ isAuthenticated, toggleLoginPopup }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
-	const [pFor, setpFor] = React.useState('rent');
-	const [type, setType] = React.useState('flat');
+	const [pFor, setpFor] = React.useState('');
+	const [openPlan, setOpenPlan] = React.useState(false);
+	const [type, setType] = React.useState('');
 	const [selectedCity, setSelectedCity] = React.useState({
 		id: null,
 		name: null,
@@ -29,11 +34,24 @@ const PostProperty = () => {
 		name: null,
 	});
 
+	const togglePlanPopUp = (status) => () => {
+		setOpenPlan(status);
+	};
+
 	const handlePFor = (type) => () => {
 		setpFor(type);
 	};
 	const handleType = (pType) => () => {
 		setType(pType);
+	};
+	const onPost = () => {
+		if (pFor && type) {
+			if (isAuthenticated) {
+				togglePlanPopUp(true)();
+			} else {
+				toggleLoginPopup(true);
+			}
+		}
 	};
 
 	const renderTypes = () => {
@@ -90,6 +108,8 @@ const PostProperty = () => {
 			case 'flat':
 			case 'independenthouse':
 				return <FurnishHOC component={SaleApartment} pType={type} />;
+			case 'land':
+				return <SaleLand pType={type} />;
 
 			default:
 				break;
@@ -110,6 +130,7 @@ const PostProperty = () => {
 	return (
 		<div>
 			<Nav />
+			<ChoosePlan open={openPlan} handleClose={togglePlanPopUp(false)} />
 			<Box className={classes.wrapper}>
 				<Typography>Home/Post Property</Typography>
 
@@ -207,138 +228,9 @@ const PostProperty = () => {
 					{/* Availability  */}
 
 					{/* User Role  */}
-					<Box mt="3rem">
-						<Typography variant="h5" gutterBottom align="center">
-							Your Details
-						</Typography>
-						<Typography gutterBottom align="center">
-							You are
-						</Typography>
-						<Box
-							mt="1rem"
-							className={clsx(
-								classes.alignCenter,
-								gClasses.smFlexWrap
-							)}
-						>
-							<Box className={classes.selectChip}>
-								<Select>Owner</Select>
-							</Box>
 
-							<Box className={classes.selectChip}>
-								<Select>Agent</Select>
-							</Box>
-							<Box className={classes.selectChip}>
-								<Select>Builder</Select>
-							</Box>
-						</Box>
-					</Box>
-					{/* User Details  */}
-					<Box mt="3rem" className={classes.userFormWrapper}>
-						<Box mt="1.5rem" mb="1.5rem">
-							<input
-								type="text"
-								placeholder="Full Name"
-								className={clsx(
-									classes.input,
-									classes.widthFull
-								)}
-							/>
-						</Box>
-						<Box mt="1.5rem" mb="1.5rem">
-							<input
-								type="text"
-								placeholder="Email"
-								className={clsx(
-									classes.input,
-									classes.widthFull
-								)}
-							/>
-						</Box>
-						<Box mt="1.5rem" mb="1.5rem">
-							<input
-								type="text"
-								placeholder="Phone Number"
-								className={clsx(
-									classes.input,
-									classes.widthFull
-								)}
-							/>
-						</Box>
-						<Box mt="1.5rem" mb="1.5rem">
-							<Typography
-								variant="caption"
-								align="center"
-								display="block"
-							>
-								OTP will be sent to your mobile number
-							</Typography>
-						</Box>
-					</Box>
-					{/* Plans  */}
-					<Box mt="2rem" className={classes.rowWrapper}>
-						<Grid container spacing={3}>
-							<Grid
-								item
-								xs={12}
-								md={4}
-								className={gClasses.justifyCenter}
-							>
-								<PlanWrapper text=" Free Campaign" />
-							</Grid>
-							<Grid
-								item
-								xs={12}
-								md={4}
-								className={gClasses.justifyCenter}
-							>
-								<PlanWrapper text=" Paid Campaign" />
-							</Grid>
-							<Grid
-								item
-								xs={12}
-								md={4}
-								className={gClasses.justifyCenter}
-							>
-								<Link
-									className={clsx(
-										gClasses.colorLink,
-										gClasses.bold
-									)}
-								>
-									See Our Plans
-								</Link>
-							</Grid>
-						</Grid>
-					</Box>
-					<Box mt="3rem">
-						<Typography
-							display="block"
-							align="center"
-							className={gClasses.bold}
-						>
-							By proceeding you agree to our{' '}
-							<Link
-								className={clsx(
-									gClasses.colorLink,
-									gClasses.bold
-								)}
-							>
-								Terms of use
-							</Link>{' '}
-							&{' '}
-							<Link
-								className={clsx(
-									gClasses.colorLink,
-									gClasses.bold
-								)}
-							>
-								Privacy Policy
-							</Link>
-						</Typography>
-					</Box>
 					<Box mt="3rem" className={gClasses.justifyCenter}>
-						<button className={classes.postButton}>
+						<button className={classes.postButton} onClick={onPost}>
 							Post Ad Now
 						</button>
 					</Box>
@@ -348,4 +240,12 @@ const PostProperty = () => {
 	);
 };
 
-export default PostProperty;
+const mapStateToProps = createStructuredSelector({
+	isAuthenticated: selectAuthenticated,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	toggleLoginPopup: (status) => dispatch(toggleLoginPopup(status)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostProperty);

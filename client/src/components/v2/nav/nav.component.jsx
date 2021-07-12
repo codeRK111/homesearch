@@ -1,6 +1,5 @@
-import { AppBar, Box } from '@material-ui/core';
+import { AppBar, Box, Menu, MenuItem } from '@material-ui/core';
 
-import Hamburger from '../hamburger/hamburger.component';
 import React from 'react';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
@@ -8,21 +7,36 @@ import { createStructuredSelector } from 'reselect';
 import logoIcon from '../../../assets/icons/logo.svg';
 import profile from '../../../assets/icons/profile.png';
 import { selectAuthenticated } from '../../../redux/auth/auth.selectors';
+import { signOut } from '../../../redux/auth/auth.actions';
 import { toggleLoginPopup } from '../../../redux/ui/ui.actions';
 import useGlovalStyles from '../../../common.style';
 import { useHistory } from 'react-router-dom';
 import useStyles from './nav.style';
 
-const NavBar = ({ isAuthenticated, toggleLoginPopup }) => {
+const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut }) => {
 	const classes = useStyles();
 	const gClasses = useGlovalStyles();
 	const history = useHistory();
+	const [anchorEl, setAnchorEl] = React.useState(null);
+
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
 	const redirectToLogIn = (_) => {
 		toggleLoginPopup(true);
 	};
 
 	const redirectToPostPage = () => {
 		history.push('/v2/post-property');
+	};
+
+	const onLogOut = () => {
+		signOut();
+		handleClose();
 	};
 
 	return (
@@ -43,23 +57,47 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup }) => {
 					</div>
 
 					{!!isAuthenticated ? (
-						<>
-							<div
+						<div>
+							<Box
 								className={clsx(
 									classes.profileWrapper,
 									gClasses.smHide
 								)}
+								aria-controls="customized-menu"
+								aria-haspopup="true"
+								onClick={handleClick}
 							>
 								<img
 									src={profile}
 									alt="Profile"
 									className={gClasses.smHide}
 								/>
-							</div>
-							{/* <Box className={classes.profileWrapper}>
-								<Hamburger />
-							</Box> */}
-						</>
+							</Box>
+							<Menu
+								id="customized-menu"
+								getContentAnchorEl={null}
+								anchorEl={anchorEl}
+								keepMounted
+								open={Boolean(anchorEl)}
+								onClose={handleClose}
+								anchorOrigin={{
+									vertical: 'bottom',
+									horizontal: 'center',
+								}}
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'center',
+								}}
+							>
+								<MenuItem onClick={handleClose} disabled>
+									Profile
+								</MenuItem>
+								<MenuItem onClick={handleClose} disabled>
+									My account
+								</MenuItem>
+								<MenuItem onClick={onLogOut}>Logout</MenuItem>
+							</Menu>
+						</div>
 					) : (
 						<Box ml="1rem">
 							<div
@@ -85,6 +123,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
 	toggleLoginPopup: (status) => dispatch(toggleLoginPopup(status)),
+	signOut: () => dispatch(signOut()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

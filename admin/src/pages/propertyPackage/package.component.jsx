@@ -9,11 +9,14 @@ import EditIcon from '@material-ui/icons/Edit';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import PackageEdit from './updatePackage.component';
 import React from 'react';
 import StarIcon from '@material-ui/icons/Star';
 import { Switch } from '@material-ui/core';
+import { apiUrl } from '../../utils/render.utils';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import noImage from '../../assets/no-image.jpg';
+import moment from 'moment';
 import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,16 +56,74 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function RecipeReviewCard({ propertyPackage }) {
+export default function RecipeReviewCard({ propertyPackage, fetchPackages }) {
+	let cancelToken = React.useRef();
 	const classes = useStyles();
-	const [expanded, setExpanded] = React.useState(false);
+	const [editOpen, setEditOpen] = React.useState(false);
+	const [status, setStatus] = React.useState(
+		propertyPackage.status === 'active' ? true : false
+	);
+	// Async State
+	const [asyncState, setAsyncState] = React.useState({
+		loading: false,
+		error: null,
+	});
+	const handleClickOpen = () => {
+		setEditOpen(true);
+	};
+	const handleClose = () => {
+		setEditOpen(false);
+	};
 
-	const handleExpandClick = () => {
-		setExpanded(!expanded);
+	const changeStatus = async (value) => {
+		try {
+			setAsyncState({
+				error: null,
+				loading: true,
+			});
+			cancelToken.current = axios.CancelToken.source();
+			const jwt = localStorage.getItem('JWT');
+			await axios.patch(
+				apiUrl(
+					`/utility/property-package/${propertyPackage._id}`,
+					'v2'
+				),
+				{
+					status: value ? 'active' : 'inactive',
+				},
+				{
+					cancelToken: cancelToken.current.token,
+					headers: {
+						Authorization: `Bearer ${jwt}`,
+					},
+				}
+			);
+
+			setAsyncState({
+				error: null,
+				loading: false,
+			});
+		} catch (error) {
+			setAsyncState({
+				error: error.response.data.message,
+				loading: false,
+			});
+		}
+	};
+
+	const handleStatus = (event) => {
+		setStatus(event.target.checked);
+		changeStatus(event.target.checked);
 	};
 
 	return (
-		<Card className={classes.root}>
+		<Card className={classes.root} elevation={5}>
+			<PackageEdit
+				open={editOpen}
+				handleClose={handleClose}
+				propertyPackage={propertyPackage}
+				fetchPackages={fetchPackages}
+			/>
 			<CardHeader
 				avatar={
 					<Avatar aria-label="recipe" className={classes.avatar}>
@@ -72,19 +133,30 @@ export default function RecipeReviewCard({ propertyPackage }) {
 				action={
 					<Switch
 						color="primary"
-						checked={
-							propertyPackage.status === 'active' ? true : 'false'
-						}
+						onChange={handleStatus}
+						checked={status}
 					/>
 				}
 				title={propertyPackage.name}
-				subheader={propertyPackage.price}
+				subheader={`₹${propertyPackage.price}`}
 			/>
 
 			<CardContent>
-				<Typography align="center" variant="h6">
-					Package Details
-				</Typography>
+				<Box display="flex" justifyContent="center" mb="0.5rem">
+					<Typography align="center" variant="caption">
+						Expiry Date
+					</Typography>
+				</Box>
+				<Box mb="0.5rem">
+					<Typography align="center" variant="h6">
+						{moment(propertyPackage.expiresAt).format('DD-MM-YYYY')}
+					</Typography>
+				</Box>
+				<Box display="flex" justifyContent="center" mb="0.5rem">
+					<Typography align="center" variant="caption">
+						Package Details
+					</Typography>
+				</Box>
 				<List disablePadding>
 					{propertyPackage.packageDetails.map((c, i) => (
 						<ListItem key={i} dense={true}>
@@ -111,6 +183,7 @@ export default function RecipeReviewCard({ propertyPackage }) {
 							size="small"
 							color="primary"
 							variant="contained"
+							onClick={handleClickOpen}
 						>
 							Update
 						</Button>

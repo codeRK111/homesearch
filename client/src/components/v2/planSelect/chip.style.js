@@ -2,18 +2,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
-		display: 'flex',
-		justifyContent: 'center',
-		minWidth: '75px',
-		borderRadius: '20px',
 		background: theme.shadowColor,
+		position: 'relative',
+		width: '100%',
+		borderRadius: '20px',
 		boxShadow: '10px 10px 20px #acacac,-10px -10px 20px #ffffff',
-		padding: '0.6rem',
+		padding: '1rem',
 		cursor: 'pointer',
-		fontSize: '0.8rem',
-		'&>span': {
-			fontWeight: '600',
-		},
+		boxSizing: 'border-box',
+
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '0.7rem',
 			minWidth: '50px',
@@ -43,7 +40,45 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	selected: {
-		background: theme.utilColor,
+		border: `4px solid ${theme.utilColor}`,
+		// background: theme.utilColor,
+	},
+	containerWrapper: {
+		/* Displayed at the top left corner */
+		right: '0px',
+		position: 'absolute',
+		top: '0px',
+
+		/* Size */
+		height: '100px',
+		width: '100px',
+
+		/* Hide the part of its children which is displayed outside */
+		overflow: 'hidden',
+	},
+
+	containerRibbon: {
+		/* Position */
+		right: '-72px',
+		position: 'absolute',
+		top: '25px',
+
+		/* Size */
+		height: '24px',
+		width: '206px',
+
+		/* Displayed diagonally */
+		transform: 'rotate(45deg)',
+
+		/* Background color */
+		backgroundColor: theme.utilColor,
+
+		/* Centerize the text content */
+		textAlign: 'center',
+		fontSize: '0.8rem',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 }));
 export default useStyles;

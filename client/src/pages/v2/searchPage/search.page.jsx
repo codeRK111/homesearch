@@ -1,15 +1,17 @@
-import { Box, Grid, Paper, Typography } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
+import {
+	setCurrentTab,
+	setSelectedCity,
+} from '../../../redux/actionTab/actionTab.actions';
 
 import ErrorCard from '../../../components/errorCard/errorCard.component';
 import Filter from './filter.component';
 import Nav from '../../../components/v2/pageNav/nav.component';
-import Pagination from '@material-ui/lab/Pagination';
 import React from 'react';
 import SearchCardProjectFlat from '../../../components/v2/searchCard2/project/flat.component';
 import SearchCardRentFlat from '../../../components/v2/searchCard2/rent/flat.component';
 import SearchCardRentHostel from '../../../components/v2/searchCard2/rent/hostel.component';
 import SearchCardSaleFlat from '../../../components/v2/searchCard2/sale/flat.component';
-import SearchCardSaleIndependent from '../../../components/v2/searchCard2/sale/independent.component';
 import SearchCardSaleLand from '../../../components/v2/searchCard2/sale/land.component';
 import Skeleton from '../../../components/searchCardSkeleton/searchCardSkeleton.component';
 import { capitalizeFirstLetter } from '../../../utils/render.utils';
@@ -24,13 +26,18 @@ import useGlobalStyles from '../../../common.style';
 import { useHistory } from 'react-router-dom';
 import useStyles from './searchPage.style';
 
-const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
+const SearchPage = ({
+	propertyLoading,
+	searchProperties,
+	setCurrentTab,
+	setSelectedCity,
+	...props
+}) => {
 	const classes = useStyles();
 
-	const history = useHistory();
 	const globalClasses = useGlobalStyles();
 	const [asyncError, setAsyncError] = React.useState(null);
-	const [totalDos, setTotalDocs] = React.useState(0);
+	// const [totalDos, setTotalDocs] = React.useState(0);
 	const [page, setPage] = React.useState(1);
 	const [data, setData] = React.useState([]);
 	const [showNoResults, setShowNoResults] = React.useState(false);
@@ -88,7 +95,7 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 				setShowNoResults(false);
 			}
 			setData(data.properties);
-			setTotalDocs(data.count);
+			// setTotalDocs(data.count);
 			setPropertyItems(data.propertyItems);
 		} else {
 			setAsyncError(data);
@@ -167,6 +174,11 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 
 	React.useEffect(() => {
 		setPFor(parsed.f);
+		setCurrentTab(parsed.f);
+		setSelectedCity({
+			id: parsed.c,
+			name: parsed.cn,
+		});
 		const body = {
 			for: parsed.f,
 			city: parsed.c,
@@ -178,17 +190,36 @@ const SearchPage = ({ propertyLoading, searchProperties, ...props }) => {
 		if (locations.length > 0) {
 			body.locations = locations;
 		}
+
 		handleCity({
 			id: parsed.c,
 			name: parsed.cn,
 		});
+		let budgetList;
+		if (parsed.f === 'rent') {
+			budgetList = rentItems.filter((c) => c.checked).map((b) => b.val);
+		} else {
+			budgetList = otherItems.filter((c) => c.checked).map((b) => b.val);
+		}
+		if (budgetList.length > 0) {
+			body.budgetList = budgetList;
+		}
 
 		searchProperties(handleFetchCities, body);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchProperties, page, props.location.search, locations, type.length]);
+	}, [
+		searchProperties,
+		page,
+		props.location.search,
+		locations,
+		type.length,
+		rentItems,
+		otherItems,
+	]);
 	return (
 		<div>
 			<Nav />
+
 			<div className={classes.wrapper}>
 				<Box mb="1rem">
 					<Filter
@@ -280,6 +311,8 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
 	searchProperties: (callback, body) =>
 		dispatch(searchProperties({ callback, body })),
+	setCurrentTab: (tab) => dispatch(setCurrentTab(tab)),
+	setSelectedCity: (tab) => dispatch(setSelectedCity(tab)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);

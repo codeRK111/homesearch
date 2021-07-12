@@ -72,6 +72,7 @@ const BuilderPackage = () => {
 				data={packages}
 				error={asyncState.error}
 				loading={asyncState.loading}
+				fetchPackages={fetchPackages}
 			/>
 		</Box>
 	);

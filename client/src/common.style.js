@@ -130,4 +130,7 @@ export default makeStyles((theme) => ({
 	pointer: {
 		cursor: 'pointer',
 	},
+	noTransfrom: {
+		textTransform: 'none',
+	},
 }));

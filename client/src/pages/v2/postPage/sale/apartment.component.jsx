@@ -1,5 +1,5 @@
 import { Box, Grid, IconButton, Typography } from '@material-ui/core';
-import { Form, Formik } from 'formik';
+import { FieldArray, Form, Formik } from 'formik';
 import {
 	validateLength,
 	validateNumber,
@@ -16,6 +16,7 @@ import TextArea from '../../../../components/formik/textArea.component';
 import TextField from '../../../../components/formik/textFieldDefault.component';
 import TodayIcon from '@material-ui/icons/Today';
 import clsx from 'clsx';
+import { renderByPropertyFor } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
 
@@ -72,7 +73,6 @@ const initialValues = {
 	numberOfBedRooms: 0,
 	numberOfBalconies: 1,
 	noOfFloors: 1,
-	floor: 1,
 	typeOfToilets: '',
 	toiletIndian: 1,
 	toiletWestern: 1,
@@ -94,7 +94,6 @@ const initialValues = {
 	location: '',
 	carParking: 'open',
 	title: '',
-	landArea: '',
 	propertyOwnerShip: '',
 	salePriceOver: '',
 	legalClearance: legalClearance,
@@ -141,32 +140,39 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 		if (!validateNumber(values.numberOfBedRooms)) {
 			error.numberOfBedRooms = 'Please enter a number';
 		}
-		if (!validateNumber(values.noOfFloors)) {
-			error.noOfFloors = 'Please enter a number';
+
+		return error;
+	};
+
+	const renderPropertyOnFoor = (totalFloors) => {
+		const numbers = [
+			{
+				value: 'Ground Fooor',
+				label: 'Ground Fooor',
+			},
+		];
+		for (let index = 1; index < totalFloors; index++) {
+			numbers.push({
+				value: `${index}`,
+				label: `${index}`,
+			});
 		}
 
-		if (pType === 'flat' && Number(values.noOfFloors) > 99) {
-			error.noOfFloors = "Can't be greater than 99";
+		if (totalFloors > 1) {
+			numbers.push({
+				value: 'Entire Building',
+				label: 'Entire Building',
+			});
 		}
-		if (pType === 'independenthouse' && Number(values.noOfFloors) > 4) {
-			error.noOfFloors = "Can't be greater than 4";
-		}
-		if (pType === 'flat' && !validateNumber(values.floor)) {
-			error.floor = 'Please enter a number';
-		}
-		if (
-			pType === 'flat' &&
-			Number(values.noOfFloors) < Number(values.floor)
-		) {
-			error.floor =
-				'Property on floor cannot be greater than total floors';
-		}
-		return error;
+		return numbers;
 	};
 	return (
 		<Box width="100%">
 			<Formik
-				initialValues={initialValues}
+				initialValues={{
+					...initialValues,
+					floor: pType === 'flat' ? 'Ground Floor' : '',
+				}}
 				validate={validateForm}
 				enableReinitialize
 			>
@@ -185,7 +191,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								/>
 							</Box>
 							<Box className={classes.columnWrapper}>
-								<span>Totla Floors</span>
+								<span>Total Floors</span>
 								<TextField
 									name="noOfFloors"
 									className={clsx(
@@ -194,16 +200,21 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 									)}
 								/>
 							</Box>
-							<Box className={classes.columnWrapper}>
-								<span>Property On Floor</span>
-								<TextField
-									name="floor"
-									className={clsx(
-										classes.input,
-										classes.widthSM
-									)}
-								/>
-							</Box>
+							{pType === 'flat' && (
+								<Box className={classes.columnWrapper}>
+									<span>Property on floor</span>
+									<DropDown
+										options={renderPropertyOnFoor(
+											values.noOfFloors
+										)}
+										onSet={(val) => {
+											setFieldValue('floor', val);
+										}}
+										value={values.floor}
+										placeholder="0"
+									/>
+								</Box>
+							)}
 						</Box>
 						{/* Unit Type  */}
 						<Box mt="2rem" className={classes.contentWrapper}>
@@ -319,16 +330,6 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 									</div>
 								</Box>
 							</Box>
-							<Box className={classes.columnWrapper2}>
-								<span>Security Deposit</span>
-								<TextField
-									name="securityDeposit"
-									className={clsx(
-										classes.input,
-										classes.widthSM
-									)}
-								/>
-							</Box>
 
 							<Box className={classes.columnWrapper2}>
 								<span>Built up area</span>
@@ -346,19 +347,6 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 
 							<Box className={classes.columnWrapper2}>
 								<span>Carpet Area</span>
-								<Box display="flex" alignItems="center">
-									<TextField
-										name="landArea"
-										className={clsx(
-											classes.input,
-											classes.widthSM
-										)}
-									/>
-									<Typography>Sq.ft</Typography>
-								</Box>
-							</Box>
-							<Box className={classes.columnWrapper2}>
-								<span>Land Area</span>
 								<Box display="flex" alignItems="center">
 									<TextField
 										name="carpetArea"
@@ -486,6 +474,55 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								))}
 							</Grid>
 						</Box>
+						<Box mt="2rem">
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Legal Clearance
+							</Typography>
+							<Grid container spacing={0}>
+								<FieldArray name="legalClearance">
+									{(arrayHelpers) => (
+										<Grid container>
+											{values.legalClearance.map(
+												(c, i) => {
+													return (
+														<Grid item lg={3}>
+															<CheckBox
+																key={i}
+																heading="test"
+																name={`legalClearance.${i}.value`}
+																formLabel={
+																	c.label
+																}
+															/>
+														</Grid>
+													);
+												}
+											)}
+										</Grid>
+									)}
+								</FieldArray>
+							</Grid>
+						</Box>
+						{values.legalClearance.find(
+							(c) => c.name === 'reraapproved'
+						)['value'] && (
+							<Box className={classes.rowWrapper2} mt="2rem">
+								<Box className={classes.columnWrapper}>
+									<span>Rera Id</span>
+									<TextField
+										name="reraapproveId"
+										className={clsx(
+											classes.input,
+											classes.widthLG
+										)}
+									/>
+								</Box>
+							</Box>
+						)}
 
 						<Box mt="2rem">
 							<Box className={classes.rowWrapper2}>

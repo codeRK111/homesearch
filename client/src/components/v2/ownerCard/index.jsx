@@ -36,24 +36,28 @@ const OwnerCard = ({
 	});
 
 	const onCallClick = () => {
-		if (isAuthenticated) {
+		if (!isAuthenticated) {
 			toggleLoginPopup(true);
 		} else {
-			if (user.mobileStatus === 'public') {
-				setNumberInfo({
-					display: true,
-					number: owner.number,
-				});
-			} else {
-				setNumberInfo({
-					display: true,
-					number: 'Number is private',
-				});
-			}
+			// if (user.mobileStatus === 'public') {
+			// 	setNumberInfo({
+			// 		display: true,
+			// 		number: owner.number,
+			// 	});
+			// } else {
+			// 	setNumberInfo({
+			// 		display: true,
+			// 		number: 'Number is private',
+			// 	});
+			// }
+			setNumberInfo({
+				display: true,
+				number: owner.number,
+			});
 		}
 	};
 	const onEmailClick = () => {
-		if (isAuthenticated) {
+		if (!isAuthenticated) {
 			toggleLoginPopup(true);
 		} else {
 			setEmailInfo({
@@ -64,7 +68,7 @@ const OwnerCard = ({
 	};
 
 	const onWhatsppClick = () => {
-		if (isAuthenticated) {
+		if (!isAuthenticated) {
 			toggleLoginPopup(true);
 		} else {
 			const text = `Hello, I am a homesearch user and I am interested for ${property.title}`;

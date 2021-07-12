@@ -14,7 +14,7 @@ exports.validate = (method) => {
 			return [
 				check('name', 'Property name required').exists(),
 				check('expiresAt', 'Expiry date required')
-					.isDate()
+					.isInt()
 					.withMessage('Please provide a date'),
 				check('price', 'Price required')
 					.isInt()

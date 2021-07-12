@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, Typography } from '@material-ui/core';
+import { Avatar, Box, Grid, Tooltip, Typography } from '@material-ui/core';
 import {
 	FacebookShareButton,
 	LinkedinShareButton,
@@ -576,30 +576,40 @@ const SearchPage = ({
 											/>
 										</LightTooltip>
 									</div>
-									<div
-										className={globalClasses.justifyCenter}
-									>
-										<WhatsappShareButton
-											url="https://homesearch18.com/#/"
-											title="Homesearch18"
-											separator=":: "
+									<Tooltip title="Share on whatsapp">
+										<div
+											className={
+												globalClasses.justifyCenter
+											}
+										>
+											<WhatsappShareButton
+												url="https://homesearch18.com/#/"
+												title="Homesearch18"
+												separator=":: "
+											>
+												<img
+													src={whatsappIcon}
+													alt="WhatsApp"
+													className={
+														classes.utilsIcon
+													}
+												/>
+											</WhatsappShareButton>
+										</div>
+									</Tooltip>
+									<Tooltip title="Save Property">
+										<div
+											className={
+												globalClasses.justifyCenter
+											}
 										>
 											<img
-												src={whatsappIcon}
-												alt="WhatsApp"
+												src={bookmarkIcon}
+												alt="BookMark"
 												className={classes.utilsIcon}
 											/>
-										</WhatsappShareButton>
-									</div>
-									<div
-										className={globalClasses.justifyCenter}
-									>
-										<img
-											src={bookmarkIcon}
-											alt="BookMark"
-											className={classes.utilsIcon}
-										/>
-									</div>
+										</div>
+									</Tooltip>
 								</div>
 								<Box mt="3rem">
 									<input

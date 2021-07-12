@@ -1,4 +1,12 @@
 import { Box, CircularProgress, Menu, Typography } from '@material-ui/core';
+import {
+	selectCurrentTab,
+	selectSelectedCity,
+} from '../../../redux/actionTab/actionTab.selectors';
+import {
+	setCurrentTab,
+	setSelectedCity,
+} from '../../../redux/actionTab/actionTab.actions';
 
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import React from 'react';
@@ -41,14 +49,20 @@ const StyledMenu = withStyles({
 	/>
 ));
 
-const HeroArea = ({ searchCityLoading, searchCities, setCity }) => {
+const HeroArea = ({
+	searchCityLoading,
+	searchCities,
+	currentTab,
+	selectedCity,
+	setCurrentTab,
+	setSelectedCity,
+}) => {
 	const history = useHistory();
 	const menuParrent = React.useRef(null);
 	const input = React.useRef(null);
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
-	const [selectedCity, setSelectedCity] = React.useState('');
 	const [assetType, setAssetType] = React.useState('project');
 	const [cities, setCities] = React.useState([]);
 	const [userTypedCity, setUserTypedCity] = React.useState('');
@@ -93,11 +107,14 @@ const HeroArea = ({ searchCityLoading, searchCities, setCity }) => {
 	};
 
 	const handleAssetType = (asset) => (e) => {
-		setAssetType(asset);
+		setCurrentTab(asset);
 	};
 
 	const clearSelectedCity = () => {
-		setSelectedCity(null);
+		setSelectedCity({
+			id: null,
+			name: null,
+		});
 		setUserTypedCity('');
 	};
 
@@ -107,7 +124,7 @@ const HeroArea = ({ searchCityLoading, searchCities, setCity }) => {
 			city: selectedCity.id,
 			cityName: selectedCity.name,
 		};
-		let link = `/v2/search?f=${assetType}&c=${
+		let link = `/v2/search?f=${currentTab}&c=${
 			data.city
 		}&cn=${encodeURIComponent(data.cityName)}`;
 		history.push(link);
@@ -122,7 +139,7 @@ const HeroArea = ({ searchCityLoading, searchCities, setCity }) => {
 							className={clsx(
 								classes.tabText,
 								classes.mr,
-								assetType === 'project' && classes.selected
+								currentTab === 'project' && classes.selected
 							)}
 							onClick={handleAssetType('project')}
 						>
@@ -132,7 +149,7 @@ const HeroArea = ({ searchCityLoading, searchCities, setCity }) => {
 							className={clsx(
 								classes.tabText,
 								classes.mr,
-								assetType === 'sale' && classes.selected
+								currentTab === 'sale' && classes.selected
 							)}
 							onClick={handleAssetType('sale')}
 						>
@@ -141,7 +158,7 @@ const HeroArea = ({ searchCityLoading, searchCities, setCity }) => {
 						<span
 							className={clsx(
 								classes.tabText,
-								assetType === 'rent' && classes.selected
+								currentTab === 'rent' && classes.selected
 							)}
 							onClick={handleAssetType('rent')}
 						>
@@ -153,7 +170,7 @@ const HeroArea = ({ searchCityLoading, searchCities, setCity }) => {
 						// onClick={handleClick}
 						ref={menuParrent}
 					>
-						{selectedCity ? (
+						{selectedCity.id ? (
 							<div className={classes.selectedLocation}>
 								<span>{selectedCity.name}</span>
 								<Box ml="1rem" onClick={clearSelectedCity}>
@@ -283,11 +300,15 @@ const HeroArea = ({ searchCityLoading, searchCities, setCity }) => {
 
 const mapStateToProps = createStructuredSelector({
 	searchCityLoading: selectSearchCityLoading,
+	currentTab: selectCurrentTab,
+	selectedCity: selectSelectedCity,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	searchCities: (callback, name) =>
 		dispatch(searchCities({ name, callback })),
+	setCurrentTab: (tab) => dispatch(setCurrentTab(tab)),
+	setSelectedCity: (tab) => dispatch(setSelectedCity(tab)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeroArea);

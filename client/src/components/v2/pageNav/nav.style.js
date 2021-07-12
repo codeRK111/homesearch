@@ -65,6 +65,26 @@ const useStyles = makeStyles((theme) => ({
 		boxShadow: 'inset 7px 7px 14px #bababa,inset -7px -7px 14px #ffffff',
 		display: 'flex',
 		alignItems: 'center',
+		'&>input': {
+			border: 'none',
+			width: '100%',
+			background: 'transparent',
+
+			'&:focus': {
+				outline: 'none',
+			},
+			'&::placeholder': {
+				color: theme.primaryHeadingColor,
+				fontWeight: 700,
+				[theme.breakpoints.down('sm')]: {
+					fontSize: '0.6rem',
+				},
+			},
+		},
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
+			padding: '1rem',
+		},
 	},
 	selectedLocation: {
 		padding: '0.5rem 1rem',
@@ -87,8 +107,42 @@ const useStyles = makeStyles((theme) => ({
 			width: 25,
 		},
 	},
+
+	selected: {
+		color: theme.secondaryHeadingColor,
+	},
+	cityWrapper: {
+		display: 'flex',
+		alignItems: 'center',
+		cursor: 'pointer',
+		padding: '0.5rem',
+		margin: '1rem',
+		background: '#e3e3e3',
+		boxShadow: '6px 6px 12px #bfbfbf,-6px -6px 12px #ffffff',
+		borderRadius: 10,
+	},
+	menuWrapper: {
+		width: '30rem',
+		height: 200,
+		overflow: 'auto',
+		[theme.breakpoints.down('sm')]: {
+			width: '70vw',
+		},
+	},
 	searchButton: {
-		padding: '1rem',
+		background: theme.shadowColor,
+		padding: '0.5rem',
+		boxShadow: '10px 5px 10px #a4a4a4,-10px -10px 20px #ffffff',
+		display: 'inline-block',
+		cursor: 'pointer',
+		borderRadius: 10,
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.5rem',
+		},
+		'&>img': {
+			height: '1.2rem',
+			width: 'auto',
+		},
 	},
 }));
 export default useStyles;

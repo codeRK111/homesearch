@@ -3,6 +3,7 @@ const express = require('express');
 const UtilityController = require('../controllersV2/packageController');
 const UtilityValidator = require('../validators/packageValidator');
 const uploadController = require('../controllersV2/fileUploadController');
+const authController = require('../controllers/adminController');
 
 const router = express.Router();
 
@@ -16,6 +17,9 @@ router
 		UtilityController.addBuilderPackages
 	)
 	.get(UtilityController.getBuilderPackages);
+router
+	.route('/property-package/:id')
+	.patch(authController.protect, UtilityController.updatePropertyPackage);
 router
 	.route('/property-package')
 	.post(

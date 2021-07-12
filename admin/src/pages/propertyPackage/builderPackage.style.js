@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+
 const useStyles = makeStyles((theme) => ({
 	pageWrapper: {
 		padding: '1rem',
@@ -16,6 +17,12 @@ const useStyles = makeStyles((theme) => ({
 			[theme.breakpoints.down('sm')]: {
 				width: '100%',
 			},
+		},
+	},
+	editWrapper: {
+		width: 500,
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
 		},
 	},
 }));

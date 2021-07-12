@@ -59,33 +59,6 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [photos, setPhotos] = React.useState([]);
 
-	const addMore = () => {
-		if (photos.length < 15) {
-			setPhotos([
-				...photos,
-				{
-					id: photos.length + 1,
-					image: null,
-				},
-			]);
-		}
-	};
-	const handleImage = (img) => (e) => {
-		const { name, files } = e.target;
-		console.log({ name });
-		setPhotos((prevState) =>
-			prevState.map((c) => {
-				if (c.id === img.id) {
-					c.image = files[0];
-				}
-				return c;
-			})
-		);
-	};
-
-	const removePhoto = (id) => {
-		setPhotos((prevState) => prevState.filter((c) => c.id !== id));
-	};
 	const validateForm = (values) => {
 		const error = {};
 		if (!validateNumber(values.numberOfBedRooms)) {
@@ -113,10 +86,36 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 		}
 		return error;
 	};
+
+	const renderPropertyOnFoor = (totalFloors) => {
+		const numbers = [
+			{
+				value: 'Ground Fooor',
+				label: 'Ground Fooor',
+			},
+		];
+		for (let index = 1; index < totalFloors; index++) {
+			numbers.push({
+				value: `${index}`,
+				label: `${index}`,
+			});
+		}
+
+		if (totalFloors > 1) {
+			numbers.push({
+				value: 'Entire Building',
+				label: 'Entire Building',
+			});
+		}
+		return numbers;
+	};
 	return (
 		<Box width="100%">
 			<Formik
-				initialValues={initialValues}
+				initialValues={{
+					...initialValues,
+					floor: pType === 'flat' ? 'Ground Floor' : '',
+				}}
 				validate={validateForm}
 				enableReinitialize
 			>
@@ -144,16 +143,21 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 									)}
 								/>
 							</Box>
-							<Box className={classes.columnWrapper}>
-								<span>Property On Floor</span>
-								<TextField
-									name="floor"
-									className={clsx(
-										classes.input,
-										classes.widthSM
-									)}
-								/>
-							</Box>
+							{pType === 'flat' && (
+								<Box className={classes.columnWrapper}>
+									<span>Property on floor</span>
+									<DropDown
+										options={renderPropertyOnFoor(
+											values.noOfFloors
+										)}
+										onSet={(val) => {
+											setFieldValue('floor', val);
+										}}
+										value={values.floor}
+										placeholder="0"
+									/>
+								</Box>
+							)}
 						</Box>
 						{/* Unit Type  */}
 						<Box mt="2rem" className={classes.contentWrapper}>

@@ -114,12 +114,7 @@ const PropertyCard = ({ property, edit = false }) => {
 						</div>
 						<div>
 							<h2 className={globalClasses.textCenter}>
-								<Link
-									to={`/v2/property-details/${property.id}`}
-									className={classes.link}
-								>
-									{property.title}
-								</Link>
+								{property.title}
 							</h2>
 							<span
 								className={clsx(

@@ -111,11 +111,31 @@ exports.getBuilderPackages = catchAsync(async (req, res, next) => {
 });
 exports.getPropertyPackages = catchAsync(async (req, res, next) => {
 	try {
-		const packages = await PropertyPackage.find();
+		const packages = await PropertyPackage.find().select('+expiresAt');
 		res.status(200).json({
 			status: 'success',
 			data: {
 				packages,
+			},
+		});
+	} catch (error) {
+		return next(new AppError(error.message, 500));
+	}
+});
+exports.updatePropertyPackage = catchAsync(async (req, res, next) => {
+	try {
+		const package = await PropertyPackage.findByIdAndUpdate(
+			req.params.id,
+			req.body,
+			{
+				new: true,
+				select: 'expiresAt',
+			}
+		);
+		res.status(200).json({
+			status: 'success',
+			data: {
+				package,
 			},
 		});
 	} catch (error) {

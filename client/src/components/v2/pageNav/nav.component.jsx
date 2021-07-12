@@ -1,19 +1,172 @@
-import { Box } from '@material-ui/core';
+import {
+	Box,
+	CircularProgress,
+	Menu,
+	MenuItem,
+	Typography,
+} from '@material-ui/core';
+import {
+	selectCurrentTab,
+	selectSelectedCity,
+} from '../../../redux/actionTab/actionTab.selectors';
+import {
+	setCurrentTab,
+	setSelectedCity,
+} from '../../../redux/actionTab/actionTab.actions';
+
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import React from 'react';
 import clsx from 'clsx';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import logoIcon from '../../../assets/icons/logo.svg';
-import menuIcon from '../../../assets/icons/menu.svg';
 import profile from '../../../assets/icons/profile.png';
+import { searchCities } from '../../../redux/city/city.actions';
 import searchIcon from '../../../assets/search.svg';
+import { selectAuthenticated } from '../../../redux/auth/auth.selectors';
+import { selectSearchCityLoading } from '../../../redux/city/city.selectors';
+import { signOut } from '../../../redux/auth/auth.actions';
+import { toggleLoginPopup } from '../../../redux/ui/ui.actions';
 import useGlobalStyles from '../../../common.style';
+import { useHistory } from 'react-router-dom';
 import useStyles from './nav.style';
+import { withStyles } from '@material-ui/core/styles';
 
-const NavBar = () => {
+const StyledMenu = withStyles({
+	paper: {
+		background: '#e3e3e3',
+		boxShadow: '20px 20px 35px #9f9f9f,-20px -20px 35px #ffffff',
+		borderRadius: 30,
+	},
+})((props) => (
+	<Menu
+		elevation={0}
+		getContentAnchorEl={null}
+		anchorOrigin={{
+			vertical: 'bottom',
+			horizontal: 'center',
+		}}
+		transformOrigin={{
+			vertical: 'top',
+			horizontal: 'center',
+		}}
+		{...props}
+	/>
+));
+
+const NavBar = ({
+	searchCityLoading,
+	searchCities,
+	currentTab,
+	selectedCity,
+	setCurrentTab,
+	setSelectedCity,
+	isAuthenticated,
+	toggleLoginPopup,
+	signOut,
+}) => {
+	const history = useHistory();
 	const classes = useStyles();
+	const menuParrent = React.useRef(null);
 	const globalClasses = useGlobalStyles();
+	const input = React.useRef(null);
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [searchAnchorEl, setSearchAnchorEl] = React.useState(null);
+	const [cities, setCities] = React.useState([]);
+	const [userTypedCity, setUserTypedCity] = React.useState('');
+	const [asyncError, setAsyncError] = React.useState(null);
+	const [noResults, setNoResults] = React.useState(false);
+
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+	const handleSearchClick = (event) => {
+		setSearchAnchorEl(menuParrent.current);
+	};
+
+	const handleSearchClose = () => {
+		setSearchAnchorEl(null);
+	};
+	const redirectToLogIn = (_) => {
+		toggleLoginPopup(true);
+	};
+
+	const redirectToPostPage = () => {
+		history.push('/v2/post-property');
+	};
+	const redirectToHomePage = () => {
+		history.push('/');
+	};
+
+	const handleAssetType = (asset) => (e) => {
+		setCurrentTab(asset);
+	};
+
+	const onLogOut = () => {
+		signOut();
+		handleClose();
+	};
+
+	const handleFetchCities = (status, data = null) => {
+		if (status === 'success') {
+			setAsyncError(null);
+			setCities(data);
+			if (data.length === 0) {
+				setNoResults(true);
+			} else {
+				setNoResults(false);
+			}
+			handleSearchClick();
+			input.current.focus();
+		} else {
+			setNoResults(false);
+			setAsyncError(data);
+			handleSearchClose();
+		}
+	};
+
+	const handleCity = (e) => {
+		const { value } = e.target;
+		setUserTypedCity(value);
+		if (value.length === 3 || value.length >= 5) {
+			searchCities(handleFetchCities, value);
+		}
+	};
+
+	const handleSelectedCity = (city) => (e) => {
+		setSelectedCity(city);
+		handleSearchClose();
+	};
+
+	const clearSelectedCity = () => {
+		setSelectedCity({
+			id: null,
+			name: null,
+		});
+		setUserTypedCity('');
+	};
+
+	const onSearch = () => {
+		if (!selectedCity) return;
+		const data = {
+			city: selectedCity.id,
+			cityName: selectedCity.name,
+		};
+		let link = `/v2/search?f=${currentTab}&c=${
+			data.city
+		}&cn=${encodeURIComponent(data.cityName)}`;
+		history.push(link);
+	};
 	return (
 		<Box className={classes.wrapper}>
-			<div className={classes.logoWrapper}>
+			<div
+				className={clsx(classes.logoWrapper, globalClasses.pointer)}
+				onClick={redirectToHomePage}
+			>
 				<img src={logoIcon} alt="" className={classes.logo} />
 				<span className={classes.logoTitle}>
 					HOMESEARCH<span>18</span>.COM
@@ -22,9 +175,11 @@ const NavBar = () => {
 			<div className={clsx(classes.logoWrapper, globalClasses.smHide)}>
 				<Box
 					className={clsx(
-						globalClasses.colorSecondary,
-						globalClasses.bold
+						globalClasses.bold,
+						globalClasses.pointer,
+						currentTab === 'project' && classes.selected
 					)}
+					onClick={handleAssetType('project')}
 				>
 					Project{' '}
 				</Box>
@@ -32,8 +187,11 @@ const NavBar = () => {
 					ml="1rem"
 					className={clsx(
 						globalClasses.colorPrimary,
-						globalClasses.bold
+						globalClasses.bold,
+						globalClasses.pointer,
+						currentTab === 'sale' && classes.selected
 					)}
+					onClick={handleAssetType('sale')}
 				>
 					Resale{' '}
 				</Box>
@@ -41,52 +199,184 @@ const NavBar = () => {
 					ml="1rem"
 					className={clsx(
 						globalClasses.colorPrimary,
-						globalClasses.bold
+						globalClasses.bold,
+						globalClasses.pointer,
+						currentTab === 'rent' && classes.selected
 					)}
+					onClick={handleAssetType('rent')}
 				>
 					Rent{' '}
 				</Box>
-				<Box ml="2rem" pl="1rem" className={classes.searchWrapper}>
-					<div className={classes.selectedLocation}>
-						<span>Bhubaneswar</span>
-						<Box ml="1rem">
-							<span>X</span>
-						</Box>
-					</div>
-					<Box ml="1rem">
+				<Box
+					ml="2rem"
+					pl="1rem"
+					className={classes.searchWrapper}
+					ref={menuParrent}
+				>
+					{selectedCity.id ? (
 						<div className={classes.selectedLocation}>
-							<span>Patia</span>
-							<Box ml="1rem">
-								<span>X</span>
+							<span>{selectedCity.name}</span>
+							<Box ml="1rem" onClick={clearSelectedCity}>
+								<span
+									className={clsx(
+										classes.clearIcon,
+										globalClasses.pointer
+									)}
+								>
+									X
+								</span>
 							</Box>
 						</div>
+					) : (
+						<input
+							type="text"
+							placeholder="Search For City"
+							onChange={handleCity}
+							value={userTypedCity}
+							ref={input}
+						/>
+					)}
+				</Box>
+				<StyledMenu
+					id="customized-menu"
+					anchorEl={searchAnchorEl}
+					keepMounted
+					open={Boolean(searchAnchorEl)}
+					onClose={handleSearchClose}
+				>
+					<Box className={classes.menuWrapper}>
+						{!!asyncError && (
+							<Typography
+								align="center"
+								className={globalClasses.colorWarning}
+							>
+								{asyncError}
+							</Typography>
+						)}
+						{!!noResults ? (
+							<Typography align="center">
+								No City Found
+							</Typography>
+						) : (
+							cities.map((c) => (
+								<Box
+									key={c.id}
+									className={classes.cityWrapper}
+									onClick={handleSelectedCity(c)}
+								>
+									<LocationOnIcon
+										className={classes.locationIcon}
+									/>
+									<Typography variant="subtitle2">
+										{c.name}
+									</Typography>
+								</Box>
+							))
+						)}
 					</Box>
-				</Box>
-				<Box ml="1rem">
-					<img
-						src={searchIcon}
-						alt="Search"
-						className={classes.searchLogo}
-					/>
-				</Box>
+				</StyledMenu>
+				{searchCityLoading ? (
+					<Box className={classes.searchButton}>
+						<CircularProgress size={20} />
+					</Box>
+				) : (
+					<Box
+						ml="1rem"
+						onClick={onSearch}
+						className={clsx(
+							classes.searchButton,
+							globalClasses.pointer
+						)}
+					>
+						<img
+							src={searchIcon}
+							alt="Search"
+							className={classes.searchLogo}
+						/>
+					</Box>
+				)}
 			</div>
 			<div className={classes.rightSide}>
-				<div className={clsx(classes.listButton, globalClasses.smHide)}>
+				<div
+					className={clsx(classes.listButton, globalClasses.smHide)}
+					onClick={redirectToPostPage}
+				>
 					List Property & Projects
 				</div>
-				<div className={classes.profileWrapper}>
-					<img src={profile} alt="Profile" />
-				</div>
-				<div className={classes.profileWrapper}>
-					<img
-						src={menuIcon}
-						alt="Menu"
-						className={classes.menuIcon}
-					/>
-				</div>
+				{!!isAuthenticated ? (
+					<div>
+						<Box
+							className={clsx(
+								classes.profileWrapper,
+								globalClasses.smHide
+							)}
+							aria-controls="customized-menu"
+							aria-haspopup="true"
+							onClick={handleClick}
+						>
+							<img
+								src={profile}
+								alt="Profile"
+								className={globalClasses.smHide}
+							/>
+						</Box>
+						<Menu
+							id="customized-menu"
+							getContentAnchorEl={null}
+							anchorEl={anchorEl}
+							keepMounted
+							open={Boolean(anchorEl)}
+							onClose={handleClose}
+							anchorOrigin={{
+								vertical: 'bottom',
+								horizontal: 'center',
+							}}
+							transformOrigin={{
+								vertical: 'top',
+								horizontal: 'center',
+							}}
+						>
+							<MenuItem onClick={handleClose} disabled>
+								Profile
+							</MenuItem>
+							<MenuItem onClick={handleClose} disabled>
+								My account
+							</MenuItem>
+							<MenuItem onClick={onLogOut}>Logout</MenuItem>
+						</Menu>
+					</div>
+				) : (
+					<Box ml="1rem">
+						<div
+							className={clsx(
+								classes.listButton,
+								globalClasses.smHide
+							)}
+							onClick={redirectToLogIn}
+						>
+							Sign In
+						</div>
+					</Box>
+				)}
 			</div>
 		</Box>
 	);
 };
 
-export default NavBar;
+const mapStateToProps = createStructuredSelector({
+	searchCityLoading: selectSearchCityLoading,
+	currentTab: selectCurrentTab,
+	selectedCity: selectSelectedCity,
+	isAuthenticated: selectAuthenticated,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	searchCities: (callback, name) =>
+		dispatch(searchCities({ name, callback })),
+	setCurrentTab: (tab) => dispatch(setCurrentTab(tab)),
+	setSelectedCity: (tab) => dispatch(setSelectedCity(tab)),
+	toggleLoginPopup: (status) => dispatch(toggleLoginPopup(status)),
+	signOut: () => dispatch(signOut()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

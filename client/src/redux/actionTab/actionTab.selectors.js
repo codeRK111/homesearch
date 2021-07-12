@@ -7,6 +7,10 @@ export const selectCurrentTab = createSelector(
 	[selectActionTab],
 	(c) => c.currentTab
 );
+export const selectSelectedCity = createSelector(
+	[selectActionTab],
+	(c) => c.selectedCity
+);
 // Select loading status
 
 // Select Errors

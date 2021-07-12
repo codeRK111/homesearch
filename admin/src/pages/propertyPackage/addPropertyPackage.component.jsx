@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { FieldArray, Form, Formik } from 'formik';
 
+import DatePicker from '../../components/formik/datePicker.component';
 import React from 'react';
 import TextField from '../../components/formik/textField.component';
 import { apiUrl } from '../../utils/render.utils';
@@ -120,10 +121,13 @@ const AddPropertyPackage = ({ fetchPackages }) => {
 								formLabel={`Enter Package Price*`}
 								type="text"
 							/>
-							<TextField
+							<DatePicker
 								name="expiresAt"
 								formLabel={`Enter Expiry Date *`}
-								type="date"
+								value={values.expiresAt}
+								onChange={(value) => {
+									setFieldValue('expiresAt', value);
+								}}
 							/>
 							<FieldArray
 								name="packageDetails"
