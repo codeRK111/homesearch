@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import React from 'react';
 import area from '../../../../assets/icons/area.svg';
 import bed from '../../../../assets/icons/bed.svg';
@@ -40,7 +41,13 @@ const PropertyCard = ({ data }) => {
 								classes.title
 							)}
 						>
-							{data.title}
+							<Link
+								to={`/v2/property-details/${data.id}`}
+								className={classes.link}
+								target="_blank"
+							>
+								{data.title}
+							</Link>
 						</h2>
 						<div className={classes.flexParentWrapper}>
 							<div className={classes.flexWrapper}>

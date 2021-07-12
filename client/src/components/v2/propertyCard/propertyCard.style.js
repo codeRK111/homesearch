@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: '32px',
 		boxShadow: '5px 5px 12px #b3b3b3,-5px -5px 12px #ffffff',
 		height: '100%',
-		boxSizing: 'border-box'
+		boxSizing: 'border-box',
 	},
 	img: {
 		height: '15px',
@@ -78,6 +78,13 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 20,
 		padding: '0 1rem 0 0',
 		boxSizing: 'border-box',
+	},
+	link: {
+		color: '#000000',
+		textDecoration: 'none',
+		'&:hover': {
+			textDecoration: 'underline',
+		},
 	},
 }));
 export default useStyles;

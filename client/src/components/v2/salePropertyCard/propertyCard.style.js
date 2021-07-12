@@ -77,5 +77,12 @@ const useStyles = makeStyles((theme) => ({
 		padding: '0 1rem 0 0',
 		boxSizing: 'border-box',
 	},
+	link: {
+		color: '#000000',
+		textDecoration: 'none',
+		'&:hover': {
+			textDecoration: 'underline',
+		},
+	},
 }));
 export default useStyles;
