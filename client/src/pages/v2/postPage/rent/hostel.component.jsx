@@ -1,11 +1,6 @@
 import { Box, Grid, IconButton, Typography } from '@material-ui/core';
 import { Form, Formik } from 'formik';
-import {
-	validateLength,
-	validateNumber,
-} from '../../../../utils/validation.utils';
 
-import AddIcon from '@material-ui/icons/Add';
 import CheckBox from '../../../../components/formik/checkbox.component';
 import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
 import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
@@ -15,21 +10,24 @@ import Select from '../../../../components/v2/chipSelect/chipSelected.component'
 import TextArea from '../../../../components/formik/textArea.component';
 import TextField from '../../../../components/formik/textFieldDefault.component';
 import TodayIcon from '@material-ui/icons/Today';
+import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
+import { toHumanReadble } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
+import { validateNumber } from '../../../../utils/validation.utils';
 
 const initialValues = {
 	for: 'rent',
 	availableFor: [],
-	typeOfToilets: '',
+	typeOfToilets: 'attached',
 	toiletIndian: 1,
 	toiletWestern: 1,
 	rent: '',
 	maintainanceFee: '',
 	securityDeposit: '',
 	noticePeriod: '',
-	furnished: '',
+	furnished: 'semifurnished',
 	furnishes: [],
 	amenities: [],
 	distanceSchool: 1,
@@ -37,79 +35,78 @@ const initialValues = {
 	distanceAirport: 1,
 	distanceBusStop: 1,
 	distanceHospital: 1,
-	availability: '',
+	availability: 'immediately',
 	availableDate: new Date(),
 	restrictions: '',
 	description: '',
 	city: '',
 	location: '',
-	carParking: '',
-	roomType: '',
+	carParking: 'open',
+	roomType: 'shared',
 	fooding: [],
 	foodSchedule: [],
 	numberOfRoomMates: 1,
 	title: '',
+	numberOfBedRooms: 1,
 };
 
 const RentApartment = ({ pType, furnishes, amenities }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [isOpen, setIsOpen] = React.useState(false);
+	const [foodingAvailable, setFoodingAvailable] = React.useState(true);
 	const [photos, setPhotos] = React.useState([]);
 
-	const addMore = () => {
-		if (photos.length < 15) {
-			setPhotos([
-				...photos,
-				{
-					id: photos.length + 1,
-					image: null,
-				},
-			]);
-		}
-	};
-	const handleImage = (img) => (e) => {
-		const { name, files } = e.target;
-		console.log({ name });
-		setPhotos((prevState) =>
-			prevState.map((c) => {
-				if (c.id === img.id) {
-					c.image = files[0];
-				}
-				return c;
-			})
-		);
-	};
-
-	const removePhoto = (id) => {
-		setPhotos((prevState) => prevState.filter((c) => c.id !== id));
-	};
 	const validateForm = (values) => {
 		const error = {};
-		if (!validateNumber(values.numberOfBedRooms)) {
-			error.numberOfBedRooms = 'Please enter a number';
-		}
-		if (!validateNumber(values.noOfFloors)) {
-			error.noOfFloors = 'Please enter a number';
+		if (!values.title) {
+			error.title = 'Enter project name';
 		}
 
-		if (pType === 'flat' && Number(values.noOfFloors) > 99) {
-			error.noOfFloors = "Can't be greater than 99";
+		if (!validateNumber(values.toiletIndian)) {
+			error.toiletIndian = 'Please enter a number';
 		}
-		if (pType === 'independenthouse' && Number(values.noOfFloors) > 4) {
-			error.noOfFloors = "Can't be greater than 4";
+		if (!validateNumber(values.toiletWestern)) {
+			error.toiletWestern = 'Please enter a number';
 		}
-		if (pType === 'flat' && !validateNumber(values.floor)) {
-			error.floor = 'Please enter a number';
+		if (Number(values.toiletIndian) > 10) {
+			error.toiletIndian = 'Cannot be graeter than 10';
 		}
-		if (
-			pType === 'flat' &&
-			Number(values.noOfFloors) < Number(values.floor)
-		) {
-			error.floor =
-				'Property on floor cannot be greater than total floors';
+		if (Number(values.toiletWestern) > 10) {
+			error.toiletWestern = 'Cannot be graeter than 10';
 		}
+
+		if (!validateNumber(values.rent)) {
+			error.rent = 'Please enter a number';
+		}
+		if (values.maintainanceFee) {
+			if (!validateNumber(values.maintainanceFee)) {
+				error.maintainanceFee = 'Please enter a number';
+			}
+		}
+		if (!validateNumber(values.securityDeposit)) {
+			error.securityDeposit = 'Please enter a number';
+		}
+		if (!validateNumber(values.noticePeriod)) {
+			error.noticePeriod = 'Please enter a number';
+		}
+		if (Number(values.securityDeposit) < Number(values.rent)) {
+			error.securityDeposit = 'Security deposit cannot be less than rent';
+		}
+		if (!values.description) {
+			error.description = 'Please mention some description';
+		}
+		if (values.roomType === 'shared') {
+			if (!values.numberOfRoomMates) {
+				error.numberOfRoomMates = 'Please enter a number';
+			}
+		}
+
 		return error;
+	};
+
+	const submitForm = (values) => {
+		alert('Hello');
 	};
 	return (
 		<Box width="100%">
@@ -117,12 +114,13 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 				initialValues={initialValues}
 				validate={validateForm}
 				enableReinitialize
+				onSubmit={submitForm}
 			>
 				{({ values, setFieldValue, errors }) => (
 					<Form>
 						<Box className={classes.rowWrapper2}>
 							<Box className={classes.columnWrapper}>
-								<span>Property Name</span>
+								<span>Project Name</span>
 								<TextField
 									name="title"
 									formLabel="Bedrooms *"
@@ -144,27 +142,37 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 										name="rent"
 										className={clsx(
 											classes.input,
-											classes.widthSM
+											classes.widthMD
 										)}
 									/>
-									<div>
-										<input
-											type="checkbox"
-											id="male"
-											name="gender"
-											value="male"
-											className={classes.bgShadow}
-										/>
-										<label for="male">
-											<Typography
-												display="inline"
-												className={gClasses.smText}
-											>
-												Negotiable
-											</Typography>
-										</label>{' '}
-									</div>
 								</Box>
+								{values.rent && (
+									<div>
+										<Typography
+											display="inline"
+											className={gClasses.smText}
+										>
+											{toHumanReadble(values.rent)}
+										</Typography>
+									</div>
+								)}
+								<div>
+									<input
+										type="checkbox"
+										id="male"
+										name="gender"
+										value="male"
+										className={classes.bgShadow}
+									/>
+									<label for="male">
+										<Typography
+											display="inline"
+											className={gClasses.smText}
+										>
+											Negotiable
+										</Typography>
+									</label>{' '}
+								</div>
 							</Box>
 							<Box className={classes.columnWrapper2}>
 								<span>Security Deposit</span>
@@ -172,17 +180,17 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 									name="securityDeposit"
 									className={clsx(
 										classes.input,
-										classes.widthSM
+										classes.widthMD
 									)}
 								/>
 							</Box>
 							<Box className={classes.columnWrapper2}>
 								<span>Maintainance Fee (If any)</span>
 								<TextField
-									name="securityDeposit"
+									name="maintainanceFee"
 									className={clsx(
 										classes.input,
-										classes.widthSM
+										classes.widthMD
 									)}
 								/>
 							</Box>
@@ -575,6 +583,119 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 							</Box>
 						)}
 
+						{/* Fooding Available  */}
+
+						<Box mt="2rem" className={classes.contentWrapper}>
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Fooding Available
+							</Typography>
+							<Box
+								mt="1rem"
+								className={clsx(
+									classes.alignCenter,
+									gClasses.smFlexWrap
+								)}
+							>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={foodingAvailable}
+										onClick={() => {
+											setFoodingAvailable(true);
+										}}
+									>
+										Yes
+									</Select>
+								</Box>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={!foodingAvailable}
+										onClick={() => {
+											setFoodingAvailable(false);
+										}}
+									>
+										No
+									</Select>
+								</Box>
+							</Box>
+						</Box>
+						{foodingAvailable && (
+							<Box mt="2rem">
+								<Typography
+									variant="h5"
+									gutterBottom
+									align="center"
+								>
+									Food Type
+								</Typography>
+								<Box className={classes.rowWrapper2}>
+									<Box className={classes.columnWrapper2}>
+										<CheckBox
+											type="checkbox"
+											name="fooding"
+											value={'veg'}
+											formLabel={'Veg'}
+										/>
+									</Box>
+									<Box className={classes.columnWrapper2}>
+										<CheckBox
+											type="checkbox"
+											name="fooding"
+											value="nonveg"
+											formLabel="Non Veg"
+										/>
+									</Box>
+								</Box>
+							</Box>
+						)}
+						{foodingAvailable && (
+							<Box mt="2rem">
+								<Typography
+									variant="h5"
+									gutterBottom
+									align="center"
+								>
+									Food Schedule
+								</Typography>
+								<Box className={classes.rowWrapper2}>
+									<Box className={classes.columnWrapper2}>
+										<CheckBox
+											type="checkbox"
+											name="foodSchedule"
+											value={'bedtea'}
+											formLabel={'Bed Tea'}
+										/>
+									</Box>
+									<Box className={classes.columnWrapper2}>
+										<CheckBox
+											type="checkbox"
+											name="foodSchedule"
+											value="breakfast"
+											formLabel="Breakfast"
+										/>
+									</Box>
+									<Box className={classes.columnWrapper2}>
+										<CheckBox
+											type="checkbox"
+											name="foodSchedule"
+											value={'lunch'}
+											formLabel={'Lunch'}
+										/>
+									</Box>
+									<Box className={classes.columnWrapper2}>
+										<CheckBox
+											type="checkbox"
+											name="foodSchedule"
+											value="dinner"
+											formLabel="Dinner"
+										/>
+									</Box>
+								</Box>
+							</Box>
+						)}
 						<Box mt="2rem" className={classes.contentWrapper}>
 							<Typography
 								variant="h5"
@@ -696,7 +817,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								Description
 							</Typography>
 							<TextArea
-								name="descriptions"
+								name="description"
 								rows={8}
 								className={clsx(
 									classes.input,
@@ -704,91 +825,19 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								)}
 							/>
 						</Box>
-						<Box className={classes.rowWrapper2} mt="3rem">
-							<Box className={classes.columnWrapper2}>
-								<Box mb="1rem">
-									<ChipWrapper onClick={addMore}>
-										<Box className={classes.contentWrapper}>
-											<AddIcon />
-											<Typography variant="body2">
-												Add Photos
-											</Typography>
-										</Box>
-									</ChipWrapper>
-								</Box>
-								<Typography variant="caption" align="center">
-									Photos 0/15 increase your chances of getting
-									genuine leads by adding at least 5 photos of
-									Hall, Bedrooms, Kitchen & bathrooms.
-								</Typography>
-							</Box>
-						</Box>
 						<Box mt="2rem">
-							<Grid container spacing={3}>
-								{photos.map((c, i) => (
-									<Grid key={c.id} item xs={6} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													c.image
-														? URL.createObjectURL(
-																c.image
-														  )
-														: require('../../../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										<input
-											type="file"
-											onChange={handleImage(c)}
-											id={`image-${c.id}`}
-											className={classes.uploadButton}
-										/>
-										{c.image ? (
-											<Grid container>
-												<Grid item xs={6}>
-													<label
-														htmlFor={`image-${c.id}`}
-														className={
-															classes.label
-														}
-													>
-														Upload
-													</label>
-												</Grid>
-												<Grid item xs={6}>
-													<label
-														className={
-															classes.remove
-														}
-														onClick={() =>
-															removePhoto(c.id)
-														}
-													>
-														Remove
-													</label>
-												</Grid>
-											</Grid>
-										) : (
-											<Grid container>
-												<Grid item xs={12}>
-													<label
-														htmlFor={`image-${c.id}`}
-														className={
-															classes.label
-														}
-													>
-														Upload
-													</label>
-												</Grid>
-											</Grid>
-										)}
-									</Grid>
-								))}
-							</Grid>
+							<UploadPhoto
+								photos={photos}
+								setPhotos={setPhotos}
+							/>
+						</Box>
+						<Box mt="3rem" className={gClasses.justifyCenter}>
+							<button
+								className={classes.postButton}
+								type="submit"
+							>
+								Post Ad Now
+							</button>
 						</Box>
 					</Form>
 				)}

@@ -155,7 +155,7 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={globalClasses.flexCenter}
 									>
 										<span className={classes.smallText}>
-											Price [ Refistration Extra ]
+											Price <br /> Refistration Extra
 										</span>
 									</Grid>
 								</Grid>
@@ -194,16 +194,20 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={classes.keyValue}
 									>
 										<Box className="test">
-											<h1>1.5K</h1>
+											<h3>
+												{capitalizeFirstLetter(
+													property.facing
+												)}
+											</h3>
 										</Box>
 									</Grid>
 									<Grid
 										item
 										xs={7}
-										className={globalClasses.flexCenter}
+										className={globalClasses.alignCenter}
 									>
 										<span className={classes.smallText}>
-											Maintainance Fee Per Month
+											Facing
 										</span>
 									</Grid>
 								</Grid>
@@ -286,7 +290,9 @@ const PropertyCard = ({ property, edit = false }) => {
 											classes.bold
 										)}
 									>
-										{capitalizeFirstLetter(property.facing)}
+										{capitalizeFirstLetter(
+											property.landUsingZoning
+										)}
 									</span>
 								</Box>
 							</div>

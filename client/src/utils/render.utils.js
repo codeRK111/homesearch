@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { validateNumber } from './validation.utils';
 
 export const renderInfo = (info) => (info ? info : 'Not Specified');
 export const renderBool = (info) => (info ? 'Yes' : 'No');
@@ -272,4 +273,11 @@ export const shortLength = (sentence, length) => {
 	} else {
 		return sentence;
 	}
+};
+
+export const toHumanReadble = (price) => {
+	if (validateNumber(price)) {
+		return Number(price).toLocaleString('en-IN');
+	}
+	return null;
 };

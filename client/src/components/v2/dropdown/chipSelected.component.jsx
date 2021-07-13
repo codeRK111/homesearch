@@ -60,7 +60,9 @@ const Chip = ({
 				interactive
 			>
 				<div onClick={toggelTooltip} className={classes.shadow}>
-					{value ? value : placeholder}
+					{value !== null && value !== undefined
+						? `${value}`
+						: placeholder}
 					<ExpandMoreIcon />
 				</div>
 			</Tooltip>

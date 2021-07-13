@@ -23,6 +23,12 @@ import tub from '../../../../assets/icons/tub.svg';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../searchCard.style';
 
+const furnisingLabels = {
+	unfurnished: 'Unfurnished',
+	furnished: 'Furnished',
+	semifurnished: 'Semi furnished',
+};
+
 const PropertyCard = ({ property, edit = false }) => {
 	const m = moment(property.createdAt);
 	const img = property.photos[0]
@@ -153,7 +159,7 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={globalClasses.flexCenter}
 									>
 										<span className={classes.smallText}>
-											Price [ Refistration Extra ]
+											Price <br /> Refistration Extra
 										</span>
 									</Grid>
 								</Grid>
@@ -166,16 +172,39 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={classes.keyValue}
 									>
 										<Box className="test">
-											<h1>{property.landArea}</h1>
+											{property.availability ===
+											'immediately' ? (
+												<h5
+													className={
+														globalClasses.textCenter
+													}
+												>
+													Ready to move
+												</h5>
+											) : (
+												<h1>
+													<span>
+														{moment(
+															property.availableDate
+														).format('D')}
+													</span>{' '}
+													<br />
+													<span>
+														{moment(
+															property.availableDate
+														).format('MMM')}
+													</span>
+												</h1>
+											)}
 										</Box>
 									</Grid>
 									<Grid
 										item
 										xs={7}
-										className={globalClasses.flexCenter}
+										className={globalClasses.alignCenter}
 									>
 										<span className={classes.smallText}>
-											Land Area
+											Available from
 										</span>
 									</Grid>
 								</Grid>
@@ -188,16 +217,26 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={classes.keyValue}
 									>
 										<Box className="test">
-											<h1>1.5K</h1>
+											<h5
+												className={
+													globalClasses.textCenter
+												}
+											>
+												{
+													furnisingLabels[
+														property.furnished
+													]
+												}
+											</h5>
 										</Box>
 									</Grid>
 									<Grid
 										item
 										xs={7}
-										className={globalClasses.flexCenter}
+										className={globalClasses.alignCenter}
 									>
 										<span className={classes.smallText}>
-											Maintainance Fee Per Month
+											Furnishing
 										</span>
 									</Grid>
 								</Grid>

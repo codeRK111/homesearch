@@ -1,4 +1,5 @@
 import { Box, Typography } from '@material-ui/core';
+import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
 
 import ChoosePlan from '../../../components/v2/propertyPlans/choosePlan.component';
 import CitySearch from '../../../components/v2/cityDropDown';
@@ -15,11 +16,10 @@ import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectAuthenticated } from '../../../redux/auth/auth.selectors';
-import { toggleLoginPopup } from '../../../redux/ui/ui.actions';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './postPage.style';
 
-const PostProperty = ({ isAuthenticated, toggleLoginPopup }) => {
+const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [pFor, setpFor] = React.useState('');
@@ -44,7 +44,23 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup }) => {
 	const handleType = (pType) => () => {
 		setType(pType);
 	};
-	const onPost = () => {
+	const onPost = (values) => {
+		if (!selectedCity.id) {
+			setSnackbar({
+				open: true,
+				message: 'Please select a city',
+				severity: 'error',
+			});
+			return;
+		}
+		if (!selectedLocation.id) {
+			setSnackbar({
+				open: true,
+				message: 'Please select a location',
+				severity: 'error',
+			});
+			return;
+		}
 		if (pFor && type) {
 			if (isAuthenticated) {
 				togglePlanPopUp(true)();
@@ -94,10 +110,22 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup }) => {
 		switch (type) {
 			case 'flat':
 			case 'independenthouse':
-				return <FurnishHOC component={RentApartment} pType={type} />;
+				return (
+					<FurnishHOC
+						component={RentApartment}
+						pType={type}
+						onPost={onPost}
+					/>
+				);
 			case 'hostel':
 			case 'pg':
-				return <FurnishHOC component={RentHostel} pType={type} />;
+				return (
+					<FurnishHOC
+						component={RentHostel}
+						pType={type}
+						onPost={onPost}
+					/>
+				);
 
 			default:
 				break;
@@ -107,9 +135,15 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup }) => {
 		switch (type) {
 			case 'flat':
 			case 'independenthouse':
-				return <FurnishHOC component={SaleApartment} pType={type} />;
+				return (
+					<FurnishHOC
+						component={SaleApartment}
+						pType={type}
+						onPost={onPost}
+					/>
+				);
 			case 'land':
-				return <SaleLand pType={type} />;
+				return <SaleLand pType={type} onPost={onPost} />;
 
 			default:
 				break;
@@ -228,12 +262,6 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup }) => {
 					{/* Availability  */}
 
 					{/* User Role  */}
-
-					<Box mt="3rem" className={gClasses.justifyCenter}>
-						<button className={classes.postButton} onClick={onPost}>
-							Post Ad Now
-						</button>
-					</Box>
 				</Box>
 			</Box>
 		</div>
@@ -246,6 +274,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
 	toggleLoginPopup: (status) => dispatch(toggleLoginPopup(status)),
+	setSnackbar: (config) => dispatch(setSnackbar(config)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostProperty);

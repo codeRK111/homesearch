@@ -16,13 +16,14 @@ import TextField from '../../../../components/formik/textFieldDefault.component'
 import TodayIcon from '@material-ui/icons/Today';
 import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
+import { toHumanReadble } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
 
 const initialValues = {
 	for: 'rent',
 	availableFor: [],
-	numberOfBedRooms: 0,
+	numberOfBedRooms: 1,
 	numberOfBalconies: 1,
 	noOfFloors: 1,
 	floor: 1,
@@ -35,7 +36,7 @@ const initialValues = {
 	maintainanceFee: '',
 	securityDeposit: '',
 	noticePeriod: '',
-	furnished: '',
+	furnished: 'semifurnished',
 	furnishes: [],
 	amenities: [],
 	distanceSchool: 1,
@@ -43,7 +44,7 @@ const initialValues = {
 	distanceAirport: 1,
 	distanceBusStop: 1,
 	distanceHospital: 1,
-	availability: '',
+	availability: 'immediately',
 	availableDate: new Date(),
 	restrictions: '',
 	description: '',
@@ -53,7 +54,7 @@ const initialValues = {
 	title: '',
 };
 
-const RentApartment = ({ pType, furnishes, amenities }) => {
+const RentApartment = ({ pType, furnishes, amenities, onPost }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [isOpen, setIsOpen] = React.useState(false);
@@ -61,8 +62,40 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 
 	const validateForm = (values) => {
 		const error = {};
+		// console.log({ test: validateNumber(values.toiletIndian) });
 		if (!validateNumber(values.numberOfBedRooms)) {
 			error.numberOfBedRooms = 'Please enter a number';
+		}
+
+		if (!values.title) {
+			error.title = 'Enter project name';
+		}
+
+		if (!validateNumber(values.numberOfBalconies)) {
+			error.numberOfBalconies = 'Please enter a number';
+		}
+
+		if (!validateNumber(values.superBuiltupArea)) {
+			error.superBuiltupArea = 'Please enter a number';
+		}
+		if (!validateNumber(values.carpetArea)) {
+			error.carpetArea = 'Please enter a number';
+		}
+		if (Number(values.superBuiltupArea) < Number(values.carpetArea)) {
+			error.carpetArea =
+				'Carpet area cannot be greater than super built up area';
+		}
+		if (!validateNumber(values.toiletIndian)) {
+			error.toiletIndian = 'Please enter a number';
+		}
+		if (Number(values.toiletIndian) > 10) {
+			error.toiletIndian = 'Cannot be graeter than 10';
+		}
+		if (!validateNumber(values.toiletWestern)) {
+			error.toiletWestern = 'Please enter a number';
+		}
+		if (Number(values.toiletWestern) > 10) {
+			error.toiletWestern = 'Cannot be graeter than 10';
 		}
 		if (!validateNumber(values.noOfFloors)) {
 			error.noOfFloors = 'Please enter a number';
@@ -74,9 +107,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 		if (pType === 'independenthouse' && Number(values.noOfFloors) > 4) {
 			error.noOfFloors = "Can't be greater than 4";
 		}
-		if (pType === 'flat' && !validateNumber(values.floor)) {
-			error.floor = 'Please enter a number';
-		}
+
 		if (
 			pType === 'flat' &&
 			Number(values.noOfFloors) < Number(values.floor)
@@ -84,6 +115,39 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 			error.floor =
 				'Property on floor cannot be greater than total floors';
 		}
+
+		if (!validateNumber(values.rent)) {
+			error.rent = 'Please enter a number';
+		}
+		if (values.maintainanceFee) {
+			if (!validateNumber(values.maintainanceFee)) {
+				error.maintainanceFee = 'Please enter a number';
+			}
+		}
+		if (!validateNumber(values.securityDeposit)) {
+			error.securityDeposit = 'Please enter a number';
+		}
+		if (Number(values.securityDeposit) < Number(values.rent)) {
+			error.securityDeposit = 'Security deposit cannot be less than rent';
+		}
+		if (!validateNumber(values.noticePeriod)) {
+			error.noticePeriod = 'Please enter a number';
+		}
+		if (!values.description) {
+			error.description = 'Please mention some description';
+		}
+
+		if (!validateLength(values.numberOfBedRooms, 1)) {
+			error.numberOfBedRooms = '1 digit allowed';
+		}
+		if (!validateLength(values.numberOfBalconies, 1)) {
+			error.numberOfBalconies = '1 digit allowed';
+		}
+
+		if (!values.description) {
+			error.description = 'Please add some description';
+		}
+
 		return error;
 	};
 
@@ -94,7 +158,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 				label: 'Ground Fooor',
 			},
 		];
-		for (let index = 1; index < totalFloors; index++) {
+		for (let index = 1; index <= totalFloors; index++) {
 			numbers.push({
 				value: `${index}`,
 				label: `${index}`,
@@ -109,6 +173,10 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 		}
 		return numbers;
 	};
+
+	const submitForm = (values) => {
+		onPost(values);
+	};
 	return (
 		<Box width="100%">
 			<Formik
@@ -118,9 +186,11 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 				}}
 				validate={validateForm}
 				enableReinitialize
+				onSubmit={submitForm}
 			>
 				{({ values, setFieldValue, errors }) => (
 					<Form>
+						{/* <pre>{JSON.stringify(errors, null, 2)}</pre> */}
 						<Box className={classes.rowWrapper2}>
 							<Box className={classes.columnWrapper}>
 								<span>Property Name</span>
@@ -251,27 +321,37 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 										name="rent"
 										className={clsx(
 											classes.input,
-											classes.widthSM
+											classes.widthMD
 										)}
 									/>
-									<div>
-										<input
-											type="checkbox"
-											id="male"
-											name="gender"
-											value="male"
-											className={classes.bgShadow}
-										/>
-										<label for="male">
-											<Typography
-												display="inline"
-												className={gClasses.smText}
-											>
-												Negotiable
-											</Typography>
-										</label>{' '}
-									</div>
 								</Box>
+								{values.rent && (
+									<div>
+										<Typography
+											display="inline"
+											className={gClasses.smText}
+										>
+											{toHumanReadble(values.rent)}
+										</Typography>
+									</div>
+								)}
+								<div>
+									<input
+										type="checkbox"
+										id="male"
+										name="gender"
+										value="male"
+										className={classes.bgShadow}
+									/>
+									<label for="male">
+										<Typography
+											display="inline"
+											className={gClasses.smText}
+										>
+											Negotiable
+										</Typography>
+									</label>{' '}
+								</div>
 							</Box>
 							<Box className={classes.columnWrapper2}>
 								<span>Security Deposit</span>
@@ -286,7 +366,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 							<Box className={classes.columnWrapper2}>
 								<span>Maintainance Fee (If any)</span>
 								<TextField
-									name="securityDeposit"
+									name="maintainanceFee"
 									className={clsx(
 										classes.input,
 										classes.widthSM
@@ -294,7 +374,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								/>
 							</Box>
 							<Box className={classes.columnWrapper2}>
-								<span>Built up area</span>
+								<span>Super Built up area</span>
 								<Box display="flex" alignItems="center">
 									<TextField
 										name="superBuiltupArea"
@@ -504,26 +584,6 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 						<Box mt="2rem">
 							<Box className={classes.rowWrapper2}>
 								<Box className={classes.columnWrapper}>
-									<span>No. of Bedroom</span>
-									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
-										onSet={(val) => {
-											setFieldValue(
-												'numberOfBedRooms',
-												val
-											);
-										}}
-										value={values.numberOfBedRooms}
-										placeholder="0"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper}>
 									<span>No. of indian bathroom </span>
 									<DropDown
 										options={[
@@ -700,7 +760,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								Description
 							</Typography>
 							<TextArea
-								name="descriptions"
+								name="description"
 								rows={8}
 								className={clsx(
 									classes.input,
@@ -713,6 +773,14 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								photos={photos}
 								setPhotos={setPhotos}
 							/>
+						</Box>
+						<Box mt="3rem" className={gClasses.justifyCenter}>
+							<button
+								className={classes.postButton}
+								type="submit"
+							>
+								Post Ad Now
+							</button>
 						</Box>
 					</Form>
 				)}

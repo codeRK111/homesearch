@@ -1,4 +1,4 @@
-import { Box, TextField } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 
 import React from 'react';
 import { useField } from 'formik';
@@ -18,7 +18,11 @@ const RowSelect = ({ formLabel, spacing = true, ...otherProps }) => {
 
 	return (
 		<Box {...padding}>
-			<Box className={classes.label}>{formLabel}</Box>
+			{!!helperText && (
+				<Typography color="error" variant="caption">
+					{helperText}
+				</Typography>
+			)}
 			<Box {...margin}>
 				<textarea
 					className={classes.input}

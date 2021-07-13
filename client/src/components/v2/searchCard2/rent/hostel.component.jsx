@@ -21,6 +21,12 @@ import tub from '../../../../assets/icons/tub.svg';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../searchCard.style';
 
+// const furnisingLabels = {
+// 	unfurnished: 'Unfurnished',
+// 	furnished: 'Furnished',
+// 	semifurnished: 'Semi furnished',
+// };
+
 const PropertyCard = ({ property, edit = false }) => {
 	const m = moment(property.createdAt);
 	const img = property.photos[0]

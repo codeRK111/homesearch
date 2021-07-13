@@ -1,23 +1,20 @@
-import { Box, Grid, IconButton, Typography } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 import { FieldArray, Form, Formik } from 'formik';
-import {
-	validateLength,
-	validateNumber,
-} from '../../../../utils/validation.utils';
 
 import AddIcon from '@material-ui/icons/Add';
 import CheckBox from '../../../../components/formik/checkbox.component';
 import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
 import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
-import Picker from '../../../../components/formik/datePickerCustom.component';
 import React from 'react';
 import Select from '../../../../components/v2/chipSelect/chipSelected.component';
 import TextArea from '../../../../components/formik/textArea.component';
 import TextField from '../../../../components/formik/textFieldDefault.component';
-import TodayIcon from '@material-ui/icons/Today';
+import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
+import { toHumanReadble } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
+import { validateNumber } from '../../../../utils/validation.utils';
 
 const legalClearance = [
 	{
@@ -52,9 +49,9 @@ const initialValues = {
 	plotArea: '',
 	widthOfRoad: '',
 	facing: 'east', //dropdown,
-	constructionDone: false, //drop,
-	boundaryWallMade: false, //drop
-	gatedCommunity: false, //drop,
+	constructionDone: true, //drop,
+	boundaryWallMade: true, //drop
+	gatedCommunity: true, //drop,
 	landUsingZoning: 'yellow', //drop
 	govermentValuation: '',
 	salePrice: '',
@@ -72,70 +69,62 @@ const initialValues = {
 	legalClearance,
 };
 
-const RentApartment = ({ pType }) => {
+const RentApartment = ({ pType, onPost }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
-	const [isOpen, setIsOpen] = React.useState(false);
 	const [photos, setPhotos] = React.useState([]);
 
-	const addMore = () => {
-		if (photos.length < 15) {
-			setPhotos([
-				...photos,
-				{
-					id: photos.length + 1,
-					image: null,
-				},
-			]);
-		}
-	};
-	const handleImage = (img) => (e) => {
-		const { name, files } = e.target;
-		console.log({ name });
-		setPhotos((prevState) =>
-			prevState.map((c) => {
-				if (c.id === img.id) {
-					c.image = files[0];
-				}
-				return c;
-			})
-		);
-	};
-
-	const removePhoto = (id) => {
-		setPhotos((prevState) => prevState.filter((c) => c.id !== id));
-	};
 	const validateForm = (values) => {
 		const error = {};
-		if (!validateNumber(values.numberOfBedRooms)) {
-			error.numberOfBedRooms = 'Please enter a number';
+		if (!values.title) {
+			error.title = 'Enter project name';
+		}
+		if (!validateNumber(values['length'])) {
+			error['length'] = 'Please enter a number';
+		}
+		if (!validateNumber(values.width)) {
+			error.width = 'Please enter a number';
+		}
+		if (!validateNumber(values.plotFrontage)) {
+			error.plotFrontage = 'Please enter a number';
+		}
+		if (!validateNumber(values.plotArea)) {
+			error.plotArea = 'Please enter a number';
+		}
+		if (!validateNumber(values.widthOfRoad)) {
+			error.widthOfRoad = 'Please enter a number';
+		}
+		if (!validateNumber(values.govermentValuation)) {
+			error.govermentValuation = 'Please enter a number';
+		}
+
+		if (!validateNumber(values.salePrice)) {
+			error.salePrice = 'Please enter a number';
+		}
+		if (!values.description) {
+			error.description = 'Please mention some description';
+		}
+
+		if (
+			values.legalClearance.find((c) => c.name === 'numberOfOwner')[
+				'value'
+			] &&
+			!values.ownerNumber
+		) {
+			error.ownerNumber = 'required';
+		}
+
+		if (values.plotArea < values.plotFrontage) {
+			error.plotFrontage = 'Plot area cannot be less than plot frontage';
 		}
 
 		return error;
 	};
 
-	const renderPropertyOnFoor = (totalFloors) => {
-		const numbers = [
-			{
-				value: 'Ground Fooor',
-				label: 'Ground Fooor',
-			},
-		];
-		for (let index = 1; index < totalFloors; index++) {
-			numbers.push({
-				value: `${index}`,
-				label: `${index}`,
-			});
-		}
-
-		if (totalFloors > 1) {
-			numbers.push({
-				value: 'Entire Building',
-				label: 'Entire Building',
-			});
-		}
-		return numbers;
+	const submitForm = (values) => {
+		onPost(values);
 	};
+
 	return (
 		<Box width="100%">
 			<Formik
@@ -145,12 +134,13 @@ const RentApartment = ({ pType }) => {
 				}}
 				validate={validateForm}
 				enableReinitialize
+				onSubmit={submitForm}
 			>
 				{({ values, setFieldValue, errors }) => (
 					<Form>
 						<Box className={classes.rowWrapper2}>
 							<Box className={classes.columnWrapper}>
-								<span>Property Name</span>
+								<span>Project Name</span>
 								<TextField
 									name="title"
 									formLabel="Bedrooms *"
@@ -201,7 +191,7 @@ const RentApartment = ({ pType }) => {
 											classes.widthSM
 										)}
 									/>
-									<Typography>Sq.ft</Typography>
+									<Typography>ft</Typography>
 								</Box>
 							</Box>
 							<Box className={classes.columnWrapper2}>
@@ -214,7 +204,7 @@ const RentApartment = ({ pType }) => {
 											classes.widthSM
 										)}
 									/>
-									<Typography>Sq.ft</Typography>
+									<Typography>ft</Typography>
 								</Box>
 							</Box>
 							<Box className={classes.columnWrapper2}>
@@ -227,7 +217,7 @@ const RentApartment = ({ pType }) => {
 											classes.widthSM
 										)}
 									/>
-									<Typography>Sq.ft</Typography>
+									<Typography>ft</Typography>
 								</Box>
 							</Box>
 						</Box>
@@ -242,24 +232,34 @@ const RentApartment = ({ pType }) => {
 											classes.widthMD
 										)}
 									/>
-									<div>
-										<input
-											type="checkbox"
-											id="male"
-											name="gender"
-											value="male"
-											className={classes.bgShadow}
-										/>
-										<label for="male">
-											<Typography
-												display="inline"
-												className={gClasses.smText}
-											>
-												Negotiable
-											</Typography>
-										</label>{' '}
-									</div>
 								</Box>
+								{values.salePrice && (
+									<div>
+										<Typography
+											display="inline"
+											className={gClasses.smText}
+										>
+											{toHumanReadble(values.salePrice)}
+										</Typography>
+									</div>
+								)}
+								<div>
+									<input
+										type="checkbox"
+										id="male"
+										name="gender"
+										value="male"
+										className={classes.bgShadow}
+									/>
+									<label for="male">
+										<Typography
+											display="inline"
+											className={gClasses.smText}
+										>
+											Negotiable
+										</Typography>
+									</label>{' '}
+								</div>
 							</Box>
 
 							<Box className={classes.columnWrapper2}>
@@ -273,6 +273,18 @@ const RentApartment = ({ pType }) => {
 										)}
 									/>
 								</Box>
+								{values.govermentValuation && (
+									<div>
+										<Typography
+											display="inline"
+											className={gClasses.smText}
+										>
+											{toHumanReadble(
+												values.govermentValuation
+											)}
+										</Typography>
+									</div>
+								)}
 							</Box>
 						</Box>
 						<Box mt="2rem">
@@ -305,7 +317,11 @@ const RentApartment = ({ pType }) => {
 												val
 											);
 										}}
-										value={values.constructionDone}
+										value={
+											values.constructionDone
+												? 'Yes'
+												: 'No'
+										}
 										placeholder="0"
 									/>
 								</Box>
@@ -322,7 +338,11 @@ const RentApartment = ({ pType }) => {
 												val
 											);
 										}}
-										value={values.boundaryWallMade}
+										value={
+											values.boundaryWallMade
+												? 'Yes'
+												: 'No'
+										}
 										placeholder="0"
 									/>
 								</Box>
@@ -339,7 +359,9 @@ const RentApartment = ({ pType }) => {
 												val
 											);
 										}}
-										value={values.gatedCommunity}
+										value={
+											values.gatedCommunity ? 'Yes' : 'No'
+										}
 										placeholder="0"
 									/>
 								</Box>
@@ -360,56 +382,6 @@ const RentApartment = ({ pType }) => {
 								</Box>
 							</Box>
 						</Box>
-
-						<Box mt="2rem">
-							<Typography
-								variant="h5"
-								gutterBottom
-								align="center"
-							>
-								Legal Clearance
-							</Typography>
-							<Grid container spacing={0}>
-								<FieldArray name="legalClearance">
-									{(arrayHelpers) => (
-										<Grid container>
-											{values.legalClearance.map(
-												(c, i) => {
-													return (
-														<Grid item lg={3}>
-															<CheckBox
-																key={i}
-																heading="test"
-																name={`legalClearance.${i}.value`}
-																formLabel={
-																	c.label
-																}
-															/>
-														</Grid>
-													);
-												}
-											)}
-										</Grid>
-									)}
-								</FieldArray>
-							</Grid>
-						</Box>
-						{values.legalClearance.find(
-							(c) => c.name === 'numberOfOwner'
-						)['value'] && (
-							<Box className={classes.rowWrapper2} mt="2rem">
-								<Box className={classes.columnWrapper}>
-									<span>Owner Number</span>
-									<TextField
-										name="ownerNumber"
-										className={clsx(
-											classes.input,
-											classes.widthLG
-										)}
-									/>
-								</Box>
-							</Box>
-						)}
 
 						<Box mt="2rem" className={classes.contentWrapper}>
 							<Typography
@@ -466,10 +438,60 @@ const RentApartment = ({ pType }) => {
 								gutterBottom
 								align="center"
 							>
+								Legal Clearance
+							</Typography>
+							<Grid container spacing={0}>
+								<FieldArray name="legalClearance">
+									{(arrayHelpers) => (
+										<Grid container>
+											{values.legalClearance.map(
+												(c, i) => {
+													return (
+														<Grid item lg={3}>
+															<CheckBox
+																key={i}
+																heading="test"
+																name={`legalClearance.${i}.value`}
+																formLabel={
+																	c.label
+																}
+															/>
+														</Grid>
+													);
+												}
+											)}
+										</Grid>
+									)}
+								</FieldArray>
+							</Grid>
+						</Box>
+						{values.legalClearance.find(
+							(c) => c.name === 'numberOfOwner'
+						)['value'] && (
+							<Box className={classes.rowWrapper2} mt="2rem">
+								<Box className={classes.columnWrapper}>
+									<span>Owner Number</span>
+									<TextField
+										name="ownerNumber"
+										className={clsx(
+											classes.input,
+											classes.widthLG
+										)}
+									/>
+								</Box>
+							</Box>
+						)}
+
+						<Box mt="2rem">
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
 								Description
 							</Typography>
 							<TextArea
-								name="descriptions"
+								name="description"
 								rows={8}
 								className={clsx(
 									classes.input,
@@ -477,91 +499,19 @@ const RentApartment = ({ pType }) => {
 								)}
 							/>
 						</Box>
-						<Box className={classes.rowWrapper2} mt="3rem">
-							<Box className={classes.columnWrapper2}>
-								<Box mb="1rem">
-									<ChipWrapper onClick={addMore}>
-										<Box className={classes.contentWrapper}>
-											<AddIcon />
-											<Typography variant="body2">
-												Add Photos
-											</Typography>
-										</Box>
-									</ChipWrapper>
-								</Box>
-								<Typography variant="caption" align="center">
-									Photos 0/15 increase your chances of getting
-									genuine leads by adding at least 5 photos of
-									Hall, Bedrooms, Kitchen & bathrooms.
-								</Typography>
-							</Box>
-						</Box>
 						<Box mt="2rem">
-							<Grid container spacing={3}>
-								{photos.map((c, i) => (
-									<Grid key={c.id} item xs={6} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													c.image
-														? URL.createObjectURL(
-																c.image
-														  )
-														: require('../../../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										<input
-											type="file"
-											onChange={handleImage(c)}
-											id={`image-${c.id}`}
-											className={classes.uploadButton}
-										/>
-										{c.image ? (
-											<Grid container>
-												<Grid item xs={6}>
-													<label
-														htmlFor={`image-${c.id}`}
-														className={
-															classes.label
-														}
-													>
-														Upload
-													</label>
-												</Grid>
-												<Grid item xs={6}>
-													<label
-														className={
-															classes.remove
-														}
-														onClick={() =>
-															removePhoto(c.id)
-														}
-													>
-														Remove
-													</label>
-												</Grid>
-											</Grid>
-										) : (
-											<Grid container>
-												<Grid item xs={12}>
-													<label
-														htmlFor={`image-${c.id}`}
-														className={
-															classes.label
-														}
-													>
-														Upload
-													</label>
-												</Grid>
-											</Grid>
-										)}
-									</Grid>
-								))}
-							</Grid>
+							<UploadPhoto
+								photos={photos}
+								setPhotos={setPhotos}
+							/>
+						</Box>
+						<Box mt="3rem" className={gClasses.justifyCenter}>
+							<button
+								className={classes.postButton}
+								type="submit"
+							>
+								Post Ad Now
+							</button>
 						</Box>
 					</Form>
 				)}

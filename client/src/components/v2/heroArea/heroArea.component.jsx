@@ -119,7 +119,7 @@ const HeroArea = ({
 	};
 
 	const onSearch = () => {
-		if (!selectedCity) return;
+		if (!selectedCity.id) return;
 		const data = {
 			city: selectedCity.id,
 			cityName: selectedCity.name,

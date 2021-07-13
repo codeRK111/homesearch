@@ -5,7 +5,6 @@ import {
 	validateNumber,
 } from '../../../../utils/validation.utils';
 
-import AddIcon from '@material-ui/icons/Add';
 import CheckBox from '../../../../components/formik/checkbox.component';
 import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
 import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
@@ -15,8 +14,9 @@ import Select from '../../../../components/v2/chipSelect/chipSelected.component'
 import TextArea from '../../../../components/formik/textArea.component';
 import TextField from '../../../../components/formik/textFieldDefault.component';
 import TodayIcon from '@material-ui/icons/Today';
+import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
-import { renderByPropertyFor } from '../../../../utils/render.utils';
+import { toHumanReadble } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
 
@@ -70,7 +70,7 @@ const legalClearance = [
 
 const initialValues = {
 	for: 'rent',
-	numberOfBedRooms: 0,
+	numberOfBedRooms: 1,
 	numberOfBalconies: 1,
 	noOfFloors: 1,
 	typeOfToilets: '',
@@ -79,7 +79,7 @@ const initialValues = {
 	superBuiltupArea: '',
 	carpetArea: '',
 	salePrice: '',
-	furnished: '',
+	furnished: 'semifurnished',
 	furnishes: [],
 	amenities: [],
 	distanceSchool: 1,
@@ -87,58 +87,83 @@ const initialValues = {
 	distanceAirport: 1,
 	distanceBusStop: 1,
 	distanceHospital: 1,
-	availability: '',
+	availability: 'immediately',
 	availableDate: new Date(),
 	description: '',
 	city: '',
 	location: '',
 	carParking: 'open',
 	title: '',
-	propertyOwnerShip: '',
+	propertyOwnerShip: 'freehold',
 	salePriceOver: '',
 	legalClearance: legalClearance,
 	reraapproveId: '',
 	pricePerSqFt: '',
-	transactionType: '',
+	transactionType: 'newbooking',
 };
 
-const RentApartment = ({ pType, furnishes, amenities }) => {
+const RentApartment = ({ pType, furnishes, amenities, onPost }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [photos, setPhotos] = React.useState([]);
 
-	const addMore = () => {
-		if (photos.length < 15) {
-			setPhotos([
-				...photos,
-				{
-					id: photos.length + 1,
-					image: null,
-				},
-			]);
-		}
-	};
-	const handleImage = (img) => (e) => {
-		const { name, files } = e.target;
-		console.log({ name });
-		setPhotos((prevState) =>
-			prevState.map((c) => {
-				if (c.id === img.id) {
-					c.image = files[0];
-				}
-				return c;
-			})
-		);
-	};
-
-	const removePhoto = (id) => {
-		setPhotos((prevState) => prevState.filter((c) => c.id !== id));
-	};
 	const validateForm = (values) => {
 		const error = {};
+		if (!values.title) {
+			error.title = 'Enter project name';
+		}
 		if (!validateNumber(values.numberOfBedRooms)) {
 			error.numberOfBedRooms = 'Please enter a number';
+		}
+		if (!validateNumber(values.superBuiltupArea)) {
+			error.superBuiltupArea = 'Please enter a number';
+		}
+		if (!validateNumber(values.carpetArea)) {
+			error.carpetArea = 'Please enter a number';
+		}
+		// if (!validateNumber(values.landArea)) {
+		// 	error.landArea = 'Please enter a number';
+		// }
+		if (!validateNumber(values.toiletIndian)) {
+			error.toiletIndian = 'Please enter a number';
+		}
+		if (!validateNumber(values.toiletWestern)) {
+			error.toiletWestern = 'Please enter a number';
+		}
+		if (Number(values.toiletIndian) > 10) {
+			error.toiletIndian = 'Cannot be graeter than 10';
+		}
+		if (Number(values.toiletWestern) > 10) {
+			error.toiletWestern = 'Cannot be graeter than 10';
+		}
+
+		if (Number(values.noOfFloors) > 99) {
+			error.toiletWestern = 'Cannot be graeter than 99';
+		}
+		if (!validateNumber(values.salePrice)) {
+			error.salePrice = 'Please enter a number';
+		}
+		if (!values.description) {
+			error.description = 'Please mention some description';
+		}
+
+		if (
+			values.legalClearance.find((c) => c.name === 'reraapproved')[
+				'value'
+			] &&
+			!values.reraapproveId
+		) {
+			error.reraapproveId = 'required';
+		}
+
+		if (Number(values.superBuiltupArea) < Number(values.carpetArea)) {
+			error.carpetArea =
+				'Carpet area cannot be greater than super built up area';
+		}
+
+		if (!validateLength(values.numberOfBedRooms, 1)) {
+			error.numberOfBedRooms = '1 digit allowed';
 		}
 
 		return error;
@@ -151,7 +176,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 				label: 'Ground Fooor',
 			},
 		];
-		for (let index = 1; index < totalFloors; index++) {
+		for (let index = 1; index <= totalFloors; index++) {
 			numbers.push({
 				value: `${index}`,
 				label: `${index}`,
@@ -166,6 +191,10 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 		}
 		return numbers;
 	};
+
+	const submitForm = (values) => {
+		onPost(values);
+	};
 	return (
 		<Box width="100%">
 			<Formik
@@ -175,12 +204,14 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 				}}
 				validate={validateForm}
 				enableReinitialize
+				onSubmit={submitForm}
 			>
 				{({ values, setFieldValue, errors }) => (
 					<Form>
+						{/* <pre>{JSON.stringify(errors, null, 2)}</pre> */}
 						<Box className={classes.rowWrapper2}>
 							<Box className={classes.columnWrapper}>
-								<span>Property Name</span>
+								<span>Project Name</span>
 								<TextField
 									name="title"
 									formLabel="Bedrooms *"
@@ -308,31 +339,41 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 										name="salePrice"
 										className={clsx(
 											classes.input,
-											classes.widthSM
+											classes.widthMD
 										)}
 									/>
-									<div>
-										<input
-											type="checkbox"
-											id="male"
-											name="gender"
-											value="male"
-											className={classes.bgShadow}
-										/>
-										<label for="male">
-											<Typography
-												display="inline"
-												className={gClasses.smText}
-											>
-												Negotiable
-											</Typography>
-										</label>{' '}
-									</div>
 								</Box>
+								{values.salePrice && (
+									<div>
+										<Typography
+											display="inline"
+											className={gClasses.smText}
+										>
+											{toHumanReadble(values.salePrice)}
+										</Typography>
+									</div>
+								)}
+								<div>
+									<input
+										type="checkbox"
+										id="male"
+										name="gender"
+										value="male"
+										className={classes.bgShadow}
+									/>
+									<label for="male">
+										<Typography
+											display="inline"
+											className={gClasses.smText}
+										>
+											Negotiable
+										</Typography>
+									</label>{' '}
+								</div>
 							</Box>
 
 							<Box className={classes.columnWrapper2}>
-								<span>Built up area</span>
+								<span>Super Built up area</span>
 								<Box display="flex" alignItems="center">
 									<TextField
 										name="superBuiltupArea"
@@ -356,6 +397,162 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 										)}
 									/>
 									<Typography>Sq.ft</Typography>
+								</Box>
+							</Box>
+						</Box>
+
+						<Box mt="2rem">
+							<Box className={classes.rowWrapper2}>
+								<Box className={classes.columnWrapper}>
+									<span>No. of indian bathroom </span>
+									<DropDown
+										options={[
+											{ value: 1, label: '1' },
+											{ value: 2, label: '2' },
+											{ value: 3, label: '3' },
+											{ value: 4, label: '4' },
+											{ value: 5, label: '5' },
+										]}
+										onSet={(val) => {
+											setFieldValue('toiletIndian', val);
+										}}
+										value={values.toiletIndian}
+										placeholder="0"
+									/>
+								</Box>
+								<Box className={classes.columnWrapper}>
+									<span>No. of western bathroom </span>
+									<DropDown
+										options={[
+											{ value: 1, label: '1' },
+											{ value: 2, label: '2' },
+											{ value: 3, label: '3' },
+											{ value: 4, label: '4' },
+											{ value: 5, label: '5' },
+										]}
+										onSet={(val) => {
+											setFieldValue('toiletWestern', val);
+										}}
+										value={values.toiletWestern}
+										placeholder="0"
+									/>
+								</Box>
+								<Box className={classes.columnWrapper}>
+									<span>No. of balconies </span>
+									<DropDown
+										options={[
+											{ value: 1, label: '1' },
+											{ value: 2, label: '2' },
+											{ value: 3, label: '3' },
+											{ value: 4, label: '4' },
+											{ value: 5, label: '5' },
+										]}
+										onSet={(val) => {
+											setFieldValue(
+												'numberOfBalconies',
+												val
+											);
+										}}
+										value={values.numberOfBalconies}
+										placeholder="0"
+									/>
+								</Box>
+							</Box>
+						</Box>
+						<Box mt="2rem" className={classes.contentWrapper}>
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Property Ownership
+							</Typography>
+							<Box
+								mt="1rem"
+								className={clsx(
+									classes.alignCenter,
+									gClasses.smFlexWrap
+								)}
+							>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.propertyOwnerShip ===
+											'freehold'
+										}
+										onClick={() => {
+											setFieldValue(
+												'propertyOwnerShip',
+												'freehold'
+											);
+										}}
+									>
+										Freehold
+									</Select>
+								</Box>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.propertyOwnerShip ===
+											'leashed'
+										}
+										onClick={() => {
+											setFieldValue(
+												'propertyOwnerShip',
+												'leashed'
+											);
+										}}
+									>
+										Leashed
+									</Select>
+								</Box>
+							</Box>
+						</Box>
+						<Box mt="2rem" className={classes.contentWrapper}>
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Transaction Type
+							</Typography>
+							<Box
+								mt="1rem"
+								className={clsx(
+									classes.alignCenter,
+									gClasses.smFlexWrap
+								)}
+							>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.transactionType ===
+											'newbooking'
+										}
+										onClick={() => {
+											setFieldValue(
+												'transactionType',
+												'newbooking'
+											);
+										}}
+									>
+										New booking
+									</Select>
+								</Box>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.transactionType === 'resale'
+										}
+										onClick={() => {
+											setFieldValue(
+												'transactionType',
+												'resale'
+											);
+										}}
+									>
+										Resale
+									</Select>
 								</Box>
 							</Box>
 						</Box>
@@ -524,181 +721,6 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 							</Box>
 						)}
 
-						<Box mt="2rem">
-							<Box className={classes.rowWrapper2}>
-								<Box className={classes.columnWrapper}>
-									<span>No. of Bedroom</span>
-									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
-										onSet={(val) => {
-											setFieldValue(
-												'numberOfBedRooms',
-												val
-											);
-										}}
-										value={values.numberOfBedRooms}
-										placeholder="0"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper}>
-									<span>No. of indian bathroom </span>
-									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
-										onSet={(val) => {
-											setFieldValue('toiletIndian', val);
-										}}
-										value={values.toiletIndian}
-										placeholder="0"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper}>
-									<span>No. of western bathroom </span>
-									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
-										onSet={(val) => {
-											setFieldValue('toiletWestern', val);
-										}}
-										value={values.toiletWestern}
-										placeholder="0"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper}>
-									<span>No. of balconies </span>
-									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
-										onSet={(val) => {
-											setFieldValue(
-												'numberOfBalconies',
-												val
-											);
-										}}
-										value={values.numberOfBalconies}
-										placeholder="0"
-									/>
-								</Box>
-							</Box>
-						</Box>
-						<Box mt="2rem" className={classes.contentWrapper}>
-							<Typography
-								variant="h5"
-								gutterBottom
-								align="center"
-							>
-								Property Ownership
-							</Typography>
-							<Box
-								mt="1rem"
-								className={clsx(
-									classes.alignCenter,
-									gClasses.smFlexWrap
-								)}
-							>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={
-											values.propertyOwnerShip ===
-											'freehold'
-										}
-										onClick={() => {
-											setFieldValue(
-												'propertyOwnerShip',
-												'freehold'
-											);
-										}}
-									>
-										Freehold
-									</Select>
-								</Box>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={
-											values.propertyOwnerShip ===
-											'leashed'
-										}
-										onClick={() => {
-											setFieldValue(
-												'propertyOwnerShip',
-												'leashed'
-											);
-										}}
-									>
-										Leashed
-									</Select>
-								</Box>
-							</Box>
-						</Box>
-						<Box mt="2rem" className={classes.contentWrapper}>
-							<Typography
-								variant="h5"
-								gutterBottom
-								align="center"
-							>
-								Transaction Type
-							</Typography>
-							<Box
-								mt="1rem"
-								className={clsx(
-									classes.alignCenter,
-									gClasses.smFlexWrap
-								)}
-							>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={
-											values.transactionType ===
-											'newbooking'
-										}
-										onClick={() => {
-											setFieldValue(
-												'transactionType',
-												'newbooking'
-											);
-										}}
-									>
-										New booking
-									</Select>
-								</Box>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={
-											values.transactionType === 'resale'
-										}
-										onClick={() => {
-											setFieldValue(
-												'transactionType',
-												'resale'
-											);
-										}}
-									>
-										Resale
-									</Select>
-								</Box>
-							</Box>
-						</Box>
 						<Box mt="2rem" className={classes.contentWrapper}>
 							<Typography
 								variant="h5"
@@ -804,7 +826,7 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								Description
 							</Typography>
 							<TextArea
-								name="descriptions"
+								name="description"
 								rows={8}
 								className={clsx(
 									classes.input,
@@ -812,91 +834,19 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								)}
 							/>
 						</Box>
-						<Box className={classes.rowWrapper2} mt="3rem">
-							<Box className={classes.columnWrapper2}>
-								<Box mb="1rem">
-									<ChipWrapper onClick={addMore}>
-										<Box className={classes.contentWrapper}>
-											<AddIcon />
-											<Typography variant="body2">
-												Add Photos
-											</Typography>
-										</Box>
-									</ChipWrapper>
-								</Box>
-								<Typography variant="caption" align="center">
-									Photos 0/15 increase your chances of getting
-									genuine leads by adding at least 5 photos of
-									Hall, Bedrooms, Kitchen & bathrooms.
-								</Typography>
-							</Box>
-						</Box>
 						<Box mt="2rem">
-							<Grid container spacing={3}>
-								{photos.map((c, i) => (
-									<Grid key={c.id} item xs={6} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													c.image
-														? URL.createObjectURL(
-																c.image
-														  )
-														: require('../../../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										<input
-											type="file"
-											onChange={handleImage(c)}
-											id={`image-${c.id}`}
-											className={classes.uploadButton}
-										/>
-										{c.image ? (
-											<Grid container>
-												<Grid item xs={6}>
-													<label
-														htmlFor={`image-${c.id}`}
-														className={
-															classes.label
-														}
-													>
-														Upload
-													</label>
-												</Grid>
-												<Grid item xs={6}>
-													<label
-														className={
-															classes.remove
-														}
-														onClick={() =>
-															removePhoto(c.id)
-														}
-													>
-														Remove
-													</label>
-												</Grid>
-											</Grid>
-										) : (
-											<Grid container>
-												<Grid item xs={12}>
-													<label
-														htmlFor={`image-${c.id}`}
-														className={
-															classes.label
-														}
-													>
-														Upload
-													</label>
-												</Grid>
-											</Grid>
-										)}
-									</Grid>
-								))}
-							</Grid>
+							<UploadPhoto
+								photos={photos}
+								setPhotos={setPhotos}
+							/>
+						</Box>
+						<Box mt="3rem" className={gClasses.justifyCenter}>
+							<button
+								className={classes.postButton}
+								type="submit"
+							>
+								Post Ad Now
+							</button>
 						</Box>
 					</Form>
 				)}

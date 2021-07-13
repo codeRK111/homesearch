@@ -247,7 +247,10 @@ const Filter = ({
 								elevation={5}
 							>
 								<Box className={globalClasses.justifyCenter}>
-									<IconButton onClick={handleLocationClose}>
+									<IconButton
+										onClick={handleLocationClose}
+										size="small"
+									>
 										<HighlightOffIcon />
 									</IconButton>
 								</Box>
@@ -283,7 +286,10 @@ const Filter = ({
 								elevation={5}
 							>
 								<Box className={globalClasses.justifyCenter}>
-									<IconButton onClick={handleTypesClose}>
+									<IconButton
+										onClick={handleTypesClose}
+										size="small"
+									>
 										<HighlightOffIcon />
 									</IconButton>
 								</Box>
@@ -318,7 +324,10 @@ const Filter = ({
 								elevation={5}
 							>
 								<Box className={globalClasses.justifyCenter}>
-									<IconButton onClick={handleBudgetClose}>
+									<IconButton
+										onClick={handleBudgetClose}
+										size="small"
+									>
 										<HighlightOffIcon />
 									</IconButton>
 								</Box>
