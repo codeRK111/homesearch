@@ -117,7 +117,7 @@ function App({
 				</Alert>
 			</Snackbar>
 			<LogIn />
-			<BrowserRouter basename="/">
+			<BrowserRouter basename="https://homesearch18.com/build/index.html">
 				{/* <SpeedDial /> */}
 				<Switch>
 					{/* <Route
