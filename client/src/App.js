@@ -8,14 +8,13 @@ import {
 
 import LogIn from './components/logInDialog/logInDialog.component';
 import MuiAlert from '@material-ui/lab/Alert';
+import Protected from './components/protected/protected.component';
 import Snackbar from '@material-ui/core/Snackbar';
 import SuspenseLoader from './components/initialLoader/initialLoader.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fetchUserProfile } from './redux/auth/auth.actions';
 import { setSnackbar } from './redux/ui/ui.actions';
-
-// import Protected from './components/protected/protected.component';
 
 // import SpeedDial from './components/speedDial/speedDial.component';
 
@@ -68,7 +67,9 @@ const PropertyDetailsPageNew = lazy(() =>
 const ProjectDetailsPageNew = lazy(() =>
 	import('./pages/v2/projectDetailsPage/projectDetails.page')
 );
-// const AgentPageNew = lazy(() => import('./pages/v2/agentPage/agent.page'));
+const ProfilePage = lazy(() =>
+	import('./pages/v2/userProfile/userProfile.page')
+);
 const PostPropertyPageNew = lazy(() =>
 	import('./pages/v2/postPage/postProperty.page')
 );
@@ -162,18 +163,14 @@ function App({
 						path="/packages/:id"
 						render={(props) => <PackagePage {...props} />}
 					/>
-					{/* <Route
+					<Route
 						exact
-						path="/post-property/:propertyForParam"
+						path="/profile"
 						render={(props) => (
-							<Protected
-								component={PostProperty}
-								redirectTo="post-property"
-								{...props}
-							/>
+							<Protected component={ProfilePage} {...props} />
 						)}
 					/>
-					<Route
+					{/* <Route
 						exact
 						path="/post-property-details/:pFor/:pType"
 						render={(props) => (

@@ -1,6 +1,7 @@
 const express = require('express');
 // const userController = require('./../controllers/userController');
 const authController = require('../controllers/authController');
+const uploadController = require('../controllersV2/fileUploadController');
 
 const router = express.Router();
 router.post('/signup', authController.signup);
@@ -40,7 +41,11 @@ router
 	.post(authController.protect, authController.updateMyPassword);
 router
 	.route('/handle-profile-image')
-	.patch(authController.protect, authController.handleProfileImage);
+	.patch(
+		authController.protect,
+		uploadController.uploadProfile,
+		authController.handleProfileImage
+	);
 router
 	.route('/')
 	.get(authController.protect, authController.getUserInfo)

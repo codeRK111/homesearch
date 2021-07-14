@@ -33,6 +33,9 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut }) => {
 	const redirectToPostPage = () => {
 		history.push('/v2/post-property');
 	};
+	const goToProfile = () => {
+		history.push('/profile');
+	};
 
 	const onLogOut = () => {
 		signOut();
@@ -89,7 +92,7 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut }) => {
 									horizontal: 'center',
 								}}
 							>
-								<MenuItem onClick={handleClose} disabled>
+								<MenuItem onClick={goToProfile}>
 									Profile
 								</MenuItem>
 								<MenuItem onClick={handleClose} disabled>

@@ -14,6 +14,15 @@ const builderStorage = multer.diskStorage({
 		cb(null, `${Date.now()}.${ext}`);
 	},
 });
+const profileStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, path.join(__dirname, '../', 'images', 'profile_images/'));
+	},
+	filename: (req, file, cb) => {
+		const ext = file.mimetype.split('/')[1];
+		cb(null, `${Date.now()}.${ext}`);
+	},
+});
 const builderPackageStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(
@@ -55,6 +64,9 @@ const multerFilter = (req, file, cb) => {
 
 const builder = multer({
 	fileFilter: multerFilter,
+});
+const profile = multer({
+	storage: profileStorage,
 });
 const properties = multer({
 	fileFilter: multerFilter,
@@ -112,3 +124,4 @@ exports.uploadBuilderPhoto = builder.fields([
 exports.uploadPropertiesPhoto = properties.array('images');
 exports.uploadProjectPhotos = projects.array('images');
 exports.uploadBuilderPackagePhoto = builderPackages.single('photo');
+exports.uploadProfile = profile.single('photo');

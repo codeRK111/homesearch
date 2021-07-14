@@ -720,103 +720,42 @@ exports.updateProfilePicture = catchAsync(async (req, res, next) => {
 });
 
 exports.handleProfileImage = catchAsync(async (req, res, next) => {
-	if (!req.files) {
-		return next(new AppError('No image found', 400));
-	} else {
-		let user = await User.findById(req.user.id);
-		if (!user) {
-			return next(new AppError('User not found', 404));
+	const updatedUser = await User.findByIdAndUpdate(
+		req.user.id,
+		{ photo: req.file.filename, photoStatus: 'uploaded' },
+		{
+			new: true,
+			runValidators: true,
 		}
-
-		let image = req.files.image;
-
-		//Use the mv() method to place the file in upload directory (i.e. "uploads")
-		let imageName =
-			Math.floor(10000000 + Math.random() * 90000000) + '-' + image.name;
-		await image.mv(
-			path.join(__dirname, '../', 'images', 'profile_images/') + imageName
+	);
+	if (!updatedUser) {
+		fs.unlinkSync(
+			path.join(__dirname, '../', 'images', 'profile_images/') +
+				req.file.filename
 		);
-		if (image.photo) {
-			fs.unlinkSync(
-				path.join(__dirname, '../', 'images', 'profile_images/') +
-					user.photo
-			);
-		}
-
-		const updatedUser = await User.findByIdAndUpdate(
-			req.user.id,
-			{ photo: imageName, photoStatus: 'uploaded' },
-			{
-				new: true,
-				runValidators: true,
-			}
-		);
-		if (!updatedUser) {
-			fs.unlinkSync(
-				path.join(__dirname, '../', 'images', 'profile_images/') +
-					imageName
-			);
-			return next(new AppError('Unable set image  '), 500);
-		}
-
-		//send response
-		res.send({
-			status: true,
-			message: 'File is uploaded',
-			data: {
-				name: imageName,
-				mimetype: image.mimetype,
-				size: image.size,
-				user: updatedUser,
-			},
-		});
+		return next(new AppError('Unable set image  '), 500);
 	}
+
+	//send response
+	res.send({
+		status: true,
+		message: 'File is uploaded',
+	});
 });
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-	console.log(req.body);
-	const user = [
-		'name',
-		'email',
-		'city',
-		'gender',
-		'number',
-		'numberVerified',
-		'role',
-		'status',
-		'mobileStatus',
-		'registerThrough',
-		'registerVia',
-		'paymentStatus',
-		'numberVerified',
-		'password',
-	];
-	const excludeFields = [
-		'serialNumber',
-		'googleId',
-		'photo',
-		'photoStatus',
-		'role',
-		'otp',
-		'createdAt',
-		'status',
-		'registerThrough',
-		'registerVia',
-		'paymentStatus',
-		'numberVerified',
-		'passwordChangedAt',
-	];
-	// EXCLUDE FROM QUERY OBJECT
-	excludeFields.forEach((field) => delete req.body[field]);
-	console.log(req.body);
-	const doc = await User.findByIdAndUpdate(req.user.id, req.body, {
+	const body = {
+		name: req.body.name ? req.body.name : 'Homesearch User',
+		email: req.body.email,
+		role: req.body.role,
+	};
+	const doc = await User.findByIdAndUpdate(req.user.id, body, {
 		new: true,
 		runValidators: true,
-		select: user.join(' '),
 	});
 
 	if (!doc) {
-		return next(new AppError('No document found with that ID', 404));
+		return next(new AppError('No user found with that ID', 404));
 	}
 
 	res.status(200).json({

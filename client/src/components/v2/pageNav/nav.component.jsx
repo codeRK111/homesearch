@@ -101,6 +101,9 @@ const NavBar = ({
 	const redirectToHomePage = () => {
 		history.push('/');
 	};
+	const goToProfile = () => {
+		history.push('/profile');
+	};
 
 	const handleAssetType = (asset) => (e) => {
 		setCurrentTab(asset);
@@ -336,9 +339,7 @@ const NavBar = ({
 								horizontal: 'center',
 							}}
 						>
-							<MenuItem onClick={handleClose} disabled>
-								Profile
-							</MenuItem>
+							<MenuItem onClick={goToProfile}>Profile</MenuItem>
 							<MenuItem onClick={handleClose} disabled>
 								My account
 							</MenuItem>
