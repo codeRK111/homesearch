@@ -94,7 +94,7 @@ function AlertDialogSlide({
 
 	const [otp, setOTP] = React.useState(false);
 	const [signUpOtp, setSignUpOtp] = React.useState(false);
-	const [counterKey, setCounterKey] = React.useState(0);
+	// const [counterKey, setCounterKey] = React.useState(0);
 	const [phoneNumber, setPhoneNumber] = React.useState(null);
 	const [otpSent, setOtpSent] = React.useState(false);
 	const [signUpOtpSent, setSignUpOtpSent] = React.useState(false);
@@ -129,18 +129,18 @@ function AlertDialogSlide({
 		toggleLoginPopup(false);
 	};
 
-	const handleSendOtp =
-		(number, setErrors) =>
-		(status, data = null) => {
-			if (status === 'success') {
-				setOtpSent(true);
-				setPhoneNumber(number);
-			} else {
-				setPhoneNumber('');
-				setOtpSent(false);
-				setErrors({ number: data });
-			}
-		};
+	// const handleSendOtp =
+	// 	(number, setErrors) =>
+	// 	(status, data = null) => {
+	// 		if (status === 'success') {
+	// 			setOtpSent(true);
+	// 			setPhoneNumber(number);
+	// 		} else {
+	// 			setPhoneNumber('');
+	// 			setOtpSent(false);
+	// 			setErrors({ number: data });
+	// 		}
+	// 	};
 
 	const handleValidateOtp =
 		(setErrors) =>

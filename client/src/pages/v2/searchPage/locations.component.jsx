@@ -1,11 +1,6 @@
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 
 import Box from '@material-ui/core/Box';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -13,6 +8,12 @@ import { searchLocations } from '../../../redux/city/city.actions';
 import { selectCurrentTab } from '../../../redux/actionTab/actionTab.selectors';
 import { selectSearchLocationLoading } from '../../../redux/city/city.selectors';
 import useStyles from './searchPage.style';
+
+// import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+// import Grow from '@material-ui/core/Grow';
+// import Paper from '@material-ui/core/Paper';
+// import Popper from '@material-ui/core/Popper';
 
 // Redux
 
@@ -45,6 +46,7 @@ function MenuListComposition({
 		if (city) {
 			searchLocations(handleFetchLocations, '', city);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [city]);
 	React.useEffect(() => {
 		setLocationData(

@@ -3,7 +3,6 @@ import { Box } from '@material-ui/core';
 import CustomerCount from '../../../components/v2/customerCount/customerCount.component';
 import Enquiry from '../../../components/v2/enquiryComponent/enquiry.component';
 import HeroArea from '../../../components/v2/heroArea/heroArea.component';
-import LatestRentProperties from '../../../components/v2/latestRentProperties/rentProperties.component';
 import NavBar from '../../../components/v2/nav/nav.component';
 import React from 'react';
 import RecentBlogs from '../../../components/v2/recentBlogs/recentBlogs.component';
@@ -16,13 +15,23 @@ import axios from 'axios';
 import clsx from 'clsx';
 import useStyles from './homePage.style';
 
+// import LatestRentProperties from '../../../components/v2/latestRentProperties/rentProperties.component';
+
+
+
+
+
+
+
+
+
+
+
+
 const HomePage = () => {
 	const classes = useStyles();
 	let cancelToken = React.useRef();
-	const [asyncState, setAsyncState] = React.useState({
-		loading: false,
-		error: null,
-	});
+
 	const [data, setData] = React.useState(null);
 	React.useEffect(() => {
 		return () => {
@@ -35,29 +44,17 @@ const HomePage = () => {
 	React.useEffect(() => {
 		(async () => {
 			try {
-				setAsyncState({
-					error: null,
-					loading: true,
-				});
 				cancelToken.current = axios.CancelToken.source();
 
 				const res = await axios.get(apiUrl('/page/homePage', 'v1'), {
 					cancelToken: cancelToken.current.token,
 				});
 
-				setAsyncState({
-					error: null,
-					loading: false,
-				});
 				console.log(res.data.data);
 				setData(res.data.data);
 			} catch (error) {
 				setData(null);
 				console.log(error);
-				setAsyncState({
-					error: error.response.data.message,
-					loading: false,
-				});
 			}
 		})();
 	}, []);

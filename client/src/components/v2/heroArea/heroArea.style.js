@@ -103,7 +103,6 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: '50%',
 		boxShadow: '5px 5px 9px #bebebe,-5px -5px 9px #ffffff',
 		display: 'inline-block',
-		display: 'flex',
 	},
 	whatsAppWrapper: {
 		marginTop: '12vh',

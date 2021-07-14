@@ -2,7 +2,7 @@ import {
 	addRequestPhotoLoading,
 	validateRequestPhotoLoading,
 } from './request.actions';
-import { all, call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import axios from 'axios';
 import { requestActionTypes as types } from './request.types';

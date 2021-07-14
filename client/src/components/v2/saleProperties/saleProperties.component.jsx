@@ -1,13 +1,20 @@
 import { Box, Grid } from '@material-ui/core';
 
 import Card from '../salePropertyCard/propertyCard.component';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Chip from '../chip/chip.component';
 import React from 'react';
 import clsx from 'clsx';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './saleProperties.style';
+
+// import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+
+
+
+
+
+
 
 const RentProperties = ({ data }) => {
 	const classes = useStyles();

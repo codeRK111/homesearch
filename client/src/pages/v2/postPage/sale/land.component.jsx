@@ -1,9 +1,7 @@
 import { Box, Grid, Typography } from '@material-ui/core';
 import { FieldArray, Form, Formik } from 'formik';
 
-import AddIcon from '@material-ui/icons/Add';
 import CheckBox from '../../../../components/formik/checkbox.component';
-import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
 import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
 import React from 'react';
 import Select from '../../../../components/v2/chipSelect/chipSelected.component';
@@ -15,6 +13,21 @@ import { toHumanReadble } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
 import { validateNumber } from '../../../../utils/validation.utils';
+
+// import AddIcon from '@material-ui/icons/Add';
+
+// import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
+
+
+
+
+
+
+
+
+
+
+
 
 const legalClearance = [
 	{

@@ -1,27 +1,33 @@
 import '../extra.css';
 
 import { Box, Grid } from '@material-ui/core';
-import {
-	renderBool,
-	renderToilets,
-	shortLength,
-} from '../../../../utils/render.utils';
 
 import { Link } from 'react-router-dom';
 import React from 'react';
-import area from '../../../../assets/icons/area.svg';
-import bed from '../../../../assets/icons/bed.svg';
-import car from '../../../../assets/icons/car.svg';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
 import location from '../../../../assets/icons/location2.svg';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
-import tub from '../../../../assets/icons/tub.svg';
+import {
+	shortLength,
+} from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../searchCard.style';
 
-const PropertyCard = ({ property, edit = false, propertyItems }) => {
+// import area from '../../../../assets/icons/area.svg';
+// import bed from '../../../../assets/icons/bed.svg';
+// import car from '../../../../assets/icons/car.svg';
+
+
+
+
+
+// import tub from '../../../../assets/icons/tub.svg';
+
+
+
+const PropertyCard = ({ property }) => {
 	const m = moment(property.createdAt);
 	const img = property.photos[0]
 		? `/assets/projects/${property.photos[0].image}`

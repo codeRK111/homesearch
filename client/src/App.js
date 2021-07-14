@@ -1,13 +1,11 @@
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
 import { loginDialogStatus, snackbarDetails } from './redux/ui/ui.selectors';
 import {
 	selectAuthenticated,
 	selectUserProfileLoading,
 } from './redux/auth/auth.selectors';
-import { setSnackbar, toggleLoginPopup } from './redux/ui/ui.actions';
 
-import CacheBuster from './CacheBuster';
 import LogIn from './components/logInDialog/logInDialog.component';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -15,6 +13,7 @@ import SuspenseLoader from './components/initialLoader/initialLoader.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fetchUserProfile } from './redux/auth/auth.actions';
+import { setSnackbar } from './redux/ui/ui.actions';
 
 // import Protected from './components/protected/protected.component';
 
@@ -79,7 +78,6 @@ function Alert(props) {
 }
 
 function App({
-	toggleLoginPopup,
 	open,
 	authenticated,
 	profileLoading,
@@ -87,22 +85,6 @@ function App({
 	snackbarDetails,
 	fetchUser,
 }) {
-	// React.useEffect(() => {
-	// 	if (!authenticated && !profileLoading && !open) {
-	// 		timer.current = setTimeout(() => {
-	// 			if (!authenticated && !profileLoading && !open) {
-	// 				toggleLoginPopup(true);
-	// 			}
-	// 		}, 10000);
-	// 	} else {
-	// 		if (typeof timer.current !== undefined) {
-	// 			window.clearTimeout(timer.current);
-	// 			toggleLoginPopup(false);
-	// 		}
-	// 	}
-
-	// 	// I will be deleted while component is unmounting.
-	// }, [authenticated, profileLoading]);
 	React.useEffect(() => {
 		if (!authenticated) {
 			const jwt = localStorage.getItem('JWT_CLIENT');
@@ -110,7 +92,8 @@ function App({
 				fetchUser(jwt, console.log);
 			}
 		}
-	}, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [authenticated]);
 
 	const handleClose = () => {
 		console.log('object 2');
@@ -118,206 +101,6 @@ function App({
 			open: false,
 		});
 	};
-
-	// return (
-	// 	<CacheBuster>
-	// 		{({ loading, isLatestVersion, refreshCacheAndReload }) => {
-	// 			if (loading) return null;
-	// 			if (!loading && !isLatestVersion) {
-	// 				refreshCacheAndReload();
-	// 			}
-
-	// 			return (
-	// 				<Suspense fallback={<SuspenseLoader />}>
-	// 					<Snackbar
-	// 						open={snackbarDetails.open}
-	// 						autoHideDuration={6000}
-	// 						onClose={handleClose}
-	// 					>
-	// 						<Alert
-	// 							onClose={handleClose}
-	// 							severity={snackbarDetails.severity}
-	// 						>
-	// 							{snackbarDetails.message}
-	// 						</Alert>
-	// 					</Snackbar>
-	// 					<LogIn />
-	// 					<HashRouter>
-	// 						{/* <SpeedDial /> */}
-	// 						<Switch>
-	// 							{/* <Route
-	// 								exact
-	// 								path="/"
-	// 								render={(props) => <HomePage {...props} />}
-	// 							/> */}
-	// 							<Route
-	// 								exact
-	// 								path="/"
-	// 								render={(props) => (
-	// 									<HomePageNew {...props} />
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/v2/property-details/:id"
-	// 								render={(props) => (
-	// 									<PropertyDetailsPageNew {...props} />
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/v2/project-details/:id"
-	// 								render={(props) => (
-	// 									<ProjectDetailsPageNew {...props} />
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/v2/search"
-	// 								render={(props) => (
-	// 									<SearchPageNew {...props} />
-	// 								)}
-	// 							/>
-	// 							{/* <Route
-	// 								exact
-	// 								path="/v2/agent"
-	// 								render={(props) => (
-	// 									<AgentPageNew {...props} />
-	// 								)}
-	// 							/> */}
-	// 							<Route
-	// 								exact
-	// 								path="/v2/post-property"
-	// 								render={(props) => (
-	// 									<PostPropertyPageNew {...props} />
-	// 								)}
-	// 							/>
-	// 							{/* <Route
-	// 								exact
-	// 								path="/payment"
-	// 								render={(props) => (
-	// 									<PaymentPage {...props} />
-	// 								)}
-	// 							/>
-
-	// 							<Route
-	// 								exact
-	// 								path="/profile"
-	// 								render={(props) => (
-	// 									<Protected
-	// 										component={ProfilePage}
-	// 										{...props}
-	// 										redirect={true}
-	// 									/>
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/update-profile"
-	// 								render={(props) => (
-	// 									<Protected
-	// 										component={ProfileUpdate}
-	// 										redirect
-	// 										{...props}
-	// 									/>
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/m/search"
-	// 								render={() => <MobileSearch />}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/search-results"
-	// 								render={(props) => (
-	// 									<SearchPage {...props} />
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/browse"
-	// 								render={(props) => (
-	// 									<BrowsePage {...props} />
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/project/:id"
-	// 								render={(props) => (
-	// 									<ProjectDetailsPage {...props} />
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/property-details/:id"
-	// 								render={(props) => (
-	// 									<DetailsPage {...props} />
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/edit-property/:id"
-	// 								render={(props) => (
-	// 									<Protected
-	// 										component={EditProperty}
-	// 										{...props}
-	// 									/>
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/project-property/:id"
-	// 								render={(props) => (
-	// 									<ProjectProperty {...props} />
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/post-property/:propertyForParam"
-	// 								render={(props) => (
-	// 									<Protected
-	// 										component={PostProperty}
-	// 										redirectTo="post-property"
-	// 										{...props}
-	// 									/>
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/post-property-details/:pFor/:pType"
-	// 								render={(props) => (
-	// 									<Protected
-	// 										component={PostPropertyDetailsPage}
-	// 										{...props}
-	// 									/>
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/builder/:slug"
-	// 								render={(props) => (
-	// 									<BuilderPage {...props} />
-	// 								)}
-	// 							/>
-	// 							<Route
-	// 								exact
-	// 								path="/:projectId"
-	// 								render={(props) => (
-	// 									<ProjectPage {...props} />
-	// 								)}
-	// 							/> */}
-	// 							<Route
-	// 								path="*"
-	// 								render={(props) => <NotFound {...props} />}
-	// 							/>
-	// 						</Switch>
-	// 					</HashRouter>
-	// 				</Suspense>
-	// 			);
-	// 		}}
-	// 	</CacheBuster>
-	// );
 
 	return (
 		<Suspense fallback={<SuspenseLoader />}>
@@ -334,7 +117,7 @@ function App({
 				</Alert>
 			</Snackbar>
 			<LogIn />
-			<HashRouter>
+			<BrowserRouter basename="/">
 				{/* <SpeedDial /> */}
 				<Switch>
 					{/* <Route
@@ -481,7 +264,7 @@ function App({
 						render={(props) => <NotFound {...props} />}
 					/>
 				</Switch>
-			</HashRouter>
+			</BrowserRouter>
 		</Suspense>
 	);
 }
@@ -496,7 +279,6 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	toggleLoginPopup: (status) => dispatch(toggleLoginPopup(status)),
 	setSnackbar: (config) => dispatch(setSnackbar(config)),
 	fetchUser: (token, callback) =>
 		dispatch(fetchUserProfile({ token, callback })),

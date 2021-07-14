@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import clsx from 'clsx';
-import useGlobalStyles from '../../../common.style';
 import useStyles from './chip.style';
+
+// import useGlobalStyles from '../../../common.style';
+
 
 const Chip = ({ children, selected, popular = false, ...otherProps }) => {
 	const classes = useStyles();
-	const globalClasses = useGlobalStyles();
+	// const globalClasses = useGlobalStyles();
 	return (
 		<div
 			className={clsx(classes.wrapper, {
