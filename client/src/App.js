@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
 import { loginDialogStatus, snackbarDetails } from './redux/ui/ui.selectors';
 import {
@@ -117,7 +117,7 @@ function App({
 				</Alert>
 			</Snackbar>
 			<LogIn />
-			<BrowserRouter>
+			<HashRouter>
 				{/* <SpeedDial /> */}
 				<Switch>
 					{/* <Route
@@ -264,7 +264,7 @@ function App({
 						render={(props) => <NotFound {...props} />}
 					/>
 				</Switch>
-			</BrowserRouter>
+			</HashRouter>
 		</Suspense>
 	);
 }
