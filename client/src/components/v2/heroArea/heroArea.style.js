@@ -1,6 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+	topMargin: {
+		[theme.breakpoints.down('sm')]: {
+			marginTop: '3rem',
+		},
+	},
 	wrapper: {
 		width: '100%',
 		display: 'flex',
@@ -8,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 		paddingLeft: theme.leftPadding,
 		boxSizing: 'border-box',
 		[theme.breakpoints.down('sm')]: {
-			marginTop: 50,
+			marginTop: 100,
 			paddingLeft: 0,
 			paddingRight: '2rem',
 		},
@@ -179,6 +184,9 @@ const useStyles = makeStyles((theme) => ({
 		},
 		'&>img': {
 			height: '1.5rem',
+			[theme.breakpoints.down('sm')]: {
+				height: '1rem',
+			},
 		},
 	},
 }));

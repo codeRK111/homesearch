@@ -6,6 +6,10 @@ import {
 	Typography,
 } from '@material-ui/core';
 import {
+	selectAuthenticated,
+	selectUser,
+} from '../../../redux/auth/auth.selectors';
+import {
 	selectCurrentTab,
 	selectSelectedCity,
 } from '../../../redux/actionTab/actionTab.selectors';
@@ -23,7 +27,6 @@ import logoIcon from '../../../assets/icons/logo.svg';
 import profile from '../../../assets/icons/profile.png';
 import { searchCities } from '../../../redux/city/city.actions';
 import searchIcon from '../../../assets/search.svg';
-import { selectAuthenticated } from '../../../redux/auth/auth.selectors';
 import { selectSearchCityLoading } from '../../../redux/city/city.selectors';
 import { signOut } from '../../../redux/auth/auth.actions';
 import { toggleLoginPopup } from '../../../redux/ui/ui.actions';
@@ -64,6 +67,7 @@ const NavBar = ({
 	isAuthenticated,
 	toggleLoginPopup,
 	signOut,
+	user,
 }) => {
 	const history = useHistory();
 	const classes = useStyles();
@@ -318,7 +322,11 @@ const NavBar = ({
 							onClick={handleClick}
 						>
 							<img
-								src={profile}
+								src={
+									user.photo
+										? `/profile/${user.photo}`
+										: profile
+								}
 								alt="Profile"
 								className={globalClasses.smHide}
 							/>
@@ -369,6 +377,7 @@ const mapStateToProps = createStructuredSelector({
 	currentTab: selectCurrentTab,
 	selectedCity: selectSelectedCity,
 	isAuthenticated: selectAuthenticated,
+	user: selectUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({

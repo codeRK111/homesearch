@@ -131,7 +131,7 @@ const HeroArea = ({
 	};
 
 	return (
-		<div>
+		<div className={classes.topMargin}>
 			<div className={classes.wrapper}>
 				<Box width="100%">
 					<div className={classes.tabWrapper}>

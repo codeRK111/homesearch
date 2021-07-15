@@ -1,30 +1,42 @@
-import { AppBar, Box, Menu, MenuItem } from '@material-ui/core';
+import { AppBar, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
+import {
+	selectAuthenticated,
+	selectUser,
+} from '../../../redux/auth/auth.selectors';
 
+import Drawer from '../drawer';
+import MenuIcon from '@material-ui/icons/Menu';
 import React from 'react';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import logoIcon from '../../../assets/icons/logo.svg';
 import profile from '../../../assets/icons/profile.png';
-import { selectAuthenticated } from '../../../redux/auth/auth.selectors';
 import { signOut } from '../../../redux/auth/auth.actions';
 import { toggleLoginPopup } from '../../../redux/ui/ui.actions';
 import useGlovalStyles from '../../../common.style';
 import { useHistory } from 'react-router-dom';
 import useStyles from './nav.style';
 
-const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut }) => {
+const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 	const classes = useStyles();
 	const gClasses = useGlovalStyles();
 	const history = useHistory();
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [openDrawer, setOpenDrawer] = React.useState(false);
 
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
+	const handleClickOpenDrawer = (event) => {
+		setOpenDrawer(true);
+	};
 
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+	const handleCloseDrawer = () => {
+		setOpenDrawer(false);
 	};
 	const redirectToLogIn = (_) => {
 		toggleLoginPopup(true);
@@ -44,6 +56,7 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut }) => {
 
 	return (
 		<AppBar color={'transparent'} position={'fixed'} elevation={0}>
+			<Drawer open={openDrawer} handleClose={handleCloseDrawer} />
 			<Box className={classes.wrapper}>
 				<div className={classes.logoWrapper}>
 					<img src={logoIcon} alt="" className={classes.logo} />
@@ -58,6 +71,13 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut }) => {
 					>
 						List Property & Projects
 					</div>
+					<IconButton
+						className={classes.smMenu}
+						size="small"
+						onClick={handleClickOpenDrawer}
+					>
+						<MenuIcon />
+					</IconButton>
 
 					{!!isAuthenticated ? (
 						<div>
@@ -71,7 +91,11 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut }) => {
 								onClick={handleClick}
 							>
 								<img
-									src={profile}
+									src={
+										user.photo
+											? `/profile/${user.photo}`
+											: profile
+									}
 									alt="Profile"
 									className={gClasses.smHide}
 								/>
@@ -122,6 +146,7 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut }) => {
 
 const mapStateToProps = createStructuredSelector({
 	isAuthenticated: selectAuthenticated,
+	user: selectUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({

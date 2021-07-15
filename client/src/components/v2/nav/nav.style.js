@@ -21,6 +21,15 @@ const useStyles = makeStyles((theme) => ({
 		'&>span': {
 			color: theme.secondaryHeadingColor,
 		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '0.9rem',
+		},
+	},
+	smMenu: {
+		display: 'none',
+		[theme.breakpoints.down('sm')]: {
+			display: 'inline-block',
+		},
 	},
 	logo: {
 		height: '25px',
