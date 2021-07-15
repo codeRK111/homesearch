@@ -218,9 +218,10 @@ const PropertyCard = ({ property, edit = false }) => {
 									>
 										<Box className="test">
 											<h5
-												className={
-													globalClasses.textCenter
-												}
+												className={clsx(
+													globalClasses.textCenter,
+													globalClasses.wordBreak
+												)}
 											>
 												{
 													furnisingLabels[

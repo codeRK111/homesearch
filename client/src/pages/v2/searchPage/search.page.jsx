@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Button, Grid, Typography } from '@material-ui/core';
 import {
 	setCurrentTab,
 	setSelectedCity,
@@ -222,6 +222,23 @@ const SearchPage = ({
 
 			<div className={classes.wrapper}>
 				<Box mb="1rem">
+					<Box
+						p="1rem"
+						className={clsx(
+							globalClasses.justifySpaceBetween,
+							globalClasses.alignCenter,
+							globalClasses.smFlexColumn,
+							globalClasses.smAlignCenter,
+							globalClasses.borderBox
+						)}
+					>
+						<span>
+							Home/ {capitalizeFirstLetter(parsed.f)}/{' '}
+							{capitalizeFirstLetter(parsed.cn)}
+						</span>
+					</Box>
+				</Box>
+				<Box className={classes.filterParent}>
 					<Filter
 						city={city.id}
 						existingLocations={locations}
@@ -236,32 +253,8 @@ const SearchPage = ({
 						setOtherItems={setOtherItems}
 					/>
 				</Box>
-				<Grid container>
+				<Grid container spacing={0}>
 					<Grid items xs={12} md={8}>
-						<Box
-							p="1rem"
-							className={clsx(
-								globalClasses.justifySpaceBetween,
-								globalClasses.alignCenter,
-								globalClasses.smFlexColumn,
-								globalClasses.smAlignCenter
-							)}
-						>
-							<span>
-								Home/ {capitalizeFirstLetter(parsed.f)}/{' '}
-								{capitalizeFirstLetter(parsed.cn)}
-							</span>
-							<h3
-								className={clsx(
-									globalClasses.colorPrimary,
-									globalClasses.noSpace,
-									globalClasses.smTopMargin
-								)}
-							>
-								{capitalizeFirstLetter(parsed.f)}s In{' '}
-								{capitalizeFirstLetter(parsed.cn)}
-							</h3>
-						</Box>
 						<Box>
 							{showNoResults && (
 								<Box mt="2rem">

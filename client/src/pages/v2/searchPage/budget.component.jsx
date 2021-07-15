@@ -157,6 +157,10 @@ function MenuListComposition({
 											name={c.name}
 											checked={c.checked}
 											onChange={handleRent(c)}
+											classes={{
+												colorSecondary: classes.checked,
+												checked: classes.checked,
+											}}
 										/>
 									}
 									label={c.name}
@@ -175,6 +179,11 @@ function MenuListComposition({
 											name={c.name}
 											checked={c.checked}
 											onChange={handleOtherItems(c)}
+											size="small"
+											classes={{
+												colorSecondary: classes.checked,
+												checked: classes.checked,
+											}}
 										/>
 									}
 									label={c.name}

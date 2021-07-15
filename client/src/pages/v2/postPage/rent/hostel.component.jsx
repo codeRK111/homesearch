@@ -210,172 +210,6 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 							</Box>
 						</Box>
 
-						{/* Furnishes  */}
-						<Box mt="2rem" className={classes.contentWrapper}>
-							<Typography
-								variant="h5"
-								gutterBottom
-								align="center"
-							>
-								Furnishing Status
-							</Typography>
-							<Box
-								mt="1rem"
-								className={clsx(
-									classes.alignCenter,
-									gClasses.smFlexWrap
-								)}
-							>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={
-											values.furnished === 'furnished'
-										}
-										onClick={() => {
-											setFieldValue(
-												'furnished',
-												'furnished'
-											);
-										}}
-									>
-										Fully Furnished
-									</Select>
-								</Box>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={
-											values.furnished === 'semifurnished'
-										}
-										onClick={() => {
-											setFieldValue(
-												'furnished',
-												'semifurnished'
-											);
-										}}
-									>
-										Semi furnished
-									</Select>
-								</Box>
-
-								<Box className={classes.selectChip}>
-									<Select
-										selected={
-											values.furnished === 'unfurnished'
-										}
-										onClick={() => {
-											setFieldValue(
-												'furnished',
-												'unfurnished'
-											);
-										}}
-									>
-										Unfurnished
-									</Select>
-								</Box>
-							</Box>
-						</Box>
-						{values.furnished !== 'unfurnished' &&
-							values.furnished !== '' && (
-								<Box mt="2rem">
-									<Grid container spacing={0}>
-										{furnishes.map((c, i) => (
-											<Grid
-												item
-												xs={6}
-												md={3}
-												key={c.id}
-												justify="center"
-											>
-												<CheckBox
-													type="checkbox"
-													name="furnishes"
-													value={c.id}
-													formLabel={c.name}
-												/>
-											</Grid>
-										))}
-									</Grid>
-								</Box>
-							)}
-						<Box mt="2rem">
-							<Typography
-								variant="h5"
-								gutterBottom
-								align="center"
-							>
-								Amenities
-							</Typography>
-							<Grid container spacing={0}>
-								{amenities.map((c, i) => (
-									<Grid
-										item
-										xs={6}
-										md={3}
-										key={c.id}
-										justify="center"
-									>
-										<CheckBox
-											type="checkbox"
-											name="amenities"
-											value={c.id}
-											formLabel={c.name}
-										/>
-									</Grid>
-								))}
-							</Grid>
-						</Box>
-						{/* Available For  */}
-						<Box mt="2rem">
-							<Typography
-								variant="h5"
-								gutterBottom
-								align="center"
-							>
-								Available For
-							</Typography>
-							<Box className={classes.rowWrapper2}>
-								<Box className={classes.columnWrapper2}>
-									<CheckBox
-										type="checkbox"
-										name="availableFor"
-										value={'Family'}
-										formLabel={'Family'}
-									/>
-								</Box>
-								<Box className={classes.columnWrapper2}>
-									<CheckBox
-										type="checkbox"
-										name="availableFor"
-										value="Bachelors (Men)"
-										formLabel="Bachelors (Men)"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper2}>
-									<CheckBox
-										type="checkbox"
-										name="availableFor"
-										value="Bachelors (Women)"
-										formLabel="Bachelors (Women)"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper2}>
-									<CheckBox
-										type="checkbox"
-										name="availableFor"
-										value="Job holder (Men)"
-										formLabel="Job holder (Men)"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper2}>
-									<CheckBox
-										type="checkbox"
-										name="availableFor"
-										value="Job holder (Women)"
-										formLabel="Job holder (Women)"
-									/>
-								</Box>
-							</Box>
-						</Box>
 						{/* Types Of Toilet  */}
 						<Box mt="2rem" className={classes.contentWrapper}>
 							<Typography
@@ -696,6 +530,173 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 								</Box>
 							</Box>
 						)}
+
+						{/* Furnishes  */}
+						<Box mt="2rem" className={classes.contentWrapper}>
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Furnishing Status
+							</Typography>
+							<Box
+								mt="1rem"
+								className={clsx(
+									classes.alignCenter,
+									gClasses.smFlexWrap
+								)}
+							>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.furnished === 'furnished'
+										}
+										onClick={() => {
+											setFieldValue(
+												'furnished',
+												'furnished'
+											);
+										}}
+									>
+										Fully Furnished
+									</Select>
+								</Box>
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.furnished === 'semifurnished'
+										}
+										onClick={() => {
+											setFieldValue(
+												'furnished',
+												'semifurnished'
+											);
+										}}
+									>
+										Semi furnished
+									</Select>
+								</Box>
+
+								<Box className={classes.selectChip}>
+									<Select
+										selected={
+											values.furnished === 'unfurnished'
+										}
+										onClick={() => {
+											setFieldValue(
+												'furnished',
+												'unfurnished'
+											);
+										}}
+									>
+										Unfurnished
+									</Select>
+								</Box>
+							</Box>
+						</Box>
+						{values.furnished !== 'unfurnished' &&
+							values.furnished !== '' && (
+								<Box mt="2rem">
+									<Grid container spacing={0}>
+										{furnishes.map((c, i) => (
+											<Grid
+												item
+												xs={6}
+												md={3}
+												key={c.id}
+												justify="center"
+											>
+												<CheckBox
+													type="checkbox"
+													name="furnishes"
+													value={c.id}
+													formLabel={c.name}
+												/>
+											</Grid>
+										))}
+									</Grid>
+								</Box>
+							)}
+						<Box mt="2rem">
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Amenities
+							</Typography>
+							<Grid container spacing={0}>
+								{amenities.map((c, i) => (
+									<Grid
+										item
+										xs={6}
+										md={3}
+										key={c.id}
+										justify="center"
+									>
+										<CheckBox
+											type="checkbox"
+											name="amenities"
+											value={c.id}
+											formLabel={c.name}
+										/>
+									</Grid>
+								))}
+							</Grid>
+						</Box>
+						{/* Available For  */}
+						<Box mt="2rem">
+							<Typography
+								variant="h5"
+								gutterBottom
+								align="center"
+							>
+								Available For
+							</Typography>
+							<Box className={classes.rowWrapper2}>
+								<Box className={classes.columnWrapper2}>
+									<CheckBox
+										type="checkbox"
+										name="availableFor"
+										value={'Family'}
+										formLabel={'Family'}
+									/>
+								</Box>
+								<Box className={classes.columnWrapper2}>
+									<CheckBox
+										type="checkbox"
+										name="availableFor"
+										value="Bachelors (Men)"
+										formLabel="Bachelors (Men)"
+									/>
+								</Box>
+								<Box className={classes.columnWrapper2}>
+									<CheckBox
+										type="checkbox"
+										name="availableFor"
+										value="Bachelors (Women)"
+										formLabel="Bachelors (Women)"
+									/>
+								</Box>
+								<Box className={classes.columnWrapper2}>
+									<CheckBox
+										type="checkbox"
+										name="availableFor"
+										value="Job holder (Men)"
+										formLabel="Job holder (Men)"
+									/>
+								</Box>
+								<Box className={classes.columnWrapper2}>
+									<CheckBox
+										type="checkbox"
+										name="availableFor"
+										value="Job holder (Women)"
+										formLabel="Job holder (Women)"
+									/>
+								</Box>
+							</Box>
+						</Box>
 						<Box mt="2rem" className={classes.contentWrapper}>
 							<Typography
 								variant="h5"

@@ -1,13 +1,16 @@
-import { Box, Grid, IconButton, Menu } from '@material-ui/core';
+import { AppBar, Box, Grid, IconButton, Menu } from '@material-ui/core';
 
 import Budget from './budget.component';
 import Button from '@material-ui/core/Button';
+import ChipHeader from '../../../components/v2/chipHeader/chipHeader.component';
+import CloseIcon from '@material-ui/icons/Close';
 import Drawer from '@material-ui/core/Drawer';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Locations from './locations.component';
 import PropertyTypes from './propertyTypes.component';
 import React from 'react';
+import SortIcon from '@material-ui/icons/Sort';
 import clsx from 'clsx';
 import useGlobalStyles from '../../../common.style';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -100,123 +103,59 @@ const Filter = ({
 				<Box>
 					<Button
 						onClick={toggleDrawer(true)}
-						variant="contained"
-						fullWidth
+						startIcon={<SortIcon />}
 					>
 						Filter
 					</Button>
 					<Drawer
-						anchor={'top'}
+						anchor={'left'}
 						open={open}
 						onClose={toggleDrawer(false)}
 					>
-						<Box p="1rem">
-							<Grid container spacing={1}>
-								<Grid item xs={12}>
-									<Box
-										className={clsx(
-											globalClasses.flexCenter,
-											globalClasses.colorPrimary,
-											globalClasses.bold,
-											classes.filter
-										)}
+						<Box className={classes.mobileFilterWrapper}>
+							<AppBar
+								position="sticky"
+								color="default"
+								elevation={0}
+							>
+								<Box
+									className={clsx(
+										globalClasses.alignCenter,
+										globalClasses.smJustifyBetween
+									)}
+								>
+									<span>Homesearch18</span>
+									<IconButton
+										size="small"
+										onClick={toggleDrawer(false)}
 									>
-										<span>Locations </span>
-										<ExpandMoreIcon />
-									</Box>
-								</Grid>
-								<Grid
-									item
-									xs={12}
-									className={clsx(
-										globalClasses.flexCenter,
-										globalClasses.colorPrimary,
-										globalClasses.bold,
-										classes.filter
-									)}
-								>
-									<span>₹0 - 2 Cr </span>
-									<ExpandMoreIcon />
-								</Grid>
-								<Grid
-									item
-									xs={12}
-									className={clsx(
-										globalClasses.flexCenter,
-										globalClasses.colorPrimary,
-										globalClasses.bold,
-										classes.filter
-									)}
-								>
-									<span>Listed By </span>
-									<ExpandMoreIcon />
-								</Grid>
-								<Grid
-									item
-									xs={12}
-									className={clsx(
-										globalClasses.flexCenter,
-										globalClasses.colorPrimary,
-										globalClasses.bold,
-										classes.filter
-									)}
-								>
-									<span>Property Type </span>
-									<ExpandMoreIcon />
-								</Grid>
-								<Grid
-									item
-									xs={12}
-									className={clsx(
-										globalClasses.flexCenter,
-										globalClasses.colorPrimary,
-										globalClasses.bold,
-										classes.filter
-									)}
-								>
-									<span>Delivery Status</span>
-									<ExpandMoreIcon />
-								</Grid>
-								<Grid
-									item
-									xs={12}
-									className={clsx(
-										globalClasses.flexCenter,
-										globalClasses.colorPrimary,
-										globalClasses.bold,
-										classes.filter
-									)}
-								>
-									<span>Posted By</span>
-									<ExpandMoreIcon />
-								</Grid>
-								<Grid
-									item
-									xs={12}
-									className={clsx(
-										globalClasses.flexCenter,
-										globalClasses.colorPrimary,
-										globalClasses.bold,
-										classes.filter
-									)}
-								>
-									<span>More Filters</span>
-									<ExpandMoreIcon />
-								</Grid>
-								<Grid
-									item
-									xs={12}
-									className={clsx(
-										globalClasses.flexCenter,
-										globalClasses.colorPrimary,
-										globalClasses.bold,
-										classes.filter
-									)}
-								>
-									<span>Short By</span>
-									<ExpandMoreIcon />
-								</Grid>
-							</Grid>
+										<CloseIcon
+											className={globalClasses.colorUtil}
+										/>
+									</IconButton>
+								</Box>
+							</AppBar>
+							<ChipHeader title="Locations" />
+							<Locations
+								city={city}
+								existingLocations={existingLocations}
+								handleLocations={handleLocations}
+								setLocationData={setLocationData}
+							/>
+							<ChipHeader title="Property Type" />
+							<PropertyTypes
+								pFor={pFor}
+								types={types}
+								setTypes={setTypes}
+							/>
+							<ChipHeader title="Budget Type" />
+							<Budget
+								pFor={pFor}
+								rentItems={rentItems}
+								setRentItems={setRentItems}
+								otherItems={otherItems}
+								setOtherItems={setOtherItems}
+							/>
 						</Box>
 					</Drawer>
 				</Box>

@@ -1,6 +1,7 @@
 import {
 	Box,
 	CircularProgress,
+	IconButton,
 	Menu,
 	MenuItem,
 	Typography,
@@ -18,7 +19,9 @@ import {
 	setSelectedCity,
 } from '../../../redux/actionTab/actionTab.actions';
 
+import Drawer from '../drawer';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import MenuIcon from '@material-ui/icons/Menu';
 import React from 'react';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
@@ -31,6 +34,7 @@ import { selectSearchCityLoading } from '../../../redux/city/city.selectors';
 import { signOut } from '../../../redux/auth/auth.actions';
 import { toggleLoginPopup } from '../../../redux/ui/ui.actions';
 import useGlobalStyles from '../../../common.style';
+import useGlovalStyles from '../../../common.style';
 import { useHistory } from 'react-router-dom';
 import useStyles from './nav.style';
 import { withStyles } from '@material-ui/core/styles';
@@ -80,6 +84,14 @@ const NavBar = ({
 	const [userTypedCity, setUserTypedCity] = React.useState('');
 	const [asyncError, setAsyncError] = React.useState(null);
 	const [noResults, setNoResults] = React.useState(false);
+	const [openDrawer, setOpenDrawer] = React.useState(false);
+
+	const handleClickOpenDrawer = (event) => {
+		setOpenDrawer(true);
+	};
+	const handleCloseDrawer = () => {
+		setOpenDrawer(false);
+	};
 
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -169,206 +181,223 @@ const NavBar = ({
 		history.push(link);
 	};
 	return (
-		<Box className={classes.wrapper}>
-			<div
-				className={clsx(classes.logoWrapper, globalClasses.pointer)}
-				onClick={redirectToHomePage}
-			>
-				<img src={logoIcon} alt="" className={classes.logo} />
-				<span className={classes.logoTitle}>
-					HOMESEARCH<span>18</span>.COM
-				</span>
-			</div>
-			<div className={clsx(classes.logoWrapper, globalClasses.smHide)}>
-				<Box
-					className={clsx(
-						globalClasses.bold,
-						globalClasses.pointer,
-						currentTab === 'project' && classes.selected
-					)}
-					onClick={handleAssetType('project')}
+		<>
+			<Drawer open={openDrawer} handleClose={handleCloseDrawer} />
+			<Box className={classes.wrapper}>
+				<div
+					className={clsx(classes.logoWrapper, globalClasses.pointer)}
+					onClick={redirectToHomePage}
 				>
-					Project{' '}
-				</Box>
-				<Box
-					ml="1rem"
-					className={clsx(
-						globalClasses.colorPrimary,
-						globalClasses.bold,
-						globalClasses.pointer,
-						currentTab === 'sale' && classes.selected
-					)}
-					onClick={handleAssetType('sale')}
+					<img src={logoIcon} alt="" className={classes.logo} />
+					<span className={classes.logoTitle}>
+						HOMESEARCH<span>18</span>.COM
+					</span>
+				</div>
+				<IconButton
+					className={classes.smMenu}
+					size="small"
+					onClick={handleClickOpenDrawer}
 				>
-					Resale{' '}
-				</Box>
-				<Box
-					ml="1rem"
-					className={clsx(
-						globalClasses.colorPrimary,
-						globalClasses.bold,
-						globalClasses.pointer,
-						currentTab === 'rent' && classes.selected
-					)}
-					onClick={handleAssetType('rent')}
+					<MenuIcon />
+				</IconButton>
+				<div
+					className={clsx(classes.logoWrapper, globalClasses.smHide)}
 				>
-					Rent{' '}
-				</Box>
-				<Box
-					ml="2rem"
-					pl="1rem"
-					className={classes.searchWrapper}
-					ref={menuParrent}
-				>
-					{selectedCity.id ? (
-						<div className={classes.selectedLocation}>
-							<span>{selectedCity.name}</span>
-							<Box ml="1rem" onClick={clearSelectedCity}>
-								<span
-									className={clsx(
-										classes.clearIcon,
-										globalClasses.pointer
-									)}
-								>
-									X
-								</span>
-							</Box>
-						</div>
-					) : (
-						<input
-							type="text"
-							placeholder="Search For City"
-							onChange={handleCity}
-							value={userTypedCity}
-							ref={input}
-						/>
-					)}
-				</Box>
-				<StyledMenu
-					id="customized-menu"
-					anchorEl={searchAnchorEl}
-					keepMounted
-					open={Boolean(searchAnchorEl)}
-					onClose={handleSearchClose}
-				>
-					<Box className={classes.menuWrapper}>
-						{!!asyncError && (
-							<Typography
-								align="center"
-								className={globalClasses.colorWarning}
-							>
-								{asyncError}
-							</Typography>
+					<Box
+						className={clsx(
+							globalClasses.bold,
+							globalClasses.pointer,
+							currentTab === 'project' && classes.selected
 						)}
-						{!!noResults ? (
-							<Typography align="center">
-								No City Found
-							</Typography>
-						) : (
-							cities.map((c) => (
-								<Box
-									key={c.id}
-									className={classes.cityWrapper}
-									onClick={handleSelectedCity(c)}
-								>
-									<LocationOnIcon
-										className={classes.locationIcon}
-									/>
-									<Typography variant="subtitle2">
-										{c.name}
-									</Typography>
-								</Box>
-							))
-						)}
+						onClick={handleAssetType('project')}
+					>
+						Project{' '}
 					</Box>
-				</StyledMenu>
-				{searchCityLoading ? (
-					<Box className={classes.searchButton}>
-						<CircularProgress size={20} />
-					</Box>
-				) : (
 					<Box
 						ml="1rem"
-						onClick={onSearch}
 						className={clsx(
-							classes.searchButton,
-							globalClasses.pointer
+							globalClasses.colorPrimary,
+							globalClasses.bold,
+							globalClasses.pointer,
+							currentTab === 'sale' && classes.selected
 						)}
+						onClick={handleAssetType('sale')}
 					>
-						<img
-							src={searchIcon}
-							alt="Search"
-							className={classes.searchLogo}
-						/>
+						Resale{' '}
 					</Box>
-				)}
-			</div>
-			<div className={classes.rightSide}>
-				<div
-					className={clsx(classes.listButton, globalClasses.smHide)}
-					onClick={redirectToPostPage}
-				>
-					List Property & Projects
-				</div>
-				{!!isAuthenticated ? (
-					<div>
-						<Box
-							className={clsx(
-								classes.profileWrapper,
-								globalClasses.smHide
+					<Box
+						ml="1rem"
+						className={clsx(
+							globalClasses.colorPrimary,
+							globalClasses.bold,
+							globalClasses.pointer,
+							currentTab === 'rent' && classes.selected
+						)}
+						onClick={handleAssetType('rent')}
+					>
+						Rent{' '}
+					</Box>
+					<Box
+						ml="2rem"
+						pl="1rem"
+						className={classes.searchWrapper}
+						ref={menuParrent}
+					>
+						{selectedCity.id ? (
+							<div className={classes.selectedLocation}>
+								<span>{selectedCity.name}</span>
+								<Box ml="1rem" onClick={clearSelectedCity}>
+									<span
+										className={clsx(
+											classes.clearIcon,
+											globalClasses.pointer
+										)}
+									>
+										X
+									</span>
+								</Box>
+							</div>
+						) : (
+							<input
+								type="text"
+								placeholder="Search For City"
+								onChange={handleCity}
+								value={userTypedCity}
+								ref={input}
+							/>
+						)}
+					</Box>
+					<StyledMenu
+						id="customized-menu"
+						anchorEl={searchAnchorEl}
+						keepMounted
+						open={Boolean(searchAnchorEl)}
+						onClose={handleSearchClose}
+					>
+						<Box className={classes.menuWrapper}>
+							{!!asyncError && (
+								<Typography
+									align="center"
+									className={globalClasses.colorWarning}
+								>
+									{asyncError}
+								</Typography>
 							)}
-							aria-controls="customized-menu"
-							aria-haspopup="true"
-							onClick={handleClick}
+							{!!noResults ? (
+								<Typography align="center">
+									No City Found
+								</Typography>
+							) : (
+								cities.map((c) => (
+									<Box
+										key={c.id}
+										className={classes.cityWrapper}
+										onClick={handleSelectedCity(c)}
+									>
+										<LocationOnIcon
+											className={classes.locationIcon}
+										/>
+										<Typography variant="subtitle2">
+											{c.name}
+										</Typography>
+									</Box>
+								))
+							)}
+						</Box>
+					</StyledMenu>
+					{searchCityLoading ? (
+						<Box className={classes.searchButton}>
+							<CircularProgress size={20} />
+						</Box>
+					) : (
+						<Box
+							ml="1rem"
+							onClick={onSearch}
+							className={clsx(
+								classes.searchButton,
+								globalClasses.pointer
+							)}
 						>
 							<img
-								src={
-									user.photo
-										? `/profile/${user.photo}`
-										: profile
-								}
-								alt="Profile"
-								className={globalClasses.smHide}
+								src={searchIcon}
+								alt="Search"
+								className={classes.searchLogo}
 							/>
 						</Box>
-						<Menu
-							id="customized-menu"
-							getContentAnchorEl={null}
-							anchorEl={anchorEl}
-							keepMounted
-							open={Boolean(anchorEl)}
-							onClose={handleClose}
-							anchorOrigin={{
-								vertical: 'bottom',
-								horizontal: 'center',
-							}}
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'center',
-							}}
-						>
-							<MenuItem onClick={goToProfile}>Profile</MenuItem>
-							<MenuItem onClick={handleClose} disabled>
-								My account
-							</MenuItem>
-							<MenuItem onClick={onLogOut}>Logout</MenuItem>
-						</Menu>
+					)}
+				</div>
+				<div className={clsx(classes.rightSide)}>
+					<div
+						className={clsx(
+							classes.listButton,
+							globalClasses.smHide
+						)}
+						onClick={redirectToPostPage}
+					>
+						List Property & Projects
 					</div>
-				) : (
-					<Box ml="1rem">
-						<div
-							className={clsx(
-								classes.listButton,
-								globalClasses.smHide
-							)}
-							onClick={redirectToLogIn}
-						>
-							Sign In
+					{!!isAuthenticated ? (
+						<div>
+							<Box
+								className={clsx(
+									classes.profileWrapper,
+									globalClasses.smHide
+								)}
+								aria-controls="customized-menu"
+								aria-haspopup="true"
+								onClick={handleClick}
+							>
+								<img
+									src={
+										user.photo
+											? `/profile/${user.photo}`
+											: profile
+									}
+									alt="Profile"
+									className={globalClasses.smHide}
+								/>
+							</Box>
+							<Menu
+								id="customized-menu"
+								getContentAnchorEl={null}
+								anchorEl={anchorEl}
+								keepMounted
+								open={Boolean(anchorEl)}
+								onClose={handleClose}
+								anchorOrigin={{
+									vertical: 'bottom',
+									horizontal: 'center',
+								}}
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'center',
+								}}
+							>
+								<MenuItem onClick={goToProfile}>
+									Profile
+								</MenuItem>
+								<MenuItem onClick={handleClose} disabled>
+									My account
+								</MenuItem>
+								<MenuItem onClick={onLogOut}>Logout</MenuItem>
+							</Menu>
 						</div>
-					</Box>
-				)}
-			</div>
-		</Box>
+					) : (
+						<Box ml="1rem">
+							<div
+								className={clsx(
+									classes.listButton,
+									globalClasses.smHide
+								)}
+								onClick={redirectToLogIn}
+							>
+								Sign In
+							</div>
+						</Box>
+					)}
+				</div>
+			</Box>
+		</>
 	);
 };
 

@@ -49,7 +49,7 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 
 	const renderPropertyTypes = () =>
 		pFor !== 'rent' ? (
-			<Box p="1rem">
+			<Box>
 				{' '}
 				<div>
 					<FormControlLabel
@@ -58,6 +58,11 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 								name="flat"
 								checked={types.flat}
 								onChange={handleTypes}
+								size="small"
+								classes={{
+									colorSecondary: classes.checked,
+									checked: classes.checked,
+								}}
 							/>
 						}
 						label="Apartment"
@@ -70,6 +75,11 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 								name="independenthouse"
 								checked={types.independenthouse}
 								onChange={handleTypes}
+								size="small"
+								classes={{
+									colorSecondary: classes.checked,
+									checked: classes.checked,
+								}}
 							/>
 						}
 						label="Villa"
@@ -82,6 +92,11 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 								name="land"
 								checked={types.land}
 								onChange={handleTypes}
+								size="small"
+								classes={{
+									colorSecondary: classes.checked,
+									checked: classes.checked,
+								}}
 							/>
 						}
 						label="Land"
@@ -98,6 +113,11 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 								name="flat"
 								checked={types.flat}
 								onChange={handleTypes}
+								size="small"
+								classes={{
+									colorSecondary: classes.checked,
+									checked: classes.checked,
+								}}
 							/>
 						}
 						label="Apartment"
@@ -110,6 +130,11 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 								name="independenthouse"
 								checked={types.independenthouse}
 								onChange={handleTypes}
+								size="small"
+								classes={{
+									colorSecondary: classes.checked,
+									checked: classes.checked,
+								}}
 							/>
 						}
 						label="Independent House"
@@ -122,6 +147,11 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 								name="hostel"
 								checked={types.hostel}
 								onChange={handleTypes}
+								size="small"
+								classes={{
+									colorSecondary: classes.checked,
+									checked: classes.checked,
+								}}
 							/>
 						}
 						label="Hostel"
@@ -134,6 +164,11 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 								name="pg"
 								checked={types.pg}
 								onChange={handleTypes}
+								size="small"
+								classes={{
+									colorSecondary: classes.checked,
+									checked: classes.checked,
+								}}
 							/>
 						}
 						label="PG"
@@ -143,7 +178,7 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 		);
 
 	return (
-		<Box height="100%" width="100%" className={classes.wrapper}>
+		<Box width="100%" className={classes.wrapper}>
 			{renderPropertyTypes()}
 		</Box>
 	);

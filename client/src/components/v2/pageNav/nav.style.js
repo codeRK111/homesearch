@@ -56,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
 	rightSide: {
 		display: 'flex',
 		alignItems: 'center',
+		[theme.breakpoints.down('sm')]: {
+			display: 'none',
+		},
 	},
 	searchWrapper: {
 		borderRadius: 40,
@@ -142,6 +145,12 @@ const useStyles = makeStyles((theme) => ({
 		'&>img': {
 			height: '1.2rem',
 			width: 'auto',
+		},
+	},
+	smMenu: {
+		display: 'none',
+		[theme.breakpoints.down('sm')]: {
+			display: 'inline-block',
 		},
 	},
 }));

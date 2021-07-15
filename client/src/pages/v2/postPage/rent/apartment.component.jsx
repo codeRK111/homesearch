@@ -415,6 +415,65 @@ const RentApartment = ({ pType, furnishes, amenities, onPost }) => {
 							</Box>
 						</Box>
 
+						<Box mt="2rem">
+							<Box className={classes.rowWrapper2}>
+								<Box className={classes.columnWrapper}>
+									<span>No. of indian bathroom </span>
+									<DropDown
+										options={[
+											{ value: 1, label: '1' },
+											{ value: 2, label: '2' },
+											{ value: 3, label: '3' },
+											{ value: 4, label: '4' },
+											{ value: 5, label: '5' },
+										]}
+										onSet={(val) => {
+											setFieldValue('toiletIndian', val);
+										}}
+										value={values.toiletIndian}
+										placeholder="0"
+									/>
+								</Box>
+								<Box className={classes.columnWrapper}>
+									<span>No. of western bathroom </span>
+									<DropDown
+										options={[
+											{ value: 1, label: '1' },
+											{ value: 2, label: '2' },
+											{ value: 3, label: '3' },
+											{ value: 4, label: '4' },
+											{ value: 5, label: '5' },
+										]}
+										onSet={(val) => {
+											setFieldValue('toiletWestern', val);
+										}}
+										value={values.toiletWestern}
+										placeholder="0"
+									/>
+								</Box>
+								<Box className={classes.columnWrapper}>
+									<span>No. of balconies </span>
+									<DropDown
+										options={[
+											{ value: 1, label: '1' },
+											{ value: 2, label: '2' },
+											{ value: 3, label: '3' },
+											{ value: 4, label: '4' },
+											{ value: 5, label: '5' },
+										]}
+										onSet={(val) => {
+											setFieldValue(
+												'numberOfBalconies',
+												val
+											);
+										}}
+										value={values.numberOfBalconies}
+										placeholder="0"
+									/>
+								</Box>
+							</Box>
+						</Box>
+
 						{/* Furnishes  */}
 						<Box mt="2rem" className={classes.contentWrapper}>
 							<Typography
@@ -581,64 +640,7 @@ const RentApartment = ({ pType, furnishes, amenities, onPost }) => {
 								</Box>
 							</Box>
 						</Box>
-						<Box mt="2rem">
-							<Box className={classes.rowWrapper2}>
-								<Box className={classes.columnWrapper}>
-									<span>No. of indian bathroom </span>
-									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
-										onSet={(val) => {
-											setFieldValue('toiletIndian', val);
-										}}
-										value={values.toiletIndian}
-										placeholder="0"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper}>
-									<span>No. of western bathroom </span>
-									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
-										onSet={(val) => {
-											setFieldValue('toiletWestern', val);
-										}}
-										value={values.toiletWestern}
-										placeholder="0"
-									/>
-								</Box>
-								<Box className={classes.columnWrapper}>
-									<span>No. of balconies </span>
-									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
-										onSet={(val) => {
-											setFieldValue(
-												'numberOfBalconies',
-												val
-											);
-										}}
-										value={values.numberOfBalconies}
-										placeholder="0"
-									/>
-								</Box>
-							</Box>
-						</Box>
+
 						<Box mt="2rem" className={classes.contentWrapper}>
 							<Typography
 								variant="h5"

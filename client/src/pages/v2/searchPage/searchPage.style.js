@@ -22,5 +22,19 @@ const useStyles = makeStyles((theme) => ({
 		overflow: 'auto',
 		padding: '1rem',
 	},
+	filterParent: {
+		marginBottom: '2rem',
+		[theme.breakpoints.down('sm')]: {
+			marginBottom: 0,
+		},
+	},
+	mobileFilterWrapper: {
+		width: '80vw',
+		padding: '1rem',
+		boxSizing: 'border-box',
+	},
+	checked: {
+		color: `${theme.utilColor} !important`,
+	},
 }));
 export default useStyles;

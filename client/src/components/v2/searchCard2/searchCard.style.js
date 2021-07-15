@@ -7,6 +7,9 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: '32px',
 		boxShadow: '12px 12px 24px #bcbcbc,-12px -12px 24px #ffffff',
 		marginTop: '2rem',
+		[theme.breakpoints.down('sm')]: {
+			marginTop: 0,
+		},
 	},
 	imageWrapper: (props) => ({
 		position: 'relative',
@@ -84,9 +87,9 @@ const useStyles = makeStyles((theme) => ({
 				padding: '0.3rem',
 			},
 		},
-		[theme.breakpoints.down('sm')]: {
-			flexDirection: 'column',
-		},
+		// [theme.breakpoints.down('sm')]: {
+		// 	flexDirection: 'column',
+		// },
 	},
 	smallText: {
 		fontSize: '0.7rem',
@@ -120,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
 		position: 'relative',
 		height: '80px',
 		[theme.breakpoints.down('sm')]: {
-			height: '60px',
+			height: '80px',
 		},
 	},
 	iconImage: {
@@ -135,10 +138,18 @@ const useStyles = makeStyles((theme) => ({
 		'&:hover': {
 			textDecoration: 'underline',
 		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1rem',
+		},
 	},
 	swipableWrapper: {
 		position: 'absolute',
 		bottom: 0,
+	},
+	test: {
+		'& h1,h5': {
+			wordBreak: 'break-all',
+		},
 	},
 }));
 export default useStyles;

@@ -143,10 +143,13 @@ const useStyles = makeStyles((theme) => ({
 			marginRight: '1rem',
 			[theme.breakpoints.down('sm')]: {
 				fontSize: '0.8rem',
+				marginBottom: '0.5rem',
 			},
 		},
 		[theme.breakpoints.down('sm')]: {
 			flexDirection: 'column',
+			marginTop: '1rem',
+			marginRight: 0,
 		},
 	},
 	columnWrapper2: {

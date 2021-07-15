@@ -97,6 +97,11 @@ function MenuListComposition({
 								existingLocations.find((b) => b === c.id)
 							)}
 							onChange={handleChangeCheckbox(c.id)}
+							size="small"
+							classes={{
+								colorSecondary: classes.checked,
+								checked: classes.checked,
+							}}
 						/>
 					}
 					label={c.name}

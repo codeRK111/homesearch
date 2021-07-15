@@ -105,7 +105,7 @@ const AgentPage = ({ user }) => {
 										{user.name}
 									</h1>
 								</Box>
-								<Box
+								{/* <Box
 									className={clsx(globalClasses.alignCenter)}
 								>
 									<span
@@ -123,7 +123,7 @@ const AgentPage = ({ user }) => {
 											ID : R04913231c
 										</span>
 									</Box>
-								</Box>
+								</Box> */}
 								<List component="nav">
 									<ListItem dense>
 										<ListItemIcon>

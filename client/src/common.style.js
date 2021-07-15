@@ -133,4 +133,10 @@ export default makeStyles((theme) => ({
 	noTransfrom: {
 		textTransform: 'none',
 	},
+	borderBox: {
+		boxSizing: 'border-box',
+	},
+	wordBreak: {
+		wordBreak: 'break-all',
+	},
 }));
