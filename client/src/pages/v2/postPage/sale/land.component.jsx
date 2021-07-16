@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from '@material-ui/core';
-import { FieldArray, Form, Formik } from 'formik';
+import { Field, FieldArray, Form, Formik } from 'formik';
 
 import CheckBox from '../../../../components/formik/checkbox.component';
 import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
@@ -9,6 +9,8 @@ import TextArea from '../../../../components/formik/textArea.component';
 import TextField from '../../../../components/formik/textFieldDefault.component';
 import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
+import { connect } from 'react-redux';
+import { setSnackbar } from '../../../../redux/ui/ui.actions';
 import { toHumanReadble } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
@@ -17,17 +19,6 @@ import { validateNumber } from '../../../../utils/validation.utils';
 // import AddIcon from '@material-ui/icons/Add';
 
 // import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
-
-
-
-
-
-
-
-
-
-
-
 
 const legalClearance = [
 	{
@@ -80,9 +71,10 @@ const initialValues = {
 	city: '',
 	location: '',
 	legalClearance,
+	negotiable: false,
 };
 
-const RentApartment = ({ pType, onPost }) => {
+const ResaleLand = ({ pType, onPost, setSnackbar }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [photos, setPhotos] = React.useState([]);
@@ -135,7 +127,23 @@ const RentApartment = ({ pType, onPost }) => {
 	};
 
 	const submitForm = (values) => {
-		onPost(values);
+		const data = {
+			...values,
+			sale_type: pType,
+		};
+		onPost(data, photos)
+			.then((data) => {
+				console.log(data);
+			})
+			.catch((error) => {
+				if (error) {
+					setSnackbar({
+						open: true,
+						message: error,
+						severity: 'error',
+					});
+				}
+			});
 	};
 
 	return (
@@ -257,11 +265,9 @@ const RentApartment = ({ pType, onPost }) => {
 									</div>
 								)}
 								<div>
-									<input
+									<Field
 										type="checkbox"
-										id="male"
-										name="gender"
-										value="male"
+										name="negotiable"
 										className={classes.bgShadow}
 									/>
 									<label for="male">
@@ -533,4 +539,8 @@ const RentApartment = ({ pType, onPost }) => {
 	);
 };
 
-export default RentApartment;
+const mapDispatchToProps = (dispatch) => ({
+	setSnackbar: (config) => dispatch(setSnackbar(config)),
+});
+
+export default connect(null, mapDispatchToProps)(ResaleLand);

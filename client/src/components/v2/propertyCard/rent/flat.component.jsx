@@ -1,5 +1,9 @@
+import { Box, Chip } from '@material-ui/core';
+
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import area from '../../../../assets/icons/area.svg';
 import bed from '../../../../assets/icons/bed.svg';
 import car from '../../../../assets/icons/car.svg';
@@ -18,9 +22,35 @@ const TYPES = {
 	independenthouse: 'Villa',
 };
 
-const PropertyCard = ({ data }) => {
+const PropertyCard = ({ data, showStatus = false }) => {
 	const classes = useStyles({ img: city });
 	const globalClasses = useGlobalStyles();
+
+	const renderStatus = () => {
+		switch (data.status) {
+			case 'active':
+				return (
+					<Chip
+						icon={<CheckCircleOutlineIcon />}
+						label="Active"
+						color="primary"
+						variant="outlined"
+					/>
+				);
+			case 'underScreening':
+				return (
+					<Chip
+						icon={<VisibilityIcon />}
+						label="Under screening"
+						color="default"
+						variant="outlined"
+					/>
+				);
+
+			default:
+				break;
+		}
+	};
 	return (
 		<>
 			{!!data && (
@@ -71,54 +101,68 @@ const PropertyCard = ({ data }) => {
 								</span>
 							</div>
 						</div>
-						<h5
-							className={clsx(
-								globalClasses.textCenter,
-								classes.title
-							)}
-						>
-							Rs. {data.rent / 1000}K/Month
-						</h5>
-						<div className={classes.flexParentWrapper}>
-							<div className={classes.flexWrapper}>
-								<img
-									src={area}
-									alt="Area"
-									className={classes.img}
-								/>
-								<span className={classes.contentText}>
-									{data.superBuiltupArea} sqft.
-								</span>
-							</div>
-							<div className={classes.flexWrapper}>
-								<img
-									src={bed}
-									alt="Bed"
-									className={classes.img}
-								/>
-								<span className={classes.contentText}>
-									{data.numberOfBedRooms}
-								</span>
-							</div>
-							<div className={classes.flexWrapper}>
-								<img
-									src={tub}
-									alt="Tub"
-									className={classes.img}
-								/>
-								<span className={classes.contentText}>
-									{renderToilets(data.toiletTypes)}
-								</span>
-							</div>
-							<div className={classes.flexWrapper}>
-								<img
-									src={car}
-									alt="Car"
-									className={classes.img}
-								/>
-								<span className={classes.contentText}>1</span>
-							</div>
-						</div>
+						{showStatus ? (
+							<Box
+								mt="1rem"
+								display="flex"
+								justifyContent="center"
+							>
+								{renderStatus()}
+							</Box>
+						) : (
+							<>
+								<h5
+									className={clsx(
+										globalClasses.textCenter,
+										classes.title
+									)}
+								>
+									Rs. {data.rent / 1000}K/Month
+								</h5>
+								<div className={classes.flexParentWrapper}>
+									<div className={classes.flexWrapper}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.img}
+										/>
+										<span className={classes.contentText}>
+											{data.superBuiltupArea} sqft.
+										</span>
+									</div>
+									<div className={classes.flexWrapper}>
+										<img
+											src={bed}
+											alt="Bed"
+											className={classes.img}
+										/>
+										<span className={classes.contentText}>
+											{data.numberOfBedRooms}
+										</span>
+									</div>
+									<div className={classes.flexWrapper}>
+										<img
+											src={tub}
+											alt="Tub"
+											className={classes.img}
+										/>
+										<span className={classes.contentText}>
+											{renderToilets(data.toiletTypes)}
+										</span>
+									</div>
+									<div className={classes.flexWrapper}>
+										<img
+											src={car}
+											alt="Car"
+											className={classes.img}
+										/>
+										<span className={classes.contentText}>
+											1
+										</span>
+									</div>
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 			)}

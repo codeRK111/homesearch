@@ -1,5 +1,9 @@
+import { Box, Chip } from '@material-ui/core';
+
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import area from '../../../assets/icons/area.svg';
 import city from '../../../assets/city.jpg';
 import clsx from 'clsx';
@@ -11,13 +15,9 @@ import useStyles from './propertyCard.style';
 // import bed from '../../../assets/icons/bed.svg';
 // import car from '../../../assets/icons/car.svg';
 
-
-
 // import { renderToilets } from '../../../utils/render.utils';
 
 // import tub from '../../../assets/icons/tub.svg';
-
-
 
 const TYPES = {
 	flat: 'Apartment',
@@ -25,9 +25,35 @@ const TYPES = {
 	independenthouse: 'Villa',
 };
 
-const PropertyCard = ({ data }) => {
+const PropertyCard = ({ data, showStatus = false }) => {
 	const classes = useStyles({ img: city });
 	const globalClasses = useGlobalStyles();
+
+	const renderStatus = () => {
+		switch (data.status) {
+			case 'active':
+				return (
+					<Chip
+						icon={<CheckCircleOutlineIcon />}
+						label="Active"
+						color="primary"
+						variant="outlined"
+					/>
+				);
+			case 'underScreening':
+				return (
+					<Chip
+						icon={<VisibilityIcon />}
+						label="Under screening"
+						color="default"
+						variant="outlined"
+					/>
+				);
+
+			default:
+				break;
+		}
+	};
 	return (
 		<>
 			{!!data && (
@@ -78,56 +104,68 @@ const PropertyCard = ({ data }) => {
 								</span>
 							</div>
 						</div>
-						<h5
-							className={clsx(
-								globalClasses.textCenter,
-								classes.title
-							)}
-						>
-							Rs. {(data.salePrice / 100000).toFixed(2)}L
-						</h5>
-						<div className={classes.flexParentWrapper}>
-							<div className={classes.flexWrapper}>
-								<img
-									src={area}
-									alt="Area"
-									className={classes.img}
-								/>
-								<span className={classes.contentText}>
-									{data.plotArea} sqft.
-								</span>
-							</div>
-							<div className={classes.flexWrapper}>
-								<img
-									src={area}
-									alt="Area"
-									className={classes.img}
-								/>
-								<span className={classes.contentText}>
-									{data.length} sqft.
-								</span>
-							</div>
-							<div className={classes.flexWrapper}>
-								<img
-									src={area}
-									alt="Area"
-									className={classes.img}
-								/>
-								<span className={classes.contentText}>
-									{data.width} sqft.
-								</span>
-							</div>
-							<div className={classes.flexWrapper}>
-								<img
-									src={area}
-									alt="Area"
-									className={classes.img}
-								/>
-								<span className={classes.contentText}>
-									{data.plotFrontage} sqft.
-								</span>
-							</div>
-						</div>
+						{showStatus ? (
+							<Box
+								mt="1rem"
+								display="flex"
+								justifyContent="center"
+							>
+								{renderStatus()}
+							</Box>
+						) : (
+							<>
+								<h5
+									className={clsx(
+										globalClasses.textCenter,
+										classes.title
+									)}
+								>
+									Rs. {(data.salePrice / 100000).toFixed(2)}L
+								</h5>
+								<div className={classes.flexParentWrapper}>
+									<div className={classes.flexWrapper}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.img}
+										/>
+										<span className={classes.contentText}>
+											{data.plotArea} sqft.
+										</span>
+									</div>
+									<div className={classes.flexWrapper}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.img}
+										/>
+										<span className={classes.contentText}>
+											{data.length} sqft.
+										</span>
+									</div>
+									<div className={classes.flexWrapper}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.img}
+										/>
+										<span className={classes.contentText}>
+											{data.width} sqft.
+										</span>
+									</div>
+									<div className={classes.flexWrapper}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.img}
+										/>
+										<span className={classes.contentText}>
+											{data.plotFrontage} sqft.
+										</span>
+									</div>
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 			)}

@@ -11,8 +11,8 @@ import {
 import { capitalizeFirstLetter, parseDate } from '../../../utils/render.utils';
 
 import CreateIcon from '@material-ui/icons/Create';
-import { Link } from 'react-router-dom';
 import MailIcon from '@material-ui/icons/Mail';
+import MyProperties from '../../../components/v2/myProperties';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import React from 'react';
@@ -149,24 +149,8 @@ const AgentPage = ({ user }) => {
 					</Box>
 				</div>
 			</div>
-			<Box className={classes.pagePadding}>
-				<Box
-					className={clsx(
-						globalClasses.alignCenter,
-						globalClasses.justifySpaceBetween
-					)}
-				>
-					<h2>Properties Posted By Sumitra</h2>
-					<Link
-						className={clsx(
-							globalClasses.colorPrimary,
-							globalClasses.bold,
-							globalClasses.smText
-						)}
-					>
-						MANAGE PROFILE
-					</Link>
-				</Box>
+			<Box className={globalClasses.smHide}>
+				<MyProperties title={`Properties posted by ${user.name}`} />
 			</Box>
 		</div>
 	);

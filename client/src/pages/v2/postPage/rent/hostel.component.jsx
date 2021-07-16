@@ -1,5 +1,5 @@
 import { Box, Grid, IconButton, Typography } from '@material-ui/core';
-import { Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 
 import CheckBox from '../../../../components/formik/checkbox.component';
 import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
@@ -12,6 +12,8 @@ import TextField from '../../../../components/formik/textFieldDefault.component'
 import TodayIcon from '@material-ui/icons/Today';
 import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
+import { connect } from 'react-redux';
+import { setSnackbar } from '../../../../redux/ui/ui.actions';
 import { toHumanReadble } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
@@ -48,9 +50,10 @@ const initialValues = {
 	numberOfRoomMates: 1,
 	title: '',
 	numberOfBedRooms: 1,
+	negotiable: false,
 };
 
-const RentApartment = ({ pType, furnishes, amenities }) => {
+const RentHostel = ({ pType, furnishes, amenities, onPost, setSnackbar }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [isOpen, setIsOpen] = React.useState(false);
@@ -106,7 +109,23 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 	};
 
 	const submitForm = (values) => {
-		alert('Hello');
+		const data = {
+			...values,
+			type: pType,
+		};
+		onPost(data, photos, 'rent')
+			.then((data) => {
+				console.log(data);
+			})
+			.catch((error) => {
+				if (error) {
+					setSnackbar({
+						open: true,
+						message: error,
+						severity: 'error',
+					});
+				}
+			});
 	};
 	return (
 		<Box width="100%">
@@ -157,11 +176,9 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 									</div>
 								)}
 								<div>
-									<input
+									<Field
 										type="checkbox"
-										id="male"
-										name="gender"
-										value="male"
+										name="negotiable"
 										className={classes.bgShadow}
 									/>
 									<label for="male">
@@ -847,4 +864,8 @@ const RentApartment = ({ pType, furnishes, amenities }) => {
 	);
 };
 
-export default RentApartment;
+const mapDispatchToProps = (dispatch) => ({
+	setSnackbar: (config) => dispatch(setSnackbar(config)),
+});
+
+export default connect(null, mapDispatchToProps)(RentHostel);

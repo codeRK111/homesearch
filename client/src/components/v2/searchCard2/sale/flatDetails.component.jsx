@@ -212,7 +212,30 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={classes.keyValue}
 									>
 										<Box className="test">
-											<h1>{property.landArea}</h1>
+											{property.availability ===
+											'immediately' ? (
+												<h5
+													className={
+														globalClasses.textCenter
+													}
+												>
+													Ready to move
+												</h5>
+											) : (
+												<h1>
+													<span>
+														{moment(
+															property.availableDate
+														).format('D')}
+													</span>{' '}
+													<br />
+													<span>
+														{moment(
+															property.availableDate
+														).format('MMM')}
+													</span>
+												</h1>
+											)}
 										</Box>
 									</Grid>
 									<Grid
@@ -221,7 +244,7 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={globalClasses.alignCenter}
 									>
 										<span className={classes.smallText}>
-											Land Area
+											Available From
 										</span>
 									</Grid>
 								</Grid>

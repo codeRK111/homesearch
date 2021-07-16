@@ -21,8 +21,8 @@ export const renderByPropertyType = (property, type, component) => {
 	return null;
 };
 
-export const apiUrl = (url) => {
-	return `/api/v1${url}`;
+export const apiUrl = (url, version = 1) => {
+	return `/api/v${version}${url}`;
 	// return `/api${url}`;
 };
 export const parseDateOnlyMonth = (date) => {

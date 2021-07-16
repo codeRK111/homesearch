@@ -1,5 +1,5 @@
 import { Box, Grid, IconButton, Typography } from '@material-ui/core';
-import { FieldArray, Form, Formik } from 'formik';
+import { Field, FieldArray, Form, Formik } from 'formik';
 import {
 	validateLength,
 	validateNumber,
@@ -16,6 +16,8 @@ import TextField from '../../../../components/formik/textFieldDefault.component'
 import TodayIcon from '@material-ui/icons/Today';
 import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
+import { connect } from 'react-redux';
+import { setSnackbar } from '../../../../redux/ui/ui.actions';
 import { toHumanReadble } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
@@ -69,7 +71,7 @@ const legalClearance = [
 ];
 
 const initialValues = {
-	for: 'rent',
+	for: 'sale',
 	numberOfBedRooms: 1,
 	numberOfBalconies: 1,
 	noOfFloors: 1,
@@ -82,11 +84,6 @@ const initialValues = {
 	furnished: 'semifurnished',
 	furnishes: [],
 	amenities: [],
-	distanceSchool: 1,
-	distanceRailwayStation: 1,
-	distanceAirport: 1,
-	distanceBusStop: 1,
-	distanceHospital: 1,
 	availability: 'immediately',
 	availableDate: new Date(),
 	description: '',
@@ -100,12 +97,20 @@ const initialValues = {
 	reraapproveId: '',
 	pricePerSqFt: '',
 	transactionType: 'newbooking',
+	negotiable: false,
 };
 
-const RentApartment = ({ pType, furnishes, amenities, onPost }) => {
+const RentApartment = ({
+	pType,
+	furnishes,
+	amenities,
+	onPost,
+	setSnackbar,
+}) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [isOpen, setIsOpen] = React.useState(false);
+
 	const [photos, setPhotos] = React.useState([]);
 
 	const validateForm = (values) => {
@@ -193,7 +198,23 @@ const RentApartment = ({ pType, furnishes, amenities, onPost }) => {
 	};
 
 	const submitForm = (values) => {
-		onPost(values);
+		const data = {
+			...values,
+			sale_type: pType,
+		};
+		onPost(data, photos)
+			.then((data) => {
+				console.log(data);
+			})
+			.catch((error) => {
+				if (error) {
+					setSnackbar({
+						open: true,
+						message: error,
+						severity: 'error',
+					});
+				}
+			});
 	};
 	return (
 		<Box width="100%">
@@ -276,6 +297,7 @@ const RentApartment = ({ pType, furnishes, amenities, onPost }) => {
 										1BHK
 									</Select>
 								</Box>
+
 								<Box className={classes.selectChip}>
 									<Select
 										selected={values.numberOfBedRooms === 2}
@@ -354,11 +376,9 @@ const RentApartment = ({ pType, furnishes, amenities, onPost }) => {
 									</div>
 								)}
 								<div>
-									<input
+									<Field
 										type="checkbox"
-										id="male"
-										name="gender"
-										value="male"
+										name="negotiable"
 										className={classes.bgShadow}
 									/>
 									<label for="male">
@@ -855,4 +875,8 @@ const RentApartment = ({ pType, furnishes, amenities, onPost }) => {
 	);
 };
 
-export default RentApartment;
+const mapDispatchToProps = (dispatch) => ({
+	setSnackbar: (config) => dispatch(setSnackbar(config)),
+});
+
+export default connect(null, mapDispatchToProps)(RentApartment);

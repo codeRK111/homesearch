@@ -47,7 +47,7 @@ const propertySchema = new Schema(
 				message:
 					'type must be between <superBuildUpArea> | <carpetArea>',
 			},
-			required: requireSaleType,
+			// required: requireSaleType,
 		},
 		postedBy: {
 			type: String,
@@ -69,9 +69,16 @@ const propertySchema = new Schema(
 			type: Number,
 			required: requireSaleType,
 		},
+		maintainanceFee: {
+			type: Number,
+		},
 		verified: {
 			type: Boolean,
 			required: requireSaleType,
+		},
+		negotiable: {
+			type: Boolean,
+			required: true,
 		},
 		amenities: {
 			type: [
@@ -167,10 +174,6 @@ const propertySchema = new Schema(
 			required: requireSaleLand,
 		},
 		govermentValuation: {
-			type: Number,
-			required: requireSaleLand,
-		},
-		pricePerSqFt: {
 			type: Number,
 			required: requireSaleLand,
 		},

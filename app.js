@@ -20,6 +20,7 @@ const projectRoute = require('./routes/projectRoute');
 const kraRoute = require('./routes/kraRoute');
 const kpiRoute = require('./routes/kpiRoute');
 const pageRoute = require('./routes/pageRoute');
+const v2PropertyRoute = require('./routesV2/propertyRoute');
 const queryRoute = require('./routes/propertyQueryRoute');
 const whatsappQueryRoute = require('./routes/whatsappQueryRoute');
 const propertyReviewRoute = require('./routes/propertyReviewRoute');
@@ -161,6 +162,7 @@ app.use('/api/v1/api-test', testRoute);
 // v2 Routes
 app.use('/api/v2/builder', builderRouteV2);
 app.use('/api/v2/utility', utilityRouteV2);
+app.use('/api/v2/property', v2PropertyRoute);
 
 app.all('*', (req, res, next) => {
 	console.log(req);
