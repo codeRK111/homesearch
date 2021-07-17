@@ -6,11 +6,11 @@ import {
 	selectUserProfileLoading,
 } from './redux/auth/auth.selectors';
 
+import { LoadingAnimationNormal } from './components/v2/loadingAnimation';
 import LogIn from './components/logInDialog/logInDialog.component';
 import MuiAlert from '@material-ui/lab/Alert';
 import Protected from './components/protected/protected.component';
 import Snackbar from '@material-ui/core/Snackbar';
-import SuspenseLoader from './components/initialLoader/initialLoader.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fetchUserProfile } from './redux/auth/auth.actions';
@@ -104,7 +104,7 @@ function App({
 	};
 
 	return (
-		<Suspense fallback={<SuspenseLoader />}>
+		<Suspense fallback={<LoadingAnimationNormal />}>
 			<Snackbar
 				open={snackbarDetails.open}
 				autoHideDuration={6000}

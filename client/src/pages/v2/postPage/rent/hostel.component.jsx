@@ -53,7 +53,14 @@ const initialValues = {
 	negotiable: false,
 };
 
-const RentHostel = ({ pType, furnishes, amenities, onPost, setSnackbar }) => {
+const RentHostel = ({
+	pType,
+	furnishes,
+	amenities,
+	onPost,
+	setSnackbar,
+	loading,
+}) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [isOpen, setIsOpen] = React.useState(false);
@@ -853,6 +860,7 @@ const RentHostel = ({ pType, furnishes, amenities, onPost, setSnackbar }) => {
 							<button
 								className={classes.postButton}
 								type="submit"
+								disabled={loading}
 							>
 								Post Ad Now
 							</button>

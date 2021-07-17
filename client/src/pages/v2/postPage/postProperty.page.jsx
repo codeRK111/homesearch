@@ -153,11 +153,11 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 									.then((response) => {
 										setLoading(false);
 										setShowSuccessMessage(true);
-										resolve(response);
+										return resolve(response);
 									})
 									.catch((error) => {
 										setLoading(false);
-										reject(error);
+										return reject(error);
 									});
 							} else {
 								setLoading(false);
@@ -225,6 +225,7 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 						component={RentApartment}
 						pType={type}
 						onPost={onPostProperty}
+						loading={loading}
 					/>
 				);
 			case 'hostel':
@@ -234,6 +235,7 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 						component={RentHostel}
 						pType={type}
 						onPost={onPostProperty}
+						loading={loading}
 					/>
 				);
 
@@ -250,10 +252,17 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 						component={SaleApartment}
 						pType={type}
 						onPost={onPostProperty}
+						loading={loading}
 					/>
 				);
 			case 'land':
-				return <SaleLand pType={type} onPost={onPostProperty} />;
+				return (
+					<SaleLand
+						pType={type}
+						onPost={onPostProperty}
+						loading={loading}
+					/>
+				);
 
 			default:
 				break;

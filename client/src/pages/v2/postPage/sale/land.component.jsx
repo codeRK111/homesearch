@@ -74,7 +74,7 @@ const initialValues = {
 	negotiable: false,
 };
 
-const ResaleLand = ({ pType, onPost, setSnackbar }) => {
+const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [photos, setPhotos] = React.useState([]);
@@ -528,6 +528,7 @@ const ResaleLand = ({ pType, onPost, setSnackbar }) => {
 							<button
 								className={classes.postButton}
 								type="submit"
+								disabled={loading}
 							>
 								Post Ad Now
 							</button>

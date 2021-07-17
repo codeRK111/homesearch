@@ -259,6 +259,7 @@ const SearchPage = ({
 				message={asyncState.error}
 			/>
 			<Loading open={!!asyncState.loading || postReviewLoading} />
+			{/* <Loading open={true} /> */}
 			<Nav />
 			{/* <pre>{JSON.stringify(asyncState.property, null, 2)}</pre> */}
 			{asyncState.property && (

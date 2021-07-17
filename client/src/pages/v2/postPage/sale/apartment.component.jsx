@@ -106,6 +106,7 @@ const RentApartment = ({
 	amenities,
 	onPost,
 	setSnackbar,
+	loading,
 }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
@@ -864,6 +865,7 @@ const RentApartment = ({
 							<button
 								className={classes.postButton}
 								type="submit"
+								disabled={loading}
 							>
 								Post Ad Now
 							</button>
