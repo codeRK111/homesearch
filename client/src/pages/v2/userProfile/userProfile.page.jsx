@@ -11,12 +11,16 @@ import {
 import { capitalizeFirstLetter, parseDate } from '../../../utils/render.utils';
 
 import CreateIcon from '@material-ui/icons/Create';
+import LikedProperties from '../../../components/v2/likeProperties';
 import MailIcon from '@material-ui/icons/Mail';
 import MyProperties from '../../../components/v2/myProperties';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import React from 'react';
+import SavedProperties from '../../../components/v2/savedProperties';
 import UpdateProfile from './updateProfile.component';
+import { apiUrl } from '../../../utils/render.utils';
+import axios from 'axios';
 import badgeIcon from '../../../assets/icons/badge.svg';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
@@ -32,6 +36,12 @@ const AgentPage = ({ user }) => {
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
 	const [updateProfileOpen, setUpdateProfileOpen] = React.useState(false);
+	let cancelToken = React.useRef(undefined);
+	const [count, setCount] = React.useState({
+		postPropertyCount: 0,
+		savedPropertyCount: 0,
+		likedPropertyCount: 0,
+	});
 
 	const handleUpdateProfileClickOpen = () => {
 		setUpdateProfileOpen(true);
@@ -40,6 +50,36 @@ const AgentPage = ({ user }) => {
 	const handleUpdateProfileClose = () => {
 		setUpdateProfileOpen(false);
 	};
+
+	React.useEffect(() => {
+		(async () => {
+			try {
+				cancelToken.current = axios.CancelToken.source();
+				const token = localStorage.getItem('JWT_CLIENT');
+				const {
+					data: { data },
+				} = await axios.get(
+					apiUrl('/page/user/profile', 2),
+
+					{
+						cancelToken: cancelToken.current.token,
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${token}`,
+						},
+					}
+				);
+				setCount(data);
+			} catch (error) {
+				setCount({
+					postPropertyCount: 0,
+					savedPropertyCount: 0,
+					likedPropertyCount: 0,
+				});
+			}
+		})();
+	}, []);
+
 	return (
 		<div>
 			<Nav />
@@ -142,6 +182,59 @@ const AgentPage = ({ user }) => {
 										<ListItemText primary={user.number} />
 									</ListItem>
 								</List>
+								<Box
+									className={clsx(globalClasses.alignCenter)}
+									mt="1rem"
+								>
+									<Box className={classes.numberWrapper}>
+										<h1 className={globalClasses.colorUtil}>
+											{count.postPropertyCount}
+										</h1>
+										<span
+											className={clsx(
+												globalClasses.smText,
+												globalClasses.bold,
+												globalClasses.textCenter
+											)}
+										>
+											Property Posted
+										</span>
+									</Box>
+									<Box
+										className={classes.numberWrapper}
+										ml="2rem"
+									>
+										<h1 className={globalClasses.colorUtil}>
+											{count.savedPropertyCount}
+										</h1>
+										<span
+											className={clsx(
+												globalClasses.smText,
+												globalClasses.bold,
+												globalClasses.textCenter
+											)}
+										>
+											Property Saved
+										</span>
+									</Box>
+									<Box
+										className={classes.numberWrapper}
+										ml="2rem"
+									>
+										<h1 className={globalClasses.colorUtil}>
+											{count.likedPropertyCount}
+										</h1>
+										<span
+											className={clsx(
+												globalClasses.smText,
+												globalClasses.bold,
+												globalClasses.textCenter
+											)}
+										>
+											Property Liked
+										</span>
+									</Box>
+								</Box>
 							</Grid>
 
 							<Grid item xs={false} md={1}></Grid>
@@ -151,6 +244,12 @@ const AgentPage = ({ user }) => {
 			</div>
 			<Box className={globalClasses.smHide}>
 				<MyProperties title={`Properties posted by ${user.name}`} />
+			</Box>
+			<Box className={globalClasses.smHide}>
+				<SavedProperties title={`Saved Properties`} />
+			</Box>
+			<Box className={globalClasses.smHide}>
+				<LikedProperties title={`Liked Properties`} />
 			</Box>
 		</div>
 	);

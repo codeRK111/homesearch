@@ -1,11 +1,4 @@
-import { Avatar, Box, Grid, Tooltip, Typography } from '@material-ui/core';
-import {
-	FacebookShareButton,
-	LinkedinShareButton,
-	TwitterShareButton,
-	WhatsappShareButton,
-} from 'react-share';
-import { LinkedinIcon, WhatsappIcon } from '../../../components/v2/createIcon';
+import { Avatar, Box, Grid, Typography } from '@material-ui/core';
 import {
 	capitalizeFirstLetter,
 	renderByPropertyFor,
@@ -16,11 +9,9 @@ import {
 	selectUser,
 } from '../../../redux/auth/auth.selectors';
 import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
-import useStyles, { LightTooltip } from './propertyDetailsPage.style';
 
 import Amenity from '../../../components/v2/amenity/amenity.component';
 import ErrorMessage from '../../../components/v2/backdropMessage';
-import FacebookIcon from '@material-ui/icons/Facebook';
 import FlatRentHeader from '../../../components/v2/searchCard2/rent/flatDetails.component';
 import FlatSaleHeader from '../../../components/v2/searchCard2/sale/flatDetails.component';
 import HostelRentHeader from '../../../components/v2/searchCard2/rent/hostelDetails.component';
@@ -29,26 +20,14 @@ import LegalClearance from './legalClearance.component';
 import Loading from '../../../components/v2/loadingAnimation';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import OwnerCard from '../../../components/v2/ownerCard';
+import PropertyAction from './propertyAction.component';
 import React from 'react';
-import ShareIcon from '@material-ui/icons/Share';
 import SimilarProperties from '../../../components/v2/similarProperties';
-import TwitterIcon from '@material-ui/icons/Twitter';
 import axios from 'axios';
-import bookmarkIcon from '../../../assets/icons/bookmark.svg';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import fingerLikeIcon from '../../../assets/icons/fingerLike.svg';
 import useGlobalStyles from '../../../common.style';
-import whatsappIcon from '../../../assets/icons/whatsappOutline.svg';
-
-// import ChipWrapper from '../../../components/v2/chipWrapper/chipWrapper.component';
-
-// import { Link } from 'react-router-dom';
-
-// import clsx from 'clsx';
-
-// import likeIcon from '../../../assets/icons/like.svg';
-// import rocketIcon from '../../../assets/icons/rocket.svg';
+import useStyles from './propertyDetailsPage.style';
 
 const SearchPage = ({
 	match: {
@@ -62,9 +41,8 @@ const SearchPage = ({
 	const [review, setReview] = React.useState('');
 	const [reviews, setReviews] = React.useState([]);
 	const [postReview, setPostReview] = React.useState(false);
-
 	const [postReviewLoading, setPostReviewLoading] = React.useState(false);
-	let cancelToken = React.useRef();
+	let cancelToken = React.useRef(undefined);
 	const [asyncState, setAsyncState] = React.useState({
 		property: null,
 		loading: false,
@@ -72,10 +50,26 @@ const SearchPage = ({
 	});
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
-
 	const handleChange = (e) => {
 		setReview(e.target.value);
 	};
+
+	// const token = localStorage.getItem('JWT_CLIENT');
+	// cancelToken.current = axios.CancelToken.source();
+	// useAxios({
+	// 	url: apiUrl('/save-property', 2),
+	// 	method: 'post',
+	// 	body: {
+	// 		property: id,
+	// 	},
+	// options: {
+	// 	headers: {
+	// 		cancelToken: cancelToken.current.token,
+	// 		'Content-Type': 'application/json',
+	// 		Authorization: `Bearer ${token}`,
+	// 	},
+	// },
+	// });
 
 	const addReview = async () => {
 		if (asyncState.property && review) {
@@ -502,115 +496,7 @@ const SearchPage = ({
 								</p>
 
 								<div className={classes.divider}></div>
-								<div className={classes.utilsWrapper}>
-									<div className={globalClasses.alignCenter}>
-										<span className={globalClasses.smText}>
-											0.1K
-										</span>
-										<Box ml="0.5rem">
-											<img
-												src={fingerLikeIcon}
-												alt="Like"
-												className={classes.utilsIcon}
-											/>
-										</Box>
-									</div>
-									<div className={globalClasses.flexCenter}>
-										<LightTooltip
-											placement="top"
-											arrow
-											interactive
-											title={
-												<Box
-													className={
-														globalClasses.alignCenter
-													}
-												>
-													<FacebookShareButton
-														url="https://homesearch18.com/#/"
-														quote="Homesearch18"
-													>
-														<FacebookIcon color="primary" />
-													</FacebookShareButton>
-													<Box ml="1rem">
-														<TwitterShareButton
-															url="https://homesearch18.com/#/"
-															title="Homesearch18"
-														>
-															<TwitterIcon color="primary" />
-														</TwitterShareButton>
-													</Box>
-													<Box ml="1rem">
-														<LinkedinShareButton
-															url="https://homesearch18.com/#/"
-															title="Homesearch18"
-														>
-															<LinkedinIcon
-																size={32}
-																round
-															/>
-														</LinkedinShareButton>
-													</Box>
-													<Box ml="1rem">
-														<WhatsappShareButton
-															url="https://homesearch18.com/#/"
-															title="Homesearch18"
-															separator=":: "
-														>
-															<WhatsappIcon
-																size={32}
-																round
-															/>
-														</WhatsappShareButton>
-													</Box>
-												</Box>
-											}
-										>
-											{/* <img
-												src={rocketIcon}
-												alt="Rocket"
-												className={classes.utilsIcon}
-											/> */}
-											<ShareIcon
-												className={classes.shareIcon}
-											/>
-										</LightTooltip>
-									</div>
-									<Tooltip title="Share on whatsapp">
-										<div
-											className={
-												globalClasses.justifyCenter
-											}
-										>
-											<WhatsappShareButton
-												url="https://homesearch18.com/#/"
-												title="Homesearch18"
-												separator=":: "
-											>
-												<img
-													src={whatsappIcon}
-													alt="WhatsApp"
-													className={
-														classes.utilsIcon
-													}
-												/>
-											</WhatsappShareButton>
-										</div>
-									</Tooltip>
-									<Tooltip title="Save Property">
-										<div
-											className={
-												globalClasses.justifyCenter
-											}
-										>
-											<img
-												src={bookmarkIcon}
-												alt="BookMark"
-												className={classes.utilsIcon}
-											/>
-										</div>
-									</Tooltip>
-								</div>
+								<PropertyAction id={id} />
 								<Box mt="3rem">
 									<input
 										type="text"

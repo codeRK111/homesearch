@@ -2,14 +2,20 @@ import { useEffect, useState } from 'react';
 
 import axios from 'axios';
 
-const useAxios = ({ url, method, body = null, headers = null }) => {
+const useAxios = ({
+	url,
+	method,
+	body = null,
+	options = null,
+	dependencies = [],
+}) => {
 	const [response, setResponse] = useState(null);
 	const [error, setError] = useState('');
 	const [loading, setloading] = useState(true);
 
 	useEffect(() => {
 		const fetchData = () => {
-			axios[method](url, JSON.parse(headers), JSON.parse(body))
+			axios[method](url, body, options)
 				.then((res) => {
 					setResponse(res.data);
 				})
@@ -20,8 +26,15 @@ const useAxios = ({ url, method, body = null, headers = null }) => {
 					setloading(false);
 				});
 		};
-		fetchData();
-	}, [method, url, body, headers]);
+		if (method === 'post') {
+			if (body) {
+				fetchData();
+			}
+		} else {
+			fetchData();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, dependencies);
 
 	return { response, error, loading };
 };
