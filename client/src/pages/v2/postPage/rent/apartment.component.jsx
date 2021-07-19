@@ -18,14 +18,14 @@ import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { setSnackbar } from '../../../../redux/ui/ui.actions';
-import { toHumanReadble } from '../../../../utils/render.utils';
+import { toHumanReadbleString } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
 
 const initialValues = {
 	for: 'rent',
 	availableFor: [],
-	numberOfBedRooms: 1,
+	numberOfBedRooms: '',
 	numberOfBalconies: 1,
 	noOfFloors: 1,
 	floor: 1,
@@ -73,8 +73,8 @@ const RentApartment = ({
 	const validateForm = (values) => {
 		const error = {};
 		// console.log({ test: validateNumber(values.toiletIndian) });
-		if (!validateNumber(values.numberOfBedRooms)) {
-			error.numberOfBedRooms = 'Please enter a number';
+		if (!values.numberOfBedRooms) {
+			error.numberOfBedRooms = 'Please choose a unit type';
 		}
 
 		if (!values.title) {
@@ -158,6 +158,21 @@ const RentApartment = ({
 			error.description = 'Please add some description';
 		}
 
+		if (!validateLength(values.numberOfBedRooms, 1)) {
+			error.numberOfBedRooms = '1 digit allowed';
+		}
+
+		if (pType === 'independenthouse') {
+			if (!validateNumber(values.landArea)) {
+				error.landArea = 'Please enter a number';
+			}
+		}
+
+		if (values.availableFor.length === 0) {
+			error.availableFor =
+				'Please choose suitable candidate for your property';
+		}
+
 		return error;
 	};
 
@@ -203,13 +218,19 @@ const RentApartment = ({
 				}
 			});
 	};
+
+	const initialData = {
+		...initialValues,
+		floor: pType === 'flat' ? 'Ground Floor' : '',
+	};
+
+	if (pType === 'independenthouse') {
+		initialData.landArea = '';
+	}
 	return (
 		<Box width="100%">
 			<Formik
-				initialValues={{
-					...initialValues,
-					floor: pType === 'flat' ? 'Ground Floor' : '',
-				}}
+				initialValues={initialData}
 				validate={validateForm}
 				enableReinitialize
 				onSubmit={submitForm}
@@ -219,7 +240,7 @@ const RentApartment = ({
 						{/* <pre>{JSON.stringify(errors, null, 2)}</pre> */}
 						<Box className={classes.rowWrapper2}>
 							<Box className={classes.columnWrapper}>
-								<span>Property Name</span>
+								<span>Society Name</span>
 								<TextField
 									name="title"
 									formLabel="Bedrooms *"
@@ -264,6 +285,16 @@ const RentApartment = ({
 							>
 								Unit Type
 							</Typography>
+							{errors.numberOfBedRooms && (
+								<Box align="center">
+									<Typography
+										className={gClasses.colorWarning}
+										variant="caption"
+									>
+										{errors.numberOfBedRooms}
+									</Typography>
+								</Box>
+							)}
 							<Box
 								mt="1rem"
 								className={clsx(
@@ -355,9 +386,12 @@ const RentApartment = ({
 									<div>
 										<Typography
 											display="inline"
-											className={gClasses.smText}
+											className={clsx(
+												gClasses.smText,
+												gClasses.bold
+											)}
 										>
-											{toHumanReadble(values.rent)}
+											{toHumanReadbleString(values.rent)}
 										</Typography>
 									</div>
 								)}
@@ -386,7 +420,23 @@ const RentApartment = ({
 										classes.widthSM
 									)}
 								/>
+								{values.securityDeposit && (
+									<div>
+										<Typography
+											display="inline"
+											className={clsx(
+												gClasses.smText,
+												gClasses.bold
+											)}
+										>
+											{toHumanReadbleString(
+												values.securityDeposit
+											)}
+										</Typography>
+									</div>
+								)}
 							</Box>
+
 							<Box className={classes.columnWrapper2}>
 								<span>Maintainance Fee (If any)</span>
 								<TextField
@@ -396,6 +446,21 @@ const RentApartment = ({
 										classes.widthSM
 									)}
 								/>
+								{values.maintainanceFee && (
+									<div>
+										<Typography
+											display="inline"
+											className={clsx(
+												gClasses.smText,
+												gClasses.bold
+											)}
+										>
+											{toHumanReadbleString(
+												values.maintainanceFee
+											)}
+										</Typography>
+									</div>
+								)}
 							</Box>
 							<Box className={classes.columnWrapper2}>
 								<span>Super Built up area</span>
@@ -424,6 +489,21 @@ const RentApartment = ({
 									<Typography>Sq.ft</Typography>
 								</Box>
 							</Box>
+							{pType === 'independenthouse' && (
+								<Box className={classes.columnWrapper2}>
+									<span>Land Area</span>
+									<Box display="flex" alignItems="center">
+										<TextField
+											name="landArea"
+											className={clsx(
+												classes.input,
+												classes.widthSM
+											)}
+										/>
+										<Typography>Sq.ft</Typography>
+									</Box>
+								</Box>
+							)}
 							<Box className={classes.columnWrapper2}>
 								<span>Notice Period</span>
 								<Box display="flex" alignItems="center">
@@ -621,6 +701,16 @@ const RentApartment = ({
 							>
 								Available For
 							</Typography>
+							{errors.availableFor && (
+								<Box align="center">
+									<Typography
+										className={gClasses.colorWarning}
+										variant="caption"
+									>
+										{errors.availableFor}
+									</Typography>
+								</Box>
+							)}
 							<Box className={classes.rowWrapper2}>
 								<Box className={classes.columnWrapper2}>
 									<CheckBox

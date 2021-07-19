@@ -14,7 +14,7 @@ import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { setSnackbar } from '../../../../redux/ui/ui.actions';
-import { toHumanReadble } from '../../../../utils/render.utils';
+import { toHumanReadbleString } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
 import { validateNumber } from '../../../../utils/validation.utils';
@@ -112,6 +112,11 @@ const RentHostel = ({
 			}
 		}
 
+		if (values.availableFor.length === 0) {
+			error.availableFor =
+				'Please choose suitable candidate for your property';
+		}
+
 		return error;
 	};
 
@@ -176,9 +181,12 @@ const RentHostel = ({
 									<div>
 										<Typography
 											display="inline"
-											className={gClasses.smText}
+											className={clsx(
+												gClasses.smText,
+												gClasses.bold
+											)}
 										>
-											{toHumanReadble(values.rent)}
+											{toHumanReadbleString(values.rent)}
 										</Typography>
 									</div>
 								)}
@@ -207,6 +215,21 @@ const RentHostel = ({
 										classes.widthMD
 									)}
 								/>
+								{values.securityDeposit && (
+									<div>
+										<Typography
+											display="inline"
+											className={clsx(
+												gClasses.smText,
+												gClasses.bold
+											)}
+										>
+											{toHumanReadbleString(
+												values.securityDeposit
+											)}
+										</Typography>
+									</div>
+								)}
 							</Box>
 							<Box className={classes.columnWrapper2}>
 								<span>Maintainance Fee (If any)</span>
@@ -217,6 +240,21 @@ const RentHostel = ({
 										classes.widthMD
 									)}
 								/>
+								{values.maintainanceFee && (
+									<div>
+										<Typography
+											display="inline"
+											className={clsx(
+												gClasses.smText,
+												gClasses.bold
+											)}
+										>
+											{toHumanReadbleString(
+												values.maintainanceFee
+											)}
+										</Typography>
+									</div>
+								)}
 							</Box>
 
 							<Box className={classes.columnWrapper2}>
@@ -678,6 +716,16 @@ const RentHostel = ({
 							>
 								Available For
 							</Typography>
+							{errors.availableFor && (
+								<Box align="center">
+									<Typography
+										className={gClasses.colorWarning}
+										variant="caption"
+									>
+										{errors.availableFor}
+									</Typography>
+								</Box>
+							)}
 							<Box className={classes.rowWrapper2}>
 								<Box className={classes.columnWrapper2}>
 									<CheckBox

@@ -18,7 +18,7 @@ import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { setSnackbar } from '../../../../redux/ui/ui.actions';
-import { toHumanReadble } from '../../../../utils/render.utils';
+import { toHumanReadbleString } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
 
@@ -72,7 +72,7 @@ const legalClearance = [
 
 const initialValues = {
 	for: 'sale',
-	numberOfBedRooms: 1,
+	numberOfBedRooms: '',
 	numberOfBalconies: 1,
 	noOfFloors: 1,
 	typeOfToilets: '',
@@ -119,9 +119,10 @@ const RentApartment = ({
 		if (!values.title) {
 			error.title = 'Enter project name';
 		}
-		if (!validateNumber(values.numberOfBedRooms)) {
-			error.numberOfBedRooms = 'Please enter a number';
+		if (!values.numberOfBedRooms) {
+			error.numberOfBedRooms = 'Please choose a unit type';
 		}
+
 		if (!validateNumber(values.superBuiltupArea)) {
 			error.superBuiltupArea = 'Please enter a number';
 		}
@@ -172,6 +173,12 @@ const RentApartment = ({
 			error.numberOfBedRooms = '1 digit allowed';
 		}
 
+		if (pType === 'independenthouse') {
+			if (!validateNumber(values.landArea)) {
+				error.landArea = 'Please enter a number';
+			}
+		}
+
 		return error;
 	};
 
@@ -217,13 +224,19 @@ const RentApartment = ({
 				}
 			});
 	};
+
+	const initialData = {
+		...initialValues,
+		floor: pType === 'flat' ? 'Ground Floor' : '',
+	};
+
+	if (pType === 'independenthouse') {
+		initialData.landArea = '';
+	}
 	return (
 		<Box width="100%">
 			<Formik
-				initialValues={{
-					...initialValues,
-					floor: pType === 'flat' ? 'Ground Floor' : '',
-				}}
+				initialValues={initialData}
 				validate={validateForm}
 				enableReinitialize
 				onSubmit={submitForm}
@@ -278,6 +291,16 @@ const RentApartment = ({
 							>
 								Unit Type
 							</Typography>
+							{errors.numberOfBedRooms && (
+								<Box align="center">
+									<Typography
+										className={gClasses.colorWarning}
+										variant="caption"
+									>
+										{errors.numberOfBedRooms}
+									</Typography>
+								</Box>
+							)}
 							<Box
 								mt="1rem"
 								className={clsx(
@@ -370,9 +393,14 @@ const RentApartment = ({
 									<div>
 										<Typography
 											display="inline"
-											className={gClasses.smText}
+											className={clsx(
+												gClasses.smText,
+												gClasses.bold
+											)}
 										>
-											{toHumanReadble(values.salePrice)}
+											{toHumanReadbleString(
+												values.salePrice
+											)}
 										</Typography>
 									</div>
 								)}
@@ -420,6 +448,21 @@ const RentApartment = ({
 									<Typography>Sq.ft</Typography>
 								</Box>
 							</Box>
+							{pType === 'independenthouse' && (
+								<Box className={classes.columnWrapper2}>
+									<span>Land Area</span>
+									<Box display="flex" alignItems="center">
+										<TextField
+											name="landArea"
+											className={clsx(
+												classes.input,
+												classes.widthSM
+											)}
+										/>
+										<Typography>Sq.ft</Typography>
+									</Box>
+								</Box>
+							)}
 						</Box>
 
 						<Box mt="2rem">
@@ -524,7 +567,7 @@ const RentApartment = ({
 											);
 										}}
 									>
-										Leashed
+										Leased
 									</Select>
 								</Box>
 							</Box>

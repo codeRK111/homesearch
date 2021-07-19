@@ -235,6 +235,81 @@ const AgentPage = ({ user }) => {
 										</span>
 									</Box>
 								</Box>
+								<Box
+									className={clsx(
+										globalClasses.alignCenter,
+										globalClasses.smFlexColumn
+									)}
+									mt="2rem"
+								>
+									<Box className={globalClasses.alignCenter}>
+										<Box
+											className={classes.numberHiglight}
+											mr="1rem"
+										>
+											<h1>
+												{count.postPropertyActiveCount}
+											</h1>
+										</Box>
+										<span
+											className={clsx(
+												globalClasses.smText,
+												globalClasses.bold
+											)}
+										>
+											Active Properties
+										</span>
+									</Box>
+									<Box
+										className={clsx(
+											classes.keyNumberSpacer,
+											globalClasses.alignCenter
+										)}
+									>
+										<Box
+											className={classes.numberHiglight}
+											mr="1rem"
+										>
+											<h1>
+												{
+													count.postPropertyUnderScreeningCount
+												}
+											</h1>
+										</Box>
+										<span
+											className={clsx(
+												globalClasses.smText,
+												globalClasses.bold
+											)}
+										>
+											Underscreening Properties
+										</span>
+									</Box>
+									<Box
+										className={clsx(
+											classes.keyNumberSpacer,
+											globalClasses.alignCenter
+										)}
+										ml="2rem"
+									>
+										<Box
+											className={classes.numberHiglight}
+											mr="1rem"
+										>
+											<h1>
+												{count.postPropertyExpiredCount}
+											</h1>
+										</Box>
+										<span
+											className={clsx(
+												globalClasses.smText,
+												globalClasses.bold
+											)}
+										>
+											Expired Property
+										</span>
+									</Box>
+								</Box>
 							</Grid>
 
 							<Grid item xs={false} md={1}></Grid>

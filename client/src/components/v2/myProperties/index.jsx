@@ -1,7 +1,8 @@
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Filter from '../propertyStatusFilter';
 import React from 'react';
 import RentApartment from '../../../components/v2/propertyCard/rent/flat.component';
 import RentHostel from '../../../components/v2/propertyCard/rent/hostel.component';
@@ -14,16 +15,27 @@ import useStyles from './swipable.style';
 
 const SimilarProperties = ({ title }) => {
 	const [index, setIndex] = React.useState(0);
+	const [filter, setFilter] = React.useState('all');
 	const [asyncState, setAsyncState] = React.useState({
 		loading: false,
 		data: [],
 		error: null,
 	});
+	const [showData, setShowData] = React.useState([]);
 	let cancelToken = React.useRef();
 	const classes = useStyles();
-	const totalImages = asyncState.data.length;
+	const totalImages = showData.length;
 	const imagePerSlide = 4;
 	const maxIndex = Math.ceil(totalImages / imagePerSlide) - 1;
+
+	React.useEffect(() => {
+		if (filter !== 'all') {
+			const tempData = asyncState.data.filter((c) => c.status === filter);
+			setShowData(tempData);
+		} else {
+			setShowData(asyncState.data);
+		}
+	}, [filter]);
 
 	const renderTypeRent = (property) => {
 		switch (property.type) {
@@ -91,6 +103,7 @@ const SimilarProperties = ({ title }) => {
 					data: properties,
 					error: null,
 				});
+				setShowData(properties);
 			} catch (error) {
 				let message = '';
 				if (!!error.response) {
@@ -125,7 +138,14 @@ const SimilarProperties = ({ title }) => {
 	return (
 		<>
 			<Box p="1rem">
-				<h2>{title}</h2>
+				<Grid container spacing={0} justify="space-between">
+					<Grid item>
+						<h2>{title}</h2>
+					</Grid>
+					<Grid item>
+						<Filter value={filter} setValue={setFilter} />
+					</Grid>
+				</Grid>
 			</Box>
 			<div className={classes.sliderWrapper}>
 				{index > 0 && totalImages > 4 && (
@@ -138,36 +158,44 @@ const SimilarProperties = ({ title }) => {
 
 				<Box style={{ flex: 1 }}>
 					<SwipeableViews index={index}>
-						{Array.from(Array(maxIndex + 1).keys()).map((c) => (
-							<Box p="1rem">
-								<Grid container spacing={3}>
-									{asyncState.data.map((c, i) => {
-										const fromImageIndex =
-											index === 0
-												? 0
-												: index *
-												  (imagePerSlide - 1 + index);
-										const tillImageIndex =
-											fromImageIndex +
-											(imagePerSlide - 1);
-										if (
-											i >= fromImageIndex &&
-											i <= tillImageIndex
-										) {
-											return (
-												<Grid
-													item
-													key={i}
-													md={12 / imagePerSlide}
-												>
-													{renderFor(c)}
-												</Grid>
-											);
-										}
-									})}
-								</Grid>
-							</Box>
-						))}
+						{showData.length === 0 ? (
+							<Typography align="center">
+								No Property Found
+							</Typography>
+						) : (
+							Array.from(Array(maxIndex + 1).keys()).map((c) => (
+								<Box p="1rem">
+									<Grid container spacing={3}>
+										{showData.map((c, i) => {
+											const fromImageIndex =
+												index === 0
+													? 0
+													: index *
+													  (imagePerSlide -
+															1 +
+															index);
+											const tillImageIndex =
+												fromImageIndex +
+												(imagePerSlide - 1);
+											if (
+												i >= fromImageIndex &&
+												i <= tillImageIndex
+											) {
+												return (
+													<Grid
+														item
+														key={i}
+														md={12 / imagePerSlide}
+													>
+														{renderFor(c)}
+													</Grid>
+												);
+											}
+										})}
+									</Grid>
+								</Box>
+							))
+						)}
 					</SwipeableViews>
 				</Box>
 				{index < maxIndex && totalImages > 4 && (

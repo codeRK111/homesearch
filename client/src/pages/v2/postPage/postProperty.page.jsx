@@ -327,7 +327,7 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 						className={clsx(
 							gClasses.smFullWidth,
 							classes.alignCenter,
-							gClasses.smJustifyBetween
+							gClasses.smJustifyCenter
 						)}
 						mt="2rem"
 					>
@@ -337,7 +337,7 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 							onSet={setSelectedCity}
 							value={selectedCity}
 						/>
-						<Box className={classes.leftSpacer}>
+						<Box ml="1rem">
 							<LocationSearch
 								placeholder="Location"
 								size={200}

@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 		boxSizing: 'border-box',
 		borderRadius: '10px',
 		display: 'flex',
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		fontSize: '1rem',
 		'&:hover': {
 			background: theme.utilColor,

@@ -60,7 +60,8 @@ const Chip = ({
 	const [asyncError, setAsyncError] = React.useState(null);
 	const [noResults, setNoResults] = React.useState(false);
 
-	const handleTooltipClose = () => {
+	const handleTooltipClose = (event) => {
+		console.log({ event });
 		setOpen(false);
 	};
 
@@ -69,14 +70,6 @@ const Chip = ({
 	};
 	const classes = useStyles(size);
 	const gClasses = useGlobalClasses();
-
-	const onClickAway = () => {
-		const dummyEl = document.getElementById('search');
-		const isFocused = document.activeElement === dummyEl;
-		if (!isFocused) {
-			handleTooltipClose();
-		}
-	};
 
 	const handleFetchCities = (status, data = null) => {
 		if (status === 'success') {
@@ -110,8 +103,21 @@ const Chip = ({
 		setUserTypedCity('');
 	}, [open]);
 
+	const handleClickAway = () => {
+		console.log('wait');
+		const elem = document.querySelector('#search');
+		if (elem === document.activeElement) {
+			return;
+		}
+		setOpen(false);
+	};
+
 	return (
-		<ClickAwayListener onClickAway={onClickAway}>
+		<ClickAwayListener
+			onClickAway={handleClickAway}
+			disableReactTree={true}
+			touchEvent={false}
+		>
 			<Tooltip
 				classes={{
 					tooltip: classes.tooltip,
@@ -135,7 +141,7 @@ const Chip = ({
 							{noResults ? (
 								<p
 									className={clsx(
-										gClasses.justifyCenter,
+										// gClasses.justifyCenter,
 										classes.noResult
 									)}
 								>
@@ -160,7 +166,14 @@ const Chip = ({
 				}
 				placement="bottom"
 				PopperProps={{
-					disablePortal: true,
+					popperOptions: {
+						modifiers: {
+							flip: { enabled: false },
+							offset: {
+								enabled: false,
+							},
+						},
+					},
 				}}
 				onClose={handleTooltipClose}
 				open={open}

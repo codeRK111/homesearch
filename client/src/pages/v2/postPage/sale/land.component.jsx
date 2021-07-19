@@ -11,7 +11,7 @@ import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { setSnackbar } from '../../../../redux/ui/ui.actions';
-import { toHumanReadble } from '../../../../utils/render.utils';
+import { toHumanReadbleString } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
 import { validateNumber } from '../../../../utils/validation.utils';
@@ -258,9 +258,14 @@ const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 									<div>
 										<Typography
 											display="inline"
-											className={gClasses.smText}
+											className={clsx(
+												gClasses.smText,
+												gClasses.bold
+											)}
 										>
-											{toHumanReadble(values.salePrice)}
+											{toHumanReadbleString(
+												values.salePrice
+											)}
 										</Typography>
 									</div>
 								)}
@@ -294,14 +299,21 @@ const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 								</Box>
 								{values.govermentValuation && (
 									<div>
-										<Typography
-											display="inline"
-											className={gClasses.smText}
-										>
-											{toHumanReadble(
-												values.govermentValuation
-											)}
-										</Typography>
+										{values.salePrice && (
+											<div>
+												<Typography
+													display="inline"
+													className={clsx(
+														gClasses.smText,
+														gClasses.bold
+													)}
+												>
+													{toHumanReadbleString(
+														values.govermentValuation
+													)}
+												</Typography>
+											</div>
+										)}
 									</div>
 								)}
 							</Box>

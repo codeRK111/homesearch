@@ -97,6 +97,11 @@ export default makeStyles((theme) => ({
 			justifyContent: 'space-between !important',
 		},
 	},
+	smJustifyCenter: {
+		[theme.breakpoints.down('sm')]: {
+			justifyContent: 'center !important',
+		},
+	},
 	smFullWidth: {
 		[theme.breakpoints.down('sm')]: {
 			width: '100% !important',

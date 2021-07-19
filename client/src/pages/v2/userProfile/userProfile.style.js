@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 					: theme.palette.grey[900],
 			backgroundSize: 'cover',
 			backgroundPosition: 'center',
-			minHeight: '60vh',
+			minHeight: '70vh',
 		},
 		[theme.breakpoints.down('sm')]: {
 			// minHeight: '300vh',

@@ -281,3 +281,80 @@ export const toHumanReadble = (price) => {
 	}
 	return null;
 };
+export const toHumanReadbleString = (price) => {
+	if (validateNumber(price)) {
+		let p = Number(price);
+
+		const a = [
+			'',
+			'One ',
+			'Two ',
+			'Three ',
+			'Four ',
+			'Five ',
+			'Six ',
+			'Seven ',
+			'Eight ',
+			'Nine ',
+			'Ten ',
+			'Eleven ',
+			'Twelve ',
+			'Thirteen ',
+			'Fourteen ',
+			'Fifteen ',
+			'Sixteen ',
+			'Seventeen ',
+			'Eighteen ',
+			'Nineteen ',
+		];
+		const b = [
+			'',
+			'',
+			'Twenty',
+			'Thirty',
+			'Forty',
+			'Fifty',
+			'Sixty',
+			'Seventy',
+			'Eighty',
+			'Ninety',
+		];
+		if ((p = p.toString()).length > 9) return 'overflow';
+		let n = ('000000000' + p)
+			.substr(-9)
+			.match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+		if (!n) return;
+		var str = '';
+		str +=
+			n[1] != 0
+				? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'Crore '
+				: '';
+		str +=
+			n[2] != 0
+				? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'Lakh '
+				: '';
+		str +=
+			n[3] != 0
+				? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) +
+				  'Thousand '
+				: '';
+		str +=
+			n[4] != 0
+				? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) +
+				  'Hundred '
+				: '';
+		str +=
+			n[5] != 0
+				? (str != '' ? 'And ' : '') +
+				  (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]])
+				: '';
+		return str;
+
+		// if (p >= 100000) {
+		// 	return `₹ ${p / 100000} Lakh`;
+		// } else {
+		// 	return `₹ ${p / 1000}K`;
+		// }
+	}
+	return null;
+};

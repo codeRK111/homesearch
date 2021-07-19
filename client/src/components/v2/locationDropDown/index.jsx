@@ -42,14 +42,6 @@ const Chip = ({
 	const classes = useStyles(size);
 	const gClasses = useGlobalClasses();
 
-	const onClickAway = () => {
-		const dummyEl = document.getElementById('search');
-		const isFocused = document.activeElement === dummyEl;
-		if (!isFocused) {
-			handleTooltipClose();
-		}
-	};
-
 	const handleFetchCities = (status, data = null) => {
 		if (status === 'success') {
 			setAsyncError(null);
@@ -77,6 +69,7 @@ const Chip = ({
 					message: 'Please select a city',
 					severity: 'error',
 				});
+				setOpen(false);
 			}
 		}
 	};
@@ -90,8 +83,21 @@ const Chip = ({
 		setUserTypedCity('');
 	}, [open]);
 
+	const handleClickAway = () => {
+		console.log('wait');
+		const elem = document.querySelector('#search');
+		if (elem === document.activeElement) {
+			return;
+		}
+		setOpen(false);
+	};
+
 	return (
-		<ClickAwayListener onClickAway={onClickAway}>
+		<ClickAwayListener
+			onClickAway={handleClickAway}
+			disableReactTree={true}
+			touchEvent={false}
+		>
 			<Tooltip
 				classes={{
 					tooltip: classes.tooltip,
@@ -138,9 +144,16 @@ const Chip = ({
 						</Box>
 					</>
 				}
-				placement="bottom"
+				placement="bottom-end"
 				PopperProps={{
-					disablePortal: true,
+					popperOptions: {
+						modifiers: {
+							flip: { enabled: false },
+							offset: {
+								enabled: false,
+							},
+						},
+					},
 				}}
 				onClose={handleTooltipClose}
 				open={open}
