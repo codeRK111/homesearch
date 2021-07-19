@@ -1,4 +1,4 @@
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
 
 import { LoadingAnimationNormal } from './components/v2/loadingAnimation';
@@ -41,6 +41,9 @@ function Alert(props) {
 }
 
 function App({ authenticated, setSnackbar, snackbarDetails, fetchUser }) {
+	const urlParts = window.location.pathname.split('/');
+	const base = urlParts.slice(0, urlParts.length - 1).join('/');
+
 	React.useEffect(() => {
 		if (!authenticated) {
 			const jwt = localStorage.getItem('JWT_CLIENT');
@@ -73,17 +76,17 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser }) {
 				</Alert>
 			</Snackbar>
 			<LogIn />
-			<HashRouter>
+			<BrowserRouter>
 				{/* <SpeedDial /> */}
 				<Switch>
 					<Route
 						exact
-						path="/"
+						path={`${base}`}
 						render={(props) => <HomePageNew {...props} />}
 					/>
 					<Route
 						exact
-						path="/v2/property-details/:id"
+						path={`${base}v2/property-details/:id`}
 						render={(props) => (
 							<PropertyDetailsPageNew {...props} />
 						)}
@@ -132,7 +135,7 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser }) {
 						render={(props) => <NotFound {...props} />}
 					/>
 				</Switch>
-			</HashRouter>
+			</BrowserRouter>
 		</Suspense>
 	);
 }
