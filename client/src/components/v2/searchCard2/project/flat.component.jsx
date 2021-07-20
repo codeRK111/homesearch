@@ -2,6 +2,8 @@ import '../extra.css';
 
 import { Box, Grid } from '@material-ui/core';
 
+import Apartment from '../../searchResultCardNewProjectApartment/searchResultCard.component';
+import ApartmentIcon from '@material-ui/icons/Apartment';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import city from '../../../../assets/city.jpg';
@@ -9,9 +11,7 @@ import clsx from 'clsx';
 import location from '../../../../assets/icons/location2.svg';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
-import {
-	shortLength,
-} from '../../../../utils/render.utils';
+import { shortLength } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../searchCard.style';
 
@@ -19,15 +19,9 @@ import useStyles from '../searchCard.style';
 // import bed from '../../../../assets/icons/bed.svg';
 // import car from '../../../../assets/icons/car.svg';
 
-
-
-
-
 // import tub from '../../../../assets/icons/tub.svg';
 
-
-
-const PropertyCard = ({ property }) => {
+const PropertyCard = ({ property, propertyItems }) => {
 	const m = moment(property.createdAt);
 	const img = property.photos[0]
 		? `/assets/projects/${property.photos[0].image}`
@@ -100,6 +94,14 @@ const PropertyCard = ({ property }) => {
 									{property.city.name}
 								</h4>
 							</div>
+							<div className={globalClasses.alignCenter}>
+								<ApartmentIcon
+									className={globalClasses.colorUtil}
+								/>
+								<h4 className={classes.locationText}>
+									{property.builder.developerName},
+								</h4>
+							</div>
 							{/* <div className={globalClasses.alignCenter}>
 								<img
 									src={tag}
@@ -112,255 +114,14 @@ const PropertyCard = ({ property }) => {
 							</div> */}
 						</div>
 					</Box>
-					{/* <Box mt="2rem">
-						<Grid container spacing={3}>
-							<Grid item xs={6}>
-								<Grid container spacing={1}>
-									<Grid
-										item
-										xs={5}
-										className={classes.keyValue}
-									>
-										<Box className="test">
-											<h1>{property.superBuiltupArea}</h1>
-										</Box>
-									</Grid>
-									<Grid
-										item
-										xs={7}
-										className={globalClasses.flexCenter}
-									>
-										<span className={classes.smallText}>
-											Sq. Ft Super Built Up Area
-										</span>
-									</Grid>
-								</Grid>
-							</Grid>
-							<Grid item xs={6}>
-								<Grid container spacing={1}>
-									<Grid
-										item
-										xs={5}
-										className={classes.keyValue}
-									>
-										<Box className="test">
-											<h1>₹{property.rent / 1000}K</h1>
-										</Box>
-									</Grid>
-									<Grid
-										item
-										xs={7}
-										className={globalClasses.flexCenter}
-									>
-										<span className={classes.smallText}>
-											Rent / Month
-										</span>
-									</Grid>
-								</Grid>
-							</Grid>
-							<Grid item xs={6}>
-								<Grid container spacing={1}>
-									<Grid
-										item
-										xs={5}
-										className={classes.keyValue}
-									>
-										<Box className="test">
-											<h1>{property.noticePeriod}</h1>
-										</Box>
-									</Grid>
-									<Grid
-										item
-										xs={7}
-										className={globalClasses.flexCenter}
-									>
-										<span className={classes.smallText}>
-											Notice Period [In days]
-										</span>
-									</Grid>
-								</Grid>
-							</Grid>
-							<Grid item xs={6}>
-								<Grid container spacing={1}>
-									<Grid
-										item
-										xs={5}
-										className={classes.keyValue}
-									>
-										<Box className="test">
-											<h1>1.5K</h1>
-										</Box>
-									</Grid>
-									<Grid
-										item
-										xs={7}
-										className={globalClasses.flexCenter}
-									>
-										<span className={classes.smallText}>
-											Maintainance Fee Per Month
-										</span>
-									</Grid>
-								</Grid>
-							</Grid>
-						</Grid>
-					</Box> */}
+
 					<Box mt="1rem">
 						<h4 className={classes.colorSecondary}>Overview</h4>
 					</Box>
-					{/* <Grid container spacing={3}>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={area}
-									alt="Area"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{property.superBuiltupArea} sqft.
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={bed}
-									alt="Bed"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{property.numberOfBedRooms}
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={tub}
-									alt="Tub"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{renderToilets(property.toiletTypes)}
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={car}
-									alt="Car"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										1
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={area}
-									alt="Area"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{property.carpetArea} sqft.
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={bed}
-									alt="Bed"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{property.noOfFloors}
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={tub}
-									alt="Tub"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{renderBool(property.verified)}
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={car}
-									alt="Car"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{property.floor}
-									</span>
-								</Box>
-							</div>
-						</Grid>
-					</Grid> */}
+					<Apartment
+						property={property}
+						propertyItems={propertyItems}
+					/>
 				</Grid>
 			</Grid>
 		</div>

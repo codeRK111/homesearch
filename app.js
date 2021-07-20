@@ -139,7 +139,7 @@ app.use(
 	'/homesearchIndia',
 	express.static(path.join(__dirname, 'homesearchIndia', 'build'))
 );
-app.use('/', express.static(path.join(__dirname, 'client', 'build'), options));
+app.use(express.static(path.join(__dirname, 'client', 'build'), options));
 
 // 3) ROUTES V!
 app.use('/api/v1/admin/users', adminUserRoute);
@@ -170,9 +170,10 @@ app.use('/api/v2/save-property', v2SavePropertyRoute);
 app.use('/api/v2/like-property', v2LikePropertyRoute);
 app.use('/api/v2/page', v2PageRoute);
 
-app.all('*', (req, res, next) => {
-	console.log(req);
-	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));
+app.get('/*', function (req, res) {
+	res.sendFile(
+		require('path').resolve(__dirname, 'client', 'build', 'index.html')
+	);
 });
 
 // GLOBAL ERROR HANDLING MIDDLEWARE
