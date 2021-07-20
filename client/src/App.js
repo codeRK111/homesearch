@@ -1,4 +1,4 @@
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
 
 import { LoadingAnimationNormal } from './components/v2/loadingAnimation';
@@ -73,7 +73,7 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser }) {
 				</Alert>
 			</Snackbar>
 			<LogIn />
-			<HashRouter>
+			<BrowserRouter>
 				{/* <SpeedDial /> */}
 				<Switch>
 					<Route
@@ -132,7 +132,7 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser }) {
 						render={(props) => <NotFound {...props} />}
 					/>
 				</Switch>
-			</HashRouter>
+			</BrowserRouter>
 		</Suspense>
 	);
 }
