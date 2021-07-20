@@ -13,5 +13,9 @@ const useStyles = makeStyles((theme) => ({
 			fontWeight: '600',
 		},
 	},
+	outlinedPrimary: {
+		color: theme.utilColor,
+		border: `1px solid ${theme.utilColor}`,
+	},
 }));
 export default useStyles;

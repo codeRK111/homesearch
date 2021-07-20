@@ -112,7 +112,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 
 	selected: {
-		color: theme.secondaryHeadingColor,
+		backgroundColor: theme.utilColor,
+		padding: '0.3rem 0.8rem',
+		color: '#ffffff',
+		borderRadius: 20,
 	},
 	cityWrapper: {
 		display: 'flex',

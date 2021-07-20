@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	searchWrapper: {
 		width: '70rem',
-		padding: '1rem 2rem',
+		padding: '0.7rem 2rem',
 		background: theme.shadowColor,
 		borderRadius: '25px',
 		display: 'flex',
@@ -128,14 +128,17 @@ const useStyles = makeStyles((theme) => ({
 	tabText: {
 		color: theme.primaryHeadingColor,
 		fontWeight: 'bold',
-		fontSize: '1.2rem',
+		fontSize: '1rem',
 		cursor: 'pointer',
 	},
 	mr: {
 		marginRight: '2rem',
 	},
 	selected: {
-		color: theme.secondaryHeadingColor,
+		backgroundColor: theme.utilColor,
+		padding: '0.5rem 1rem',
+		color: '#ffffff',
+		borderRadius: 20,
 	},
 	menuWrapper: {
 		width: '70rem',
@@ -179,11 +182,12 @@ const useStyles = makeStyles((theme) => ({
 		boxShadow: '10px 5px 10px #a4a4a4,-10px -10px 20px #ffffff',
 		display: 'inline-block',
 		cursor: 'pointer',
+		borderRadius: 10,
 		[theme.breakpoints.down('sm')]: {
 			padding: '0.5rem',
 		},
 		'&>img': {
-			height: '1.5rem',
+			height: '1rem',
 			[theme.breakpoints.down('sm')]: {
 				height: '1rem',
 			},

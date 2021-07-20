@@ -497,6 +497,18 @@ const SearchPage = ({
 								</p>
 
 								<div className={classes.divider}></div>
+							</Grid>
+							<Grid item xs={12} md={3}>
+								<Box mb="2rem">
+									<OwnerCard
+										owner={asyncState.property.userId}
+										property={asyncState.property}
+									/>
+								</Box>
+							</Grid>
+						</Grid>
+						{asyncState.property && (
+							<>
 								<PropertyAction id={id} />
 								<Box mt="3rem">
 									<input
@@ -554,33 +566,21 @@ const SearchPage = ({
 										</Box>
 									))}
 								</Box>
-							</Grid>
-							<Grid item xs={12} md={3}>
-								<OwnerCard
-									owner={asyncState.property.userId}
-									property={asyncState.property}
+								<Box mt="2rem">
+									<h2>Similar Properties For Rent</h2>
+								</Box>
+								<SimilarProperties
+									pFor={asyncState.property.for}
+									type={
+										asyncState.property.type
+											? asyncState.property.type
+											: asyncState.property.sale_type
+									}
+									city={asyncState.property.city.id}
+									location={asyncState.property.location.id}
 								/>
-							</Grid>
-							{asyncState.property && (
-								<>
-									<Box>
-										<h2>Similar Properties For Rent</h2>
-									</Box>
-									<SimilarProperties
-										pFor={asyncState.property.for}
-										type={
-											asyncState.property.type
-												? asyncState.property.type
-												: asyncState.property.sale_type
-										}
-										city={asyncState.property.city.id}
-										location={
-											asyncState.property.location.id
-										}
-									/>
-								</>
-							)}
-						</Grid>
+							</>
+						)}
 					</Box>
 				</div>
 			)}

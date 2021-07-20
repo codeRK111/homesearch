@@ -9,6 +9,7 @@ import {
 
 import ImageCarousel from '../../imageCarousel';
 import { Link } from 'react-router-dom';
+import PropertyTypeChip from '../../chip/propertyType.component';
 import React from 'react';
 import SwipablePhotos from '../../swipableViews';
 import ViewFullImage from '../../viewFullImage';
@@ -117,15 +118,7 @@ const PropertyCard = ({ property, edit = false }) => {
 							<h2 className={globalClasses.textCenter}>
 								{property.title}
 							</h2>
-							<span
-								className={clsx(
-									classes.smallText,
-									classes.colorGray,
-									globalClasses.textCenter
-								)}
-							>
-								{shortLength(property.description, 50)}
-							</span>
+							<PropertyTypeChip title={property.type} />
 						</div>
 					</div>
 					<Box mt="1rem" className={globalClasses.justifyCenter}>

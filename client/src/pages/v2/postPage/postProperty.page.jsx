@@ -39,6 +39,12 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 		id: null,
 		name: null,
 	});
+
+	const [storedData, setStoredData] = React.useState({
+		values: null,
+		photos: [],
+		type: null,
+	});
 	const [loading, setLoading] = React.useState(false);
 
 	const togglePlanPopUp = (status) => () => {
@@ -50,31 +56,6 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 	};
 	const handleType = (pType) => () => {
 		setType(pType);
-	};
-	const onPost = (values) => {
-		if (!selectedCity.id) {
-			setSnackbar({
-				open: true,
-				message: 'Please select a city',
-				severity: 'error',
-			});
-			return;
-		}
-		if (!selectedLocation.id) {
-			setSnackbar({
-				open: true,
-				message: 'Please select a location',
-				severity: 'error',
-			});
-			return;
-		}
-		if (pFor && type) {
-			if (isAuthenticated) {
-				togglePlanPopUp(true)();
-			} else {
-				toggleLoginPopup(true);
-			}
-		}
 	};
 
 	const addImage = (id, photos, token, property) => {
@@ -121,8 +102,18 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 			if (pFor && type) {
 				if (!isAuthenticated) {
 					toggleLoginPopup(true);
+					setStoredData({
+						values,
+						photos,
+						type,
+					});
 					return reject(null);
 				} else {
+					setStoredData({
+						values: null,
+						photos: [],
+						type: null,
+					});
 					setLoading(true);
 					cancelToken.current = axios.CancelToken.source();
 					const token = localStorage.getItem('JWT_CLIENT');
@@ -179,6 +170,28 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 			}
 		});
 	};
+
+	React.useEffect(() => {
+		if (isAuthenticated && storedData.values && storedData.type) {
+			onPostProperty(
+				storedData.values,
+				storedData.photos,
+				storedData.type
+			)
+				.then((data) => {
+					console.log(data);
+				})
+				.catch((error) => {
+					if (error) {
+						setSnackbar({
+							open: true,
+							message: error,
+							severity: 'error',
+						});
+					}
+				});
+		}
+	}, [isAuthenticated]);
 
 	const renderTypes = () => {
 		let arr = [

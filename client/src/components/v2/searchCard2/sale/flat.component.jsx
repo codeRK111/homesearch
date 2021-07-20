@@ -18,7 +18,6 @@ import clsx from 'clsx';
 import location from '../../../../assets/icons/location2.svg';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
-import tag from '../../../../assets/icons/tag2.svg';
 import tub from '../../../../assets/icons/tub.svg';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../searchCard.style';
@@ -36,8 +35,17 @@ const PropertyCard = ({ property, edit = false }) => {
 		: city;
 	const classes = useStyles({ img });
 	const globalClasses = useGlobalStyles({ img: city });
+
+	const onClick = () => {
+		const url = `/v2/property-details/${property.id}`;
+		var win = window.open(url, '_blank');
+		win.focus();
+	};
 	return (
-		<div className={classes.wrapper}>
+		<div
+			className={clsx(classes.wrapper, globalClasses.pointer)}
+			onClick={onClick}
+		>
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={7}>
 					<div className={classes.imageWrapper}>
@@ -72,13 +80,7 @@ const PropertyCard = ({ property, edit = false }) => {
 						</div>
 						<div>
 							<h2 className={globalClasses.textCenter}>
-								<Link
-									to={`/v2/property-details/${property.id}`}
-									className={classes.link}
-									target="_blank"
-								>
-									{property.title}
-								</Link>
+								{property.title}
 							</h2>
 							<span
 								className={clsx(

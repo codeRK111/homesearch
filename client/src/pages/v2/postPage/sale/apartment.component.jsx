@@ -1,5 +1,5 @@
 import { Box, Grid, IconButton, Typography } from '@material-ui/core';
-import { Field, FieldArray, Form, Formik } from 'formik';
+import { Field, FieldArray, Form, Formik, useFormikContext } from 'formik';
 import {
 	validateLength,
 	validateNumber,
@@ -17,6 +17,7 @@ import TodayIcon from '@material-ui/icons/Today';
 import UploadPhoto from '../components/uploadPhoto';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
+import { selectAuthenticated } from '../../../../redux/auth/auth.selectors';
 import { setSnackbar } from '../../../../redux/ui/ui.actions';
 import { toHumanReadbleString } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
@@ -107,12 +108,14 @@ const RentApartment = ({
 	onPost,
 	setSnackbar,
 	loading,
+	isAuthenticated,
 }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [isOpen, setIsOpen] = React.useState(false);
 
 	const [photos, setPhotos] = React.useState([]);
+	const [resubmitForm, setReSubmitForm] = React.useState(false);
 
 	const validateForm = (values) => {
 		const error = {};
@@ -233,6 +236,14 @@ const RentApartment = ({
 	if (pType === 'independenthouse') {
 		initialData.landArea = '';
 	}
+
+	// React.useEffect(() => {
+	// 	if (isAuthenticated && resubmitForm) {
+	// 		postProperty(
+
+	// 		);
+	// 	}
+	// }, [isAuthenticated]);
 	return (
 		<Box width="100%">
 			<Formik
@@ -922,6 +933,7 @@ const RentApartment = ({
 
 const mapDispatchToProps = (dispatch) => ({
 	setSnackbar: (config) => dispatch(setSnackbar(config)),
+	isAuthenticated: selectAuthenticated,
 });
 
 export default connect(null, mapDispatchToProps)(RentApartment);

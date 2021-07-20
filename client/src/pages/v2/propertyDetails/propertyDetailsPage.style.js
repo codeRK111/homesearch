@@ -95,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 50,
 		fontSize: '1rem',
 		padding: '1rem 1rem 1rem 2rem',
+		boxSizing: 'border-box',
 		[theme.breakpoints.down('sm')]: {
 			padding: '0.5rem',
 			borderRadius: 20,

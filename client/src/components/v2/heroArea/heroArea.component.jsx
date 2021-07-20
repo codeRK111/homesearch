@@ -104,6 +104,14 @@ const HeroArea = ({
 	const handleSelectedCity = (city) => (e) => {
 		setSelectedCity(city);
 		handleClose();
+		const data = {
+			city: city.id,
+			cityName: city.name,
+		};
+		let link = `/v2/search?f=${currentTab}&c=${
+			city.id
+		}&cn=${encodeURIComponent(city.name)}`;
+		history.push(link);
 	};
 
 	const handleAssetType = (asset) => (e) => {

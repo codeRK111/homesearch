@@ -28,8 +28,17 @@ const PropertyCard = ({ property, edit = false }) => {
 		: city;
 	const classes = useStyles({ img });
 	const globalClasses = useGlobalStyles({ img: city });
+
+	const onClick = () => {
+		const url = `/v2/property-details/${property.id}`;
+		var win = window.open(url, '_blank');
+		win.focus();
+	};
 	return (
-		<div className={classes.wrapper}>
+		<div
+			className={clsx(classes.wrapper, globalClasses.pointer)}
+			onClick={onClick}
+		>
 			{/* <pre>{JSON.stringify(property, null, 2)}</pre> */}
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={7}>
@@ -63,13 +72,7 @@ const PropertyCard = ({ property, edit = false }) => {
 						</div>
 						<div>
 							<h2 className={globalClasses.textCenter}>
-								<Link
-									to={`/v2/property-details/${property.id}`}
-									className={classes.link}
-									target="_blank"
-								>
-									{property.title}
-								</Link>
+								{property.title}
 							</h2>
 							<span
 								className={clsx(
