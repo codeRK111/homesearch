@@ -6,8 +6,8 @@ import {
 	shortLength,
 } from '../../../../utils/render.utils';
 
-import Apartment from '../../searchResultCardNewProjectApartment/searchResultCard.component';
 import ApartmentIcon from '@material-ui/icons/Apartment';
+import Land from '../../searchResultCardNewProjectLand/searchResultCard.component';
 import PropertyTypeChip from '../../chip/propertyType.component';
 import React from 'react';
 import city from '../../../../assets/city.jpg';
@@ -129,10 +129,7 @@ const PropertyCard = ({ property, propertyItems }) => {
 					<Box mt="1rem">
 						<h4 className={classes.colorSecondary}>Overview</h4>
 					</Box>
-					<Apartment
-						property={property}
-						propertyItems={propertyItems}
-					/>
+					<Land property={property} propertyItems={propertyItems} />
 				</Grid>
 			</Grid>
 		</div>

@@ -9,6 +9,7 @@ import Filter from './filter.component';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import React from 'react';
 import SearchCardProjectFlat from '../../../components/v2/searchCard2/project/flat.component';
+import SearchCardProjectLand from '../../../components/v2/searchCard2/project/land.component';
 import SearchCardRentFlat from '../../../components/v2/searchCard2/rent/flat.component';
 import SearchCardRentHostel from '../../../components/v2/searchCard2/rent/hostel.component';
 import SearchCardSaleFlat from '../../../components/v2/searchCard2/sale/flat.component';
@@ -148,6 +149,15 @@ const SearchPage = ({
 			case 'independenthouse':
 				return (
 					<SearchCardProjectFlat
+						property={property}
+						propertyItems={propertyItems.filter(
+							(c) => c.project === property.id
+						)}
+					/>
+				);
+			case 'land':
+				return (
+					<SearchCardProjectLand
 						property={property}
 						propertyItems={propertyItems.filter(
 							(c) => c.project === property.id

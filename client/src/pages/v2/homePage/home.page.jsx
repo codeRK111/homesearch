@@ -17,17 +17,6 @@ import useStyles from './homePage.style';
 
 // import LatestRentProperties from '../../../components/v2/latestRentProperties/rentProperties.component';
 
-
-
-
-
-
-
-
-
-
-
-
 const HomePage = () => {
 	const classes = useStyles();
 	let cancelToken = React.useRef();
@@ -46,7 +35,7 @@ const HomePage = () => {
 			try {
 				cancelToken.current = axios.CancelToken.source();
 
-				const res = await axios.get(apiUrl('/page/homePage', 'v1'), {
+				const res = await axios.get(apiUrl('/page/homePage'), {
 					cancelToken: cancelToken.current.token,
 				});
 

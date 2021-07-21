@@ -7,7 +7,12 @@ import SwipeableViews from 'react-swipeable-views';
 import clsx from 'clsx';
 import useStyles from './swipable.style';
 
-const SwipableViews = ({ photos, selected, setSelected }) => {
+const SwipableViews = ({
+	photos,
+	selected,
+	setSelected,
+	dir = 'properties',
+}) => {
 	const [index, setIndex] = React.useState(0);
 	const classes = useStyles();
 	const totalImages = photos.length;
@@ -71,7 +76,7 @@ const SwipableViews = ({ photos, selected, setSelected }) => {
 												onClick={onClick(c)}
 											>
 												<img
-													src={`/assets/properties/${c.image}`}
+													src={`/assets/${dir}/${c.image}`}
 													alt=""
 													style={{
 														width: '100%',

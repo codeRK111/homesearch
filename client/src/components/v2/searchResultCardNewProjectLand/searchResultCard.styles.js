@@ -184,7 +184,7 @@ const useStyle = makeStyles((theme) => ({
 		fontSize: '0.8rem',
 	},
 	header: {
-		backgroundColor: theme.colorOne,
+		backgroundColor: theme.utilColor,
 		color: '#ffffff',
 	},
 	cell: {
