@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles((theme) => ({
+const globalStyle = makeStyles((theme) => ({
 	justifyCenter: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -145,3 +145,5 @@ export default makeStyles((theme) => ({
 		wordBreak: 'break-all',
 	},
 }));
+
+export default globalStyle;

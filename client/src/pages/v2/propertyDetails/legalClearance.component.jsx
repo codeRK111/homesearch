@@ -5,11 +5,11 @@ import React from 'react';
 import { capitalizeFirstLetter } from '../../../utils/render.utils';
 import useGlobalStyles from '../../../common.style';
 
-const LegalClearance = ({ property }) => {
+const LegalClearance = ({ property, project = false }) => {
 	const globalClasses = useGlobalStyles();
 	return (
 		<>
-			{property.for === 'sale' ? (
+			{property.for === 'sale' || project ? (
 				<>
 					{property.legalClearance.filter((c) => c.value).length >
 						0 && (

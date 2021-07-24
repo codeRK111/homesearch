@@ -1,44 +1,46 @@
-import React from 'react';
-import { Formik, Form, FieldArray } from 'formik';
-import RowTextField from '../../components/rowTextField/rowFormikTextField.component';
+import {
+	Backdrop,
+	Box,
+	Button,
+	CircularProgress,
+	Grid,
+	Switch,
+} from '@material-ui/core';
+import { FieldArray, Form, Formik } from 'formik';
 import {
 	complitionStatusMenuItems,
-	projectTypeMenuItens,
-	statusMenuItems,
-	configureIntial,
-	validate,
 	configureForUpdate,
-	showReraId,
+	configureIntial,
+	projectTypeMenuItens,
 	showNumber,
+	showReraId,
+	statusMenuItems,
+	validate,
 } from './projectInfo.constant';
-import RowSelect from '../../components/rowSelect/rowFormikSelect.component';
-import Checkbox from '../../components/checkbox/checkbox.component';
-import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
-import FormHeader from '../../components/formHeader/formHeader.component';
 import {
-	Box,
-	Backdrop,
-	CircularProgress,
-	Button,
-	Switch,
-	Grid,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+	removePropertyFloorplan,
+	updateProjectDetails,
+} from '../../redux/project/project.action';
 import {
-	selectAmenities,
 	selectLoading as resourcesLoading,
+	selectAmenities,
 } from '../../redux/property/property.selector';
 import {
 	selectUpdateProjectDetailsLoading,
 	selectremovePropertyFloorplanLoading,
 } from '../../redux/project/project.selector';
-import { fetchAllPropertyResourcesStart } from '../../redux/property/property.actions';
-import {
-	updateProjectDetails,
-	removePropertyFloorplan,
-} from '../../redux/project/project.action';
-import { createStructuredSelector } from 'reselect';
+
+import Checkbox from '../../components/checkbox/checkbox.component';
+import FormHeader from '../../components/formHeader/formHeader.component';
+import React from 'react';
+import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
+import RowSelect from '../../components/rowSelect/rowFormikSelect.component';
+import RowTextField from '../../components/rowTextField/rowFormikTextField.component';
+import axios from 'axios';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { fetchAllPropertyResourcesStart } from '../../redux/property/property.actions';
+import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -87,12 +89,16 @@ const ProjectInfo = ({
 		amenities: false,
 		legalClearance: false,
 	});
-	const [images, setImages] = React.useState({
-		image1: null,
-		image2: null,
-		image3: null,
-		image4: null,
-	});
+	const [photos, setPhotos] = React.useState([]);
+	const addMore = () => {
+		setPhotos([
+			...photos,
+			{
+				id: photos.length + 1,
+				image: null,
+			},
+		]);
+	};
 	const [asyncError, setAsyncError] = React.useState(null);
 
 	// Api response handler
@@ -128,13 +134,6 @@ const ProjectInfo = ({
 		const { name, checked } = e.target;
 		setVisible({ ...visible, [name]: checked });
 	};
-	const handleImage = (e) => {
-		const { name, files } = e.target;
-		setImages((prevState) => ({
-			...prevState,
-			[name]: files[0],
-		}));
-	};
 
 	const updateProject = (data) => {
 		const clone = { ...data };
@@ -149,7 +148,7 @@ const ProjectInfo = ({
 		}
 		configureForUpdate(clone);
 		console.log(clone);
-		clone.image = images;
+
 		updateProjectDetails(handleUpdateProjectDetails, id, clone);
 	};
 
@@ -157,13 +156,65 @@ const ProjectInfo = ({
 		removePropertyFloorplan(handleRemovePropertyFloorplan, name, id);
 	};
 
-	// UseEffect hooks
-	React.useEffect(() => {
-		if (visible.amenities) {
-			if (amenities.length === 0) {
-				fetchResourcesStart(handleFetchResources);
+	const handleRemovePropertyImage = (img) => async () => {
+		try {
+			await axios.get(
+				`/api/v1/projects/remove-project-photos/${id}/${img._id}`,
+
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				}
+			);
+			refetch();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleImage = (img) => (e) => {
+		const { name, files } = e.target;
+		console.log({ name });
+		setPhotos((prevState) =>
+			prevState.map((c) => {
+				if (c.id === img.id) {
+					c.image = files[0];
+				}
+				return c;
+			})
+		);
+	};
+
+	const addPhotos = async () => {
+		const i = photos.filter((c) => !!c.image).map((b) => b.image);
+
+		if (i.length > 0) {
+			const formData = new FormData();
+			i.forEach((c) => {
+				formData.append('images', c);
+			});
+
+			try {
+				await axios.post(
+					`/api/v1/projects/add-project-image/${id}`,
+					formData,
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					}
+				);
+				refetch();
+			} catch (error) {
+				console.log(error);
 			}
 		}
+	};
+
+	// UseEffect hooks
+	React.useEffect(() => {
+		fetchResourcesStart(handleFetchResources);
 	}, [visible.amenities]);
 	return (
 		<Box>
@@ -182,6 +233,13 @@ const ProjectInfo = ({
 			<FormHeader text="Project Info" />
 			<Box p="1rem">
 				<p className="color-red">{asyncError}</p>
+				{/* <pre>
+					{JSON.stringify(
+						configureIntial(initialValue, amenities),
+						null,
+						2
+					)}
+				</pre> */}
 				<Formik
 					initialValues={configureIntial(initialValue, amenities)}
 					validate={validate}
@@ -259,35 +317,31 @@ const ProjectInfo = ({
 									/>
 								</RowHOC>
 							)}
-							{visible.amenities && (
-								<RowHOC heading="Amenities">
-									{resourcesLoading ? (
-										<p>Loading amenities...</p>
-									) : (
-										<FieldArray name="amenities">
-											{(arrayHelpers) => (
-												<div>
-													{values.amenities.map(
-														(c, i) => {
-															return (
-																<Checkbox
-																	key={i}
-																	heading="test"
-																	type="checkbox"
-																	name={`amenities.${i}.value`}
-																	label={
-																		c.name
-																	}
-																/>
-															);
-														}
-													)}
-												</div>
-											)}
-										</FieldArray>
-									)}
-								</RowHOC>
-							)}
+							<RowHOC heading="Amenities">
+								{resourcesLoading ? (
+									<p>Loading amenities...</p>
+								) : (
+									<FieldArray name="amenities">
+										{(arrayHelpers) => (
+											<div>
+												{values.amenities.map(
+													(c, i) => {
+														return (
+															<Checkbox
+																key={i}
+																heading="test"
+																type="checkbox"
+																name={`amenities.${i}.value`}
+																label={c.name}
+															/>
+														);
+													}
+												)}
+											</div>
+										)}
+									</FieldArray>
+								)}
+							</RowHOC>
 							<RowHOC heading="Show legal clearance">
 								<Switch
 									checked={visible.legalClearance}
@@ -336,249 +390,109 @@ const ProjectInfo = ({
 									value={values.numberOfOwner}
 								/>
 							)}
-							<RowHOC heading="Exsting images">
+							<RowHOC heading="Exsting Images" center={true}>
 								<Grid container spacing={2}>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													values.image1
-														? `/assets/projects/${values.image1}`
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										{values.image1 && (
-											<Button
-												variant="outlined"
-												color="secondary"
-												classes={{
-													label: 'transform-none',
-												}}
-												size="small"
-												className={classes.removeButton}
-												onClick={handleRemoveImage(
-													'image1'
-												)}
-											>
-												Remove
-											</Button>
-										)}
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													values.image2
-														? `/assets/projects/${values.image2}`
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										{values.image2 && (
-											<Button
-												variant="outlined"
-												color="secondary"
-												classes={{
-													label: 'transform-none',
-												}}
-												size="small"
-												className={classes.removeButton}
-												onClick={handleRemoveImage(
-													'image2'
-												)}
-											>
-												Remove
-											</Button>
-										)}
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													values.image3
-														? `/assets/projects/${values.image3}`
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										{values.image3 && (
-											<Button
-												variant="outlined"
-												color="secondary"
-												classes={{
-													label: 'transform-none',
-												}}
-												size="small"
-												className={classes.removeButton}
-												onClick={handleRemoveImage(
-													'image3'
-												)}
-											>
-												Remove
-											</Button>
-										)}
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													values.image4
-														? `/assets/projects/${values.image4}`
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										{values.image4 && (
-											<Button
-												variant="outlined"
-												color="secondary"
-												classes={{
-													label: 'transform-none',
-												}}
-												size="small"
-												className={classes.removeButton}
-												onClick={handleRemoveImage(
-													'image4'
-												)}
-											>
-												Remove
-											</Button>
-										)}
-									</Grid>
+									{values.photos &&
+										values.photos.map((c) => (
+											<Grid item xs={12} lg={3}>
+												<Box
+													className={
+														classes.imageWrapper
+													}
+												>
+													<img
+														src={
+															c.image
+																? `/assets/projects/${c.image}`
+																: require('../../assets/no-image.jpg')
+														}
+														alt="project"
+														srcset=""
+														className={
+															classes.image
+														}
+													/>
+												</Box>
+												<Button
+													variant="outlined"
+													color="secondary"
+													classes={{
+														label: 'transform-none',
+													}}
+													size="small"
+													className={
+														classes.removeButton
+													}
+													onClick={handleRemovePropertyImage(
+														c
+													)}
+												>
+													Remove
+												</Button>
+											</Grid>
+										))}
 								</Grid>
 							</RowHOC>
-							<RowHOC heading="Update images">
-								<Grid container spacing={2}>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													images.image1
-														? URL.createObjectURL(
-																images.image1
-														  )
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-											<input
-												type="file"
-												name="image1"
-												onChange={handleImage}
-												id="image1"
-												className={classes.input}
-											/>
-											<label
-												htmlFor="image1"
-												className={classes.label}
-											>
-												Image1
-											</label>
-										</Box>
+							<RowHOC heading="Add New Images" center={true}>
+								<Box p="0.8rem">
+									<Grid container spacing={3}>
+										{photos.map((c, i) => (
+											<Grid key={c.id} item xs={6} lg={3}>
+												<Box
+													className={
+														classes.imageWrapper
+													}
+												>
+													<img
+														src={
+															c.image
+																? URL.createObjectURL(
+																		c.image
+																  )
+																: require('../../assets/no-image.jpg')
+														}
+														alt="project"
+														srcset=""
+														className={
+															classes.image
+														}
+													/>
+												</Box>
+
+												<input
+													type="file"
+													onChange={handleImage(c)}
+													id={`image-${c.id}`}
+													className={classes.input}
+												/>
+												<label
+													htmlFor={`image-${c.id}`}
+												>
+													Upload
+												</label>
+											</Grid>
+										))}
 									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													images.image2
-														? URL.createObjectURL(
-																images.image2
-														  )
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-											<input
-												type="file"
-												name="image2"
-												onChange={handleImage}
-												id="image2"
-												className={classes.input}
-											/>
-											<label
-												htmlFor="image2"
-												className={classes.label}
-											>
-												Image2
-											</label>
-										</Box>
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													images.image3
-														? URL.createObjectURL(
-																images.image3
-														  )
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-											<input
-												type="file"
-												name="image3"
-												onChange={handleImage}
-												id="image3"
-												className={classes.input}
-											/>
-											<label
-												htmlFor="image3"
-												className={classes.label}
-											>
-												Image3
-											</label>
-										</Box>
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													images.image4
-														? URL.createObjectURL(
-																images.image4
-														  )
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-											<input
-												type="file"
-												name="image4"
-												id="image4"
-												onChange={handleImage}
-												className={classes.input}
-											/>
-											<label
-												htmlFor="image4"
-												className={classes.label}
-											>
-												Image4
-											</label>
-										</Box>
-									</Grid>
-								</Grid>
+									<Box mt="2rem">
+										<button onClick={addMore} type="button">
+											Add More Image
+										</button>
+									</Box>
+									<Box mt="2rem">
+										<Button
+											onClick={addPhotos}
+											type="button"
+											type="button"
+											color="primary"
+											variant="contained"
+											classes={{
+												label: 'transform-none',
+											}}
+										>
+											Save New Images
+										</Button>
+									</Box>
+								</Box>
 							</RowHOC>
 							<Grid>
 								<Grid item xs={12}>

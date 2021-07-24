@@ -7,9 +7,9 @@ import useStyles from './searchCardSkeleton.styles';
 const SearchCardSkeleton = () => {
 	const classes = useStyles();
 	return (
-		<Paper className={classes.wrapper}>
+		<Paper className={classes.wrapper} elevation={0}>
 			<Grid container spacing={1} className={classes.fullArea}>
-				<Grid item xs={4} className={classes.fullArea}>
+				<Grid item xs={8} className={classes.fullArea}>
 					<Skeleton
 						variant="rect"
 						width={'100%'}
@@ -17,7 +17,7 @@ const SearchCardSkeleton = () => {
 						animation="wave"
 					/>
 				</Grid>
-				<Grid item xs={8} className={classes.fullArea}>
+				<Grid item xs={4} className={classes.fullArea}>
 					<Grid container spacing={1} className={classes.fullArea}>
 						<Grid item xs={6}>
 							<Skeleton

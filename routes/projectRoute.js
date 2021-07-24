@@ -10,6 +10,27 @@ router
 		uploadController.uploadProjectPhotos,
 		projectController.handleProjectImage
 	);
+router
+	.route('/add-floorplans/:id')
+	.post(
+		uploadController.uploadFloorplans,
+		projectController.handleFloorPlans
+	);
+router
+	.route('/add-project-property-photos/:id')
+	.post(
+		uploadController.uploadFloorplans,
+		projectController.handleProjectPropertyPhotos
+	);
+router
+	.route('/remove-project-property-photos/:propertyId/:imageId')
+	.get(projectController.removePhoto);
+router
+	.route('/remove-project-photos/:propertyId/:imageId')
+	.get(projectController.removeProjectPhoto);
+router
+	.route('/remove-floorplan-photos/:propertyId/:imageId')
+	.get(projectController.removeFloorPlanPhoto);
 
 router.route('/get-all-details/:id').get(projectController.getAllProjectInfo);
 router

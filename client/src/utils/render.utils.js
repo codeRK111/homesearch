@@ -81,13 +81,26 @@ export const renderTypes = (type) => {
 };
 
 export const renderLandArea = (project, info) => {
+	let min;
+	let max;
 	if (project.projectType === 'land') {
-		return `${Math.min(...info.minAreaLand)} - ${Math.max(
-			...info.maxAreaLand
-		)}`;
+		min = Math.min(...info.minAreaLand);
+		max = Math.max(...info.maxAreaLand);
+		return min === max
+			? min
+			: `${Math.min(...info.minAreaLand)} - ${Math.max(
+					...info.maxAreaLand
+			  )}`;
 	} else {
-		return `${info.minArea} - ${info.maxArea}`;
+		min = info.minArea;
+		max = info.maxArea;
+		return min === max ? min : `${info.minArea} - ${info.maxArea}`;
 	}
+};
+export const renderLandPlotArea = (area) => {
+	const min = Math.min(...area);
+	const max = Math.max(...area);
+	return min === max ? `${min}` : `${min} to ${max}`;
 };
 
 export const renderProjectTypes = (project, info) => {
@@ -97,7 +110,7 @@ export const renderProjectTypes = (project, info) => {
 		switch (project.projectType) {
 			case 'independenthouse':
 			case 'flat':
-				return `${info.bedRooms.join(',')} BHK`;
+				return `${info.bedRooms.join(',')}`;
 
 			default:
 				break;
@@ -319,8 +332,8 @@ export const toHumanReadbleString = (price) => {
 			'Eighty',
 			'Ninety',
 		];
-		if ((p = p.toString()).length > 9) return 'overflow';
-		let n = ('000000000' + p)
+		if ((p = p.toString()).length > 12) return 'overflow';
+		let n = ('000000000000' + p)
 			.substr(-9)
 			.match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
 		if (!n) return;

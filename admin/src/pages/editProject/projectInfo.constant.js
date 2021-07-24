@@ -63,6 +63,18 @@ export const statusMenuItems = [
 ];
 
 export const configureIntial = (initialValue, amenities) => {
+	console.log(amenities.length);
+	console.log(
+		amenities.map((c) => {
+			// if (initialValue.amenities.find((b) => b === c.id)) {
+			// 	c.value = true;
+			// } else {
+			// 	c.value = false;
+			// }
+			return c;
+		})
+	);
+
 	const clone = {
 		...initialValue,
 		initialAmenities: initialValue.amenities,

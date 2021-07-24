@@ -2,8 +2,12 @@ import '../extra.css';
 
 import { Box, Grid } from '@material-ui/core';
 import {
+	capitalizeFirstLetter,
 	renderBool,
+	renderLandArea,
+	renderProjectTypes,
 	renderToilets,
+	renderTypes,
 	shortLength,
 } from '../../../../utils/render.utils';
 
@@ -27,7 +31,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from '../searchCard.style';
 import { useTheme } from '@material-ui/core/styles';
 
-const PropertyCard = ({ project }) => {
+const PropertyCard = ({ project, info }) => {
 	const theme = useTheme();
 	const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const [fullImageOpen, setFullImageOpen] = React.useState(false);
@@ -93,6 +97,161 @@ const PropertyCard = ({ project }) => {
 							</div>
 						</div>
 					)}
+				</Grid>
+				<Grid item xs={12} md={4}>
+					<div className={classes.titleWrapper}>
+						<div className={classes.mr1}>
+							<img
+								src={logoIcon}
+								alt="Logo"
+								className={classes.logo}
+							/>
+
+							<span
+								className={clsx(
+									classes.smallText,
+									classes.colorPrimary,
+									globalClasses.textCenter
+								)}
+							>
+								{capitalizeFirstLetter(
+									project.complitionStatus
+								)}
+							</span>
+						</div>
+						<Box>
+							<PropertyTypeChip title={project.projectType} />
+							<h2>{project.title}</h2>
+						</Box>
+					</div>
+					<Box mt="1rem" className={globalClasses.justifyCenter}>
+						<div>
+							<div className={globalClasses.alignCenter}>
+								<img
+									src={location}
+									alt="Location"
+									className={classes.icon}
+								/>
+								<h4 className={classes.locationText}>
+									{project.location.name},{project.city.name}
+								</h4>
+							</div>
+						</div>
+					</Box>
+					<Box mt="2rem">
+						<Grid container spacing={3}>
+							<Grid item xs={6}>
+								<Grid container spacing={1}>
+									<Grid
+										item
+										xs={5}
+										className={classes.keyValue}
+									>
+										<Box className="projectValueWrapper">
+											<h1>{info.totalUnits}</h1>
+										</Box>
+									</Grid>
+									<Grid
+										item
+										xs={7}
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
+									>
+										<span className={classes.smallText}>
+											Total Units
+										</span>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={6}>
+								<Grid container spacing={1}>
+									<Grid
+										item
+										xs={5}
+										className={classes.keyValue}
+									>
+										<Box className="projectValueWrapper">
+											<h1>
+												{renderLandArea(project, info)}
+											</h1>
+										</Box>
+									</Grid>
+									<Grid
+										item
+										xs={7}
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
+									>
+										<span className={classes.smallText}>
+											Plot Size (Sq. ft)
+										</span>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={6}>
+								<Grid container spacing={1}>
+									<Grid
+										item
+										xs={5}
+										className={classes.keyValue}
+									>
+										<Box className="projectValueWrapper">
+											<h1>
+												{info.minPrice / 100000} L -{' '}
+												{info.maxPrice / 100000} L
+											</h1>
+										</Box>
+									</Grid>
+									<Grid
+										item
+										xs={7}
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
+									>
+										<span className={classes.smallText}>
+											Price Range
+										</span>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={6}>
+								<Grid container spacing={1}>
+									<Grid
+										item
+										xs={5}
+										className={classes.keyValue}
+									>
+										<Box className="projectValueWrapper">
+											<h1>
+												{renderProjectTypes(
+													project,
+													info
+												)}
+											</h1>
+										</Box>
+									</Grid>
+									<Grid
+										item
+										xs={7}
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
+									>
+										<span className={classes.smallText}>
+											Unit Types
+										</span>
+									</Grid>
+								</Grid>
+							</Grid>
+						</Grid>
+					</Box>
 				</Grid>
 			</Grid>
 		</div>

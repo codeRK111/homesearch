@@ -244,12 +244,7 @@ const ProjectInformation = ({
 		legalClearanceInitialValue
 	);
 	const [photos, setPhotos] = React.useState([]);
-	const [images, setImages] = React.useState({
-		image1: null,
-		image2: null,
-		image3: null,
-		image4: null,
-	});
+
 	const addMore = () => {
 		setPhotos([
 			...photos,
@@ -325,10 +320,11 @@ const ProjectInformation = ({
 	};
 
 	const handleAmenities = (id) => (e) => {
+		const { checked } = e.target;
 		setSAmenities((prevState) => {
 			return prevState.map((c) => {
 				if (c.id === id) {
-					c.value = e.target.checked;
+					c.value = checked;
 				}
 				return c;
 			});

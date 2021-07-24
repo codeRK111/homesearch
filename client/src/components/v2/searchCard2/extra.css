@@ -20,7 +20,28 @@
 	width: 90%;
 	position: absolute;
 	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
+	align-items: center;
+	background: #c3c1c1;
+	top: 0;
+	left: 0;
+	-webkit-transition: background-color 200ms linear, height 200ms linear,
+		width 200ms linear;
+	-moz-transition: background-color 200ms linear, height 200ms linear,
+		width 200ms linear;
+	-o-transition: background-color 200ms linear, height 200ms linear,
+		width 200ms linear;
+	-ms-transition: background-color 200ms linear, height 200ms linear,
+		width 200ms linear;
+	transition: background-color 200ms linear, height 200ms linear,
+		width 200ms linear;
+}
+.projectValueWrapper {
+	height: 90%;
+	width: 90%;
+	position: absolute;
+	display: flex;
+	justify-content: center;
 	align-items: center;
 	background: #c3c1c1;
 	top: 0;
@@ -40,6 +61,10 @@
 	font-size: 1.4rem;
 	word-break: break-all;
 }
+.projectValueWrapper > h1 {
+	font-size: 0.9rem;
+	word-break: break-all;
+}
 
 @media screen and (max-width: 800px) {
 	.test > h1 {
@@ -48,6 +73,11 @@
 }
 
 .test:hover {
+	background-color: #ffd609;
+	height: 100%;
+	width: 100%;
+}
+.projectValueWrapper:hover {
 	background-color: #ffd609;
 	height: 100%;
 	width: 100%;

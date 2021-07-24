@@ -119,62 +119,6 @@ const PropertyCard = ({ property, edit = false }) => {
 					<Box mt="2rem">
 						<Grid container spacing={3}>
 							<Grid item xs={6}>
-								{property.roomType === 'shared' ? (
-									<Grid container spacing={1}>
-										<Grid
-											item
-											xs={5}
-											className={classes.keyValue}
-										>
-											<Box className="test">
-												<h1
-													style={{
-														fontSize: '1rem',
-													}}
-												>
-													Shared
-												</h1>
-											</Box>
-										</Grid>
-										<Grid
-											item
-											xs={7}
-											style={{
-												display: 'flex',
-												alignItems: 'center',
-											}}
-										>
-											<span className={classes.smallText}>
-												Room Type
-											</span>
-										</Grid>
-									</Grid>
-								) : (
-									<Grid container spacing={1}>
-										<Grid
-											item
-											xs={5}
-											className={classes.keyValue}
-										>
-											<Box className="test">
-												<h1>
-													{property.numberOfRoomMates}
-												</h1>
-											</Box>
-										</Grid>
-										<Grid
-											item
-											xs={7}
-											className={globalClasses.flexCenter}
-										>
-											<span className={classes.smallText}>
-												Roommates
-											</span>
-										</Grid>
-									</Grid>
-								)}
-							</Grid>
-							<Grid item xs={6}>
 								<Grid container spacing={1}>
 									<Grid
 										item
@@ -196,6 +140,37 @@ const PropertyCard = ({ property, edit = false }) => {
 									>
 										<span className={classes.smallText}>
 											Rent / Month
+										</span>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={6}>
+								<Grid container spacing={1}>
+									<Grid
+										item
+										xs={5}
+										className={classes.keyValue}
+									>
+										<Box className="test">
+											<h1>
+												₹
+												{property.securityDeposit /
+													1000}
+												K
+											</h1>
+										</Box>
+										<span></span>
+									</Grid>
+									<Grid
+										item
+										xs={7}
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
+									>
+										<span className={classes.smallText}>
+											Security Deposit
 										</span>
 									</Grid>
 								</Grid>

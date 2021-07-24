@@ -40,7 +40,7 @@ const PropertyCard = ({ property, edit = false }) => {
 		  };
 	const [defaultImage, setDefaultImage] = React.useState(img);
 	const classes = useStyles({
-		img: `/assets/properties/${defaultImage.image}`,
+		img: `/assets/projects/${defaultImage.image}`,
 	});
 	const globalClasses = useGlobalStyles({ img: city });
 
@@ -49,11 +49,12 @@ const PropertyCard = ({ property, edit = false }) => {
 	};
 	return (
 		<div className={classes.wrapper}>
+			{/* <pre>{JSON.stringify(property, null, 2)}</pre> */}
 			<ViewFullImage
 				open={fullImageOpen}
 				handleClose={toggleFullImage(false)}
 				title={property.title}
-				image={`/assets/properties/${defaultImage.image}`}
+				image={`/assets/projects/${defaultImage.image}`}
 			/>
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={8}>
@@ -62,8 +63,7 @@ const PropertyCard = ({ property, edit = false }) => {
 							photos={
 								property.photos[0]
 									? property.photos.map(
-											(c) =>
-												`/assets/properties/${c.image}`
+											(c) => `/assets/projects/${c.image}`
 									  )
 									: [city]
 							}
@@ -85,9 +85,14 @@ const PropertyCard = ({ property, edit = false }) => {
 								</button>
 								<Box className={classes.swipableWrapper}>
 									<SwipablePhotos
-										photos={property.photos}
+										photos={
+											property.photos
+												? property.photos
+												: []
+										}
 										selected={defaultImage}
 										setSelected={setDefaultImage}
+										dir="projects"
 									/>
 								</Box>
 							</div>
@@ -102,27 +107,15 @@ const PropertyCard = ({ property, edit = false }) => {
 								alt="Logo"
 								className={classes.logo}
 							/>
-
-							<span
-								className={clsx(
-									classes.smallText,
-									classes.colorPrimary,
-									globalClasses.textCenter
-								)}
-							>
-								For Rent
-							</span>
 						</div>
 						<div>
-							<h2 className={globalClasses.textCenter}>
-								{property.title}
-							</h2>
+							<h2>{property.title}</h2>
 							<PropertyTypeChip title={property.type} />
 						</div>
 					</div>
 					<Box mt="1rem" className={globalClasses.justifyCenter}>
 						<div>
-							<div className={globalClasses.alignCenter}>
+							{/* <div className={globalClasses.alignCenter}>
 								<img
 									src={location}
 									alt="Location"
@@ -132,33 +125,21 @@ const PropertyCard = ({ property, edit = false }) => {
 									{property.location.name},
 									{property.city.name}
 								</h4>
-							</div>
+							</div> */}
+							{/* <div className={globalClasses.alignCenter}>
+								<img
+									src={tag}
+									alt="Tag"
+									className={clsx(classes.icon)}
+								/>
+								<h4 className={classes.locationText}>
+									Apartment,3BHK,Swimming Pool
+								</h4>
+							</div> */}
 						</div>
 					</Box>
 					<Box mt="2rem">
 						<Grid container spacing={3}>
-							<Grid item xs={6}>
-								<Grid container spacing={0}>
-									<Grid
-										item
-										xs={5}
-										className={classes.keyValue}
-									>
-										<Box className="test">
-											<h1>{property.superBuiltupArea}</h1>
-										</Box>
-									</Grid>
-									<Grid
-										item
-										xs={7}
-										className={globalClasses.flexCenter}
-									>
-										<span className={classes.smallText}>
-											Sq. Ft Super Built Up Area
-										</span>
-									</Grid>
-								</Grid>
-							</Grid>
 							<Grid item xs={6}>
 								<Grid container spacing={1}>
 									<Grid
@@ -166,8 +147,8 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<Box className="test">
-											<h1>₹{property.rent / 1000}K</h1>
+										<Box className="projectValueWrapper">
+											<h1>{property.numberOfUnits}</h1>
 										</Box>
 									</Grid>
 									<Grid
@@ -179,7 +160,58 @@ const PropertyCard = ({ property, edit = false }) => {
 										}}
 									>
 										<span className={classes.smallText}>
-											Rent / Month
+											Units
+										</span>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={6}>
+								<Grid container spacing={0}>
+									<Grid
+										item
+										xs={5}
+										style={{
+											position: 'relative',
+											height: '80px',
+										}}
+									>
+										<Box className="projectValueWrapper">
+											<h1>
+												{property.minPrice / 100000}-
+												{property.maxPrice / 100000}L
+											</h1>
+										</Box>
+									</Grid>
+									<Grid
+										item
+										xs={7}
+										className={globalClasses.alignCenter}
+									>
+										<span className={classes.smallText}>
+											Price Range
+										</span>
+									</Grid>
+								</Grid>
+							</Grid>
+
+							<Grid item xs={6}>
+								<Grid container spacing={1}>
+									<Grid
+										item
+										xs={5}
+										className={classes.keyValue}
+									>
+										<Box className="projectValueWrapper">
+											<h1>{property.numberOfBedrooms}</h1>
+										</Box>
+									</Grid>
+									<Grid
+										item
+										xs={7}
+										className={globalClasses.alignCenter}
+									>
+										<span className={classes.smallText}>
+											Number of bedroom
 										</span>
 									</Grid>
 								</Grid>
@@ -191,17 +223,19 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<Box className="test">
-											<h1>{property.noticePeriod}</h1>
+										<Box className="projectValueWrapper">
+											<h1>
+												{property.numberOflivingAreas}
+											</h1>
 										</Box>
 									</Grid>
 									<Grid
 										item
 										xs={7}
-										className={globalClasses.flexCenter}
+										className={globalClasses.alignCenter}
 									>
 										<span className={classes.smallText}>
-											Notice Period [In days]
+											Living Area
 										</span>
 									</Grid>
 								</Grid>
@@ -213,8 +247,82 @@ const PropertyCard = ({ property, edit = false }) => {
 										xs={5}
 										className={classes.keyValue}
 									>
-										<Box className="test">
-											<h1>1.5K</h1>
+										<Box className="projectValueWrapper">
+											<h1>{property.superBuiltupArea}</h1>
+										</Box>
+									</Grid>
+									<Grid
+										item
+										xs={7}
+										className={globalClasses.alignCenter}
+									>
+										<span className={classes.smallText}>
+											Super built up area (Sq.ft)
+										</span>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={6}>
+								<Grid container spacing={1}>
+									<Grid
+										item
+										xs={5}
+										className={classes.keyValue}
+									>
+										<Box className="projectValueWrapper">
+											<h1>{property.carpetArea}</h1>
+										</Box>
+									</Grid>
+									<Grid
+										item
+										xs={7}
+										className={globalClasses.alignCenter}
+									>
+										<span className={classes.smallText}>
+											Carpet area (Sq.ft)
+										</span>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={6}>
+								<Grid container spacing={1}>
+									<Grid
+										item
+										xs={5}
+										className={classes.keyValue}
+									>
+										<Box className="projectValueWrapper">
+											<h1>
+												{renderToilets(
+													property.toiletTypes
+												)}
+											</h1>
+										</Box>
+									</Grid>
+									<Grid
+										item
+										xs={7}
+										className={globalClasses.alignCenter}
+									>
+										<span className={classes.smallText}>
+											Toilets
+										</span>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={6}>
+								<Grid container spacing={1}>
+									<Grid
+										item
+										xs={5}
+										className={classes.keyValue}
+									>
+										<Box className="projectValueWrapper">
+											<h1>
+												{property.bookingAmount /
+													100000}
+												L
+											</h1>
 										</Box>
 									</Grid>
 									<Grid
@@ -223,170 +331,13 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={globalClasses.flexCenter}
 									>
 										<span className={classes.smallText}>
-											Maintainance Fee Per Month
+											Booking Amount
 										</span>
 									</Grid>
 								</Grid>
 							</Grid>
 						</Grid>
 					</Box>
-					<Box mt="1rem">
-						<h4 className={classes.colorSecondary}>Overview</h4>
-					</Box>
-					<Grid container spacing={3}>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={area}
-									alt="Area"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{property.superBuiltupArea} sqft.
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={bed}
-									alt="Bed"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{property.numberOfBedRooms}
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={tub}
-									alt="Tub"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{renderToilets(property.toiletTypes)}
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={car}
-									alt="Car"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										1
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={area}
-									alt="Area"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{property.carpetArea} sqft.
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={bed}
-									alt="Bed"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{property.noOfFloors}
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={tub}
-									alt="Tub"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{renderBool(property.verified)}
-									</span>
-								</Box>
-							</div>
-						</Grid>
-						<Grid item xs={3}>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={car}
-									alt="Car"
-									className={classes.iconImage}
-								/>
-								<Box ml="0.2rem">
-									<span
-										className={clsx(
-											classes.smallText,
-											classes.bold
-										)}
-									>
-										{property.floor}
-									</span>
-								</Box>
-							</div>
-						</Grid>
-					</Grid>
 				</Grid>
 			</Grid>
 		</div>

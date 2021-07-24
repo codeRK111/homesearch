@@ -84,7 +84,6 @@ const Chip = ({
 	}, [open]);
 
 	const handleClickAway = () => {
-		console.log('wait');
 		const elem = document.querySelector('#search');
 		if (elem === document.activeElement) {
 			return;

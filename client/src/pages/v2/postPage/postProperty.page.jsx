@@ -46,6 +46,7 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 		type: null,
 	});
 	const [loading, setLoading] = React.useState(false);
+	const [pForError, setpForError] = React.useState(null);
 
 	const togglePlanPopUp = (status) => () => {
 		setOpenPlan(status);
@@ -53,8 +54,14 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 
 	const handlePFor = (type) => () => {
 		setpFor(type);
+		setpForError(null);
 	};
 	const handleType = (pType) => () => {
+		if (!pFor) {
+			setpForError('Please select one from the below');
+		} else {
+			setpForError(null);
+		}
 		setType(pType);
 	};
 
@@ -319,6 +326,14 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 						<Typography align="center">
 							List property for
 						</Typography>
+						{pForError && !pFor && (
+							<Typography
+								align="center"
+								className={gClasses.colorWarning}
+							>
+								{pForError}
+							</Typography>
+						)}
 					</Box>
 					<Box className={classes.alignCenter} mt="1rem">
 						<Select

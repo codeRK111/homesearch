@@ -76,9 +76,6 @@ const PropertyCard = ({ property, propertyItems }) => {
 							</span>
 						</div>
 						<div>
-							<h2 className={globalClasses.textCenter}>
-								{property.title}
-							</h2>
 							<span
 								className={clsx(
 									classes.smallText,
@@ -90,6 +87,9 @@ const PropertyCard = ({ property, propertyItems }) => {
 									title={property.projectType}
 								/>
 							</span>
+							<h2 className={globalClasses.textCenter}>
+								{property.title}
+							</h2>
 						</div>
 					</div>
 					<Box mt="1rem" className={globalClasses.justifyCenter}>
@@ -126,10 +126,12 @@ const PropertyCard = ({ property, propertyItems }) => {
 						</div>
 					</Box>
 
-					<Box mt="1rem">
-						<h4 className={classes.colorSecondary}>Overview</h4>
+					<Box mt="2rem">
+						<Land
+							property={property}
+							propertyItems={propertyItems}
+						/>
 					</Box>
-					<Land property={property} propertyItems={propertyItems} />
 				</Grid>
 			</Grid>
 		</div>

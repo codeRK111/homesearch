@@ -96,7 +96,7 @@ const HeroArea = ({
 	const handleCity = (e) => {
 		const { value } = e.target;
 		setUserTypedCity(value);
-		if (value.length === 3 || value.length >= 5) {
+		if (value.length === 2 || value.length >= 4) {
 			searchCities(handleFetchCities, value);
 		}
 	};

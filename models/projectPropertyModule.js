@@ -210,30 +210,24 @@ const projectPropertySchema = new Schema(
 			type: Number,
 			required: requireLand,
 		},
-		image1: {
-			type: String,
-			default: null,
-		},
-		image2: {
-			type: String,
-			default: null,
-		},
-		image3: {
-			type: String,
-			default: null,
-		},
-		image4: {
-			type: String,
-			default: null,
-		},
-		floorplan1: {
-			type: String,
-			default: null,
-		},
-		floorplan2: {
-			type: String,
-			default: null,
-		},
+		photos: [
+			{
+				image: {
+					type: String,
+				},
+			},
+		],
+
+		floorPlans: [
+			{
+				image: {
+					type: String,
+				},
+				label: {
+					type: String,
+				},
+			},
+		],
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

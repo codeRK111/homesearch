@@ -1,6 +1,11 @@
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
 let theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: '#2AAAAC',
+		},
+	},
 	typography: {
 		fontFamily: ['CenturyGothic'],
 	},

@@ -15,8 +15,8 @@ const useStyles = makeStyles((theme) => ({
 			theme.palette.type === 'light'
 				? theme.palette.grey[50]
 				: theme.palette.grey[900],
-		backgroundSize: 'cover',
-		// backgroundPosition: 'center',
+		backgroundSize: 'contain',
+		backgroundPosition: 'center',
 		height: '80vh',
 		width: '100%',
 		borderRadius: 30,

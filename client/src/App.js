@@ -29,6 +29,9 @@ const PropertyDetailsPageNew = lazy(() =>
 const ProjectDetailsPageNew = lazy(() =>
 	import('./pages/v2/projectDetailsPage/projectDetails.page')
 );
+const ProjectPropertyDetailsPage = lazy(() =>
+	import('./pages/v2/projectPropertyDetails')
+);
 const ProfilePage = lazy(() =>
 	import('./pages/v2/userProfile/userProfile.page')
 );
@@ -125,6 +128,13 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser }) {
 						exact
 						path="/payment"
 						render={(props) => <PaymentPage {...props} />}
+					/>
+					<Route
+						exact
+						path="/project-property/:id"
+						render={(props) => (
+							<ProjectPropertyDetailsPage {...props} />
+						)}
 					/>
 
 					<Route

@@ -1,7 +1,13 @@
+import { Box, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 
-import { Box } from '@material-ui/core';
+import Amenity from '../../../components/v2/amenity/amenity.component';
+import BuilderCard from '../../../components/v2/ownerCard/builderCard.component';
+import FlatHeader from '../../../components/v2/searchCard2/project/flatDetails.component';
+import FlatUnit from '../../../components/v2/searchCard2/project/unitConfig/flat.unit';
 import LandHeader from '../../../components/v2/searchCard2/project/landDetails.component';
+import LandUnit from '../../../components/v2/searchCard2/project/unitConfig/land.unit';
+import LegalClearance from '../propertyDetails/legalClearance.component';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import Skeleton from '../../../components/v2/skeleton/propertyHeader.component';
 import TextSkeleton from '@material-ui/lab/Skeleton';
@@ -9,9 +15,8 @@ import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { setSnackbar } from '../../../redux/ui/ui.actions';
+import useGlobalStyles from '../../../common.style';
 import useStyles from './projectDetailsPage.style';
-
-// import useGlobalStyles from '../../../common.style';
 
 const initialState = {
 	project: null,
@@ -26,7 +31,7 @@ const ProjectDetailsPage = ({
 	setSnackbar,
 }) => {
 	const classes = useStyles();
-	// const globalClasses = useGlobalStyles();
+	const globalClasses = useGlobalStyles();
 
 	// State
 	const [data, setData] = useState(initialState);
@@ -65,7 +70,7 @@ const ProjectDetailsPage = ({
 				setData({
 					project: responseData.data.project,
 					properties: responseData.data.properties,
-					projectInfo: responseData.data.projectInfo,
+					projectInfo: responseData.data.projectInfo[0],
 				});
 				setLoading(false);
 				setError(null);
@@ -96,8 +101,33 @@ const ProjectDetailsPage = ({
 
 	const renderHeader = (info) => {
 		switch (info.project.projectType) {
+			case 'flat':
+			case 'independenthouse':
+				return (
+					<FlatHeader
+						project={info.project}
+						info={info.projectInfo}
+					/>
+				);
 			case 'land':
-				return <LandHeader project={info.project} />;
+				return (
+					<LandHeader
+						project={info.project}
+						info={info.projectInfo}
+					/>
+				);
+
+			default:
+				break;
+		}
+	};
+	const renderUnits = (info) => {
+		switch (info.project.projectType) {
+			case 'flat':
+			case 'independenthouse':
+				return <FlatUnit properties={info.properties} />;
+			case 'land':
+				return <LandUnit properties={info.properties} />;
 
 			default:
 				break;
@@ -127,6 +157,73 @@ const ProjectDetailsPage = ({
 						data.project && renderHeader(data)
 					)}
 				</Box>
+
+				<Grid container spacing={3}>
+					<Grid item xs={12} md={9}>
+						{data.project && data.project.projectType !== 'land' && (
+							<>
+								<h2 className={globalClasses.colorPrimary}>
+									Amenities
+								</h2>
+								<Grid container spacing={3}>
+									{data.project.allAmenities
+										.filter((c) =>
+											data.project.amenities.includes(
+												c.id
+											)
+										)
+										.map((b) => {
+											return (
+												<Grid
+													item
+													xs={6}
+													md={3}
+													key={b.id}
+												>
+													<Amenity text={b.name} />
+												</Grid>
+											);
+										})}
+								</Grid>
+							</>
+						)}
+
+						{data.project && (
+							<>
+								<Box mt="2rem">
+									<LegalClearance
+										property={data.project}
+										project
+									/>
+								</Box>
+								<Box mt="3rem">
+									<h2 className={globalClasses.colorPrimary}>
+										About The Project
+									</h2>
+								</Box>
+								<p>
+									<i>{data.project.description}</i>
+								</p>
+								<Box mt="2rem">
+									<h2 className={globalClasses.colorPrimary}>
+										Unit Configuration
+									</h2>
+								</Box>
+								{renderUnits(data)}
+							</>
+						)}
+					</Grid>
+					<Grid item xs={12} md={3}>
+						{data.project && (
+							<Box mb="2rem" mt="2rem">
+								<BuilderCard
+									owner={data.project.builder}
+									property={data.project}
+								/>
+							</Box>
+						)}
+					</Grid>
+				</Grid>
 			</div>
 		</div>
 	);

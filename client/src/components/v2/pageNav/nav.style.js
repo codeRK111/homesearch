@@ -129,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	menuWrapper: {
 		width: '30rem',
-		height: 200,
+		maxHeight: 200,
 		overflow: 'auto',
 		[theme.breakpoints.down('sm')]: {
 			width: '70vw',

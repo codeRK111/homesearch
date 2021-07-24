@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	logo: {
-		height: '25px',
+		maxHeight: '25px',
 	},
 	listButton: {
 		color: theme.secondaryHeadingColor,

@@ -151,5 +151,16 @@ const useStyles = makeStyles((theme) => ({
 			wordBreak: 'break-all',
 		},
 	},
+	header: {
+		backgroundColor: theme.utilColor,
+		color: '#ffffff',
+	},
+	cell: {
+		padding: '0.6rem 0.5rem',
+		fontSize: '0.9rem',
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.5rem 0',
+		},
+	},
 }));
 export default useStyles;

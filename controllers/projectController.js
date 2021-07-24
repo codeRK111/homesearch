@@ -7,6 +7,7 @@ const ApiFeatures = require('../utils/apiFeatures');
 const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const Amenity = require('./../models/amenityModel');
 const ObjectId = mongoose.Types.ObjectId;
 
 exports.addProjectFlat = catchAsync(async (req, res, next) => {
@@ -502,6 +503,8 @@ exports.getProjectDetailsBySlug = catchAsync(async (req, res, next) => {
 
 exports.getAllProjectInfo = catchAsync(async (req, res, next) => {
 	const project = await Project.findById(req.params.id);
+	const allAmenities = await Amenity.find();
+	project['_doc']['allAmenities'] = allAmenities;
 	if (!project) return next(new AppError('project not found', 404));
 	const properties = await ProjectProperty.find({ project: project.id });
 	const projectInfo = await ProjectProperty.aggregate([
@@ -573,10 +576,114 @@ exports.getProjectPropertyDetails = catchAsync(async (req, res, next) => {
 
 exports.handleProjectImage = catchAsync(async (req, res, next) => {
 	console.log(req.files);
-	const images = req.files.map((c) => ({ image: c.filename }));
+	const images = req.files.map((c, i) => ({
+		image: c.filename,
+	}));
 	const project = await Project.findByIdAndUpdate(
 		req.params.id,
 		{ $push: { photos: { $each: images } } },
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+	res.json({
+		project,
+	});
+});
+exports.handleProjectPropertyPhotos = catchAsync(async (req, res, next) => {
+	console.log(req.files);
+	const images = req.files.map((c, i) => ({
+		image: c.filename,
+	}));
+	const project = await ProjectProperty.findByIdAndUpdate(
+		req.params.id,
+		{ $push: { photos: { $each: images } } },
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+	res.json({
+		project,
+	});
+});
+exports.removeProjectPhoto = catchAsync(async (req, res, next) => {
+	const property = await Project.findByIdAndUpdate(req.params.propertyId);
+	const img = property.photos.find((c) => c._id == req.params.imageId);
+	if (img) {
+		fs.unlink(
+			path.join(__dirname, '../', 'images', 'project_images/') +
+				img.image,
+			function (err) {}
+		);
+		property.photos = property.photos.filter(
+			(c) => c._id != req.params.imageId
+		);
+		await property.save();
+		res.json({
+			status: 'success',
+			property,
+		});
+	} else {
+		return next(new AppError('Image Not Found', 404));
+	}
+});
+exports.removePhoto = catchAsync(async (req, res, next) => {
+	const property = await ProjectProperty.findByIdAndUpdate(
+		req.params.propertyId
+	);
+	const img = property.photos.find((c) => c._id == req.params.imageId);
+	if (img) {
+		fs.unlink(
+			path.join(__dirname, '../', 'images', 'project_images/') +
+				img.image,
+			function (err) {}
+		);
+		property.photos = property.photos.filter(
+			(c) => c._id != req.params.imageId
+		);
+		await property.save();
+		res.json({
+			status: 'success',
+			property,
+		});
+	} else {
+		return next(new AppError('Image Not Found', 404));
+	}
+});
+exports.removeFloorPlanPhoto = catchAsync(async (req, res, next) => {
+	const property = await ProjectProperty.findByIdAndUpdate(
+		req.params.propertyId
+	);
+	const img = property.floorPlans.find((c) => c._id == req.params.imageId);
+	if (img) {
+		fs.unlink(
+			path.join(__dirname, '../', 'images', 'project_images/') +
+				img.image,
+			function (err) {}
+		);
+		property.floorPlans = property.floorPlans.filter(
+			(c) => c._id != req.params.imageId
+		);
+		await property.save();
+		res.json({
+			status: 'success',
+			property,
+		});
+	} else {
+		return next(new AppError('Image Not Found', 404));
+	}
+});
+exports.handleFloorPlans = catchAsync(async (req, res, next) => {
+	console.log(req.files);
+	const images = req.files.map((c, i) => ({
+		image: c.filename,
+		label: req.body.labels[i] ? req.body.labels[i] : '',
+	}));
+	const project = await ProjectProperty.findByIdAndUpdate(
+		req.params.id,
+		{ $push: { floorPlans: { $each: images } } },
 		{
 			new: true,
 			runValidators: true,
