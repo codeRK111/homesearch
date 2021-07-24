@@ -94,22 +94,15 @@ const ProjectInfo = ({
 	// Declaration
 	const classes = useStyles();
 	const history = useHistory();
+
 	// State hook
 	const [visible, setVisible] = React.useState({
 		furnishes: false,
 	});
 	const [asyncError, setAsyncError] = React.useState(null);
-	const [floorplans, setFloorplans] = React.useState({
-		floorplan1: null,
-		floorplan2: null,
-	});
-	const [images, setImages] = React.useState({
-		image1: null,
-		image2: null,
-		image3: null,
-		image4: null,
-	});
+
 	const [photos, setPhotos] = React.useState([]);
+	const [loading, setLoading] = React.useState(false);
 	const [floorPlans, setFloorPlans] = React.useState([]);
 
 	const addMore = () => {
@@ -158,7 +151,7 @@ const ProjectInfo = ({
 	const handleFloorLabel = (img) => (e) => {
 		const { value } = e.target;
 
-		setPhotos((prevState) =>
+		setFloorPlans((prevState) =>
 			prevState.map((c) => {
 				if (c.id === img.id) {
 					c.label = value;
@@ -166,6 +159,106 @@ const ProjectInfo = ({
 				return c;
 			})
 		);
+	};
+	const uploadToServer = async () => {
+		const i = floorPlans.filter((c) => !!c.image).map((b) => b.image);
+
+		const labels = floorPlans.filter((c) => !!c.image).map((b) => b.label);
+		if (i.length > 0) {
+			const formData = new FormData();
+			i.forEach((c) => {
+				formData.append('images', c);
+			});
+			labels.forEach((c) => {
+				formData.append('labels', c);
+			});
+			try {
+				setLoading(true);
+				await axios.post(
+					`/api/v1/projects/add-floorplans/${id}`,
+					formData,
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					}
+				);
+				setLoading(false);
+				refetch();
+				setFloorPlans([]);
+			} catch (error) {
+				setLoading(false);
+				console.log(error);
+			}
+		}
+	};
+	const addPhotos = async () => {
+		const i = photos.filter((c) => !!c.image).map((b) => b.image);
+
+		if (i.length > 0) {
+			const formData = new FormData();
+			i.forEach((c) => {
+				formData.append('images', c);
+			});
+
+			try {
+				setLoading(true);
+				await axios.post(
+					`/api/v1/projects/add-project-property-photos/${id}`,
+					formData,
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					}
+				);
+				setLoading(false);
+				refetch();
+				setPhotos([]);
+			} catch (error) {
+				setLoading(false);
+				console.log(error);
+			}
+		}
+	};
+
+	const handleRemovePropertyImage = (img) => async () => {
+		try {
+			setLoading(true);
+			await axios.get(
+				`/api/v1/projects/remove-project-property-photos/${id}/${img._id}`,
+
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				}
+			);
+			setLoading(false);
+			refetch();
+		} catch (error) {
+			setLoading(false);
+			console.log(error);
+		}
+	};
+	const handleRemovefloorPlanImage = (img) => async () => {
+		try {
+			setLoading(true);
+			await axios.get(
+				`/api/v1/projects/remove-floorplan-photos/${id}/${img._id}`,
+
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				}
+			);
+			setLoading(false);
+			refetch();
+		} catch (error) {
+			setLoading(false);
+			console.log(error);
+		}
 	};
 
 	// Api response handler
@@ -186,16 +279,6 @@ const ProjectInfo = ({
 		}
 	};
 
-	const handleRemovePropertyFloorplan = (type, data) => {
-		if (type === 'fail') {
-			setAsyncError(data);
-		} else {
-			console.log(data);
-			setAsyncError(null);
-			refetch();
-		}
-	};
-
 	// Event handler
 	const handleChangeSwitch = (e) => {
 		const { name, checked } = e.target;
@@ -206,113 +289,7 @@ const ProjectInfo = ({
 		const clone = { ...data };
 		configureForUpdateFlat(clone);
 		console.log(clone);
-		clone.floorplans = floorplans;
-		clone.propertyImages = images;
 		updateProjectPropertyDetails(handleUpdateProjectDetails, id, clone);
-	};
-	const handleImageFloorPlan = (e) => {
-		const { name, files } = e.target;
-		setFloorplans((prevState) => ({
-			...prevState,
-			[name]: files[0],
-		}));
-	};
-
-	const handleRemove = (name) => (e) => {
-		console.log(name);
-		removePropertyFloorplan(handleRemovePropertyFloorplan, name, id);
-	};
-
-	const handleRemoveImage = (name) => (e) => {
-		console.log(name);
-		removePropertyFloorplan(handleRemovePropertyFloorplan, name, id);
-	};
-
-	const uploadToServer = async () => {
-		const i = floorPlans.filter((c) => !!c.image).map((b) => b.image);
-
-		const labels = floorPlans.filter((c) => !!c.image).map((b) => b.label);
-		if (i.length > 0) {
-			const formData = new FormData();
-			i.forEach((c) => {
-				formData.append('images', c);
-			});
-			labels.forEach((c) => {
-				formData.append('labels', c);
-			});
-			try {
-				await axios.post(
-					`/api/v1/projects/add-floorplans/${id}`,
-					formData,
-					{
-						headers: {
-							'Content-Type': 'multipart/form-data',
-						},
-					}
-				);
-				refetch();
-			} catch (error) {
-				console.log(error);
-			}
-		}
-	};
-	const addPhotos = async () => {
-		const i = photos.filter((c) => !!c.image).map((b) => b.image);
-
-		if (i.length > 0) {
-			const formData = new FormData();
-			i.forEach((c) => {
-				formData.append('images', c);
-			});
-
-			try {
-				await axios.post(
-					`/api/v1/projects/add-project-property-photos/${id}`,
-					formData,
-					{
-						headers: {
-							'Content-Type': 'multipart/form-data',
-						},
-					}
-				);
-				refetch();
-			} catch (error) {
-				console.log(error);
-			}
-		}
-	};
-
-	const handleRemovePropertyImage = (img) => async () => {
-		try {
-			await axios.get(
-				`/api/v1/projects/remove-project-property-photos/${id}/${img._id}`,
-
-				{
-					headers: {
-						'Content-Type': 'multipart/form-data',
-					},
-				}
-			);
-			refetch();
-		} catch (error) {
-			console.log(error);
-		}
-	};
-	const handleRemovefloorPlanImage = (img) => async () => {
-		try {
-			await axios.get(
-				`/api/v1/projects/remove-floorplan-photos/${id}/${img._id}`,
-
-				{
-					headers: {
-						'Content-Type': 'multipart/form-data',
-					},
-				}
-			);
-			refetch();
-		} catch (error) {
-			console.log(error);
-		}
 	};
 
 	// UseEffect hooks
@@ -333,7 +310,7 @@ const ProjectInfo = ({
 			</Backdrop>
 			<Backdrop
 				className={classes.backdrop}
-				open={removeFloorplanLoading}
+				open={removeFloorplanLoading || loading}
 			>
 				<CircularProgress color="secondary" />
 			</Backdrop>

@@ -1,51 +1,53 @@
-import React from 'react';
-import { Formik, Form, FieldArray } from 'formik';
-import RowTextField from '../../components/rowTextField/rowFormikTextField.component';
 import {
-	configureIntialLand,
-	configureForUpdateLand,
-	validateLand,
-	renderTypes,
-	carParkingMenuItems,
-	transactionTypeMenuItems,
-	verifiedMenuItems,
+	Backdrop,
+	Box,
+	Button,
+	CircularProgress,
+	Divider,
+	Grid,
+} from '@material-ui/core';
+import { FieldArray, Form, Formik } from 'formik';
+import {
 	boundaryWallMadeMenuItems,
-	facingMenuItems,
+	carParkingMenuItems,
+	configureForUpdateLand,
+	configureIntialLand,
 	constructionDoneMenuItems,
+	facingMenuItems,
 	gatedCommunityMadeMenuItems,
 	landUsingZoningMenuItems,
+	renderTypes,
+	transactionTypeMenuItems,
+	validateLand,
+	verifiedMenuItems,
 } from './properties.constant';
-import RowSelect from '../../components/rowSelect/rowFormikSelect.component';
-import FormHeader from '../../components/formHeader/formHeader.component';
 import {
-	Box,
-	Backdrop,
-	CircularProgress,
-	Button,
-	Grid,
-	Divider,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+	removePropertyFloorplan,
+	updateProjectPropertyDetails,
+} from '../../redux/project/project.action';
 import {
+	selectLoading as resourcesLoading,
 	selectAmenities,
 	selectFurnishes,
-	selectLoading as resourcesLoading,
 } from '../../redux/property/property.selector';
 import {
 	selectUpdateProjectPropertyDetailsLoading,
 	selectremovePropertyFloorplanLoading,
 } from '../../redux/project/project.selector';
-import { fetchAllPropertyResourcesStart } from '../../redux/property/property.actions';
-import {
-	updateProjectPropertyDetails,
-	removePropertyFloorplan,
-} from '../../redux/project/project.action';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
-import IconButton from '@material-ui/core/IconButton';
+
 import DeleteIcon from '@material-ui/icons/Delete';
+import FormHeader from '../../components/formHeader/formHeader.component';
+import IconButton from '@material-ui/core/IconButton';
+import React from 'react';
+import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
+import RowSelect from '../../components/rowSelect/rowFormikSelect.component';
+import RowTextField from '../../components/rowTextField/rowFormikTextField.component';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { fetchAllPropertyResourcesStart } from '../../redux/property/property.actions';
+import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -96,16 +98,165 @@ const ProjectInfo = ({
 		furnishes: false,
 	});
 	const [asyncError, setAsyncError] = React.useState(null);
-	const [floorplans, setFloorplans] = React.useState({
-		floorplan1: null,
-		floorplan2: null,
-	});
-	const [images, setImages] = React.useState({
-		image1: null,
-		image2: null,
-		image3: null,
-		image4: null,
-	});
+	const [photos, setPhotos] = React.useState([]);
+	const [loading, setLoading] = React.useState(false);
+	const [floorPlans, setFloorPlans] = React.useState([]);
+
+	const addMore = () => {
+		setPhotos([
+			...photos,
+			{
+				id: photos.length + 1,
+				image: null,
+			},
+		]);
+	};
+	const addMoreFloorPlan = () => {
+		setFloorPlans([
+			...floorPlans,
+			{
+				id: photos.length + 1,
+				image: null,
+				label: '',
+			},
+		]);
+	};
+	const handleImage = (img) => (e) => {
+		const { name, files } = e.target;
+		console.log({ name });
+		setPhotos((prevState) =>
+			prevState.map((c) => {
+				if (c.id === img.id) {
+					c.image = files[0];
+				}
+				return c;
+			})
+		);
+	};
+	const handleFloorPlanImage = (img) => (e) => {
+		const { name, files } = e.target;
+		console.log({ name });
+		setFloorPlans((prevState) =>
+			prevState.map((c) => {
+				if (c.id === img.id) {
+					c.image = files[0];
+				}
+				return c;
+			})
+		);
+	};
+	const handleFloorLabel = (img) => (e) => {
+		const { value } = e.target;
+
+		setFloorPlans((prevState) =>
+			prevState.map((c) => {
+				if (c.id === img.id) {
+					c.label = value;
+				}
+				return c;
+			})
+		);
+	};
+	const uploadToServer = async () => {
+		const i = floorPlans.filter((c) => !!c.image).map((b) => b.image);
+
+		const labels = floorPlans.filter((c) => !!c.image).map((b) => b.label);
+		if (i.length > 0) {
+			const formData = new FormData();
+			i.forEach((c) => {
+				formData.append('images', c);
+			});
+			labels.forEach((c) => {
+				formData.append('labels', c);
+			});
+			try {
+				setLoading(true);
+				await axios.post(
+					`/api/v1/projects/add-floorplans/${id}`,
+					formData,
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					}
+				);
+				setLoading(false);
+				refetch();
+				setFloorPlans([]);
+			} catch (error) {
+				setLoading(false);
+				console.log(error);
+			}
+		}
+	};
+	const addPhotos = async () => {
+		const i = photos.filter((c) => !!c.image).map((b) => b.image);
+
+		if (i.length > 0) {
+			const formData = new FormData();
+			i.forEach((c) => {
+				formData.append('images', c);
+			});
+
+			try {
+				setLoading(true);
+				await axios.post(
+					`/api/v1/projects/add-project-property-photos/${id}`,
+					formData,
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					}
+				);
+				setLoading(false);
+				refetch();
+				setPhotos([]);
+			} catch (error) {
+				setLoading(false);
+				console.log(error);
+			}
+		}
+	};
+
+	const handleRemovePropertyImage = (img) => async () => {
+		try {
+			setLoading(true);
+			await axios.get(
+				`/api/v1/projects/remove-project-property-photos/${id}/${img._id}`,
+
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				}
+			);
+			setLoading(false);
+			refetch();
+		} catch (error) {
+			setLoading(false);
+			console.log(error);
+		}
+	};
+	const handleRemovefloorPlanImage = (img) => async () => {
+		try {
+			setLoading(true);
+			await axios.get(
+				`/api/v1/projects/remove-floorplan-photos/${id}/${img._id}`,
+
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				}
+			);
+			setLoading(false);
+			refetch();
+		} catch (error) {
+			setLoading(false);
+			console.log(error);
+		}
+	};
 
 	// Api response handler
 	const handleFetchResources = (type, data) => {
@@ -141,36 +292,8 @@ const ProjectInfo = ({
 		const clone = { ...data };
 		configureForUpdateLand(clone);
 		console.log(clone);
-		clone.floorplans = floorplans;
-		clone.propertyImages = images;
 		clone.plotArea = data.plotArea.filter((c) => c);
 		updateProjectPropertyDetails(handleUpdateProjectDetails, id, clone);
-	};
-
-	const handleImageFloorPlan = (e) => {
-		const { name, files } = e.target;
-		setFloorplans((prevState) => ({
-			...prevState,
-			[name]: files[0],
-		}));
-	};
-
-	const handleRemove = (name) => (e) => {
-		console.log(name);
-		removePropertyFloorplan(handleRemovePropertyFloorplan, name, id);
-	};
-
-	const handleRemoveImage = (name) => (e) => {
-		console.log(name);
-		removePropertyFloorplan(handleRemovePropertyFloorplan, name, id);
-	};
-
-	const handleImage = (e) => {
-		const { name, files } = e.target;
-		setImages((prevState) => ({
-			...prevState,
-			[name]: files[0],
-		}));
 	};
 
 	// UseEffect hooks
@@ -191,7 +314,7 @@ const ProjectInfo = ({
 			</Backdrop>
 			<Backdrop
 				className={classes.backdrop}
-				open={removeFloorplanLoading}
+				open={removeFloorplanLoading || loading}
 			>
 				<CircularProgress color="secondary" />
 			</Backdrop>
@@ -422,151 +545,25 @@ const ProjectInfo = ({
 									disabled={true}
 								/>
 							</Box> */}
-							<FormHeader text="Floor plans & Images" />
-							<RowHOC heading="Exsting floorplans" center={true}>
-								<Grid container spacing={2}>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													values.floorplan1
-														? `/assets/projects/${values.floorplan1}`
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										{values.floorplan1 && (
-											<Button
-												variant="outlined"
-												color="secondary"
-												classes={{
-													label: 'transform-none',
-												}}
-												size="small"
-												className={classes.removeButton}
-												onClick={handleRemove(
-													'floorplan1'
-												)}
-											>
-												Remove
-											</Button>
-										)}
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													values.floorplan2
-														? `/assets/projects/${values.floorplan2}`
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										{values.floorplan2 && (
-											<Button
-												variant="outlined"
-												color="secondary"
-												classes={{
-													label: 'transform-none',
-												}}
-												size="small"
-												className={classes.removeButton}
-												onClick={handleRemove(
-													'floorplan2'
-												)}
-											>
-												Remove
-											</Button>
-										)}
-									</Grid>
-								</Grid>
-							</RowHOC>
-							<Divider />
-							<RowHOC heading="Update floorplans" center={true}>
-								<Grid item xs={12} lg={3}>
-									<Box className={classes.imageWrapper}>
-										<img
-											src={
-												floorplans.floorplan1
-													? URL.createObjectURL(
-															floorplans.floorplan1
-													  )
-													: require('../../assets/no-image.jpg')
-											}
-											alt="project"
-											srcset=""
-											className={classes.image}
-										/>
-									</Box>
-									<input
-										type="file"
-										name="floorplan1"
-										onChange={handleImageFloorPlan}
-										id="floorplan1"
-										className={classes.input}
-									/>
-									<label
-										htmlFor="floorplan1"
-										className={classes.label}
-									>
-										Floorplan1
-									</label>
-								</Grid>
-								<Grid item xs={12} lg={3}>
-									<Box className={classes.imageWrapper}>
-										<img
-											src={
-												floorplans.floorplan2
-													? URL.createObjectURL(
-															floorplans.floorplan2
-													  )
-													: require('../../assets/no-image.jpg')
-											}
-											alt="project"
-											srcset=""
-											className={classes.image}
-										/>
-									</Box>
-									<input
-										type="file"
-										name="floorplan2"
-										onChange={handleImageFloorPlan}
-										id="floorplan2"
-										className={classes.input}
-									/>
-									<label
-										htmlFor="floorplan2"
-										className={classes.label}
-									>
-										floorplan2
-									</label>
-								</Grid>
-							</RowHOC>
-							<Box pt="1rem" pb="1rem">
-								<Divider />
-							</Box>
+							<FormHeader text="Images" />
 							<RowHOC heading="Exsting Images" center={true}>
 								<Grid container spacing={2}>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													values.image1
-														? `/assets/projects/${values.image1}`
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										{values.image1 && (
+									{values.photos.map((c) => (
+										<Grid item xs={12} lg={3}>
+											<Box
+												className={classes.imageWrapper}
+											>
+												<img
+													src={
+														c.image
+															? `/assets/projects/${c.image}`
+															: require('../../assets/no-image.jpg')
+													}
+													alt="project"
+													srcset=""
+													className={classes.image}
+												/>
+											</Box>
 											<Button
 												variant="outlined"
 												color="secondary"
@@ -575,229 +572,188 @@ const ProjectInfo = ({
 												}}
 												size="small"
 												className={classes.removeButton}
-												onClick={handleRemoveImage(
-													'image1'
+												onClick={handleRemovePropertyImage(
+													c
 												)}
 											>
 												Remove
 											</Button>
-										)}
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													values.image2
-														? `/assets/projects/${values.image2}`
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										{values.image2 && (
-											<Button
-												variant="outlined"
-												color="secondary"
-												classes={{
-													label: 'transform-none',
-												}}
-												size="small"
-												className={classes.removeButton}
-												onClick={handleRemoveImage(
-													'image2'
-												)}
-											>
-												Remove
-											</Button>
-										)}
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													values.image3
-														? `/assets/projects/${values.image3}`
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										{values.image3 && (
-											<Button
-												variant="outlined"
-												color="secondary"
-												classes={{
-													label: 'transform-none',
-												}}
-												size="small"
-												className={classes.removeButton}
-												onClick={handleRemoveImage(
-													'image3'
-												)}
-											>
-												Remove
-											</Button>
-										)}
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													values.image4
-														? `/assets/projects/${values.image4}`
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										{values.image4 && (
-											<Button
-												variant="outlined"
-												color="secondary"
-												classes={{
-													label: 'transform-none',
-												}}
-												size="small"
-												className={classes.removeButton}
-												onClick={handleRemoveImage(
-													'image4'
-												)}
-											>
-												Remove
-											</Button>
-										)}
-									</Grid>
+										</Grid>
+									))}
 								</Grid>
+							</RowHOC>
+
+							<RowHOC heading="Upload New Images" center={true}>
+								<Box p="0.8rem">
+									<Grid container spacing={3}>
+										{photos.map((c, i) => (
+											<Grid key={c.id} item xs={6} lg={3}>
+												<Box
+													className={
+														classes.imageWrapper
+													}
+												>
+													<img
+														src={
+															c.image
+																? URL.createObjectURL(
+																		c.image
+																  )
+																: require('../../assets/no-image.jpg')
+														}
+														alt="project"
+														srcset=""
+														className={
+															classes.image
+														}
+													/>
+												</Box>
+
+												<input
+													type="file"
+													onChange={handleImage(c)}
+													id={`image-${c.id}`}
+													className={classes.input}
+												/>
+												<label
+													htmlFor={`image-${c.id}`}
+												>
+													Upload
+												</label>
+											</Grid>
+										))}
+									</Grid>
+									<Box mt="2rem">
+										<button onClick={addMore} type="button">
+											Add More Image
+										</button>
+									</Box>
+									<Box mt="2rem">
+										<Button
+											onClick={addPhotos}
+											type="button"
+											type="button"
+											color="primary"
+											variant="contained"
+											classes={{
+												label: 'transform-none',
+											}}
+										>
+											Save New Images
+										</Button>
+									</Box>
+								</Box>
+							</RowHOC>
+							<Divider />
+							<RowHOC heading="Exsting Floorplans" center={true}>
+								<Grid container spacing={2}>
+									{values.floorPlans.map((c) => (
+										<Grid item xs={12} lg={3}>
+											<Box
+												className={classes.imageWrapper}
+											>
+												<img
+													src={
+														c.image
+															? `/assets/projects/${c.image}`
+															: require('../../assets/no-image.jpg')
+													}
+													alt="project"
+													srcset=""
+													className={classes.image}
+												/>
+											</Box>
+											<Button
+												variant="outlined"
+												color="secondary"
+												classes={{
+													label: 'transform-none',
+												}}
+												size="small"
+												className={classes.removeButton}
+												onClick={handleRemovefloorPlanImage(
+													c
+												)}
+											>
+												Remove
+											</Button>
+										</Grid>
+									))}
+								</Grid>
+							</RowHOC>
+							<RowHOC heading="Add New Floor Plans" center={true}>
+								<Box p="0.8rem">
+									<Grid container spacing={3}>
+										{floorPlans.map((c, i) => (
+											<Grid key={c.id} item xs={6} lg={3}>
+												<Box
+													className={
+														classes.imageWrapper
+													}
+												>
+													<img
+														src={
+															c.image
+																? URL.createObjectURL(
+																		c.image
+																  )
+																: require('../../assets/no-image.jpg')
+														}
+														alt="project"
+														srcset=""
+														className={
+															classes.image
+														}
+													/>
+												</Box>
+												<input
+													type="text"
+													onChange={handleFloorLabel(
+														c
+													)}
+												/>
+												<input
+													type="file"
+													onChange={handleFloorPlanImage(
+														c
+													)}
+													id={`f-image-${c.id}`}
+													className={classes.input}
+												/>
+												<label
+													htmlFor={`f-image-${c.id}`}
+												>
+													Upload
+												</label>
+											</Grid>
+										))}
+									</Grid>
+									<Box mt="2rem">
+										<button
+											onClick={addMoreFloorPlan}
+											type="button"
+										>
+											Add More Image
+										</button>
+									</Box>
+									<Box mt="2rem">
+										<Button
+											onClick={uploadToServer}
+											type="button"
+											color="primary"
+											variant="contained"
+											classes={{
+												label: 'transform-none',
+											}}
+										>
+											Save New Images
+										</Button>
+									</Box>
+								</Box>
 							</RowHOC>
 							<Box pt="1rem" pb="1rem">
 								<Divider />
 							</Box>
-							<RowHOC heading="Update images" center>
-								<Grid container spacing={2}>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													images.image1
-														? URL.createObjectURL(
-																images.image1
-														  )
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										<input
-											type="file"
-											name="image1"
-											onChange={handleImage}
-											id="pimage1"
-											className={classes.input}
-										/>
-										<label
-											htmlFor="pimage1"
-											className={classes.label}
-										>
-											Image1
-										</label>
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													images.image2
-														? URL.createObjectURL(
-																images.image2
-														  )
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										<input
-											type="file"
-											name="image2"
-											onChange={handleImage}
-											id="pimage2"
-											className={classes.input}
-										/>
-										<label
-											htmlFor="pimage2"
-											className={classes.label}
-										>
-											Image2
-										</label>
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													images.image3
-														? URL.createObjectURL(
-																images.image3
-														  )
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										<input
-											type="file"
-											name="image3"
-											onChange={handleImage}
-											id="pimage3"
-											className={classes.input}
-										/>
-										<label
-											htmlFor="pimage3"
-											className={classes.label}
-										>
-											Image3
-										</label>
-									</Grid>
-									<Grid item xs={12} lg={3}>
-										<Box className={classes.imageWrapper}>
-											<img
-												src={
-													images.image4
-														? URL.createObjectURL(
-																images.image4
-														  )
-														: require('../../assets/no-image.jpg')
-												}
-												alt="project"
-												srcset=""
-												className={classes.image}
-											/>
-										</Box>
-										<input
-											type="file"
-											name="image4"
-											id="pimage4"
-											onChange={handleImage}
-											className={classes.input}
-										/>
-										<label
-											htmlFor="pimage4"
-											className={classes.label}
-										>
-											Image4
-										</label>
-									</Grid>
-								</Grid>
-							</RowHOC>
 							<Box display="flex" justifyContent="flex-end">
 								<Button
 									type="submit"
@@ -823,7 +779,8 @@ const mapStateToProps = createStructuredSelector({
 	amenities: selectAmenities,
 	furnishes: selectFurnishes,
 	resourcesLoading,
-	updateProjectPropertyDetailsLoading: selectUpdateProjectPropertyDetailsLoading,
+	updateProjectPropertyDetailsLoading:
+		selectUpdateProjectPropertyDetailsLoading,
 	removeFloorplanLoading: selectremovePropertyFloorplanLoading,
 });
 
