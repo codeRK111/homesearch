@@ -519,6 +519,23 @@ const ProjectInfo = ({
 									disabled={true}
 								/>
 							</Box>
+							<Box
+								display="flex"
+								justifyContent="flex-end"
+								mt="1rem"
+							>
+								<Button
+									type="submit"
+									color="primary"
+									variant="contained"
+									classes={{
+										label: 'transform-none',
+									}}
+									size="large"
+								>
+									Update
+								</Button>
+							</Box>
 							<FormHeader text="Images" />
 							<RowHOC heading="Exsting Images" center={true}>
 								<Grid container spacing={2}>
@@ -727,24 +744,6 @@ const ProjectInfo = ({
 							</RowHOC>
 							<Box pt="1rem" pb="1rem">
 								<Divider />
-							</Box>
-
-							<Box
-								display="flex"
-								justifyContent="flex-end"
-								mt="1rem"
-							>
-								<Button
-									type="submit"
-									color="primary"
-									variant="contained"
-									classes={{
-										label: 'transform-none',
-									}}
-									size="large"
-								>
-									Update
-								</Button>
 							</Box>
 						</Form>
 					)}

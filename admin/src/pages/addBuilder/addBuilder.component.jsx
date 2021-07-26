@@ -30,18 +30,35 @@ import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.componen
 import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
 import RowSelect from '../../components/rowSelect/rowSelect.component';
 import RowTextField from '../../components/rowTextField/rowTextField.component';
-import { addBuilder } from '../../redux/builder/builder.action';
 import { selectAddBuilderLoading as addBuilderLoading } from '../../redux/builder/builder.selector';
+import { apiUrl } from '../../utils/render.utils';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
 import { selectCurrentUser } from '../../redux/user/user.selector';
+import { setSnackbar } from '../../redux/ui/ui.actions';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
 		zIndex: theme.zIndex.drawer + 1,
 		color: '#fff',
+	},
+	image: {
+		width: '100px',
+		height: '100px',
+	},
+	input: {
+		display: 'none',
+	},
+	label: {
+		padding: '0.5rem 1.7rem',
+		border: '1px solid #cccccc',
+		width: '100%',
+		borderRadius: '5px',
+		backgroundColor: '#cccccc',
+		cursor: 'pointer',
 	},
 }));
 
@@ -52,13 +69,14 @@ const PropertySale = ({
 	cityLoading,
 	fetchCities,
 	addBuilderLoading,
-	addBuilder,
 	currentUser,
+	setSnackbar,
 }) => {
 	const history = useHistory();
+	const cancelToken = React.useRef(undefined);
 	const [cities, setCities] = React.useState([]);
+	const [loading, setLoading] = React.useState(false);
 	const [selectedState, setSelectedState] = React.useState('');
-	const [selectedCities, setSelectedCities] = React.useState([]);
 	const classes = useStyles();
 	const [progress, setProgress] = React.useState(0);
 	const [property, setProperty] = React.useState({
@@ -69,16 +87,35 @@ const PropertySale = ({
 		operatingSince: Date.now(),
 		state: '',
 		cities: [],
-		logo: '',
 		officeAddress: '',
-		image1: '',
-		image2: '',
-		image3: '',
-		image4: '',
-		image5: '',
-		image6: '',
+		totalProjects: '',
+		underConstructionProjects: '',
+		completedProjects: '',
 	});
-	const [asyncError, setAsyncError] = React.useState('');
+
+	const [photos, setPhotos] = React.useState([]);
+
+	const addMore = () => {
+		setPhotos([
+			...photos,
+			{
+				id: photos.length + 1,
+				image: null,
+			},
+		]);
+	};
+	const handleImage = (img) => (e) => {
+		const { name, files } = e.target;
+		console.log({ name });
+		setPhotos((prevState) =>
+			prevState.map((c) => {
+				if (c.id === img.id) {
+					c.image = files[0];
+				}
+				return c;
+			})
+		);
+	};
 
 	const validateFields = () => {
 		let citiesStatus =
@@ -91,41 +128,60 @@ const PropertySale = ({
 		);
 	};
 
-	const handleAddBuilder = (type, data) => {
-		if (type === 'success') {
-			console.log(data);
-			setAsyncError('');
-			history.push('/builders/active');
-		} else {
-			setAsyncError(data);
-		}
-	};
-
 	const onSubmit = () => {
-		let builder = {
-			developerName: property.developerName.trim(),
-			description: property.description.trim(),
-			phoneNumber: property.phoneNumber.trim(),
-			email: property.email.trim(),
-			officeAddress: property.officeAddress.trim(),
-			operatingSince: property.operatingSince,
-			cities: cities.filter((c) => c.value).map((b) => b.id),
-			image: {
-				logo: property.logo,
-				image1: property.image1,
-				image2: property.image2,
-				image3: property.image3,
-				image4: property.image4,
-				image5: property.image5,
-				image6: property.image6,
-			},
-		};
-		addBuilder(builder, handleAddBuilder);
+		cancelToken.current = axios.CancelToken.source();
+		const token = localStorage.getItem('JWT');
+		const formData = new FormData();
+		for (const key in property) {
+			if (property.hasOwnProperty(key)) {
+				if (key === 'cities') {
+					const c = cities.filter((c) => c.value).map((b) => b.id);
+					c.forEach((c) => {
+						formData.append('cities', c);
+					});
+				} else {
+					formData.append(key, property[key]);
+				}
+			}
+		}
+		const propertyImages = photos
+			.filter((c) => !!c.image)
+			.map((b) => b.image);
+		propertyImages.forEach((c) => {
+			formData.append('photos', c);
+		});
+		setLoading(true);
+		axios
+			.post(apiUrl(`/builder`, 'v2'), formData, {
+				cancelToken: cancelToken.current.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((_) => {
+				setLoading(false);
+				history.push('/builders/active');
+			})
+			.catch((error) => {
+				setLoading(false);
+				let message = '';
+				if (!!error.response) {
+					message = error.response.data.message;
+				} else {
+					message = error.message;
+				}
+				setSnackbar({
+					open: true,
+					message,
+					severity: 'error',
+				});
+				return;
+			});
 	};
 
 	const handleFetchCity = (type, data) => {
 		if (type === 'success') {
-			console.log(data);
 			setCities(data.cities.map((c) => ({ ...c, value: false })));
 		}
 	};
@@ -136,16 +192,10 @@ const PropertySale = ({
 
 	const setState = (e) => {
 		console.log(e);
-		let b = e;
-		console.log(e.target.innerText);
 		setSelectedState(e.target.innerText);
 	};
 
 	React.useEffect(() => {
-		console.log({
-			selectedState,
-			role: currentUser.role,
-		});
 		if (selectedState && currentUser.type === 'super-admin') {
 			fetchCities(selectedState, handleFetchCity);
 		} else {
@@ -198,57 +248,15 @@ const PropertySale = ({
 		}
 	}, [addBuilderLoading]);
 
-	const imageCreater = (arr) => {
-		return arr.map((c) => (
-			<Grid item xs={12} md={3} lg={2} key={c}>
-				<Box
-					display="flex"
-					flexDirection="column"
-					justifyContent="center"
-					alignItems="center"
-				>
-					{/* <p>{values[`image${c}`]}</p> */}
-					<div className="image-wrapper">
-						<img
-							src={
-								!property[`image${c}`]
-									? require('../../assets/no-image.jpg')
-									: URL.createObjectURL(property[`image${c}`])
-							}
-							alt=""
-							srcset=""
-							className="image"
-						/>
-					</div>
-					<input
-						accept="image/*"
-						className="input"
-						id={`contained-button-file-${c}`}
-						multiple
-						type="file"
-						onChange={(event) => {
-							setProperty((prevState) => ({
-								...prevState,
-								[`image${c}`]: event.currentTarget.files[0],
-							}));
-						}}
-					/>
-					<label htmlFor={`contained-button-file-${c}`}>
-						<Button
-							variant="contained"
-							color="default"
-							component="span"
-							startIcon={<CloudUploadIcon />}
-							size="small"
-							fullWidth
-						>
-							Upload
-						</Button>
-					</label>
-				</Box>
-			</Grid>
-		));
-	};
+	React.useEffect(() => {
+		return () => {
+			if (typeof cancelToken.current != typeof undefined) {
+				cancelToken.current.cancel(
+					'Operation canceled due to new request'
+				);
+			}
+		};
+	}, []);
 
 	const StateNode = RenderByRole({
 		'super-admin': (
@@ -340,7 +348,7 @@ const PropertySale = ({
 	});
 	return (
 		<Box p="1rem">
-			{addBuilderLoading && (
+			{loading && (
 				<Box
 					color="white"
 					position="fixed"
@@ -360,7 +368,6 @@ const PropertySale = ({
 				Creating a new builder
 			</Backdrop> */}
 			<Paper>
-				<p className="color-red">{asyncError}</p>
 				<Box p="1rem">
 					<RowTextField
 						heading="Developer Name"
@@ -446,6 +453,24 @@ const PropertySale = ({
 							}))
 						}
 					/>
+					<RowTextField
+						heading="Total Projects"
+						name="totalProjects"
+						onChange={handleChange}
+						label="Enter total projects"
+					/>
+					<RowTextField
+						heading="Ongoing Projects"
+						name="underConstructionProjects"
+						onChange={handleChange}
+						label="Enter ongoing projects"
+					/>
+					<RowTextField
+						heading="Completed Projects"
+						name="completedProjects"
+						onChange={handleChange}
+						label="Enter completed projects"
+					/>
 					<FormHeader text="Logo & Images" />
 					<RowHOC heading="Logo">
 						<Box
@@ -501,9 +526,43 @@ const PropertySale = ({
 							Images
 						</Grid>
 					</Box>
-					<Grid container spacing={2}>
-						{imageCreater(Array.of(1, 2, 3, 4, 5, 6))}
-					</Grid>
+					<Box p="0.8rem">
+						<Grid container spacing={3}>
+							{photos.map((c, i) => (
+								<Grid key={c.id} item xs={6} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												c.image
+													? URL.createObjectURL(
+															c.image
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										onChange={handleImage(c)}
+										id={`image-${c.id}`}
+										className={classes.input}
+									/>
+									<label
+										htmlFor={`image-${c.id}`}
+										className={classes.label}
+									>
+										Upload
+									</label>
+								</Grid>
+							))}
+						</Grid>
+						<Box mt="2rem">
+							<button onClick={addMore}>Add More Image</button>
+						</Box>
+					</Box>
 					<Box mt="1rem">
 						<Button
 							type="submit"
@@ -536,8 +595,8 @@ const mapDispatchToProps = (dispatch) => ({
 	fetchStatesStart: () => dispatch(fetchAllStatesStart()),
 	fetchCities: (state, callback) =>
 		dispatch(fetchCities({ state, callback })),
-	addBuilder: (builder, callback) =>
-		dispatch(addBuilder({ builder, callback })),
+
+	setSnackbar: (config) => dispatch(setSnackbar(config)),
 });
 
 PropertySale.propTypes = {

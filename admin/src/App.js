@@ -43,6 +43,7 @@ import LocationsPage from './pages/getLocations/getLocations.componet';
 import LogIn from './pages/login/login.component';
 import ManageTask from './pages/manageTask/manageTask.page';
 import ManageTaskProperty from './pages/manageTaskProperty/manageTask.page';
+import MuiAlert from '@material-ui/lab/Alert';
 import ProjectAdvertisement from './pages/projectAdvertisement/projectAdvertisement.page';
 import ProjectPage from './pages/projects/projects.component';
 import PropertyAdvertisement from './pages/propertyAdvertisement/propertyAdvertisement.page';
@@ -53,12 +54,17 @@ import Query from './pages/queries/queries.component';
 import QueryConversation from './pages/queries/conversationPage';
 import React from 'react';
 import RequestsPage from './pages/requestPhotosPage/requestPhotos.page';
+import Snackbar from '@material-ui/core/Snackbar';
 import TypeHOC from './components/hoc/hocForAdminTYpe.component';
 import TypeProtected from './components/typeProtected/typeProtected.component';
 import Users from './pages/users/users.component';
 import ViewCitiesPage from './pages/getCities/getCities.componet';
 import WhQueries from './pages/whQueries/whQueries.component';
 import Workspace from './pages/workspace/workspace.page';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { setSnackbar } from './redux/ui/ui.actions';
+import { snackbarDetails } from './redux/ui/ui.selectors';
 
 // components
 
@@ -123,10 +129,30 @@ const EditProjectPageWithDrawer = Drawer(EditProjectPage);
 // import { Switch, Route, Redirect } from "react-router-dom";
 // import { connect } from "react-redux";
 // import { createStructuredSelector } from "reselect";
+function Alert(props) {
+	return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+function App({ setSnackbar, snackbarDetails, ...props }) {
+	const handleClose = () => {
+		setSnackbar({
+			open: false,
+		});
+	};
 
-function App(props) {
 	return (
 		<div>
+			<Snackbar
+				open={snackbarDetails.open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+			>
+				<Alert
+					onClose={handleClose}
+					severity={snackbarDetails.severity}
+				>
+					{snackbarDetails.message}
+				</Alert>
+			</Snackbar>
 			<Switch>
 				<Route
 					exact
@@ -815,4 +841,12 @@ function App(props) {
 	);
 }
 
-export default App;
+const mapStateToProps = createStructuredSelector({
+	snackbarDetails,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setSnackbar: (config) => dispatch(setSnackbar(config)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

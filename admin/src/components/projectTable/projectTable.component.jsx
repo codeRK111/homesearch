@@ -2,6 +2,7 @@ import {
 	selectFetchProjectsLoading as fetchProjectsLoading,
 	selectProjects,
 } from '../../redux/project/project.selector';
+import { renderBoolean, renderPropertyTypes } from '../../utils/render.utils';
 
 import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
@@ -20,7 +21,6 @@ import { createStructuredSelector } from 'reselect';
 import { fetchProjects } from '../../redux/project/project.action';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
-import { renderBoolean } from '../../utils/render.utils';
 import renderByRole from '../roleRender/roleRender.component';
 import { withRouter } from 'react-router-dom';
 
@@ -216,9 +216,7 @@ function Orders({
 							<TableCell style={{ color: '#ffffff' }}>
 								Title
 							</TableCell>
-							<TableCell style={{ color: '#ffffff' }}>
-								Description
-							</TableCell>
+
 							<TableCell style={{ color: '#ffffff' }}>
 								Type
 							</TableCell>
@@ -248,8 +246,9 @@ function Orders({
 							<TableRow key={i}>
 								<TableCell>{i + 1}</TableCell>
 								<TableCell>{c.title}</TableCell>
-								<TableCell>{c.description}</TableCell>
-								<TableCell>{c.projectType}</TableCell>
+								<TableCell>
+									{renderPropertyTypes(c.projectType)}
+								</TableCell>
 								<TableCell>{c.complitionStatus}</TableCell>
 								<TableCell>{c.city.name}</TableCell>
 								<TableCell>{c.location.name}</TableCell>

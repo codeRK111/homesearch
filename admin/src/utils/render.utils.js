@@ -14,3 +14,21 @@ export const apiUrl = (url, version = null) => {
 
 export const capitalizeFirstLetter = (string) =>
 	string.charAt(0).toUpperCase() + string.slice(1);
+
+export const renderPropertyTypes = (type) => {
+	switch (type) {
+		case 'independenthouse':
+			return 'Villa';
+		case 'flat':
+			return 'Apartment';
+		case 'land':
+			return 'Land';
+		case 'hostel':
+			return 'Hostel';
+		case 'pg':
+			return 'PG';
+
+		default:
+			return type;
+	}
+};

@@ -503,6 +503,7 @@ const SearchPage = ({
 									<OwnerCard
 										owner={asyncState.property.userId}
 										property={asyncState.property}
+										type="property"
 									/>
 								</Box>
 							</Grid>

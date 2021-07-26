@@ -45,6 +45,11 @@ const propertyQuerySchema = new Schema(
 			ref: 'User',
 			default: null,
 		},
+		builder: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Builder',
+			default: null,
+		},
 		user: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
@@ -67,6 +72,13 @@ const propertyQuerySchema = new Schema(
 				values: ['property', 'project', 'projectproperty'],
 			},
 			default: 'property',
+		},
+		queryType: {
+			type: String,
+			enum: {
+				values: ['number', 'message', 'whatsapp'],
+			},
+			default: 'number',
 		},
 		verified: {
 			type: Boolean,
@@ -94,11 +106,15 @@ const propertyQuerySchema = new Schema(
 propertyQuerySchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'property',
-		select: 'id title',
+		select: 'id title for',
 	})
 		.populate({
 			path: 'owner',
 			select: 'id name ',
+		})
+		.populate({
+			path: 'builder',
+			select: 'id developerName ',
 		})
 		.populate({
 			path: 'user',

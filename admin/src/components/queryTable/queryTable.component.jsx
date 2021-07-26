@@ -3,6 +3,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 import DeleteAlert from '../deleteAlert/deleteAlert.component';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ForumIcon from '@material-ui/icons/Forum';
 import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -20,7 +21,7 @@ import { deleteQuery } from '../../redux/query/query.actions';
 import moment from 'moment';
 import { selectDeleteQueryLoading } from '../../redux/query/query.selector';
 import { useHistory } from 'react-router-dom';
-import ForumIcon from '@material-ui/icons/Forum';
+
 // import EditIcon from '@material-ui/icons/Edit';
 
 export const parseDate = (date) => {
@@ -108,7 +109,8 @@ function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
 	const redirectUrl = (data) => {
 		switch (data.type) {
 			case 'property':
-				return `/properties/editProperties/${data.property.id}`;
+				const u = data.property.for === 'rent' ? '' : 'Sale';
+				return `/properties/editProperties${u}/${data.property.id}`;
 			case 'project':
 				return `/edit-projects/${data.project.id}`;
 			case 'projectproperty':
@@ -140,7 +142,7 @@ function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
 							<TableRow>
 								<StyledTableCell>SL Num.</StyledTableCell>
 								<StyledTableCell>Property</StyledTableCell>
-								<StyledTableCell>Message</StyledTableCell>
+								<StyledTableCell>Query For</StyledTableCell>
 								<StyledTableCell>User</StyledTableCell>
 								<StyledTableCell>Number</StyledTableCell>
 								<StyledTableCell>Email</StyledTableCell>
@@ -159,7 +161,7 @@ function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
 										{renderTitle(row)}
 									</StyledTableCell>
 									<StyledTableCell>
-										{row.message}
+										{row.queryType}
 									</StyledTableCell>
 									<StyledTableCell>
 										{row.userName}
@@ -187,7 +189,7 @@ function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
 													<VisibilityIcon size="small" />
 												</Box>
 											</Tooltip>
-											<Tooltip title="Conversations">
+											{/* <Tooltip title="Conversations">
 												<Box
 													className="pointer"
 													onClick={redirectToQueryConvo(
@@ -196,7 +198,7 @@ function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
 												>
 													<ForumIcon size="small" />
 												</Box>
-											</Tooltip>
+											</Tooltip> */}
 
 											<Tooltip title="Delete">
 												<Box

@@ -119,9 +119,7 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 								<MenuItem onClick={goToProfile}>
 									Profile
 								</MenuItem>
-								<MenuItem onClick={handleClose} disabled>
-									My account
-								</MenuItem>
+
 								<MenuItem onClick={onLogOut}>Logout</MenuItem>
 							</Menu>
 						</div>

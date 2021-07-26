@@ -1,48 +1,49 @@
-import React from 'react';
-import RowTextField from '../../components/rowTextField/rowTextField.component';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
-import FormHeader from '../../components/formHeader/formHeader.component';
-import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
 import {
 	Box,
 	Button,
+	Checkbox,
+	FormControl,
+	FormControlLabel,
 	Grid,
 	Paper,
 	Radio,
 	RadioGroup,
-	FormControlLabel,
-	FormControl,
-	Checkbox,
 } from '@material-ui/core';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
 import {
 	selectAddBuilderLoading as addBuilderLoading,
 	selectFetchBuilderInfoLoading as fetchBuilderInfoLoading,
 	selectUpdateBuilderLoading as updateBuilderLoading,
 } from '../../redux/builder/builder.selector';
 import {
+	selectCityLoading as cityLoading,
 	selectAllStates,
 	selectLoading as stateLoading,
-	selectCityLoading as cityLoading,
 } from '../../redux/city/city.selector';
 import {
 	fetchAllStatesStart,
 	fetchCitiesStart as fetchCities,
 } from '../../redux/city/city.actions';
 import {
-	updateBuilder,
 	fetchBuilderInfo,
+	updateBuilder,
 } from '../../redux/builder/builder.action';
-import { addBuilder } from '../../redux/builder/builder.action';
+
+import Backdrop from '@material-ui/core/Backdrop';
+import Chip from '../../components/chip/chip.component';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import FormHeader from '../../components/formHeader/formHeader.component';
+import ProgressBar from '../../components/asyncProgressBar/asyncProgressBar.component';
 import PropTypes from 'prop-types';
+import React from 'react';
+import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
+import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import RowTextField from '../../components/rowTextField/rowTextField.component';
+import { addBuilder } from '../../redux/builder/builder.action';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import Backdrop from '@material-ui/core/Backdrop';
-import ProgressBar from '../../components/asyncProgressBar/asyncProgressBar.component';
-import Chip from '../../components/chip/chip.component';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -95,6 +96,7 @@ const PropertySale = ({
 		operatingSince: Date.now(),
 		state: '',
 		cities: [],
+		photos: [],
 		officeAddress: '',
 		logo: '',
 		image1: '',
@@ -244,7 +246,7 @@ const PropertySale = ({
 	}, [updateBuilderLoading]);
 
 	const imageCreater = (arr) => {
-		return arr.map((c) => (
+		return property.photos.map((c) => (
 			<Grid item xs={12} md={3} lg={2} key={c}>
 				<Box
 					display="flex"
@@ -255,45 +257,20 @@ const PropertySale = ({
 					{/* <p>{values[`image${c}`]}</p> */}
 					<div className="image-wrapper">
 						<img
-							src={
-								!property[`image${c}`] && !assets[`image${c}`]
-									? require('../../assets/no-image.jpg')
-									: assets[`image${c}`]
-									? URL.createObjectURL(assets[`image${c}`])
-									: `/assets/builders/${
-											property[`image${c}`]
-									  }`
-							}
-							alt=""
-							srcset=""
+							src={`/assets/builders/${c.image}`}
+							alt="Property"
 							className="image"
 						/>
 					</div>
-					<input
-						accept="image/*"
-						className="input"
-						id={`contained-button-file-${c}`}
-						multiple
-						type="file"
-						onChange={(event) => {
-							handleAssets((prevState) => ({
-								...prevState,
-								[`image${c}`]: event.currentTarget.files[0],
-							}));
-						}}
-					/>
-					<label htmlFor={`contained-button-file-${c}`}>
-						<Button
-							variant="contained"
-							color="default"
-							component="span"
-							startIcon={<CloudUploadIcon />}
-							size="small"
-							fullWidth
-						>
-							Upload
-						</Button>
-					</label>
+					<Button
+						variant="contained"
+						color="secondary"
+						component="span"
+						size="small"
+						fullWidth
+					>
+						Remove
+					</Button>
 				</Box>
 			</Grid>
 		));

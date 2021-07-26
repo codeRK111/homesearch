@@ -304,5 +304,10 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 		height: '150px',
 	},
+	queriesWrapper: {
+		width: 400,
+		maxHeight: 400,
+		overflow: 'auto',
+	},
 }));
 export default useStyles;

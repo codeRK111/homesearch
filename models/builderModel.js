@@ -49,12 +49,12 @@ const builderSchema = new Schema(
 				required: [true, 'Builder must have some cities'],
 			},
 		],
-		promoters: [
-			{
-				type: String,
-				unique: true,
-			},
-		],
+		// promoters: [
+		// 	{
+		// 		type: String,
+		// 		unique: true,
+		// 	},
+		// ],
 		totalProjects: {
 			type: Number,
 			required: [true, 'Please provide total number of projects'],
@@ -77,9 +77,11 @@ const builderSchema = new Schema(
 			type: String,
 			default: null,
 		},
-		images: [
+		photos: [
 			{
-				type: String,
+				image: {
+					type: String,
+				},
 			},
 		],
 
@@ -109,7 +111,7 @@ builderSchema.pre(/^find/, function (next) {
 });
 
 builderSchema.pre('save', async function (next) {
-	this.slug = slugify(this.title, {
+	this.slug = slugify(this.developerName, {
 		replacement: '-',
 		lower: true,
 	});

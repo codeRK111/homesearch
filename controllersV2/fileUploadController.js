@@ -7,7 +7,7 @@ const sharp = require('sharp');
 
 const builderStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, path.join(__dirname, '../', 'images', 'test/'));
+		cb(null, path.join(__dirname, '../', 'images', 'builder_images/'));
 	},
 	filename: (req, file, cb) => {
 		const ext = file.mimetype.split('/')[1];
@@ -73,6 +73,7 @@ const multerFilter = (req, file, cb) => {
 
 const builder = multer({
 	fileFilter: multerFilter,
+	storage: builderStorage,
 });
 const profile = multer({
 	storage: profileStorage,
@@ -132,7 +133,7 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
 
 exports.uploadBuilderPhoto = builder.fields([
 	{ name: 'logo', maxCount: 1 },
-	{ name: 'images', maxCount: 30 },
+	{ name: 'photos', maxCount: 30 },
 ]);
 exports.uploadPropertiesPhoto = properties.array('images');
 exports.uploadProjectPhotos = projects.array('images');

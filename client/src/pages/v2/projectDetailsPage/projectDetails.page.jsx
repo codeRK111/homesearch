@@ -9,6 +9,7 @@ import LandHeader from '../../../components/v2/searchCard2/project/landDetails.c
 import LandUnit from '../../../components/v2/searchCard2/project/unitConfig/land.unit';
 import LegalClearance from '../propertyDetails/legalClearance.component';
 import Nav from '../../../components/v2/pageNav/nav.component';
+import SimilarProperties from '../../../components/v2/similarProperties/project.component';
 import Skeleton from '../../../components/v2/skeleton/propertyHeader.component';
 import TextSkeleton from '@material-ui/lab/Skeleton';
 import { apiUrl } from '../../../utils/render.utils';
@@ -224,6 +225,19 @@ const ProjectDetailsPage = ({
 						)}
 					</Grid>
 				</Grid>
+				{data.project && (
+					<>
+						<Box mt="2rem">
+							<h2>Similar Projects</h2>
+						</Box>
+						<SimilarProperties
+							pFor={'project'}
+							type={data.project.projectType}
+							city={data.project.city.id}
+							location={data.project.location.id}
+						/>
+					</>
+				)}
 			</div>
 		</div>
 	);

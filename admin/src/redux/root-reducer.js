@@ -9,6 +9,7 @@ import projectReducer from './project/project.reducer';
 import propertyReducer from './property/property.reducer';
 import queryReducer from './query/query.reducer';
 import sidebarReducer from './sidebar/sidebar.reducer';
+import uiReducer from './ui/ui.reducer';
 import userReducer from './user/user.reducer';
 import usersReducer from './users/users.reducer';
 
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
 	feedback: feedbackReducer,
 	kra: kraReducer,
 	kpi: kpiReducer,
+	ui: uiReducer,
 });
 
 // export default persistReducer(persistConfig, rootReducer);
