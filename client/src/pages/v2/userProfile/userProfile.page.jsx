@@ -18,6 +18,7 @@ import {
 import { capitalizeFirstLetter, parseDate } from '../../../utils/render.utils';
 
 import ApartmentIcon from '@material-ui/icons/Apartment';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import CreateIcon from '@material-ui/icons/Create';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LikedProperties from '../../../components/v2/likeProperties';
@@ -37,6 +38,7 @@ import badgeIcon from '../../../assets/icons/badge.svg';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import moment from 'moment';
 import { selectUser } from '../../../redux/auth/auth.selectors';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './userProfile.style';
@@ -281,6 +283,20 @@ const AgentPage = ({ user }) => {
 													</ListItemIcon>
 													<ListItemText
 														primary={c.phoneNumber}
+													/>
+												</ListItem>
+												<ListItem dense>
+													<ListItemIcon>
+														<CalendarTodayIcon
+															className={
+																classes.iconColor
+															}
+														/>
+													</ListItemIcon>
+													<ListItemText
+														primary={moment(
+															c.createdAt
+														).format('Do MMM')}
 													/>
 												</ListItem>
 												<ListItem dense>
