@@ -7,5 +7,9 @@ const useStyles = makeStyles((theme) => ({
 			width: '100%',
 		},
 	},
+	noSpace: {
+		margin: 0,
+		padding: 0,
+	},
 }));
 export default useStyles;

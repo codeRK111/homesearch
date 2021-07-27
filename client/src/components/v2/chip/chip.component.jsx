@@ -10,7 +10,9 @@ const Chip = ({ title, selected = false, ...otherProps }) => {
 	return (
 		<div className={classes.wrapper} {...otherProps}>
 			<span
-				className={clsx({ [globalClasses.colorSecondary]: selected })}
+				className={clsx(classes.chipText, {
+					[globalClasses.colorSecondary]: selected,
+				})}
 			>
 				{title}
 			</span>

@@ -32,3 +32,16 @@ export const renderPropertyTypes = (type) => {
 			return type;
 	}
 };
+export const renderQueryTypes = (type) => {
+	switch (type) {
+		case 'number':
+			return 'Phone Number';
+		case 'whatsapp':
+			return 'Whatsapp';
+		case 'message':
+			return 'Enquiry';
+
+		default:
+			return type;
+	}
+};

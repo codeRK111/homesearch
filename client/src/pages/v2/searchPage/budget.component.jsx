@@ -1,11 +1,6 @@
 import { Checkbox, Divider, FormControlLabel } from '@material-ui/core';
 
 import Box from '@material-ui/core/Box';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';

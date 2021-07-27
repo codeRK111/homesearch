@@ -6,11 +6,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import React from 'react';
 import RentApartment from '../../../components/v2/propertyCard/rent/flat.component';
 import RentHostel from '../../../components/v2/propertyCard/rent/hostel.component';
-import SaleApartment from '../../../components/v2/salePropertyCard/propertyCard.component';
-import SaleLand from '../../../components/v2/salePropertyCard/propertyCardLand.component';
 import SwipeableViews from 'react-swipeable-views';
 import axios from 'axios';
-import clsx from 'clsx';
 import useStyles from './swipable.style';
 
 const SimilarProperties = ({
@@ -105,7 +102,7 @@ const SimilarProperties = ({
 				});
 			}
 		})();
-	}, []);
+	}, [city, location, type]);
 
 	const onNext = () => {
 		if (index === maxIndex) {

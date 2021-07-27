@@ -3,7 +3,6 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 import DeleteAlert from '../deleteAlert/deleteAlert.component';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ForumIcon from '@material-ui/icons/Forum';
 import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -15,10 +14,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Tooltip from '@material-ui/core/Tooltip';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import { capitalizeFirstLetter } from '../../pages/addProperty/hostel.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { deleteQuery } from '../../redux/query/query.actions';
 import moment from 'moment';
+import { renderPropertyTypes } from '../../utils/render.utils';
 import { selectDeleteQueryLoading } from '../../redux/query/query.selector';
 import { useHistory } from 'react-router-dom';
 
@@ -52,7 +53,13 @@ const useStyles = makeStyles({
 	},
 });
 
-function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
+function CustomizedTables({
+	queries,
+	deleteQuery,
+	deleteLoading,
+	loading,
+	fetchQueries,
+}) {
 	const [open, setOpen] = React.useState(false);
 	const [id, setId] = React.useState(null);
 	const [allQueries, setAllQueries] = React.useState([]);
@@ -80,12 +87,12 @@ function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
 	const handleDeleteQuery = (status, data) => {
 		if (status === 'success') {
 			handleClose();
-			setAllQueries(queries.filter((c) => c.id !== data.id));
+			fetchQueries();
 		}
 	};
 
 	const onRedirect = (data) => (_) => {
-		history.push(redirectUrl(data));
+		history.push(`/query-details/${data.id}`);
 	};
 	const redirectToQueryConvo = (id) => (_) => {
 		history.push(`/queries/${id}`);
@@ -123,7 +130,7 @@ function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
 
 	return (
 		<Box>
-			{loading && queries.length === 0 ? (
+			{loading ? (
 				<Skeleton variant="rect" width={'100%'} height={'30vh'} />
 			) : (
 				<TableContainer component={Paper}>
@@ -142,6 +149,8 @@ function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
 							<TableRow>
 								<StyledTableCell>SL Num.</StyledTableCell>
 								<StyledTableCell>Property</StyledTableCell>
+								<StyledTableCell>Property For</StyledTableCell>
+								<StyledTableCell>Property Type</StyledTableCell>
 								<StyledTableCell>Query For</StyledTableCell>
 								<StyledTableCell>User</StyledTableCell>
 								<StyledTableCell>Number</StyledTableCell>
@@ -159,6 +168,12 @@ function CustomizedTables({ queries, deleteQuery, deleteLoading, loading }) {
 									<StyledTableCell>{i + 1}</StyledTableCell>
 									<StyledTableCell>
 										{renderTitle(row)}
+									</StyledTableCell>
+									<StyledTableCell>
+										{capitalizeFirstLetter(row.pFor)}
+									</StyledTableCell>
+									<StyledTableCell>
+										{renderPropertyTypes(row.pType)}
 									</StyledTableCell>
 									<StyledTableCell>
 										{row.queryType}

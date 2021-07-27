@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
 
+import Footer from './components/footer/footer.component';
 import { LoadingAnimationNormal } from './components/v2/loadingAnimation';
 import LogIn from './components/logInDialog/logInDialog.component';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -142,6 +143,7 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser }) {
 						render={(props) => <NotFound {...props} />}
 					/>
 				</Switch>
+				<Footer />
 			</BrowserRouter>
 		</Suspense>
 	);

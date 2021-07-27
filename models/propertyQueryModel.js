@@ -73,12 +73,40 @@ const propertyQuerySchema = new Schema(
 			},
 			default: 'property',
 		},
+		pFor: {
+			type: String,
+			enum: {
+				values: ['rent', 'sale', 'project', null],
+			},
+			default: null,
+		},
+		pType: {
+			type: String,
+			enum: {
+				values: [
+					'flat',
+					'land',
+					'independenthouse',
+					'hostel',
+					'pg',
+					null,
+				],
+			},
+			default: null,
+		},
 		queryType: {
 			type: String,
 			enum: {
 				values: ['number', 'message', 'whatsapp'],
 			},
 			default: 'number',
+		},
+		via: {
+			type: String,
+			enum: {
+				values: ['app', 'web'],
+			},
+			default: 'web',
 		},
 		verified: {
 			type: Boolean,
@@ -110,11 +138,11 @@ propertyQuerySchema.pre(/^find/, function (next) {
 	})
 		.populate({
 			path: 'owner',
-			select: 'id name ',
+			select: 'id name email number',
 		})
 		.populate({
 			path: 'builder',
-			select: 'id developerName ',
+			select: 'id developerName email phoneNumber',
 		})
 		.populate({
 			path: 'user',

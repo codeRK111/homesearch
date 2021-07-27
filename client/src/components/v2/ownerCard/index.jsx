@@ -32,6 +32,8 @@ const OwnerCard = ({
 	setSnackbar,
 	property,
 	type,
+	pFor = null,
+	pType = null,
 }) => {
 	const classes = useStyles();
 	const cancelToken = React.useRef(undefined);
@@ -40,10 +42,7 @@ const OwnerCard = ({
 		display: false,
 		number: '',
 	});
-	const [emailInfo, setEmailInfo] = useState({
-		display: false,
-		email: '',
-	});
+
 	const [loading, setLoading] = useState({
 		call: false,
 		message: false,
@@ -63,6 +62,8 @@ const OwnerCard = ({
 				user: user.id,
 				owner: property.userId._id,
 				queryType,
+				pFor,
+				pType,
 			};
 
 			cancelToken.current = axios.CancelToken.source();

@@ -1,19 +1,9 @@
-import {
-	Box,
-	Chip,
-	Grid,
-	Menu,
-	MenuItem,
-	Slide,
-	Typography,
-} from '@material-ui/core';
+import { Box, Grid, Slide, Typography } from '@material-ui/core';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Plan from './plan.component';
-import PlanSelect from '../planSelect/planSelect.component';
 import React from 'react';
-import useGlobalStyle from '../../../common.style';
 import { useHistory } from 'react-router-dom';
 import useStyles from './plans.style';
 
@@ -23,7 +13,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function AlertDialogSlide({ open, handleClose }) {
 	const classes = useStyles();
-	const gClasses = useGlobalStyle();
 
 	const [plan, setPlan] = React.useState('paid');
 	const history = useHistory();

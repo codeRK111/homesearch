@@ -1,14 +1,9 @@
 import '../extra.css';
 
 import { Box, Grid } from '@material-ui/core';
-import {
-	renderBool,
-	renderToilets,
-	shortLength,
-} from '../../../../utils/render.utils';
+import { renderBool, renderToilets } from '../../../../utils/render.utils';
 
 import ImageCarousel from '../../imageCarousel';
-import { Link } from 'react-router-dom';
 import PropertyTypeChip from '../../chip/propertyType.component';
 import React from 'react';
 import SwipablePhotos from '../../swipableViews';

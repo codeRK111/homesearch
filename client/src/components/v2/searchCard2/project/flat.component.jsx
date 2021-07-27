@@ -1,15 +1,12 @@
 import '../extra.css';
 
 import { Box, Grid } from '@material-ui/core';
-import {
-	capitalizeFirstLetter,
-	shortLength,
-} from '../../../../utils/render.utils';
 
 import Apartment from '../../searchResultCardNewProjectApartment/searchResultCard.component';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import PropertyTypeChip from '../../chip/propertyType.component';
 import React from 'react';
+import { capitalizeFirstLetter } from '../../../../utils/render.utils';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
 import location from '../../../../assets/icons/location2.svg';

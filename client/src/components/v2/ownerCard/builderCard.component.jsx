@@ -1,4 +1,4 @@
-import { AppBar, Avatar, Box } from '@material-ui/core';
+import { AppBar, Avatar, Box, CircularProgress } from '@material-ui/core';
 import React, { useState } from 'react';
 import {
 	selectAuthenticated,
@@ -6,6 +6,8 @@ import {
 } from '../../../redux/auth/auth.selectors';
 import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
 
+import { apiUrl } from '../../../utils/render.utils';
+import axios from 'axios';
 import badgeIcon from '../../../assets/icons/badge.svg';
 import callIcon from '../../../assets/icons/call.svg';
 import clsx from 'clsx';
@@ -19,6 +21,12 @@ import whatsappDefaultIcon from '../../../assets/icons/whatsapp.svg';
 const defaultImage =
 	'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100';
 
+const renderKey = {
+	property: 'property',
+	project: 'project',
+	projectproperty: 'projectProperty',
+};
+
 const OwnerCard = ({
 	owner,
 	isAuthenticated,
@@ -26,50 +34,127 @@ const OwnerCard = ({
 	user,
 	setSnackbar,
 	property,
+	type,
+	pFor = null,
+	pType = null,
+	builderId = null,
 }) => {
 	const builderImage = owner.logo
 		? `/assets/builder/${owner.logo}`
 		: defaultImage;
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
+	const cancelToken = React.useRef(undefined);
 	const [numberInfo, setNumberInfo] = useState({
 		display: false,
 		number: '',
 	});
-	const [emailInfo, setEmailInfo] = useState({
-		display: false,
-		email: '',
+
+	const [loading, setLoading] = useState({
+		call: false,
+		message: false,
+		whatspp: false,
 	});
+	const [error, setError] = useState(null);
+	const [success, setSuccess] = useState(null);
+
+	const onClick = (queryType) => {
+		return new Promise((resolve, reject) => {
+			const data = {
+				userName: user.name,
+				phoneNumber: user.number,
+				email: user.email,
+				type,
+				[renderKey[type]]: property._id,
+				user: user.id,
+				builder: builderId ? builderId : property.builder._id,
+				queryType,
+				pFor,
+				pType,
+			};
+
+			cancelToken.current = axios.CancelToken.source();
+			const token = localStorage.getItem('JWT_CLIENT');
+			axios
+				.post(apiUrl(`/query`, 2), data, {
+					cancelToken: cancelToken.current.token,
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				})
+				.then((resp) => {
+					console.log(resp);
+					resolve(resp.data);
+				})
+				.catch((error) => {
+					let message = '';
+					if (!!error.response) {
+						message = error.response.data.message;
+					} else {
+						message = error.message;
+					}
+					console.log(message);
+					reject(message);
+				});
+		});
+	};
 
 	const onCallClick = () => {
 		if (!isAuthenticated) {
 			toggleLoginPopup(true);
 		} else {
-			// if (user.mobileStatus === 'public') {
-			// 	setNumberInfo({
-			// 		display: true,
-			// 		number: owner.number,
-			// 	});
-			// } else {
-			// 	setNumberInfo({
-			// 		display: true,
-			// 		number: 'Number is private',
-			// 	});
-			// }
-			setNumberInfo({
-				display: true,
-				number: owner.number,
-			});
+			setLoading((prevState) => ({
+				...prevState,
+				call: true,
+			}));
+			onClick('number')
+				.then((resp) => {
+					setLoading((prevState) => ({
+						...prevState,
+						call: false,
+					}));
+					setNumberInfo({
+						display: true,
+						number: owner.phoneNumber,
+					});
+					setError(null);
+				})
+				.catch((err) => {
+					setNumberInfo({
+						display: true,
+						number: owner.phoneNumber,
+					});
+					setError(err);
+				});
 		}
 	};
 	const onEmailClick = () => {
 		if (!isAuthenticated) {
 			toggleLoginPopup(true);
 		} else {
-			setEmailInfo({
-				display: true,
-				email: owner.email ? owner.email : 'Not Provided',
-			});
+			setLoading((prevState) => ({
+				...prevState,
+				message: true,
+			}));
+			onClick('message')
+				.then((resp) => {
+					setLoading((prevState) => ({
+						...prevState,
+						message: false,
+					}));
+
+					setSuccess('Your information has been sent to the owner');
+					setError(null);
+				})
+				.catch((err) => {
+					setLoading((prevState) => ({
+						...prevState,
+						message: false,
+					}));
+					setSuccess(null);
+					setError(err);
+				});
 		}
 	};
 
@@ -77,12 +162,53 @@ const OwnerCard = ({
 		if (!isAuthenticated) {
 			toggleLoginPopup(true);
 		} else {
-			const text = `Hello, I am a homesearch user and I am interested for ${property.title}`;
-			window.location.href = `https://wa.me/${
-				owner.phoneNumber
-			}?text=${encodeURI(text)}`;
+			setLoading((prevState) => ({
+				...prevState,
+				whatspp: true,
+			}));
+			onClick('whatsapp')
+				.then((resp) => {
+					setLoading((prevState) => ({
+						...prevState,
+						whatspp: false,
+					}));
+
+					setSuccess(null);
+					setError(null);
+					const text = `Hello, I am a homesearch user and I am interested for ${property.title}`;
+					window.location.href = `https://wa.me/91${
+						owner.phoneNumber
+					}?text=${encodeURI(text)}`;
+				})
+				.catch((err) => {
+					setLoading((prevState) => ({
+						...prevState,
+						whatspp: false,
+					}));
+					setSuccess(null);
+					setError(err);
+				});
 		}
 	};
+
+	React.useEffect(() => {
+		if (success) {
+			setSnackbar({
+				open: true,
+				message: success,
+				severity: 'success',
+			});
+		}
+	}, [success, setSnackbar]);
+	React.useEffect(() => {
+		if (error) {
+			setSnackbar({
+				open: true,
+				message: error,
+				severity: 'error',
+			});
+		}
+	}, [error, setSnackbar]);
 	return (
 		<AppBar position="sticky" color="transparent" elevation={0}>
 			<div className={classes.rightWrapper}>
@@ -143,38 +269,63 @@ const OwnerCard = ({
 								)}
 							>
 								<Box className={classes.borderRight}>
-									<img
-										src={callIcon}
-										alt="Call"
-										className={clsx(
-											classes.ownerIcon,
-											globalClasses.pointer
-										)}
-										onClick={onCallClick}
-									/>
+									{loading.call ? (
+										<CircularProgress
+											color="primary"
+											size={15}
+										/>
+									) : numberInfo.display ? (
+										<span className={globalClasses.xsText}>
+											{numberInfo.number}
+										</span>
+									) : (
+										<img
+											src={callIcon}
+											alt="Call"
+											className={clsx(
+												classes.ownerIcon,
+												globalClasses.pointer
+											)}
+											onClick={onCallClick}
+										/>
+									)}
 								</Box>
 								<Box className={classes.borderRight}>
-									<img
-										src={commentIcon}
-										alt="Comment"
-										className={clsx(
-											classes.ownerIcon,
-											globalClasses.pointer
-										)}
-										onClick={onEmailClick}
-									/>
+									{loading.message ? (
+										<CircularProgress
+											color="primary"
+											size={15}
+										/>
+									) : (
+										<img
+											src={commentIcon}
+											alt="Comment"
+											className={clsx(
+												classes.ownerIcon,
+												globalClasses.pointer
+											)}
+											onClick={onEmailClick}
+										/>
+									)}
 								</Box>
 								<Box>
-									<img
-										src={whatsappDefaultIcon}
-										alt="Whatsapp"
-										className={clsx(
-											classes.ownerIcon,
-											classes.iconPadding,
-											globalClasses.pointer
-										)}
-										onClick={onWhatsppClick}
-									/>
+									{loading.whatspp ? (
+										<CircularProgress
+											color="primary"
+											size={15}
+										/>
+									) : (
+										<img
+											src={whatsappDefaultIcon}
+											alt="Whatsapp"
+											className={clsx(
+												classes.ownerIcon,
+												classes.iconPadding,
+												globalClasses.pointer
+											)}
+											onClick={onWhatsppClick}
+										/>
+									)}
 								</Box>
 							</Box>
 						</div>

@@ -1,5 +1,5 @@
-import '../../../node_modules/draft-js-static-toolbar-plugin/lib/plugin.css';
 import 'draft-js-static-toolbar-plugin/lib/plugin.css';
+import '../../../node_modules/draft-js-static-toolbar-plugin/lib/plugin.css';
 
 import {
 	Box,
@@ -40,11 +40,9 @@ import {
 
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { EditorState } from 'draft-js';
 import React from 'react';
 import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
-import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
 import RowSelect from '../../components/rowSelect/rowSelect.component';
 import RowTextField from '../../components/rowTextField/rowTextField.component';
 import { connect } from 'react-redux';

@@ -17,7 +17,6 @@ import clsx from 'clsx';
 import location from '../../../../assets/icons/location2.svg';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
-import tag from '../../../../assets/icons/tag2.svg';
 import tub from '../../../../assets/icons/tub.svg';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../searchCard.style';

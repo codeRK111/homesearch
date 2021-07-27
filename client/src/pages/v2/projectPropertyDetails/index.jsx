@@ -365,6 +365,10 @@ const ProjectPropertyDetailsPage = ({
 										<BuilderCard
 											owner={data.project.builder}
 											property={data}
+											type="projectproperty"
+											builderId={data.project.builder._id}
+											pFor="project"
+											pType={data.type}
 										/>
 									</Box>
 								)}

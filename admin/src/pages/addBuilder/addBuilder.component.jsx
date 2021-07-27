@@ -2,43 +2,39 @@ import {
 	Box,
 	Button,
 	Checkbox,
-	FormControl,
 	FormControlLabel,
 	Grid,
 	Paper,
-	Radio,
-	RadioGroup,
 } from '@material-ui/core';
-import {
-	selectCityLoading as cityLoading,
-	selectAllStates,
-	selectLoading as stateLoading,
-} from '../../redux/city/city.selector';
+import Backdrop from '@material-ui/core/Backdrop';
+import { makeStyles } from '@material-ui/core/styles';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import ProgressBar from '../../components/asyncProgressBar/asyncProgressBar.component';
+import FormHeader from '../../components/formHeader/formHeader.component';
+import RenderByRole from '../../components/roleRender/renderByRole.component';
+import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
+import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import RowTextField from '../../components/rowTextField/rowTextField.component';
+import { selectAddBuilderLoading as addBuilderLoading } from '../../redux/builder/builder.selector';
 import {
 	fetchAllStatesStart,
 	fetchCitiesStart as fetchCities,
 } from '../../redux/city/city.actions';
-
-import Backdrop from '@material-ui/core/Backdrop';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import FormHeader from '../../components/formHeader/formHeader.component';
-import ProgressBar from '../../components/asyncProgressBar/asyncProgressBar.component';
-import PropTypes from 'prop-types';
-import React from 'react';
-import RenderByRole from '../../components/roleRender/renderByRole.component';
-import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
-import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import RowTextField from '../../components/rowTextField/rowTextField.component';
-import { selectAddBuilderLoading as addBuilderLoading } from '../../redux/builder/builder.selector';
-import { apiUrl } from '../../utils/render.utils';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { makeStyles } from '@material-ui/core/styles';
-import { selectCurrentUser } from '../../redux/user/user.selector';
+import {
+	selectAllStates,
+	selectCityLoading as cityLoading,
+	selectLoading as stateLoading,
+} from '../../redux/city/city.selector';
 import { setSnackbar } from '../../redux/ui/ui.actions';
-import { useHistory } from 'react-router-dom';
+import { selectCurrentUser } from '../../redux/user/user.selector';
+import { apiUrl } from '../../utils/render.utils';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {

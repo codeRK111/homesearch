@@ -1,12 +1,23 @@
 const express = require('express');
 const queryController = require('../controllersV2/queryController');
 const authController = require('../controllers/authController');
+const adminController = require('../controllers/adminController');
 
 const router = express.Router();
 
-router
-	.route('/')
-	.get(authController.protect, queryController.getQueries)
-	.post(authController.protect, queryController.addQuery);
+// Admin
+router.post(
+	'/get-all-queries',
+	adminController.protect,
+	queryController.getQueries
+);
+router.get(
+	'/details/:id',
+	adminController.protect,
+	queryController.getQueryDetails
+);
+
+// User
+router.route('/').post(authController.protect, queryController.addQuery);
 
 module.exports = router;

@@ -1,11 +1,9 @@
 import {
 	Backdrop,
-	Box,
 	CircularProgress,
 	Grid,
 	Typography,
 } from '@material-ui/core';
-import { Form, Formik } from 'formik';
 import {
 	selectAmenities,
 	selectFurnishes,
@@ -13,7 +11,6 @@ import {
 } from '../../redux/property/property.selectors';
 
 import Amenity from '../v2/amenity/amenity.component';
-import CheckBox from '../formik/checkbox.component';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';

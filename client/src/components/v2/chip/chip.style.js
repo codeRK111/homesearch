@@ -17,5 +17,8 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.utilColor,
 		border: `1px solid ${theme.utilColor}`,
 	},
+	chipText: {
+		fontSize: '0.8rem',
+	},
 }));
 export default useStyles;

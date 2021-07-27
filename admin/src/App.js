@@ -37,7 +37,6 @@ import EditUser from './components/editUser/editUser.component';
 import ExpertQuery from './pages/queries/expertQueries.component';
 import Feedback from './pages/feedback/feedback.component';
 import HOC from './components/hoc/hoc.component';
-import HomePage from './pages/home/home.component';
 import KPIPage from './pages/kpi/index.page';
 import LocationsPage from './pages/getLocations/getLocations.componet';
 import LogIn from './pages/login/login.component';
@@ -52,6 +51,7 @@ import PropertySale from './pages/properties/propertiesSale.component';
 import Protected from './components/protected/protected.component';
 import Query from './pages/queries/queries.component';
 import QueryConversation from './pages/queries/conversationPage';
+import QueryDetailsPage from './pages/queries/queryDetails.component';
 import React from 'react';
 import RequestsPage from './pages/requestPhotosPage/requestPhotos.page';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -71,6 +71,7 @@ import { snackbarDetails } from './redux/ui/ui.selectors';
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const ManageTaskPropertyPageWithDrawer = Drawer(ManageTaskProperty);
+const QueryDetailsPageWithDrawer = Drawer(QueryDetailsPage);
 const BuilderPackagePageWithDrawer = Drawer(BuilderPackage);
 const PropertyPackagePageWithDrawer = Drawer(PropertyPackage);
 const WhQueriesPageWithDrawer = Drawer(WhQueries);
@@ -832,6 +833,16 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 								'super-admin',
 								'admin',
 							])}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/query-details/:id"
+					render={(props) => (
+						<Protected
+							component={QueryDetailsPageWithDrawer}
 							{...props}
 						/>
 					)}

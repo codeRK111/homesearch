@@ -1,12 +1,7 @@
 import { Box, Grid, Typography } from '@material-ui/core';
-import {
-	capitalizeFirstLetter,
-	renderMinAndMax,
-} from '../../../utils/render.utils';
 
-import DoneIcon from '@material-ui/icons/Done';
-import { Link } from 'react-router-dom';
 import React from 'react';
+import { renderMinAndMax } from '../../../utils/render.utils';
 import useStyles from './searchResultCard.styles';
 
 const ResultCard = ({ property, propertyItems }) => {

@@ -504,6 +504,12 @@ const SearchPage = ({
 										owner={asyncState.property.userId}
 										property={asyncState.property}
 										type="property"
+										pFor={asyncState.property.for}
+										pType={
+											asyncState.property.for === 'rent'
+												? asyncState.property.type
+												: asyncState.property.sale_type
+										}
 									/>
 								</Box>
 							</Grid>

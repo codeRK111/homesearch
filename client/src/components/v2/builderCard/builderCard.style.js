@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 		'& img': {
 			height: '70px',
+			[theme.breakpoints.down('sm')]: {
+				marginRight: '1rem',
+			},
 		},
 	},
 	numbersWrapper: {

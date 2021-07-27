@@ -10,12 +10,6 @@ import useStyles from './saleProperties.style';
 
 // import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
-
-
-
-
-
-
 const RentProperties = ({ data }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
@@ -28,16 +22,18 @@ const RentProperties = ({ data }) => {
 		<div>
 			{!!data && (
 				<div className={classes.listWrapper}>
-					{data.cities.map((c, i) => (
-						<Box className={classes.chipWrapper}>
-							<Chip
-								title={c.name}
-								key={c._id}
-								onClick={() => onClick(c._id)}
-								selected={!!selected && c._id === selected}
-							/>
-						</Box>
-					))}
+					<Grid container spacing={1}>
+						{data.cities.map((c, i) => (
+							<Grid item xs={4} md={1}>
+								<Chip
+									title={c.name}
+									key={c._id}
+									onClick={() => onClick(c._id)}
+									selected={!!selected && c._id === selected}
+								/>
+							</Grid>
+						))}
+					</Grid>
 				</div>
 			)}
 			<Box mt="3rem">

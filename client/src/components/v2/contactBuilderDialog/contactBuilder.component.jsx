@@ -1,12 +1,10 @@
 import { Form, Formik } from 'formik';
 
 import { Box } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import FormInput from '../../formik/textField.component';
 import IconButton from '@material-ui/core/IconButton';
-import MuiDialogActions from '@material-ui/core/DialogActions';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import React from 'react';
@@ -59,13 +57,6 @@ const DialogContent = withStyles((theme) => ({
 		padding: theme.spacing(2),
 	},
 }))(MuiDialogContent);
-
-const Submit = withStyles((theme) => ({
-	root: {
-		margin: 0,
-		padding: theme.spacing(1),
-	},
-}))(MuiDialogActions);
 
 export default function CustomizedDialogs({
 	open,

@@ -1,28 +1,17 @@
 import '../extra.css';
 
 import { Box, Grid } from '@material-ui/core';
-import {
-	renderBool,
-	renderLandPlotArea,
-	renderToilets,
-	shortLength,
-} from '../../../../utils/render.utils';
 
 import ImageCarousel from '../../imageCarousel';
-import { Link } from 'react-router-dom';
 import PropertyTypeChip from '../../chip/propertyType.component';
 import React from 'react';
 import SwipablePhotos from '../../swipableViews';
 import ViewFullImage from '../../viewFullImage';
-import area from '../../../../assets/icons/area.svg';
-import bed from '../../../../assets/icons/bed.svg';
-import car from '../../../../assets/icons/car.svg';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
-import location from '../../../../assets/icons/location2.svg';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
-import tub from '../../../../assets/icons/tub.svg';
+import { renderLandPlotArea } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from '../searchCard.style';

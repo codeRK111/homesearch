@@ -8,7 +8,6 @@ import {
 	shortLength,
 } from '../../../../utils/render.utils';
 
-import { Link } from 'react-router-dom';
 import React from 'react';
 import area from '../../../../assets/icons/area.svg';
 import bed from '../../../../assets/icons/bed.svg';

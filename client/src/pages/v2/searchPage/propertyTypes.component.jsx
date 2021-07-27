@@ -1,11 +1,6 @@
 import Box from '@material-ui/core/Box';
 import { Checkbox } from '@material-ui/core';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -26,16 +21,6 @@ function MenuListComposition({ currentTab, pFor, types, setTypes }) {
 	};
 
 	const anchorRef = React.useRef(null);
-
-	const handleClose = (event) => {
-		if (anchorRef.current && anchorRef.current.contains(event.target)) {
-			return;
-		}
-
-		setOpen(false);
-	};
-
-	const toggleOpen = (_) => setOpen(!open);
 
 	// return focus to the button when we transitioned from !open -> open
 	const prevOpen = React.useRef(open);

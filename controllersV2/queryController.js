@@ -22,7 +22,19 @@ exports.getQueries = catchAsync(async (req, res, next) => {
 	const limit = req.body.limit * 1 || 10;
 	const skip = (page - 1) * limit;
 
-	filter['owner'] = ObjectId(req.user.id);
+	if (req.body.queryFor) {
+		filter.queryType = req.body.queryFor;
+	}
+	if (req.body.propertyFor) {
+		filter.pFor = req.body.propertyFor;
+	}
+	if (req.body.propertyType) {
+		filter.pType = req.body.propertyType;
+	}
+	if (req.body.via) {
+		filter.via = req.body.via;
+	}
+	const totalDocs = await PropertyQuery.countDocuments(filter);
 
 	const queries = await PropertyQuery.find(filter)
 		.sort('-createdAt')
@@ -33,6 +45,17 @@ exports.getQueries = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			queries,
+			totalDocs,
+		},
+	});
+});
+exports.getQueryDetails = catchAsync(async (req, res, next) => {
+	const query = await PropertyQuery.findById(req.params.id);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			query,
 		},
 	});
 });

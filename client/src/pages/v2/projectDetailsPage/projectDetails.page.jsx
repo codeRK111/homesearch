@@ -220,6 +220,9 @@ const ProjectDetailsPage = ({
 								<BuilderCard
 									owner={data.project.builder}
 									property={data.project}
+									type="project"
+									pFor="project"
+									pType={data.project.projectType}
 								/>
 							</Box>
 						)}

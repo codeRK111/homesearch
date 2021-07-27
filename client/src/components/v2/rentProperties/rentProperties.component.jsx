@@ -1,26 +1,12 @@
 import { Box, Grid } from '@material-ui/core';
 
 import Card from '../propertyCard/propertyCard.component';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Chip from '../chip/chip.component';
 import React from 'react';
 import clsx from 'clsx';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './rentProperties.style';
-
-const cities = [
-	'Banglore',
-	'Navi Mumbai',
-	'Mumbai',
-	'Delhi NCR',
-	'Chennai',
-	'Hyderabad',
-	'Pune',
-	'Kolkata',
-	'Bhubaneswar',
-	'Chandigarh',
-];
 
 const RentProperties = ({ data }) => {
 	const classes = useStyles();
@@ -35,7 +21,19 @@ const RentProperties = ({ data }) => {
 		<div>
 			{!!data && (
 				<div className={classes.listWrapper}>
-					{data.cities.map((c, i) => (
+					<Grid container spacing={1}>
+						{data.cities.map((c, i) => (
+							<Grid item xs={4} md={1}>
+								<Chip
+									title={c.name}
+									key={c._id}
+									onClick={() => onClick(c._id)}
+									selected={!!selected && c._id === selected}
+								/>
+							</Grid>
+						))}
+					</Grid>
+					{/* {data.cities.map((c, i) => (
 						<Box className={classes.chipWrapper}>
 							<Chip
 								title={c.name}
@@ -44,7 +42,7 @@ const RentProperties = ({ data }) => {
 								selected={!!selected && c._id === selected}
 							/>
 						</Box>
-					))}
+					))} */}
 				</div>
 			)}
 			<Box mt="3rem">

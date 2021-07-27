@@ -9,7 +9,6 @@ import SaleApartment from '../../../components/v2/salePropertyCard/propertyCard.
 import SaleLand from '../../../components/v2/salePropertyCard/propertyCardLand.component';
 import SwipeableViews from 'react-swipeable-views';
 import axios from 'axios';
-import clsx from 'clsx';
 import useStyles from './swipable.style';
 
 const SimilarProperties = ({
@@ -116,6 +115,7 @@ const SimilarProperties = ({
 				});
 			}
 		})();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const onNext = () => {
