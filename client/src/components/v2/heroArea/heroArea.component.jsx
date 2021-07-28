@@ -1,4 +1,10 @@
-import { Box, CircularProgress, Menu, Typography } from '@material-ui/core';
+import {
+	Box,
+	CircularProgress,
+	Grid,
+	Menu,
+	Typography,
+} from '@material-ui/core';
 import {
 	selectCurrentTab,
 	selectSelectedCity,
@@ -16,7 +22,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import loanIcon from '../../../assets/icons/loan.svg';
 import newsIcon from '../../../assets/icons/news.svg';
-import queryString from 'query-string';
 import { searchCities } from '../../../redux/city/city.actions';
 import searchIcon from '../../../assets/search.svg';
 import { selectSearchCityLoading } from '../../../redux/city/city.selectors';
@@ -188,10 +193,21 @@ const HeroArea = ({
 						) : (
 							<input
 								type="text"
-								placeholder="Search For City"
+								placeholder="Enter City Name"
 								onChange={handleCity}
 								value={userTypedCity}
 								ref={input}
+								onFocus={(e) => {
+									if (input.current) {
+										input.current.placeholder = '';
+									}
+								}}
+								onBlur={(e) => {
+									if (input.current) {
+										input.current.placeholder =
+											'Enter City Name';
+									}
+								}}
 							/>
 						)}
 						{searchCityLoading ? (
@@ -228,20 +244,32 @@ const HeroArea = ({
 									No City Found
 								</Typography>
 							) : (
-								cities.map((c) => (
-									<Box
-										key={c.id}
-										className={classes.cityWrapper}
-										onClick={handleSelectedCity(c)}
-									>
-										<LocationOnIcon
-											className={classes.locationIcon}
-										/>
-										<Typography variant="subtitle2">
-											{c.name}
-										</Typography>
-									</Box>
-								))
+								<Box p="1rem">
+									<Grid container spacing={1}>
+										{cities.map((c) => (
+											<Grid item xs={12} md={6}>
+												<Box
+													key={c.id}
+													className={
+														classes.cityWrapper
+													}
+													onClick={handleSelectedCity(
+														c
+													)}
+												>
+													<LocationOnIcon
+														className={
+															classes.locationIcon
+														}
+													/>
+													<Typography variant="subtitle2">
+														{c.name}
+													</Typography>
+												</Box>
+											</Grid>
+										))}
+									</Grid>
+								</Box>
 							)}
 						</Box>
 					</StyledMenu>

@@ -4,6 +4,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import React from 'react';
 import SwipeableViews from 'react-swipeable-views';
+import ViewFullImage from '../viewFullImage';
 import clsx from 'clsx';
 import useStyles from './swipable.style';
 
@@ -18,6 +19,14 @@ const SwipableViews = ({
 	const totalImages = photos.length;
 	const imagePerSlide = 4;
 	const maxIndex = Math.ceil(totalImages / imagePerSlide) - 1;
+	const [fullImageOpen, setFullImageOpen] = React.useState(false);
+	const [selectedelectedImage, setSelectedImage] = React.useState({
+		id: null,
+		image: null,
+	});
+	const toggleFullImage = (status) => () => {
+		setFullImageOpen(status);
+	};
 
 	const onNext = () => {
 		if (index === maxIndex) {
@@ -36,9 +45,17 @@ const SwipableViews = ({
 
 	const onClick = (image) => () => {
 		setSelected(image);
+		setSelectedImage(image);
+		toggleFullImage(true)();
 	};
 	return (
 		<div className={classes.sliderWrapper}>
+			<ViewFullImage
+				open={fullImageOpen}
+				handleClose={toggleFullImage(false)}
+				title={null}
+				image={`/assets/${dir}/${selectedelectedImage.image}`}
+			/>
 			{index > 0 && totalImages > 4 && (
 				<div className={classes.scrollbar} onClick={onPrevious}>
 					<div className={classes.scrollWrapper}>
@@ -49,7 +66,7 @@ const SwipableViews = ({
 			<Box style={{ flex: 1, width: '100%' }}>
 				<SwipeableViews index={index}>
 					{Array.from(Array(maxIndex + 1).keys()).map((c) => (
-						<Box p="1rem">
+						<Box>
 							<Grid container spacing={0}>
 								{photos.map((c, i) => {
 									const fromImageIndex =
@@ -64,7 +81,7 @@ const SwipableViews = ({
 												item
 												key={i}
 												md={3}
-												style={{ height: 100 }}
+												style={{ height: 150 }}
 												className={clsx(
 													classes.gridWrapper,
 													{

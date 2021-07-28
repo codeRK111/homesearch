@@ -63,9 +63,9 @@ const useStyles = makeStyles((theme) => ({
 	searchWrapper: {
 		borderRadius: 40,
 		background: theme.shadowColor,
-		minHeight: 50,
+		minHeight: 41,
 		width: 500,
-		boxShadow: 'inset 7px 7px 14px #bababa,inset -7px -7px 14px #ffffff',
+		boxShadow: 'inset 5px 5px 8px #bababa, inset -5px -5px 8px #ffffff',
 		display: 'flex',
 		alignItems: 'center',
 		'&>input': {
@@ -139,11 +139,13 @@ const useStyles = makeStyles((theme) => ({
 		background: theme.shadowColor,
 		padding: '0.5rem',
 		boxShadow: '10px 5px 10px #a4a4a4,-10px -10px 20px #ffffff',
-		display: 'inline-block',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
 		cursor: 'pointer',
-		borderRadius: 10,
+		borderRadius: 20,
 		[theme.breakpoints.down('sm')]: {
-			padding: '0.5rem',
+			padding: '0.7rem',
 		},
 		'&>img': {
 			height: '1.2rem',

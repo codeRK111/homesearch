@@ -13,6 +13,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import LockOpen from '@material-ui/icons/LockOpen';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PersonIcon from '@material-ui/icons/Person';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import React from 'react';
@@ -127,6 +128,14 @@ function TemporaryDrawer({
 								<PostAddIcon className={gClasses.colorUtil} />
 							</ListItemIcon>
 							<ListItemText primary={'Post Property'} />
+						</ListItem>
+						<ListItem button>
+							<ListItemIcon>
+								<MonetizationOnIcon
+									className={gClasses.colorUtil}
+								/>
+							</ListItemIcon>
+							<ListItemText primary={'Property Valuation'} />
 						</ListItem>
 						{isAuthenticated ? (
 							<ListItem button onClick={onLogOut}>

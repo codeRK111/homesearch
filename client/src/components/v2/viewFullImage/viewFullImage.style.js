@@ -8,19 +8,13 @@ const useStyles = makeStyles((theme) => ({
 		marginLeft: theme.spacing(2),
 		flex: 1,
 	},
-	imageWrapper: (props) => ({
-		backgroundImage: `url("${props.img}")`,
-		backgroundRepeat: 'no-repeat',
-		backgroundColor:
-			theme.palette.type === 'light'
-				? theme.palette.grey[50]
-				: theme.palette.grey[900],
-		backgroundSize: 'contain',
-		backgroundPosition: 'center',
-		height: '80vh',
-		width: '100%',
+	radius: {
 		borderRadius: 30,
+	},
+	imageWrapper: (props) => ({
+		height: '80vh',
 		boxSizing: 'border-box',
+		padding: '1rem',
 	}),
 }));
 

@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	imageWrapper: (props) => ({
-		position: 'relative',
+		position: 'absolute',
 		backgroundImage: `url("${props.img}")`,
 		backgroundRepeat: 'no-repeat',
 		backgroundColor:
@@ -21,7 +21,22 @@ const useStyles = makeStyles((theme) => ({
 				: theme.palette.grey[900],
 		backgroundSize: 'cover',
 		backgroundPosition: 'center',
-		minHeight: '20rem',
+		// minHeight: '30rem',
+		height: '90%',
+		width: '100%',
+		borderRadius: 30,
+	}),
+	imageWrapperCard: (props) => ({
+		position: 'absolute',
+		backgroundImage: `url("${props.img}")`,
+		backgroundRepeat: 'no-repeat',
+		backgroundColor:
+			theme.palette.type === 'light'
+				? theme.palette.grey[50]
+				: theme.palette.grey[900],
+		backgroundSize: 'cover',
+		backgroundPosition: 'center',
+		// minHeight: '30rem',
 		height: '100%',
 		width: '100%',
 		borderRadius: 30,
@@ -35,12 +50,12 @@ const useStyles = makeStyles((theme) => ({
 		left: 0,
 		right: 0,
 		bottom: 0,
-		backgroundColor: 'rgba(0,0,0,0.4)',
+		backgroundColor: 'rgba(0,0,0,0.2)',
 		zIndex: 2,
 		display: 'flex',
 		justifyContent: 'flex-end',
 		borderRadius: 30,
-		padding: '0 1rem 0 0',
+		padding: '0 4rem 0 0',
 		boxSizing: 'border-box',
 
 		'&>button': {
@@ -61,14 +76,27 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 		background: theme.utilColor,
-		padding: '0.5rem 1rem',
+		padding: '1rem',
 		color: '#ffffff',
-		maxHeight: '50px',
-		borderRadius: 10,
+		height: '80px',
 
 		'& >span': {
 			fontWeight: 'bolder',
-			fontSize: '1.4rem',
+			fontSize: '2rem',
+		},
+	},
+	dateWrapperCard: {
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+		background: theme.utilColor,
+		padding: '1rem',
+		color: '#ffffff',
+		height: '70px',
+
+		'& >span': {
+			fontWeight: 'bolder',
+			fontSize: '2rem',
 		},
 	},
 
@@ -107,7 +135,7 @@ const useStyles = makeStyles((theme) => ({
 		color: '#929292',
 	},
 	mr1: {
-		marginRight: '2rem',
+		marginRight: '1rem',
 	},
 	icon: {
 		height: '1.2rem',
@@ -145,6 +173,8 @@ const useStyles = makeStyles((theme) => ({
 	swipableWrapper: {
 		position: 'absolute',
 		bottom: 0,
+		width: '100%',
+		zIndex: 100,
 	},
 	test: {
 		'& h1,h5': {
@@ -160,6 +190,38 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: '0.9rem',
 		[theme.breakpoints.down('sm')]: {
 			padding: '0.5rem 0',
+		},
+	},
+	imageContainer: {
+		position: 'relative',
+		width: '100%',
+		height: '32rem',
+	},
+	imageContainerCard: {
+		position: 'relative',
+		width: '100%',
+		minHeight: '20rem',
+		height: '100%',
+		[theme.breakpoints.down('sm')]: {
+			minHeight: '15rem',
+		},
+	},
+	cardContentWrapper: {
+		padding: '1.5rem',
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.5rem',
+		},
+	},
+	logo: {
+		height: 60,
+		[theme.breakpoints.down('sm')]: {
+			height: 40,
+		},
+	},
+	propertyName: {
+		// fontSize: '1.6rem',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.4rem',
 		},
 	},
 }));

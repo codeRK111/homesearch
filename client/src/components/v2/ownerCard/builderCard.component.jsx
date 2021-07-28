@@ -144,7 +144,7 @@ const OwnerCard = ({
 						message: false,
 					}));
 
-					setSuccess('Your information has been sent to the owner');
+					setSuccess('We received your query successfully');
 					setError(null);
 				})
 				.catch((err) => {

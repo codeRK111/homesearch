@@ -27,10 +27,10 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 	const classes = useStyles();
 	const cancelToken = React.useRef(undefined);
 	const gClasses = useGlobalStyles();
-	const [pFor, setpFor] = React.useState('');
+	const [pFor, setpFor] = React.useState('rent');
 	const [openPlan, setOpenPlan] = React.useState(false);
 	const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
-	const [type, setType] = React.useState('');
+	const [type, setType] = React.useState('flat');
 	const [selectedCity, setSelectedCity] = React.useState({
 		id: null,
 		name: null,
@@ -65,12 +65,13 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 		setType(pType);
 	};
 
-	const addImage = (id, photos, token, property) => {
+	const addImage = (id, photos, token, property, defaultPhoto) => {
 		return new Promise((resolve, reject) => {
 			const formData = new FormData();
 			photos.forEach((c) => {
 				formData.append('images', c);
 			});
+			formData.append('default', defaultPhoto);
 			axios
 				.post(
 					apiUrl(`/properties/add-property-image/${id}`),
@@ -146,7 +147,8 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 									resp.data.data.property.id,
 									photos,
 									token,
-									resp.data.data.property
+									resp.data.data.property,
+									values.defaultPhoto
 								)
 									.then((response) => {
 										setLoading(false);

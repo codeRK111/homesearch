@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: '1rem',
 	},
 	filterParent: {
-		marginBottom: '2rem',
+		marginBottom: '0.5rem',
 		[theme.breakpoints.down('sm')]: {
 			marginBottom: 0,
 		},

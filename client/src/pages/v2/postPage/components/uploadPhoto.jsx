@@ -1,4 +1,10 @@
-import { Box, Grid, Typography } from '@material-ui/core';
+import {
+	Box,
+	Checkbox,
+	FormControlLabel,
+	Grid,
+	Typography,
+} from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add';
 import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
@@ -7,7 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import React from 'react';
 import useStyles from '../postPage.style';
 
-const UploadPhoto = ({ photos, setPhotos }) => {
+const UploadPhoto = ({ photos, setPhotos, defaultPhoto, setDefaultPhoto }) => {
 	const classes = useStyles();
 
 	const handleImage = (e) => {
@@ -32,6 +38,9 @@ const UploadPhoto = ({ photos, setPhotos }) => {
 		let temp = [...photos];
 		temp.splice(i, 1);
 		setPhotos(temp);
+		if (defaultPhoto === i) {
+			setDefaultPhoto(0);
+		}
 	};
 	return (
 		<React.Fragment>
@@ -100,6 +109,19 @@ const UploadPhoto = ({ photos, setPhotos }) => {
 										/>
 									</label>
 								</Box>
+							</Box>
+							<Box display="flex" justifyContent="center">
+								<FormControlLabel
+									control={
+										<Checkbox
+											checked={defaultPhoto === i}
+											onChange={(e) => setDefaultPhoto(i)}
+											name="checkedB"
+											color="primary"
+										/>
+									}
+									label="Thumbnail"
+								/>
 							</Box>
 						</Grid>
 					))}

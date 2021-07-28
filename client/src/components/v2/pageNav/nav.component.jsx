@@ -34,7 +34,6 @@ import { selectSearchCityLoading } from '../../../redux/city/city.selectors';
 import { signOut } from '../../../redux/auth/auth.actions';
 import { toggleLoginPopup } from '../../../redux/ui/ui.actions';
 import useGlobalStyles from '../../../common.style';
-import useGlovalStyles from '../../../common.style';
 import { useHistory } from 'react-router-dom';
 import useStyles from './nav.style';
 import { withStyles } from '@material-ui/core/styles';
@@ -260,10 +259,21 @@ const NavBar = ({
 						) : (
 							<input
 								type="text"
-								placeholder="Search For City"
+								placeholder="Enter City Name"
 								onChange={handleCity}
 								value={userTypedCity}
 								ref={input}
+								onFocus={(e) => {
+									if (input.current) {
+										input.current.placeholder = '';
+									}
+								}}
+								onBlur={(e) => {
+									if (input.current) {
+										input.current.placeholder =
+											'Enter City Name';
+									}
+								}}
 							/>
 						)}
 					</Box>

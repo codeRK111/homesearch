@@ -126,7 +126,7 @@ const Chip = ({
 						<input
 							type="text"
 							id="search"
-							placeholder="Search For City"
+							placeholder="Enter City Name"
 							onChange={handleCity}
 							value={userTypedCity}
 							className={classes.input}

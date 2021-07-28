@@ -10,6 +10,10 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down('xs')]: {
 			width: '100%',
 		},
+		borderRadius: 20,
+	},
+	radius: {
+		borderRadius: 20,
 	},
 	bg: {
 		height: '100%',

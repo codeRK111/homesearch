@@ -46,6 +46,7 @@ const legalClearance = [
 const initialValues = {
 	for: 'sale',
 	title: '',
+	usp: '',
 	description: '',
 	length: '',
 	width: '',
@@ -78,6 +79,7 @@ const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [photos, setPhotos] = React.useState([]);
+	const [defaultPhoto, setDefaultPhoto] = React.useState(0);
 
 	const validateForm = (values) => {
 		const error = {};
@@ -130,6 +132,7 @@ const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 		const data = {
 			...values,
 			sale_type: pType,
+			defaultPhoto,
 		};
 		onPost(data, photos)
 			.then((data) => {
@@ -512,7 +515,20 @@ const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 								</Box>
 							</Box>
 						)}
-
+						{/* USP  */}
+						<Box className={classes.rowWrapper2} mt="2rem">
+							<Box className={classes.columnWrapper}>
+								<span>USP</span>
+								<TextField
+									name="usp"
+									formLabel="USP *"
+									className={clsx(
+										classes.input,
+										classes.widthMD
+									)}
+								/>
+							</Box>
+						</Box>
 						<Box mt="2rem">
 							<Typography
 								variant="h5"
@@ -534,6 +550,8 @@ const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 							<UploadPhoto
 								photos={photos}
 								setPhotos={setPhotos}
+								defaultPhoto={defaultPhoto}
+								setDefaultPhoto={setDefaultPhoto}
 							/>
 						</Box>
 						<Box mt="3rem" className={gClasses.justifyCenter}>

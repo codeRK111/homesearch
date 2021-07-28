@@ -165,7 +165,6 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 		cursor: 'pointer',
 		padding: '0.5rem',
-		margin: '1rem',
 		background: '#e3e3e3',
 		boxShadow: '6px 6px 12px #bfbfbf,-6px -6px 12px #ffffff',
 		borderRadius: 10,

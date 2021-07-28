@@ -63,29 +63,30 @@ const PropertyCard = ({ project, info }) => {
 							}
 						/>
 					) : (
-						<div className={clsx(classes.imageWrapper)}>
-							<div
-								className={clsx(classes.overlay, 'parentImage')}
-							>
-								<div className={classes.dateWrapper}>
-									<span>{m.format('D')}</span>
-									<span>{m.format('MMM')}</span>
-								</div>
-								<button
-									className={'fullImageButton'}
+						<div className={classes.imageContainer}>
+							<div className={clsx(classes.imageWrapper)}>
+								<div
+									className={clsx(
+										classes.overlay,
+										'parentImage',
+										globalClasses.pointer
+									)}
 									onClick={toggleFullImage(true)}
 								>
-									View Full Image
-								</button>
-								<Box className={classes.swipableWrapper}>
-									<SwipablePhotos
-										photos={project.photos}
-										selected={defaultImage}
-										setSelected={setDefaultImage}
-										dir="projects"
-									/>
-								</Box>
+									<div className={classes.dateWrapper}>
+										<span>{m.format('D')}</span>
+										<span>{m.format('MMM')}</span>
+									</div>
+								</div>
 							</div>
+							<Box className={classes.swipableWrapper}>
+								<SwipablePhotos
+									photos={project.photos}
+									selected={defaultImage}
+									setSelected={setDefaultImage}
+									dir="projects"
+								/>
+							</Box>
 						</div>
 					)}
 				</Grid>

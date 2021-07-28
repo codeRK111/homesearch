@@ -42,11 +42,13 @@ const PropertyCard = ({ property, propertyItems }) => {
 			{/* <pre>{JSON.stringify(property, null, 2)}</pre> */}
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={7}>
-					<div className={classes.imageWrapper}>
-						<div className={classes.overlay}>
-							<div className={classes.dateWrapper}>
-								<span>{m.format('D')}</span>
-								<span>{m.format('MMM')}</span>
+					<div className={classes.imageContainerCard}>
+						<div className={classes.imageWrapperCard}>
+							<div className={classes.overlay}>
+								<div className={classes.dateWrapperCard}>
+									<span>{m.format('D')}</span>
+									<span>{m.format('MMM')}</span>
+								</div>
 							</div>
 						</div>
 					</div>

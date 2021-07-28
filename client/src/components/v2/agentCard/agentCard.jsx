@@ -1,12 +1,7 @@
 import React from 'react';
-import area from '../../../assets/icons/area.svg';
-import bed from '../../../assets/icons/bed.svg';
-import car from '../../../assets/icons/car.svg';
-import city from '../../../assets/city.png';
 import clsx from 'clsx';
 import location from '../../../assets/icons/location.svg';
-import tag from '../../../assets/icons/tag.svg';
-import tub from '../../../assets/icons/tub.svg';
+import tag from '../../../assets/icons/tag2.svg';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './agentCard.style';
 

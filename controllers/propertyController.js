@@ -91,6 +91,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				'city',
 				'location',
 				'title',
+				'usp',
 				'numberOfBedRooms',
 				'toiletTypes',
 				'numberOfBalconies',
@@ -149,6 +150,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				type: req.body.type,
 				city: req.body.city,
 				title: req.body.title,
+				usp: req.body.usp,
 				location: req.body.location,
 				numberOfBedRooms: req.body.numberOfBedRooms,
 				toiletTypes: req.body.toiletTypes,
@@ -214,6 +216,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				'city',
 				'location',
 				'title',
+				'usp',
 				'numberOfRoomMates',
 				'typeOfToilets',
 				'toiletTypes',
@@ -251,6 +254,7 @@ exports.addProperty = catchAsync(async (req, res, next) => {
 				for: req.body.for,
 				type: req.body.type,
 				title: req.body.title,
+				usp: req.body.usp,
 				city: req.body.city,
 				availableFor: req.body.availableFor,
 				floor: req.body.floor,
@@ -451,6 +455,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				'propertyOwnerShip',
 				'location',
 				'title',
+				'usp',
 				'pricePerSqFt',
 				'numberOfBedRooms',
 				'description',
@@ -498,6 +503,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				propertyOwnerShip: req.body.propertyOwnerShip,
 				city: req.body.city,
 				title: req.body.title,
+				usp: req.body.usp,
 				description: req.body.description,
 				location: req.body.location,
 				toiletTypes: req.body.toiletTypes,
@@ -562,6 +568,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				'propertyOwnerShip',
 				'location',
 				'title',
+				'usp',
 				'pricePerSqFt',
 				'description',
 				'toiletTypes',
@@ -611,6 +618,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				propertyOwnerShip: req.body.propertyOwnerShip,
 				city: req.body.city,
 				title: req.body.title,
+				usp: req.body.usp,
 				description: req.body.description,
 				location: req.body.location,
 				toiletTypes: req.body.toiletTypes,
@@ -674,6 +682,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				'city',
 				'location',
 				'title',
+				'usp',
 				'description',
 				'length',
 				'width',
@@ -717,6 +726,7 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 				sale_type: req.body.sale_type,
 				city: req.body.city,
 				title: req.body.title,
+				usp: req.body.usp,
 				description: req.body.description,
 				location: req.body.location,
 				length: req.body.length,
@@ -1694,7 +1704,15 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 
 exports.handlePropertyImage = catchAsync(async (req, res, next) => {
 	console.log(req.files);
-	const images = req.files.map((c) => ({ image: c.filename }));
+	let images = req.files.map((c) => ({ image: c.filename }));
+	if (req.body.default) {
+		images = images.map((c, i) => {
+			if (Number(req.body.default) === i) {
+				c.default = true;
+			}
+			return c;
+		});
+	}
 	const property = await Property.findByIdAndUpdate(
 		req.params.id,
 		{ $push: { photos: { $each: images } } },

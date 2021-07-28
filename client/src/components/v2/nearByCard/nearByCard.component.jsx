@@ -1,14 +1,6 @@
-import { Box, Typography } from '@material-ui/core';
-
 import React from 'react';
-import admin from '../../../assets/icons/admin.svg';
-import car from '../../../assets/icons/car.svg';
+import { Typography } from '@material-ui/core';
 import city from '../../../assets/city.jpg';
-import clsx from 'clsx';
-import comment from '../../../assets/icons/comment.svg';
-import location from '../../../assets/icons/location.svg';
-import logo from '../../../assets/icons/bLogo.svg';
-import tag from '../../../assets/icons/tag.svg';
 import useStyles from './nearByCard.style';
 
 const PropertyCard = () => {

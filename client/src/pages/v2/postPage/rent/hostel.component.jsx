@@ -49,6 +49,7 @@ const initialValues = {
 	foodSchedule: [],
 	numberOfRoomMates: 1,
 	title: '',
+	usp: '',
 	numberOfBedRooms: 1,
 	negotiable: false,
 };
@@ -66,6 +67,7 @@ const RentHostel = ({
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [foodingAvailable, setFoodingAvailable] = React.useState(true);
 	const [photos, setPhotos] = React.useState([]);
+	const [defaultPhoto, setDefaultPhoto] = React.useState(0);
 
 	const validateForm = (values) => {
 		const error = {};
@@ -124,6 +126,7 @@ const RentHostel = ({
 		const data = {
 			...values,
 			type: pType,
+			defaultPhoto,
 		};
 		onPost(data, photos, 'rent')
 			.then((data) => {
@@ -864,6 +867,20 @@ const RentHostel = ({
 								</Box>
 							</Box>
 						)}
+						{/* USP  */}
+						<Box className={classes.rowWrapper2} mt="2rem">
+							<Box className={classes.columnWrapper}>
+								<span>USP</span>
+								<TextField
+									name="usp"
+									formLabel="USP *"
+									className={clsx(
+										classes.input,
+										classes.widthMD
+									)}
+								/>
+							</Box>
+						</Box>
 						<Box mt="2rem">
 							<Typography
 								variant="h5"
@@ -902,6 +919,8 @@ const RentHostel = ({
 							<UploadPhoto
 								photos={photos}
 								setPhotos={setPhotos}
+								defaultPhoto={defaultPhoto}
+								setDefaultPhoto={setDefaultPhoto}
 							/>
 						</Box>
 						<Box mt="3rem" className={gClasses.justifyCenter}>

@@ -26,6 +26,10 @@ const globalStyle = makeStyles((theme) => ({
 		alignItems: 'center',
 		width: '100%',
 	},
+	alignCenterOnly: {
+		display: 'flex',
+		alignItems: 'center',
+	},
 	flexCenter: {
 		display: 'flex',
 		justifyContent: 'center',

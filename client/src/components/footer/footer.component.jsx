@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid } from '@material-ui/core';
+import { Avatar, Box, Grid, Typography } from '@material-ui/core';
 
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
@@ -14,10 +14,12 @@ const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		backgroundColor: 'rgba(0,0,0,0.9)',
 		color: '#ffffff',
+		fontFamily: 'CenturyGothic',
 	},
 	link: {
 		color: '#ffffff',
 		textDecoration: 'none',
+		lineHeight: 1.5,
 	},
 	iconFb: {
 		color: '#445494',
@@ -236,7 +238,7 @@ const Footer = () => {
 					<Grid item xs={12}>
 						<Box pr="1rem">
 							<h3>About Us</h3>
-							<p>
+							<Typography variant="caption">
 								Lorem ipsum dolor, sit amet consectetur
 								adipisicing elit. Dolorem nihil, molestias ab
 								facere ad impedit temporibus architecto vel quis
@@ -245,7 +247,7 @@ const Footer = () => {
 								voluptatum fuga sed. Eum blanditiis earum rerum
 								optio sint. Quos eum magnam, nisi vitae dicta
 								ipsa corrupti quia rem ipsam.
-							</p>
+							</Typography>
 						</Box>
 					</Grid>
 				</Grid>

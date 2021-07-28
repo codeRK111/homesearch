@@ -15,6 +15,10 @@ const propertySchema = new Schema(
 			type: String,
 			required: true,
 		},
+		usp: {
+			type: String,
+			required: true,
+		},
 		sale_type: {
 			type: String,
 			enum: {
@@ -402,6 +406,10 @@ const propertySchema = new Schema(
 			{
 				image: {
 					type: String,
+				},
+				default: {
+					type: Boolean,
+					default: false,
 				},
 			},
 		],

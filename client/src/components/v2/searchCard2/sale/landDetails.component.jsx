@@ -7,7 +7,6 @@ import {
 } from '../../../../utils/render.utils';
 
 import ImageCarousel from '../../imageCarousel';
-import PropertyTypeChip from '../../chip/propertyType.component';
 import React from 'react';
 import SwipablePhotos from '../../swipableViews';
 import ViewFullImage from '../../viewFullImage';
@@ -19,6 +18,7 @@ import clsx from 'clsx';
 import location from '../../../../assets/icons/location2.svg';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
+import tag from '../../../../assets/icons/tag2.svg';
 import tub from '../../../../assets/icons/tub.svg';
 import useGlobalStyles from '../../../../common.style';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -31,7 +31,9 @@ const PropertyCard = ({ property, edit = false }) => {
 	const [fullImageOpen, setFullImageOpen] = React.useState(false);
 	const m = moment(property.createdAt);
 	const img = property.photos[0]
-		? property.photos[0]
+		? property.photos.find((c) => c.default)
+			? property.photos.find((c) => c.default)
+			: property.photos[0]
 		: {
 				id: null,
 				image: city,
@@ -68,28 +70,29 @@ const PropertyCard = ({ property, edit = false }) => {
 							}
 						/>
 					) : (
-						<div className={clsx(classes.imageWrapper)}>
-							<div
-								className={clsx(classes.overlay, 'parentImage')}
-							>
-								<div className={classes.dateWrapper}>
-									<span>{m.format('D')}</span>
-									<span>{m.format('MMM')}</span>
-								</div>
-								<button
-									className={'fullImageButton'}
+						<div className={classes.imageContainer}>
+							<div className={clsx(classes.imageWrapper)}>
+								<div
+									className={clsx(
+										classes.overlay,
+										'parentImage',
+										globalClasses.pointer
+									)}
 									onClick={toggleFullImage(true)}
 								>
-									View Full Image
-								</button>
-								<Box className={classes.swipableWrapper}>
-									<SwipablePhotos
-										photos={property.photos}
-										selected={defaultImage}
-										setSelected={setDefaultImage}
-									/>
-								</Box>
+									<div className={classes.dateWrapper}>
+										<span>{m.format('D')}</span>
+										<span>{m.format('MMM')}</span>
+									</div>
+								</div>
 							</div>
+							<Box className={classes.swipableWrapper}>
+								<SwipablePhotos
+									photos={property.photos}
+									selected={defaultImage}
+									setSelected={setDefaultImage}
+								/>
+							</Box>
 						</div>
 					)}
 				</Grid>
@@ -114,32 +117,39 @@ const PropertyCard = ({ property, edit = false }) => {
 						</div>
 						<div>
 							<h2>{property.title}</h2>
-							<PropertyTypeChip title={property.sale_type} />
+							<span
+								className={clsx(
+									classes.smallText,
+									classes.colorGray
+								)}
+							>
+								{`${property.plotArea} Sq. Ft Land For Sale`}
+							</span>
 						</div>
 					</div>
 					<Box mt="1rem" className={globalClasses.justifyCenter}>
-						<div>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={location}
-									alt="Location"
-									className={classes.icon}
-								/>
-								<h4 className={classes.locationText}>
-									{property.location.name},
-									{property.city.name}
-								</h4>
-							</div>
-							{/* <div className={globalClasses.alignCenter}>
-								<img
-									src={tag}
-									alt="Tag"
-									className={clsx(classes.icon)}
-								/>
-								<h4 className={classes.locationText}>
-									Apartment,3BHK,Swimming Pool 
-								</h4>
-							</div> */}
+						<div className={globalClasses.alignCenterOnly}>
+							<img
+								src={location}
+								alt="Location"
+								className={classes.icon}
+							/>
+							<h4 className={classes.locationText}>
+								{property.location.name},{property.city.name}
+							</h4>
+						</div>
+					</Box>
+					<Box className={globalClasses.justifyCenter}>
+						<div className={globalClasses.alignCenterOnly}>
+							<img
+								src={tag}
+								alt="Tag"
+								className={clsx(classes.icon)}
+							/>
+							<h4 className={classes.locationText}>
+								Land, &nbsp;&nbsp;{property.plotArea}
+								Sq.Ft,&nbsp;&nbsp;{property.usp}
+							</h4>
 						</div>
 					</Box>
 					<Box mt="2rem">

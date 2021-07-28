@@ -283,6 +283,9 @@ function AlertDialogSlide({
 				BackdropComponent={CBackdrop}
 				aria-labelledby="alert-dialog-slide-title"
 				aria-describedby="alert-dialog-slide-description"
+				classes={{
+					paper: classes.radius,
+				}}
 			>
 				<Box className={classes.wrapper}>
 					<Grid container spacing={0} className={classes.fullHeight}>
@@ -433,7 +436,12 @@ function AlertDialogSlide({
 															</Box>
 														)}
 
-														<Box mt="1rem">
+														<Box
+															mt="1rem"
+															mb="1rem"
+															display="flex"
+															justifyContent="center"
+														>
 															<button
 																type="submit"
 																fullWidth
@@ -690,6 +698,7 @@ function AlertDialogSlide({
 															className={
 																gClasses.flexCenter
 															}
+															mb="1rem"
 														>
 															<button
 																type="submit"

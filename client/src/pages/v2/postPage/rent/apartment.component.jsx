@@ -54,6 +54,7 @@ const initialValues = {
 	location: '',
 	carParking: 'open',
 	title: '',
+	usp: '',
 	negotiable: false,
 };
 
@@ -68,6 +69,7 @@ const RentApartment = ({
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const [isOpen, setIsOpen] = React.useState(false);
+	const [defaultPhoto, setDefaultPhoto] = React.useState(0);
 	const [photos, setPhotos] = React.useState([]);
 
 	const validateForm = (values) => {
@@ -203,7 +205,9 @@ const RentApartment = ({
 		const data = {
 			...values,
 			type: pType,
+			defaultPhoto,
 		};
+
 		onPost(data, photos, 'rent')
 			.then((data) => {
 				console.log(data);
@@ -518,7 +522,7 @@ const RentApartment = ({
 								</Box>
 							</Box>
 						</Box>
-
+						{/* Bathroom */}
 						<Box mt="2rem">
 							<Box className={classes.rowWrapper2}>
 								<Box className={classes.columnWrapper}>
@@ -850,6 +854,20 @@ const RentApartment = ({
 								</Box>
 							</Box>
 						)}
+						{/* USP  */}
+						<Box className={classes.rowWrapper2} mt="2rem">
+							<Box className={classes.columnWrapper}>
+								<span>USP</span>
+								<TextField
+									name="usp"
+									formLabel="USP *"
+									className={clsx(
+										classes.input,
+										classes.widthMD
+									)}
+								/>
+							</Box>
+						</Box>
 						<Box mt="2rem">
 							<Typography
 								variant="h5"
@@ -888,6 +906,8 @@ const RentApartment = ({
 							<UploadPhoto
 								photos={photos}
 								setPhotos={setPhotos}
+								defaultPhoto={defaultPhoto}
+								setDefaultPhoto={setDefaultPhoto}
 							/>
 						</Box>
 						<Box mt="3rem" className={gClasses.justifyCenter}>

@@ -12,6 +12,7 @@ exports.addPropertyByUserForSale = catchAsync(async (req, res, next) => {
 			const propertyFlat = {
 				for: req.body.for,
 				title: req.body.title,
+				usp: req.body.usp,
 				numberOfBedRooms: req.body.numberOfBedRooms,
 				superBuiltupArea: req.body.superBuiltupArea,
 				carpetArea: req.body.carpetArea,
@@ -92,6 +93,7 @@ exports.addPropertyByUserForSale = catchAsync(async (req, res, next) => {
 			const propertyLand = {
 				for: req.body.for,
 				title: req.body.title,
+				usp: req.body.usp,
 				length: req.body['length'],
 				width: req.body.width,
 				plotFrontage: req.body.plotFrontage,
@@ -152,6 +154,7 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 			const propertyFlat = {
 				for: req.body.for,
 				title: req.body.title,
+				usp: req.body.usp,
 				numberOfBedRooms: req.body.numberOfBedRooms,
 				superBuiltupArea: req.body.superBuiltupArea,
 				carpetArea: req.body.carpetArea,
@@ -238,6 +241,7 @@ exports.addPropertyByUserForRent = catchAsync(async (req, res, next) => {
 			const propertyHostel = {
 				for: req.body.for,
 				title: req.body.title,
+				usp: req.body.usp,
 				toiletIndian: req.body.toiletIndian,
 				toiletWestern: req.body.toiletWestern,
 				description: req.body.description,

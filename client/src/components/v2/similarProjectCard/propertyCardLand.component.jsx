@@ -8,7 +8,7 @@ import area from '../../../assets/icons/area.svg';
 import city from '../../../assets/city.jpg';
 import clsx from 'clsx';
 import location from '../../../assets/icons/location.svg';
-import tag from '../../../assets/icons/tag.svg';
+import tag from '../../../assets/icons/tag2.svg';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './propertyCard.style';
 
