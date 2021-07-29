@@ -36,6 +36,9 @@ function* addProjectFlat({ payload: { project, callback, type = 'flat' } }) {
 				project.propertyImages.forEach((c) => {
 					formData.append('images', c);
 				});
+				if(project.defaultPhoto !== null && project.defaultPhoto !== undefined){
+					formData.append('default', project.defaultPhoto);
+				}
 
 				yield axios.post(
 					`/api/v1/projects/add-project-image/${responseData.data.project.id}`,

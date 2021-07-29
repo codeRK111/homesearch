@@ -10,6 +10,22 @@ const projectSchema = new Schema(
 			type: String,
 			required: [true, 'Missing parameter title'],
 		},
+		usp: {
+			type: String,
+			required: [true, 'Missing parameter usp'],
+		},
+		bookingAmount: {
+			type: Number,
+			required: [true, 'Missing parameter bookingAmount'],
+		},
+		emi: {
+			type: Number,
+			required: [true, 'Missing parameter emi'],
+		},
+		totalLandArea: {
+			type: Number,
+			required: [true, 'Missing parameter totalLandArea'],
+		},
 		slug: {
 			type: String,
 			unique: [true, 'slug already exists'],
@@ -124,6 +140,10 @@ const projectSchema = new Schema(
 			{
 				image: {
 					type: String,
+				},
+				default: {
+					type: Boolean,
+					default: false,
 				},
 			},
 		],

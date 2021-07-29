@@ -154,6 +154,13 @@ const useStyles = makeStyles((theme) => ({
 			height: '80px',
 		},
 	},
+	keyValueProject: {
+		position: 'relative',
+		height: '90px',
+		[theme.breakpoints.down('sm')]: {
+			height: '90px',
+		},
+	},
 	iconImage: {
 		[theme.breakpoints.down('sm')]: {
 			height: '1rem',

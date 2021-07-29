@@ -20,7 +20,7 @@
 	width: 90%;
 	position: absolute;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-end;
 	align-items: center;
 	background: #c3c1c1;
 	top: 0;
@@ -58,7 +58,7 @@
 		width 200ms linear;
 }
 .test > h1 {
-	font-size: 1.4rem;
+	font-size: 1.7rem;
 	word-break: break-all;
 }
 .projectValueWrapper > h1 {

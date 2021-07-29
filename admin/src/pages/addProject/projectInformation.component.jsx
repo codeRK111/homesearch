@@ -1,6 +1,3 @@
-import 'draft-js-static-toolbar-plugin/lib/plugin.css';
-import '../../../node_modules/draft-js-static-toolbar-plugin/lib/plugin.css';
-
 import {
 	Box,
 	Button,
@@ -8,49 +5,50 @@ import {
 	FormControlLabel,
 	Grid,
 } from '@material-ui/core';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
+import { EditorState } from 'draft-js';
+import 'draft-js-static-toolbar-plugin/lib/plugin.css';
+import React from 'react';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import '../../../node_modules/draft-js-static-toolbar-plugin/lib/plugin.css';
+import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import RowTextField from '../../components/rowTextField/rowTextField.component';
+import { fetchBuilders } from '../../redux/builder/builder.action';
 import {
-	selectAddPropertySaleLoading as addPropertyLoading,
-	selectLoading as resourcesLoading,
-	selectAmenities,
-	selectFurnishes,
-} from '../../redux/property/property.selector';
-import {
-	addPropertySale,
-	fetchAllPropertyResourcesStart,
-} from '../../redux/property/property.actions';
-import {
-	selectCityLoading as cityLoading,
-	selectFetchLocationLoading as locationLoading,
-	selectAllStates,
-	selectLoading as stateLoading,
-} from '../../redux/city/city.selector';
+	selectBuilders,
+	selectFetchBuildersLoading as fetchBuilderLoading,
+} from '../../redux/builder/builder.selector';
 import {
 	fetchAllStatesStart,
 	fetchCitiesStart as fetchCities,
 	fetchLocationssStart as fetchLocations,
 } from '../../redux/city/city.actions';
 import {
-	selectFetchBuildersLoading as fetchBuilderLoading,
-	selectBuilders,
-} from '../../redux/builder/builder.selector';
+	selectAllStates,
+	selectCityLoading as cityLoading,
+	selectFetchLocationLoading as locationLoading,
+	selectLoading as stateLoading,
+} from '../../redux/city/city.selector';
+import {
+	addPropertySale,
+	fetchAllPropertyResourcesStart,
+} from '../../redux/property/property.actions';
+import {
+	selectAddPropertySaleLoading as addPropertyLoading,
+	selectAmenities,
+	selectFurnishes,
+	selectLoading as resourcesLoading,
+} from '../../redux/property/property.selector';
+import { fetchAllUsersSTart } from '../../redux/users/users.actions';
 import {
 	selectAllUsers,
 	selectLoading as userLoading,
 } from '../../redux/users/users.selector';
-
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { EditorState } from 'draft-js';
-import React from 'react';
-import RowChildren from '../../components/rowCheckBox/rowCheckbox.component';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import RowTextField from '../../components/rowTextField/rowTextField.component';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { fetchAllUsersSTart } from '../../redux/users/users.actions';
-import { fetchBuilders } from '../../redux/builder/builder.action';
-import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
 
 const typeMenuItems = [
 	{
@@ -165,6 +163,10 @@ const initialState = {
 	distanceHospital: '',
 	reraId: '',
 	ownerNumber: '',
+	usp: '',
+	bookingAmount: '',
+	emi: '',
+	totalLandArea: '',
 };
 
 const filter = (state, ...excludeFields) => {
@@ -242,6 +244,7 @@ const ProjectInformation = ({
 		legalClearanceInitialValue
 	);
 	const [photos, setPhotos] = React.useState([]);
+	const [defaultPhoto, setDefaultPhoto] = React.useState(0);
 
 	const addMore = () => {
 		setPhotos([
@@ -350,6 +353,9 @@ const ProjectInformation = ({
 		const propertyImages = photos
 			.filter((c) => !!c.image)
 			.map((b) => b.image);
+			if(propertyImages[defaultPhoto]){
+				propertyToSubmit['defaultPhoto'] = defaultPhoto;
+			}
 
 		propertyToSubmit['propertyImages'] = propertyImages;
 		if (sAmenities.filter((c) => c.value).length > 0) {
@@ -592,6 +598,34 @@ const ProjectInformation = ({
 				type="number"
 				label="In KM"
 			/>
+			
+			<RowTextField
+				heading="Booking Amount"
+				name="bookingAmount"
+				onChange={handleChange}
+				type="number"
+				label="Rs"
+			/>
+			<RowTextField
+				heading="EMI Approx"
+				name="emi"
+				onChange={handleChange}
+				type="number"
+				label="Rs"
+			/>
+			<RowTextField
+				heading="Total Land Area"
+				name="totalLandArea"
+				onChange={handleChange}
+				type="number"
+				label="Sq Ft"
+			/>
+			<RowTextField
+				heading="USP"
+				name="usp"
+				onChange={handleChange}
+				type="text"
+			/>
 			<Box mt="1rem" mb="1rem">
 				<Grid item xs={12}>
 					Images
@@ -625,6 +659,19 @@ const ProjectInformation = ({
 							>
 								Upload
 							</label>
+							<Box display="flex">
+								<FormControlLabel
+									control={
+										<Checkbox
+											checked={defaultPhoto === i}
+											onChange={(e) => setDefaultPhoto(i)}
+											name="checkedB"
+											color="primary"
+										/>
+									}
+									label="Thumbnail"
+								/>
+							</Box>
 						</Grid>
 					))}
 				</Grid>
@@ -649,7 +696,10 @@ const ProjectInformation = ({
 							state &&
 							selectedCity &&
 							selectedLocation &&
-							selectedUser
+							selectedUser &&
+							property.bookingAmount &&
+							property.emi &&
+							property.usp 
 						)
 					}
 				>

@@ -576,9 +576,15 @@ exports.getProjectPropertyDetails = catchAsync(async (req, res, next) => {
 
 exports.handleProjectImage = catchAsync(async (req, res, next) => {
 	console.log(req.files);
-	const images = req.files.map((c, i) => ({
-		image: c.filename,
-	}));
+	let images = req.files.map((c) => ({ image: c.filename }));
+	if (req.body.default) {
+		images = images.map((c, i) => {
+			if (Number(req.body.default) === i) {
+				c.default = true;
+			}
+			return c;
+		});
+	}
 	const project = await Project.findByIdAndUpdate(
 		req.params.id,
 		{ $push: { photos: { $each: images } } },

@@ -1,23 +1,41 @@
-import { Box, Grid } from '@material-ui/core';
+import { Box, CardMedia, Grid, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 
 import Amenity from '../../../components/v2/amenity/amenity.component';
 import BuilderCard from '../../../components/v2/ownerCard/builderCard.component';
+import ChipWrapper from '../../../components/v2/chipWrapper/chipWrapper.component';
 import FlatHeader from '../../../components/v2/searchCard2/project/flatDetails.component';
 import FlatUnit from '../../../components/v2/searchCard2/project/unitConfig/flat.unit';
 import LandHeader from '../../../components/v2/searchCard2/project/landDetails.component';
 import LandUnit from '../../../components/v2/searchCard2/project/unitConfig/land.unit';
 import LegalClearance from '../propertyDetails/legalClearance.component';
+import { Link } from 'react-router-dom';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import SimilarProperties from '../../../components/v2/similarProperties/project.component';
 import Skeleton from '../../../components/v2/skeleton/propertyHeader.component';
 import TextSkeleton from '@material-ui/lab/Skeleton';
 import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
+import byBHK from '../../../assets/icons/byBHK.svg';
+import byType from '../../../assets/icons/byType.svg';
+import byUnit from '../../../assets/icons/byUnit.svg';
+import clsx from 'clsx';
 import { connect } from 'react-redux';
+import fPlan from '../../../assets/fPlan.png';
+import likeIcon from '../../../assets/icons/like.svg';
 import { setSnackbar } from '../../../redux/ui/ui.actions';
+import threeSixty from '../../../assets/360.png';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './projectDetailsPage.style';
+
+const locals = [
+	'Parking is easy',
+	'Walkable distance from market',
+	"It's a student area",
+	"It's dog friendly",
+	"It's a family area",
+	"It's a safe area",
+];
 
 const initialState = {
 	project: null,
@@ -205,12 +223,399 @@ const ProjectDetailsPage = ({
 								<p>
 									<i>{data.project.description}</i>
 								</p>
+
+								<Box mt="2rem">
+									<h2 className={globalClasses.colorPrimary}>
+										Virtual Tour
+									</h2>
+								</Box>
+								<Box>
+									<Grid container spacing={5}>
+										<Grid item xs={12} md={4}>
+											<Typography
+												variant="h5"
+												gutterBottom
+												className={clsx(
+													globalClasses.colorUtil,
+													globalClasses.bold
+												)}
+											>
+												Enjoy Virtual Tour From The
+												Comfort & Safety Of Your Home.
+											</Typography>
+											<Box>
+												<CardMedia
+													image={threeSixty}
+													className={
+														classes.cardMediaMediun
+													}
+												/>
+											</Box>
+										</Grid>
+										<Grid item xs={12} md={8}>
+											<Grid container spacing={3}>
+												<Grid item xs={6} md={4}>
+													<Box>
+														<CardMedia
+															image={threeSixty}
+															className={
+																classes.cardMedia
+															}
+														/>
+														<Typography align="center">
+															VT4464
+														</Typography>
+													</Box>
+												</Grid>
+												<Grid item xs={6} md={4}>
+													<Box>
+														<CardMedia
+															image={threeSixty}
+															className={
+																classes.cardMedia
+															}
+														/>
+														<Typography align="center">
+															VT4464
+														</Typography>
+													</Box>
+												</Grid>
+												<Grid item xs={6} md={4}>
+													<Box>
+														<CardMedia
+															image={threeSixty}
+															className={
+																classes.cardMedia
+															}
+														/>
+														<Typography align="center">
+															VT4464
+														</Typography>
+													</Box>
+												</Grid>
+												<Grid item xs={6} md={4}>
+													<Box>
+														<CardMedia
+															image={threeSixty}
+															className={
+																classes.cardMedia
+															}
+														/>
+														<Typography align="center">
+															VT4464
+														</Typography>
+													</Box>
+												</Grid>
+												<Grid item xs={6} md={4}>
+													<Box>
+														<CardMedia
+															image={threeSixty}
+															className={
+																classes.cardMedia
+															}
+														/>
+														<Typography align="center">
+															VT4464
+														</Typography>
+													</Box>
+												</Grid>
+												<Grid item xs={6} md={4}>
+													<Box>
+														<CardMedia
+															image={threeSixty}
+															className={
+																classes.cardMedia
+															}
+														/>
+														<Typography align="center">
+															VT4464
+														</Typography>
+													</Box>
+												</Grid>
+											</Grid>
+										</Grid>
+									</Grid>
+								</Box>
+								<Box mt="3rem">
+									<h2 className={globalClasses.colorPrimary}>
+										{data.project.title} Floor Plan
+									</h2>
+								</Box>
+								<Box
+									mt="2rem"
+									className={classes.floorPlanWrapper}
+								>
+									<Grid container spacing={1}>
+										<Grid item xs={12} md={5}>
+											<Box
+												className={
+													globalClasses.justifySpaceAround
+												}
+											>
+												<Box
+													className={
+														classes.planTypeWrapper
+													}
+												>
+													<img
+														src={byType}
+														alt="Unit"
+													/>
+													<Typography
+														variant="caption"
+														className={
+															globalClasses.bold
+														}
+													>
+														By Type
+													</Typography>
+												</Box>
+												<Box
+													className={
+														classes.planTypeWrapper
+													}
+												>
+													<img
+														src={byUnit}
+														alt="Unit"
+													/>
+													<Typography
+														variant="caption"
+														className={
+															globalClasses.bold
+														}
+													>
+														By Unit
+													</Typography>
+												</Box>
+												<Box
+													className={
+														classes.planTypeWrapper
+													}
+												>
+													<img
+														src={byBHK}
+														alt="Unit"
+													/>
+													<Typography
+														variant="caption"
+														className={
+															globalClasses.bold
+														}
+													>
+														By BHK
+													</Typography>
+												</Box>
+											</Box>
+											<Box mt="2rem">
+												<Box
+													className={
+														classes.floorPlanNameWrapper
+													}
+												>
+													{Array.from(
+														Array(12).keys()
+													).map((c) => (
+														<Box mb="1rem">
+															<Typography
+																variant="caption"
+																display="block"
+																className={clsx(
+																	globalClasses.bold,
+																	globalClasses.colorPrimary
+																)}
+															>
+																z1A210
+															</Typography>
+															<Typography
+																variant="caption"
+																display="block"
+																className={clsx(
+																	globalClasses.colorUtil
+																)}
+															>
+																1435 sqft/ 133
+																sqm
+															</Typography>
+															<Typography
+																variant="caption"
+																display="block"
+																className={clsx(
+																	globalClasses.colorUtil
+																)}
+															>
+																3Bed-3 Bath
+															</Typography>
+														</Box>
+													))}
+
+													<Box mb="1rem">
+														<Typography
+															variant="caption"
+															display="block"
+															className={clsx(
+																globalClasses.bold,
+																globalClasses.colorPrimary
+															)}
+														>
+															z1A210
+														</Typography>
+														<Typography
+															variant="caption"
+															display="block"
+															className={clsx(
+																globalClasses.colorUtil
+															)}
+														>
+															1435 sqft/ 133 sqm
+														</Typography>
+														<Typography
+															variant="caption"
+															display="block"
+															className={clsx(
+																globalClasses.colorUtil
+															)}
+														>
+															3Bed-3 Bath
+														</Typography>
+													</Box>
+													<Box mb="1rem">
+														<Typography
+															variant="caption"
+															display="block"
+															className={clsx(
+																globalClasses.bold,
+																globalClasses.colorPrimary
+															)}
+														>
+															z1A210
+														</Typography>
+														<Typography
+															variant="caption"
+															display="block"
+															className={clsx(
+																globalClasses.colorUtil
+															)}
+														>
+															1435 sqft/ 133 sqm
+														</Typography>
+														<Typography
+															variant="caption"
+															display="block"
+															className={clsx(
+																globalClasses.colorUtil
+															)}
+														>
+															3Bed-3 Bath
+														</Typography>
+													</Box>
+												</Box>
+											</Box>
+										</Grid>
+										<Grid item xs={false} md={1}></Grid>
+										<Grid item xs={12} md={5}>
+											<CardMedia
+												image={fPlan}
+												className={classes.fPlan}
+											/>
+										</Grid>
+									</Grid>
+								</Box>
 								<Box mt="2rem">
 									<h2 className={globalClasses.colorPrimary}>
 										Unit Configuration
 									</h2>
 								</Box>
 								{renderUnits(data)}
+								<Box mt="3rem" mb="2rem">
+									<h2 className={globalClasses.colorPrimary}>
+										What Locals Say About The Area
+									</h2>
+								</Box>
+								<Grid container spacing={3}>
+									{locals.map((c, i) => (
+										<Grid key={i} item xs={12} md={4}>
+											<div
+												className={
+													globalClasses.alignCenter
+												}
+											>
+												<ChipWrapper>
+													<div
+														className={clsx(
+															globalClasses.alignCenter,
+															globalClasses.justifyCenter
+														)}
+													>
+														<img
+															src={likeIcon}
+															alt="Like"
+															className={
+																classes.likeIcon
+															}
+														/>
+														<Box ml="0.5rem">
+															<h4
+																className={clsx(
+																	globalClasses.colorPrimary,
+																	globalClasses.noSpace,
+																	classes.likeValue
+																)}
+															>
+																92%
+															</h4>
+														</Box>
+													</div>
+												</ChipWrapper>
+												<Box ml="1rem">
+													<h4
+														className={clsx(
+															globalClasses.colorPrimary,
+															globalClasses.noSpace
+														)}
+													>
+														{c}
+													</h4>
+												</Box>
+											</div>
+										</Grid>
+									))}
+									<Grid item xs={12} md={4}>
+										<div
+											className={
+												globalClasses.alignCenter
+											}
+										>
+											<ChipWrapper>
+												<div
+													className={clsx(
+														globalClasses.justifyCenter
+													)}
+												>
+													<h4
+														className={clsx(
+															globalClasses.colorPrimary,
+															globalClasses.noSpace
+														)}
+													>
+														See All
+													</h4>
+												</div>
+											</ChipWrapper>
+											<Box ml="1rem">
+												<Link
+													className={clsx(
+														globalClasses.colorPrimary,
+														globalClasses.bold,
+														globalClasses.xsText
+													)}
+												>
+													Take Part In The Survey
+												</Link>
+											</Box>
+										</div>
+									</Grid>
+								</Grid>
 							</>
 						)}
 					</Grid>
