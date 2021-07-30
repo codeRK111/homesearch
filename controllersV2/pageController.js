@@ -1,6 +1,9 @@
 const LikedProperty = require('./../models/likedPropertyModel');
 const SavedProperty = require('./../models/savedPropertyModel');
 const Property = require('./../models/propertyModel');
+const Builder = require('./../models/builderModel');
+const Amenity = require('./../models/amenityModel');
+const Furnish = require('./../models/furnishingModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const mongoose = require('mongoose');
@@ -37,6 +40,22 @@ exports.getPageInfo = catchAsync(async (req, res, next) => {
 			postPropertyExpiredCount,
 			savedPropertyCount,
 			likedPropertyCount,
+		},
+	});
+});
+
+// Admin
+exports.getAddProjectPageInfo = catchAsync(async (req, res, next) => {
+	const builders = await Builder.find({ status: 'active' });
+	const amenities = await Amenity.find();
+	const furnishes = await Furnish.find();
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			builders,
+			amenities,
+			furnishes,
 		},
 	});
 });

@@ -45,6 +45,7 @@ import ManageTaskProperty from './pages/manageTaskProperty/manageTask.page';
 import MuiAlert from '@material-ui/lab/Alert';
 import ProjectAdvertisement from './pages/projectAdvertisement/projectAdvertisement.page';
 import ProjectPage from './pages/projects/projects.component';
+import ProjectSpecialitiesPage from './pages/projectSpeciality';
 import PropertyAdvertisement from './pages/propertyAdvertisement/propertyAdvertisement.page';
 import PropertyPackage from './pages/propertyPackage/propertyPackage.page';
 import PropertySale from './pages/properties/propertiesSale.component';
@@ -65,12 +66,15 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { setSnackbar } from './redux/ui/ui.actions';
 import { snackbarDetails } from './redux/ui/ui.selectors';
+import { withLoader } from './hoc/withLoader';
 
 // components
 
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const ManageTaskPropertyPageWithDrawer = Drawer(ManageTaskProperty);
+
+const ProjectSpecialitiesPageWithDrawer = Drawer(ProjectSpecialitiesPage);
 const QueryDetailsPageWithDrawer = Drawer(QueryDetailsPage);
 const BuilderPackagePageWithDrawer = Drawer(BuilderPackage);
 const PropertyPackagePageWithDrawer = Drawer(PropertyPackage);
@@ -843,6 +847,18 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 					render={(props) => (
 						<Protected
 							component={QueryDetailsPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/project-specialities"
+					render={(props) => (
+						<Protected
+							component={withLoader(
+								ProjectSpecialitiesPageWithDrawer
+							)}
 							{...props}
 						/>
 					)}

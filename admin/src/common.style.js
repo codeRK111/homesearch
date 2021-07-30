@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles((theme) => ({
+const useGlobalStyles = makeStyles((theme) => ({
 	justifyCenter: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -29,4 +29,10 @@ export default makeStyles((theme) => ({
 		fontWeight: 500,
 		textAlign: 'center',
 	},
+	buttonFullHeight: {
+		display: 'inline-block',
+		height: '100%',
+	},
 }));
+
+export default useGlobalStyles;

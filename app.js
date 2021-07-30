@@ -24,6 +24,7 @@ const v2PropertyRoute = require('./routesV2/propertyRoute');
 const v2SavePropertyRoute = require('./routesV2/savePropertyRoute');
 const v2LikePropertyRoute = require('./routesV2/likePropertyRoute');
 const v2PageRoute = require('./routesV2/pageRoute');
+const v2ProjectRoute = require('./routesV2/projectRoute');
 const queryRoute = require('./routes/propertyQueryRoute');
 const whatsappQueryRoute = require('./routes/whatsappQueryRoute');
 const propertyReviewRoute = require('./routes/propertyReviewRoute');
@@ -170,6 +171,7 @@ app.use('/api/v2/save-property', v2SavePropertyRoute);
 app.use('/api/v2/like-property', v2LikePropertyRoute);
 app.use('/api/v2/page', v2PageRoute);
 app.use('/api/v2/query', queryRouteV2);
+app.use('/api/v2/project', v2ProjectRoute);
 
 app.get('/*', function (req, res) {
 	res.sendFile(

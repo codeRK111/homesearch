@@ -19,10 +19,8 @@ import {
 	togglePropertySale,
 } from '../../redux/sidebar/sidebar.actions';
 
-import { AccordionDetails } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ApartmentIcon from '@material-ui/icons/Apartment';
-import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import ChatIcon from '@material-ui/icons/Chat';
 import Collapse from '@material-ui/core/Collapse';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -772,8 +770,20 @@ const MainListItems = ({
 			<Collapse in={selectProject} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
 					<AddProjectNode />
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/project-specialities')}
+					>
+						<ListItemIcon>
+							<PeopleAltIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Project Specialities" />
+					</ListItem>
+
 					{ViewPermissionNode(
 						'project',
+
 						<ListItem
 							button
 							className={classes.nested}
