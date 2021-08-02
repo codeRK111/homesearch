@@ -13,6 +13,7 @@ const SwipableViews = ({
 	selected,
 	setSelected,
 	dir = 'properties',
+	title = 'Homesearch18',
 }) => {
 	const [index, setIndex] = React.useState(0);
 	const classes = useStyles();
@@ -53,7 +54,7 @@ const SwipableViews = ({
 			<ViewFullImage
 				open={fullImageOpen}
 				handleClose={toggleFullImage(false)}
-				title={null}
+				title={title}
 				image={`/assets/${dir}/${selectedelectedImage.image}`}
 			/>
 			{index > 0 && totalImages > 4 && (

@@ -6,6 +6,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import React from 'react';
 import SwipeableViews from 'react-swipeable-views';
+import ViewFullImage from '../viewFullImage';
 import { autoPlay } from 'react-swipeable-views-utils';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
@@ -31,11 +32,17 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function SwipeableTextMobileStepper({ photos }) {
+function SwipeableTextMobileStepper({ photos, title }) {
 	const classes = useStyles();
 	const theme = useTheme();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const maxSteps = photos.length;
+	const [fullImageOpen, setFullImageOpen] = React.useState(false);
+	const [image, setImage] = React.useState(null);
+
+	const toggleFullImage = (status) => () => {
+		setFullImageOpen(status);
+	};
 
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -49,8 +56,20 @@ function SwipeableTextMobileStepper({ photos }) {
 		setActiveStep(step);
 	};
 
+	const onImageClick = (img) => () => {
+		// alert('Hello');
+		setImage(img);
+		toggleFullImage(true)();
+	};
+
 	return (
 		<div className={classes.root}>
+			<ViewFullImage
+				open={fullImageOpen}
+				handleClose={toggleFullImage(false)}
+				title={title}
+				image={image}
+			/>
 			<AutoPlaySwipeableViews
 				axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
 				index={activeStep}
@@ -61,6 +80,7 @@ function SwipeableTextMobileStepper({ photos }) {
 					<div key={step.label}>
 						{Math.abs(activeStep - index) <= 2 ? (
 							<img
+								onClick={onImageClick(step)}
 								className={classes.img}
 								src={step}
 								alt={'PropertyPhoto'}

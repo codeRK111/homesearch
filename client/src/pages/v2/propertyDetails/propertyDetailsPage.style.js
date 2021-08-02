@@ -90,9 +90,8 @@ const useStyles = makeStyles((theme) => ({
 		background: theme.shadowColor,
 		border: 'none',
 		minHeight: 100,
-		boxShadow:
-			'inset 11px 11px 23px #b3b3b3,inset -11px -11px 23px #ffffff',
-		borderRadius: 50,
+		boxShadow: 'inset 3px 3px 5px #b5b5b5,inset -3px -3px 5px #ffffff',
+		borderRadius: 20,
 		fontSize: '1rem',
 		padding: '1rem 1rem 1rem 2rem',
 		boxSizing: 'border-box',
@@ -169,6 +168,17 @@ const useStyles = makeStyles((theme) => ({
 	shareIcon: {
 		color: theme.primaryHeadingColor,
 		fontSize: '2rem',
+	},
+	button: {
+		cursor: 'pointer',
+		background: theme.shadowColor,
+		display: 'flex',
+		minWidth: '75px',
+		justifyContent: 'center',
+		borderRadius: '20px',
+		boxShadow: '10px 10px 20px #acacac,-10px -10px 20px #ffffff',
+		padding: '1rem 3rem',
+		border: 'none',
 	},
 }));
 export const LightTooltip = withStyles((theme) => ({

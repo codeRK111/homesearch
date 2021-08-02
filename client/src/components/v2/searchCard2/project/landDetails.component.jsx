@@ -3,20 +3,23 @@ import '../extra.css';
 import { Box, Grid } from '@material-ui/core';
 import {
 	capitalizeFirstLetter,
-	renderLandArea,
-	renderProjectTypes,
+	renderLandAreaGrid,
+	renderTypes,
+	toHumanReadble,
 } from '../../../../utils/render.utils';
 
+import ApartmentIcon from '@material-ui/icons/Apartment';
 import ImageCarousel from '../../imageCarousel';
-import PropertyTypeChip from '../../chip/propertyType.component';
 import React from 'react';
 import SwipablePhotos from '../../swipableViews';
 import ViewFullImage from '../../viewFullImage';
+import area from '../../../../assets/icons/area.svg';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
 import location from '../../../../assets/icons/location2.svg';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
+import tag from '../../../../assets/icons/tag2.svg';
 import useGlobalStyles from '../../../../common.style';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from '../searchCard.style';
@@ -28,7 +31,9 @@ const PropertyCard = ({ project, info }) => {
 	const [fullImageOpen, setFullImageOpen] = React.useState(false);
 	const m = moment(project.createdAt);
 	const img = project.photos[0]
-		? project.photos[0]
+		? project.photos.find((c) => c.default)
+			? project.photos.find((c) => c.default)
+			: project.photos[0]
 		: {
 				id: null,
 				image: city,
@@ -42,6 +47,8 @@ const PropertyCard = ({ project, info }) => {
 	const toggleFullImage = (status) => () => {
 		setFullImageOpen(status);
 	};
+
+	const areaInfo = renderLandAreaGrid(project, info);
 	return (
 		<div className={classes.wrapper}>
 			<ViewFullImage
@@ -85,6 +92,7 @@ const PropertyCard = ({ project, info }) => {
 									selected={defaultImage}
 									setSelected={setDefaultImage}
 									dir="projects"
+									title={project.title}
 								/>
 							</Box>
 						</div>
@@ -112,22 +120,57 @@ const PropertyCard = ({ project, info }) => {
 							</span>
 						</div>
 						<Box>
-							<PropertyTypeChip title={project.projectType} />
-							<h2>{project.title}</h2>
+							<div>
+								<h2 className={clsx(classes.propertyName)}>
+									{project.title}
+								</h2>
+								<span
+									className={clsx(
+										classes.smallText,
+										classes.colorGray
+									)}
+								>
+									{`${renderTypes(
+										project.projectType
+									)} For Sale`}
+								</span>
+							</div>
 						</Box>
 					</div>
 					<Box mt="1rem" className={globalClasses.justifyCenter}>
-						<div>
-							<div className={globalClasses.alignCenter}>
-								<img
-									src={location}
-									alt="Location"
-									className={classes.icon}
-								/>
-								<h4 className={classes.locationText}>
-									{project.location.name},{project.city.name}
-								</h4>
-							</div>
+						<div className={globalClasses.alignCenterOnly}>
+							<img
+								src={location}
+								alt="Location"
+								className={classes.icon}
+							/>
+							<h4 className={classes.locationText}>
+								{project.location.name},{project.city.name}
+							</h4>
+						</div>
+					</Box>
+					<Box className={globalClasses.justifyCenter}>
+						<div className={globalClasses.alignCenterOnly}>
+							<img
+								src={tag}
+								alt="Tag"
+								className={clsx(classes.icon)}
+							/>
+							<h4 className={classes.locationText}>
+								{renderTypes(project.projectType)}, &nbsp;&nbsp;
+								{toHumanReadble(project.totalLandArea)}
+								Acres, &nbsp;&nbsp;{project.usp}
+							</h4>
+						</div>
+					</Box>
+					<Box className={globalClasses.justifyCenter}>
+						<div className={globalClasses.alignCenterOnly}>
+							<ApartmentIcon
+								className={globalClasses.colorUtil}
+							/>
+							<h4 className={classes.locationText}>
+								{project.builder.developerName},
+							</h4>
 						</div>
 					</Box>
 					<Box mt="2rem">
@@ -136,16 +179,16 @@ const PropertyCard = ({ project, info }) => {
 								<Grid container spacing={1}>
 									<Grid
 										item
-										xs={5}
-										className={classes.keyValue}
+										xs={6}
+										className={classes.keyValueProject}
 									>
-										<Box className="projectValueWrapper">
+										<Box className="test">
 											<h1>{info.totalUnits}</h1>
 										</Box>
 									</Grid>
 									<Grid
 										item
-										xs={7}
+										xs={6}
 										style={{
 											display: 'flex',
 											alignItems: 'center',
@@ -161,25 +204,26 @@ const PropertyCard = ({ project, info }) => {
 								<Grid container spacing={1}>
 									<Grid
 										item
-										xs={5}
-										className={classes.keyValue}
+										xs={6}
+										className={classes.keyValueProject}
 									>
-										<Box className="projectValueWrapper">
+										<Box className="test">
 											<h1>
-												{renderLandArea(project, info)}
+												{project.bookingAmount / 100000}{' '}
+												L
 											</h1>
 										</Box>
 									</Grid>
 									<Grid
 										item
-										xs={7}
+										xs={6}
 										style={{
 											display: 'flex',
 											alignItems: 'center',
 										}}
 									>
 										<span className={classes.smallText}>
-											Plot Size (Sq. ft)
+											Booking Amount
 										</span>
 									</Grid>
 								</Grid>
@@ -188,26 +232,23 @@ const PropertyCard = ({ project, info }) => {
 								<Grid container spacing={1}>
 									<Grid
 										item
-										xs={5}
-										className={classes.keyValue}
+										xs={6}
+										className={classes.keyValueProject}
 									>
-										<Box className="projectValueWrapper">
-											<h1>
-												{info.minPrice / 100000} L -{' '}
-												{info.maxPrice / 100000} L
-											</h1>
+										<Box className="test">
+											<h1>{project.emi / 100000} L</h1>
 										</Box>
 									</Grid>
 									<Grid
 										item
-										xs={7}
+										xs={6}
 										style={{
 											display: 'flex',
 											alignItems: 'center',
 										}}
 									>
 										<span className={classes.smallText}>
-											Price Range
+											EMI
 										</span>
 									</Grid>
 								</Grid>
@@ -216,34 +257,131 @@ const PropertyCard = ({ project, info }) => {
 								<Grid container spacing={1}>
 									<Grid
 										item
-										xs={5}
-										className={classes.keyValue}
+										xs={6}
+										className={classes.keyValueProject}
 									>
-										<Box className="projectValueWrapper">
-											<h1>
-												{renderProjectTypes(
-													project,
-													info
-												)}
-											</h1>
+										<Box className="test">
+											<h1>{project.totalLandArea}</h1>
 										</Box>
 									</Grid>
 									<Grid
 										item
-										xs={7}
+										xs={6}
 										style={{
 											display: 'flex',
 											alignItems: 'center',
 										}}
 									>
 										<span className={classes.smallText}>
-											Unit Types
+											Total Land Area (Arces)
 										</span>
 									</Grid>
 								</Grid>
 							</Grid>
 						</Grid>
 					</Box>
+					<Box mt="1rem">
+						<h4 className={classes.colorSecondary}>Overview</h4>
+					</Box>
+					<Grid container spacing={1}>
+						{/* Super builtup area  */}
+						<Grid item xs={4} md={3}>
+							<Grid
+								container
+								direction="column"
+								spacing={1}
+								alignItems="center"
+							>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText,
+													classes.bold
+												)}
+											>
+												{areaInfo.min} sqft.
+											</span>
+										</Box>
+									</div>
+								</Grid>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText,
+													classes.bold
+												)}
+											>
+												{areaInfo.max} sqft.
+											</span>
+										</Box>
+									</div>
+								</Grid>
+							</Grid>
+						</Grid>
+
+						{/* Price  */}
+						<Grid item xs={4} md={3}>
+							<Grid
+								container
+								direction="column"
+								spacing={1}
+								alignItems="center"
+							>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText,
+													classes.bold
+												)}
+											>
+												{info.minPrice / 100000} L
+											</span>
+										</Box>
+									</div>
+								</Grid>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText,
+													classes.bold
+												)}
+											>
+												{info.maxPrice / 100000} L
+											</span>
+										</Box>
+									</div>
+								</Grid>
+							</Grid>
+						</Grid>
+					</Grid>
 				</Grid>
 			</Grid>
 		</div>

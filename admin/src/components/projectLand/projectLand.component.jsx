@@ -1,17 +1,19 @@
-import React from 'react';
-import { Box, Paper, Button, Grid, Divider } from '@material-ui/core';
-import RowTextField from '../rowTextField/rowFormikTextField.component';
-import RowSelect from '../rowSelect/rowFormikSelect.component';
-import RowHOC from '../rowCheckBox/rowCheckbox.component';
-import { Formik, Form, FieldArray } from 'formik';
-import PropTypes from 'prop-types';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { selectFurnishes } from '../../redux/property/property.selector';
+import { Box, Button, Divider, Grid, Paper } from '@material-ui/core';
+import { FieldArray, Form, Formik } from 'formik';
+
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import DeleteIcon from '@material-ui/icons/Delete';
 import FormHeader from '../formHeader/formHeader.component';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+import PropTypes from 'prop-types';
+import React from 'react';
+import RowHOC from '../rowCheckBox/rowCheckbox.component';
+import RowSelect from '../rowSelect/rowFormikSelect.component';
+import RowTextField from '../rowTextField/rowFormikTextField.component';
+import SelectSpeciality from '../selectSpeciality';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectFurnishes } from '../../redux/property/property.selector';
 
 const facingMenuItems = [
 	{
@@ -116,6 +118,7 @@ const initialState = {
 	verified: true,
 	transactionType: 'newbooking',
 	furnishes: [],
+	speciality: null,
 };
 
 const basicValidation = (error, values, ...excludeField) => {
@@ -287,6 +290,12 @@ const Land = ({ bhk, furnishes, setProject }) => {
 							name="plotFrontage"
 							type="number"
 							label="SqFt"
+						/>
+						<SelectSpeciality
+							speciality={values.speciality}
+							setSpeciality={(c) => {
+								setFieldValue('speciality', c);
+							}}
 						/>
 
 						<FormHeader text="Area" />

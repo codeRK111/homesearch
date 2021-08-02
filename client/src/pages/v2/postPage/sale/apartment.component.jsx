@@ -183,6 +183,10 @@ const RentApartment = ({
 			}
 		}
 
+		if (values.usp.trim().length > 20) {
+			error.usp = 'Max 20 characters allowed';
+		}
+
 		return error;
 	};
 
@@ -314,79 +318,30 @@ const RentApartment = ({
 									</Typography>
 								</Box>
 							)}
-							<Box
-								mt="1rem"
-								className={clsx(
-									classes.alignCenter,
-									gClasses.smFlexWrap
-								)}
-							>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={values.numberOfBedRooms === 1}
-										onClick={() => {
-											setFieldValue(
-												'numberOfBedRooms',
-												1
-											);
-										}}
-									>
-										1BHK
-									</Select>
-								</Box>
-
-								<Box className={classes.selectChip}>
-									<Select
-										selected={values.numberOfBedRooms === 2}
-										onClick={() => {
-											setFieldValue(
-												'numberOfBedRooms',
-												2
-											);
-										}}
-									>
-										2BHK
-									</Select>
-								</Box>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={values.numberOfBedRooms === 3}
-										onClick={() => {
-											setFieldValue(
-												'numberOfBedRooms',
-												3
-											);
-										}}
-									>
-										3BHK
-									</Select>
-								</Box>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={values.numberOfBedRooms === 4}
-										onClick={() => {
-											setFieldValue(
-												'numberOfBedRooms',
-												4
-											);
-										}}
-									>
-										4BHK
-									</Select>
-								</Box>
-								<Box className={classes.selectChip}>
-									<Select
-										selected={values.numberOfBedRooms === 5}
-										onClick={() => {
-											setFieldValue(
-												'numberOfBedRooms',
-												5
-											);
-										}}
-									>
-										4BHK+
-									</Select>
-								</Box>
+							<Box mt="1rem">
+								<Grid container spacing={3}>
+									{Array.from(
+										{ length: 6 },
+										(_, i) => i + 1
+									).map((c) => (
+										<Grid item xs={4} md={2} key={c}>
+											<Select
+												selected={
+													values.numberOfBedRooms ===
+													c
+												}
+												onClick={() => {
+													setFieldValue(
+														'numberOfBedRooms',
+														c
+													);
+												}}
+											>
+												{c}BHK
+											</Select>
+										</Grid>
+									))}
+								</Grid>
 							</Box>
 						</Box>
 						{/* Price and area */}
@@ -896,15 +851,29 @@ const RentApartment = ({
 						{/* USP  */}
 						<Box className={classes.rowWrapper2} mt="2rem">
 							<Box className={classes.columnWrapper}>
-								<span>USP</span>
-								<TextField
-									name="usp"
-									formLabel="USP *"
-									className={clsx(
-										classes.input,
-										classes.widthMD
-									)}
-								/>
+								<span>Speciality</span>
+								<Box>
+									<TextField
+										name="usp"
+										formLabel="USP *"
+										className={clsx(
+											classes.input,
+											classes.widthMD
+										)}
+									/>
+									<Box className={gClasses.justifyCenter}>
+										<Typography variant="caption">
+											Max 20 Characters
+										</Typography>
+									</Box>
+									<Box
+										className={clsx(gClasses.justifyCenter)}
+									>
+										<Typography variant="caption">
+											Ex: Swimming Pool, Near NH etc
+										</Typography>
+									</Box>
+								</Box>
 							</Box>
 						</Box>
 						<Box mt="2rem">

@@ -510,6 +510,13 @@ exports.getAllProjectInfo = catchAsync(async (req, res, next) => {
 	const projectInfo = await ProjectProperty.aggregate([
 		{ $match: { project: ObjectId(project.id) } },
 		{
+			$unwind: {
+				path: '$toiletTypes',
+				preserveNullAndEmptyArrays: true,
+			},
+		},
+
+		{
 			$group: {
 				_id: null,
 				minPrice: { $min: '$minPrice' },
@@ -517,9 +524,15 @@ exports.getAllProjectInfo = catchAsync(async (req, res, next) => {
 				totalUnits: { $sum: '$numberOfUnits' },
 				minArea: { $min: '$superBuiltupArea' },
 				maxArea: { $max: '$superBuiltupArea' },
+				minCarpetArea: { $min: '$carpetArea' },
+				maxCarpetArea: { $max: '$carpetArea' },
 				minAreaLand: { $min: '$plotArea' },
 				maxAreaLand: { $max: '$plotArea' },
 				bedRooms: { $push: '$numberOfBedrooms' },
+				bedRoomsMin: { $min: '$numberOfBedrooms' },
+				bedRoomsMax: { $max: '$numberOfBedrooms' },
+				toiletMin: { $min: '$toiletTypes.numbers' },
+				toiletMax: { $max: '$toiletTypes.numbers' },
 			},
 		},
 	]);

@@ -70,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
 				display: 'inline-block',
 			},
 		},
+		[theme.breakpoints.down('sm')]: {
+			padding: '0 1.5rem 0 0',
+		},
 	},
 	dateWrapper: {
 		display: 'flex',
@@ -97,6 +100,14 @@ const useStyles = makeStyles((theme) => ({
 		'& >span': {
 			fontWeight: 'bolder',
 			fontSize: '2rem',
+		},
+		[theme.breakpoints.down('sm')]: {
+			padding: '0.5rem',
+			height: '50px',
+			'& >span': {
+				fontWeight: 'bold',
+				fontSize: '1.2rem',
+			},
 		},
 	},
 

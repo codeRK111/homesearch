@@ -1,29 +1,30 @@
-import React from 'react';
+import './addProject.style.scss';
+
 import {
 	Box,
-	Paper,
+	Button,
 	Collapse,
+	Divider,
 	ListItem,
 	ListItemIcon,
 	ListItemText,
-	Divider,
-	Button,
+	Paper,
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
+
 import ApartmentIcon from '@material-ui/icons/Apartment';
-import PropertyTab from '../../components/projectWrapper/projectWrapper.component';
-import ProjectInformation from './projectInformation.component';
-import './addProject.style.scss';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
-import ProgressBar from '../../components/asyncProgressBar/asyncProgressBar.component';
-import { selectAddProjectFlatLoading as addProjectFlatLoading } from '../../redux/project/project.selector';
-import { addProjectFlat } from '../../redux/project/project.action';
 import IndependentHouse from '../../components/projectIndependentHouse/projectIndependentHouse.component';
+import ProgressBar from '../../components/asyncProgressBar/asyncProgressBar.component';
+import ProjectInformation from './projectInformation.component';
 import ProjectLand from '../../components/projectLand/projectLand.component';
+import PropTypes from 'prop-types';
+import PropertyTab from '../../components/projectWrapper/projectWrapper.component';
+import React from 'react';
+import { addProjectFlat } from '../../redux/project/project.action';
+import { selectAddProjectFlatLoading as addProjectFlatLoading } from '../../redux/project/project.selector';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { useHistory } from 'react-router-dom';
 
 const initialStateExpand = {
 	projectInfo: true,
@@ -33,9 +34,8 @@ const initialStateExpand = {
 const AddProject = ({ addProjectFlatLoading, addProjectFlat }) => {
 	const history = useHistory();
 	const [expand, setExpand] = React.useState(initialStateExpand);
-	const [projectInfoCompleted, setProjectInfoCompleted] = React.useState(
-		false
-	);
+	const [projectInfoCompleted, setProjectInfoCompleted] =
+		React.useState(false);
 	const [project, setProject] = React.useState({});
 	const [type, changeType] = React.useState('flat');
 	const [secureAdd, setSecureAdd] = React.useState(false);
@@ -113,13 +113,10 @@ const AddProject = ({ addProjectFlatLoading, addProjectFlat }) => {
 		switch (type) {
 			case 'flat':
 				return <PropertyTab setProject={setProjectState} />;
-				break;
 			case 'independenthouse':
 				return <IndependentHouse setProject={setProjectState} />;
-				break;
 			case 'land':
 				return <ProjectLand setProject={setProjectState} />;
-				break;
 			default:
 				break;
 		}

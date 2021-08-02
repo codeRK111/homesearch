@@ -61,7 +61,7 @@ const CBackdrop = withStyles({
 	},
 })(Backdrop);
 
-export default function FullScreenDialog({ title, open, handleClose, image }) {
+export default function ViewFullImage({ title, open, handleClose, image }) {
 	const classes = useStyles({ img: image });
 
 	return (
@@ -81,7 +81,7 @@ export default function FullScreenDialog({ title, open, handleClose, image }) {
 					id="customized-dialog-title"
 					onClose={handleClose}
 				>
-					Homesearch18
+					{title}
 				</CDialogTitle>
 				<Box className={classes.imageWrapper}>
 					<img

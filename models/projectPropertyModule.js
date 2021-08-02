@@ -6,6 +6,9 @@ const projectPropertySchema = new Schema(
 			type: String,
 			required: true,
 		},
+		tower: {
+			type: String,
+		},
 
 		description: {
 			type: String,
@@ -22,6 +25,11 @@ const projectPropertySchema = new Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: 'Project',
 			required: [true, 'property must have a projectId'],
+		},
+		speciality: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'ProjectSpeciality',
+			default: null,
 		},
 		numberOfBedrooms: {
 			type: Number,
@@ -236,6 +244,15 @@ projectPropertySchema.index({
 	status: 1,
 	city: 1,
 	type: 1,
+});
+
+projectPropertySchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'speciality',
+		select: 'id name',
+	});
+
+	next();
 });
 
 function requireIndependentHouse() {

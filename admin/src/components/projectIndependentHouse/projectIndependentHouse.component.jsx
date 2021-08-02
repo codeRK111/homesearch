@@ -1,26 +1,28 @@
-import React from 'react';
 import {
+	Box,
+	Button,
+	FormControl,
+	FormControlLabel,
+	Grid,
+	Paper,
 	Radio,
 	RadioGroup,
-	FormControlLabel,
-	FormControl,
-	Box,
-	Paper,
-	Button,
-	Grid,
 } from '@material-ui/core';
-import RowTextField from '../rowTextField/rowFormikTextField.component';
-import RowSelect from '../rowSelect/rowFormikSelect.component';
-import RowHOC from '../rowCheckBox/rowCheckbox.component';
-import { Formik, Form, FieldArray } from 'formik';
-import PropTypes from 'prop-types';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { selectFurnishes } from '../../redux/property/property.selector';
+import { FieldArray, Form, Formik } from 'formik';
+
 import Checkbox from '../checkbox/checkbox.component';
-import RowDatePicker from '../rowDatePicker/rowDatePicker.component';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import FormHeader from '../formHeader/formHeader.component';
+import PropTypes from 'prop-types';
+import React from 'react';
+import RowDatePicker from '../rowDatePicker/rowDatePicker.component';
+import RowHOC from '../rowCheckBox/rowCheckbox.component';
+import RowSelect from '../rowSelect/rowFormikSelect.component';
+import RowTextField from '../rowTextField/rowFormikTextField.component';
+import SelectSpeciality from '../selectSpeciality';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectFurnishes } from '../../redux/property/property.selector';
 
 const furnishMenuItems = [
 	{
@@ -114,6 +116,8 @@ const initialState = {
 	transactionType: 'newbooking',
 	furnishes: [],
 	numberOfBedrooms: 0,
+	speciality: null,
+	tower: '',
 };
 
 const basicValidation = (error, values, ...excludeField) => {
@@ -309,6 +313,18 @@ const IndependentHouse = ({ bhk, furnishes, setProject }) => {
 							name="westernToilet"
 							type="number"
 							label="Enter number"
+						/>
+						<RowTextField
+							heading="Tower Name"
+							name="tower"
+							type="text"
+							label="Enter Towen Name"
+						/>
+						<SelectSpeciality
+							speciality={values.speciality}
+							setSpeciality={(c) => {
+								setFieldValue('speciality', c);
+							}}
 						/>
 						<RowSelect
 							heading="Property ownership"

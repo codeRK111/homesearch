@@ -45,6 +45,7 @@ import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.componen
 import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
 import RowSelect from '../../components/rowSelect/rowFormikSelect.component';
 import RowTextField from '../../components/rowTextField/rowFormikTextField.component';
+import SelectSpeciality from '../../components/selectSpeciality';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -121,7 +122,7 @@ const ProjectInfo = ({
 		setFloorPlans([
 			...floorPlans,
 			{
-				id: photos.length + 1,
+				id: floorPlans.length + 1,
 				image: null,
 				label: '',
 			},
@@ -364,6 +365,19 @@ const ProjectInfo = ({
 								type="number"
 								name="westernToilet"
 								value={values.westernToilet}
+							/>
+							<RowTextField
+								heading="Tower Name"
+								name="tower"
+								type="text"
+								label="Enter Tower Name"
+							/>
+							<SelectSpeciality
+								speciality={values.speciality}
+								setSpeciality={(c) => {
+									setFieldValue('speciality', c);
+								}}
+								fetchFirst
 							/>
 							<RowTextField
 								heading="Salable area"

@@ -118,6 +118,9 @@ const RentHostel = ({
 			error.availableFor =
 				'Please choose suitable candidate for your property';
 		}
+		if (values.usp.trim().length > 20) {
+			error.usp = 'Max 20 characters allowed';
+		}
 
 		return error;
 	};
@@ -329,13 +332,12 @@ const RentHostel = ({
 								<Box className={classes.columnWrapper}>
 									<span>No. of Bedroom</span>
 									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
+										options={Array.from(
+											Array(29).keys()
+										).map((c) => ({
+											value: c + 1,
+											label: `${c + 1}`,
+										}))}
 										onSet={(val) => {
 											setFieldValue(
 												'numberOfBedRooms',
@@ -349,13 +351,12 @@ const RentHostel = ({
 								<Box className={classes.columnWrapper}>
 									<span>No. of indian bathroom </span>
 									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
+										options={Array.from(
+											Array(29).keys()
+										).map((c) => ({
+											value: c + 1,
+											label: `${c + 1}`,
+										}))}
 										onSet={(val) => {
 											setFieldValue('toiletIndian', val);
 										}}
@@ -366,13 +367,12 @@ const RentHostel = ({
 								<Box className={classes.columnWrapper}>
 									<span>No. of western bathroom </span>
 									<DropDown
-										options={[
-											{ value: 1, label: '1' },
-											{ value: 2, label: '2' },
-											{ value: 3, label: '3' },
-											{ value: 4, label: '4' },
-											{ value: 5, label: '5' },
-										]}
+										options={Array.from(
+											Array(29).keys()
+										).map((c) => ({
+											value: c + 1,
+											label: `${c + 1}`,
+										}))}
 										onSet={(val) => {
 											setFieldValue('toiletWestern', val);
 										}}
@@ -870,15 +870,29 @@ const RentHostel = ({
 						{/* USP  */}
 						<Box className={classes.rowWrapper2} mt="2rem">
 							<Box className={classes.columnWrapper}>
-								<span>USP</span>
-								<TextField
-									name="usp"
-									formLabel="USP *"
-									className={clsx(
-										classes.input,
-										classes.widthMD
-									)}
-								/>
+								<span>Speciality</span>
+								<Box>
+									<TextField
+										name="usp"
+										formLabel="USP *"
+										className={clsx(
+											classes.input,
+											classes.widthMD
+										)}
+									/>
+									<Box className={gClasses.justifyCenter}>
+										<Typography variant="caption">
+											Max 20 Characters
+										</Typography>
+									</Box>
+									<Box
+										className={clsx(gClasses.justifyCenter)}
+									>
+										<Typography variant="caption">
+											Ex: Swimming Pool, Near NH etc
+										</Typography>
+									</Box>
+								</Box>
 							</Box>
 						</Box>
 						<Box mt="2rem">

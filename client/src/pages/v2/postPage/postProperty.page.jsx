@@ -1,4 +1,4 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
 
 import ChoosePlan from '../../../components/v2/propertyPlans/choosePlan.component';
@@ -383,24 +383,18 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 						<Typography variant="h5" gutterBottom align="center">
 							Property Type
 						</Typography>
-						<Box
-							mt="1rem"
-							className={clsx(
-								classes.alignCenter,
-								gClasses.smFlexWrap
-							)}
-						>
-							{renderTypes().map((c, i) => (
-								<Box key={i} className={classes.selectChip}>
+						<Grid container spacing={3}>
+							{renderTypes().map((c) => (
+								<Grid item xs={3} md={3} key={c}>
 									<Select
 										selected={type === c.name}
 										onClick={handleType(c.name)}
 									>
 										{c.label}
 									</Select>
-								</Box>
+								</Grid>
 							))}
-						</Box>
+						</Grid>
 					</Box>
 					<Box mt="2rem">
 						{renderpFor()}

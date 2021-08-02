@@ -22,15 +22,18 @@ const PropertyCard = ({ property, edit = false }) => {
 	const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const [fullImageOpen, setFullImageOpen] = React.useState(false);
 	const m = moment(property.createdAt);
-	const img = property.photos
-		? property.photos[0]
-		: {
-				id: null,
-				image: city,
-		  };
+	const img =
+		property.photos.length > 0
+			? property.photos[0]
+			: {
+					id: null,
+					image: city,
+			  };
 	const [defaultImage, setDefaultImage] = React.useState(img);
 	const classes = useStyles({
-		img: `/assets/projects/${defaultImage.image}`,
+		img: defaultImage.id
+			? `/assets/projects/${defaultImage.image}`
+			: defaultImage.image,
 	});
 	const globalClasses = useGlobalStyles({ img: city });
 

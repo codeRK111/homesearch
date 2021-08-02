@@ -97,6 +97,24 @@ export const renderLandArea = (project, info) => {
 		return min === max ? min : `${info.minArea} - ${info.maxArea}`;
 	}
 };
+export const renderLandAreaGrid = (project, info) => {
+	let min;
+	let max;
+	if (project.projectType === 'land') {
+		min = Math.min(...info.minAreaLand);
+		max = Math.max(...info.maxAreaLand);
+
+		return {
+			min,
+			max,
+		};
+	} else {
+		return {
+			min,
+			max,
+		};
+	}
+};
 export const renderLandPlotArea = (area) => {
 	const min = Math.min(...area);
 	const max = Math.max(...area);

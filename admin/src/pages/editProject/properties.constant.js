@@ -21,6 +21,16 @@ export const configureIntialFlat = (initialValue, furnishes) => {
 			(c) => c.toiletType === 'western'
 		)['numbers'];
 	}
+	if (initialValue.speciality) {
+		clone.speciality = initialValue.speciality.id;
+	} else {
+		clone.speciality = null;
+	}
+	if (initialValue.tower) {
+		clone.tower = initialValue.tower;
+	} else {
+		clone.tower = '';
+	}
 	return clone;
 };
 
@@ -28,6 +38,11 @@ export const configureIntialLand = (initialValue) => {
 	const clone = {
 		...initialValue,
 	};
+	if (initialValue.speciality) {
+		clone.speciality = initialValue.speciality.id;
+	} else {
+		clone.speciality = null;
+	}
 	return clone;
 };
 

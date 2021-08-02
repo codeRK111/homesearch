@@ -42,6 +42,7 @@ const StyledMenu = withStyles({
 	<Menu
 		elevation={0}
 		getContentAnchorEl={null}
+		autoFocus={false}
 		anchorOrigin={{
 			vertical: 'bottom',
 			horizontal: 'center',
@@ -143,6 +144,15 @@ const HeroArea = ({
 		history.push(link);
 	};
 
+	React.useEffect(() => {
+		if (Boolean(anchorEl)) {
+			if (input.current) {
+				console.log('test');
+				input.current.focus();
+			}
+		}
+	}, [anchorEl]);
+
 	return (
 		<div className={classes.topMargin}>
 			<div className={classes.wrapper}>
@@ -229,6 +239,7 @@ const HeroArea = ({
 						keepMounted
 						open={Boolean(anchorEl)}
 						onClose={handleClose}
+						variant="menu"
 					>
 						<Box className={classes.menuWrapper}>
 							{!!asyncError && (
@@ -247,7 +258,12 @@ const HeroArea = ({
 								<Box p="1rem">
 									<Grid container spacing={1}>
 										{cities.map((c) => (
-											<Grid item xs={12} md={6}>
+											<Grid
+												item
+												xs={12}
+												md={6}
+												key={c.id}
+											>
 												<Box
 													key={c.id}
 													className={

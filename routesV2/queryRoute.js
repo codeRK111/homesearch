@@ -18,6 +18,9 @@ router.get(
 );
 
 // User
-router.route('/').post(authController.protect, queryController.addQuery);
+router
+	.route('/')
+	.post(authController.protect, queryController.addQuery)
+	.get(authController.protect, queryController.getUserQueries);
 
 module.exports = router;

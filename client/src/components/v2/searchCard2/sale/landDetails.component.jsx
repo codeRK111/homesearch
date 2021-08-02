@@ -68,6 +68,7 @@ const PropertyCard = ({ property, edit = false }) => {
 									  )
 									: [city]
 							}
+							title={property.title}
 						/>
 					) : (
 						<div className={classes.imageContainer}>

@@ -297,6 +297,22 @@ const ProjectInfo = ({
 								name="distanceHospital"
 								value={values.distanceHospital}
 							/>
+							<RowTextField
+								heading="Booking Amount"
+								name="bookingAmount"
+								value={values.bookingAmount}
+							/>
+							<RowTextField
+								heading="EMI"
+								name="emi"
+								value={values.emi}
+							/>
+							<RowTextField
+								heading="Total Land Area"
+								name="totalLandArea"
+								value={values.totalLandArea}
+							/>
+
 							<RowSelect
 								heading="Status"
 								name="status"

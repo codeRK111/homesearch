@@ -126,6 +126,14 @@ const globalStyle = makeStyles((theme) => ({
 			marginTop: '1rem !important',
 		},
 	},
+	xsTopMargin: {
+		[theme.breakpoints.down('sm')]: {
+			marginTop: '0.5rem !important',
+		},
+	},
+	topMargin: {
+		marginTop: '1rem !important',
+	},
 	smXsText: {
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '0.8rem',

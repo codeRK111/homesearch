@@ -8,7 +8,7 @@ import area from '../../../assets/icons/area.svg';
 import city from '../../../assets/city.jpg';
 import clsx from 'clsx';
 import location from '../../../assets/icons/location.svg';
-import tag from '../../../assets/icons/tag.svg';
+import tag from '../../../assets/icons/tag2.svg';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './propertyCard.style';
 
@@ -26,7 +26,12 @@ const TYPES = {
 };
 
 const PropertyCard = ({ data, showStatus = false }) => {
-	const classes = useStyles({ img: city });
+	const img = data.photos[0]
+		? data.photos.find((c) => c.default)
+			? `/assets/properties/${data.photos.find((c) => c.default).image}`
+			: `/assets/properties/${data.photos[0].image}`
+		: city;
+	const classes = useStyles({ img });
 	const globalClasses = useGlobalStyles();
 
 	const renderStatus = () => {
@@ -60,7 +65,9 @@ const PropertyCard = ({ data, showStatus = false }) => {
 				<div className={classes.wrapper}>
 					<div className={classes.imageWrapper}>
 						<div className={classes.overlay}>
-							<div className={classes.feature}>Feature</div>
+							{data.feature && (
+								<div className={classes.feature}>Feature</div>
+							)}
 						</div>
 					</div>
 					{/* <div className={classes.imageWrapper}>

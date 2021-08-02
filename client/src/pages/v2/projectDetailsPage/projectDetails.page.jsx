@@ -5,23 +5,19 @@ import Amenity from '../../../components/v2/amenity/amenity.component';
 import BuilderCard from '../../../components/v2/ownerCard/builderCard.component';
 import ChipWrapper from '../../../components/v2/chipWrapper/chipWrapper.component';
 import FlatHeader from '../../../components/v2/searchCard2/project/flatDetails.component';
-import FlatUnit from '../../../components/v2/searchCard2/project/unitConfig/flat.unit';
 import LandHeader from '../../../components/v2/searchCard2/project/landDetails.component';
-import LandUnit from '../../../components/v2/searchCard2/project/unitConfig/land.unit';
 import LegalClearance from '../propertyDetails/legalClearance.component';
 import { Link } from 'react-router-dom';
 import Nav from '../../../components/v2/pageNav/nav.component';
+import Properties from './properties.component';
 import SimilarProperties from '../../../components/v2/similarProperties/project.component';
 import Skeleton from '../../../components/v2/skeleton/propertyHeader.component';
 import TextSkeleton from '@material-ui/lab/Skeleton';
 import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
-import byBHK from '../../../assets/icons/byBHK.svg';
-import byType from '../../../assets/icons/byType.svg';
-import byUnit from '../../../assets/icons/byUnit.svg';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
-import fPlan from '../../../assets/fPlan.png';
+import { getProjectProperty } from '../../../utils/async';
 import likeIcon from '../../../assets/icons/like.svg';
 import { setSnackbar } from '../../../redux/ui/ui.actions';
 import threeSixty from '../../../assets/360.png';
@@ -140,18 +136,26 @@ const ProjectDetailsPage = ({
 				break;
 		}
 	};
-	const renderUnits = (info) => {
-		switch (info.project.projectType) {
-			case 'flat':
-			case 'independenthouse':
-				return <FlatUnit properties={info.properties} />;
-			case 'land':
-				return <LandUnit properties={info.properties} />;
 
-			default:
-				break;
+	React.useEffect(() => {
+		if (data.project) {
+			cancelToken.current = axios.CancelToken.source();
+			getProjectProperty(
+				{
+					project: data.project.id,
+					type: 'type',
+				},
+				cancelToken.current,
+				(t) => {}
+			)
+				.then((resp) => {
+					console.log(resp);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 		}
-	};
+	}, [data.project]);
 
 	return (
 		<div>
@@ -341,192 +345,8 @@ const ProjectDetailsPage = ({
 										{data.project.title} Floor Plan
 									</h2>
 								</Box>
-								<Box
-									mt="2rem"
-									className={classes.floorPlanWrapper}
-								>
-									<Grid container spacing={1}>
-										<Grid item xs={12} md={5}>
-											<Box
-												className={
-													globalClasses.justifySpaceAround
-												}
-											>
-												<Box
-													className={
-														classes.planTypeWrapper
-													}
-												>
-													<img
-														src={byType}
-														alt="Unit"
-													/>
-													<Typography
-														variant="caption"
-														className={
-															globalClasses.bold
-														}
-													>
-														By Type
-													</Typography>
-												</Box>
-												<Box
-													className={
-														classes.planTypeWrapper
-													}
-												>
-													<img
-														src={byUnit}
-														alt="Unit"
-													/>
-													<Typography
-														variant="caption"
-														className={
-															globalClasses.bold
-														}
-													>
-														By Unit
-													</Typography>
-												</Box>
-												<Box
-													className={
-														classes.planTypeWrapper
-													}
-												>
-													<img
-														src={byBHK}
-														alt="Unit"
-													/>
-													<Typography
-														variant="caption"
-														className={
-															globalClasses.bold
-														}
-													>
-														By BHK
-													</Typography>
-												</Box>
-											</Box>
-											<Box mt="2rem">
-												<Box
-													className={
-														classes.floorPlanNameWrapper
-													}
-												>
-													{Array.from(
-														Array(12).keys()
-													).map((c) => (
-														<Box mb="1rem">
-															<Typography
-																variant="caption"
-																display="block"
-																className={clsx(
-																	globalClasses.bold,
-																	globalClasses.colorPrimary
-																)}
-															>
-																z1A210
-															</Typography>
-															<Typography
-																variant="caption"
-																display="block"
-																className={clsx(
-																	globalClasses.colorUtil
-																)}
-															>
-																1435 sqft/ 133
-																sqm
-															</Typography>
-															<Typography
-																variant="caption"
-																display="block"
-																className={clsx(
-																	globalClasses.colorUtil
-																)}
-															>
-																3Bed-3 Bath
-															</Typography>
-														</Box>
-													))}
+								<Properties project={data.project} />
 
-													<Box mb="1rem">
-														<Typography
-															variant="caption"
-															display="block"
-															className={clsx(
-																globalClasses.bold,
-																globalClasses.colorPrimary
-															)}
-														>
-															z1A210
-														</Typography>
-														<Typography
-															variant="caption"
-															display="block"
-															className={clsx(
-																globalClasses.colorUtil
-															)}
-														>
-															1435 sqft/ 133 sqm
-														</Typography>
-														<Typography
-															variant="caption"
-															display="block"
-															className={clsx(
-																globalClasses.colorUtil
-															)}
-														>
-															3Bed-3 Bath
-														</Typography>
-													</Box>
-													<Box mb="1rem">
-														<Typography
-															variant="caption"
-															display="block"
-															className={clsx(
-																globalClasses.bold,
-																globalClasses.colorPrimary
-															)}
-														>
-															z1A210
-														</Typography>
-														<Typography
-															variant="caption"
-															display="block"
-															className={clsx(
-																globalClasses.colorUtil
-															)}
-														>
-															1435 sqft/ 133 sqm
-														</Typography>
-														<Typography
-															variant="caption"
-															display="block"
-															className={clsx(
-																globalClasses.colorUtil
-															)}
-														>
-															3Bed-3 Bath
-														</Typography>
-													</Box>
-												</Box>
-											</Box>
-										</Grid>
-										<Grid item xs={false} md={1}></Grid>
-										<Grid item xs={12} md={5}>
-											<CardMedia
-												image={fPlan}
-												className={classes.fPlan}
-											/>
-										</Grid>
-									</Grid>
-								</Box>
-								<Box mt="2rem">
-									<h2 className={globalClasses.colorPrimary}>
-										Unit Configuration
-									</h2>
-								</Box>
-								{renderUnits(data)}
 								<Box mt="3rem" mb="2rem">
 									<h2 className={globalClasses.colorPrimary}>
 										What Locals Say About The Area

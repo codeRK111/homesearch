@@ -42,6 +42,7 @@ import React from 'react';
 import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
 import RowSelect from '../../components/rowSelect/rowFormikSelect.component';
 import RowTextField from '../../components/rowTextField/rowFormikTextField.component';
+import SelectSpeciality from '../../components/selectSpeciality';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -115,7 +116,7 @@ const ProjectInfo = ({
 		setFloorPlans([
 			...floorPlans,
 			{
-				id: photos.length + 1,
+				id: floorPlans.length + 1,
 				image: null,
 				label: '',
 			},
@@ -414,6 +415,13 @@ const ProjectInfo = ({
 							<Box mb="0.5rem" mt="0.5rem">
 								<Divider />
 							</Box>
+							<SelectSpeciality
+								speciality={values.speciality}
+								setSpeciality={(c) => {
+									setFieldValue('speciality', c);
+								}}
+								fetchFirst
+							/>
 							<RowTextField
 								heading="Plot frontage"
 								type="number"

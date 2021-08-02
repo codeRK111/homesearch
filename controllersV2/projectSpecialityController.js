@@ -29,6 +29,8 @@ exports.getSpecialities = catchAsync(async (req, res, next) => {
 		}
 	});
 
+	console.log(filter);
+
 	const totalDocs = await ProjectSpeciality.countDocuments(filter);
 
 	const specialities = await ProjectSpeciality.find(filter)

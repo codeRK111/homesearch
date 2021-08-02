@@ -1,17 +1,17 @@
-import React from 'react';
-import { Box, Paper, Backdrop, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { fetchProjectDetails } from '../../redux/project/project.action';
-import { selectFetchProjectDetailsLoading } from '../../redux/project/project.selector';
+import { Backdrop, Box, CircularProgress, Paper } from '@material-ui/core';
 
-import ProjectInfo from './projectInfo.component';
 import Flat from './projectFlat.component';
 import IndependentHouse from './projectIndependentHouse.component';
 import Land from './projectLand.component';
+import ProjectInfo from './projectInfo.component';
+import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { fetchProjectDetails } from '../../redux/project/project.action';
 import { initialProjectDetails } from './projectInfo.constant';
+import { makeStyles } from '@material-ui/core/styles';
+import { selectFetchProjectDetailsLoading } from '../../redux/project/project.selector';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -69,7 +69,6 @@ const EditProject = ({
 						refetch={refetch}
 					/>
 				);
-				break;
 			case 'independenthouse':
 				return (
 					<IndependentHouse
@@ -78,7 +77,6 @@ const EditProject = ({
 						refetch={refetch}
 					/>
 				);
-				break;
 			case 'land':
 				return (
 					<Land
@@ -87,7 +85,6 @@ const EditProject = ({
 						refetch={refetch}
 					/>
 				);
-				break;
 
 			default:
 				break;

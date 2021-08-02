@@ -124,6 +124,20 @@ const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 		if (values.plotArea < values.plotFrontage) {
 			error.plotFrontage = 'Plot area cannot be less than plot frontage';
 		}
+		if (values.usp.trim().length > 20) {
+			error.usp = 'Max 20 characters allowed';
+		}
+
+		const blockArea = values.legalClearance.find(
+			(c) => c.name === 'withinBlockArea' && c.value
+		);
+		const devAuthority = values.legalClearance.find(
+			(c) => c.name === 'withinAreaOfDevelopmentAuthrity' && c.value
+		);
+		if (!!blockArea && !!devAuthority) {
+			error.legalClearance =
+				'Property cannot be within both block area and development authority';
+		}
 
 		return error;
 	};
@@ -474,6 +488,16 @@ const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 							>
 								Legal Clearance
 							</Typography>
+							{errors.legalClearance && (
+								<Box align="center">
+									<Typography
+										className={gClasses.colorWarning}
+										variant="caption"
+									>
+										{errors.legalClearance}
+									</Typography>
+								</Box>
+							)}
 							<Grid container spacing={0}>
 								<FieldArray name="legalClearance">
 									{(arrayHelpers) => (
@@ -518,15 +542,29 @@ const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 						{/* USP  */}
 						<Box className={classes.rowWrapper2} mt="2rem">
 							<Box className={classes.columnWrapper}>
-								<span>USP</span>
-								<TextField
-									name="usp"
-									formLabel="USP *"
-									className={clsx(
-										classes.input,
-										classes.widthMD
-									)}
-								/>
+								<span>Speciality</span>
+								<Box>
+									<TextField
+										name="usp"
+										formLabel="USP *"
+										className={clsx(
+											classes.input,
+											classes.widthMD
+										)}
+									/>
+									<Box className={gClasses.justifyCenter}>
+										<Typography variant="caption">
+											Max 20 Characters
+										</Typography>
+									</Box>
+									<Box
+										className={clsx(gClasses.justifyCenter)}
+									>
+										<Typography variant="caption">
+											Ex: Swimming Pool, Near NH etc
+										</Typography>
+									</Box>
+								</Box>
 							</Box>
 						</Box>
 						<Box mt="2rem">

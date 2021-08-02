@@ -98,7 +98,13 @@ const PropertyCard = ({ property, propertyItems }) => {
 								</span>
 							</div>
 						</div>
-						<Box mt="1rem" className={globalClasses.justifyCenter}>
+						<Box
+							mt="1rem"
+							className={clsx(
+								globalClasses.justifyCenter,
+								globalClasses.xsTopMargin
+							)}
+						>
 							<div className={globalClasses.alignCenterOnly}>
 								<img
 									src={location}
@@ -122,7 +128,7 @@ const PropertyCard = ({ property, propertyItems }) => {
 									{renderTypes(property.projectType)},
 									&nbsp;&nbsp;
 									{toHumanReadble(property.totalLandArea)}
-									Sq.Ft, &nbsp;&nbsp;{property.usp}
+									Acres, &nbsp;&nbsp;{property.usp}
 								</h4>
 							</div>
 						</Box>
@@ -137,7 +143,7 @@ const PropertyCard = ({ property, propertyItems }) => {
 							</div>
 						</Box>
 
-						<Box mt="2rem">
+						<Box mt="2rem" className={globalClasses.smTopMargin}>
 							<Apartment
 								property={property}
 								propertyItems={propertyItems}

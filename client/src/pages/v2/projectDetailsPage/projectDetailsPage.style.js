@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: '1rem',
 		padding: '1rem 1rem 1rem 2rem',
 		[theme.breakpoints.down('sm')]: {
-			padding: '0.5rem'
+			padding: '0.5rem',
 		},
 		'&:focus': {
 			outline: 'none',
@@ -207,7 +207,6 @@ const useStyles = makeStyles((theme) => ({
 		overflow: 'auto',
 		height: 300,
 
-
 		'&::-webkit-scrollbar': {
 			width: 20,
 		},
@@ -236,9 +235,21 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
+		padding: '0 0.5rem 0.5rem 0.5rem ',
+		cursor: 'pointer',
 		'& img': {
 			width: 20,
 			height: 20,
+		},
+	},
+	planSelected: {
+		borderBottom: `4px solid ${theme.utilColor}`,
+	},
+	propertyTitle: {
+		padding: '0.5rem',
+		'&:hover': {
+			background: '#cccccc',
+			cursor: 'pointer',
 		},
 	},
 }));

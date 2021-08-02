@@ -24,6 +24,7 @@ import PropertyAction from './propertyAction.component';
 import React from 'react';
 import SimilarProperties from '../../../components/v2/similarProperties';
 import axios from 'axios';
+import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import useGlobalStyles from '../../../common.style';
@@ -39,6 +40,7 @@ const SearchPage = ({
 	setSnackbar,
 }) => {
 	const [review, setReview] = React.useState('');
+	const input = React.useRef(null);
 	const [reviews, setReviews] = React.useState([]);
 	const [postReview, setPostReview] = React.useState(false);
 	const [postReviewLoading, setPostReviewLoading] = React.useState(false);
@@ -126,6 +128,16 @@ const SearchPage = ({
 			} else {
 				addReview();
 			}
+		}
+	};
+
+	const onComment = () => {
+		if (!review.trim()) return;
+		if (!isAuthenticated) {
+			setPostReview(true);
+			toggleLoginPopup(true);
+		} else {
+			addReview();
 		}
 	};
 
@@ -525,8 +537,30 @@ const SearchPage = ({
 										value={review}
 										onChange={handleChange}
 										onKeyDown={handleKeypress}
+										ref={input}
+										onFocus={(e) => {
+											if (input.current) {
+												input.current.placeholder = '';
+											}
+										}}
+										onBlur={(e) => {
+											if (input.current) {
+												input.current.placeholder =
+													'Leave A Comment !';
+											}
+										}}
 									/>
 								</Box>
+								<button
+									onClick={onComment}
+									className={clsx(
+										classes.button,
+										globalClasses.topMargin,
+										globalClasses.xsTopMargin
+									)}
+								>
+									Submit
+								</button>
 								<Box mt="3rem">
 									{reviews.map((c) => (
 										<Box key={c.id} mt="1rem">
@@ -574,7 +608,12 @@ const SearchPage = ({
 									))}
 								</Box>
 								<Box mt="2rem">
-									<h2>Similar Properties For Rent</h2>
+									<h2>
+										Similar Properties For{' '}
+										{capitalizeFirstLetter(
+											asyncState.property.for
+										)}
+									</h2>
 								</Box>
 								<SimilarProperties
 									pFor={asyncState.property.for}
