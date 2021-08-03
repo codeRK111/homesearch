@@ -173,6 +173,11 @@ app.use('/api/v2/page', v2PageRoute);
 app.use('/api/v2/query', queryRouteV2);
 app.use('/api/v2/project', v2ProjectRoute);
 
+app.all('/api/*', (req, res, next) => {
+	console.log(req);
+	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));
+});
+
 app.get('/*', function (req, res) {
 	res.sendFile(
 		require('path').resolve(__dirname, 'client', 'build', 'index.html')

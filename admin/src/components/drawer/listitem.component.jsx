@@ -773,6 +773,16 @@ const MainListItems = ({
 					<ListItem
 						button
 						className={classes.nested}
+						onClick={onUsersClick('/add-project-v2')}
+					>
+						<ListItemIcon>
+							<PeopleAltIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Add Project v2" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
 						onClick={onUsersClick('/project-specialities')}
 					>
 						<ListItemIcon>

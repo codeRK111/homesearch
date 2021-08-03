@@ -33,6 +33,9 @@ const useGlobalStyles = makeStyles((theme) => ({
 		display: 'inline-block',
 		height: '100%',
 	},
+	errorColor: {
+		color: 'red',
+	},
 }));
 
 export default useGlobalStyles;

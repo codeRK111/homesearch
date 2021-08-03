@@ -4,7 +4,7 @@ import React from 'react';
 import { useField } from 'formik';
 import useStyles from './formik.styles';
 
-const RowSelect = ({ formLabel, options, ...otherProps }) => {
+const FSelect = ({ formLabel, options, ...otherProps }) => {
 	const classes = useStyles();
 	const [field, meta] = useField(otherProps);
 	let helperText = meta.touched && meta.error;
@@ -31,4 +31,4 @@ const RowSelect = ({ formLabel, options, ...otherProps }) => {
 	);
 };
 
-export default RowSelect;
+export default FSelect;

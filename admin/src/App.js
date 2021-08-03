@@ -9,6 +9,7 @@ import AddCityPage from './pages/addCity/addCity.component';
 import AddLocationPage from './pages/addLocation/addLocation.component';
 import AddProjectAdvertisementLeads from './pages/addProjectAdvertisementLeads/addLeads.page';
 import AddProjectPage from './pages/addProject/addProject.component';
+import AddProjectv2Page from './pages/addProject/v2';
 import AddProperty from './pages/addProperty/addProperty.component';
 import AddPropertyAdvertisement from './pages/propertyAdvertisement/AddStaff.page';
 import AddPropertyForSale from './pages/addPropertyForSale/addPropertyWrapper.component';
@@ -75,6 +76,7 @@ import { withLoader } from './hoc/withLoader';
 const ManageTaskPropertyPageWithDrawer = Drawer(ManageTaskProperty);
 
 const ProjectSpecialitiesPageWithDrawer = Drawer(ProjectSpecialitiesPage);
+const AddProjectv2PageWithDrawer = Drawer(AddProjectv2Page);
 const QueryDetailsPageWithDrawer = Drawer(QueryDetailsPage);
 const BuilderPackagePageWithDrawer = Drawer(BuilderPackage);
 const PropertyPackagePageWithDrawer = Drawer(PropertyPackage);
@@ -406,6 +408,16 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 									value: 'create',
 								},
 							])}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/add-project-v2"
+					render={(props) => (
+						<Protected
+							component={AddProjectv2PageWithDrawer}
 							{...props}
 						/>
 					)}
