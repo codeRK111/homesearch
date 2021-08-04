@@ -6,6 +6,11 @@ const useGlobalStyles = makeStyles((theme) => ({
 		justifyContent: 'center',
 		width: '100%',
 	},
+	justifyBetween: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		width: '100%',
+	},
 	alignCenter: {
 		display: 'flex',
 		alignItems: 'center',

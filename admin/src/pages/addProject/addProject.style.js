@@ -18,5 +18,12 @@ const useStyles = makeStyles((theme) => ({
 		width: '100px',
 		objectFit: 'contain',
 	},
+	towerWrapper: {
+		padding: '1rem',
+	},
+	propertyItemsContainer: {
+		height: '15rem',
+		overflow: 'auto',
+	},
 }));
 export default useStyles;

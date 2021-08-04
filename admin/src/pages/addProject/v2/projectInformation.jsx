@@ -1,11 +1,13 @@
-import { Box, Button, Grid } from '@material-ui/core';
+import { Box, Button, Grid, Typography } from '@material-ui/core';
 import { Field, FieldArray, Form, Formik } from 'formik';
 
 import FSelect from '../../../components/formik/select.component';
 import FTextField from '../../../components/formik/textField.component';
 import React from 'react';
 import SearchPlace from '../../../components/searchPlace';
+import useGlobalStyles from '../../../common.style';
 import useStyles from '../addProject.style';
+import { validateNumber } from '../../../utils/validation.utils';
 
 // import CheckBox from '../../../components/formik/checkbox.component';
 
@@ -50,14 +52,88 @@ const statusMenuItems = [
 	},
 ];
 
-const ProjectInformation = ({ resources, projectType }) => {
+const ProjectInformation = ({
+	resources,
+	projectType,
+	handleNext,
+	setProjectInfo,
+}) => {
 	const classes = useStyles();
+	const gClasses = useGlobalStyles();
 	const validate = (values) => {
 		const error = {};
+		if (!values.title) {
+			error.title = 'Enter project name';
+		}
+		if (!values.builder) {
+			error.builder = 'Enter builder name';
+		}
+		if (!values.description) {
+			error.description = 'Enter Description';
+		}
+		if (!values.usp) {
+			error.usp = 'Enter USP';
+		}
+		if (!values.city) {
+			error.city = 'Select City';
+		}
+		if (!values.location) {
+			error.location = 'Select Location';
+		}
+		if (!values.thumbnailImage) {
+			error.thumbnailImage = 'Select Thumbnail Image';
+		}
+		if (!values.masterFloorPlan) {
+			error.masterFloorPlan = 'Select Master floorplan image';
+		}
+		if (!values.geogrophicalImage) {
+			error.geogrophicalImage = 'Select Geographical Image';
+		}
+		if (!validateNumber(values.towers)) {
+			error.towers = 'Please enter a number';
+		}
+		if (!validateNumber(values.bookingAmount)) {
+			error.bookingAmount = 'Please enter a number';
+		}
+		if (!validateNumber(values.emi)) {
+			error.emi = 'Please enter a number';
+		}
+		if (!validateNumber(values.totalLandArea)) {
+			error.totalLandArea = 'Please enter a number';
+		}
+
+		if (
+			values.legalClearance.find((c) => c.name === 'reraapproved') &&
+			values.legalClearance.find((c) => c.name === 'reraapproved')[
+				'value'
+			] &&
+			!values.reraId
+		) {
+			error.reraId = 'required';
+		}
+		if (
+			values.legalClearance.find((c) => c.name === 'numberOfOwner') &&
+			values.legalClearance.find((c) => c.name === 'numberOfOwner')[
+				'value'
+			] &&
+			!values.ownerNumber
+		) {
+			error.ownerNumber = 'required';
+		}
+
+		if (values.usp.trim().length > 20) {
+			error.usp = 'Max 20 characters allowed';
+		}
 		return error;
 	};
 
-	const onSubmit = (values) => {};
+	const onSubmit = (values) => {
+		setProjectInfo({
+			id: null,
+			towers: values.towers,
+		});
+		handleNext();
+	};
 	console.log({ resources });
 	return (
 		<div>
@@ -74,8 +150,9 @@ const ProjectInformation = ({ resources, projectType }) => {
 				validate={validate}
 				onSubmit={onSubmit}
 			>
-				{({ values, setFieldValue, resetForm }) => (
+				{({ values, setFieldValue, errors }) => (
 					<Form>
+						{/* <pre>{JSON.stringify(errors, null, 2)}</pre> */}
 						<Grid container spacing={3}>
 							<Grid item xs={12} md={6}>
 								<FSelect
@@ -113,6 +190,7 @@ const ProjectInformation = ({ resources, projectType }) => {
 										setFieldValue('city', c);
 										setFieldValue('location', null);
 									}}
+									error={errors.city}
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -124,6 +202,7 @@ const ProjectInformation = ({ resources, projectType }) => {
 									onSelect={(c) =>
 										setFieldValue('location', c)
 									}
+									error={errors.location}
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -223,7 +302,7 @@ const ProjectInformation = ({ resources, projectType }) => {
 								) &&
 								values.legalClearance.find(
 									(c) => c.name === 'reraapproved'
-								) && (
+								)['value'] && (
 									<Grid item xs={12}>
 										<FTextField
 											formLabel="RERA ID"
@@ -261,6 +340,18 @@ const ProjectInformation = ({ resources, projectType }) => {
 								<h3>Images</h3>
 								<Grid container spacing={3}>
 									<Grid item xs={12} md={3}>
+										{errors.thumbnailImage && (
+											<Box>
+												<Typography
+													variant="caption"
+													className={
+														gClasses.errorColor
+													}
+												>
+													{errors.thumbnailImage}
+												</Typography>
+											</Box>
+										)}
 										<input
 											type="file"
 											id="thumbnail-image"
@@ -277,6 +368,7 @@ const ProjectInformation = ({ resources, projectType }) => {
 										<label htmlFor="thumbnail-image">
 											Thumbnail
 										</label>
+
 										{values.thumbnailImage && (
 											<Box>
 												<img
@@ -292,6 +384,18 @@ const ProjectInformation = ({ resources, projectType }) => {
 										)}
 									</Grid>
 									<Grid item xs={12} md={3}>
+										{errors.masterFloorPlan && (
+											<Box>
+												<Typography
+													variant="caption"
+													className={
+														gClasses.errorColor
+													}
+												>
+													{errors.masterFloorPlan}
+												</Typography>
+											</Box>
+										)}
 										<input
 											type="file"
 											id="master-floorplan"
@@ -323,6 +427,18 @@ const ProjectInformation = ({ resources, projectType }) => {
 										)}
 									</Grid>
 									<Grid item xs={12} md={3}>
+										{errors.geogrophicalImage && (
+											<Box>
+												<Typography
+													variant="caption"
+													className={
+														gClasses.errorColor
+													}
+												>
+													{errors.geogrophicalImage}
+												</Typography>
+											</Box>
+										)}
 										<input
 											type="file"
 											id="geographical-image"

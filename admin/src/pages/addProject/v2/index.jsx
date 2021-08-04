@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import LoaderBackdrop from '../../../components/backdrop';
 import ProjectInformation from './projectInformation';
 import ProjectSteper from '../../../components/projectSteper';
+import UnitConfig from './unitConfig';
 import axios from 'axios';
 import { getAddProjectPageInfo } from '../../../utils/asyncFunctions';
 import useGlobalStyles from '../../../common.style';
@@ -14,6 +15,10 @@ const AddProject = () => {
 	const gClasses = useGlobalStyles();
 	const cancelToken = useRef(undefined);
 	const [activeStep, setActiveStep] = React.useState(0);
+	const [projectInfo, setProjectInfo] = React.useState({
+		id: null,
+		towers: 0,
+	});
 	const [helperData, setHelperData] = React.useState(null);
 	const [projectType, setProjectType] = React.useState('flat');
 	const [loading, setLoading] = React.useState(false);
@@ -62,58 +67,91 @@ const AddProject = () => {
 				/>
 			</Box>
 			<Box p="1rem">
-				<h2 className={gClasses.flexCenter}>Select Project Type</h2>
-				<Grid container spacing={0} justify="center">
-					<Grid item xs={2} md={2} className={gClasses.justifyCenter}>
-						<Chip
-							label="Apartment"
-							clickable
-							onClick={handleProjectType('flat')}
-							classes={{
-								label: classes.chip,
-								root: classes.chipRoot,
-							}}
-							color={
-								projectType === 'flat' ? 'primary' : 'default'
-							}
-						/>
+				{activeStep === 0 && (
+					<Grid container spacing={0} justify="center">
+						<h2 className={gClasses.flexCenter}>
+							Select Project Type
+						</h2>
+						<Grid
+							item
+							xs={2}
+							md={2}
+							className={gClasses.justifyCenter}
+						>
+							<Chip
+								label="Apartment"
+								clickable
+								onClick={handleProjectType('flat')}
+								classes={{
+									label: classes.chip,
+									root: classes.chipRoot,
+								}}
+								color={
+									projectType === 'flat'
+										? 'primary'
+										: 'default'
+								}
+							/>
+						</Grid>
+						<Grid
+							item
+							xs={2}
+							md={2}
+							className={gClasses.justifyCenter}
+						>
+							<Chip
+								label="Villa"
+								clickable
+								onClick={handleProjectType('independenthouse')}
+								classes={{
+									label: classes.chip,
+									root: classes.chipRoot,
+								}}
+								color={
+									projectType === 'independenthouse'
+										? 'primary'
+										: 'default'
+								}
+							/>
+						</Grid>
+						<Grid
+							item
+							xs={2}
+							md={2}
+							className={gClasses.justifyCenter}
+						>
+							<Chip
+								label="Land"
+								clickable
+								onClick={handleProjectType('land')}
+								classes={{
+									label: classes.chip,
+									root: classes.chipRoot,
+								}}
+								color={
+									projectType === 'land'
+										? 'primary'
+										: 'default'
+								}
+							/>
+						</Grid>
 					</Grid>
-					<Grid item xs={2} md={2} className={gClasses.justifyCenter}>
-						<Chip
-							label="Villa"
-							clickable
-							onClick={handleProjectType('independenthouse')}
-							classes={{
-								label: classes.chip,
-								root: classes.chipRoot,
-							}}
-							color={
-								projectType === 'independenthouse'
-									? 'primary'
-									: 'default'
-							}
-						/>
-					</Grid>
-					<Grid item xs={2} md={2} className={gClasses.justifyCenter}>
-						<Chip
-							label="Land"
-							clickable
-							onClick={handleProjectType('land')}
-							classes={{
-								label: classes.chip,
-								root: classes.chipRoot,
-							}}
-							color={
-								projectType === 'land' ? 'primary' : 'default'
-							}
-						/>
-					</Grid>
-				</Grid>
+				)}
 			</Box>
-			{helperData && (
+			{helperData && activeStep === 0 && (
 				<ProjectInformation
+					handleNext={handleNext}
 					resources={helperData}
 					projectType={projectType}
+					setProjectInfo={setProjectInfo}
+				/>
+			)}
+			{helperData && activeStep === 1 && (
+				<UnitConfig
+					handleNext={handleNext}
+					resources={helperData}
+					projectType={projectType}
+					projectInfo={projectInfo}
 				/>
 			)}
 		</Box>

@@ -1,4 +1,10 @@
-import { Box, FormControl, MenuItem, Select } from '@material-ui/core';
+import {
+	Box,
+	FormControl,
+	FormHelperText,
+	MenuItem,
+	Select,
+} from '@material-ui/core';
 
 import React from 'react';
 import { useField } from 'formik';
@@ -12,7 +18,12 @@ const FSelect = ({ formLabel, options, ...otherProps }) => {
 		<Box p="0.5rem">
 			<Box className={classes.label}>{formLabel}</Box>
 			<Box mt="0.3rem">
-				<FormControl size="small" variant="filled" fullWidth>
+				<FormControl
+					size="small"
+					variant="filled"
+					fullWidth
+					error={!!helperText}
+				>
 					<Select
 						error={!!helperText}
 						helperText={helperText}
@@ -25,6 +36,9 @@ const FSelect = ({ formLabel, options, ...otherProps }) => {
 							</MenuItem>
 						))}
 					</Select>
+					{!!helperText && (
+						<FormHelperText>{helperText}</FormHelperText>
+					)}
 				</FormControl>
 			</Box>
 		</Box>

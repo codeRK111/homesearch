@@ -1,9 +1,9 @@
 // *https://www.registers.service.gov.uk/registers/country/use-the-api*
 
+import { Box, Typography } from '@material-ui/core';
 import React, { useRef } from 'react';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { Box } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
@@ -15,6 +15,7 @@ export default function SearchPlace({
 	type = 'city',
 	city = null,
 	location = null,
+	error,
 }) {
 	const cancelToken = useRef(null);
 	const [open, setOpen] = React.useState(false);
@@ -61,6 +62,11 @@ export default function SearchPlace({
 
 	return (
 		<Box p="0.5rem">
+			{error && (
+				<Typography style={{ color: 'red' }} variant="caption">
+					{error}
+				</Typography>
+			)}
 			<Autocomplete
 				id="asynchronous-demo"
 				style={{ width: '100%' }}

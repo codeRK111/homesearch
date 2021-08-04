@@ -16,3 +16,16 @@ export const yupValidation = {
 		.min(6, 'Minimum 6 character required')
 		.required('password required'),
 };
+
+export const validateNumber = (v) => {
+	const value = String(v);
+	if (value.match(/^[0-9]+$/)) {
+		return true;
+	} else {
+		if (value === 0 || value === '0') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+};
