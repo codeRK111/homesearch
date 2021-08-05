@@ -7,6 +7,7 @@ import ProjectSteper from '../../../components/projectSteper';
 import UnitConfig from './unitConfig';
 import axios from 'axios';
 import { getAddProjectPageInfo } from '../../../utils/asyncFunctions';
+import { getProject } from '../../../utils/asyncProject';
 import useGlobalStyles from '../../../common.style';
 import useStyles from '../addProject.style';
 
@@ -14,10 +15,12 @@ const AddProject = () => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 	const cancelToken = useRef(undefined);
+	const cancelTokenFetchProject = useRef(undefined);
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [projectInfo, setProjectInfo] = React.useState({
-		id: null,
-		towers: 0,
+		id: '610bdbc5756e203bb8fcbb97',
+		towers: 1,
+		towerNames: [],
 	});
 	const [helperData, setHelperData] = React.useState(null);
 	const [projectType, setProjectType] = React.useState('flat');
@@ -49,6 +52,20 @@ const AddProject = () => {
 			}
 		);
 	}, []);
+
+	const fetchProject = () => {
+		if (projectInfo.id) {
+			cancelTokenFetchProject.current = axios.CancelToken.source();
+			getProject(
+				projectInfo.id,
+				cancelTokenFetchProject.current,
+				setLoading
+			).then((data) => {
+				setProjectInfo(data);
+				console.log({ data });
+			});
+		}
+	};
 
 	return (
 		<Box className={classes.wrapper}>
@@ -152,6 +169,7 @@ const AddProject = () => {
 					resources={helperData}
 					projectType={projectType}
 					projectInfo={projectInfo}
+					fetchProject={fetchProject}
 				/>
 			)}
 		</Box>

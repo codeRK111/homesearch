@@ -5,9 +5,7 @@ import {
 	getProjectSpecialities,
 } from '../../utils/asyncFunctions';
 
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ProjectUnitApartment from './apartment';
@@ -69,6 +67,8 @@ export default function AddPropertyUnit({
 	handleClose,
 	projectType,
 	resources,
+	items,
+	setItems,
 }) {
 	const cancelToken = React.useRef(undefined);
 	const descriptionElementRef = React.useRef(null);
@@ -84,6 +84,12 @@ export default function AddPropertyUnit({
 			}
 		}
 	}, [open]);
+
+	const onSubmit = (values) => {
+		console.log(values.title);
+		setItems([...items, values.title]);
+		handleClose();
+	};
 
 	const fetchSpecialities = (forRefresh = false) => {
 		if (specialities.length === 0 || forRefresh) {
@@ -120,22 +126,21 @@ export default function AddPropertyUnit({
 
 	return (
 		<div>
-			<Formik initialValues={formikState}>
-				{({ values, setFieldValue, errors }) => (
-					<Form>
-						<Dialog
-							fullWidth={true}
-							maxWidth="md"
-							open={open}
-							onClose={handleClose}
-							scroll={'paper'}
-							aria-labelledby="scroll-dialog-title"
-							aria-describedby="scroll-dialog-description"
-						>
-							<DialogTitle id="scroll-dialog-title">
-								Add Unit
-							</DialogTitle>
-							<DialogContent dividers={true}>
+			<Dialog
+				fullWidth={true}
+				maxWidth="md"
+				open={open}
+				onClose={handleClose}
+				scroll={'paper'}
+				aria-labelledby="scroll-dialog-title"
+				aria-describedby="scroll-dialog-description"
+			>
+				<DialogTitle id="scroll-dialog-title">Add Unit</DialogTitle>
+				<DialogContent dividers={true}>
+					<Formik initialValues={formikState} onSubmit={onSubmit}>
+						{({ values, setFieldValue, errors }) => (
+							<Form>
+								<pre>{JSON.stringify(errors, null, 2)}</pre>
 								{projectType === 'land' ? (
 									<ProjectUnitLand
 										values={values}
@@ -149,6 +154,7 @@ export default function AddPropertyUnit({
 										addLoading={addLoading}
 										specialities={specialities}
 										errors={errors}
+										onSubmit={onSubmit}
 									/>
 								) : (
 									<ProjectUnitApartment
@@ -163,21 +169,15 @@ export default function AddPropertyUnit({
 										addLoading={addLoading}
 										specialities={specialities}
 										errors={errors}
+										onSubmit={onSubmit}
 									/>
 								)}
-							</DialogContent>
-							<DialogActions>
-								<Button onClick={handleClose} color="primary">
-									Cancel
-								</Button>
-								<Button onClick={handleClose} color="primary">
-									Save
-								</Button>
-							</DialogActions>
-						</Dialog>
-					</Form>
-				)}
-			</Formik>
+								<button type="submit">submit</button>
+							</Form>
+						)}
+					</Formik>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }

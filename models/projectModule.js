@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
-const ProjectProperty = require('./projectPropertyModule');
-const PropertyModel = require('./propertyModel');
 const slugify = require('slugify');
 
 const { Schema, model } = mongoose;
+
+// const towerSchema = new Schema({
+// 	name: {
+// 		type: String,
+// 		default: '1'
+// 	}
+// })
 const projectSchema = new Schema(
 	{
 		title: {
@@ -89,10 +94,7 @@ const projectSchema = new Schema(
 			ref: 'Builder',
 			required: [true, 'Missing parameter builder'],
 		},
-		createdAt: {
-			type: Date,
-			default: Date.now(),
-		},
+
 		city: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'City',
@@ -103,39 +105,25 @@ const projectSchema = new Schema(
 			ref: 'Location',
 			required: [true, 'Missing paramter location'],
 		},
-		distanceSchool: {
+		towers: {
 			type: Number,
+			default: 1,
+		},
+		towerNames: {
+			type: [
+				{
+					name: {
+						type: String,
+					},
+				},
+			],
+			default: [
+				{
+					name: '1',
+				},
+			],
 		},
 
-		distanceRailwayStation: {
-			type: Number,
-		},
-		distanceAirport: {
-			type: Number,
-		},
-
-		distanceBusStop: {
-			type: Number,
-		},
-		distanceHospital: {
-			type: Number,
-		},
-		image1: {
-			type: String,
-			default: null,
-		},
-		image2: {
-			type: String,
-			default: null,
-		},
-		image3: {
-			type: String,
-			default: null,
-		},
-		image4: {
-			type: String,
-			default: null,
-		},
 		photos: [
 			{
 				image: {
@@ -147,6 +135,18 @@ const projectSchema = new Schema(
 				},
 			},
 		],
+		thumbnailImage: {
+			type: String,
+			default: null,
+		},
+		masterFloorPlan: {
+			type: String,
+			default: null,
+		},
+		geogrophicalImage: {
+			type: String,
+			default: null,
+		},
 		status: {
 			type: String,
 			enum: {
@@ -163,7 +163,11 @@ const projectSchema = new Schema(
 			required: true,
 		},
 	},
-	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
+	{
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+		timestamps: true,
+	}
 );
 
 projectSchema.pre(/^find/, function (next) {

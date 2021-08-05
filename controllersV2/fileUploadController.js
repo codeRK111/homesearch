@@ -5,6 +5,16 @@ const multer = require('multer');
 const path = require('path');
 const sharp = require('sharp');
 
+// Image Filter
+const multerFilter = (req, file, cb) => {
+	if (file.mimetype.startsWith('image')) {
+		cb(null, true);
+	} else {
+		cb(new AppError('Not an image! Please upload an image.', 400), false);
+	}
+};
+
+// Handle Builder Images
 const builderStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(null, path.join(__dirname, '../', 'images', 'builder_images/'));
@@ -14,15 +24,7 @@ const builderStorage = multer.diskStorage({
 		cb(null, `${Date.now()}.${ext}`);
 	},
 });
-const profileStorage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, path.join(__dirname, '../', 'images', 'profile_images/'));
-	},
-	filename: (req, file, cb) => {
-		const ext = file.mimetype.split('/')[1];
-		cb(null, `${Date.now()}.${ext}`);
-	},
-});
+
 const builderPackageStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(
@@ -35,6 +37,32 @@ const builderPackageStorage = multer.diskStorage({
 		cb(null, `${Date.now()}.${ext}`);
 	},
 });
+const builder = multer({
+	fileFilter: multerFilter,
+	storage: builderStorage,
+});
+
+const builderPackages = multer({
+	fileFilter: multerFilter,
+	storage: builderPackageStorage,
+});
+
+// Handle Profile Images
+const profileStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, path.join(__dirname, '../', 'images', 'profile_images/'));
+	},
+	filename: (req, file, cb) => {
+		const ext = file.mimetype.split('/')[1];
+		cb(null, `${Date.now()}.${ext}`);
+	},
+});
+const profile = multer({
+	fileFilter: multerFilter,
+	storage: profileStorage,
+});
+
+// Handle Property Images
 const propertyStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(null, path.join(__dirname, '../', 'images', 'property_images/'));
@@ -44,6 +72,12 @@ const propertyStorage = multer.diskStorage({
 		cb(null, `${Date.now()}.${ext}`);
 	},
 });
+const properties = multer({
+	fileFilter: multerFilter,
+	storage: propertyStorage,
+});
+
+// Handle Project Images
 const projectStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(null, path.join(__dirname, '../', 'images', 'project_images/'));
@@ -62,26 +96,6 @@ const floorPlanStorage = multer.diskStorage({
 		cb(null, `${Date.now()}.${ext}`);
 	},
 });
-
-const multerFilter = (req, file, cb) => {
-	if (file.mimetype.startsWith('image')) {
-		cb(null, true);
-	} else {
-		cb(new AppError('Not an image! Please upload an image.', 400), false);
-	}
-};
-
-const builder = multer({
-	fileFilter: multerFilter,
-	storage: builderStorage,
-});
-const profile = multer({
-	storage: profileStorage,
-});
-const properties = multer({
-	fileFilter: multerFilter,
-	storage: propertyStorage,
-});
 const projects = multer({
 	fileFilter: multerFilter,
 	storage: projectStorage,
@@ -89,10 +103,6 @@ const projects = multer({
 const floorPlans = multer({
 	fileFilter: multerFilter,
 	storage: floorPlanStorage,
-});
-const builderPackages = multer({
-	fileFilter: multerFilter,
-	storage: builderPackageStorage,
 });
 
 exports.resizeTourImages = catchAsync(async (req, res, next) => {
@@ -136,6 +146,12 @@ exports.uploadBuilderPhoto = builder.fields([
 	{ name: 'photos', maxCount: 30 },
 ]);
 exports.uploadPropertiesPhoto = properties.array('images');
+exports.uploadProjectPhotosV2 = projects.fields([
+	{ name: 'thumbnailImage', maxCount: 1 },
+	{ name: 'masterFloorPlan', maxCount: 1 },
+	{ name: 'geogrophicalImage', maxCount: 1 },
+	{ name: 'photos', maxCount: 7 },
+]);
 exports.uploadProjectPhotos = projects.array('images');
 exports.uploadFloorplans = floorPlans.array('images');
 exports.uploadBuilderPackagePhoto = builderPackages.single('photo');

@@ -34,6 +34,7 @@ const ProjectUnitApartment = ({
 	addLoading,
 	specialities,
 	errors,
+	onSubmit,
 }) => {
 	const buttonProps = {};
 	if (addLoading) {

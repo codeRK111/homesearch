@@ -1,10 +1,15 @@
 import { Box, Button, Grid, Typography } from '@material-ui/core';
 import { Field, FieldArray, Form, Formik } from 'formik';
+import { addProject, updateProject } from '../../../utils/asyncProject';
 
+import AddProjectLoader from '../../../components/addProjectLoader';
 import FSelect from '../../../components/formik/select.component';
 import FTextField from '../../../components/formik/textField.component';
 import React from 'react';
 import SearchPlace from '../../../components/searchPlace';
+import UploadPhoto from '../../../components/uploadPhotos';
+import axios from 'axios';
+import { useCancelAxios } from '../../../hooks/useCancel';
 import useGlobalStyles from '../../../common.style';
 import useStyles from '../addProject.style';
 import { validateNumber } from '../../../utils/validation.utils';
@@ -17,15 +22,10 @@ const initialState = {
 	builder: '',
 	complitionStatus: 'ongoing',
 	description: '',
-	distanceSchool: '',
-	distanceRailwayStation: '',
-	distanceAirport: '',
-	distanceBusStop: '',
-	distanceHospital: '',
+
 	reraId: '',
 	ownerNumber: '',
 	usp: '',
-	towers: '',
 	bookingAmount: '',
 	emi: '',
 	totalLandArea: '',
@@ -60,6 +60,14 @@ const ProjectInformation = ({
 }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
+	const cancelToken = React.useRef(undefined);
+	const cancelTokenImage = React.useRef(undefined);
+	const [addProjectLoading, setAddProjectLoading] = React.useState(false);
+	const [uploadPhotosLoading, setUploadPhotosLoading] = React.useState(false);
+	const [addProjectError, setAddProjectError] = React.useState(null);
+	const [photos, setPhotos] = React.useState([]);
+	useCancelAxios(cancelToken.current);
+	useCancelAxios(cancelTokenImage.current);
 	const validate = (values) => {
 		const error = {};
 		if (!values.title) {
@@ -89,9 +97,7 @@ const ProjectInformation = ({
 		if (!values.geogrophicalImage) {
 			error.geogrophicalImage = 'Select Geographical Image';
 		}
-		if (!validateNumber(values.towers)) {
-			error.towers = 'Please enter a number';
-		}
+
 		if (!validateNumber(values.bookingAmount)) {
 			error.bookingAmount = 'Please enter a number';
 		}
@@ -127,16 +133,103 @@ const ProjectInformation = ({
 		return error;
 	};
 
-	const onSubmit = (values) => {
-		setProjectInfo({
-			id: null,
-			towers: values.towers,
+	const addPhotos = (project, values) => {
+		const formData = new FormData();
+		cancelTokenImage.current = axios.CancelToken.source();
+		formData.append('thumbnailImage', values.thumbnailImage);
+		formData.append('masterFloorPlan', values.masterFloorPlan);
+		formData.append('geogrophicalImage', values.geogrophicalImage);
+		photos.forEach((c) => {
+			formData.append('photos', c);
 		});
-		handleNext();
+		updateProject(
+			project,
+			formData,
+			cancelTokenImage.current,
+			setUploadPhotosLoading
+		)
+			.then((resp) => {
+				setProjectInfo({
+					id: project,
+					towers: resp.towers,
+				});
+				setAddProjectError(null);
+				handleNext();
+			})
+			.catch((error) => {
+				console.log(error);
+				// setAddProjectError(error);
+			});
 	};
-	console.log({ resources });
+
+	const onSubmit = (values, { setErrors }) => {
+		const data = {
+			...values,
+			bookingAmount: Number(values.bookingAmount),
+			emi: Number(values.emi),
+			totalLandArea: Number(values.totalLandArea),
+		};
+		if (projectType === 'land') {
+			const numberOfOwner = values.legalClearance.find(
+				(c) => c.name === 'numberOfOwner'
+			);
+			if (numberOfOwner && numberOfOwner['value']) {
+				data.legalClearance = values.legalClearance.map((c) => {
+					if (c.name === 'numberOfOwner') {
+						c.details = values.ownerNumber;
+					}
+					return c;
+				});
+			}
+		} else {
+			const reraApproved = values.legalClearance.find(
+				(c) => c.name === 'reraapproved'
+			);
+			if (reraApproved && reraApproved['value']) {
+				data.legalClearance = values.legalClearance.map((c) => {
+					if (c.name === 'reraapproved') {
+						c.details = values.reraId;
+					}
+					return c;
+				});
+			}
+		}
+
+		delete data.thumbnailImage;
+		delete data.masterFloorPlan;
+		delete data.geogrophicalImage;
+
+		cancelToken.current = axios.CancelToken.source();
+		addProject(data, cancelToken.current, setAddProjectLoading)
+			.then((resp) => {
+				setProjectInfo({
+					id: resp.id,
+					towers: 0,
+				});
+				setAddProjectError(null);
+				addPhotos(resp.id, values);
+			})
+			.catch((error) => {
+				console.log({ error });
+				if (error.validation) {
+					error.validationFields.forEach((c) => {
+						setErrors({
+							[c.param]: c.msg,
+						});
+					});
+					setAddProjectError(error.message);
+				} else {
+					setAddProjectError(error.message);
+				}
+			});
+	};
+
 	return (
 		<div>
+			<AddProjectLoader
+				addProjectLoading={addProjectLoading}
+				addImageLoading={uploadPhotosLoading}
+			/>
 			<Formik
 				initialValues={{
 					...initialState,
@@ -226,13 +319,7 @@ const ProjectInformation = ({
 									name="totalLandArea"
 								/>
 							</Grid>
-							<Grid item xs={12} md={6}>
-								<FTextField
-									formLabel="Number of towers"
-									label="Enter Number"
-									name="towers"
-								/>
-							</Grid>
+
 							<Grid item xs={12} md={6}>
 								<FTextField
 									formLabel="USP"
@@ -471,6 +558,15 @@ const ProjectInformation = ({
 									</Grid>
 								</Grid>
 							</Grid>
+							<Grid item xs={12}>
+								<UploadPhoto
+									photos={photos}
+									setPhotos={setPhotos}
+								/>
+							</Grid>
+							<p className={gClasses.errorColor}>
+								{addProjectError}
+							</p>
 							<Grid item xs={12}>
 								<Button
 									type="submit"

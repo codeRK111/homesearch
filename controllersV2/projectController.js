@@ -1,10 +1,12 @@
 const AppError = require('./../utils/appError');
 const ProjectSpeciality = require('./../models/projectSpeciality');
+const Project = require('./../models/projectModule');
 const ProjectProperty = require('./../models/projectPropertyModule');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
+const { validationResult } = require('express-validator');
 
 exports.properties = catchAsync(async (req, res, next) => {
 	const match = {
@@ -58,5 +60,66 @@ exports.properties = catchAsync(async (req, res, next) => {
 				});
 			}
 		);
+	});
+});
+
+exports.addProject = catchAsync(async (req, res, next) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({
+			status: 'fail',
+			validationError: true,
+			errors: errors.array(),
+		});
+	}
+
+	const project = await Project.create(req.body);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
+	});
+});
+exports.uploadPhotos = catchAsync(async (req, res, next) => {
+	const data = {
+		thumbnailImage: req.files['thumbnailImage'][0].filename,
+		masterFloorPlan: req.files['masterFloorPlan'][0].filename,
+		geogrophicalImage: req.files['geogrophicalImage'][0].filename,
+		photos: req.files['photos'].map((c, i) => ({
+			image: c.filename,
+		})),
+	};
+
+	const project = await Project.findByIdAndUpdate(req.params.id, data, {
+		new: true,
+		runValidators: true,
+	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
+	});
+});
+exports.updateProject = catchAsync(async (req, res, next) => {
+	const project = await Project.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+		runValidators: true,
+	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
+	});
+});
+exports.getProject = catchAsync(async (req, res, next) => {
+	const project = await Project.findById(req.params.id);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
 	});
 });
