@@ -30,7 +30,7 @@ import EditExpertQuery from './pages/queries/expertQueriesEdit.component';
 import EditLocationPage from './pages/editLocation/editLocation.component';
 import EditProjectAdvertisement from './pages/projectAdvertisement/editProjectAdvertisement.page';
 import EditProjectAdvertisementLeads from './pages/editProjectAdvertisementLead/editLeads.page';
-import EditProjectPage from './pages/editProject/editProject.component';
+import EditProjectPage from './pages/editProject/v2/';
 import EditPropertyAdvertisement from './pages/propertyAdvertisement/editPropertyAdvertisement.page';
 import EditPropertyPage from './pages/editProperty/editProperty.component';
 import EditPropertySalePage from './pages/editProperty/editPropertySale.component';

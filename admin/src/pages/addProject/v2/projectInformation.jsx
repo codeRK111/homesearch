@@ -9,6 +9,7 @@ import React from 'react';
 import SearchPlace from '../../../components/searchPlace';
 import UploadPhoto from '../../../components/uploadPhotos';
 import axios from 'axios';
+import { renderPrice } from '../../../utils/render.utils';
 import { useCancelAxios } from '../../../hooks/useCancel';
 import useGlobalStyles from '../../../common.style';
 import useStyles from '../addProject.style';
@@ -152,6 +153,7 @@ const ProjectInformation = ({
 				setProjectInfo({
 					id: project,
 					towers: resp.towers,
+					towerNames: resp.towerNames,
 				});
 				setAddProjectError(null);
 				handleNext();
@@ -204,7 +206,8 @@ const ProjectInformation = ({
 			.then((resp) => {
 				setProjectInfo({
 					id: resp.id,
-					towers: 0,
+					towers: resp.towers,
+					towerNames: resp.towerNames,
 				});
 				setAddProjectError(null);
 				addPhotos(resp.id, values);
@@ -304,6 +307,13 @@ const ProjectInformation = ({
 									label="Rs"
 									name="bookingAmount"
 								/>
+								{values.bookingAmount && (
+									<p>
+										<b>
+											{renderPrice(values.bookingAmount)}
+										</b>
+									</p>
+								)}
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<FTextField
@@ -497,7 +507,7 @@ const ProjectInformation = ({
 											}}
 										/>
 										<label htmlFor="master-floorplan">
-											Master Floorplan
+											Master floor plan
 										</label>
 										{values.masterFloorPlan && (
 											<Box>

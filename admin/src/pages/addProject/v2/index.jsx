@@ -18,10 +18,11 @@ const AddProject = () => {
 	const cancelTokenFetchProject = useRef(undefined);
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [projectInfo, setProjectInfo] = React.useState({
-		id: '610bdbc5756e203bb8fcbb97',
+		id: null,
 		towers: 1,
 		towerNames: [],
 	});
+	const [projectProperties, setProjectProperties] = React.useState([]);
 	const [helperData, setHelperData] = React.useState(null);
 	const [projectType, setProjectType] = React.useState('flat');
 	const [loading, setLoading] = React.useState(false);
@@ -61,7 +62,8 @@ const AddProject = () => {
 				cancelTokenFetchProject.current,
 				setLoading
 			).then((data) => {
-				setProjectInfo(data);
+				setProjectInfo(data.project);
+				setProjectProperties(data.properties);
 				console.log({ data });
 			});
 		}
@@ -170,6 +172,7 @@ const AddProject = () => {
 					projectType={projectType}
 					projectInfo={projectInfo}
 					fetchProject={fetchProject}
+					projectProperties={projectProperties}
 				/>
 			)}
 		</Box>

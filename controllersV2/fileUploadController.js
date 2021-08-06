@@ -154,5 +154,6 @@ exports.uploadProjectPhotosV2 = projects.fields([
 ]);
 exports.uploadProjectPhotos = projects.array('images');
 exports.uploadFloorplans = floorPlans.array('images');
+exports.uploadFloorplan = floorPlans.single('floorPlan');
 exports.uploadBuilderPackagePhoto = builderPackages.single('photo');
 exports.uploadProfile = profile.single('photo');

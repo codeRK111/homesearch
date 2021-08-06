@@ -1,26 +1,22 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
+const towerSchema = new Schema({
+	name: {
+		type: String,
+	},
+});
 const projectPropertySchema = new Schema(
 	{
 		title: {
 			type: String,
 			required: true,
 		},
-		tower: {
-			type: String,
-		},
+		tower: towerSchema,
 
 		description: {
 			type: String,
 		},
-		priceOver: {
-			type: String,
-			enum: {
-				values: ['superBuiltUpArea', 'carpetArea'],
-				message:
-					'type must be between <superBuiltUpArea> | <carpetArea>',
-			},
-		},
+
 		project: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Project',
@@ -34,12 +30,7 @@ const projectPropertySchema = new Schema(
 		numberOfBedrooms: {
 			type: Number,
 		},
-		bhk: {
-			type: Number,
-		},
-		numberOfBedrooms: {
-			type: Number,
-		},
+
 		numberOflivingAreas: {
 			type: Number,
 		},
@@ -55,26 +46,9 @@ const projectPropertySchema = new Schema(
 			},
 		},
 
-		numberOfBedRooms: {
+		numberOfToilets: {
 			type: Number,
 		},
-
-		toiletTypes: [
-			{
-				toiletType: {
-					type: String,
-					enum: {
-						values: ['indian', 'western'],
-						message:
-							'Toilet type must be between <indian> | <western> ',
-					},
-				},
-				numbers: {
-					type: Number,
-					default: 1,
-				},
-			},
-		],
 
 		superBuiltupArea: {
 			type: Number,
@@ -82,17 +56,12 @@ const projectPropertySchema = new Schema(
 		carpetArea: {
 			type: Number,
 		},
-		bookingAmount: {
-			type: Number,
-		},
-		maxPrice: {
+
+		price: {
 			type: Number,
 			required: true,
 		},
-		minPrice: {
-			type: Number,
-			required: true,
-		},
+
 		furnished: {
 			type: String,
 			enum: {
@@ -119,10 +88,7 @@ const projectPropertySchema = new Schema(
 		availableDate: {
 			type: Date,
 		},
-		createdAt: {
-			type: Date,
-			default: Date.now(),
-		},
+
 		status: {
 			type: String,
 			enum: {
@@ -174,12 +140,10 @@ const projectPropertySchema = new Schema(
 			type: Number,
 			required: requireLand,
 		},
-		plotArea: [
-			{
-				type: Number,
-				required: requireLand,
-			},
-		],
+		plotArea: {
+			type: Number,
+			required: requireLand,
+		},
 		widthOfRoad: {
 			type: Number,
 			required: requireLand,
@@ -218,26 +182,16 @@ const projectPropertySchema = new Schema(
 			type: Number,
 			required: requireLand,
 		},
-		photos: [
-			{
-				image: {
-					type: String,
-				},
-			},
-		],
 
-		floorPlans: [
-			{
-				image: {
-					type: String,
-				},
-				label: {
-					type: String,
-				},
-			},
-		],
+		floorPlan: {
+			type: String,
+		},
 	},
-	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
+	{
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+		timestamps: true,
+	}
 );
 
 projectPropertySchema.index({

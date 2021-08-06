@@ -29,6 +29,20 @@ router
 		projectController.uploadPhotos
 	);
 router
+	.route('/handle-towers/:id')
+	.patch(adminController.protect, projectController.updateTowerNumbers);
+router
+	.route('/handle-tower-name/:id/:towerId')
+	.patch(adminController.protect, projectController.updateTowerName);
+router
+	.route('/:projectId/units')
+	.post(
+		adminController.protect,
+		fileController.uploadFloorplan,
+		projectController.addProjectProperty
+	);
+
+router
 	.route('/:id')
 	.get(adminController.protect, projectController.getProject)
 	.patch(adminController.protect, projectController.updateProject);

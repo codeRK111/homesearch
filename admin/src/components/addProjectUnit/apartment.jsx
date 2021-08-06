@@ -89,18 +89,12 @@ const ProjectUnitApartment = ({
 				</Grid>
 				<Grid item xs={12} md={6}>
 					<FTextField
-						formLabel="Number of indian toilet"
+						formLabel="Toilets"
 						label="Enter Number"
-						name="indianToilet"
+						name="numberOfToilets"
 					/>
 				</Grid>
-				<Grid item xs={12} md={6}>
-					<FTextField
-						formLabel="Number of western toilet"
-						label="Enter Number"
-						name="westernToilet"
-					/>
-				</Grid>
+
 				<Grid item xs={12} md={6}>
 					<FSelect
 						formLabel="Furnishing Status"
@@ -157,23 +151,6 @@ const ProjectUnitApartment = ({
 					</Grid>
 				)}
 
-				<Grid item xs={12} md={6}>
-					<FSelect
-						formLabel="Price Over"
-						label="Price Over"
-						name="priceOver"
-						options={[
-							{
-								value: 'superBuiltUpArea',
-								label: 'Super Builtup Area',
-							},
-							{
-								value: 'carpetArea',
-								label: 'Carpet Area',
-							},
-						]}
-					/>
-				</Grid>
 				<Grid item xs={12} md={6}>
 					<FTextField
 						formLabel="Price"
@@ -269,7 +246,8 @@ const ProjectUnitApartment = ({
 							setFieldValue('floorPlan', files[0]);
 						}}
 					/>
-					<label htmlFor="thumbnail-image">Floorplan</label>
+					<br />
+					<label htmlFor="thumbnail-image">Typical floor plan</label>
 
 					{values.floorPlan && (
 						<Box>

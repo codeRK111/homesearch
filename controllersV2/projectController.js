@@ -102,6 +102,24 @@ exports.uploadPhotos = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+exports.addProjectProperty = catchAsync(async (req, res, next) => {
+	const data = {
+		...req.body,
+		floorPlan: req.file.filename,
+		project: req.params.projectId,
+		tower: JSON.parse(req.body.tower),
+	};
+
+	console.log(data);
+
+	const property = await ProjectProperty.create(data);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			property,
+		},
+	});
+});
 exports.updateProject = catchAsync(async (req, res, next) => {
 	const project = await Project.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
@@ -114,12 +132,57 @@ exports.updateProject = catchAsync(async (req, res, next) => {
 		},
 	});
 });
-exports.getProject = catchAsync(async (req, res, next) => {
-	const project = await Project.findById(req.params.id);
+exports.updateTowerNumbers = catchAsync(async (req, res, next) => {
+	const project = await Project.findByIdAndUpdate(
+		req.params.id,
+		{
+			$push: { towerNames: { $each: req.body.towerNames } },
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
 	res.status(200).json({
 		status: 'success',
 		data: {
 			project,
+		},
+	});
+});
+exports.updateTowerName = catchAsync(async (req, res, next) => {
+	const project = await Project.findOneAndUpdate(
+		{
+			_id: req.params.id,
+			'towerNames._id': req.params.towerId,
+		},
+		{
+			$set: {
+				'towerNames.$.name': req.body.name,
+			},
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
+	});
+});
+exports.getProject = catchAsync(async (req, res, next) => {
+	const project = await Project.findById(req.params.id);
+	const properties = await ProjectProperty.find({
+		project: req.params.id,
+	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+			properties,
 		},
 	});
 });

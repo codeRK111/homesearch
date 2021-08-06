@@ -251,7 +251,9 @@ const ProjectUnitLand = ({
 							setFieldValue('floorPlan', files[0]);
 						}}
 					/>
-					<label htmlFor="thumbnail-image">Floorplan</label>
+					<br />
+
+					<label htmlFor="thumbnail-image">Typical floor plan</label>
 
 					{values.floorPlan && (
 						<Box>

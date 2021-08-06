@@ -44,6 +44,47 @@ export const addProject = (data, cancelToken, setLoading) => {
 			});
 	});
 };
+export const addProjectProperty = (project, data, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.post(apiUrl(`/project/${project}/units`, 'v2'), data, {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data.property);
+			})
+			.catch((error) => {
+				console.log({ error });
+				setLoading(false);
+				let message = '';
+				let validation = false;
+				let validationFields = [];
+				if (!!error.response) {
+					if (error.response.data.validationError) {
+						validation = true;
+						validationFields = error.response.data.errors;
+						message = 'Invalid input fields';
+					} else {
+						validation = false;
+						validationFields = [];
+						message = error.response.data.message;
+					}
+				} else {
+					validation = false;
+					validationFields = [];
+					message = error.message;
+				}
+				return reject({ message, validation, validationFields });
+			});
+	});
+};
 export const updateProject = (
 	project,
 	data,
@@ -57,6 +98,72 @@ export const updateProject = (
 			type === 'photo'
 				? `/project/upload-photos/${project}`
 				: `/project/${project}`;
+		setLoading(true);
+		axios
+			.patch(apiUrl(url, 'v2'), data, {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data.project);
+			})
+			.catch((error) => {
+				setLoading(false);
+				let message = '';
+				if (!!error.response) {
+					message = error.response.data.message;
+				} else {
+					message = error.message;
+				}
+				return reject(message);
+			});
+	});
+};
+export const updateTowerNumbers = (project, data, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		const url = `/project/handle-towers/${project}`;
+
+		setLoading(true);
+		axios
+			.patch(apiUrl(url, 'v2'), data, {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data.project);
+			})
+			.catch((error) => {
+				setLoading(false);
+				let message = '';
+				if (!!error.response) {
+					message = error.response.data.message;
+				} else {
+					message = error.message;
+				}
+				return reject(message);
+			});
+	});
+};
+export const updateTowerName = (
+	project,
+	tower,
+	data,
+	cancelToken,
+	setLoading
+) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		const url = `/project/handle-tower-name/${project}/${tower}`;
+
 		setLoading(true);
 		axios
 			.patch(apiUrl(url, 'v2'), data, {
@@ -96,7 +203,10 @@ export const getProject = (project, cancelToken, setLoading) => {
 			})
 			.then((resp) => {
 				setLoading(false);
-				return resolve(resp.data.data.project);
+				return resolve({
+					project: resp.data.data.project,
+					properties: resp.data.data.properties,
+				});
 			})
 			.catch((error) => {
 				setLoading(false);

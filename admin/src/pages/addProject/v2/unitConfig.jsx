@@ -1,25 +1,25 @@
 import {
 	Box,
 	Button,
+	Card,
+	CardActions,
+	CardHeader,
 	CircularProgress,
-	Divider,
 	Grid,
 	IconButton,
 	List,
 	ListItem,
 	ListItemSecondaryAction,
 	ListItemText,
-	Paper,
 	TextField,
 } from '@material-ui/core';
 
-import AddIcon from '@material-ui/icons/Add';
 import AddPropertyUnit from '../../../components/addProjectUnit';
 import EditIcon from '@material-ui/icons/Edit';
+import EditTextField from './editTextField';
 import React from 'react';
 import axios from 'axios';
-import { updateProject } from '../../../utils/asyncProject';
-import useGlobalStyles from '../../../common.style';
+import { updateTowerNumbers } from '../../../utils/asyncProject';
 import useStyles from '../addProject.style';
 
 const UnitConfig = ({
@@ -28,34 +28,47 @@ const UnitConfig = ({
 	resources,
 	projectInfo,
 	fetchProject,
+	projectProperties,
 }) => {
 	const cancelToken = React.useRef(undefined);
 	const [open, setOpen] = React.useState(false);
+	const [showEdit, setShowEdit] = React.useState(null);
+	const [selectedTower, setSelectedTower] = React.useState(null);
 	const [updateTowerLoading, setUpdateTowerLoading] = React.useState(false);
-	const [towers, setTowers] = React.useState(projectInfo.towers);
+	const [towers, setTowers] = React.useState(1);
 	const [items, setItems] = React.useState([]);
 	const classes = useStyles();
-	const gClasses = useGlobalStyles();
 
 	const toggleDialog = (status) => () => {
 		setOpen(status);
 	};
 
+	const handleSHowEdit = (towerDetails) => () => {
+		if (showEdit && showEdit.id === towerDetails.id) {
+			setShowEdit(null);
+		} else {
+			setShowEdit(towerDetails);
+		}
+	};
+	const onAddClick = (towerDetails) => () => {
+		setSelectedTower(towerDetails);
+		toggleDialog(true)();
+	};
+
 	const updateTower = () => {
 		if (towers) {
 			cancelToken.current = axios.CancelToken.source();
-			updateProject(
+			updateTowerNumbers(
 				projectInfo.id,
 				{
 					towers: towers,
 					towerNames: Array.from(
 						{ length: towers },
-						(_, i) => i + 1
+						(_, i) => projectInfo.towerNames.length + (i + 1)
 					).map((c) => ({ name: `${c}` })),
 				},
 				cancelToken.current,
-				setUpdateTowerLoading,
-				'data'
+				setUpdateTowerLoading
 			)
 				.then((resp) => {
 					fetchProject();
@@ -72,74 +85,126 @@ const UnitConfig = ({
 			<CircularProgress size={20} color="inherit" />
 		);
 	}
-	return (
-		<Box className={classes.wrapper}>
-			<AddPropertyUnit
-				open={open}
-				handleClose={toggleDialog(false)}
-				projectType={projectType}
-				resources={resources}
-				items={items}
-				setItems={setItems}
-			/>
-			<Box mb="1rem">
-				<TextField
-					id="filled-basic"
-					label="Number of towers"
-					variant="filled"
-					type="number"
-					value={towers}
-					onChange={(e) => setTowers(e.target.value)}
-				/>
-			</Box>
-			<Button
-				variant="contained"
-				{...setTowerButtonProps}
-				onClick={updateTower}
-			>
-				Save
-			</Button>
 
-			<h3>Unit Config</h3>
-			{/* <pre>{JSON.stringify(projectInfo, null, 2)}</pre> */}
-			<Grid container spacing={3}>
-				{projectInfo.towerNames.map((c) => (
-					<Grid item xs={12} md={4} key={c.id}>
-						<Paper className={classes.towerWrapper}>
-							<Box className={gClasses.justifyBetween}>
-								<h4>Tower - {c.name}</h4>
-								<IconButton
-									color="primary"
-									onClick={toggleDialog(true)}
-								>
-									<AddIcon />
-								</IconButton>
-							</Box>
-							<Divider />
-							<List
-								dense={true}
-								className={classes.propertyItemsContainer}
-							>
-								{items.map((b) => (
-									<ListItem key={b}>
-										<ListItemText primary={b} />
-										<ListItemSecondaryAction>
+	React.useEffect(() => {
+		fetchProject();
+	}, []);
+	return (
+		<>
+			{projectInfo.id && (
+				<Box className={classes.wrapper}>
+					<AddPropertyUnit
+						open={open}
+						handleClose={toggleDialog(false)}
+						projectType={projectType}
+						resources={resources}
+						items={items}
+						setItems={setItems}
+						project={projectInfo.id}
+						tower={selectedTower}
+						fetchProject={fetchProject}
+					/>
+					<Box mb="1rem">
+						<TextField
+							id="filled-basic"
+							label="Number of towers to add"
+							variant="filled"
+							type="number"
+							value={towers}
+							onChange={(e) => setTowers(e.target.value)}
+						/>
+					</Box>
+					<Button
+						variant="contained"
+						{...setTowerButtonProps}
+						onClick={updateTower}
+					>
+						Add Towers
+					</Button>
+
+					<h3>Unit Config</h3>
+					{/* <pre>{JSON.stringify(projectInfo, null, 2)}</pre> */}
+					<Grid container spacing={3}>
+						{projectInfo.towerNames.map((c) => (
+							<Grid item xs={12} md={4} key={c._id}>
+								<Card>
+									<CardHeader
+										action={
 											<IconButton
-												edge="end"
-												aria-label="delete"
-												size="small"
+												aria-label="settings"
+												onClick={handleSHowEdit(c)}
 											>
 												<EditIcon />
 											</IconButton>
-										</ListItemSecondaryAction>
-									</ListItem>
-								))}
-							</List>
-						</Paper>
+										}
+										title={
+											showEdit &&
+											showEdit._id === c._id ? (
+												<EditTextField
+													tower={c}
+													project={projectInfo.id}
+													fetchProject={fetchProject}
+													setShowEdit={setShowEdit}
+												/>
+											) : (
+												c.name
+											)
+										}
+										subheader={`Tower- ${c.name}`}
+									/>
+									{/* <Box className={gClasses.justifyBetween}>
+							<h4>Tower - {c.name}</h4>
+							<IconButton
+								color="primary"
+								onClick={toggleDialog(true)}
+							>
+								<AddIcon />
+							</IconButton>
+						</Box>
+						<Divider /> */}
+									<List
+										dense={true}
+										className={
+											classes.propertyItemsContainer
+										}
+									>
+										{projectProperties
+											.filter(
+												(b) => b.tower._id === c._id
+											)
+											.map((b) => (
+												<ListItem key={b}>
+													<ListItemText
+														primary={b.title}
+													/>
+													<ListItemSecondaryAction>
+														<IconButton
+															edge="end"
+															aria-label="delete"
+															size="small"
+														>
+															<EditIcon />
+														</IconButton>
+													</ListItemSecondaryAction>
+												</ListItem>
+											))}
+									</List>
+									<CardActions>
+										<Button
+											size="small"
+											color="primary"
+											onClick={onAddClick(c)}
+										>
+											Add Floor plan
+										</Button>
+									</CardActions>
+								</Card>
+							</Grid>
+						))}
 					</Grid>
-				))}
-			</Grid>
-		</Box>
+				</Box>
+			)}
+		</>
 	);
 };
 export default UnitConfig;

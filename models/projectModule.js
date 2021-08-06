@@ -9,6 +9,12 @@ const { Schema, model } = mongoose;
 // 		default: '1'
 // 	}
 // })
+
+const towerSchema = new Schema({
+	name: {
+		type: String,
+	},
+});
 const projectSchema = new Schema(
 	{
 		title: {
@@ -110,13 +116,7 @@ const projectSchema = new Schema(
 			default: 1,
 		},
 		towerNames: {
-			type: [
-				{
-					name: {
-						type: String,
-					},
-				},
-			],
+			type: [towerSchema],
 			default: [
 				{
 					name: '1',

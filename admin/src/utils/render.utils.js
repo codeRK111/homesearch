@@ -45,3 +45,15 @@ export const renderQueryTypes = (type) => {
 			return type;
 	}
 };
+export const renderPrice = (price) => {
+	const num = Number(price);
+	if (num < 10000000) {
+		if (num < 100000) {
+			return `${num / 1000} K`;
+		} else {
+			return `${num / 100000} L`;
+		}
+	} else {
+		return `${num / 10000000} Cr`;
+	}
+};

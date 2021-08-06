@@ -1,3 +1,4 @@
+import { Box, Button, CircularProgress } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import {
@@ -10,6 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ProjectUnitApartment from './apartment';
 import ProjectUnitLand from './land';
+import { addProjectProperty } from '../../utils/asyncProject';
 import axios from 'axios';
 
 const initialStateApartment = {
@@ -18,22 +20,15 @@ const initialStateApartment = {
 	numberOfUnits: '',
 	superBuiltupArea: '',
 	carpetArea: '',
-	indianToilet: '',
-	westernToilet: '',
+	numberOfToilets: '',
 	furnished: 'unfurnished',
 	availability: 'immediately',
 	availableDate: Date.now(),
-	priceOver: 'superBuiltUpArea',
-	pricePerSqFtMin: '',
-	pricePerSqFtMax: '',
-	minPrice: '',
-	maxPrice: '',
-	bookingAmount: 0,
+	price: '',
 	numberOfBedrooms: 0,
 	numberOflivingAreas: 0,
 	furnishes: [],
 	speciality: null,
-	tower: '',
 	floorPlan: null,
 };
 const initialStateLand = {
@@ -67,13 +62,16 @@ export default function AddPropertyUnit({
 	handleClose,
 	projectType,
 	resources,
-	items,
-	setItems,
+	fetchProject,
+	project,
+	tower,
 }) {
 	const cancelToken = React.useRef(undefined);
+	const cancelTokenAdd = React.useRef(undefined);
 	const descriptionElementRef = React.useRef(null);
 	const [loading, setLoading] = useState(false);
 	const [addLoading, setAddLoading] = useState(false);
+	const [addPropertyLoading, setAddPropertyLoading] = useState(false);
 	const [name, setName] = useState('');
 	const [specialities, setSpecialities] = useState([]);
 	React.useEffect(() => {
@@ -86,9 +84,33 @@ export default function AddPropertyUnit({
 	}, [open]);
 
 	const onSubmit = (values) => {
-		console.log(values.title);
-		setItems([...items, values.title]);
-		handleClose();
+		cancelTokenAdd.current = axios.CancelToken.source();
+		const formData = new FormData();
+		for (const key in values) {
+			if (values.hasOwnProperty(key)) {
+				if (key === 'furnishes') {
+					values.furnishes.forEach((c) => {
+						formData.append('furnishes', c);
+					});
+				} else {
+					formData.append(key, values[key]);
+				}
+			}
+		}
+		formData.append('tower', JSON.stringify(tower));
+		addProjectProperty(
+			project,
+			formData,
+			cancelTokenAdd.current,
+			setAddPropertyLoading
+		)
+			.then((resp) => {
+				fetchProject();
+			})
+			.catch((error) => {
+				console.log(error);
+				// setAddProjectError(error);
+			});
 	};
 
 	const fetchSpecialities = (forRefresh = false) => {
@@ -124,6 +146,11 @@ export default function AddPropertyUnit({
 	const formikState =
 		projectType === 'land' ? initialStateLand : initialStateApartment;
 
+	const buttonProps = {};
+	if (addPropertyLoading) {
+		buttonProps.endIcon = <CircularProgress size={20} color="inherit" />;
+	}
+
 	return (
 		<div>
 			<Dialog
@@ -140,7 +167,7 @@ export default function AddPropertyUnit({
 					<Formik initialValues={formikState} onSubmit={onSubmit}>
 						{({ values, setFieldValue, errors }) => (
 							<Form>
-								<pre>{JSON.stringify(errors, null, 2)}</pre>
+								{/* <pre>{JSON.stringify(errors, null, 2)}</pre> */}
 								{projectType === 'land' ? (
 									<ProjectUnitLand
 										values={values}
@@ -172,7 +199,16 @@ export default function AddPropertyUnit({
 										onSubmit={onSubmit}
 									/>
 								)}
-								<button type="submit">submit</button>
+								<Box m="1rem">
+									<Button
+										variant="contained"
+										color="primary"
+										type="submit"
+										{...buttonProps}
+									>
+										submit
+									</Button>
+								</Box>
 							</Form>
 						)}
 					</Formik>
