@@ -57,3 +57,11 @@ export const renderPrice = (price) => {
 		return `${num / 10000000} Cr`;
 	}
 };
+
+export const renderImage = (image, path) => {
+	if (typeof image === 'string') {
+		return `${path}/${image}`;
+	} else {
+		return URL.createObjectURL(image);
+	}
+};

@@ -95,7 +95,7 @@ exports.addProjectIndependentHouse = catchAsync(async (req, res, next) => {
 		return next(new AppError('Unable to add project', 500));
 	}
 
-	// console.log(clone.projectType);
+	// // console.log(clone.projectType);
 
 	const pr = await ProjectProperty.create({
 		...req.body.independenthouse,
@@ -426,7 +426,7 @@ exports.removeProjectImage = catchAsync(async (req, res, next) => {
 					project[req.params.image]
 			);
 		} catch (_) {
-			// console.log(error);
+			// // console.log(error);
 		}
 		project[req.params.image] = null;
 	}
@@ -452,7 +452,7 @@ exports.removePropertyImage = catchAsync(async (req, res, next) => {
 					property[req.params.image]
 			);
 		} catch (_) {
-			// console.log(error);
+			// // console.log(error);
 		}
 		property[req.params.image] = null;
 	}
@@ -588,7 +588,7 @@ exports.getProjectPropertyDetails = catchAsync(async (req, res, next) => {
 });
 
 exports.handleProjectImage = catchAsync(async (req, res, next) => {
-	console.log(req.files);
+	// console.log(req.files);
 	let images = req.files.map((c) => ({ image: c.filename }));
 	if (req.body.default) {
 		images = images.map((c, i) => {
@@ -611,7 +611,7 @@ exports.handleProjectImage = catchAsync(async (req, res, next) => {
 	});
 });
 exports.handleProjectPropertyPhotos = catchAsync(async (req, res, next) => {
-	console.log(req.files);
+	// console.log(req.files);
 	const images = req.files.map((c, i) => ({
 		image: c.filename,
 	}));
@@ -695,7 +695,7 @@ exports.removeFloorPlanPhoto = catchAsync(async (req, res, next) => {
 	}
 });
 exports.handleFloorPlans = catchAsync(async (req, res, next) => {
-	console.log(req.files);
+	// console.log(req.files);
 	const images = req.files.map((c, i) => ({
 		image: c.filename,
 		label: req.body.labels[i] ? req.body.labels[i] : '',

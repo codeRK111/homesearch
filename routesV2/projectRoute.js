@@ -41,6 +41,13 @@ router
 		fileController.uploadFloorplan,
 		projectController.addProjectProperty
 	);
+router
+	.route('/units/:id')
+	.patch(
+		adminController.protect,
+		fileController.uploadFloorplan,
+		projectController.updateProjectProperty
+	);
 
 router
 	.route('/:id')

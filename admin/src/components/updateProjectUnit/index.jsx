@@ -18,8 +18,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import ProjectUnitApartment from './apartment';
 import ProjectUnitLand from './land';
-import { addProjectProperty } from '../../utils/asyncProject';
 import axios from 'axios';
+import { updateProjectProperty } from '../../utils/asyncProject';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = (theme) => ({
@@ -34,49 +34,6 @@ const styles = (theme) => ({
 		color: theme.palette.grey[500],
 	},
 });
-
-const initialStateApartment = {
-	title: '',
-	description: '',
-	numberOfUnits: '',
-	superBuiltupArea: '',
-	carpetArea: '',
-	numberOfToilets: '',
-	furnished: 'unfurnished',
-	availability: 'immediately',
-	availableDate: Date.now(),
-	price: '',
-	numberOfBedrooms: 0,
-	numberOflivingAreas: 0,
-	furnishes: [],
-	speciality: null,
-	floorPlan: null,
-};
-const initialStateLand = {
-	title: '',
-	description: '',
-	numberOfUnits: '',
-	length: '',
-	width: '',
-	plotFrontage: '',
-	plotArea: [0],
-	widthOfRoad: '',
-	facing: 'east', //dropdown,
-	constructionDone: false, //drop,
-	boundaryWallMade: false, //drop
-	gatedCommunity: false, //drop,
-	landUsingZoning: 'yellow', //drop
-	govermentValuation: '',
-	pricePerSqFtMin: '',
-	pricePerSqFtMax: '',
-	minPrice: '',
-	maxPrice: '',
-	carParking: 'open',
-	verified: true,
-	transactionType: 'newbooking',
-	furnishes: [],
-	speciality: null,
-};
 
 const DialogTitle = withStyles(styles)((props) => {
 	const { children, classes, onClose, ...other } = props;
@@ -96,7 +53,7 @@ const DialogTitle = withStyles(styles)((props) => {
 	);
 });
 
-export default function AddPropertyUnit({
+export default function UpdateProjectUnitDialog({
 	open,
 	handleClose,
 	projectType,
@@ -104,6 +61,7 @@ export default function AddPropertyUnit({
 	fetchProject,
 	project,
 	tower,
+	state,
 }) {
 	const cancelToken = React.useRef(undefined);
 	const cancelTokenAdd = React.useRef(undefined);
@@ -129,17 +87,24 @@ export default function AddPropertyUnit({
 		for (const key in values) {
 			if (values.hasOwnProperty(key)) {
 				if (key === 'furnishes') {
-					values.furnishes.forEach((c) => {
-						formData.append('furnishes', c);
-					});
+					if (values.furnished !== 'unfurnished') {
+						values.furnishes.forEach((c) => {
+							formData.append('furnishes', c);
+						});
+					}
 				} else {
 					formData.append(key, values[key]);
 				}
 			}
 		}
-		formData.append('tower', JSON.stringify(tower));
-		addProjectProperty(
-			project,
+		// formData.append('tower', JSON.stringify(tower));
+		if (typeof values.floorPlan === 'string') {
+			formData.delete('floorPlan');
+		}
+		formData.delete('tower');
+		console.log(JSON.stringify(tower));
+		updateProjectProperty(
+			values.id,
 			formData,
 			cancelTokenAdd.current,
 			setAddPropertyLoading
@@ -154,23 +119,26 @@ export default function AddPropertyUnit({
 			});
 	};
 
-	const fetchSpecialities = (forRefresh = false) => {
-		if (specialities.length === 0 || forRefresh) {
-			cancelToken.current = axios.CancelToken.source();
-			getProjectSpecialities(cancelToken.current, setLoading, {
-				page: 1,
-				limit: 200,
-				status: 'active',
-			})
-				.then((resp) => {
-					console.log({ resp });
-					setSpecialities(resp.specialities);
+	const fetchSpecialities = React.useCallback(
+		(forRefresh = false) => {
+			if (specialities.length === 0 || forRefresh) {
+				cancelToken.current = axios.CancelToken.source();
+				getProjectSpecialities(cancelToken.current, setLoading, {
+					page: 1,
+					limit: 200,
+					status: 'active',
 				})
-				.catch((err) => {
-					console.log({ err });
-				});
-		}
-	};
+					.then((resp) => {
+						console.log({ resp });
+						setSpecialities(resp.specialities);
+					})
+					.catch((err) => {
+						console.log({ err });
+					});
+			}
+		},
+		[specialities.length]
+	);
 
 	const addSpeciality = () => {
 		cancelToken.current = axios.CancelToken.source();
@@ -184,13 +152,19 @@ export default function AddPropertyUnit({
 				console.log(err);
 			});
 	};
-	const formikState =
-		projectType === 'land' ? initialStateLand : initialStateApartment;
+	const formikState = {
+		...state,
+		speciality: state.speciality._id,
+	};
 
 	const buttonProps = {};
 	if (addPropertyLoading) {
 		buttonProps.endIcon = <CircularProgress size={20} color="inherit" />;
 	}
+
+	React.useEffect(() => {
+		fetchSpecialities(true);
+	}, [fetchSpecialities]);
 
 	return (
 		<div>
@@ -204,7 +178,7 @@ export default function AddPropertyUnit({
 				aria-describedby="scroll-dialog-description"
 			>
 				<DialogTitle id="scroll-dialog-title" onClose={handleClose}>
-					Add Unit
+					Update Unit
 				</DialogTitle>
 				<DialogContent dividers={true}>
 					<Formik initialValues={formikState} onSubmit={onSubmit}>

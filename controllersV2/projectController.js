@@ -7,6 +7,8 @@ const catchAsync = require('./../utils/catchAsync');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const { validationResult } = require('express-validator');
+const fs = require('fs');
+const path = require('path');
 
 exports.properties = catchAsync(async (req, res, next) => {
 	const match = {
@@ -82,14 +84,67 @@ exports.addProject = catchAsync(async (req, res, next) => {
 	});
 });
 exports.uploadPhotos = catchAsync(async (req, res, next) => {
-	const data = {
-		thumbnailImage: req.files['thumbnailImage'][0].filename,
-		masterFloorPlan: req.files['masterFloorPlan'][0].filename,
-		geogrophicalImage: req.files['geogrophicalImage'][0].filename,
-		photos: req.files['photos'].map((c, i) => ({
-			image: c.filename,
-		})),
-	};
+	const existingProject = await Project.findById(req.params.id);
+	if (!existingProject) {
+		return next(new AppError('Project not found'));
+	}
+
+	const data = {};
+
+	if (
+		req.files['thumbnailImage'] &&
+		req.files['thumbnailImage'][0].filename
+	) {
+		data.thumbnailImage = req.files['thumbnailImage'][0].filename;
+		if (existingProject.thumbnailImage) {
+			fs.unlink(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					existingProject.thumbnailImage,
+				function (err) {}
+			);
+		}
+	}
+	if (
+		req.files['masterFloorPlan'] &&
+		req.files['masterFloorPlan'][0].filename
+	) {
+		data.masterFloorPlan = req.files['masterFloorPlan'][0].filename;
+		if (existingProject.masterFloorPlan) {
+			fs.unlink(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					existingProject.masterFloorPlan,
+				function (err) {}
+			);
+		}
+	}
+	if (
+		req.files['geogrophicalImage'] &&
+		req.files['geogrophicalImage'][0].filename
+	) {
+		data.geogrophicalImage = req.files['geogrophicalImage'][0].filename;
+		if (existingProject.geogrophicalImage) {
+			fs.unlink(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					existingProject.geogrophicalImage,
+				function (err) {}
+			);
+		}
+	}
+
+	if (req.files['photos'] && req.files['photos'].length > 0) {
+		if (existingProject.photos.length > 0) {
+			const images = req.files['photos'].map((c, i) => ({
+				image: c.filename,
+			}));
+			data['$push'] = { photos: { $each: images } };
+		} else {
+			data.photos = req.files['photos'].map((c, i) => ({
+				image: c.filename,
+			}));
+		}
+	}
+
+	console.log(data);
 
 	const project = await Project.findByIdAndUpdate(req.params.id, data, {
 		new: true,
@@ -113,6 +168,48 @@ exports.addProjectProperty = catchAsync(async (req, res, next) => {
 	console.log(data);
 
 	const property = await ProjectProperty.create(data);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			property,
+		},
+	});
+});
+
+exports.updateProjectProperty = catchAsync(async (req, res, next) => {
+	const existingProperty = await ProjectProperty.findById(req.params.id);
+	if (!existingProperty) {
+		return next(new AppError('Property not found'));
+	}
+	const data = {
+		...req.body,
+	};
+	if (req.body.tower) {
+		data.tower = JSON.parse(req.body.tower);
+	}
+
+	if (req.file && req.file.filename) {
+		if (existingProperty.floorPlan) {
+			fs.unlink(
+				path.join(__dirname, '../', 'images', 'project_images/') +
+					existingProperty.floorPlan,
+				function (err) {}
+			);
+		}
+
+		data.floorPlan = req.file.filename;
+	}
+
+	console.log(data);
+
+	const property = await ProjectProperty.findByIdAndUpdate(
+		req.params.id,
+		data,
+		{
+			runValidators: true,
+			new: true,
+		}
+	);
 	res.status(200).json({
 		status: 'success',
 		data: {

@@ -59,6 +59,7 @@ import RequestsPage from './pages/requestPhotosPage/requestPhotos.page';
 import Snackbar from '@material-ui/core/Snackbar';
 import TypeHOC from './components/hoc/hocForAdminTYpe.component';
 import TypeProtected from './components/typeProtected/typeProtected.component';
+import UpdateProjectProperty from './pages/editProject/v2/projectProperty';
 import Users from './pages/users/users.component';
 import ViewCitiesPage from './pages/getCities/getCities.componet';
 import WhQueries from './pages/whQueries/whQueries.component';
@@ -132,6 +133,7 @@ const BuilderPageWithDrawer = Drawer(BuilderPage);
 const ProjectPageWithDrawer = Drawer(ProjectPage);
 const EditBuilderPageWithDrawer = Drawer(EditBuilderPage);
 const EditProjectPageWithDrawer = Drawer(EditProjectPage);
+const UpdateProjectPropertyPageWithDrawer = Drawer(UpdateProjectProperty);
 
 // import { Switch, Route, Redirect } from "react-router-dom";
 // import { connect } from "react-redux";
@@ -513,18 +515,19 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 				<Route
 					exact
 					path="/edit-projects/:id"
-					render={() => (
+					render={(props) => (
 						<Protected
-							component={HOC(EditProjectPageWithDrawer, [
-								{
-									type: 'propertyAccess',
-									value: 'project',
-								},
-								{
-									type: 'propertyActions',
-									value: 'update',
-								},
-							])}
+							component={EditProjectPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/edit-project-property/:pId/:pType"
+					render={(props) => (
+						<Protected
+							component={UpdateProjectPropertyPageWithDrawer}
 							{...props}
 						/>
 					)}

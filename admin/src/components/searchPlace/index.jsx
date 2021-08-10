@@ -23,8 +23,18 @@ export default function SearchPlace({
 	const [options, setOptions] = React.useState([]);
 	const [loading, setLoading] = React.useState(false);
 
-	const onKeyDown = (e) => {
-		if (e.key === 'Enter') {
+	const otherProps = {};
+	if (city && type === 'city') {
+		otherProps.value = city;
+	}
+	if (location && type === 'location') {
+		otherProps.value = location;
+	}
+
+	const onChange = (e) => {
+		const { value } = e.target;
+		setPlaceName(value);
+		if (value.length === 2 || value.length >= 4) {
 			cancelToken.current = axios.CancelToken.source();
 			if (type === 'city') {
 				searchPlace(
@@ -52,14 +62,6 @@ export default function SearchPlace({
 		}
 	};
 
-	const otherProps = {};
-	if (city && type === 'city') {
-		otherProps.value = city;
-	}
-	if (location && type === 'location') {
-		otherProps.value = location;
-	}
-
 	return (
 		<Box p="0.5rem">
 			{error && (
@@ -77,9 +79,9 @@ export default function SearchPlace({
 				onClose={() => {
 					setOpen(false);
 				}}
-				getOptionSelected={(option, value) =>
-					option.name === value.name
-				}
+				// getOptionSelected={(option, value) =>
+				// 	option.name === value.name
+				// }
 				onChange={(_, value) => {
 					onSelect(value);
 				}}
@@ -92,8 +94,7 @@ export default function SearchPlace({
 						label={label}
 						variant="filled"
 						value={placeName}
-						onChange={(e) => setPlaceName(e.target.value)}
-						onKeyDown={onKeyDown}
+						onChange={onChange}
 						InputProps={{
 							...params.InputProps,
 							endAdornment: (
