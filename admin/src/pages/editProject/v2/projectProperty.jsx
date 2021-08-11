@@ -27,6 +27,7 @@ import EditTextField from '../../addProject/v2/editTextField';
 import ErrorCard from '../../../components/errorCard';
 import InactiveIcon from '@material-ui/icons/Cancel';
 import LoaderBackdrop from '../../../components/backdrop';
+import RemoveTowerButton from './removeButton';
 import UpdateProjectUnitDialog from '../../../components/updateProjectUnit';
 import axios from 'axios';
 import { getAddProjectPageInfo } from '../../../utils/asyncFunctions';
@@ -37,24 +38,33 @@ const UpdateProjectProperty = ({
 		params: { pId, pType },
 	},
 }) => {
+	// Styles
 	const classes = useStyles();
+
+	// Cancel Token
 	const cancelTokenFetchProject = useRef(undefined);
 	const cancelToken = useRef(undefined);
 	const cancelTokenChangeStatus = useRef(undefined);
+
+	// UI
 	const [showEdit, setShowEdit] = React.useState(null);
+	const [fetchError, setFetchError] = useState(null);
+	const [open, setOpen] = React.useState(false);
+	const [updateDialogOpen, setUpdateDialogOpen] = React.useState(false);
+
+	// Data
 	const [project, setProject] = useState(null);
 	const [towers, setTowers] = React.useState(1);
-	const [fetchError, setFetchError] = useState(null);
-	const [loading, setLoading] = useState(false);
-	const [resourcesLoading, setResourcesLoading] = useState(false);
-	const [updateTowerLoading, setUpdateTowerLoading] = React.useState(false);
 	const [properties, setProperties] = useState([]);
 	const [selectedTower, setSelectedTower] = React.useState(null);
 	const [property, setProperty] = React.useState(null);
-	const [open, setOpen] = React.useState(false);
-	const [changeStatusLoading, setChangeStatusLoading] = React.useState(false);
-	const [updateDialogOpen, setUpdateDialogOpen] = React.useState(false);
 	const [resources, setResources] = React.useState(null);
+
+	// Loading State
+	const [loading, setLoading] = useState(false);
+	const [resourcesLoading, setResourcesLoading] = useState(false);
+	const [updateTowerLoading, setUpdateTowerLoading] = React.useState(false);
+	const [changeStatusLoading, setChangeStatusLoading] = React.useState(false);
 
 	const toggleDialog = (status) => () => {
 		setOpen(status);
@@ -153,6 +163,7 @@ const UpdateProjectProperty = ({
 			});
 	};
 
+	// Effects
 	React.useEffect(() => {
 		fetchProject();
 	}, [pId, fetchProject]);
@@ -244,16 +255,7 @@ const UpdateProjectProperty = ({
 										}
 										subheader={`Tower- ${c.name}`}
 									/>
-									{/* <Box className={gClasses.justifyBetween}>
-							<h4>Tower - {c.name}</h4>
-							<IconButton
-								color="primary"
-								onClick={toggleDialog(true)}
-							>
-								<AddIcon />
-							</IconButton>
-						</Box>
-						<Divider /> */}
+
 									<List
 										dense={true}
 										className={
@@ -318,12 +320,11 @@ const UpdateProjectProperty = ({
 										{properties.filter(
 											(b) => b.tower._id === c._id
 										).length === 0 && (
-											<Button
-												size="small"
-												color="secondary"
-											>
-												Remove Tower
-											</Button>
+											<RemoveTowerButton
+												towerId={c._id}
+												projectId={pId}
+												fetchProject={fetchProject}
+											/>
 										)}
 									</CardActions>
 								</Card>

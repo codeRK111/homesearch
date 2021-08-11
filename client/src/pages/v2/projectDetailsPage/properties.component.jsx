@@ -10,7 +10,6 @@ import byUnit from '../../../assets/icons/byUnit.svg';
 import clsx from 'clsx';
 import { getProjectProperty } from '../../../utils/async';
 import noImage from '../../../assets/no-image.jpg';
-import { renderToilets } from '../../../utils/render.utils';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './projectDetailsPage.style';
 
@@ -70,7 +69,7 @@ const Properties = ({ project }) => {
 										globalClasses.colorPrimary
 									)}
 								>
-									{c.tower}
+									{c.tower.name}
 								</Link>
 							</Typography>
 						)}
@@ -97,7 +96,7 @@ const Properties = ({ project }) => {
 							className={clsx(globalClasses.colorUtil)}
 						>
 							{c.numberOfBedrooms}Bed-
-							{renderToilets(c.toiletTypes)} Bath
+							{c.numberOfToilets} Bath
 						</Typography>
 						{filterType === 'unit' && (
 							<Typography
@@ -146,9 +145,7 @@ const Properties = ({ project }) => {
 							display="block"
 							className={clsx(globalClasses.colorUtil)}
 						>
-							{c.plotArea.map((c, i) => (
-								<span key={i}>{c} SqFt &nbsp;&nbsp; </span>
-							))}
+							<span>{c.plotArea} SqFt &nbsp;&nbsp; </span>
 						</Typography>
 
 						<Typography
@@ -156,8 +153,7 @@ const Properties = ({ project }) => {
 							display="block"
 							className={clsx(globalClasses.colorUtil)}
 						>
-							{c.minPrice / 100000}L-
-							{c.maxPrice / 100000}L
+							{c.price / 100000}L
 						</Typography>
 						{filterType === 'unit' && (
 							<Typography
@@ -177,8 +173,8 @@ const Properties = ({ project }) => {
 	};
 
 	const floorPlanImage =
-		property && property.floorPlans
-			? `/assets/projects/${property.floorPlans.image}`
+		property && property.floorPlan
+			? `/assets/projects/${property.floorPlan}`
 			: noImage;
 
 	return (
@@ -282,11 +278,6 @@ const Properties = ({ project }) => {
 						</Box>
 					) : (
 						<>
-							{property && property.floorPlans && (
-								<Typography align="center">
-									{property.floorPlans.label}
-								</Typography>
-							)}
 							<CardMedia
 								image={floorPlanImage}
 								className={classes.fPlan}

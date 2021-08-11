@@ -174,7 +174,6 @@ app.use('/api/v2/query', queryRouteV2);
 app.use('/api/v2/project', v2ProjectRoute);
 
 app.all('/api/*', (req, res, next) => {
-	console.log(req);
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));
 });
 

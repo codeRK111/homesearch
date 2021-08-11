@@ -218,6 +218,35 @@ export const updateTowerName = (
 			});
 	});
 };
+export const removeTower = (projectId, towerId, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		const url = `/project/tower/${projectId}/${towerId}`;
+		setLoading(true);
+		axios
+			.delete(apiUrl(url, 'v2'), {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data.project);
+			})
+			.catch((error) => {
+				setLoading(false);
+				let message = '';
+				if (!!error.response) {
+					message = error.response.data.message;
+				} else {
+					message = error.message;
+				}
+				return reject(message);
+			});
+	});
+};
 export const getProject = (project, cancelToken, setLoading) => {
 	const token = localStorage.getItem('JWT');
 	return new Promise((resolve, reject) => {

@@ -84,13 +84,9 @@ export const renderLandArea = (project, info) => {
 	let min;
 	let max;
 	if (project.projectType === 'land') {
-		min = Math.min(...info.minAreaLand);
-		max = Math.max(...info.maxAreaLand);
-		return min === max
-			? min
-			: `${Math.min(...info.minAreaLand)} - ${Math.max(
-					...info.maxAreaLand
-			  )}`;
+		min = info.minAreaLand;
+		max = info.maxAreaLand;
+		return min === max ? min : `${info.minAreaLand} - ${info.maxAreaLand}`;
 	} else {
 		min = info.minArea;
 		max = info.maxArea;
@@ -101,8 +97,8 @@ export const renderLandAreaGrid = (project, info) => {
 	let min;
 	let max;
 	if (project.projectType === 'land') {
-		min = Math.min(...info.minAreaLand);
-		max = Math.max(...info.maxAreaLand);
+		min = info.minAreaLand;
+		max = info.maxAreaLand;
 
 		return {
 			min,
@@ -157,6 +153,10 @@ export const renderTransactionType = (type) => {
 };
 
 export const renderMinAndMax = (arr) => {
+	console.log('------');
+	console.log(arr);
+	console.log(arr.length);
+	console.log('------');
 	return arr.length > 1
 		? `${Math.min(...arr)}-${Math.max(...arr)}`
 		: `${arr[0]}`;

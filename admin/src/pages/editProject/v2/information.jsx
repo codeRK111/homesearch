@@ -250,13 +250,28 @@ const EditProjectInfo = memo(
 					initialValues={{
 						...projectData,
 						builder: projectData.builder.id,
-						reraId: projectData.legalClearance.find(
-							(c) => c.name === 'reraapproved'
-						)['details']
-							? projectData.legalClearance.find(
-									(c) => c.name === 'reraapproved'
-							  )['details']
-							: '',
+						reraId:
+							projectData.legalClearance.find(
+								(c) => c.name === 'reraapproved'
+							) &&
+							projectData.legalClearance.find(
+								(c) => c.name === 'reraapproved'
+							)['details']
+								? projectData.legalClearance.find(
+										(c) => c.name === 'reraapproved'
+								  )['details']
+								: '',
+						ownerNumber:
+							projectData.legalClearance.find(
+								(c) => c.name === 'numberOfOwner'
+							) &&
+							projectData.legalClearance.find(
+								(c) => c.name === 'numberOfOwner'
+							)['details']
+								? projectData.legalClearance.find(
+										(c) => c.name === 'numberOfOwner'
+								  )['details']
+								: '',
 						projectType,
 					}}
 					enableReinitialize

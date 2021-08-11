@@ -519,8 +519,8 @@ exports.getAllProjectInfo = catchAsync(async (req, res, next) => {
 		{
 			$group: {
 				_id: null,
-				minPrice: { $min: '$minPrice' },
-				maxPrice: { $max: '$maxPrice' },
+				minPrice: { $min: '$price' },
+				maxPrice: { $max: '$price' },
 				totalUnits: { $sum: '$numberOfUnits' },
 				minArea: { $min: '$superBuiltupArea' },
 				maxArea: { $max: '$superBuiltupArea' },

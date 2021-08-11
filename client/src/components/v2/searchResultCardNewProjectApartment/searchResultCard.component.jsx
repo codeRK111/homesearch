@@ -53,17 +53,13 @@ const ResultCard = ({ property, propertyItems }) => {
 												₹{' '}
 												{Math.min(
 													...propertyItems.map((c) =>
-														Number(
-															c.minPrice / 100000
-														)
+														Number(c.price / 100000)
 													)
 												)}{' '}
 												Lacs -{' '}
 												{Math.max(
 													...propertyItems.map((c) =>
-														Number(
-															c.maxPrice / 100000
-														)
+														Number(c.price / 100000)
 													)
 												)}{' '}
 												Lacs
@@ -116,8 +112,8 @@ const ResultCard = ({ property, propertyItems }) => {
 											className={classes.cell}
 										>
 											<Typography variant="caption">
-												₹ {c.minPrice / 100000} L -{' '}
-												{c.maxPrice / 100000} L
+												₹ {c.price / 100000} L -{' '}
+												{c.price / 100000} L
 											</Typography>
 										</Grid>
 									</Grid>

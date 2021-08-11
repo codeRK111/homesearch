@@ -35,16 +35,11 @@ const ResultCard = ({ property, propertyItems }) => {
 									<Box>
 										<Box>
 											<b>
-												{renderMinAndMax([
-													...new Set(
-														propertyItems
-															.map(
-																(c) =>
-																	c.plotArea
-															)
-															.flat()
-													),
-												])}{' '}
+												{renderMinAndMax(
+													propertyItems.map(
+														(c) => c.plotArea
+													)
+												)}{' '}
 												Sq.Ft
 											</b>
 										</Box>
@@ -57,17 +52,13 @@ const ResultCard = ({ property, propertyItems }) => {
 												₹{' '}
 												{Math.min(
 													...propertyItems.map((c) =>
-														Number(
-															c.minPrice / 100000
-														)
+														Number(c.price / 100000)
 													)
 												)}{' '}
 												Lacs -{' '}
 												{Math.max(
 													...propertyItems.map((c) =>
-														Number(
-															c.maxPrice / 100000
-														)
+														Number(c.price / 100000)
 													)
 												)}{' '}
 												Lacs
@@ -111,7 +102,7 @@ const ResultCard = ({ property, propertyItems }) => {
 											className={classes.cell}
 										>
 											<Typography variant="caption">
-												{renderMinAndMax(c.plotArea)}{' '}
+												{renderMinAndMax([c.plotArea])}{' '}
 												Sq.Ft
 											</Typography>
 										</Grid>
@@ -121,8 +112,8 @@ const ResultCard = ({ property, propertyItems }) => {
 											className={classes.cell}
 										>
 											<Typography variant="caption">
-												₹ {c.minPrice / 100000} L -{' '}
-												{c.maxPrice / 100000} L
+												₹ {c.price / 100000} L -{' '}
+												{c.price / 100000} L
 											</Typography>
 										</Grid>
 									</Grid>

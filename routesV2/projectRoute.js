@@ -31,6 +31,11 @@ router
 router
 	.route('/handle-towers/:id')
 	.patch(adminController.protect, projectController.updateTowerNumbers);
+router.delete(
+	'/tower/:projectId/:towerId',
+	adminController.protect,
+	projectController.removeTower
+);
 router
 	.route('/handle-tower-name/:id/:towerId')
 	.patch(adminController.protect, projectController.updateTowerName);

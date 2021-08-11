@@ -903,7 +903,7 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 	if (req.body.for === 'project') {
 		const propertyFilter = {};
 		if (req.body.price) {
-			propertyFilter['maxPrice'] = { $lte: req.body.price };
+			propertyFilter['price'] = { $lte: req.body.price };
 		}
 		if (req.body.availability) {
 			propertyFilter['availability'] = req.body.availability;
@@ -925,7 +925,7 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 					obj['$gte'] = Number(c.min);
 				}
 				arr.push({
-					maxPrice: obj,
+					price: obj,
 				});
 			});
 			propertyFilter['$or'] = arr;
@@ -933,6 +933,51 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 
 		console.log(JSON.stringify(propertyFilter));
 		const propertyItems = await ProjectProperty.find(propertyFilter);
+		const propertyItemsGrouped = await ProjectProperty.aggregate([
+			{
+				$match: propertyFilter,
+			},
+			{
+				$group: {
+					_id: {
+						project: '$project',
+						numberOfUnits: '$numberOfUnits',
+						price: '$price',
+						numberOfBedrooms: '$numberOfBedrooms',
+					},
+				},
+			},
+			{
+				$project: {
+					_id: 0,
+					project: '$_id.project',
+					numberOfUnits: '$_id.numberOfUnits',
+					price: '$_id.price',
+					numberOfBedrooms: '$_id.numberOfBedrooms',
+				},
+			},
+			{
+				$group: {
+					_id: {
+						bedrooms: '$numberOfBedrooms',
+						project: '$project',
+					},
+					totalUnits: { $sum: '$numberOfUnits' },
+					minPrice: { $min: '$price' },
+					maxPrice: { $max: '$price' },
+				},
+			},
+			{
+				$project: {
+					_id: 0,
+					project: '$_id.project',
+					numberOfBedrooms: '$_id.bedrooms',
+					totalUnits: 1,
+					minPrice: 1,
+					maxPrice: 1,
+				},
+			},
+		]);
 		filter['_id'] = { $in: propertyItems.map((c) => c.project) };
 		if (req.body.locations) {
 			filter['location'] = { $in: req.body.locations };
@@ -945,6 +990,7 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 		}
 		filter.status = 'active';
 		const totalDocs = await Project.countDocuments(filter);
+		console.log(filter);
 
 		const properties = await Project.find(filter)
 			.sort('-createdAt')
@@ -953,7 +999,7 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 		res.status(200).json({
 			status: 'success',
 			count: totalDocs,
-			data: { propertyItems, properties },
+			data: { propertyItems, properties, propertyItemsGrouped },
 		});
 	} else {
 		if (req.body.for) {

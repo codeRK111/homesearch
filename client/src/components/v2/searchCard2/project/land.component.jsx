@@ -27,11 +27,7 @@ import useStyles from '../searchCard.style';
 
 const PropertyCard = ({ property, propertyItems }) => {
 	const m = moment(property.createdAt);
-	const img = property.photos[0]
-		? property.photos.find((c) => c.default)
-			? `/assets/projects/${property.photos.find((c) => c.default).image}`
-			: `/assets/projects/${property.photos[0].image}`
-		: city;
+	const img = `/assets/projects/${property.thumbnailImage}`;
 	const classes = useStyles({ img });
 	const globalClasses = useGlobalStyles({ img: city });
 

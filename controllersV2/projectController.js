@@ -22,12 +22,6 @@ exports.properties = catchAsync(async (req, res, next) => {
 		{
 			$match: match,
 		},
-		{
-			$unwind: {
-				path: '$floorPlans',
-				preserveNullAndEmptyArrays: true,
-			},
-		},
 	];
 
 	if (req.body.type === 'unit') {
@@ -280,6 +274,29 @@ exports.getProject = catchAsync(async (req, res, next) => {
 		data: {
 			project,
 			properties,
+		},
+	});
+});
+
+exports.removeTower = catchAsync(async (req, res, next) => {
+	const project = await Project.findByIdAndUpdate(
+		req.params.projectId,
+		{
+			$pull: {
+				towerNames: {
+					_id: req.params.towerId,
+				},
+			},
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
 		},
 	});
 });
