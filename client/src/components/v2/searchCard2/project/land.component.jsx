@@ -6,16 +6,14 @@ import {
 	renderTypes,
 	toHumanReadble,
 } from '../../../../utils/render.utils';
+import { location2, logo, tag } from '../../../../utils/statc';
 
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import Land from '../../searchResultCardNewProjectLand/searchResultCard.component';
 import React from 'react';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
-import location from '../../../../assets/icons/location2.svg';
-import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
-import tag from '../../../../assets/icons/tag2.svg';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../searchCard.style';
 
@@ -59,7 +57,7 @@ const PropertyCard = ({ property, propertyItems }) => {
 					<div className={classes.titleWrapper}>
 						<div className={classes.mr1}>
 							<img
-								src={logoIcon}
+								src={logo}
 								alt="Logo"
 								className={classes.logo}
 							/>
@@ -101,7 +99,7 @@ const PropertyCard = ({ property, propertyItems }) => {
 					>
 						<div className={globalClasses.alignCenterOnly}>
 							<img
-								src={location}
+								src={location2}
 								alt="Location"
 								className={classes.icon}
 							/>

@@ -4,7 +4,7 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import area from '../../../assets/icons/area.svg';
+import { area } from '../../../utils/statc';
 import city from '../../../assets/city.jpg';
 import clsx from 'clsx';
 import location from '../../../assets/icons/location.svg';

@@ -1,19 +1,11 @@
+import { admin, comment, tag } from '../../../utils/statc';
+
 import { Box } from '@material-ui/core';
 import React from 'react';
-import admin from '../../../assets/icons/admin.svg';
 import city from '../../../assets/city.jpg';
-import comment from '../../../assets/icons/comment.svg';
-import tag from '../../../assets/icons/tag.svg';
 import useStyles from './blogCard.style';
 
-// import car from '../../../assets/icons/car.svg';
-
 // import clsx from 'clsx';
-
-// import location from '../../../assets/icons/location.svg';
-// import logo from '../../../assets/icons/bLogo.svg';
-
-
 
 const PropertyCard = () => {
 	const classes = useStyles({ img: city });

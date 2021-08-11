@@ -5,6 +5,7 @@ import {
 	Menu,
 	Typography,
 } from '@material-ui/core';
+import { agent, loan, news, valuation, whatsapp } from '../../../utils/statc';
 import {
 	selectCurrentTab,
 	selectSelectedCity,
@@ -16,20 +17,15 @@ import {
 
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import React from 'react';
-import agentIcon from '../../../assets/icons/agent.svg';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import loanIcon from '../../../assets/icons/loan.svg';
-import newsIcon from '../../../assets/icons/news.svg';
 import { searchCities } from '../../../redux/city/city.actions';
 import searchIcon from '../../../assets/search.svg';
 import { selectSearchCityLoading } from '../../../redux/city/city.selectors';
 import useGlobalStyles from '../../../common.style';
 import { useHistory } from 'react-router-dom';
 import useStyles from './heroArea.style';
-import valuationIcon from '../../../assets/icons/valuation.svg';
-import whatsappIcon from '../../../assets/icons/whatsapp.svg';
 import { withStyles } from '@material-ui/core/styles';
 
 const StyledMenu = withStyles({
@@ -294,7 +290,7 @@ const HeroArea = ({
 			<div className={classes.whatsAppWrapper}>
 				<div className={classes.whatsappShadow}>
 					<img
-						src={whatsappIcon}
+						src={whatsapp}
 						alt=""
 						className={classes.whatsappIcon}
 					/>
@@ -305,7 +301,7 @@ const HeroArea = ({
 					<div>
 						<div className={classes.iconShadow}>
 							<img
-								src={valuationIcon}
+								src={valuation}
 								alt=""
 								className={classes.svgWrapper}
 							/>
@@ -317,7 +313,7 @@ const HeroArea = ({
 					<div>
 						<div className={classes.iconShadow}>
 							<img
-								src={agentIcon}
+								src={agent}
 								alt=""
 								className={classes.svgWrapper}
 							/>
@@ -327,7 +323,7 @@ const HeroArea = ({
 					<div>
 						<div className={classes.iconShadow}>
 							<img
-								src={loanIcon}
+								src={loan}
 								alt=""
 								className={classes.svgWrapper}
 							/>
@@ -337,7 +333,7 @@ const HeroArea = ({
 					<div>
 						<div className={classes.iconShadow}>
 							<img
-								src={newsIcon}
+								src={news}
 								alt=""
 								className={classes.svgWrapper}
 							/>

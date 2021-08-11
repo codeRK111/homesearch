@@ -1,5 +1,6 @@
 import { AppBar, Avatar, Box, CircularProgress } from '@material-ui/core';
 import React, { useState } from 'react';
+import { badge, call, comment, whatsapp } from '../../../utils/statc';
 import {
 	selectAuthenticated,
 	selectUser,
@@ -8,15 +9,11 @@ import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
 
 import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
-import badgeIcon from '../../../assets/icons/badge.svg';
-import callIcon from '../../../assets/icons/call.svg';
 import clsx from 'clsx';
-import commentIcon from '../../../assets/icons/comment.svg';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './ownerCard.style';
-import whatsappDefaultIcon from '../../../assets/icons/whatsapp.svg';
 
 const defaultImage =
 	'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100';
@@ -226,7 +223,7 @@ const OwnerCard = ({
 							className={classes.avatar}
 						/>
 						<img
-							src={badgeIcon}
+							src={badge}
 							alt="Badge"
 							className={classes.commentIcon}
 						/>
@@ -280,7 +277,7 @@ const OwnerCard = ({
 										</span>
 									) : (
 										<img
-											src={callIcon}
+											src={call}
 											alt="Call"
 											className={clsx(
 												classes.ownerIcon,
@@ -298,7 +295,7 @@ const OwnerCard = ({
 										/>
 									) : (
 										<img
-											src={commentIcon}
+											src={comment}
 											alt="Comment"
 											className={clsx(
 												classes.ownerIcon,
@@ -316,7 +313,7 @@ const OwnerCard = ({
 										/>
 									) : (
 										<img
-											src={whatsappDefaultIcon}
+											src={whatsapp}
 											alt="Whatsapp"
 											className={clsx(
 												classes.ownerIcon,

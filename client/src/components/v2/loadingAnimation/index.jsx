@@ -1,10 +1,10 @@
 import './loading.css';
 
+import { Box, Paper } from '@material-ui/core';
+
 import Backdrop from '@material-ui/core/Backdrop';
-import { Box } from '@material-ui/core';
-import { Paper } from '@material-ui/core';
 import React from 'react';
-import logo from '../../../assets/icons/logo.svg';
+import { logo } from '../../../utils/statc';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({

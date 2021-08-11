@@ -1,14 +1,12 @@
 import { Box, Chip } from '@material-ui/core';
+import { area, location2, tag } from '../../../utils/statc';
 
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import area from '../../../assets/icons/area.svg';
 import city from '../../../assets/city.jpg';
 import clsx from 'clsx';
-import location from '../../../assets/icons/location.svg';
-import tag from '../../../assets/icons/tag2.svg';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './propertyCard.style';
 
@@ -85,7 +83,7 @@ const PropertyCard = ({ data, showStatus = false }) => {
 						<div className={classes.flexParentWrapper}>
 							<div className={classes.flexWrapper}>
 								<img
-									src={location}
+									src={location2}
 									alt="Location"
 									className={classes.img}
 								/>

@@ -1,7 +1,7 @@
+import { location2, tag } from '../../../utils/statc';
+
 import React from 'react';
 import clsx from 'clsx';
-import location from '../../../assets/icons/location.svg';
-import tag from '../../../assets/icons/tag2.svg';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './agentCard.style';
 
@@ -24,7 +24,7 @@ const PropertyCard = () => {
 				<div className={classes.flexParentWrapper}>
 					<div className={classes.flexWrapper}>
 						<img
-							src={location}
+							src={location2}
 							alt="Location"
 							className={classes.img}
 						/>

@@ -1,15 +1,17 @@
 import { Box, CardMedia, Grid } from '@material-ui/core';
+import {
+	area,
+	bed,
+	car,
+	location2,
+	logo,
+	tag,
+	tub,
+} from '../../../utils/statc';
 
 import React from 'react';
-import area from '../../../assets/icons/area.svg';
-import bed from '../../../assets/icons/bed.svg';
-import car from '../../../assets/icons/car.svg';
 import city from '../../../assets/city.jpg';
 import clsx from 'clsx';
-import location from '../../../assets/icons/location2.svg';
-import logoIcon from '../../../assets/icons/logo.svg';
-import tag from '../../../assets/icons/tag2.svg';
-import tub from '../../../assets/icons/tub.svg';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './searchCard.style';
 
@@ -61,7 +63,7 @@ const PropertyCard = () => {
 					<div className={classes.titleWrapper}>
 						<div className={classes.mr1}>
 							<img
-								src={logoIcon}
+								src={logo}
 								alt="Logo"
 								className={classes.logo}
 							/>
@@ -76,7 +78,9 @@ const PropertyCard = () => {
 							</span>
 						</div>
 						<div>
-							<h2 className={globalClasses.textCenter}>Casa Living Villa</h2>
+							<h2 className={globalClasses.textCenter}>
+								Casa Living Villa
+							</h2>
 							<span
 								className={clsx(
 									classes.smallText,
@@ -91,7 +95,7 @@ const PropertyCard = () => {
 						<div>
 							<div className={globalClasses.alignCenter}>
 								<img
-									src={location}
+									src={location2}
 									alt="Location"
 									className={classes.icon}
 								/>
