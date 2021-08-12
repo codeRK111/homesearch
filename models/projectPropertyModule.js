@@ -4,6 +4,17 @@ const towerSchema = new Schema({
 	name: {
 		type: String,
 	},
+	floorPlan: {
+		type: String,
+	},
+	phase: {
+		type: Number,
+	},
+	status: {
+		type: String,
+		enum: ['active', 'inactive'],
+		default: 'active',
+	},
 });
 const projectPropertySchema = new Schema(
 	{
@@ -92,7 +103,7 @@ const projectPropertySchema = new Schema(
 		status: {
 			type: String,
 			enum: {
-				values: ['active', 'expired', 'underScreening'],
+				values: ['active', 'inactive', 'expired', 'underScreening'],
 			},
 			default: 'active',
 		},

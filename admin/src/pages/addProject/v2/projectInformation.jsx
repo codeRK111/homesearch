@@ -1,17 +1,22 @@
 import { Box, Button, Grid, Typography } from '@material-ui/core';
 import { Field, FieldArray, Form, Formik } from 'formik';
 import { addProject, updateProject } from '../../../utils/asyncProject';
+import {
+	renderLunchingDateLabel,
+	renderPrice,
+} from '../../../utils/render.utils';
 
 import AddProjectLoader from '../../../components/addProjectLoader';
+import FMonthPicker from '../../../components/formik/monthAndYearPicker.component';
 import FSelect from '../../../components/formik/select.component';
 import FTextField from '../../../components/formik/textField.component';
 import React from 'react';
 import SearchPlace from '../../../components/searchPlace';
 import UploadPhoto from '../../../components/uploadPhotos';
 import axios from 'axios';
-import { renderPrice } from '../../../utils/render.utils';
 import { useCancelAxios } from '../../../hooks/useCancel';
 import useGlobalStyles from '../../../common.style';
+import { useHistory } from 'react-router-dom';
 import useStyles from '../addProject.style';
 import { validateNumber } from '../../../utils/validation.utils';
 
@@ -23,7 +28,6 @@ const initialState = {
 	builder: '',
 	complitionStatus: 'ongoing',
 	description: '',
-
 	reraId: '',
 	ownerNumber: '',
 	usp: '',
@@ -36,6 +40,7 @@ const initialState = {
 	thumbnailImage: null,
 	masterFloorPlan: null,
 	geogrophicalImage: null,
+	lunchingDate: Date.now(),
 };
 
 const statusMenuItems = [
@@ -59,16 +64,25 @@ const ProjectInformation = ({
 	handleNext,
 	setProjectInfo,
 }) => {
+	// Constants
+	const history = useHistory();
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
+
+	// API Cancel Token
 	const cancelToken = React.useRef(undefined);
 	const cancelTokenImage = React.useRef(undefined);
+
+	// Loading
 	const [addProjectLoading, setAddProjectLoading] = React.useState(false);
 	const [uploadPhotosLoading, setUploadPhotosLoading] = React.useState(false);
+
+	// UI
 	const [addProjectError, setAddProjectError] = React.useState(null);
+
+	// Data
 	const [photos, setPhotos] = React.useState([]);
-	useCancelAxios(cancelToken.current);
-	useCancelAxios(cancelTokenImage.current);
+
 	const validate = (values) => {
 		const error = {};
 		if (!values.title) {
@@ -156,7 +170,9 @@ const ProjectInformation = ({
 					towerNames: resp.towerNames,
 				});
 				setAddProjectError(null);
-				handleNext();
+				history.push(
+					`/edit-project-property/${project}/${resp.projectType}`
+				);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -227,6 +243,11 @@ const ProjectInformation = ({
 			});
 	};
 
+	// Cancel API
+
+	useCancelAxios(cancelToken.current);
+	useCancelAxios(cancelTokenImage.current);
+
 	return (
 		<div>
 			<AddProjectLoader
@@ -259,6 +280,18 @@ const ProjectInformation = ({
 										value: c.value,
 										label: c.label,
 									}))}
+								/>
+							</Grid>
+							<Grid item xs={12} md={6}>
+								<FMonthPicker
+									formLabel={renderLunchingDateLabel(
+										values.complitionStatus
+									)}
+									name="lunchingDate"
+									value={values.availableDate}
+									onChange={(value) =>
+										setFieldValue('availableDate', value)
+									}
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>

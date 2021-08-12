@@ -41,6 +41,9 @@ const useGlobalStyles = makeStyles((theme) => ({
 	errorColor: {
 		color: 'red',
 	},
+	flexGrow: {
+		flexGrow: 1,
+	},
 }));
 
 export default useGlobalStyles;

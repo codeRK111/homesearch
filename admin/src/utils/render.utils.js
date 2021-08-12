@@ -65,3 +65,17 @@ export const renderImage = (image, path) => {
 		return URL.createObjectURL(image);
 	}
 };
+
+export const renderLunchingDateLabel = (status) => {
+	switch (status) {
+		case 'upcoming':
+			return 'Lunching month and year';
+		case 'ongoing':
+			return 'Possesion month and year';
+		case 'completed':
+			return 'Completion monthn and year';
+
+		default:
+			return 'Lunching month and year';
+	}
+};

@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: '1rem',
 	},
 	propertyItemsContainer: {
-		height: '15rem',
+		maxHeight: '15rem',
 		overflow: 'auto',
 	},
 }));

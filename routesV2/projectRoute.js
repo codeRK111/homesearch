@@ -59,6 +59,23 @@ router
 	.get(adminController.protect, projectController.getProject)
 	.patch(adminController.protect, projectController.updateProject);
 router
+	.route('/phases/:projectId')
+	.patch(adminController.protect, projectController.addPhase);
+router
+	.route('/towers/:towerId/floorPlan/:projectId')
+	.patch(
+		adminController.protect,
+		fileController.uploadFloorplan,
+		projectController.manageFloorPlan
+	);
+router
+	.route('/towers/:towerId/status/:projectId')
+	.patch(adminController.protect, projectController.manageTowerStatus);
+router
+	.route('/towers/:projectId')
+	.patch(adminController.protect, projectController.addTower);
+
+router
 	.route('/')
 	.post(
 		adminController.protect,

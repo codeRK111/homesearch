@@ -1,11 +1,11 @@
 import { Button, CircularProgress, Typography } from '@material-ui/core';
 import React, { memo, useRef, useState } from 'react';
 
+import { addTower } from '../../../utils/asyncProject';
 import axios from 'axios';
-import { removeTower } from '../../../utils/asyncProject';
 import useGlobalStyles from '../../../common.style';
 
-const RemoveTowerButton = memo(({ towerId, projectId, fetchProject }) => {
+const AddTower = memo(({ project, phase, fetchProject }) => {
 	// Styles
 	const gClasses = useGlobalStyles();
 
@@ -18,16 +18,19 @@ const RemoveTowerButton = memo(({ towerId, projectId, fetchProject }) => {
 	// Error State
 	const [error, setError] = useState(null);
 
+	// Data
+
 	// Callbacks
-	const onRemoveTower = async () => {
+	const onAddTower = async () => {
 		try {
 			cancelToken.current = axios.CancelToken.source();
-			await removeTower(
-				projectId,
-				towerId,
-				cancelToken.current,
-				setLoading
-			);
+			const data = {
+				name: `Tower - ${project.towerNames.length + 1}`,
+				floorPlan: null,
+				phase,
+				status: 'active',
+			};
+			await addTower(project.id, data, cancelToken.current, setLoading);
 			setError(null);
 			fetchProject();
 		} catch (error) {
@@ -45,19 +48,16 @@ const RemoveTowerButton = memo(({ towerId, projectId, fetchProject }) => {
 				<Typography className={gClasses.errorColor}>{error}</Typography>
 			) : (
 				<Button
-					fullWidth
-					variant="outlined"
-					size="small"
-					color="secondary"
-					onClick={onRemoveTower}
-					disabled={loading}
+					color="primary"
+					onClick={onAddTower}
+					disabled={loading || !phase}
 					{...buttonProps}
 				>
-					Remove Tower
+					Add Tower
 				</Button>
 			)}
 		</>
 	);
 });
 
-export default RemoveTowerButton;
+export default AddTower;

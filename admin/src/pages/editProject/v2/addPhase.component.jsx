@@ -1,11 +1,12 @@
 import { Button, CircularProgress, Typography } from '@material-ui/core';
 import React, { memo, useRef, useState } from 'react';
 
+import AddIcon from '@material-ui/icons/Add';
+import { addPhase } from '../../../utils/asyncProject';
 import axios from 'axios';
-import { removeTower } from '../../../utils/asyncProject';
 import useGlobalStyles from '../../../common.style';
 
-const RemoveTowerButton = memo(({ towerId, projectId, fetchProject }) => {
+const AddPhaseButton = memo(({ projectId, fetchProject }) => {
 	// Styles
 	const gClasses = useGlobalStyles();
 
@@ -19,15 +20,10 @@ const RemoveTowerButton = memo(({ towerId, projectId, fetchProject }) => {
 	const [error, setError] = useState(null);
 
 	// Callbacks
-	const onRemoveTower = async () => {
+	const onAddPhase = async () => {
 		try {
 			cancelToken.current = axios.CancelToken.source();
-			await removeTower(
-				projectId,
-				towerId,
-				cancelToken.current,
-				setLoading
-			);
+			await addPhase(projectId, cancelToken.current, setLoading);
 			setError(null);
 			fetchProject();
 		} catch (error) {
@@ -38,6 +34,8 @@ const RemoveTowerButton = memo(({ towerId, projectId, fetchProject }) => {
 	const buttonProps = {};
 	if (loading) {
 		buttonProps.endIcon = <CircularProgress size={15} color="inherit" />;
+	} else {
+		buttonProps.endIcon = <AddIcon />;
 	}
 	return (
 		<>
@@ -45,19 +43,18 @@ const RemoveTowerButton = memo(({ towerId, projectId, fetchProject }) => {
 				<Typography className={gClasses.errorColor}>{error}</Typography>
 			) : (
 				<Button
-					fullWidth
-					variant="outlined"
-					size="small"
-					color="secondary"
-					onClick={onRemoveTower}
+					size="large"
+					variant="contained"
+					onClick={onAddPhase}
 					disabled={loading}
+					endIcon={<AddIcon />}
 					{...buttonProps}
 				>
-					Remove Tower
+					Add Phase
 				</Button>
 			)}
 		</>
 	);
 });
 
-export default RemoveTowerButton;
+export default AddPhaseButton;

@@ -14,6 +14,28 @@ const towerSchema = new Schema({
 	name: {
 		type: String,
 	},
+	floorPlan: {
+		type: String,
+	},
+	phase: {
+		type: Number,
+	},
+	status: {
+		type: String,
+		enum: ['active', 'inactive'],
+		default: 'active',
+	},
+});
+const phaseSchema = new Schema({
+	name: {
+		type: String,
+	},
+
+	status: {
+		type: String,
+		enum: ['active', 'inactive'],
+		default: 'active',
+	},
 });
 const projectSchema = new Schema(
 	{
@@ -111,19 +133,13 @@ const projectSchema = new Schema(
 			ref: 'Location',
 			required: [true, 'Missing paramter location'],
 		},
-		towers: {
+		phases: {
 			type: Number,
 			default: 1,
 		},
 		towerNames: {
 			type: [towerSchema],
-			default: [
-				{
-					name: '1',
-				},
-			],
 		},
-
 		photos: [
 			{
 				image: {
@@ -161,6 +177,9 @@ const projectSchema = new Schema(
 				message: 'Invalid complitionStatus',
 			},
 			required: true,
+		},
+		lunchingDate: {
+			type: Date,
 		},
 	},
 	{

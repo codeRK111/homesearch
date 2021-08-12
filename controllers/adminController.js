@@ -63,7 +63,7 @@ exports.login = catchAsync(async (req, res, next) => {
 		return next(new AppError('Incorrect email or password', 401));
 	}
 
-	if(admin.status !== 'active'){
+	if (admin.status !== 'active') {
 		return next(new AppError('Your account has been disabled', 401));
 	}
 
@@ -119,11 +119,13 @@ exports.protect = catchAsync(async (req, res, next) => {
 	next();
 });
 
-exports.autorizartion = (...type) => (req, res, next) => {
-	if (!type.includes(req.admin.type)) {
-		return next(new AppError('You are not authorized', 401));
-	}
-};
+exports.autorizartion =
+	(...type) =>
+	(req, res, next) => {
+		if (!type.includes(req.admin.type)) {
+			return next(new AppError('You are not authorized', 401));
+		}
+	};
 
 exports.getAdminInfo = catchAsync(async (req, res, next) => {
 	if (!req.admin) {

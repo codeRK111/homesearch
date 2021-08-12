@@ -241,6 +241,62 @@ exports.updateTowerNumbers = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+exports.manageFloorPlan = catchAsync(async (req, res, next) => {
+	const project = await Project.findOneAndUpdate(
+		{
+			_id: req.params.projectId,
+			'towerNames._id': req.params.towerId,
+		},
+		{
+			$set: {
+				'towerNames.$.floorPlan': req.file.filename,
+			},
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
+	});
+});
+exports.manageTowerStatus = catchAsync(async (req, res, next) => {
+	const project = await Project.findOneAndUpdate(
+		{
+			_id: req.params.projectId,
+			'towerNames._id': req.params.towerId,
+		},
+		{
+			$set: {
+				'towerNames.$.status': req.body.status,
+			},
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	const properties = await ProjectProperty.updateMany(
+		{
+			'tower._id': req.params.towerId,
+		},
+		{
+			status: req.body.status,
+		}
+	);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+			properties,
+		},
+	});
+});
 exports.updateTowerName = catchAsync(async (req, res, next) => {
 	const project = await Project.findOneAndUpdate(
 		{
@@ -287,6 +343,74 @@ exports.removeTower = catchAsync(async (req, res, next) => {
 					_id: req.params.towerId,
 				},
 			},
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
+	});
+});
+exports.removePhase = catchAsync(async (req, res, next) => {
+	const phaseCounts = await Project.countDocuments({
+		_id: req.params.projectId,
+		'towerNames.phase': req.params.phase,
+	});
+
+	if (phaseCounts > 0) {
+		return new AppError('Towers present in the phase');
+	}
+
+	const project = await Project.findByIdAndUpdate(
+		req.params.projectId,
+		{
+			$pull: {
+				towerNames: {
+					_id: req.params.towerId,
+				},
+			},
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
+	});
+});
+exports.addPhase = catchAsync(async (req, res, next) => {
+	const project = await Project.findByIdAndUpdate(
+		req.params.projectId,
+		{
+			$inc: { phases: 1 },
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
+	});
+});
+
+exports.addTower = catchAsync(async (req, res, next) => {
+	const project = await Project.findByIdAndUpdate(
+		req.params.projectId,
+		{
+			$push: { towerNames: req.body },
 		},
 		{
 			new: true,
