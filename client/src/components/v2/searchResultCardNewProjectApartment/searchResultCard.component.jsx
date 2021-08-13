@@ -1,5 +1,4 @@
 import { Box, Grid, Typography } from '@material-ui/core';
-
 import React from 'react';
 import { renderMinAndMax } from '../../../utils/render.utils';
 import useStyles from './searchResultCard.styles';
@@ -112,8 +111,7 @@ const ResultCard = ({ property, propertyItems }) => {
 											className={classes.cell}
 										>
 											<Typography variant="caption">
-												₹ {c.price / 100000} L -{' '}
-												{c.price / 100000} L
+												₹ {c.price / 100000} L
 											</Typography>
 										</Grid>
 									</Grid>

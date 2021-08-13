@@ -319,23 +319,48 @@ export const removeTower = (projectId, towerId, cancelToken, setLoading) => {
 			});
 	});
 };
-export const addPhase = (projectId, cancelToken, setLoading) => {
+export const removePhase = (projectId, phaseId, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		const url = `/project/phase/${projectId}/${phaseId}`;
+		setLoading(true);
+		axios
+			.delete(apiUrl(url, 'v2'), {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data.project);
+			})
+			.catch((error) => {
+				setLoading(false);
+				let message = '';
+				if (!!error.response) {
+					message = error.response.data.message;
+				} else {
+					message = error.message;
+				}
+				return reject(message);
+			});
+	});
+};
+export const addPhase = (projectId, data, cancelToken, setLoading) => {
 	const token = localStorage.getItem('JWT');
 	return new Promise((resolve, reject) => {
 		const url = `/project/phases/${projectId}`;
 		setLoading(true);
 		axios
-			.patch(
-				apiUrl(url, 'v2'),
-				{},
-				{
-					cancelToken: cancelToken.token,
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			)
+			.patch(apiUrl(url, 'v2'), data, {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
 			.then((resp) => {
 				setLoading(false);
 				return resolve(resp.data.data.project);

@@ -198,7 +198,7 @@ const ProjectUnitLand = ({
 							<TextField
 								size="small"
 								id="filled-basic"
-								label="Speciality Name"
+								label="Add Speciality Name"
 								variant="filled"
 								name="name"
 								value={name}
@@ -253,8 +253,9 @@ const ProjectUnitLand = ({
 					/>
 					<br />
 
-					<label htmlFor="thumbnail-image">Typical floor plan</label>
+					<label htmlFor="thumbnail-image">Unit floor plan</label>
 
+					<br />
 					{values.floorPlan && (
 						<Box>
 							<img

@@ -36,6 +36,11 @@ router.delete(
 	adminController.protect,
 	projectController.removeTower
 );
+router.delete(
+	'/phase/:projectId/:phaseId',
+	adminController.protect,
+	projectController.removePhase
+);
 router
 	.route('/handle-tower-name/:id/:towerId')
 	.patch(adminController.protect, projectController.updateTowerName);

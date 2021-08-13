@@ -112,8 +112,7 @@ const ResultCard = ({ property, propertyItems }) => {
 											className={classes.cell}
 										>
 											<Typography variant="caption">
-												₹ {c.price / 100000} L -{' '}
-												{c.price / 100000} L
+												₹ {c.price / 100000} L
 											</Typography>
 										</Grid>
 									</Grid>

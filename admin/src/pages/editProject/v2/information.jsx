@@ -8,10 +8,15 @@ import {
 import { Field, FieldArray, Form, Formik } from 'formik';
 import React, { memo } from 'react';
 import { removeProjectPhoto, updateProject } from '../../../utils/asyncProject';
-import { renderImage, renderPrice } from '../../../utils/render.utils';
+import {
+	renderImage,
+	renderLunchingDateLabel,
+	renderPrice,
+} from '../../../utils/render.utils';
 
 import AddProjectLoader from '../../../components/addProjectLoader';
 import { Alert } from '@material-ui/lab';
+import FMonthPicker from '../../../components/formik/monthAndYearPicker.component';
 import FSelect from '../../../components/formik/select.component';
 import FTextField from '../../../components/formik/textField.component';
 import SearchPlace from '../../../components/searchPlace';
@@ -291,6 +296,18 @@ const EditProjectInfo = memo(
 											value: c.value,
 											label: c.label,
 										}))}
+									/>
+								</Grid>
+								<Grid item xs={12} md={6}>
+									<FMonthPicker
+										formLabel={renderLunchingDateLabel(
+											values.complitionStatus
+										)}
+										name="lunchingDate"
+										value={values.lunchingDate}
+										onChange={(value) =>
+											setFieldValue('lunchingDate', value)
+										}
 									/>
 								</Grid>
 								<Grid item xs={12} md={6}>

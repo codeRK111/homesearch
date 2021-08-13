@@ -254,7 +254,8 @@ const ProjectUnitLand = ({
 					/>
 					<br />
 
-					<label htmlFor="thumbnail-image">Typical floor plan</label>
+					<label htmlFor="thumbnail-image">Unit floor plan</label>
+					<br />
 
 					{values.floorPlan && (
 						<Box>

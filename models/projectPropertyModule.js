@@ -42,9 +42,6 @@ const projectPropertySchema = new Schema(
 			type: Number,
 		},
 
-		numberOflivingAreas: {
-			type: Number,
-		},
 		numberOfUnits: {
 			type: Number,
 		},

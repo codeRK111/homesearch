@@ -288,9 +288,9 @@ const ProjectInformation = ({
 										values.complitionStatus
 									)}
 									name="lunchingDate"
-									value={values.availableDate}
+									value={values.lunchingDate}
 									onChange={(value) =>
-										setFieldValue('availableDate', value)
+										setFieldValue('lunchingDate', value)
 									}
 								/>
 							</Grid>

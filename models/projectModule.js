@@ -28,7 +28,7 @@ const towerSchema = new Schema({
 });
 const phaseSchema = new Schema({
 	name: {
-		type: String,
+		type: Number,
 	},
 
 	status: {
@@ -134,8 +134,7 @@ const projectSchema = new Schema(
 			required: [true, 'Missing paramter location'],
 		},
 		phases: {
-			type: Number,
-			default: 1,
+			type: [phaseSchema],
 		},
 		towerNames: {
 			type: [towerSchema],

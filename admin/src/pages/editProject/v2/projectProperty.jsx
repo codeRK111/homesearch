@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import React, { useCallback, useRef, useState } from 'react';
 import { getProject, updateProjectProperty } from '../../../utils/asyncProject';
 
@@ -10,7 +10,7 @@ import ProjectPhases from './phases.component';
 import UpdateProjectUnitDialog from '../../../components/updateProjectUnit';
 import axios from 'axios';
 import { getAddProjectPageInfo } from '../../../utils/asyncFunctions';
-import useGlobalStyles from '../../../common.style';
+import { renderPropertyTypes } from '../../../utils/render.utils';
 import useStyles from '../../addProject/addProject.style';
 
 const UpdateProjectProperty = ({
@@ -20,7 +20,6 @@ const UpdateProjectProperty = ({
 }) => {
 	// Styles
 	const classes = useStyles();
-	const gClasses = useGlobalStyles();
 
 	// Cancel Token
 	const cancelTokenFetchProject = useRef(undefined);
@@ -28,14 +27,12 @@ const UpdateProjectProperty = ({
 	const cancelTokenChangeStatus = useRef(undefined);
 
 	// UI
-	const [showEdit, setShowEdit] = React.useState(null);
 	const [fetchError, setFetchError] = useState(null);
 	const [open, setOpen] = React.useState(false);
 	const [updateDialogOpen, setUpdateDialogOpen] = React.useState(false);
 
 	// Data
 	const [project, setProject] = useState(null);
-	const [towers, setTowers] = React.useState(1);
 	const [properties, setProperties] = useState([]);
 	const [selectedTower, setSelectedTower] = React.useState(null);
 	const [property, setProperty] = React.useState(null);
@@ -44,7 +41,6 @@ const UpdateProjectProperty = ({
 	// Loading State
 	const [loading, setLoading] = useState(false);
 	const [resourcesLoading, setResourcesLoading] = useState(false);
-	const [updateTowerLoading, setUpdateTowerLoading] = React.useState(false);
 	const [changeStatusLoading, setChangeStatusLoading] = React.useState(false);
 
 	const toggleDialog = (status) => () => {
@@ -61,14 +57,6 @@ const UpdateProjectProperty = ({
 	const onEditClick = (propertyDetails) => () => {
 		setProperty(propertyDetails);
 		toggleUpdateDialog(true)();
-	};
-
-	const handleShowEdit = (towerDetails) => () => {
-		if (showEdit && showEdit.id === towerDetails.id) {
-			setShowEdit(null);
-		} else {
-			setShowEdit(towerDetails);
-		}
 	};
 
 	const fetchProject = useCallback(() => {
@@ -128,18 +116,32 @@ const UpdateProjectProperty = ({
 		fetchPageDetails();
 	}, [pId, fetchPageDetails]);
 
-	const setTowerButtonProps = {};
-	if (updateTowerLoading) {
-		setTowerButtonProps.endIcon = (
-			<CircularProgress size={20} color="inherit" />
-		);
-	}
 	return (
 		<div className={classes.wrapper}>
 			<LoaderBackdrop
 				open={loading || resourcesLoading || changeStatusLoading}
 			/>
 			<h1>Manage Project Property</h1>
+			{project && (
+				<Box mb="1rem">
+					<Typography variant="caption" display="block" gutterBottom>
+						Project Name - <b>{project.title}</b>
+					</Typography>
+					<Typography variant="caption" display="block" gutterBottom>
+						Project Type -{' '}
+						<b>{renderPropertyTypes(project.projectType)}</b>
+					</Typography>
+					<Typography variant="caption" display="block" gutterBottom>
+						Phases - <b>{project.phases.length}</b>
+					</Typography>
+					<Typography variant="caption" display="block" gutterBottom>
+						Towers - <b>{project.towerNames.length}</b>
+					</Typography>
+					<Typography variant="caption" display="block" gutterBottom>
+						Properties - <b>{properties.length}</b>
+					</Typography>
+				</Box>
+			)}
 			{fetchError && <ErrorCard error={fetchError} />}
 			{!!project && !!resources && (
 				<>
@@ -164,12 +166,14 @@ const UpdateProjectProperty = ({
 							state={property}
 						/>
 					)}
-					<Box mb="2rem">
-						<AddPhaseButton
-							projectId={pId}
-							fetchProject={fetchProject}
-						/>
-					</Box>
+					{project && (
+						<Box mb="2rem">
+							<AddPhaseButton
+								project={project}
+								fetchProject={fetchProject}
+							/>
+						</Box>
+					)}
 
 					{project && (
 						<ProjectPhases
@@ -177,6 +181,8 @@ const UpdateProjectProperty = ({
 							fetchProject={fetchProject}
 							properties={properties}
 							onAddClick={onAddClick}
+							onEditClick={onEditClick}
+							onStatusChange={onStatusChange}
 						/>
 					)}
 				</>

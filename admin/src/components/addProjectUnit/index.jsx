@@ -47,7 +47,6 @@ const initialStateApartment = {
 	availableDate: Date.now(),
 	price: '',
 	numberOfBedrooms: 0,
-	numberOflivingAreas: 0,
 	furnishes: [],
 	speciality: null,
 	floorPlan: null,

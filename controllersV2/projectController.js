@@ -357,21 +357,12 @@ exports.removeTower = catchAsync(async (req, res, next) => {
 	});
 });
 exports.removePhase = catchAsync(async (req, res, next) => {
-	const phaseCounts = await Project.countDocuments({
-		_id: req.params.projectId,
-		'towerNames.phase': req.params.phase,
-	});
-
-	if (phaseCounts > 0) {
-		return new AppError('Towers present in the phase');
-	}
-
 	const project = await Project.findByIdAndUpdate(
 		req.params.projectId,
 		{
 			$pull: {
-				towerNames: {
-					_id: req.params.towerId,
+				phases: {
+					_id: req.params.phaseId,
 				},
 			},
 		},
@@ -391,7 +382,7 @@ exports.addPhase = catchAsync(async (req, res, next) => {
 	const project = await Project.findByIdAndUpdate(
 		req.params.projectId,
 		{
-			$inc: { phases: 1 },
+			$push: { phases: req.body },
 		},
 		{
 			new: true,

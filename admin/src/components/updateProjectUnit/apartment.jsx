@@ -60,13 +60,7 @@ const ProjectUnitApartment = ({
 						name="numberOfBedrooms"
 					/>
 				</Grid>
-				<Grid item xs={12} md={6}>
-					<FTextField
-						formLabel="Number Of Living Areas"
-						label="Enter Number"
-						name="numberOflivingAreas"
-					/>
-				</Grid>
+
 				<Grid item xs={12} md={6}>
 					<FTextField
 						formLabel="Enter number of units"
@@ -194,7 +188,7 @@ const ProjectUnitApartment = ({
 							<TextField
 								size="small"
 								id="filled-basic"
-								label="Speciality Name"
+								label="Add Speciality Name"
 								variant="filled"
 								name="name"
 								value={name}
@@ -248,8 +242,8 @@ const ProjectUnitApartment = ({
 						}}
 					/>
 					<br />
-					<label htmlFor="thumbnail-image">Typical floor plan</label>
-
+					<label htmlFor="thumbnail-image">Unit floor plan</label>
+					<br />
 					{values.floorPlan && (
 						<Box>
 							<img

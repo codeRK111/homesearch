@@ -28,7 +28,15 @@ import { renderImage } from '../../../utils/render.utils';
 import useEditStyles from './style';
 import useStyles from '../../addProject/addProject.style';
 
-const Tower = ({ project, fetchProject, tower, properties, onAddClick }) => {
+const Tower = ({
+	project,
+	fetchProject,
+	tower,
+	properties,
+	onAddClick,
+	onEditClick,
+	onStatusChange,
+}) => {
 	const classes = useStyles();
 	const editClasses = useEditStyles();
 	const [floorPlan, setFloorPlan] = useState(null);
@@ -166,7 +174,13 @@ const Tower = ({ project, fetchProject, tower, properties, onAddClick }) => {
 						className={editClasses.imageWrapper}
 					/>
 				) : (
-					''
+					<Typography
+						variant="caption"
+						display="block"
+						align="center"
+					>
+						No floor plan
+					</Typography>
 				)}
 			</CardContent>
 			<Box height="100%">
@@ -176,36 +190,44 @@ const Tower = ({ project, fetchProject, tower, properties, onAddClick }) => {
 						.filter((b) => b.tower._id === tower._id)
 						.map((b) => (
 							<ListItem key={b}>
-								<ListItemText primary={b.title} />
+								<ListItemText
+									primary={
+										<Typography variant="caption">
+											{b.title}
+										</Typography>
+									}
+								/>
 								<ListItemSecondaryAction>
 									<IconButton
 										edge="end"
 										aria-label="delete"
 										size="small"
-										// onClick={onEditClick(
-										// 	b
-										// )}
+										onClick={onEditClick(b)}
 									>
-										<EditIcon />
+										<EditIcon
+											style={{
+												fontSize: '1.2rem',
+											}}
+										/>
 									</IconButton>
 									<IconButton
 										edge="end"
 										aria-label="delete"
 										size="small"
-										// onClick={onStatusChange(
-										// 	b
-										// )}
+										onClick={onStatusChange(b)}
 									>
 										{b.status === 'active' ? (
 											<ActiveIcon
 												style={{
 													color: 'green',
+													fontSize: '1.2rem',
 												}}
 											/>
 										) : (
 											<InactiveIcon
 												style={{
 													color: 'red',
+													fontSize: '1.2rem',
 												}}
 											/>
 										)}

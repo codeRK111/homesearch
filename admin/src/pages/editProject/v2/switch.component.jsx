@@ -91,7 +91,9 @@ export default function StatusSwitch({ project, tower, fetchProject }) {
 					alignItems="center"
 					spacing={1}
 				>
-					<Grid item>Inactive</Grid>
+					<Grid item>
+						<Typography variant="caption">Inactive</Typography>
+					</Grid>
 					<Grid item>
 						{loading ? (
 							<CircularProgress size={15} />
@@ -105,7 +107,9 @@ export default function StatusSwitch({ project, tower, fetchProject }) {
 							/>
 						)}
 					</Grid>
-					<Grid item>Active</Grid>
+					<Grid item>
+						<Typography variant="caption">Active</Typography>
+					</Grid>
 				</Grid>
 			</Typography>
 		</Box>

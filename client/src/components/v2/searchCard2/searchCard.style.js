@@ -93,13 +93,13 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 		background: theme.utilColor,
-		padding: '1rem',
+		padding: '0.7rem',
 		color: '#ffffff',
 		height: '70px',
 
 		'& >span': {
 			fontWeight: 'bolder',
-			fontSize: '2rem',
+			fontSize: '1.7rem',
 		},
 		[theme.breakpoints.down('sm')]: {
 			padding: '0.5rem',
