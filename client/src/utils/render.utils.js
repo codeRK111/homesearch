@@ -389,3 +389,18 @@ export const toHumanReadbleString = (price) => {
 	}
 	return null;
 };
+
+export const isReraApproved = (legalClearance) => {
+	return (
+		legalClearance.find((c) => c.name === 'reraapproved') &&
+		legalClearance.find((c) => c.name === 'reraapproved')['value']
+	);
+};
+export const renderReraId = (legalClearance) => {
+	const rera = legalClearance.find((c) => c.name === 'reraapproved');
+	if (rera && rera['value']) {
+		return rera['details'];
+	} else {
+		return null;
+	}
+};

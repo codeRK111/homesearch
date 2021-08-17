@@ -10,7 +10,6 @@ import {
 
 import BuilderCard from '../../../components/v2/ownerCard/builderCard.component';
 import FlatHeader from '../../../components/v2/searchCard2/projectProperty/flat.component';
-import FloorPlanCard from '../../../components/v2/floorplanCard';
 import Furnishes from '../../../components/furnishes/propertyFurnishes.component';
 import LandHeader from '../../../components/v2/searchCard2/projectProperty/land.component';
 import Nav from '../../../components/v2/pageNav/nav.component';
@@ -96,7 +95,7 @@ const ProjectPropertyDetailsPage = ({
 	}, [error, setSnackbar]);
 
 	const renderHeader = (info) => {
-		switch (info.type) {
+		switch (info.project.projectType) {
 			case 'flat':
 			case 'independenthouse':
 				return <FlatHeader property={info} />;
@@ -374,23 +373,6 @@ const ProjectPropertyDetailsPage = ({
 								)}
 							</Grid>
 						</Grid>
-						{data && data.floorPlans.length > 0 && (
-							<Box mt="2rem">
-								<h2 className={globalClasses.colorPrimary}>
-									Floor Plans
-								</h2>
-								<Grid container spacing={3}>
-									{data.floorPlans.map((c) => (
-										<Grid item xs={12} md={4} key={c.id}>
-											<FloorPlanCard
-												property={data}
-												floorPlan={c}
-											/>
-										</Grid>
-									))}
-								</Grid>
-							</Box>
-						)}
 					</>
 				)}
 			</div>

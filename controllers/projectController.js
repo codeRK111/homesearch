@@ -531,8 +531,8 @@ exports.getAllProjectInfo = catchAsync(async (req, res, next) => {
 				bedRooms: { $push: '$numberOfBedrooms' },
 				bedRoomsMin: { $min: '$numberOfBedrooms' },
 				bedRoomsMax: { $max: '$numberOfBedrooms' },
-				toiletMin: { $min: '$toiletTypes.numbers' },
-				toiletMax: { $max: '$toiletTypes.numbers' },
+				toiletMin: { $min: '$numberOfToilets' },
+				toiletMax: { $max: '$numberOfToilets' },
 			},
 		},
 	]);

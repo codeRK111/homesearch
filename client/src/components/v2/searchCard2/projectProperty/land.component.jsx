@@ -5,13 +5,11 @@ import { Box, Grid } from '@material-ui/core';
 import ImageCarousel from '../../imageCarousel';
 import PropertyTypeChip from '../../chip/propertyType.component';
 import React from 'react';
-import SwipablePhotos from '../../swipableViews';
 import ViewFullImage from '../../viewFullImage';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
-import { renderLandPlotArea } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from '../searchCard.style';
@@ -22,18 +20,18 @@ const PropertyCard = ({ property, edit = false }) => {
 	const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const [fullImageOpen, setFullImageOpen] = React.useState(false);
 	const m = moment(property.createdAt);
-	const img =
-		property.photos.length > 0
-			? property.photos[0]
-			: {
-					id: null,
-					image: city,
-			  };
+	const img = property.floorPlan
+		? {
+				id: null,
+				image: property.floorPlan,
+		  }
+		: {
+				id: null,
+				image: city,
+		  };
 	const [defaultImage, setDefaultImage] = React.useState(img);
 	const classes = useStyles({
-		img: defaultImage.id
-			? `/assets/projects/${defaultImage.image}`
-			: defaultImage.image,
+		img: `/assets/projects/${defaultImage.image}`,
 	});
 	const globalClasses = useGlobalStyles({ img: city });
 
@@ -78,16 +76,6 @@ const PropertyCard = ({ property, edit = false }) => {
 									</div>
 								</div>
 							</div>
-							<Box className={classes.swipableWrapper}>
-								<SwipablePhotos
-									photos={
-										property.photos ? property.photos : []
-									}
-									selected={defaultImage}
-									setSelected={setDefaultImage}
-									dir="projects"
-								/>
-							</Box>
 						</div>
 					)}
 				</Grid>
@@ -102,7 +90,9 @@ const PropertyCard = ({ property, edit = false }) => {
 						</div>
 						<div>
 							<h2>{property.title}</h2>
-							<PropertyTypeChip title={property.type} />
+							<PropertyTypeChip
+								title={property.project.projectType}
+							/>
 						</div>
 					</div>
 					<Box mt="1rem" className={globalClasses.justifyCenter}>
@@ -165,11 +155,7 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={classes.keyValue}
 									>
 										<Box className="projectValueWrapper">
-											<h1>
-												{renderLandPlotArea(
-													property.plotArea
-												)}
-											</h1>
+											<h1>{property.plotArea}</h1>
 										</Box>
 									</Grid>
 									<Grid
@@ -194,10 +180,7 @@ const PropertyCard = ({ property, edit = false }) => {
 										}}
 									>
 										<Box className="projectValueWrapper">
-											<h1>
-												{property.minPrice / 100000}-
-												{property.maxPrice / 100000}L
-											</h1>
+											<h1>{property.price / 100000}L</h1>
 										</Box>
 									</Grid>
 									<Grid
@@ -206,7 +189,7 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={globalClasses.alignCenter}
 									>
 										<span className={classes.smallText}>
-											Price Range
+											Price
 										</span>
 									</Grid>
 								</Grid>
@@ -297,33 +280,6 @@ const PropertyCard = ({ property, edit = false }) => {
 									>
 										<span className={classes.smallText}>
 											Plot frontage (Sq.ft)
-										</span>
-									</Grid>
-								</Grid>
-							</Grid>
-
-							<Grid item xs={6}>
-								<Grid container spacing={1}>
-									<Grid
-										item
-										xs={5}
-										className={classes.keyValue}
-									>
-										<Box className="projectValueWrapper">
-											<h1>
-												{property.govermentValuation /
-													100000}
-												L
-											</h1>
-										</Box>
-									</Grid>
-									<Grid
-										item
-										xs={7}
-										className={globalClasses.flexCenter}
-									>
-										<span className={classes.smallText}>
-											Goverment Valuation
 										</span>
 									</Grid>
 								</Grid>

@@ -4,6 +4,8 @@ import { Box, Grid } from '@material-ui/core';
 import { area, bed, location2, logo, tag, tub } from '../../../../utils/statc';
 import {
 	capitalizeFirstLetter,
+	isReraApproved,
+	renderReraId,
 	renderTypes,
 	toHumanReadble,
 } from '../../../../utils/render.utils';
@@ -28,14 +30,24 @@ const PropertyCard = ({ project, info }) => {
 	const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const [fullImageOpen, setFullImageOpen] = React.useState(false);
 	const m = moment(project.createdAt);
-	const img = project.photos[0]
-		? project.photos.find((c) => c.default)
-			? project.photos.find((c) => c.default)
-			: project.photos[0]
-		: {
-				id: null,
-				image: city,
-		  };
+	const previewImages = [
+		{
+			_id: 'default',
+			image: project.thumbnailImage,
+		},
+		{
+			_id: 'master',
+			image: project.masterFloorPlan,
+		},
+		{
+			_id: 'geography',
+			image: project.geogrophicalImage,
+		},
+	];
+	const img = {
+		_id: 'default',
+		image: project.thumbnailImage,
+	};
 	const [defaultImage, setDefaultImage] = React.useState(img);
 	const classes = useStyles({
 		img: `/assets/projects/${defaultImage.image}`,
@@ -84,7 +96,10 @@ const PropertyCard = ({ project, info }) => {
 							</div>
 							<Box className={classes.swipableWrapper}>
 								<SwipablePhotos
-									photos={project.photos}
+									photos={[
+										...previewImages,
+										...project.photos,
+									]}
 									selected={defaultImage}
 									setSelected={setDefaultImage}
 									dir="projects"
@@ -169,6 +184,18 @@ const PropertyCard = ({ project, info }) => {
 							</h4>
 						</div>
 					</Box>
+					{isReraApproved(project.legalClearance) && (
+						<Box className={globalClasses.justifyCenter}>
+							<div className={globalClasses.alignCenterOnly}>
+								<h4 className={classes.locationText}>
+									{`RERA ID - ${renderReraId(
+										project.legalClearance
+									)}`}
+									,
+								</h4>
+							</div>
+						</Box>
+					)}
 					<Box mt="2rem">
 						<Grid container spacing={3}>
 							<Grid item xs={6}>
@@ -232,7 +259,7 @@ const PropertyCard = ({ project, info }) => {
 										className={classes.keyValueProject}
 									>
 										<Box className="test">
-											<h1>{project.emi / 100000} L</h1>
+											<h1>{project.emi / 1000} K</h1>
 										</Box>
 									</Grid>
 									<Grid

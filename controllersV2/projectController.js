@@ -2,7 +2,6 @@ const AppError = require('./../utils/appError');
 const ProjectSpeciality = require('./../models/projectSpeciality');
 const Project = require('./../models/projectModule');
 const ProjectProperty = require('./../models/projectPropertyModule');
-const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
@@ -18,11 +17,9 @@ exports.properties = catchAsync(async (req, res, next) => {
 	if (req.body.type === 'type') {
 		match.speciality = { $ne: null };
 	}
-	const aggregationArray = [
-		{
-			$match: match,
-		},
-	];
+	const aggregationArray = [];
+
+	aggregationArray.push({ $match: match });
 
 	if (req.body.type === 'unit') {
 		aggregationArray.push({
@@ -34,8 +31,6 @@ exports.properties = catchAsync(async (req, res, next) => {
 			$sort: { numberOfBedrooms: -1 },
 		});
 	}
-
-	console.log(aggregationArray);
 
 	ProjectProperty.aggregate(aggregationArray).exec(function (err, projectes) {
 		if (err) {
@@ -59,7 +54,7 @@ exports.properties = catchAsync(async (req, res, next) => {
 	});
 });
 
-exports.addProject = catchAsync(async (req, res, next) => {
+exports.addProject = catchAsync(async (req, res) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		return res.status(400).json({
@@ -125,6 +120,7 @@ exports.uploadPhotos = catchAsync(async (req, res, next) => {
 		}
 	}
 
+	// noinspection TypeScriptValidateTypes
 	if (req.files['photos'] && req.files['photos'].length > 0) {
 		if (existingProject.photos.length > 0) {
 			const images = req.files['photos'].map((c, i) => ({
@@ -151,7 +147,7 @@ exports.uploadPhotos = catchAsync(async (req, res, next) => {
 		},
 	});
 });
-exports.addProjectProperty = catchAsync(async (req, res, next) => {
+exports.addProjectProperty = catchAsync(async (req, res) => {
 	const data = {
 		...req.body,
 		floorPlan: req.file.filename,
@@ -211,7 +207,7 @@ exports.updateProjectProperty = catchAsync(async (req, res, next) => {
 		},
 	});
 });
-exports.updateProject = catchAsync(async (req, res, next) => {
+exports.updateProject = catchAsync(async (req, res) => {
 	const project = await Project.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 		runValidators: true,
@@ -223,7 +219,7 @@ exports.updateProject = catchAsync(async (req, res, next) => {
 		},
 	});
 });
-exports.updateTowerNumbers = catchAsync(async (req, res, next) => {
+exports.updateTowerNumbers = catchAsync(async (req, res) => {
 	const project = await Project.findByIdAndUpdate(
 		req.params.id,
 		{
@@ -241,7 +237,7 @@ exports.updateTowerNumbers = catchAsync(async (req, res, next) => {
 		},
 	});
 });
-exports.manageFloorPlan = catchAsync(async (req, res, next) => {
+exports.manageFloorPlan = catchAsync(async (req, res) => {
 	const project = await Project.findOneAndUpdate(
 		{
 			_id: req.params.projectId,
@@ -264,7 +260,7 @@ exports.manageFloorPlan = catchAsync(async (req, res, next) => {
 		},
 	});
 });
-exports.manageTowerStatus = catchAsync(async (req, res, next) => {
+exports.manageTowerStatus = catchAsync(async (req, res) => {
 	const project = await Project.findOneAndUpdate(
 		{
 			_id: req.params.projectId,
@@ -297,7 +293,7 @@ exports.manageTowerStatus = catchAsync(async (req, res, next) => {
 		},
 	});
 });
-exports.updateTowerName = catchAsync(async (req, res, next) => {
+exports.updateTowerName = catchAsync(async (req, res) => {
 	const project = await Project.findOneAndUpdate(
 		{
 			_id: req.params.id,
@@ -320,7 +316,7 @@ exports.updateTowerName = catchAsync(async (req, res, next) => {
 		},
 	});
 });
-exports.getProject = catchAsync(async (req, res, next) => {
+exports.getProject = catchAsync(async (req, res) => {
 	const project = await Project.findById(req.params.id);
 	const properties = await ProjectProperty.find({
 		project: req.params.id,
@@ -334,7 +330,7 @@ exports.getProject = catchAsync(async (req, res, next) => {
 	});
 });
 
-exports.removeTower = catchAsync(async (req, res, next) => {
+exports.removeTower = catchAsync(async (req, res) => {
 	const project = await Project.findByIdAndUpdate(
 		req.params.projectId,
 		{
@@ -356,7 +352,7 @@ exports.removeTower = catchAsync(async (req, res, next) => {
 		},
 	});
 });
-exports.removePhase = catchAsync(async (req, res, next) => {
+exports.removePhase = catchAsync(async (req, res) => {
 	const project = await Project.findByIdAndUpdate(
 		req.params.projectId,
 		{
@@ -378,7 +374,7 @@ exports.removePhase = catchAsync(async (req, res, next) => {
 		},
 	});
 });
-exports.addPhase = catchAsync(async (req, res, next) => {
+exports.addPhase = catchAsync(async (req, res) => {
 	const project = await Project.findByIdAndUpdate(
 		req.params.projectId,
 		{
@@ -397,7 +393,7 @@ exports.addPhase = catchAsync(async (req, res, next) => {
 	});
 });
 
-exports.addTower = catchAsync(async (req, res, next) => {
+exports.addTower = catchAsync(async (req, res) => {
 	const project = await Project.findByIdAndUpdate(
 		req.params.projectId,
 		{
@@ -414,4 +410,122 @@ exports.addTower = catchAsync(async (req, res, next) => {
 			project,
 		},
 	});
+});
+
+exports.copyTower = catchAsync(async (req, res, next) => {
+	try {
+		const project = await Project.findOne({
+			_id: req.params.projectId,
+			'towerNames._id': req.params.towerId,
+		}).select('towerNames');
+
+		if (project) {
+			const tower = project.towerNames.find(
+				(c) => String(c._id) === String(req.params.towerId)
+			);
+			const copyTower = project.towerNames.find(
+				(c) => String(c._id) === String(req.params.copyId)
+			);
+			if (copyTower.floorPlan) {
+				console.log('Yes');
+				const imgArray = copyTower.floorPlan.split('.');
+				const oldImagePath =
+					path.join(__dirname, '../', 'images', 'project_images/') +
+					copyTower.floorPlan;
+				const newImage = `${Date.now()}.${imgArray[1]}`;
+				console.log(newImage);
+				const newImagePath =
+					path.join(__dirname, '../', 'images', 'project_images/') +
+					newImage;
+				fs.copyFile(oldImagePath, newImagePath, async (err) => {
+					if (err) {
+						console.log(err);
+						return next(new AppError('Cannot copy image', 500));
+					} else {
+						await Project.findOneAndUpdate(
+							{
+								_id: req.params.projectId,
+								'towerNames._id': req.params.towerId,
+							},
+							{
+								$set: {
+									'towerNames.$.floorPlan': newImage,
+								},
+							},
+							{
+								new: true,
+								runValidators: true,
+							}
+						);
+
+						// Get properties associate with the given tower
+						const propertiesDocs = await ProjectProperty.find({
+							'tower._id': req.params.copyId,
+						}).select('-_id -id -__v');
+
+						const properties = propertiesDocs.map((c) => {
+							const data = {
+								...c._doc,
+							};
+							if (data.speciality) {
+								data.speciality = data.speciality._id;
+							}
+							delete data.id;
+							data.tower = tower;
+							return data;
+						});
+
+						const newProperties = await ProjectProperty.insertMany(
+							properties
+						);
+						res.status(200).json({
+							status: 'success',
+							data: {
+								properties: newProperties,
+								tower,
+							},
+						});
+					}
+				});
+			} else {
+				console.log('No');
+				// Get properties associate with the given tower
+				const propertiesDocs = await ProjectProperty.find({
+					'tower._id': req.params.copyId,
+				}).select('-_id -id -__v');
+
+				const properties = propertiesDocs.map((c) => {
+					const data = {
+						...c._doc,
+					};
+					if (data.speciality) {
+						data.speciality = data.speciality._id;
+					}
+					delete data.id;
+					data.tower = tower;
+					return data;
+				});
+
+				const newProperties = await ProjectProperty.insertMany(
+					properties
+				);
+				res.status(200).json({
+					status: 'success',
+					data: {
+						properties: newProperties,
+						tower,
+					},
+				});
+			}
+		} else {
+			return next(new AppError('Project not found', 404));
+		}
+	} catch (e) {
+		res.status(500).json({
+			status: 'fail',
+			error: {
+				e,
+			},
+		});
+	}
 });

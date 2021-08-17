@@ -71,3 +71,21 @@ export const facingMenuItems = [
 		value: 'south',
 	},
 ];
+export const userRoleMenuItems = [
+	{
+		label: 'Builder',
+		value: 'builder',
+	},
+	{
+		label: 'Agent',
+		value: 'agent',
+	},
+	{
+		label: 'Owner',
+		value: 'owner',
+	},
+	{
+		label: 'Tenant',
+		value: 'tenant',
+	},
+];

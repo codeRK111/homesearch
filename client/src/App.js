@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect, useRef } from 'react';
+import { selectAuthenticated, selectUser } from './redux/auth/auth.selectors';
 
 import Footer from './components/footer/footer.component';
 import { LoadingAnimationNormal } from './components/v2/loadingAnimation';
@@ -7,10 +8,11 @@ import LogIn from './components/logInDialog/logInDialog.component';
 import MuiAlert from '@material-ui/lab/Alert';
 import Protected from './components/protected/protected.component';
 import Snackbar from '@material-ui/core/Snackbar';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fetchUserProfile } from './redux/auth/auth.actions';
-import { selectAuthenticated } from './redux/auth/auth.selectors';
+import { setLastActive } from './utils/asyncUser';
 import { setSnackbar } from './redux/ui/ui.actions';
 import { snackbarDetails } from './redux/ui/ui.selectors';
 
@@ -44,16 +46,28 @@ function Alert(props) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-function App({ authenticated, setSnackbar, snackbarDetails, fetchUser }) {
-	React.useEffect(() => {
+function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
+	const source = useRef(null);
+	useEffect(() => {
 		if (!authenticated) {
 			const jwt = localStorage.getItem('JWT_CLIENT');
 			if (jwt) {
 				fetchUser(jwt, console.log);
 			}
+		} else {
+			if (user) {
+				source.current = axios.CancelToken.source();
+				setLastActive(user.id, source.current);
+			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [authenticated]);
+	}, [authenticated, user]);
+
+	useEffect(() => {
+		return () => {
+			source.current.cancel('Component got unmounted');
+		};
+	}, [source]);
 
 	const handleClose = () => {
 		console.log('object 2');
@@ -94,7 +108,7 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser }) {
 					/>
 					<Route
 						exact
-						path="/v2/project-details/:id"
+						path="/project-details/:id"
 						render={(props) => <ProjectDetailsPageNew {...props} />}
 					/>
 					<Route
@@ -153,6 +167,7 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser }) {
 
 const mapStateToProps = createStructuredSelector({
 	authenticated: selectAuthenticated,
+	user: selectUser,
 	snackbarDetails,
 });
 

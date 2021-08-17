@@ -437,6 +437,34 @@ export const getProject = (project, cancelToken, setLoading) => {
 			});
 	});
 };
+export const copyTower = (towerId,copyId,projectId, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.get(apiUrl(`/project/copy-tower/${towerId}/${copyId}/${projectId}`, 'v2'), {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data);
+			})
+			.catch((error) => {
+				setLoading(false);
+				let message = '';
+				if (!!error.response) {
+					message = error.response.data.message;
+				} else {
+					message = error.message;
+				}
+				return reject(message);
+			});
+	});
+};
 
 export const removeProjectPhoto = (
 	projectId,

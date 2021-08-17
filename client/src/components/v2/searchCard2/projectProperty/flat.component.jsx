@@ -2,16 +2,13 @@ import '../extra.css';
 
 import { Box, Grid } from '@material-ui/core';
 
-import ImageCarousel from '../../imageCarousel';
 import PropertyTypeChip from '../../chip/propertyType.component';
 import React from 'react';
-import SwipablePhotos from '../../swipableViews';
 import ViewFullImage from '../../viewFullImage';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'moment';
-import { renderToilets } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from '../searchCard.style';
@@ -22,8 +19,11 @@ const PropertyCard = ({ property, edit = false }) => {
 	const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const [fullImageOpen, setFullImageOpen] = React.useState(false);
 	const m = moment(property.createdAt);
-	const img = property.photos[0]
-		? property.photos[0]
+	const img = property.floorPlan
+		? {
+				id: null,
+				image: property.floorPlan,
+		  }
 		: {
 				id: null,
 				image: city,
@@ -49,15 +49,7 @@ const PropertyCard = ({ property, edit = false }) => {
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={8}>
 					{smallScreen ? (
-						<ImageCarousel
-							photos={
-								property.photos[0]
-									? property.photos.map(
-											(c) => `/assets/projects/${c.image}`
-									  )
-									: [city]
-							}
-						/>
+						<div></div>
 					) : (
 						<div className={classes.imageContainer}>
 							<div className={clsx(classes.imageWrapper)}>
@@ -75,16 +67,6 @@ const PropertyCard = ({ property, edit = false }) => {
 									</div>
 								</div>
 							</div>
-							<Box className={classes.swipableWrapper}>
-								<SwipablePhotos
-									photos={
-										property.photos ? property.photos : []
-									}
-									selected={defaultImage}
-									setSelected={setDefaultImage}
-									dir="projects"
-								/>
-							</Box>
 						</div>
 					)}
 				</Grid>
@@ -99,7 +81,9 @@ const PropertyCard = ({ property, edit = false }) => {
 						</div>
 						<div>
 							<h2>{property.title}</h2>
-							<PropertyTypeChip title={property.type} />
+							<PropertyTypeChip
+								title={property.project.projectType}
+							/>
 						</div>
 					</div>
 					<Box mt="1rem" className={globalClasses.justifyCenter}>
@@ -165,10 +149,7 @@ const PropertyCard = ({ property, edit = false }) => {
 										}}
 									>
 										<Box className="projectValueWrapper">
-											<h1>
-												{property.minPrice / 100000}-
-												{property.maxPrice / 100000}L
-											</h1>
+											<h1>{property.price / 100000}L</h1>
 										</Box>
 									</Grid>
 									<Grid
@@ -177,7 +158,7 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={globalClasses.alignCenter}
 									>
 										<span className={classes.smallText}>
-											Price Range
+											Price
 										</span>
 									</Grid>
 								</Grid>
@@ -205,30 +186,7 @@ const PropertyCard = ({ property, edit = false }) => {
 									</Grid>
 								</Grid>
 							</Grid>
-							<Grid item xs={6}>
-								<Grid container spacing={1}>
-									<Grid
-										item
-										xs={5}
-										className={classes.keyValue}
-									>
-										<Box className="projectValueWrapper">
-											<h1>
-												{property.numberOflivingAreas}
-											</h1>
-										</Box>
-									</Grid>
-									<Grid
-										item
-										xs={7}
-										className={globalClasses.alignCenter}
-									>
-										<span className={classes.smallText}>
-											Living Area
-										</span>
-									</Grid>
-								</Grid>
-							</Grid>
+
 							<Grid item xs={6}>
 								<Grid container spacing={1}>
 									<Grid
@@ -281,11 +239,7 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={classes.keyValue}
 									>
 										<Box className="projectValueWrapper">
-											<h1>
-												{renderToilets(
-													property.toiletTypes
-												)}
-											</h1>
+											<h1>{property.numberOfToilets}</h1>
 										</Box>
 									</Grid>
 									<Grid
@@ -295,32 +249,6 @@ const PropertyCard = ({ property, edit = false }) => {
 									>
 										<span className={classes.smallText}>
 											Toilets
-										</span>
-									</Grid>
-								</Grid>
-							</Grid>
-							<Grid item xs={6}>
-								<Grid container spacing={1}>
-									<Grid
-										item
-										xs={5}
-										className={classes.keyValue}
-									>
-										<Box className="projectValueWrapper">
-											<h1>
-												{property.bookingAmount /
-													100000}
-												L
-											</h1>
-										</Box>
-									</Grid>
-									<Grid
-										item
-										xs={7}
-										className={globalClasses.flexCenter}
-									>
-										<span className={classes.smallText}>
-											Booking Amount
 										</span>
 									</Grid>
 								</Grid>

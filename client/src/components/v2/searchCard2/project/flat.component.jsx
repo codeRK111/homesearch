@@ -3,6 +3,7 @@ import '../extra.css';
 import { Box, Grid } from '@material-ui/core';
 import {
 	capitalizeFirstLetter,
+	isReraApproved,
 	renderTypes,
 	toHumanReadble,
 } from '../../../../utils/render.utils';
@@ -10,6 +11,7 @@ import { location2, logo, tag } from '../../../../utils/statc';
 
 import Apartment from '../../searchResultCardNewProjectApartment/searchResultCard.component';
 import ApartmentIcon from '@material-ui/icons/Apartment';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import React from 'react';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
@@ -31,10 +33,11 @@ const PropertyCard = ({ property, propertyItems }) => {
 	const globalClasses = useGlobalStyles({ img: city });
 
 	const onClick = () => {
-		const url = `/v2/project-details/${property.id}`;
+		const url = `/project-details/${property.id}`;
 		var win = window.open(url, '_blank');
 		win.focus();
 	};
+
 	return (
 		<div
 			className={clsx(classes.wrapper, globalClasses.pointer)}
@@ -46,6 +49,17 @@ const PropertyCard = ({ property, propertyItems }) => {
 					<div className={classes.imageContainerCard}>
 						<div className={classes.imageWrapperCard}>
 							<div className={classes.overlay}>
+								{isReraApproved(property.legalClearance) && (
+									<div className="ribbon ribbon-top-left">
+										<span>
+											{' '}
+											<CheckCircleIcon
+												style={{ fontSize: 16 }}
+											/>{' '}
+											RERA{' '}
+										</span>
+									</div>
+								)}
 								<div className={classes.dateWrapperCard}>
 									<span>{m.format('D')}</span>
 									<span>{m.format('MMM')}</span>

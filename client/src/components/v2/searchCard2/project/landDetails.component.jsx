@@ -27,14 +27,24 @@ const PropertyCard = ({ project, info }) => {
 	const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const [fullImageOpen, setFullImageOpen] = React.useState(false);
 	const m = moment(project.createdAt);
-	const img = project.photos[0]
-		? project.photos.find((c) => c.default)
-			? project.photos.find((c) => c.default)
-			: project.photos[0]
-		: {
-				id: null,
-				image: city,
-		  };
+	const previewImages = [
+		{
+			_id: 'default',
+			image: project.thumbnailImage,
+		},
+		{
+			_id: 'master',
+			image: project.masterFloorPlan,
+		},
+		{
+			_id: 'geography',
+			image: project.geogrophicalImage,
+		},
+	];
+	const img = {
+		_id: 'default',
+		image: project.thumbnailImage,
+	};
 	const [defaultImage, setDefaultImage] = React.useState(img);
 	const classes = useStyles({
 		img: `/assets/projects/${defaultImage.image}`,
@@ -85,7 +95,10 @@ const PropertyCard = ({ project, info }) => {
 							</div>
 							<Box className={classes.swipableWrapper}>
 								<SwipablePhotos
-									photos={project.photos}
+									photos={[
+										...previewImages,
+										...project.photos,
+									]}
 									selected={defaultImage}
 									setSelected={setDefaultImage}
 									dir="projects"
@@ -233,7 +246,7 @@ const PropertyCard = ({ project, info }) => {
 										className={classes.keyValueProject}
 									>
 										<Box className="test">
-											<h1>{project.emi / 100000} L</h1>
+											<h1>{project.emi / 1000} K</h1>
 										</Box>
 									</Grid>
 									<Grid

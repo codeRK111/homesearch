@@ -60,7 +60,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import TypeHOC from './components/hoc/hocForAdminTYpe.component';
 import TypeProtected from './components/typeProtected/typeProtected.component';
 import UpdateProjectProperty from './pages/editProject/v2/projectProperty';
-import Users from './pages/users/users.component';
+import Users from './pages/usersPage';
 import ViewCitiesPage from './pages/getCities/getCities.componet';
 import WhQueries from './pages/whQueries/whQueries.component';
 import Workspace from './pages/workspace/workspace.page';

@@ -25,6 +25,7 @@ const v2SavePropertyRoute = require('./routesV2/savePropertyRoute');
 const v2LikePropertyRoute = require('./routesV2/likePropertyRoute');
 const v2PageRoute = require('./routesV2/pageRoute');
 const v2ProjectRoute = require('./routesV2/projectRoute');
+const v2UserRoute = require('./routesV2/userRoute');
 const queryRoute = require('./routes/propertyQueryRoute');
 const whatsappQueryRoute = require('./routes/whatsappQueryRoute');
 const propertyReviewRoute = require('./routes/propertyReviewRoute');
@@ -176,6 +177,7 @@ app.use('/api/v2/like-property', v2LikePropertyRoute);
 app.use('/api/v2/page', v2PageRoute);
 app.use('/api/v2/query', queryRouteV2);
 app.use('/api/v2/project', v2ProjectRoute);
+app.use('/api/v2/user', v2UserRoute);
 
 app.all('/api/*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));

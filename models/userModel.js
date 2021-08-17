@@ -84,6 +84,9 @@ const userSchema = new Schema(
 			type: Date,
 			default: Date.now(),
 		},
+		lastActive: {
+			type: Date,
+		},
 		status: {
 			type: String,
 			enum: {

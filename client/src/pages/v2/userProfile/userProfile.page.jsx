@@ -15,7 +15,7 @@ import {
 	Menu,
 	Typography,
 } from '@material-ui/core';
-import { capitalizeFirstLetter, parseDate } from '../../../utils/render.utils';
+import { apiUrl, capitalizeFirstLetter } from '../../../utils/render.utils';
 
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
@@ -32,7 +32,6 @@ import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import React from 'react';
 import SavedProperties from '../../../components/v2/savedProperties';
 import UpdateProfile from './updateProfile.component';
-import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
 import badgeIcon from '../../../assets/icons/badge.svg';
 import clsx from 'clsx';
@@ -181,7 +180,7 @@ const AgentPage = ({ user }) => {
 			case 'property':
 				return `/v2/property-details/${query.property.id}`;
 			case 'project':
-				return `/v2/project-details/${query.property.id}`;
+				return `/project-details/${query.property.id}`;
 
 			case 'projectproperty':
 				return `/v2/project-property/${query.projectProperty.id}`;

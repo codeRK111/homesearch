@@ -71,7 +71,7 @@ const PropertyCard = ({ data, showStatus = false }) => {
 							)}
 						>
 							<Link
-								to={`/v2/project-details/${data.id}`}
+								to={`/project-details/${data.id}`}
 								className={classes.link}
 								target="_blank"
 							>

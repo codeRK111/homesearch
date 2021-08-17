@@ -30,7 +30,7 @@ const PropertyCard = ({ property, propertyItems }) => {
 	const globalClasses = useGlobalStyles({ img: city });
 
 	const onClick = () => {
-		const url = `/v2/project-details/${property.id}`;
+		const url = `/project-details/${property.id}`;
 		var win = window.open(url, '_blank');
 		win.focus();
 	};
