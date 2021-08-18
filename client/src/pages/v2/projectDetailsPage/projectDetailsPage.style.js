@@ -230,6 +230,7 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down('sm')]: {
 			height: 200,
 		},
+		cursor: 'pointer',
 	},
 	planTypeWrapper: {
 		display: 'flex',

@@ -1,0 +1,242 @@
+<Grid container spacing={1}>
+						{/* Super builtup area  */}
+						<Grid item xs={4} md>
+							<Grid
+								container
+								direction="column"
+								spacing={1}
+								alignItems="center"
+							>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText2,
+													classes.bold
+												)}
+											>
+												{info.minArea} sqft.
+											</span>
+										</Box>
+									</div>
+								</Grid>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText2,
+													classes.bold
+												)}
+											>
+												{info.maxArea} sqft.
+											</span>
+										</Box>
+									</div>
+								</Grid>
+							</Grid>
+						</Grid>
+						{/* Carpet Area  */}
+						<Grid item xs={4} md>
+							<Grid
+								container
+								direction="column"
+								spacing={1}
+								alignItems="center"
+							>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText2,
+													classes.bold
+												)}
+											>
+												{info.minCarpetArea} sqft.
+											</span>
+										</Box>
+									</div>
+								</Grid>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText2,
+													classes.bold
+												)}
+											>
+												{info.maxCarpetArea} sqft.
+											</span>
+										</Box>
+									</div>
+								</Grid>
+							</Grid>
+						</Grid>
+						{/* Price  */}
+						<Grid item xs={4} md>
+							<Grid
+								container
+								direction="column"
+								spacing={1}
+								alignItems="center"
+							>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText2,
+													classes.bold
+												)}
+											>
+												{info.minPrice / 100000} L
+											</span>
+										</Box>
+									</div>
+								</Grid>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={area}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText2,
+													classes.bold
+												)}
+											>
+												{info.maxPrice / 100000} L
+											</span>
+										</Box>
+									</div>
+								</Grid>
+							</Grid>
+						</Grid>
+						{/* Bed rooms  */}
+						<Grid item xs={4} md>
+							<Grid
+								container
+								direction="column"
+								spacing={1}
+								alignItems="center"
+							>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={bed}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText2,
+													classes.bold
+												)}
+											>
+												{info.bedRoomsMin}
+											</span>
+										</Box>
+									</div>
+								</Grid>
+								<Grid item>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={bed}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText2,
+													classes.bold
+												)}
+											>
+												{info.bedRoomsMax}
+											</span>
+										</Box>
+									</div>
+								</Grid>
+							</Grid>
+						</Grid>
+						{/* Toilets  */}
+						<Grid item xs={4} md>
+							<Grid
+								container
+								direction="column"
+								spacing={1}
+								alignItems="center"
+							>
+								<Grid item xs>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={tub}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText2,
+													classes.bold
+												)}
+											>
+												{info.toiletMin}
+											</span>
+										</Box>
+									</div>
+								</Grid>
+								<Grid item xs>
+									<div className={globalClasses.alignCenter}>
+										<img
+											src={tub}
+											alt="Area"
+											className={classes.iconImage}
+										/>
+										<Box ml="0.2rem">
+											<span
+												className={clsx(
+													classes.smallText2,
+													classes.bold
+												)}
+											>
+												{info.toiletMax}
+											</span>
+										</Box>
+									</div>
+								</Grid>
+							</Grid>
+						</Grid>
+					</Grid>

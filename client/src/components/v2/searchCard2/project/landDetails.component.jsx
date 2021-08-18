@@ -68,13 +68,9 @@ const PropertyCard = ({ project, info }) => {
 				<Grid item xs={12} md={8}>
 					{smallScreen ? (
 						<ImageCarousel
-							photos={
-								project.photos[0]
-									? project.photos.map(
-											(c) => `/assets/projects/${c.image}`
-									  )
-									: [city]
-							}
+							photos={[...previewImages, ...project.photos].map(
+								(c) => `/assets/projects/${c.image}`
+							)}
 						/>
 					) : (
 						<div className={classes.imageContainer}>

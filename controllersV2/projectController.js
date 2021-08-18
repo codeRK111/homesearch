@@ -309,6 +309,18 @@ exports.updateTowerName = catchAsync(async (req, res) => {
 			runValidators: true,
 		}
 	);
+
+	if (project) {
+		await ProjectProperty.updateMany(
+			{
+				'tower._id': req.params.towerId,
+			},
+			{
+				'tower.name': req.body.name,
+			}
+		);
+	}
+
 	res.status(200).json({
 		status: 'success',
 		data: {

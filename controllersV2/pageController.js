@@ -2,6 +2,8 @@ const LikedProperty = require('./../models/likedPropertyModel');
 const SavedProperty = require('./../models/savedPropertyModel');
 const Property = require('./../models/propertyModel');
 const Builder = require('./../models/builderModel');
+const Admin = require('./../models/adminModel');
+const Project = require('./../models/projectModule');
 const Amenity = require('./../models/amenityModel');
 const Furnish = require('./../models/furnishingModel');
 const catchAsync = require('./../utils/catchAsync');
@@ -127,6 +129,18 @@ exports.getAddProjectPageInfo = catchAsync(async (req, res, next) => {
 			furnishes,
 			legalClearancesForLand,
 			legalClearances,
+		},
+	});
+});
+
+exports.addAgent = catchAsync(async (req, res, next) => {
+	const admins = await Admin.find({ status: 'active' });
+	const projects = await Project.find({ status: 'active' });
+	res.status(200).json({
+		status: 'success',
+		data: {
+			admins,
+			projects,
 		},
 	});
 });

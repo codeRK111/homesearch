@@ -18,6 +18,7 @@ const SimilarProperties = ({
 	city,
 	location,
 	type,
+	exclude = null,
 }) => {
 	const [index, setIndex] = React.useState(0);
 	const [asyncState, setAsyncState] = React.useState({
@@ -85,7 +86,9 @@ const SimilarProperties = ({
 				);
 				setAsyncState({
 					loading: false,
-					data: properties,
+					data: exclude
+						? properties.filter((c) => c.id !== exclude)
+						: properties,
 					error: null,
 				});
 			} catch (error) {

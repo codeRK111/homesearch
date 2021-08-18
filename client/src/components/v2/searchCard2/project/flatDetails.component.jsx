@@ -23,6 +23,8 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from '../searchCard.style';
 import { useTheme } from '@material-ui/core/styles';
 
+// import { area, bed, location2, logo, tag, tub } from '../../../../utils/statc';
+
 // import car from '../../../../assets/icons/car.svg';
 
 const PropertyCard = ({ project, info }) => {
@@ -69,13 +71,9 @@ const PropertyCard = ({ project, info }) => {
 				<Grid item xs={12} md={8}>
 					{smallScreen ? (
 						<ImageCarousel
-							photos={
-								project.photos[0]
-									? project.photos.map(
-											(c) => `/assets/projects/${c.image}`
-									  )
-									: [city]
-							}
+							photos={[...previewImages, ...project.photos].map(
+								(c) => `/assets/projects/${c.image}`
+							)}
 						/>
 					) : (
 						<div className={classes.imageContainer}>
@@ -120,7 +118,7 @@ const PropertyCard = ({ project, info }) => {
 
 							<span
 								className={clsx(
-									classes.smallText,
+									classes.smallText2,
 									classes.colorPrimary,
 									globalClasses.textCenter
 								)}
@@ -135,12 +133,7 @@ const PropertyCard = ({ project, info }) => {
 								<h2 className={clsx(classes.propertyName)}>
 									{project.title}
 								</h2>
-								<span
-									className={clsx(
-										classes.smallText,
-										classes.colorGray
-									)}
-								>
+								<span className={clsx(classes.colorGray)}>
 									{`${renderTypes(
 										project.projectType
 									)} For Sale`}
@@ -148,7 +141,7 @@ const PropertyCard = ({ project, info }) => {
 							</div>
 						</Box>
 					</div>
-					<Box mt="1rem" className={globalClasses.justifyCenter}>
+					<Box mt="1.5rem" className={globalClasses.justifyCenter}>
 						<div className={globalClasses.alignCenterOnly}>
 							<img
 								src={location2}
@@ -217,7 +210,7 @@ const PropertyCard = ({ project, info }) => {
 											alignItems: 'center',
 										}}
 									>
-										<span className={classes.smallText}>
+										<span className={classes.smallText2}>
 											Total Units
 										</span>
 									</Grid>
@@ -245,7 +238,7 @@ const PropertyCard = ({ project, info }) => {
 											alignItems: 'center',
 										}}
 									>
-										<span className={classes.smallText}>
+										<span className={classes.smallText2}>
 											Booking Amount
 										</span>
 									</Grid>
@@ -270,7 +263,7 @@ const PropertyCard = ({ project, info }) => {
 											alignItems: 'center',
 										}}
 									>
-										<span className={classes.smallText}>
+										<span className={classes.smallText2}>
 											EMI
 										</span>
 									</Grid>
@@ -295,7 +288,7 @@ const PropertyCard = ({ project, info }) => {
 											alignItems: 'center',
 										}}
 									>
-										<span className={classes.smallText}>
+										<span className={classes.smallText2}>
 											Total Land Area (Arces)
 										</span>
 									</Grid>
@@ -304,248 +297,176 @@ const PropertyCard = ({ project, info }) => {
 						</Grid>
 					</Box>
 					<Box mt="1rem">
-						<h4 className={classes.colorSecondary}>Overview</h4>
+						<h4
+							className={clsx(
+								classes.colorSecondary,
+								globalClasses.textShadow
+							)}
+						>
+							Overview
+						</h4>
 					</Box>
-					<Grid container spacing={1}>
-						{/* Super builtup area  */}
-						<Grid item xs={4} md>
-							<Grid
-								container
-								direction="column"
-								spacing={1}
-								alignItems="center"
-							>
-								<Grid item>
-									<div className={globalClasses.alignCenter}>
-										<img
-											src={area}
-											alt="Area"
-											className={classes.iconImage}
-										/>
-										<Box ml="0.2rem">
-											<span
-												className={clsx(
-													classes.smallText,
-													classes.bold
-												)}
-											>
-												{info.minArea} sqft.
-											</span>
-										</Box>
-									</div>
-								</Grid>
-								<Grid item>
-									<div className={globalClasses.alignCenter}>
-										<img
-											src={area}
-											alt="Area"
-											className={classes.iconImage}
-										/>
-										<Box ml="0.2rem">
-											<span
-												className={clsx(
-													classes.smallText,
-													classes.bold
-												)}
-											>
-												{info.maxArea} sqft.
-											</span>
-										</Box>
-									</div>
-								</Grid>
-							</Grid>
+					<Grid container spacing={3}>
+						{/* Super built up min  */}
+						<Grid item xs={3}>
+							<div className={globalClasses.alignCenter}>
+								<img
+									src={area}
+									alt="Area"
+									className={classes.iconImage}
+								/>
+								<Box ml="0.3rem">
+									<span
+										className={clsx(
+											classes.smallText2,
+											classes.bolder
+										)}
+									>
+										{info.minArea} sqft.
+									</span>
+								</Box>
+							</div>
 						</Grid>
-						{/* Carpet Area  */}
-						<Grid item xs={4} md>
-							<Grid
-								container
-								direction="column"
-								spacing={1}
-								alignItems="center"
-							>
-								<Grid item>
-									<div className={globalClasses.alignCenter}>
-										<img
-											src={area}
-											alt="Area"
-											className={classes.iconImage}
-										/>
-										<Box ml="0.2rem">
-											<span
-												className={clsx(
-													classes.smallText,
-													classes.bold
-												)}
-											>
-												{info.minCarpetArea} sqft.
-											</span>
-										</Box>
-									</div>
-								</Grid>
-								<Grid item>
-									<div className={globalClasses.alignCenter}>
-										<img
-											src={area}
-											alt="Area"
-											className={classes.iconImage}
-										/>
-										<Box ml="0.2rem">
-											<span
-												className={clsx(
-													classes.smallText,
-													classes.bold
-												)}
-											>
-												{info.maxCarpetArea} sqft.
-											</span>
-										</Box>
-									</div>
-								</Grid>
-							</Grid>
+						{/* Price min  */}
+						<Grid item xs={3}>
+							<div className={globalClasses.alignCenter}>
+								<img
+									src={area}
+									alt="Area"
+									className={classes.iconImage}
+								/>
+								<Box ml="0.3rem">
+									<span
+										className={clsx(
+											classes.smallText2,
+											classes.bolder
+										)}
+									>
+										{info.minPrice / 100000} L
+									</span>
+								</Box>
+							</div>
 						</Grid>
-						{/* Price  */}
-						<Grid item xs={4} md>
-							<Grid
-								container
-								direction="column"
-								spacing={1}
-								alignItems="center"
-							>
-								<Grid item>
-									<div className={globalClasses.alignCenter}>
-										<img
-											src={area}
-											alt="Area"
-											className={classes.iconImage}
-										/>
-										<Box ml="0.2rem">
-											<span
-												className={clsx(
-													classes.smallText,
-													classes.bold
-												)}
-											>
-												{info.minPrice / 100000} L
-											</span>
-										</Box>
-									</div>
-								</Grid>
-								<Grid item>
-									<div className={globalClasses.alignCenter}>
-										<img
-											src={area}
-											alt="Area"
-											className={classes.iconImage}
-										/>
-										<Box ml="0.2rem">
-											<span
-												className={clsx(
-													classes.smallText,
-													classes.bold
-												)}
-											>
-												{info.maxPrice / 100000} L
-											</span>
-										</Box>
-									</div>
-								</Grid>
-							</Grid>
+						{/* Bedroom min  */}
+						<Grid item xs={3}>
+							<div className={globalClasses.alignCenter}>
+								<img
+									src={bed}
+									alt="Bed"
+									className={classes.iconImage}
+								/>
+								<Box ml="0.3rem">
+									<span
+										className={clsx(
+											classes.smallText2,
+											classes.bolder
+										)}
+									>
+										{info.bedRoomsMin}
+									</span>
+								</Box>
+							</div>
 						</Grid>
-						{/* Bed rooms  */}
-						<Grid item xs={4} md>
-							<Grid
-								container
-								direction="column"
-								spacing={1}
-								alignItems="center"
-							>
-								<Grid item>
-									<div className={globalClasses.alignCenter}>
-										<img
-											src={bed}
-											alt="Area"
-											className={classes.iconImage}
-										/>
-										<Box ml="0.2rem">
-											<span
-												className={clsx(
-													classes.smallText,
-													classes.bold
-												)}
-											>
-												{info.bedRoomsMin}
-											</span>
-										</Box>
-									</div>
-								</Grid>
-								<Grid item>
-									<div className={globalClasses.alignCenter}>
-										<img
-											src={bed}
-											alt="Area"
-											className={classes.iconImage}
-										/>
-										<Box ml="0.2rem">
-											<span
-												className={clsx(
-													classes.smallText,
-													classes.bold
-												)}
-											>
-												{info.bedRoomsMax}
-											</span>
-										</Box>
-									</div>
-								</Grid>
-							</Grid>
+						{/* Toilet min  */}
+						<Grid item xs={3}>
+							<div className={globalClasses.alignCenter}>
+								<img
+									src={tub}
+									alt="Tub"
+									className={classes.iconImage}
+								/>
+								<Box ml="0.3rem">
+									<span
+										className={clsx(
+											classes.smallText2,
+											classes.bolder
+										)}
+									>
+										{info.toiletMin}
+									</span>
+								</Box>
+							</div>
 						</Grid>
-						{/* Toilets  */}
-						<Grid item xs={4} md>
-							<Grid
-								container
-								direction="column"
-								spacing={1}
-								alignItems="center"
-							>
-								<Grid item xs>
-									<div className={globalClasses.alignCenter}>
-										<img
-											src={tub}
-											alt="Area"
-											className={classes.iconImage}
-										/>
-										<Box ml="0.2rem">
-											<span
-												className={clsx(
-													classes.smallText,
-													classes.bold
-												)}
-											>
-												{info.toiletMin}
-											</span>
-										</Box>
-									</div>
-								</Grid>
-								<Grid item xs>
-									<div className={globalClasses.alignCenter}>
-										<img
-											src={tub}
-											alt="Area"
-											className={classes.iconImage}
-										/>
-										<Box ml="0.2rem">
-											<span
-												className={clsx(
-													classes.smallText,
-													classes.bold
-												)}
-											>
-												{info.toiletMax}
-											</span>
-										</Box>
-									</div>
-								</Grid>
-							</Grid>
+						{/* Max  */}
+						{/* Super built up min  */}
+						<Grid item xs={3}>
+							<div className={globalClasses.alignCenter}>
+								<img
+									src={area}
+									alt="Area"
+									className={classes.iconImage}
+								/>
+								<Box ml="0.3rem">
+									<span
+										className={clsx(
+											classes.smallText2,
+											classes.bolder
+										)}
+									>
+										{info.maxArea} sqft.
+									</span>
+								</Box>
+							</div>
+						</Grid>
+						{/* Price min  */}
+						<Grid item xs={3}>
+							<div className={globalClasses.alignCenter}>
+								<img
+									src={area}
+									alt="Area"
+									className={classes.iconImage}
+								/>
+								<Box ml="0.3rem">
+									<span
+										className={clsx(
+											classes.smallText2,
+											classes.bolder
+										)}
+									>
+										{info.maxPrice / 100000} L
+									</span>
+								</Box>
+							</div>
+						</Grid>
+						{/* Bedroom min  */}
+						<Grid item xs={3}>
+							<div className={globalClasses.alignCenter}>
+								<img
+									src={bed}
+									alt="Bed"
+									className={classes.iconImage}
+								/>
+								<Box ml="0.3rem">
+									<span
+										className={clsx(
+											classes.smallText2,
+											classes.bolder
+										)}
+									>
+										{info.bedRoomsMax}
+									</span>
+								</Box>
+							</div>
+						</Grid>
+						{/* Toilet min  */}
+						<Grid item xs={3}>
+							<div className={globalClasses.alignCenter}>
+								<img
+									src={tub}
+									alt="Tub"
+									className={classes.iconImage}
+								/>
+								<Box ml="0.3rem">
+									<span
+										className={clsx(
+											classes.smallText2,
+											classes.bolder
+										)}
+									>
+										{info.toiletMax}
+									</span>
+								</Box>
+							</div>
 						</Grid>
 					</Grid>
 				</Grid>

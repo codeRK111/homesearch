@@ -58,8 +58,10 @@
 		width 200ms linear;
 }
 .test > h1 {
-	font-size: 1.7rem;
+	font-size: 2rem;
+	font-weight: bolder;
 	word-break: break-all;
+	text-shadow: 0px 0.5px, 0.5px 0px, 0.5px 0.5px;
 }
 .projectValueWrapper > h1 {
 	font-size: 0.9rem;
@@ -73,12 +75,12 @@
 }
 
 .test:hover {
-	background-color: #ffd609;
+	background-color: #dec029;
 	height: 100%;
 	width: 100%;
 }
 .projectValueWrapper:hover {
-	background-color: #ffd609;
+	background-color: #dec029;
 	height: 100%;
 	width: 100%;
 }

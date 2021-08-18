@@ -48,7 +48,7 @@ const PropertyCard = ({ property, edit = false }) => {
 		>
 			{/* <pre>{JSON.stringify(property, null, 2)}</pre> */}
 			<Grid container spacing={0}>
-				<Grid item xs={12} md={7}>
+				<Grid item xs={12} md={6}>
 					<div className={classes.imageContainerCard}>
 						<div className={classes.imageWrapperCard}>
 							<div className={classes.overlay}>
@@ -60,7 +60,7 @@ const PropertyCard = ({ property, edit = false }) => {
 						</div>
 					</div>
 				</Grid>
-				<Grid item xs={12} md={5}>
+				<Grid item xs={12} md={6}>
 					<div className={classes.cardContentWrapper}>
 						<div className={classes.titleWrapper}>
 							<div className={classes.mr1}>
@@ -83,10 +83,7 @@ const PropertyCard = ({ property, edit = false }) => {
 							</div>
 							<div>
 								<h2
-									className={clsx(
-										globalClasses.textCenter,
-										classes.propertyName
-									)}
+									className={clsx(classes.propertyNameSearch)}
 								>
 									{property.title}
 								</h2>
@@ -120,9 +117,14 @@ const PropertyCard = ({ property, edit = false }) => {
 									alt="Tag"
 									className={clsx(classes.icon)}
 								/>
-								<h4 className={classes.locationText}>
-									Land, &nbsp;&nbsp;{property.plotArea}
-									Sq.Ft,&nbsp;&nbsp;{property.usp}
+								<h4
+									className={clsx(
+										classes.locationText,
+										globalClasses.textCenter
+									)}
+								>
+									Land, &nbsp;{property.plotArea}
+									Sq.Ft,&nbsp;{property.usp}
 								</h4>
 							</div>
 						</Box>

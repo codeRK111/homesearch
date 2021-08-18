@@ -117,6 +117,7 @@ const useStyles = makeStyles((theme) => ({
 	titleWrapper: {
 		display: 'flex',
 		alignItems: 'center',
+		justifyContent: 'center',
 		'& div': {
 			display: 'flex',
 			flexDirection: 'column',
@@ -133,6 +134,9 @@ const useStyles = makeStyles((theme) => ({
 	smallText: {
 		fontSize: '0.7rem',
 	},
+	smallText2: {
+		fontSize: '0.85rem',
+	},
 	colorPrimary: {
 		color: theme.primaryHeadingColor,
 	},
@@ -141,6 +145,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	bold: {
 		fontWeight: 'bold',
+	},
+	bolder: {
+		fontWeight: 'bolder',
 	},
 	colorGray: {
 		color: '#929292',
@@ -154,6 +161,9 @@ const useStyles = makeStyles((theme) => ({
 	locationText: {
 		margin: '0 0 0 0.5rem',
 		padding: '0.3rem',
+		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		letterSpacing: 1,
+		fontWeight: 'bolder',
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '0.8rem',
 		},
@@ -231,13 +241,25 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	logo: {
-		height: 60,
+		height: 50,
 		[theme.breakpoints.down('sm')]: {
 			height: 40,
 		},
 	},
 	propertyName: {
-		// fontSize: '1.6rem',
+		fontSize: '2rem',
+		textShadow: '0px 0.2px, 0.2px 0px, 0.2px 0.2px',
+		letterSpacing: 1,
+		fontWeight: 'bolder',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.4rem',
+		},
+	},
+	propertyNameSearch: {
+		fontSize: '1.6rem',
+		textShadow: '0px 0.2px, 0.2px 0px, 0.2px 0.2px',
+		letterSpacing: 1,
+		fontWeight: 'bolder',
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '1.4rem',
 		},

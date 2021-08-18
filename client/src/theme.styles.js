@@ -28,7 +28,8 @@ const customTheme = {
 	utilColor: '#2AAAAC',
 	leftPadding: '10vw',
 	leftPaddingMedium: '3vw',
-	yellowColor: '#FFD609',
+	yellowColor: '#dec029',
+	textColor: '#929292',
 };
 
 export default customTheme;

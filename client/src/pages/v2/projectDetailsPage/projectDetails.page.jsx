@@ -463,6 +463,7 @@ const ProjectDetailsPage = ({
 							type={data.project.projectType}
 							city={data.project.city.id}
 							location={data.project.location.id}
+							exclude={data.project.id}
 						/>
 					</>
 				)}

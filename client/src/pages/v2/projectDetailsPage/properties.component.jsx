@@ -1,6 +1,7 @@
 import { Box, CardMedia, Grid, Typography } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
 
+import ImageLightBox from '../../../components/v2/lightBox';
 import { Link } from 'react-router-dom';
 import Skeleton from '@material-ui/lab/Skeleton';
 import axios from 'axios';
@@ -16,6 +17,7 @@ import useStyles from './projectDetailsPage.style';
 const Properties = ({ project }) => {
 	let cancelToken = useRef();
 	const [filterType, setFilterType] = useState('type');
+	const [open, setOpen] = useState(false);
 	const [properties, setProperties] = useState([]);
 	const [property, selectedProperty] = useState(null);
 	const [loading, setLoading] = useState(false);
@@ -26,6 +28,10 @@ const Properties = ({ project }) => {
 	};
 	const onTitleClickClick = (property) => () => {
 		selectedProperty(property);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
 	};
 
 	useEffect(() => {
@@ -278,9 +284,15 @@ const Properties = ({ project }) => {
 						</Box>
 					) : (
 						<>
+							<ImageLightBox
+								images={[floorPlanImage]}
+								open={open}
+								handleClose={handleClose}
+							/>
 							<CardMedia
 								image={floorPlanImage}
 								className={classes.fPlan}
+								onClick={() => setOpen(true)}
 							/>
 						</>
 					)}

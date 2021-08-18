@@ -37,7 +37,7 @@ const OwnerCard = ({
 	builderId = null,
 }) => {
 	const builderImage = owner.logo
-		? `/assets/builder/${owner.logo}`
+		? `/assets/builders/${owner.logo}`
 		: defaultImage;
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
@@ -209,6 +209,7 @@ const OwnerCard = ({
 	return (
 		<AppBar position="sticky" color="transparent" elevation={0}>
 			<div className={classes.rightWrapper}>
+				{/* <h3>{owner.logo}</h3> */}
 				{/* <pre>{JSON.stringify(owner, null, 2)}</pre> */}
 				<div
 					style={{
@@ -222,6 +223,11 @@ const OwnerCard = ({
 							src={builderImage}
 							className={classes.avatar}
 						/>
+						{/* <img
+							src={builderImage}
+							alt=""
+							className={classes.avatar}
+						/> */}
 						<img
 							src={badge}
 							alt="Badge"

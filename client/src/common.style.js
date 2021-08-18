@@ -156,6 +156,10 @@ const globalStyle = makeStyles((theme) => ({
 	wordBreak: {
 		wordBreak: 'break-all',
 	},
+	textShadow: {
+		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		letterSpacing: 1,
+	},
 }));
 
 export default globalStyle;

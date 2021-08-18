@@ -53,7 +53,7 @@ const PropertyCard = ({ property, edit = false }) => {
 			onClick={onClick}
 		>
 			<Grid container spacing={0}>
-				<Grid item xs={12} md={7}>
+				<Grid item xs={12} md={6}>
 					<div className={classes.imageContainerCard}>
 						<div className={classes.imageWrapperCard}>
 							<div className={classes.overlay}>
@@ -65,7 +65,7 @@ const PropertyCard = ({ property, edit = false }) => {
 						</div>
 					</div>
 				</Grid>
-				<Grid item xs={12} md={5}>
+				<Grid item xs={12} md={6}>
 					<div className={classes.cardContentWrapper}>
 						<div className={classes.titleWrapper}>
 							<div className={classes.mr1}>
@@ -88,7 +88,9 @@ const PropertyCard = ({ property, edit = false }) => {
 								</span>
 							</div>
 							<div>
-								<h2 className={clsx(classes.propertyName)}>
+								<h2
+									className={clsx(classes.propertyNameSearch)}
+								>
 									{property.title}
 								</h2>
 								<span

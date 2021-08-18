@@ -18,10 +18,9 @@ const TYPES = {
 };
 
 const PropertyCard = ({ data, showStatus = false }) => {
-	const img =
-		data.photos.length === 0
-			? city
-			: `/assets/projects/${data.photos[0]['image']}`;
+	const img = !data.thumbnailImage
+		? city
+		: `/assets/projects/${data.thumbnailImage}`;
 	const classes = useStyles({ img });
 	const globalClasses = useGlobalStyles();
 
@@ -56,7 +55,7 @@ const PropertyCard = ({ data, showStatus = false }) => {
 				<div className={classes.wrapper}>
 					<div className={classes.imageWrapper}>
 						<div className={classes.overlay}>
-							<div className={classes.feature}>Feature</div>
+							{/* <div className={classes.feature}>Feature</div> */}
 						</div>
 					</div>
 					{/* <div className={classes.imageWrapper}>
