@@ -134,7 +134,10 @@ exports.getAddProjectPageInfo = catchAsync(async (req, res, next) => {
 });
 
 exports.addAgent = catchAsync(async (req, res, next) => {
-	const admins = await Admin.find({ status: 'active' });
+	const admins = await Admin.find({
+		status: 'active',
+		type: 'clientSupport',
+	});
 	const projects = await Project.find({ status: 'active' });
 	res.status(200).json({
 		status: 'success',

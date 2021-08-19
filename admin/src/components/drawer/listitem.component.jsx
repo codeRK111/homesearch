@@ -37,6 +37,7 @@ import LockIcon from '@material-ui/icons/Lock';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PhoneIcon from '@material-ui/icons/Phone';
 import React from 'react';
 import RenderByAdminType from '../roleRender/renderByRole.component';
@@ -779,6 +780,16 @@ const MainListItems = ({
 							<PeopleAltIcon style={{ color: green[500] }} />
 						</ListItemIcon>
 						<ListItemText primary="Add Project v2" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/add-agent')}
+					>
+						<ListItemIcon>
+							<PersonAddIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Add Agent" />
 					</ListItem>
 					<ListItem
 						button

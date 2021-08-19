@@ -437,18 +437,30 @@ export const getProject = (project, cancelToken, setLoading) => {
 			});
 	});
 };
-export const copyTower = (towerId,copyId,projectId, cancelToken, setLoading) => {
+export const copyTower = (
+	towerId,
+	copyId,
+	projectId,
+	cancelToken,
+	setLoading
+) => {
 	const token = localStorage.getItem('JWT');
 	return new Promise((resolve, reject) => {
 		setLoading(true);
 		axios
-			.get(apiUrl(`/project/copy-tower/${towerId}/${copyId}/${projectId}`, 'v2'), {
-				cancelToken: cancelToken.token,
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-			})
+			.get(
+				apiUrl(
+					`/project/copy-tower/${towerId}/${copyId}/${projectId}`,
+					'v2'
+				),
+				{
+					cancelToken: cancelToken.token,
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
 			.then((resp) => {
 				setLoading(false);
 				return resolve(resp.data.data);
@@ -513,6 +525,69 @@ export const removeProjectPhoto = (
 					loading: false,
 					error: message,
 				});
+				return reject(message);
+			});
+	});
+};
+
+export const getAddAgentPageData = (cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.get(apiUrl(`/page/project/add-agent`, 'v2'), {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data);
+			})
+			.catch((error) => {
+				setLoading(false);
+				let message = '';
+				if (!!error.response) {
+					message = error.response.data.message;
+				} else {
+					message = error.message;
+				}
+				return reject(message);
+			});
+	});
+};
+
+export const searchByCity = (city, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		const url = `/project/search-by-city`;
+		setLoading(true);
+		axios
+			.post(
+				apiUrl(url, 'v2'),
+				{ city },
+				{
+					cancelToken: cancelToken.token,
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data.projects);
+			})
+			.catch((error) => {
+				setLoading(false);
+				let message = '';
+				if (!!error.response) {
+					message = error.response.data.message;
+				} else {
+					message = error.message;
+				}
 				return reject(message);
 			});
 	});

@@ -16,6 +16,7 @@ export default function SearchPlace({
 	city = null,
 	location = null,
 	error,
+	padding = true,
 }) {
 	const cancelToken = useRef(null);
 	const [open, setOpen] = React.useState(false);
@@ -62,8 +63,13 @@ export default function SearchPlace({
 		}
 	};
 
+	const boxProps = {};
+	if (padding) {
+		boxProps.p = '0.5rem';
+	}
+
 	return (
-		<Box p="0.5rem">
+		<Box {...boxProps}>
 			{error && (
 				<Typography style={{ color: 'red' }} variant="caption">
 					{error}

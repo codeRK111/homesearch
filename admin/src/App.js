@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import ActiveProperties from './pages/properties/properties.component';
 import AddAdmin from './components/addAdmin/addAdmin.component';
+import AddAgentPage from './pages/addAgent';
 import AddBuilderPage from './pages/addBuilder/addBuilder.component';
 import AddCityPage from './pages/addCity/addCity.component';
 import AddLocationPage from './pages/addLocation/addLocation.component';
@@ -95,6 +96,7 @@ const EditProjectAdvertisementLeadsPageWithDrawer = Drawer(
 	EditProjectAdvertisementLeads
 );
 const WorkspacePageWithDrawer = Drawer(Workspace);
+const AddAgentPageWithDrawer = Drawer(AddAgentPage);
 const KPIPageWithDrawer = Drawer(KPIPage);
 const QueriesPageWithDrawer = Drawer(Query);
 const QueryConversationPageWithDrawer = Drawer(QueryConversation);
@@ -169,6 +171,16 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 					render={() => (
 						<Protected
 							component={DashboardPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/add-agent"
+					render={(props) => (
+						<Protected
+							component={AddAgentPageWithDrawer}
 							{...props}
 						/>
 					)}

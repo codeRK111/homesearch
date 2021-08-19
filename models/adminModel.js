@@ -98,7 +98,7 @@ const adminSchema = new Schema(
 		type: {
 			type: String,
 			enum: {
-				values: ['super-admin', 'admin', 'staff'],
+				values: ['super-admin', 'admin', 'staff', 'clientSupport'],
 				message:
 					'role must be between <super-admin> | <admin> | <staff>',
 			},

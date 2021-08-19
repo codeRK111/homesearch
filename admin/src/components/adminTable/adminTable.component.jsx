@@ -1,33 +1,35 @@
-import React from 'react';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Backdrop from '@material-ui/core/Backdrop';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { green, red } from '@material-ui/core/colors';
-import Tooltip from '@material-ui/core/Tooltip';
-import AlertDialogue from '../alertDialogue/alertDialogue.component';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import {
-	selectAllAdmins,
-	selectAllAdminsLoading,
-	selectAllAdminsError,
-} from '../../redux/admins/admins.selector';
 import {
 	fetchAllAdminsStart,
 	removeAdmin,
 	toggleAdminInfo,
 } from '../../redux/admins/admins.actions';
+import { green, red } from '@material-ui/core/colors';
+import {
+	selectAllAdmins,
+	selectAllAdminsError,
+	selectAllAdminsLoading,
+} from '../../redux/admins/admins.selector';
+
+import AlertDialogue from '../alertDialogue/alertDialogue.component';
+import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
-import { useHistory } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CustomSelect from './select.component';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import Link from '@material-ui/core/Link';
+import React from 'react';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
+
 // import moment from 'moment';
 
 function preventDefault(event) {
@@ -172,6 +174,10 @@ function Orders({
 											{
 												label: 'Super Admin',
 												value: 'super-admin',
+											},
+											{
+												label: 'Client Support',
+												value: 'clientSupport',
 											},
 										]}
 									/>

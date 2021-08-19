@@ -13,5 +13,10 @@ router.get(
 	adminController.protect,
 	pageController.getAddProjectPageInfo
 );
+router.get(
+	'/project/add-agent',
+	adminController.protect,
+	pageController.addAgent
+);
 
 module.exports = router;

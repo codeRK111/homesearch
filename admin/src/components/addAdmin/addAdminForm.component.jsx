@@ -134,6 +134,10 @@ const AddAdminForm = ({ loading, onSubmit }) => {
 										},
 										{ value: 'admin', label: 'Admin' },
 										{ value: 'staff', label: 'Staff' },
+										{
+											value: 'clientSupport',
+											label: 'Client Support',
+										},
 									]}
 								/>
 							</Grid>

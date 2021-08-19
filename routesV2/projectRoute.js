@@ -11,17 +11,21 @@ const router = express.Router();
 // Admin
 
 router
+	.route('/search-by-city')
+	.post(adminController.protect, projectController.searchByCity);
+router
 	.route('/speciality')
 	.get(adminController.protect, specialityController.getSpecialities)
 	.post(adminController.protect, specialityController.addSpeciality);
-
 
 router
 	.route('/speciality/:id')
 	.get(adminController.protect, specialityController.getSpecialityDetails)
 	.patch(adminController.protect, specialityController.updateSpeciality);
 
-router.route('/copy-tower/:towerId/:copyId/:projectId').get(adminController.protect, projectController.copyTower)
+router
+	.route('/copy-tower/:towerId/:copyId/:projectId')
+	.get(adminController.protect, projectController.copyTower);
 
 // User
 router.route('/property').post(projectController.properties);
