@@ -55,6 +55,7 @@ const ProjectDetailsPage = ({
 	const [agents, setAgents] = useState([]);
 	// loading State
 	const [loading, setLoading] = useState(false);
+	const [agentLoading, setAgentLoading] = useState(false);
 	// error state
 	const [error, setError] = useState(null);
 
@@ -113,7 +114,7 @@ const ProjectDetailsPage = ({
 				const resp = await getProjectAgents(
 					id,
 					cancelTokenFindAgents.current,
-					setLoading
+					setAgentLoading
 				);
 				setAgents(resp.agents);
 			} catch (error) {
