@@ -288,6 +288,9 @@ const Properties = ({ project }) => {
 								images={[floorPlanImage]}
 								open={open}
 								handleClose={handleClose}
+								reactModalStyle={{
+									zIndex: 100000,
+								}}
 							/>
 							<CardMedia
 								image={floorPlanImage}

@@ -253,7 +253,7 @@ exports.addProfilePicture = catchAsync(async (req, res, next) => {
 
 exports.getAdmin = catchAsync(async (req, res, next) => {
 	const admin = await Admin.findById(req.params.id).select(
-		'name username email serialNumber password cities gender  status ableToSee type photo city propertyAccess userAccess builderAccess expertQueryAccess staffAccess propertyActions userActions expertQueryActions cityActions locationActions builderActions'
+		'name username email serialNumber password cities gender  status ableToSee type photo city propertyAccess userAccess builderAccess expertQueryAccess staffAccess propertyActions userActions expertQueryActions cityActions locationActions builderActions number'
 	);
 
 	res.status(200).json({

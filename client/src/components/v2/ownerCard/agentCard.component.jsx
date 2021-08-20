@@ -1,4 +1,4 @@
-import { Avatar, Box, CircularProgress } from '@material-ui/core';
+import { Avatar, Box } from '@material-ui/core';
 import React, { useState } from 'react';
 import { badge, call, comment, whatsapp } from '../../../utils/statc';
 import {
@@ -36,9 +36,7 @@ const OwnerCard = ({
 	pType = null,
 	builderId = null,
 }) => {
-	const builderImage = owner.logo
-		? `/assets/builders/${owner.logo}`
-		: defaultImage;
+	const builderImage = defaultImage;
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
 	const cancelToken = React.useRef(undefined);
@@ -235,34 +233,9 @@ const OwnerCard = ({
 				</div>
 				<div>
 					<div className={classes.ownerInfo}>
-						<div className={classes.ownerType}>Builder</div>
-						<h2>{owner.developerName.toUpperCase()}</h2>
-						{/* <Box
-                                className={clsx(
-                                    globalClasses.justifySpaceBetween,
-                                    globalClasses.alignCenter
-                                )}
-                            >
-                                <span
-                                    className={clsx(
-                                        classes.ownerId,
-                                        globalClasses.xsText,
-                                        globalClasses.bold
-                                    )}
-                                >
-                                    ID : R04913231c
-                                </span>
-                                <Link
-                                    className={clsx(
-                                        globalClasses.colorWarning,
-                                        globalClasses.xsText,
-                                        globalClasses.bold
-                                    )}
-                                >
-                                    {' '}
-                                    View Listing
-                                </Link>
-                            </Box> */}
+						<div className={classes.ownerType}>Homesearch18</div>
+						<h2>{owner.name}</h2>
+
 						<Box
 							p="0.4rem"
 							className={clsx(
@@ -271,63 +244,36 @@ const OwnerCard = ({
 							)}
 						>
 							<Box className={classes.borderRight}>
-								{loading.call ? (
-									<CircularProgress
-										color="primary"
-										size={15}
-									/>
-								) : numberInfo.display ? (
-									<span className={globalClasses.xsText}>
-										{numberInfo.number}
-									</span>
-								) : (
-									<img
-										src={call}
-										alt="Call"
-										className={clsx(
-											classes.ownerIcon,
-											globalClasses.pointer
-										)}
-										onClick={onCallClick}
-									/>
-								)}
+								<img
+									src={call}
+									alt="Call"
+									className={clsx(
+										classes.ownerIcon,
+										globalClasses.pointer
+									)}
+									// onClick={onCallClick}
+								/>
 							</Box>
 							<Box className={classes.borderRight}>
-								{loading.message ? (
-									<CircularProgress
-										color="primary"
-										size={15}
-									/>
-								) : (
-									<img
-										src={comment}
-										alt="Comment"
-										className={clsx(
-											classes.ownerIcon,
-											globalClasses.pointer
-										)}
-										onClick={onEmailClick}
-									/>
-								)}
+								<img
+									src={comment}
+									alt="Comment"
+									className={clsx(
+										classes.ownerIcon,
+										globalClasses.pointer
+									)}
+								/>
 							</Box>
 							<Box>
-								{loading.whatspp ? (
-									<CircularProgress
-										color="primary"
-										size={15}
-									/>
-								) : (
-									<img
-										src={whatsapp}
-										alt="Whatsapp"
-										className={clsx(
-											classes.ownerIcon,
-											classes.iconPadding,
-											globalClasses.pointer
-										)}
-										onClick={onWhatsppClick}
-									/>
-								)}
+								<img
+									src={whatsapp}
+									alt="Whatsapp"
+									className={clsx(
+										classes.ownerIcon,
+										classes.iconPadding,
+										globalClasses.pointer
+									)}
+								/>
 							</Box>
 						</Box>
 					</div>

@@ -1,6 +1,7 @@
-import { Box, CardMedia, Grid, Typography } from '@material-ui/core';
+import { AppBar, Box, CardMedia, Grid, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 
+import AgentCard from '../../../components/v2/ownerCard/agentCard.component';
 import Amenity from '../../../components/v2/amenity/amenity.component';
 import BuilderCard from '../../../components/v2/ownerCard/builderCard.component';
 import ChipWrapper from '../../../components/v2/chipWrapper/chipWrapper.component';
@@ -17,6 +18,7 @@ import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
+import { getProjectAgents } from '../../../utils/asyncProject';
 import { getProjectProperty } from '../../../utils/async';
 import likeIcon from '../../../assets/icons/like.svg';
 import { setSnackbar } from '../../../redux/ui/ui.actions';
@@ -50,6 +52,7 @@ const ProjectDetailsPage = ({
 
 	// State
 	const [data, setData] = useState(initialState);
+	const [agents, setAgents] = useState([]);
 	// loading State
 	const [loading, setLoading] = useState(false);
 	// error state
@@ -57,6 +60,7 @@ const ProjectDetailsPage = ({
 
 	// Axios cancel token
 	let cancelToken = React.useRef();
+	let cancelTokenFindAgents = React.useRef(undefined);
 
 	// Cancel API call on unmount
 	useEffect(() => {
@@ -101,6 +105,27 @@ const ProjectDetailsPage = ({
 				setError(message);
 			}
 		})();
+	}, [id]);
+	useEffect(() => {
+		(async () => {
+			try {
+				cancelTokenFindAgents.current = axios.CancelToken.source();
+				const resp = await getProjectAgents(
+					id,
+					cancelTokenFindAgents.current,
+					setLoading
+				);
+				setAgents(resp.agents);
+			} catch (error) {
+				setError(error);
+			}
+		})();
+
+		return () => {
+			if (typeof cancelTokenFindAgents.current !== undefined) {
+				cancelTokenFindAgents.current.cancel();
+			}
+		};
 	}, [id]);
 
 	// Throw Error On Screen
@@ -440,17 +465,36 @@ const ProjectDetailsPage = ({
 						)}
 					</Grid>
 					<Grid item xs={12} md={3}>
-						{data.project && (
-							<Box mb="2rem" mt="2rem">
-								<BuilderCard
-									owner={data.project.builder}
-									property={data.project}
-									type="project"
-									pFor="project"
-									pType={data.project.projectType}
-								/>
-							</Box>
-						)}
+						<AppBar
+							position="sticky"
+							color="transparent"
+							elevation={0}
+						>
+							{data.project && (
+								<Box mt="2rem">
+									<BuilderCard
+										owner={data.project.builder}
+										property={data.project}
+										type="project"
+										pFor="project"
+										pType={data.project.projectType}
+									/>
+								</Box>
+							)}
+							{data &&
+								data.project &&
+								agents.map((c) => (
+									<Box key={c.id} mt="2rem">
+										<AgentCard
+											owner={c}
+											property={data.project}
+											type="project"
+											pFor="project"
+											pType={data.project.projectType}
+										/>
+									</Box>
+								))}
+						</AppBar>
 					</Grid>
 				</Grid>
 				{data.project && (

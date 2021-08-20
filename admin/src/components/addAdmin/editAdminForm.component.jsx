@@ -76,6 +76,12 @@ const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
 									type="email"
 								/>
 							</Grid>
+							<Grid item xs={12} md={4}>
+								<TextField
+									formLabel="User Number"
+									name="number"
+								/>
+							</Grid>
 
 							<Grid item xs={12} md={4}>
 								<Select

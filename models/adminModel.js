@@ -11,6 +11,13 @@ const adminSchema = new Schema(
 			required: [true, 'A name must be required'],
 			maxlength: [25, 'Max 25 chars allowed'],
 		},
+		number: {
+			type: String,
+			maxlength: [10, 'Max 10 chars allowed'],
+			required: [true, 'A phone number must be required'],
+
+			default: null,
+		},
 		username: {
 			type: String,
 			required: [true, 'A username must be required'],

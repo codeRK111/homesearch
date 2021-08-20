@@ -6,6 +6,7 @@ const projectAgentSchema = new Schema(
 		project: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Project',
+			unique: true,
 		},
 
 		agents: [
@@ -15,6 +16,11 @@ const projectAgentSchema = new Schema(
 				default: null,
 			},
 		],
+		status: {
+			type: String,
+			enum: ['active', 'inactive'],
+			default: 'active',
+		},
 	},
 	{
 		toJSON: { virtuals: true },

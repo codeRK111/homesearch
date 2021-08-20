@@ -42,3 +42,7 @@ code {
 .cRed {
 	color: red !important;
 }
+
+.ReactModal__Overlay {
+	z-index: 100000 !important;
+}

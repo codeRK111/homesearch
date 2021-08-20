@@ -1,5 +1,6 @@
 const AppError = require('./../utils/appError');
 const ProjectSpeciality = require('./../models/projectSpeciality');
+const ProjectAgent = require('./../models/projectAgent');
 const Project = require('./../models/projectModule');
 const ProjectProperty = require('./../models/projectPropertyModule');
 const catchAsync = require('./../utils/catchAsync');
@@ -550,6 +551,40 @@ exports.searchByCity = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			projects,
+		},
+	});
+});
+exports.addProjectAgent = catchAsync(async (req, res, next) => {
+	const isPresent = await ProjectAgent.findOne({
+		project: mongoose.Types.ObjectId(req.body.project),
+	});
+	if (isPresent) {
+		isPresent.agents = req.body.agents;
+		await isPresent.save();
+		return res.status(200).json({
+			status: 'success',
+			data: {
+				projectAgent: isPresent,
+			},
+		});
+	}
+	const projectAgent = await ProjectAgent.create(req.body);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			projectAgent,
+		},
+	});
+});
+exports.getAgents = catchAsync(async (req, res, next) => {
+	const isPresent = await ProjectAgent.findOne({
+		project: mongoose.Types.ObjectId(req.params.projectId),
+	});
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			projectAgents: isPresent,
 		},
 	});
 });

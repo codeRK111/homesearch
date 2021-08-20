@@ -1,5 +1,4 @@
 import {
-	selectAllCity,
 	selectAllStates,
 	selectLoading as stateLoading,
 } from '../../redux/city/city.selector';
@@ -9,24 +8,11 @@ import {
 } from '../../redux/admins/admins.selector';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Divider from '@material-ui/core/Divider';
 import EditAdmin from '../addAdmin/editAdminForm.component';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import React from 'react';
-import Select from '@material-ui/core/Select';
 import Skeleton from '../skeleton/detailsStack.component';
-import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
