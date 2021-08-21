@@ -19,6 +19,10 @@ router.get(
 
 // User
 router
+	.route('/agent')
+	.post(authController.protect, queryController.addAgentQuery)
+	.get(adminController.protect, queryController.getAgentQueries);
+router
 	.route('/')
 	.post(authController.protect, queryController.addQuery)
 	.get(authController.protect, queryController.getUserQueries);

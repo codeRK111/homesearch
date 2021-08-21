@@ -17,6 +17,7 @@ import AddPropertyForSale from './pages/addPropertyForSale/addPropertyWrapper.co
 import AddStaff from './pages/projectAdvertisement/AddStaff.page';
 import AddUser from './components/addUser/addUser.component';
 import AdminPage from './pages/admins/admins.component';
+import AgentQueryPage from './pages/agentQueries';
 import Authentication from './pages/authpage/authentication.component';
 import BuilderPackage from './pages/builderPackage/builderPackage.page';
 import BuilderPage from './pages/builders/builders.component';
@@ -75,6 +76,7 @@ import { withLoader } from './hoc/withLoader';
 
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
+const AgentQueryPageWithDrawer = Drawer(AgentQueryPage);
 const ManageTaskPropertyPageWithDrawer = Drawer(ManageTaskProperty);
 
 const ProjectSpecialitiesPageWithDrawer = Drawer(ProjectSpecialitiesPage);
@@ -181,6 +183,16 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 					render={(props) => (
 						<Protected
 							component={AddAgentPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/agent-queries"
+					render={(props) => (
+						<Protected
+							component={AgentQueryPageWithDrawer}
 							{...props}
 						/>
 					)}

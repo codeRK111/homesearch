@@ -844,6 +844,12 @@ const MainListItems = ({
 				</ListItemIcon>
 				<ListItemText primary="Property queries" />
 			</ListItem>
+			<ListItem button onClick={onUsersClick('/agent-queries')}>
+				<ListItemIcon>
+					<ChatIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Agent queries" />
+			</ListItem>
 			<ExpertQueriesLabelNode />
 			<ListItem button onClick={onUsersClick('/feedbacks')}>
 				<ListItemIcon>
