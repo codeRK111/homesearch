@@ -11,9 +11,9 @@ import {
 
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import ImageCarousel from '../../imageCarousel';
+import ImageLightBoxCarousel from '../../lightBox/carousel.component';
 import React from 'react';
-import SwipablePhotos from '../../swipableViews';
-import ViewFullImage from '../../viewFullImage';
+import SwipablePhotos from '../../swipableViews/project';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -25,22 +25,26 @@ import { useTheme } from '@material-ui/core/styles';
 const PropertyCard = ({ project, info }) => {
 	const theme = useTheme();
 	const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+	const [allImages, setAllImages] = React.useState([]);
+	const [index, setIndex] = React.useState(0);
 	const [fullImageOpen, setFullImageOpen] = React.useState(false);
 	const m = moment(project.createdAt);
-	const previewImages = [
-		{
-			_id: 'default',
-			image: project.thumbnailImage,
-		},
-		{
-			_id: 'master',
-			image: project.masterFloorPlan,
-		},
-		{
-			_id: 'geography',
-			image: project.geogrophicalImage,
-		},
-	];
+	const previewImages = React.useMemo(() => {
+		return [
+			{
+				_id: 'default',
+				image: project.thumbnailImage,
+			},
+			{
+				_id: 'master',
+				image: project.masterFloorPlan,
+			},
+			{
+				_id: 'geography',
+				image: project.geogrophicalImage,
+			},
+		];
+	}, [project]);
 	const img = {
 		_id: 'default',
 		image: project.thumbnailImage,
@@ -56,18 +60,38 @@ const PropertyCard = ({ project, info }) => {
 	};
 
 	const areaInfo = renderLandAreaGrid(project, info);
+
+	const onImageClick = (img) => {
+		const i = allImages.findIndex((element) => {
+			if (element._id === img._id) {
+				return true;
+			} else {
+				return false;
+			}
+		});
+		setDefaultImage(img);
+		setIndex(i);
+		toggleFullImage(true)();
+	};
+	React.useEffect(() => {
+		if (project) {
+			setAllImages([...previewImages, ...project.photos]);
+		}
+	}, [project, previewImages]);
 	return (
 		<div className={classes.wrapper}>
-			<ViewFullImage
+			<ImageLightBoxCarousel
 				open={fullImageOpen}
 				handleClose={toggleFullImage(false)}
 				title={project.title}
-				image={`/assets/projects/${defaultImage.image}`}
+				photos={allImages.map((c) => `/assets/projects/${c.image}`)}
+				index={index}
 			/>
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={8}>
 					{smallScreen ? (
 						<ImageCarousel
+							title={project.title}
 							photos={[...previewImages, ...project.photos].map(
 								(c) => `/assets/projects/${c.image}`
 							)}
@@ -96,7 +120,7 @@ const PropertyCard = ({ project, info }) => {
 										...project.photos,
 									]}
 									selected={defaultImage}
-									setSelected={setDefaultImage}
+									setSelected={onImageClick}
 									dir="projects"
 									title={project.title}
 								/>

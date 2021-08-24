@@ -1,6 +1,7 @@
 import { Box, Button, Chip, CircularProgress, Grid } from '@material-ui/core';
 import { FieldArray, Form, Formik } from 'formik';
 
+import { ADMIN_ROLE } from '../../utils/staticData';
 import CheckBox from '../formik/checkbox.component';
 import DividerHeading from '../dividerHeadinng/dividerHeading.component';
 import React from 'react';
@@ -14,6 +15,7 @@ const AddAdminForm = ({ loading, onSubmit }) => {
 		name: '',
 		email: '',
 		username: '',
+		number: '',
 		password: '',
 		gender: 'male',
 		status: 'active',
@@ -92,6 +94,12 @@ const AddAdminForm = ({ loading, onSubmit }) => {
 							</Grid>
 							<Grid item xs={12} md={4}>
 								<TextField
+									formLabel="User Number"
+									name="number"
+								/>
+							</Grid>
+							<Grid item xs={12} md={4}>
+								<TextField
 									formLabel="Password"
 									name="password"
 									type="text"
@@ -129,14 +137,24 @@ const AddAdminForm = ({ loading, onSubmit }) => {
 									name="type"
 									options={[
 										{
-											value: 'super-admin',
+											value: ADMIN_ROLE.superAdmin,
 											label: 'Super Admin',
 										},
-										{ value: 'admin', label: 'Admin' },
-										{ value: 'staff', label: 'Staff' },
 										{
-											value: 'clientSupport',
+											value: ADMIN_ROLE.admin,
+											label: 'Admin',
+										},
+										{
+											value: ADMIN_ROLE.staff,
+											label: 'Staff',
+										},
+										{
+											value: ADMIN_ROLE.clientSupport,
 											label: 'Client Support',
+										},
+										{
+											value: ADMIN_ROLE.digitalMarketing,
+											label: 'Digital Marketing',
 										},
 									]}
 								/>

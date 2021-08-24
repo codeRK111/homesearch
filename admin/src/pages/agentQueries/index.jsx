@@ -1,18 +1,33 @@
-// import axios from 'axios';
+import {
+	Box,
+	FormControl,
+	Grid,
+	InputLabel,
+	MenuItem,
+	Select,
+	TextField,
+	Typography,
+} from '@material-ui/core';
+import React, { useCallback, useEffect, useRef } from 'react';
 
-import { Box, FormControl, Grid, InputLabel, Select } from '@material-ui/core';
-import React, { useRef } from 'react';
-
+import AgentQueriesTable from '../../components/queryTable/agentQueries.component';
+import Pagination from '@material-ui/lab/Pagination';
+import TableSkeleton from '../../components/skeleton/table.component';
+import axios from 'axios';
+import { getAgentQueries } from '../../utils/asyncQueries';
 import useStyles from './agentQueries.style';
 
 const AgentQueries = () => {
 	const cancelToken = useRef(undefined);
 	const [page, setPage] = React.useState(1);
+	const [loading, setLoading] = React.useState(false);
+	const [error, setError] = React.useState(null);
 	const [via, setVia] = React.useState('web');
 	const [queryFor, setQueryFor] = React.useState('');
 	const [propertyFor, setPropertyFor] = React.useState('');
 	const [propertyType, setPropertyType] = React.useState('');
 	const [limit, setLimit] = React.useState(10);
+	const [queriesPerPage, setQueriesPerPage] = React.useState(10);
 	const handleChange = (event, value) => {
 		setPage(value);
 	};
@@ -21,6 +36,40 @@ const AgentQueries = () => {
 		totalDocs: 0,
 	});
 	const classes = useStyles();
+
+	const fetchQueries = useCallback(async () => {
+		cancelToken.current = axios.CancelToken.source();
+		const data = {
+			page,
+			limit,
+			via,
+		};
+		if (queryFor) {
+			data.queryFor = queryFor;
+		}
+		if (propertyType) {
+			data.propertyType = propertyType;
+		}
+		if (propertyFor) {
+			data.queryOn = propertyFor;
+		}
+
+		try {
+			const result = await getAgentQueries(
+				data,
+				cancelToken.current,
+				setLoading
+			);
+			setData(result);
+			setError(null);
+		} catch (error) {
+			setError(error);
+		}
+	}, [page, via, queryFor, propertyFor, propertyType, limit]);
+
+	useEffect(() => {
+		fetchQueries();
+	}, [fetchQueries]);
 	return (
 		<div className={classes.wrapper}>
 			<h1>Agent Queries</h1>
@@ -32,18 +81,13 @@ const AgentQueries = () => {
 								Query For
 							</InputLabel>
 							<Select
-								native
 								value={queryFor}
 								onChange={(e) => setQueryFor(e.target.value)}
-								inputProps={{
-									name: 'age',
-									id: 'filled-age-native-simple',
-								}}
 							>
-								<option aria-label="None" value="" disabled />
-								<option value={'number'}>Number</option>
-								<option value={'message'}>Enquiry</option>
-								<option value={'whatsapp'}>Whatsapp</option>
+								<MenuItem value={''}>All</MenuItem>
+								<MenuItem value={'number'}>Number</MenuItem>
+								<MenuItem value={'message'}>Enquiry</MenuItem>
+								<MenuItem value={'whatsapp'}>Whatsapp</MenuItem>
 							</Select>
 						</FormControl>
 					</Grid>
@@ -53,20 +97,15 @@ const AgentQueries = () => {
 								Property For
 							</InputLabel>
 							<Select
-								native
 								value={propertyFor}
 								onChange={(e) => setPropertyFor(e.target.value)}
-								inputProps={{
-									name: 'age',
-									id: 'filled-age-native-simple',
-								}}
 							>
-								<option aria-label="None" value="" disabled />
+								<MenuItem value="">All</MenuItem>
 
-								<option value={'project'}>Project</option>
-								<option value={'projectProperty'}>
+								<MenuItem value={'project'}>Project</MenuItem>
+								<MenuItem value={'projectProperty'}>
 									Project Property
-								</option>
+								</MenuItem>
 							</Select>
 						</FormControl>
 					</Grid>
@@ -76,23 +115,18 @@ const AgentQueries = () => {
 								Property Type
 							</InputLabel>
 							<Select
-								native
 								value={propertyType}
 								onChange={(e) =>
 									setPropertyType(e.target.value)
 								}
-								inputProps={{
-									name: 'age',
-									id: 'filled-age-native-simple',
-								}}
 							>
-								<option aria-label="None" value="" disabled />
-								<option value={'flat'}>Apartment</option>
-								<option value={'independenthouse'}>
+								<MenuItem value="">All</MenuItem>
+								<MenuItem value={'flat'}>Apartment</MenuItem>
+								<MenuItem value={'independenthouse'}>
 									Villa
-								</option>
+								</MenuItem>
 
-								<option value={'land'}>Land</option>
+								<MenuItem value={'land'}>Land</MenuItem>
 							</Select>
 						</FormControl>
 					</Grid>
@@ -102,21 +136,61 @@ const AgentQueries = () => {
 								Via
 							</InputLabel>
 							<Select
-								native
 								value={via}
 								onChange={(e) => setVia(e.target.value)}
-								inputProps={{
-									name: 'age',
-									id: 'filled-age-native-simple',
-								}}
 							>
-								<option value={'web'}>Web</option>
-								<option value={'app'}>Mobile App</option>
+								<MenuItem value={'web'}>Web</MenuItem>
+								<MenuItem value={'app'}>Mobile App</MenuItem>
 							</Select>
 						</FormControl>
 					</Grid>
 				</Grid>
 			</Box>
+			<Box>{loading && <TableSkeleton />}</Box>
+			{!loading && (
+				<div className={classes.flexWrapper}>
+					<Typography>
+						Total <b>{data.totalDocs}</b> queries found{' '}
+					</Typography>
+					<div className={classes.perPageWrapper}>
+						<TextField
+							variant="filled"
+							label="Queries per page"
+							size="small"
+							value={queriesPerPage}
+							onChange={(e) => setQueriesPerPage(e.target.value)}
+						/>
+						<button
+							onClick={() => {
+								if (Number(queriesPerPage)) {
+									setPage(1);
+									setLimit(queriesPerPage);
+								}
+							}}
+						>
+							Apply
+						</button>
+					</div>
+				</div>
+			)}
+			{!loading && (
+				<Box mt="1rem">
+					<AgentQueriesTable
+						queries={data.queries}
+						fetchQueries={fetchQueries}
+					/>
+				</Box>
+			)}
+			{!loading && (
+				<Box mt="1rem" display="flex" justifyContent="center">
+					<Pagination
+						count={Math.ceil(data.totalDocs / limit)}
+						page={page}
+						onChange={handleChange}
+						color="primary"
+					/>
+				</Box>
+			)}
 		</div>
 	);
 };

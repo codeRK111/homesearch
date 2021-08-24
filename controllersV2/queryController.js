@@ -160,6 +160,8 @@ exports.getAgentQueries = catchAsync(async (req, res, next) => {
 	if (req.admin.type === 'clientSupport') {
 		filter.agent = mongoose.Types.ObjectId(req.admin.id);
 	}
+
+	// console.log(filter);
 	const totalDocs = await AgentQuery.countDocuments(filter);
 
 	const queries = await AgentQuery.find(filter)
@@ -169,5 +171,24 @@ exports.getAgentQueries = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: { queries, totalDocs },
+	});
+});
+
+exports.addAgentMessage = catchAsync(async (req, res) => {
+	const query = await AgentQuery.findByIdAndUpdate(
+		req.params.queryId,
+		{
+			$push: { action: req.body },
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			query,
+		},
 	});
 });

@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		background: theme.shadowColor,
+		cursor: 'pointer',
 		display: 'flex',
 		minWidth: '75px',
 		justifyContent: 'center',
@@ -11,6 +12,8 @@ const useStyles = makeStyles((theme) => ({
 		padding: '0.6rem',
 		'&>span': {
 			fontWeight: '600',
+			textShadow: '0px 0.07px, 0.07px 0px, 0.07px 0.07px',
+			letterSpacing: 1,
 		},
 	},
 	outlinedPrimary: {

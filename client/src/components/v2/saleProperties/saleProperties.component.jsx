@@ -42,7 +42,7 @@ const RentProperties = ({ data }) => {
 						<div className={classes.content}>
 							<Grid container spacing={3}>
 								{data.properties.map((c) => (
-									<Grid item xs={12} md={4}>
+									<Grid item xs={12} md={3}>
 										<Card key={c.id} data={c} />
 									</Grid>
 								))}

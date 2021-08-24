@@ -1,3 +1,13 @@
+export const DOMAIN_NAME = 'http://homesearch18.com';
+
+export const ADMIN_ROLE = {
+	superAdmin: 'super-admin',
+	admin: 'admin',
+	staff: 'staff',
+	clientSupport: 'clientSupport',
+	digitalMarketing: 'digitalMarketing',
+};
+
 export const furnishMenuItems = [
 	{
 		label: 'Furnished',

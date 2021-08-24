@@ -23,6 +23,12 @@ router
 	.post(authController.protect, queryController.addAgentQuery)
 	.get(adminController.protect, queryController.getAgentQueries);
 router
+	.route('/get-agent-queries')
+	.post(adminController.protect, queryController.getAgentQueries);
+router
+	.route('/agent-response/:queryId')
+	.post(adminController.protect, queryController.addAgentMessage);
+router
 	.route('/')
 	.post(authController.protect, queryController.addQuery)
 	.get(authController.protect, queryController.getUserQueries);

@@ -1,5 +1,6 @@
 import { area, bed, car, location2, tag, tub } from '../../../utils/statc';
 
+import { Box } from '@material-ui/core';
 import React from 'react';
 import city from '../../../assets/city.jpg';
 import clsx from 'clsx';
@@ -14,7 +15,12 @@ const TYPES = {
 };
 
 const PropertyCard = ({ data }) => {
-	const classes = useStyles({ img: city });
+	const img = data.photos[0]
+		? data.photos.find((c) => c.default)
+			? `/assets/properties/${data.photos.find((c) => c.default).image}`
+			: `/assets/properties/${data.photos[0].image}`
+		: city;
+	const classes = useStyles({ img });
 	const globalClasses = useGlobalStyles();
 	return (
 		<>
@@ -22,7 +28,7 @@ const PropertyCard = ({ data }) => {
 				<div className={classes.wrapper}>
 					<div className={classes.imageWrapper}>
 						<div className={classes.overlay}>
-							<div className={classes.feature}>Feature</div>
+							{/* <div className={classes.feature}>Feature</div> */}
 						</div>
 					</div>
 					{/* <div className={classes.imageWrapper}>
@@ -49,7 +55,7 @@ const PropertyCard = ({ data }) => {
 									{data.location.name}, {data.city.name}
 								</span>
 							</div>
-							<div className={classes.flexWrapper}>
+							<Box className={classes.flexWrapper} mt="0.5rem">
 								<img
 									src={tag}
 									alt="Tag"
@@ -58,17 +64,17 @@ const PropertyCard = ({ data }) => {
 								<span className={classes.contentText}>
 									{TYPES[data.type]}
 								</span>
-							</div>
+							</Box>
 						</div>
 						<h5
 							className={clsx(
 								globalClasses.textCenter,
-								classes.title
+								classes.rent
 							)}
 						>
 							Rs. {data.rent / 1000}K/Month
 						</h5>
-						<div className={classes.flexParentWrapper}>
+						<Box className={classes.flexParentWrapper} mt="0.5rem">
 							<div className={classes.flexWrapper}>
 								<img
 									src={area}
@@ -107,7 +113,7 @@ const PropertyCard = ({ data }) => {
 								/>
 								<span className={classes.contentText}>1</span>
 							</div>
-						</div>
+						</Box>
 					</div>
 				</div>
 			)}

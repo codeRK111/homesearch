@@ -179,7 +179,7 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 				/>
 				<Route
 					exact
-					path="/add-agent"
+					path="/add-agent/:id"
 					render={(props) => (
 						<Protected
 							component={AddAgentPageWithDrawer}
@@ -520,18 +520,9 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 				<Route
 					exact
 					path="/projects/:status"
-					render={() => (
+					render={(props) => (
 						<Protected
-							component={HOC(ProjectPageWithDrawer, [
-								{
-									type: 'propertyAccess',
-									value: 'project',
-								},
-								{
-									type: 'propertyActions',
-									value: 'view',
-								},
-							])}
+							component={ProjectPageWithDrawer}
 							{...props}
 						/>
 					)}

@@ -147,6 +147,7 @@ exports.addAdmin = catchAsync(async (req, res, next) => {
 	// name username email serialNumber password cities gender  status ableToSee type
 	const newAdmin = await Admin.create({
 		name: req.body.name,
+		number: req.body.number,
 		city: req.body.city,
 		username: req.body.username,
 		email: req.body.email,

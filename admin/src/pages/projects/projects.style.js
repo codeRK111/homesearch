@@ -19,5 +19,8 @@ const useStyles = makeStyles((theme) => ({
 			padding: '0.5rem 0',
 		},
 	},
+	errorColor: {
+		color: 'red',
+	},
 }));
 export default useStyles;

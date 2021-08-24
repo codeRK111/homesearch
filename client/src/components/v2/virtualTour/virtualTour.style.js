@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
 	image: {
 		maxWidth: '100%',
 		minWidth: '100%',
+		cursor: 'pointer',
 	},
 	tourHeading: {
 		color: theme.secondaryHeadingColor,

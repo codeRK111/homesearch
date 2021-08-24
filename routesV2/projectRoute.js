@@ -18,6 +18,9 @@ router
 	.post(adminController.protect, projectController.addProjectAgent);
 router.route('/get-agents/:projectId').get(projectController.getAgents);
 router
+	.route('/remove-agent/:projectId/:agentId')
+	.get(adminController.protect, projectController.removeAgent);
+router
 	.route('/speciality')
 	.get(adminController.protect, specialityController.getSpecialities)
 	.post(adminController.protect, specialityController.addSpeciality);
@@ -92,6 +95,9 @@ router
 	.route('/towers/:projectId')
 	.patch(adminController.protect, projectController.addTower);
 
+router
+	.route('/get-projects')
+	.post(adminController.protect, projectController.getProjects);
 router
 	.route('/')
 	.post(

@@ -11,5 +11,15 @@ const useStyles = makeStyles((theme) => ({
 			width: '100%',
 		},
 	},
+	chip: {
+		margin: theme.spacing(0.5),
+	},
+	chipWrapper: {
+		display: 'flex',
+		flexWrap: 'wrap',
+		listStyle: 'none',
+		padding: theme.spacing(0.5),
+		margin: 0,
+	},
 }));
 export default useStyles;

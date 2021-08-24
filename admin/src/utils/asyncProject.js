@@ -1,4 +1,5 @@
-import { apiUrl } from './render.utils';
+import { apiUrl, asyncError } from './render.utils';
+
 import axios from 'axios';
 
 // import queryString from 'query-string';
@@ -619,6 +620,78 @@ export const addAgent = (data, cancelToken, setLoading) => {
 					message = error.message;
 				}
 				return reject(message);
+			});
+	});
+};
+export const getAgentsOfAProject = (id, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		const url = `/project/get-agents/${id}`;
+		setLoading(true);
+		axios
+			.get(apiUrl(url, 'v2'), {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data.projectAgents);
+			})
+			.catch((error) => {
+				setLoading(false);
+
+				return reject(asyncError(error));
+			});
+	});
+};
+export const removeAgent = (projectId, agentId, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		const url = `/project/remove-agent/${projectId}/${agentId}`;
+		setLoading(true);
+		axios
+			.get(apiUrl(url, 'v2'), {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data.project);
+			})
+			.catch((error) => {
+				setLoading(false);
+
+				return reject(asyncError(error));
+			});
+	});
+};
+export const getAllProjects = (data, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		const url = `/project/get-projects`;
+		setLoading(true);
+		axios
+			.post(apiUrl(url, 'v2'), data, {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data);
+			})
+			.catch((error) => {
+				setLoading(false);
+
+				return reject(asyncError(error));
 			});
 	});
 };

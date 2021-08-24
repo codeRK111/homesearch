@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	searchWrapper: {
 		width: '70rem',
-		padding: '0.7rem 2rem',
+		padding: '0.7rem 1rem 0.7rem 1rem',
 		background: theme.shadowColor,
 		borderRadius: '25px',
 		display: 'flex',
@@ -177,11 +177,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 	searchButton: {
 		background: theme.shadowColor,
-		padding: '0.5rem',
+		padding: '0.7rem',
 		boxShadow: '10px 5px 10px #a4a4a4,-10px -10px 20px #ffffff',
 		display: 'inline-block',
 		cursor: 'pointer',
-		borderRadius: 10,
+		borderRadius: 25,
 		[theme.breakpoints.down('sm')]: {
 			padding: '0.5rem',
 		},

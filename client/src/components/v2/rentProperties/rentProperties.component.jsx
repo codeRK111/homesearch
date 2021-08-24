@@ -49,7 +49,7 @@ const RentProperties = ({ data }) => {
 				{!!data && (
 					<div className={classes.propertiesWrapper}>
 						<div className={classes.content}>
-							<Grid container spacing={3}>
+							<Grid container spacing={7}>
 								{data.properties.map((c) => (
 									<Grid item xs={12} md={4}>
 										<Card key={c.id} data={c} />
@@ -57,7 +57,7 @@ const RentProperties = ({ data }) => {
 								))}
 							</Grid>
 						</div>
-						{data.properties.length > 3 && (
+						{true && (
 							<div
 								className={clsx(
 									classes.scrollbarRight,

@@ -9,6 +9,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const { validationResult } = require('express-validator');
 const fs = require('fs');
 const path = require('path');
+const { arrayUniq } = require('../utils/helper');
 
 exports.properties = catchAsync(async (req, res, next) => {
 	const match = {
@@ -559,7 +560,10 @@ exports.addProjectAgent = catchAsync(async (req, res, next) => {
 		project: mongoose.Types.ObjectId(req.body.project),
 	});
 	if (isPresent) {
-		isPresent.agents = req.body.agents;
+		const existing = isPresent.agents.map((c) => c.id);
+		const newAgents = [...existing, ...req.body.agents];
+		console.log(arrayUniq(newAgents));
+		isPresent.agents = arrayUniq(newAgents);
 		await isPresent.save();
 		return res.status(200).json({
 			status: 'success',
@@ -586,5 +590,69 @@ exports.getAgents = catchAsync(async (req, res, next) => {
 		data: {
 			projectAgents: isPresent,
 		},
+	});
+});
+
+exports.removeAgent = catchAsync(async (req, res) => {
+	const project = await ProjectAgent.findOneAndUpdate(
+		{ project: req.params.projectId },
+		{
+			$pull: {
+				agents: {
+					$in: [req.params.agentId],
+				},
+			},
+		},
+		{
+			new: true,
+			runValidators: true,
+			useFindAndModify: true,
+		}
+	);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
+	});
+});
+
+exports.getProjects = catchAsync(async (req, res, next) => {
+	const filter = {};
+	const page = req.body.page * 1 || 1;
+	const limit = req.body.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	if (req.body.title) {
+		filter.title = { $regex: req.body.title, $options: 'i' };
+	}
+
+	if (req.body.projectType) {
+		filter.projectType = req.body.projectType;
+	}
+	if (req.body.builder) {
+		filter.builder = req.body.builder;
+	}
+
+	if (req.body.city) {
+		filter.city = req.body.city;
+	}
+	if (req.body.complitionStatus) {
+		filter.complitionStatus = req.body.complitionStatus;
+	}
+	if (req.body.status) {
+		filter.status = req.body.status;
+	}
+
+	// console.log(filter);
+	const totalDocs = await Project.countDocuments(filter);
+
+	const projects = await Project.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+	res.status(200).json({
+		status: 'success',
+		data: { projects, totalDocs },
 	});
 });

@@ -5,7 +5,16 @@ const useStyles = makeStyles((theme) => ({
 		padding: '0.7rem 0.7rem 1.2rem 0.7rem',
 		background: theme.shadowColor,
 		borderRadius: '32px',
-		boxShadow: '23px 23px 46px #a4a4a4,-23px -23px 46px #ffffff',
+		boxShadow: '12px 12px 21px #bebebe,-12px -12px 21px #ffffff',
+		boxSizing: 'border-box',
+	},
+	developerName: {
+		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		letterSpacing: 1,
+		textAlign: 'center',
+		fontSize: '1.4rem',
+		margin: 0,
+		padding: 0,
 	},
 	imageWrapper: (props) => ({
 		position: 'relative',
@@ -19,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundPosition: 'center',
 		height: '15rem',
 		width: '100%',
-		borderRadius: 20,
+		borderRadius: 40,
 	}),
 	featureWrapper: {
 		display: 'flex',
@@ -32,18 +41,12 @@ const useStyles = makeStyles((theme) => ({
 			color: '#ffffff',
 			display: 'inline-block',
 			fontSize: '0.7rem',
+			fontWeight: 'bold',
 		},
 	},
 	logoWrapper: {
-		display: 'flex',
-		justifyContent: 'space-around',
-		alignItems: 'center',
-		'& img': {
-			height: '70px',
-			[theme.breakpoints.down('sm')]: {
-				marginRight: '1rem',
-			},
-		},
+		padding: '0 1rem',
+		boxSizing: 'bordered-box',
 	},
 	numbersWrapper: {
 		display: 'flex',
@@ -56,12 +59,15 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	text: {
-		fontSize: '0.7rem',
+		fontSize: '0.8rem',
 		color: '#929292',
+		fontWeight: 'bolder',
 	},
 	value: {
-		fontSize: '0.7rem',
+		fontSize: '0.8rem',
 		fontWeight: 'bold',
+		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		letterSpacing: 1,
 	},
 	description: {
 		fontSize: '0.9rem',
@@ -79,11 +85,12 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 2,
 		display: 'flex',
 		justifyContent: 'flex-end',
-		borderRadius: 20,
+		borderRadius: 40,
 		padding: '1rem',
 		boxSizing: 'border-box',
 	},
 	textWrapper: {
+		padding: '1rem',
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',

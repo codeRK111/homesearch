@@ -1,28 +1,19 @@
-import {
-	selectFetchProjectsLoading as fetchProjectsLoading,
-	selectProjects,
-} from '../../redux/project/project.selector';
-import { renderBoolean, renderPropertyTypes } from '../../utils/render.utils';
+import { Link, useHistory, withRouter } from 'react-router-dom';
 
-import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import CustomSelect from './selectBuilder.component';
-import { Link } from 'react-router-dom';
+import GroupIcon from '@material-ui/icons/Group';
 import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { fetchProjects } from '../../redux/project/project.action';
+import { Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import renderByRole from '../roleRender/roleRender.component';
-import { withRouter } from 'react-router-dom';
+import { renderPropertyTypes } from '../../utils/render.utils';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -57,55 +48,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const types = {
-	flat: 'Flat',
-	land: 'Land',
-	independenthouse: 'Independent House',
-};
+function Orders({ projects, fetchProjects }) {
+	const history = useHistory();
 
-const menuItems = [
-	{
-		label: '2',
-		value: 2,
-	},
-	{
-		label: '3',
-		value: 3,
-	},
-];
-
-function Orders({
-	fetchProjects,
-	loading,
-	match: { params },
-	allProjects = [],
-}) {
-	const [page, setPage] = React.useState(0);
-	const [count, setCount] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(20);
-	console.log(allProjects);
-	const handleChangePage = (event, newPage) => {
-		setPage(newPage);
+	const onActionClick = (data) => (_) => {
+		history.push(`/add-agent/${data.id}`);
 	};
-
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-		setPage(0);
-	};
-	const handleProjects = (status, data = null) => {
-		console.log(status);
-		console.log(data);
-		if (status === 'success') {
-			setCount(data);
-		}
-	};
-	React.useEffect(() => {
-		fetchProjects(handleProjects, {
-			status: params.status,
-			page: page + 1,
-			limit: rowsPerPage,
-		});
-	}, [fetchProjects, params.status, page, rowsPerPage]);
 
 	const classes = useStyles();
 
@@ -135,6 +83,7 @@ function Orders({
 			<TableCell>
 				{/* {c.status} */}
 				<CustomSelect
+					fetchProjects={fetchProjects}
 					value={c.status}
 					builderId={c.id}
 					items={[
@@ -175,34 +124,7 @@ function Orders({
 
 	return (
 		<React.Fragment>
-			<Backdrop
-				className={classes.backdrop}
-				open={loading}
-				// onClick={handleClose}
-			>
-				<CircularProgress color="secondary" />
-			</Backdrop>
-
 			<div className={classes.tableWrapper}>
-				{/* <p className={classes.colorRed}>{error}</p> */}
-				<Box mb="1rem">
-					<TablePagination
-						component="div"
-						count={count}
-						page={page}
-						rowsPerPageOptions={[2, 5, 10, 20, 40, 50]}
-						labelRowsPerPage={'Properties per page'}
-						onChangePage={handleChangePage}
-						rowsPerPage={rowsPerPage}
-						onChangeRowsPerPage={handleChangeRowsPerPage}
-						classes={{
-							root: classes.noSpace,
-						}}
-					/>
-				</Box>
-				<Box mb="0.5rem">
-					{count ? <b>{count} results found</b> : ''}
-				</Box>
 				<Table size="medium">
 					<TableHead>
 						<TableRow
@@ -239,10 +161,13 @@ function Orders({
 							</TableCell>
 							<StatusHeadingNode />
 							<UpdateHeadingNode />
+							<TableCell style={{ color: '#ffffff' }}>
+								Manage Staffs
+							</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{allProjects.map((c, i) => (
+						{projects.map((c, i) => (
 							<TableRow key={i}>
 								<TableCell>{i + 1}</TableCell>
 								<TableCell>{c.title}</TableCell>
@@ -262,6 +187,22 @@ function Orders({
 								</TableCell>
 								{renderStatusDataNode(c)}
 								{renderActionDataNode(c)}
+								<TableCell>
+									<Box
+										display="flex"
+										alignItems="center"
+										justifyContent="space-around"
+									>
+										<Tooltip title="View">
+											<Box
+												className="pointer"
+												onClick={onActionClick(c)}
+											>
+												<GroupIcon size="small" />
+											</Box>
+										</Tooltip>
+									</Box>
+								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
@@ -276,14 +217,4 @@ function Orders({
 	);
 }
 
-const mapStateToProps = createStructuredSelector({
-	allProjects: selectProjects,
-	loading: fetchProjectsLoading,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-	fetchProjects: (callback, param) =>
-		dispatch(fetchProjects({ callback, param })),
-});
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Orders));
+export default withRouter(Orders);

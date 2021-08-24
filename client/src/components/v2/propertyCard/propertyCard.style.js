@@ -11,15 +11,17 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 	},
 	contentText: {
-		fontWeight: '500',
+		fontWeight: '700',
 		fontSize: '0.7rem',
 		marginLeft: '0.4rem',
+		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		letterSpacing: 1,
 	},
 	wrapper: {
 		padding: '0.7rem 0.7rem 1.2rem 0.7rem',
 		background: theme.shadowColor,
-		borderRadius: '32px',
-		boxShadow: '5px 5px 12px #b3b3b3,-5px -5px 12px #ffffff',
+		borderRadius: '42px',
+		boxShadow: '12px 12px 21px #bebebe,-12px -12px 21px #ffffff',
 		height: '100%',
 		boxSizing: 'border-box',
 	},
@@ -31,7 +33,20 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: 'boldest',
 		padding: '0.5rem',
 		margin: 0,
-		fontSize: '1.2vw',
+		fontSize: '1.7rem',
+		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		letterSpacing: 1,
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1rem',
+		},
+	},
+	rent: {
+		fontWeight: 'boldest',
+		padding: '0.5rem',
+		margin: 0,
+		fontSize: '1rem',
+		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		letterSpacing: 1,
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '1rem',
 		},
@@ -44,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 1000,
 		background: '#2AAAAC',
 		padding: '0.5rem 1rem',
-		borderRadius: 15,
+		borderRadius: 40,
 		color: '#ffffff',
 		fontSize: '0.7rem',
 	},
@@ -58,9 +73,9 @@ const useStyles = makeStyles((theme) => ({
 				: theme.palette.grey[900],
 		backgroundSize: 'cover',
 		backgroundPosition: 'center',
-		height: '10rem',
+		height: '15rem',
 		width: '100%',
-		borderRadius: 20,
+		borderRadius: 40,
 	}),
 
 	overlay: {
@@ -75,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 2,
 		display: 'flex',
 		justifyContent: 'flex-end',
-		borderRadius: 20,
+		borderRadius: 40,
 		padding: '0 1rem 0 0',
 		boxSizing: 'border-box',
 	},
@@ -85,6 +100,9 @@ const useStyles = makeStyles((theme) => ({
 		'&:hover': {
 			textDecoration: 'underline',
 		},
+	},
+	contentWrapper: {
+		padding: '1rem 2rem',
 	},
 }));
 export default useStyles;

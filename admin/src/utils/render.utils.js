@@ -83,3 +83,13 @@ export const renderLunchingDateLabel = (status) => {
 			return 'Lunching month and year';
 	}
 };
+
+export const asyncError = (error) => {
+	let message = '';
+	if (!!error.response) {
+		message = error.response.data.message;
+	} else {
+		message = error.message;
+	}
+	return message;
+};

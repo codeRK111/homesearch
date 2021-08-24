@@ -9,6 +9,15 @@ const agentQuerySchema = new Schema(
 			ref: 'Builder',
 			default: null,
 		},
+		action: [
+			{
+				message: String,
+				date: {
+					type: Date,
+					default: Date.now(),
+				},
+			},
+		],
 		user: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
@@ -79,7 +88,7 @@ agentQuerySchema.pre(/^find/, function (next) {
 	})
 		.populate({
 			path: 'user',
-			select: 'id name',
+			select: 'id name email number',
 		})
 		.populate({
 			path: 'project',

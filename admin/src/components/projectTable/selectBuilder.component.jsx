@@ -1,12 +1,13 @@
-import React from 'react';
-import Select from '@material-ui/core/Select';
+import {
+	fetchProjects,
+	updateProjectDetails,
+} from '../../redux/project/project.action';
+
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
+import React from 'react';
+import Select from '@material-ui/core/Select';
 import { connect } from 'react-redux';
-import {
-	updateProjectDetails,
-	fetchProjects,
-} from '../../redux/project/project.action';
 import { withRouter } from 'react-router-dom';
 
 const CustomSelect = ({
@@ -18,10 +19,11 @@ const CustomSelect = ({
 		params: { status },
 	},
 	items = [],
+	fetchProjects = () => {},
 }) => {
 	const callBack = (type) => {
 		if (type === 'success') {
-			fetchBuilders(console.log, status);
+			fetchProjects();
 		}
 	};
 	const handleMobileStatus = (e) => {

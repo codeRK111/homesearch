@@ -42,5 +42,8 @@ const useStyles = makeStyles((theme) => ({
 			marginRight: '0.5rem',
 		},
 	},
+	contentWrapper: {
+		padding: '1rem 2rem',
+	},
 }));
 export default useStyles;

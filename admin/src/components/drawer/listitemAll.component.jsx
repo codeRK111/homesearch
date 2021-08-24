@@ -27,7 +27,6 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import Divider from '@material-ui/core/Divider';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import FeedbackIcon from '@material-ui/icons/Feedback';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -37,7 +36,6 @@ import LockIcon from '@material-ui/icons/Lock';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PhoneIcon from '@material-ui/icons/Phone';
 import React from 'react';
 import RenderByAdminType from '../roleRender/renderByRole.component';
@@ -328,26 +326,6 @@ const MainListItems = ({
 		true
 	);
 	// Expert Queries
-	const ExpertQueriesLabelNode = RenderByRole(
-		<ListItem button onClick={onUsersClick('/expert-queries')}>
-			<ListItemIcon>
-				<ChatIcon color="secondary" />
-			</ListItemIcon>
-			<ListItemText primary="Callback requests" />
-		</ListItem>,
-		[
-			{
-				type: 'expertQueryActions',
-				value: 'create',
-			},
-			{
-				type: 'expertQueryActions',
-				value: 'view',
-			},
-		],
-		null,
-		true
-	);
 
 	// Sale label
 	const PropertyForSaleLabelNode = RenderByRole(
@@ -770,7 +748,6 @@ const MainListItems = ({
 			<ProjectLabel />
 			<Collapse in={selectProject} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
-					<AddProjectNode />
 					<ListItem
 						button
 						className={classes.nested}
@@ -779,18 +756,9 @@ const MainListItems = ({
 						<ListItemIcon>
 							<PeopleAltIcon style={{ color: green[500] }} />
 						</ListItemIcon>
-						<ListItemText primary="Add Project v2" />
+						<ListItemText primary="Add Project" />
 					</ListItem>
-					<ListItem
-						button
-						className={classes.nested}
-						onClick={onUsersClick('/add-agent')}
-					>
-						<ListItemIcon>
-							<PersonAddIcon style={{ color: green[500] }} />
-						</ListItemIcon>
-						<ListItemText primary="Add Agent" />
-					</ListItem>
+
 					<ListItem
 						button
 						className={classes.nested}
@@ -849,13 +817,6 @@ const MainListItems = ({
 					<ChatIcon color="secondary" />
 				</ListItemIcon>
 				<ListItemText primary="Agent queries" />
-			</ListItem>
-			<ExpertQueriesLabelNode />
-			<ListItem button onClick={onUsersClick('/feedbacks')}>
-				<ListItemIcon>
-					<FeedbackIcon color="secondary" />
-				</ListItemIcon>
-				<ListItemText primary="Search Feedbacks" />
 			</ListItem>
 
 			<ListItem button onClick={togglePackage}>

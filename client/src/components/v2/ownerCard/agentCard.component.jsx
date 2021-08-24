@@ -1,6 +1,6 @@
 import { Avatar, Box, CircularProgress } from '@material-ui/core';
 import React, { useState } from 'react';
-import { badge, call, comment, whatsapp } from '../../../utils/statc';
+import { badge, call, comment, logo, whatsapp } from '../../../utils/statc';
 import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
 
 import { addAgentQuery } from '../../../utils/asyncQuery';
@@ -29,9 +29,7 @@ const OwnerCard = ({
 	property,
 	type,
 }) => {
-	const builderImage = owner.logo
-		? `/assets/builders/${owner.logo}`
-		: defaultImage;
+	const builderImage = logo;
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
 	const cancelToken = React.useRef(undefined);
@@ -153,7 +151,7 @@ const OwnerCard = ({
 
 	React.useEffect(() => {
 		return () => {
-			if (typeof cancelToken.current !== undefined) {
+			if (cancelToken.current) {
 				cancelToken.current.cancel();
 			}
 		};

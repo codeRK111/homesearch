@@ -17,9 +17,9 @@ const useStyles = makeStyles((theme) => ({
 				: theme.palette.grey[900],
 		backgroundSize: 'cover',
 		backgroundPosition: 'center',
-		height: '17rem',
+		height: '20rem',
 		width: '100%',
-		borderRadius: 20,
+		borderRadius: 40,
 	}),
 
 	overlay: {
@@ -34,15 +34,15 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 2,
 		display: 'flex',
 		justifyContent: 'flex-end',
-		borderRadius: 20,
-		padding: '0 1rem 0 0',
+		borderRadius: 40,
+		padding: '0 2rem 0 0',
 		boxSizing: 'border-box',
 	},
 	dateWrapper: {
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
-		background: theme.secondaryHeadingColor,
+		background: '#2AAAAC',
 		padding: '0.5rem 1rem',
 		color: '#ffffff',
 		maxHeight: '50px',
@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 		'& span': {
 			fontSize: '0.7rem',
 			marginLeft: '0.3rem',
+			fontWeight: 'bolder',
 		},
 		'& img': {
 			height: '12px',
@@ -70,10 +71,15 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		margin: 0,
 		padding: 0,
+		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		letterSpacing: 1,
 	},
 	description: {
 		fontSize: '0.7rem',
-		lineHeight: 1.3,
+		lineHeight: 1.5,
+		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		letterSpacing: 1,
+		fontWeight: 'bold',
 	},
 	rotate: {
 		transform: 'rotate(-30deg)',

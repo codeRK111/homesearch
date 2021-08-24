@@ -86,7 +86,7 @@ const PropertyCard = ({ data, showStatus = false }) => {
 								{data.title}
 							</Link>
 						</h2>
-						<div className={classes.flexParentWrapper}>
+						<Box className={classes.flexParentWrapper}>
 							<div className={classes.flexWrapper}>
 								<img
 									src={location}
@@ -107,7 +107,7 @@ const PropertyCard = ({ data, showStatus = false }) => {
 									{TYPES[data.sale_type]}
 								</span>
 							</div>
-						</div>
+						</Box>
 						{showStatus ? (
 							<Box
 								mt="1rem"
@@ -121,12 +121,15 @@ const PropertyCard = ({ data, showStatus = false }) => {
 								<h5
 									className={clsx(
 										globalClasses.textCenter,
-										classes.title
+										classes.rent
 									)}
 								>
 									Rs. {(data.salePrice / 100000).toFixed(2)}L
 								</h5>
-								<div className={classes.flexParentWrapper}>
+								<Box
+									className={classes.flexParentWrapper}
+									mt="0.5rem"
+								>
 									<div className={classes.flexWrapper}>
 										<img
 											src={area}
@@ -167,7 +170,7 @@ const PropertyCard = ({ data, showStatus = false }) => {
 											1
 										</span>
 									</div>
-								</div>
+								</Box>
 							</>
 						)}
 					</div>
