@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: '32px',
 		boxShadow: '12px 12px 21px #bebebe,-12px -12px 21px #ffffff',
 		boxSizing: 'border-box',
+		height: '100%',
 	},
 	developerName: {
 		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundPosition: 'center',
 		height: '15rem',
 		width: '100%',
+		// height: '100%',
 		borderRadius: 40,
 	}),
 	featureWrapper: {
@@ -72,6 +74,8 @@ const useStyles = makeStyles((theme) => ({
 	description: {
 		fontSize: '0.9rem',
 		lineHeight: 1.4,
+		height: 100,
+		overflow: 'auto',
 	},
 	overlay: {
 		position: 'absolute',

@@ -34,24 +34,19 @@ router
 		builderController.addBuilder
 	);
 
-// router
-// 	.route('/upload')
-// 	/**
-// 	 * @api {patch} / Upload Images
-// 	 * @apiName Upload builder images
-// 	 * @apiPermission all
-// 	 *
-// 	 * @apiParam  {File} [logo] logo of the builder
-// 	 * @apiParam  {Array<File>} [images] builder images
-// 	 * @apiParam  {String} [id] builder id
-
-// 	 *
-// 	 * @apiSuccess (200) {Object}
-// 	 */
-// 	.patch(
-// 		uploadController.uploadBuilderPhoto,
-// 		uploadController.resizeTourImages,
-// 		builderController.uploadImages
-// 	);
+router
+	.route('/handle-images/:id')
+	.patch(
+		adminController.protect,
+		uploadController.uploadBuilderPhoto,
+		builderController.handleImages
+	);
+router
+	.route('/remove-photo/:id')
+	.patch(adminController.protect, builderController.removePhoto);
+router
+	.route('/:id')
+	.get(adminController.protect, builderController.getBuilderDetails)
+	.patch(adminController.protect, builderController.updateBuilder);
 
 module.exports = router;

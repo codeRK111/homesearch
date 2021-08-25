@@ -10,7 +10,11 @@ import DateFnsUtils from '@date-io/date-fns';
 import React from 'react';
 import useStyles from './formik.styles';
 
-const RowSelect = ({ formLabel, ...otherProps }) => {
+const FormikFilledDatePicker = ({
+	formLabel,
+	disablePast = true,
+	...otherProps
+}) => {
 	const classes = useStyles();
 	return (
 		<Box p="0.5rem">
@@ -19,7 +23,7 @@ const RowSelect = ({ formLabel, ...otherProps }) => {
 				<MuiPickersUtilsProvider utils={DateFnsUtils} fullWidth>
 					<KeyboardDatePicker
 						fullWidth
-						disablePast
+						disablePast={disablePast}
 						id="date-picker-dialog"
 						format="MM/dd/yyyy"
 						KeyboardButtonProps={{
@@ -38,4 +42,4 @@ const RowSelect = ({ formLabel, ...otherProps }) => {
 	);
 };
 
-export default RowSelect;
+export default FormikFilledDatePicker;

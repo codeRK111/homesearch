@@ -26,7 +26,7 @@ import DeleteCityPage from './pages/deleteCity/deleteCity.component';
 import DeleteLocationPage from './pages/deleteLocation/deleteLocation.component';
 import Drawer from './components/drawer/drawer.component';
 import EditAdmin from './components/editAdmin/editAdmin.component';
-import EditBuilderPage from './pages/editBuilder/editBuilder.component';
+import EditBuilderPage from './pages/editBuilder/v2';
 import EditCityPage from './pages/editCity/editCity.component';
 import EditExpertQuery from './pages/queries/expertQueriesEdit.component';
 import EditLocationPage from './pages/editLocation/editLocation.component';
@@ -550,14 +550,10 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 				<Route
 					exact
 					path="/edit-builder/:id"
-					render={() => (
+					render={(props) => (
 						<Protected
-							component={HOC(EditBuilderPageWithDrawer, [
-								{
-									type: 'builderActions',
-									value: 'update',
-								},
-							])}
+							component={EditBuilderPageWithDrawer}
+							{...props}
 						/>
 					)}
 				/>

@@ -4,11 +4,13 @@ import React from 'react';
 import city from '../../../assets/city.jpg';
 import { logo } from '../../../utils/statc';
 import moment from 'moment';
+import { shortLength } from '../../../utils/render.utils';
 import useStyles from './builderCard.style';
 
 const PropertyCard = ({ data }) => {
 	const classes = useStyles({ img: city });
 	const m = moment(data.operatingSince);
+	const builderLogo = data.logo ? `/assets/builders/${data.logo}` : logo;
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.featureWrapper}>
@@ -20,7 +22,7 @@ const PropertyCard = ({ data }) => {
 					<Grid item xs={4}>
 						<Avatar
 							// src={`/assets/builders/${data.logo}`}
-							src={logo}
+							src={builderLogo}
 							alt="Builder Logo"
 							style={{ height: 80, width: 80 }}
 						/>
@@ -51,26 +53,22 @@ const PropertyCard = ({ data }) => {
 					<Grid item xs={12}>
 						<Box mt="1rem">
 							<p className={classes.description}>
-								{/* {data.description} */}
-								Lorem ipsum dolor, sit amet consectetur
-								adipisicing elit. Libero consequuntur fugit
-								optio corrupti quam dolor reiciendis illum, sed
-								doloribus veniam? Pariatur nobis recusandae quam
-								possimus deleniti maxime cum molestiae
-								reiciendis?
+								{shortLength(data.description, 100)}
 							</p>
 						</Box>
 					</Grid>
 				</Grid>
 			</div>
 
-			<div className={classes.imageWrapper}>
-				<div className={classes.overlay}>
-					<div className={classes.textWrapper}>
-						<span>{data.developerName}</span>
-						<span className={classes.smallText}>
-							{data.officeAddress}
-						</span>
+			<div>
+				<div className={classes.imageWrapper}>
+					<div className={classes.overlay}>
+						<div className={classes.textWrapper}>
+							<span>{data.developerName}</span>
+							<span className={classes.smallText}>
+								{data.officeAddress}
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>

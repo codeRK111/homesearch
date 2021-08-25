@@ -21,9 +21,7 @@ const PaymentPage = lazy(() =>
 );
 
 const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
-const PackagePage = lazy(() =>
-	import('./pages/v2/PlanPage/planPage.component')
-);
+
 const HomePageNew = lazy(() => import('./pages/v2/homePage/home.page'));
 const SearchPageNew = lazy(() => import('./pages/v2/searchPage/search.page'));
 const PropertyDetailsPageNew = lazy(() =>
@@ -126,11 +124,11 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 						path="/v2/post-property"
 						render={(props) => <PostPropertyPageNew {...props} />}
 					/>
-					<Route
+					{/* <Route
 						exact
 						path="/packages/:id"
 						render={(props) => <PackagePage {...props} />}
-					/>
+					/> */}
 					<Route
 						exact
 						path="/profile"
