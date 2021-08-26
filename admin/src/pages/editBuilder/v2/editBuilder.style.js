@@ -71,7 +71,28 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		border: `1px solid ${theme.palette.primary.dark}`,
+		border: `1px dotted ${theme.palette.primary.dark}`,
+	},
+	addDirectorWrapper: {
+		width: '100%',
+		height: '100%',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		border: `1px dotted ${theme.palette.primary.dark}`,
+	},
+	directorWrapper: {
+		width: '100%',
+		boxSizing: 'border-box',
+	},
+	directorImageWrapper: {
+		width: '100%',
+		height: 150,
+		position: 'relative',
+	},
+	uploadIcon: {
+		fontSize: '2rem',
+		color: theme.palette.primary.contrastText,
 	},
 }));
 export default useStyles;

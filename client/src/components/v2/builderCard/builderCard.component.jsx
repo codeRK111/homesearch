@@ -8,13 +8,26 @@ import { shortLength } from '../../../utils/render.utils';
 import useStyles from './builderCard.style';
 
 const PropertyCard = ({ data }) => {
-	const classes = useStyles({ img: city });
+	let img = '';
+	if (data.photos.length === 0) {
+		img = city;
+	} else {
+		const primaryPhoto = data.photos.find((c) => c.primary);
+		if (primaryPhoto) {
+			img = `/assets/builders/${primaryPhoto.image}`;
+		} else {
+			const photo = data.photos.find((c) => c.image);
+			img = photo ? `/assets/builders/${photo.image}` : city;
+		}
+	}
+
+	const classes = useStyles({ img });
 	const m = moment(data.operatingSince);
 	const builderLogo = data.logo ? `/assets/builders/${data.logo}` : logo;
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.featureWrapper}>
-				<div className={classes.feature}>Feature</div>
+				{/* <div className={classes.feature}>Feature</div> */}
 			</div>
 
 			<div className={classes.logoWrapper}>
@@ -42,7 +55,9 @@ const PropertyCard = ({ data }) => {
 									</span>
 								</div>
 								<Box ml="1rem">
-									<span className={classes.value}>1</span>
+									<span className={classes.value}>
+										{data.totalProjects}
+									</span>
 									<span className={classes.text}>
 										Projects
 									</span>
@@ -53,7 +68,7 @@ const PropertyCard = ({ data }) => {
 					<Grid item xs={12}>
 						<Box mt="1rem">
 							<p className={classes.description}>
-								{shortLength(data.description, 100)}
+								{shortLength(data.description, 200)}
 							</p>
 						</Box>
 					</Grid>

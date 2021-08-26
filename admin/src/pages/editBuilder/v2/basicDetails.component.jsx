@@ -110,6 +110,13 @@ const UpdateBuilderBasicDetails = ({
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<FTextField
+									formLabel="Company Name"
+									label="Company Name"
+									name="companyName"
+								/>
+							</Grid>
+							<Grid item xs={12} md={6}>
+								<FTextField
 									formLabel="Contact Number"
 									label="Contact Number"
 									name="phoneNumber"
@@ -120,6 +127,20 @@ const UpdateBuilderBasicDetails = ({
 									formLabel="Contact email"
 									label="Contact email"
 									name="email"
+								/>
+							</Grid>
+							<Grid item xs={12} md={6}>
+								<FTextField
+									formLabel="CIN Number"
+									label="CIN Number"
+									name="cin"
+								/>
+							</Grid>
+							<Grid item xs={12} md={6}>
+								<FTextField
+									formLabel="RERA ID"
+									label="RERA ID"
+									name="rera"
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -143,7 +164,7 @@ const UpdateBuilderBasicDetails = ({
 									name="completedProjects"
 								/>
 							</Grid>
-							<Grid item xs={12}>
+							<Grid item xs={12} md={6}>
 								<FormikFilledDatePicker
 									disablePast={false}
 									formLabel={'Operating Since'}
@@ -156,9 +177,18 @@ const UpdateBuilderBasicDetails = ({
 							</Grid>
 							<Grid item xs={12}>
 								<FTextField
-									formLabel="Office Address"
-									label="Office Address"
+									formLabel="Registered Office Address"
+									label="Registered Office Address"
 									name="officeAddress"
+									multiline={true}
+									rows={3}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<FTextField
+									formLabel="Corporate Office Address"
+									label="Corporate Office Address"
+									name="corporateOfficeAddress"
 									multiline={true}
 									rows={3}
 								/>

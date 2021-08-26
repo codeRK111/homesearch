@@ -1,3 +1,4 @@
+import { Link, withRouter } from 'react-router-dom';
 import {
 	selectFetchBuildersLoading as fetchBuildersLoading,
 	selectBuilders,
@@ -6,7 +7,6 @@ import {
 import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
 import CustomSelect from './selectBuilder.component';
-import { Link } from 'react-router-dom';
 import React from 'react';
 import RenderByAccess from '../roleRender/roleRender.component';
 import Table from '@material-ui/core/Table';
@@ -20,7 +20,6 @@ import { createStructuredSelector } from 'reselect';
 import { fetchBuilders } from '../../redux/builder/builder.action';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
-import { withRouter } from 'react-router-dom';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -208,7 +207,7 @@ function Orders({
 								Developer Name
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
-								Description
+								Company Name
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
 								Number
@@ -235,7 +234,7 @@ function Orders({
 							<TableRow key={i}>
 								<TableCell>{i + 1}</TableCell>
 								<TableCell>{c.developerName}</TableCell>
-								<TableCell>{c.description}</TableCell>
+								<TableCell>{c.companyName}</TableCell>
 								<TableCell>{c.phoneNumber}</TableCell>
 								<TableCell>{c.email}</TableCell>
 

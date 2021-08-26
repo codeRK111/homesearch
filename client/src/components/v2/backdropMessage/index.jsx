@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function SimpleBackdrop({ open, message }) {
+export default function ErrorBackdrop({ open, message }) {
 	const classes = useStyles();
 
 	return (

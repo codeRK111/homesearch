@@ -9,6 +9,10 @@ const builderSchema = new Schema(
 			type: String,
 			required: [true, 'A developerName must be required'],
 		},
+		companyName: {
+			type: String,
+			required: [true, 'A companyName must be required'],
+		},
 		description: {
 			type: String,
 			required: [true, 'A description must be required'],
@@ -16,6 +20,18 @@ const builderSchema = new Schema(
 		officeAddress: {
 			type: String,
 			required: [true, 'A officeAddress must be required'],
+		},
+		corporateOfficeAddress: {
+			type: String,
+			required: [true, 'A corporateOfficeAddress must be required'],
+		},
+		cin: {
+			type: String,
+			required: [true, 'A cin number must be required'],
+		},
+		rera: {
+			type: String,
+			required: [true, 'A rera ID must be required'],
 		},
 		phoneNumber: {
 			type: String,
@@ -77,9 +93,27 @@ const builderSchema = new Schema(
 			type: String,
 			default: null,
 		},
+		teamPhoto: {
+			type: String,
+			default: null,
+		},
 		photos: [
 			{
 				image: {
+					type: String,
+				},
+				primary: {
+					type: Boolean,
+					default: false,
+				},
+			},
+		],
+		directors: [
+			{
+				image: {
+					type: String,
+				},
+				name: {
 					type: String,
 				},
 			},

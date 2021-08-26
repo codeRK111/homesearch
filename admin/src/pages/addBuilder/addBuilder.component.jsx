@@ -6,35 +6,36 @@ import {
 	Grid,
 	Paper,
 } from '@material-ui/core';
-import Backdrop from '@material-ui/core/Backdrop';
-import { makeStyles } from '@material-ui/core/styles';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { createStructuredSelector } from 'reselect';
-import ProgressBar from '../../components/asyncProgressBar/asyncProgressBar.component';
-import FormHeader from '../../components/formHeader/formHeader.component';
-import RenderByRole from '../../components/roleRender/renderByRole.component';
-import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
-import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
-import RowSelect from '../../components/rowSelect/rowSelect.component';
-import RowTextField from '../../components/rowTextField/rowTextField.component';
-import { selectAddBuilderLoading as addBuilderLoading } from '../../redux/builder/builder.selector';
+import {
+	selectCityLoading as cityLoading,
+	selectAllStates,
+	selectLoading as stateLoading,
+} from '../../redux/city/city.selector';
 import {
 	fetchAllStatesStart,
 	fetchCitiesStart as fetchCities,
 } from '../../redux/city/city.actions';
-import {
-	selectAllStates,
-	selectCityLoading as cityLoading,
-	selectLoading as stateLoading,
-} from '../../redux/city/city.selector';
-import { setSnackbar } from '../../redux/ui/ui.actions';
-import { selectCurrentUser } from '../../redux/user/user.selector';
+
+import Backdrop from '@material-ui/core/Backdrop';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import FormHeader from '../../components/formHeader/formHeader.component';
+import ProgressBar from '../../components/asyncProgressBar/asyncProgressBar.component';
+import PropTypes from 'prop-types';
+import React from 'react';
+import RenderByRole from '../../components/roleRender/renderByRole.component';
+import RowDatePicker from '../../components/rowDatePicker/rowDatePicker.component';
+import RowHOC from '../../components/rowCheckBox/rowCheckbox.component';
+import RowSelect from '../../components/rowSelect/rowSelect.component';
+import RowTextField from '../../components/rowTextField/rowTextField.component';
+import { selectAddBuilderLoading as addBuilderLoading } from '../../redux/builder/builder.selector';
 import { apiUrl } from '../../utils/render.utils';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
+import { selectCurrentUser } from '../../redux/user/user.selector';
+import { setSnackbar } from '../../redux/ui/ui.actions';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -77,6 +78,7 @@ const PropertySale = ({
 	const [progress, setProgress] = React.useState(0);
 	const [property, setProperty] = React.useState({
 		developerName: '',
+		companyName: '',
 		description: '',
 		phoneNumber: '',
 		email: '',
@@ -84,12 +86,27 @@ const PropertySale = ({
 		state: '',
 		cities: [],
 		officeAddress: '',
+		corporateOfficeAddress: '',
+		cin: '',
+		rera: '',
+		teamPhoto: '',
 		totalProjects: '',
 		underConstructionProjects: '',
 		completedProjects: '',
 	});
 
 	const [photos, setPhotos] = React.useState([]);
+	const [directors, setDirectors] = React.useState([]);
+	const [thumbnailIndex, setThumbnailIndex] = React.useState(0);
+
+	const handleChangePrimary = (index) => (e) => {
+		const { checked } = e.target;
+		if (checked) {
+			setThumbnailIndex(index);
+		} else {
+			setThumbnailIndex(0);
+		}
+	};
 
 	const addMore = () => {
 		setPhotos([
@@ -100,6 +117,16 @@ const PropertySale = ({
 			},
 		]);
 	};
+	const addMoreDirectors = () => {
+		setDirectors([
+			...directors,
+			{
+				id: directors.length + 1,
+				image: null,
+				name: '',
+			},
+		]);
+	};
 	const handleImage = (img) => (e) => {
 		const { name, files } = e.target;
 		console.log({ name });
@@ -107,6 +134,28 @@ const PropertySale = ({
 			prevState.map((c) => {
 				if (c.id === img.id) {
 					c.image = files[0];
+				}
+				return c;
+			})
+		);
+	};
+	const handleImageDirectorPhoto = (img) => (e) => {
+		const { files } = e.target;
+		setDirectors((prevState) =>
+			prevState.map((c) => {
+				if (c.id === img.id) {
+					c.image = files[0];
+				}
+				return c;
+			})
+		);
+	};
+	const handleImageDirectorName = (img) => (e) => {
+		const { value } = e.target;
+		setDirectors((prevState) =>
+			prevState.map((c) => {
+				if (c.id === img.id) {
+					c.name = value;
 				}
 				return c;
 			})
@@ -143,9 +192,15 @@ const PropertySale = ({
 		const propertyImages = photos
 			.filter((c) => !!c.image)
 			.map((b) => b.image);
+		const directorImages = directors.filter((c) => !!c.image);
 		propertyImages.forEach((c) => {
 			formData.append('photos', c);
 		});
+		directorImages.forEach((c) => {
+			formData.append('directors', c.image);
+			formData.append('directorNames', c.name);
+		});
+		formData.append('thumbnailIndex', thumbnailIndex);
 		setLoading(true);
 		axios
 			.post(apiUrl(`/builder`, 'v2'), formData, {
@@ -372,6 +427,12 @@ const PropertySale = ({
 						label="Enter developer Name"
 					/>
 					<RowTextField
+						heading="Company Name"
+						name="companyName"
+						onChange={handleChange}
+						label="Enter company Name"
+					/>
+					<RowTextField
 						heading="Description"
 						name="description"
 						label="Enter Description"
@@ -391,6 +452,19 @@ const PropertySale = ({
 						onChange={handleChange}
 						label="Enter email"
 					/>
+					<RowTextField
+						heading="CIN Number"
+						name="cin"
+						onChange={handleChange}
+						label="Enter CIN Number"
+					/>
+					<RowTextField
+						heading="RERA ID"
+						name="rera"
+						onChange={handleChange}
+						label="Enter RERA ID"
+					/>
+
 					{/* <StateNode />
 					<CityNode /> */}
 					<RowSelect
@@ -429,8 +503,16 @@ const PropertySale = ({
 					</RowHOC>
 					{}
 					<RowTextField
-						heading="Office Address"
+						heading="Registered Office Address"
 						name="officeAddress"
+						label="Enter Office Address"
+						onChange={handleChange}
+						multiline={true}
+						rows={6}
+					/>
+					<RowTextField
+						heading="Corporate Office Address"
+						name="corporateOfficeAddress"
 						label="Enter Office Address"
 						onChange={handleChange}
 						multiline={true}
@@ -517,6 +599,56 @@ const PropertySale = ({
 							</label>
 						</Box>
 					</RowHOC>
+					<RowHOC heading="Team Photo">
+						<Box
+							display="flex"
+							flexDirection="column"
+							justifyContent="center"
+							alignItems="center"
+						>
+							{/* <p>{values[`image${c}`]}</p> */}
+							<div className="image-wrapper">
+								<img
+									src={
+										!property['teamPhoto']
+											? require('../../assets/no-image.jpg')
+											: URL.createObjectURL(
+													property['teamPhoto']
+											  )
+									}
+									alt=""
+									srcset=""
+									className="image"
+								/>
+							</div>
+							<input
+								accept="image/*"
+								className="input"
+								id="contained-button-file-teamPhoto"
+								multiple
+								type="file"
+								onChange={(event) => {
+									setProperty((prevState) => ({
+										...prevState,
+										teamPhoto: event.currentTarget.files[0],
+									}));
+								}}
+							/>
+
+							<label htmlFor="contained-button-file-teamPhoto">
+								<Button
+									variant="contained"
+									color="default"
+									component="span"
+									startIcon={<CloudUploadIcon />}
+									size="small"
+									fullWidth
+								>
+									Upload
+								</Button>
+							</label>
+						</Box>
+					</RowHOC>
 					<Box mt="1rem" mb="1rem">
 						<Grid item xs={12}>
 							Images
@@ -552,11 +684,75 @@ const PropertySale = ({
 									>
 										Upload
 									</label>
+									<br />
+									<FormControlLabel
+										control={
+											<Checkbox
+												checked={i === thumbnailIndex}
+												onChange={handleChangePrimary(
+													i
+												)}
+												name="checkedA"
+											/>
+										}
+										label="Front Image / Thumbnail"
+									/>
 								</Grid>
 							))}
 						</Grid>
 						<Box mt="2rem">
-							<button onClick={addMore}>Add More Image</button>
+							<button onClick={addMore}>Add Image Block</button>
+						</Box>
+					</Box>
+					<Box mt="1rem" mb="1rem">
+						<Grid item xs={12}>
+							Directors
+						</Grid>
+					</Box>
+					<Box p="0.8rem">
+						<Grid container spacing={3}>
+							{directors.map((c, i) => (
+								<Grid key={c.id} item xs={6} lg={3}>
+									<Box className={classes.imageWrapper}>
+										<img
+											src={
+												c.image
+													? URL.createObjectURL(
+															c.image
+													  )
+													: require('../../assets/no-image.jpg')
+											}
+											alt="project"
+											srcset=""
+											className={classes.image}
+										/>
+									</Box>
+									<input
+										type="file"
+										onChange={handleImageDirectorPhoto(c)}
+										id={`director-image-${c.id}`}
+										className={classes.input}
+									/>
+									<label
+										htmlFor={`director-image-${c.id}`}
+										className={classes.label}
+									>
+										Upload
+									</label>
+									<br />
+									<input
+										type="text"
+										value={c.name}
+										onChange={handleImageDirectorName(c)}
+										placeholder="Name"
+									/>
+								</Grid>
+							))}
+						</Grid>
+						<Box mt="2rem">
+							<button onClick={addMoreDirectors}>
+								Add Director Block
+							</button>
 						</Box>
 					</Box>
 					<Box mt="1rem">

@@ -42,8 +42,28 @@ router
 		builderController.handleImages
 	);
 router
+	.route('/director/:id')
+	.post(
+		adminController.protect,
+		uploadController.uploadDirector,
+		builderController.addDirector
+	)
+	.patch(
+		adminController.protect,
+		uploadController.uploadDirector,
+		builderController.updateDirector
+	);
+router
+	.route('/manage-primary-photo/:id')
+	.patch(adminController.protect, builderController.managePrimary);
+router
+	.route('/remove-director/:builderId/:directorId')
+	.delete(adminController.protect, builderController.removeDirector);
+
+router
 	.route('/remove-photo/:id')
 	.patch(adminController.protect, builderController.removePhoto);
+router.route('/slug/:slug').get(builderController.getBuilderDetailsBySlug);
 router
 	.route('/:id')
 	.get(adminController.protect, builderController.getBuilderDetails)

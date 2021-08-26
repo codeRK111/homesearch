@@ -23,6 +23,7 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 	const gClasses = useGlovalStyles();
 	const history = useHistory();
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	// const [checked, setChecked] = React.useState(false);
 	const [openDrawer, setOpenDrawer] = React.useState(false);
 
 	const handleClick = (event) => {
@@ -55,90 +56,98 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 	};
 
 	return (
-		<AppBar color={'transparent'} position={'fixed'} elevation={0}>
-			<Drawer open={openDrawer} handleClose={handleCloseDrawer} />
-			<Box className={classes.wrapper}>
-				<div className={classes.logoWrapper}>
-					<img src={logoIcon} alt="" className={classes.logo} />
-					<span className={classes.logoTitle}>
-						HOMESEARCH<span>18</span>.COM
-					</span>
-				</div>
-				<div className={classes.rightSide}>
-					<div
-						className={clsx(classes.listButton, gClasses.smHide)}
-						onClick={redirectToPostPage}
-					>
-						List Property & Projects
+		<>
+			<AppBar color={'transparent'} position={'fixed'} elevation={0}>
+				{/* {<SimpleGrow checked={checked}  />} */}
+				<Drawer open={openDrawer} handleClose={handleCloseDrawer} />
+				<Box className={classes.wrapper}>
+					<div className={classes.logoWrapper}>
+						<img src={logoIcon} alt="" className={classes.logo} />
+						<span className={classes.logoTitle}>
+							HOMESEARCH<span>18</span>.COM
+						</span>
 					</div>
-					<IconButton
-						className={classes.smMenu}
-						size="small"
-						onClick={handleClickOpenDrawer}
-					>
-						<MenuIcon />
-					</IconButton>
-
-					{!!isAuthenticated ? (
-						<div>
-							<Box
-								className={clsx(
-									classes.profileWrapper,
-									gClasses.smHide
-								)}
-								aria-controls="customized-menu"
-								aria-haspopup="true"
-								onClick={handleClick}
-							>
-								<img
-									src={
-										user.photo
-											? `/profile/${user.photo}`
-											: profile
-									}
-									alt="Profile"
-									className={gClasses.smHide}
-								/>
-							</Box>
-							<Menu
-								id="customized-menu"
-								getContentAnchorEl={null}
-								anchorEl={anchorEl}
-								keepMounted
-								open={Boolean(anchorEl)}
-								onClose={handleClose}
-								anchorOrigin={{
-									vertical: 'bottom',
-									horizontal: 'center',
-								}}
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'center',
-								}}
-							>
-								<MenuItem onClick={goToProfile}>
-									Profile
-								</MenuItem>
-
-								<MenuItem onClick={onLogOut}>Logout</MenuItem>
-							</Menu>
+					<div className={classes.rightSide}>
+						<div
+							className={clsx(
+								classes.listButton,
+								gClasses.smHide
+							)}
+							onClick={redirectToPostPage}
+						>
+							List Property & Projects
 						</div>
-					) : (
-						<Box ml="1rem">
-							<div
-								className={clsx(
-									classes.listButton,
-									gClasses.smHide
-								)}
-								onClick={redirectToLogIn}
-							>
-								Sign In
+						<IconButton
+							className={classes.smMenu}
+							size="small"
+							onClick={handleClickOpenDrawer}
+						>
+							<MenuIcon />
+						</IconButton>
+
+						{!!isAuthenticated ? (
+							<div>
+								<Box
+									className={clsx(
+										classes.profileWrapper,
+										gClasses.smHide
+									)}
+									aria-controls="customized-menu"
+									aria-haspopup="true"
+									onClick={handleClick}
+								>
+									<img
+										src={
+											user.photo
+												? `/profile/${user.photo}`
+												: profile
+										}
+										alt="Profile"
+										className={gClasses.smHide}
+									/>
+								</Box>
+								<Menu
+									id="customized-menu"
+									getContentAnchorEl={null}
+									anchorEl={anchorEl}
+									keepMounted
+									open={Boolean(anchorEl)}
+									onClose={handleClose}
+									anchorOrigin={{
+										vertical: 'bottom',
+										horizontal: 'center',
+									}}
+									transformOrigin={{
+										vertical: 'top',
+										horizontal: 'center',
+									}}
+								>
+									<MenuItem onClick={goToProfile}>
+										Profile
+									</MenuItem>
+
+									<MenuItem onClick={onLogOut}>
+										Logout
+									</MenuItem>
+								</Menu>
 							</div>
-						</Box>
-					)}
-				</div>
-			</Box>
-		</AppBar>
+						) : (
+							<Box ml="1rem">
+								<div
+									className={clsx(
+										classes.listButton,
+										gClasses.smHide
+									)}
+									onClick={redirectToLogIn}
+								>
+									Sign In
+								</div>
+							</Box>
+						)}
+					</div>
+				</Box>
+			</AppBar>
+		</>
 	);
 };
 

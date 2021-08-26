@@ -7,6 +7,14 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 
+const getName = (source, index) => {
+	if (typeof source === 'object') {
+		return source[index];
+	} else {
+		return index == 0 ? source : '';
+	}
+};
+
 exports.addBuilder = catchAsync(async (req, res, next) => {
 	const removeFieldArray = [
 		'logo',
@@ -37,9 +45,23 @@ exports.addBuilder = catchAsync(async (req, res, next) => {
 	if (req.files['logo']) {
 		clone.logo = req.files['logo'][0].filename;
 	}
-	if (req.files['photos']) {
-		clone.photos = req.files['photos'].map((c) => ({ image: c.filename }));
+	if (req.files['teamPhoto']) {
+		clone.teamPhoto = req.files['teamPhoto'][0].filename;
 	}
+	if (req.files['photos']) {
+		clone.photos = req.files['photos'].map((c, i) => ({
+			image: c.filename,
+			primary: i == req.body.thumbnailIndex ? true : false,
+		}));
+	}
+	if (req.files['directors']) {
+		clone.directors = req.files['directors'].map((c, i) => ({
+			image: c.filename,
+			name: getName(req.body.directorNames, i),
+		}));
+	}
+
+	console.log(clone);
 	const builder = await Builder.create(clone);
 
 	res.status(200).json({
@@ -82,6 +104,22 @@ exports.getBuilderDetails = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+exports.getBuilderDetailsBySlug = catchAsync(async (req, res, next) => {
+	const builder = await Builder.findOne({
+		slug: req.params.slug,
+		status: 'active',
+	});
+	if (!builder) {
+		return next(new AppError('Builder not found', 404));
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			builder,
+		},
+	});
+});
 exports.handleImages = catchAsync(async (req, res, next) => {
 	const builder = await Builder.findById(req.params.id);
 	if (!builder) {
@@ -99,6 +137,16 @@ exports.handleImages = catchAsync(async (req, res, next) => {
 			);
 		}
 		updateData.logo = req.files['logo'][0].filename;
+	}
+	if (req.files && req.files['teamPhoto']) {
+		if (builder.teamPhoto) {
+			fs.unlink(
+				path.join(__dirname, '../', 'images', 'builder_images/') +
+					builder.teamPhoto,
+				function (err) {}
+			);
+		}
+		updateData.teamPhoto = req.files['teamPhoto'][0].filename;
 	}
 
 	if (req.files && req.files['photos'] && req.files['photos'].length > 0) {
@@ -163,6 +211,128 @@ exports.removePhoto = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			builder,
+		},
+	});
+});
+
+exports.addDirector = catchAsync(async (req, res, next) => {
+	const data = {
+		image: req.file ? req.file.filename : '',
+		name: req.body.name,
+	};
+
+	const builder = await Builder.findByIdAndUpdate(
+		req.params.id,
+		{
+			$push: {
+				directors: data,
+			},
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			builder,
+		},
+	});
+});
+exports.updateDirector = catchAsync(async (req, res, next) => {
+	if (!req.body.id) {
+		return next(new AppError('Director not found', 404));
+	}
+	const data = {};
+
+	if (req.file) {
+		data['directors.$.image'] = req.file.filename;
+	}
+	if (req.body.name) {
+		data['directors.$.name'] = req.body.name;
+	}
+
+	const builder = await Builder.findOneAndUpdate(
+		{ _id: req.params.id, 'directors._id': req.body.id },
+		{
+			$set: data,
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			builder,
+		},
+	});
+});
+exports.removeDirector = catchAsync(async (req, res, next) => {
+	const builder = await Builder.findOneAndUpdate(
+		{ _id: req.params.builderId },
+		{
+			$pull: {
+				directors: { _id: req.params.directorId },
+			},
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			builder,
+		},
+	});
+});
+exports.managePrimary = catchAsync(async (req, res, next) => {
+	const builder = await Builder.findById(req.params.id);
+	if (!builder) {
+		return next(new AppError('Builder Not Found', 404));
+	}
+
+	console.log(builder.photos);
+
+	if (!builder.photos.find((c) => c._id != req.body._id)) {
+		return next(new AppError('Photo Not Found', 404));
+	}
+
+	const originalPhotos = builder.photos;
+	const newPhotos = originalPhotos.map((c) => {
+		if (c._id == req.body._id) {
+			c.primary = req.body.checked;
+		} else {
+			c.primary = false;
+		}
+
+		return c;
+	});
+
+	console.log(newPhotos);
+
+	const newBuilder = await Builder.findOneAndUpdate(
+		{ _id: req.params.id },
+		{
+			photos: newPhotos,
+		},
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			builder: newBuilder,
 		},
 	});
 });

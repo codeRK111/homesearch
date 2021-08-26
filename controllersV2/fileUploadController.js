@@ -143,8 +143,11 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
 
 exports.uploadBuilderPhoto = builder.fields([
 	{ name: 'logo', maxCount: 1 },
+	{ name: 'teamPhoto', maxCount: 1 },
 	{ name: 'photos', maxCount: 30 },
+	{ name: 'directors', maxCount: 30 },
 ]);
+exports.uploadDirector = builder.single('image');
 exports.uploadPropertiesPhoto = properties.array('images');
 exports.uploadProjectPhotosV2 = projects.fields([
 	{ name: 'thumbnailImage', maxCount: 1 },

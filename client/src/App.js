@@ -23,6 +23,7 @@ const PaymentPage = lazy(() =>
 const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
 
 const HomePageNew = lazy(() => import('./pages/v2/homePage/home.page'));
+const BuilderPage = lazy(() => import('./pages/v2/builderPage'));
 const SearchPageNew = lazy(() => import('./pages/v2/searchPage/search.page'));
 const PropertyDetailsPageNew = lazy(() =>
 	import('./pages/v2/propertyDetails/propertyDetails.page')
@@ -63,7 +64,9 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 
 	useEffect(() => {
 		return () => {
-			source.current.cancel('Component got unmounted');
+			if (source.current) {
+				source.current.cancel('Component got unmounted');
+			}
 		};
 	}, [source]);
 
@@ -148,6 +151,11 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 						render={(props) => (
 							<ProjectPropertyDetailsPage {...props} />
 						)}
+					/>
+					<Route
+						exact
+						path="/:slug"
+						render={(props) => <BuilderPage {...props} />}
 					/>
 
 					<Route
