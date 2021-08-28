@@ -5,7 +5,6 @@ const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const morgan = require('morgan');
-const timeout = require('connect-timeout');
 const compression = require('compression');
 const globalErrorHandler = require('./controllers/errorController');
 const adminUserRoute = require('./routes/adminUsersRoute');
@@ -20,12 +19,7 @@ const projectRoute = require('./routes/projectRoute');
 const kraRoute = require('./routes/kraRoute');
 const kpiRoute = require('./routes/kpiRoute');
 const pageRoute = require('./routes/pageRoute');
-const v2PropertyRoute = require('./routesV2/propertyRoute');
-const v2SavePropertyRoute = require('./routesV2/savePropertyRoute');
-const v2LikePropertyRoute = require('./routesV2/likePropertyRoute');
-const v2PageRoute = require('./routesV2/pageRoute');
-const v2ProjectRoute = require('./routesV2/projectRoute');
-const v2UserRoute = require('./routesV2/userRoute');
+
 const queryRoute = require('./routes/propertyQueryRoute');
 const whatsappQueryRoute = require('./routes/whatsappQueryRoute');
 const propertyReviewRoute = require('./routes/propertyReviewRoute');
@@ -42,6 +36,14 @@ const basicAuth = require('express-basic-auth');
 const builderRouteV2 = require('./routesV2/builderRoute');
 const utilityRouteV2 = require('./routesV2/packageRoute');
 const queryRouteV2 = require('./routesV2/queryRoute');
+const v2PropertyRoute = require('./routesV2/propertyRoute');
+const v2SavePropertyRoute = require('./routesV2/savePropertyRoute');
+const v2LikePropertyRoute = require('./routesV2/likePropertyRoute');
+const v2PageRoute = require('./routesV2/pageRoute');
+const v2ProjectRoute = require('./routesV2/projectRoute');
+const v2UserRoute = require('./routesV2/userRoute');
+const v2AdminRoute = require('./routesV2/adminRoute');
+const v2CityRoute = require('./routesV2/cityRoute');
 
 const app = express();
 
@@ -122,6 +124,10 @@ app.use(
 	express.static(path.join(__dirname, 'images', 'builder_images'))
 );
 app.use(
+	'/assets/cities',
+	express.static(path.join(__dirname, 'images', 'city_images'))
+);
+app.use(
 	'/assets/projects',
 	express.static(path.join(__dirname, 'images', 'project_images'))
 );
@@ -178,6 +184,8 @@ app.use('/api/v2/page', v2PageRoute);
 app.use('/api/v2/query', queryRouteV2);
 app.use('/api/v2/project', v2ProjectRoute);
 app.use('/api/v2/user', v2UserRoute);
+app.use('/api/v2/admin', v2AdminRoute);
+app.use('/api/v2/city', v2CityRoute);
 
 app.all('/api/*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));

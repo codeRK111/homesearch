@@ -16,7 +16,7 @@ import AddPropertyAdvertisement from './pages/propertyAdvertisement/AddStaff.pag
 import AddPropertyForSale from './pages/addPropertyForSale/addPropertyWrapper.component';
 import AddStaff from './pages/projectAdvertisement/AddStaff.page';
 import AddUser from './components/addUser/addUser.component';
-import AdminPage from './pages/admins/admins.component';
+import AdminPage from './pages/adminsPage';
 import AgentQueryPage from './pages/agentQueries';
 import Authentication from './pages/authpage/authentication.component';
 import BuilderPackage from './pages/builderPackage/builderPackage.page';
@@ -24,6 +24,7 @@ import BuilderPage from './pages/builders/builders.component';
 import DashboardPage from './pages/dashboard/dashboatd.component';
 import DeleteCityPage from './pages/deleteCity/deleteCity.component';
 import DeleteLocationPage from './pages/deleteLocation/deleteLocation.component';
+import DigitalMarketingPage from './pages/digitalMarketingWorkspace';
 import Drawer from './components/drawer/drawer.component';
 import EditAdmin from './components/editAdmin/editAdmin.component';
 import EditBuilderPage from './pages/editBuilder/v2';
@@ -77,6 +78,7 @@ import { withLoader } from './hoc/withLoader';
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const AgentQueryPageWithDrawer = Drawer(AgentQueryPage);
+const DigitalMarketingPageWithDrawer = Drawer(DigitalMarketingPage);
 const ManageTaskPropertyPageWithDrawer = Drawer(ManageTaskProperty);
 
 const ProjectSpecialitiesPageWithDrawer = Drawer(ProjectSpecialitiesPage);
@@ -173,6 +175,16 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 					render={() => (
 						<Protected
 							component={DashboardPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/digital-marketing"
+					render={() => (
+						<Protected
+							component={DigitalMarketingPageWithDrawer}
 							{...props}
 						/>
 					)}

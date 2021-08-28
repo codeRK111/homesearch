@@ -1,23 +1,22 @@
-import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import React, { useRef, useState } from 'react';
+
+import AlertMessage from '../../components/alert';
+import { Avatar } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import Select from '../../components/select/select.component';
 import TextField from '../../components/textField/textField.component';
-import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { selectFetchCityDetailsLoading as cityDetailsLoading } from '../../redux/city/city.selector';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import {
-	selectFetchCityDetailsLoading as cityDetailsLoading,
-	selectUpdateCityLoading as updateCityLoading,
-} from '../../redux/city/city.selector';
-import {
-	fetchCityDetailsStart as fetchCityDetails,
-	updateCityStart as updateCity,
-} from '../../redux/city/city.actions';
+import { fetchCityDetailsStart as fetchCityDetails } from '../../redux/city/city.actions';
+import { makeStyles } from '@material-ui/core/styles';
+import { updateCity } from '../../utils/asyncCity';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -29,25 +28,29 @@ const useStyles = makeStyles((theme) => ({
 const EditComponent = ({
 	cityDetailsLoading,
 	fetchCityDetails,
-	updateCityLoading,
-	updateCity,
 	match: {
 		params: { id },
 	},
 }) => {
+	const cancelToken = useRef(null);
 	const history = useHistory();
 	const classes = useStyles();
 	const [asyncError, setAsyncError] = React.useState('');
 	const [cityDetails, setCityDetails] = React.useState({
 		name: '',
 		state: '',
+		image: '',
 	});
+	const [image, setImage] = useState(null);
+	const [success, setSuccess] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const handleFetchCityDetails = (type, data) => {
 		if (type === 'success') {
 			console.log(data);
 			setCityDetails({
 				state: data.city.state,
 				name: data.city.name,
+				image: data.city.image,
 			});
 			setAsyncError('');
 		} else {
@@ -77,8 +80,39 @@ const EditComponent = ({
 		}));
 	};
 
-	const updateCityClick = () => {
-		updateCity(id, cityDetails, handleUpdateCity);
+	const handleFileChange = (e) => {
+		const { files } = e.target;
+		setImage(files[0]);
+	};
+
+	const updateCityClick = async () => {
+		try {
+			cancelToken.current = axios.CancelToken.source();
+			const body = {
+				name: cityDetails.name,
+				state: cityDetails.state,
+				image,
+			};
+
+			const resp = await updateCity(
+				id,
+				body,
+				cancelToken.current,
+				setLoading
+			);
+			setAsyncError(null);
+			setSuccess(true);
+			setImage(null);
+			if (resp.image) {
+				setCityDetails((prevState) => ({
+					...prevState,
+					image: resp.image,
+				}));
+			}
+		} catch (error) {
+			setAsyncError(error);
+			setSuccess(false);
+		}
 	};
 
 	return (
@@ -86,7 +120,7 @@ const EditComponent = ({
 			<Backdrop className={classes.backdrop} open={cityDetailsLoading}>
 				fetching city details ...
 			</Backdrop>
-			<Backdrop className={classes.backdrop} open={updateCityLoading}>
+			<Backdrop className={classes.backdrop} open={loading}>
 				updating city details ...
 			</Backdrop>
 			<h3>Edit City</h3>
@@ -96,6 +130,13 @@ const EditComponent = ({
 					<Grid container>
 						<Grid item xs={12} md={12} lg={8}>
 							<Grid container spacing={1}>
+								{cityDetails.image && (
+									<Grid item xs={12}>
+										<Avatar
+											src={`/assets/cities/${cityDetails.image}`}
+										/>
+									</Grid>
+								)}
 								<Grid item xs={12} md={12} lg={4}>
 									<Box p="0.5rem">State</Box>
 								</Grid>
@@ -137,6 +178,26 @@ const EditComponent = ({
 							</Grid>
 							<Grid container spacing={1}>
 								<Grid item xs={12} md={12} lg={4}>
+									<Box p="0.5rem">Image</Box>
+								</Grid>
+								<Grid item xs={12} md={12} lg={8}>
+									<Box p="0.5rem">
+										<input
+											type="file"
+											onChange={handleFileChange}
+										/>
+									</Box>
+								</Grid>
+								<Grid item xs={12} md={8}>
+									<AlertMessage
+										status={success}
+										setStatus={setSuccess}
+										message={'City Updated Successfully'}
+									/>
+								</Grid>
+							</Grid>
+							<Grid container spacing={1}>
+								<Grid item xs={12} md={12} lg={4}>
 									<Box p="0.5rem">
 										<Button
 											className="tarnsform-none"
@@ -159,14 +220,11 @@ const EditComponent = ({
 
 const mapStateToProps = createStructuredSelector({
 	cityDetailsLoading,
-	updateCityLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	fetchCityDetails: (cityId, callback) =>
 		dispatch(fetchCityDetails({ cityId, callback })),
-	updateCity: (cityId, city, callback) =>
-		dispatch(updateCity({ cityId, city, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditComponent);

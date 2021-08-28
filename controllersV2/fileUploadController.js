@@ -46,6 +46,21 @@ const builderPackages = multer({
 	fileFilter: multerFilter,
 	storage: builderPackageStorage,
 });
+// Handle City Images
+const cityStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, path.join(__dirname, '../', 'images', 'city_images/'));
+	},
+	filename: (req, file, cb) => {
+		const ext = file.mimetype.split('/')[1];
+		cb(null, `${Date.now()}.${ext}`);
+	},
+});
+
+const city = multer({
+	fileFilter: multerFilter,
+	storage: cityStorage,
+});
 
 // Handle Profile Images
 const profileStorage = multer.diskStorage({
@@ -148,6 +163,7 @@ exports.uploadBuilderPhoto = builder.fields([
 	{ name: 'directors', maxCount: 30 },
 ]);
 exports.uploadDirector = builder.single('image');
+exports.uploadCity = city.single('image');
 exports.uploadPropertiesPhoto = properties.array('images');
 exports.uploadProjectPhotosV2 = projects.fields([
 	{ name: 'thumbnailImage', maxCount: 1 },

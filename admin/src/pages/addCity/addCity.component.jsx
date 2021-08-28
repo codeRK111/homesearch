@@ -1,20 +1,23 @@
-import React from 'react';
-import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Backdrop from '@material-ui/core/Backdrop';
-import { makeStyles } from '@material-ui/core/styles';
-import Select from '../../components/select/select.component';
-import TextField from '../../components/textField/textField.component';
-import Button from '@material-ui/core/Button';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import React, { useEffect, useRef, useState } from 'react';
 import {
 	selectAllStates,
 	selectLoading as stateLoading,
-	selectCityLoading as cityLoading,
 } from '../../redux/city/city.selector';
-import { fetchAllStatesStart, addCity } from '../../redux/city/city.actions';
+
+import AlertMessage from '../../components/alert';
+import Backdrop from '@material-ui/core/Backdrop';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Select from '../../components/select/select.component';
+import TextField from '../../components/textField/textField.component';
+import { addCity } from '../../utils/asyncCity';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { fetchAllStatesStart } from '../../redux/city/city.actions';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -33,17 +36,15 @@ const errorState = {
 	city: '',
 };
 
-const AddCity = ({
-	fetchStatesStart,
-	stateLoading,
-	allStates,
-	cityLoading,
-	addCity,
-}) => {
+const AddCity = ({ fetchStatesStart, stateLoading, allStates }) => {
 	const classes = useStyles();
-	const [city, setCity] = React.useState(initialState);
-	const [error, setError] = React.useState(errorState);
-	const [asyncError, setAsyncError] = React.useState('');
+	const cancelToken = useRef(null);
+	const [city, setCity] = useState(initialState);
+	const [error, setError] = useState(errorState);
+	const [asyncError, setAsyncError] = useState('');
+	const [image, setImage] = useState(null);
+	const [success, setSuccess] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const handleChange = (e) => {
 		e.persist();
 		setCity((prevState) => ({
@@ -52,7 +53,7 @@ const AddCity = ({
 		}));
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		fetchStatesStart();
 	}, []);
 
@@ -76,27 +77,37 @@ const AddCity = ({
 		}
 	};
 
-	const responseHandler = (type, data) => {
-		if (type === 'success') {
-			console.log(data);
-			setAsyncError('');
-		} else {
-			setAsyncError(data);
+	const buttonClick = async () => {
+		checkError();
+		if (city.state && city['city']) {
+			try {
+				cancelToken.current = axios.CancelToken.source();
+				const body = { ...city, name: city['city'] };
+				if (image) body.image = image;
+				console.log(city);
+				console.log(body);
+				await addCity(body, cancelToken.current, setLoading);
+				setAsyncError(null);
+				setSuccess(true);
+				setCity(initialState);
+				setImage(null);
+			} catch (error) {
+				setAsyncError(error);
+				setSuccess(false);
+			}
 		}
 	};
 
-	const buttonClick = () => {
-		checkError();
-		if (city.state && city['city']) {
-			addCity({ name: city['city'], state: city.state }, responseHandler);
-		}
+	const handleFileChange = (e) => {
+		const { files } = e.target;
+		setImage(files[0]);
 	};
 	return (
 		<Box p="1rem">
 			<Backdrop className={classes.backdrop} open={stateLoading}>
 				Loading states..
 			</Backdrop>
-			<Backdrop className={classes.backdrop} open={cityLoading}>
+			<Backdrop className={classes.backdrop} open={loading}>
 				Adding city,please wait...
 			</Backdrop>
 			<h3>Add City</h3>
@@ -145,6 +156,19 @@ const AddCity = ({
 							</Grid>
 							<Grid container spacing={1}>
 								<Grid item xs={12} md={12} lg={4}>
+									<Box p="0.5rem">Image</Box>
+								</Grid>
+								<Grid item xs={12} md={12} lg={8}>
+									<Box p="0.5rem">
+										<input
+											type="file"
+											onChange={handleFileChange}
+										/>
+									</Box>
+								</Grid>
+							</Grid>
+							<Grid container spacing={1}>
+								<Grid item xs={12} md={12} lg={4}>
 									<Box mt="1rem">
 										<Button
 											color="primary"
@@ -158,6 +182,13 @@ const AddCity = ({
 										</Button>
 									</Box>
 								</Grid>
+								<Grid item xs={12} md={12} lg={4}>
+									<AlertMessage
+										status={success}
+										setStatus={setSuccess}
+										message={'City Added Successfully'}
+									/>
+								</Grid>
 							</Grid>
 						</Grid>
 					</Grid>
@@ -170,12 +201,10 @@ const AddCity = ({
 const mapStateToProps = createStructuredSelector({
 	allStates: selectAllStates,
 	stateLoading,
-	cityLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	fetchStatesStart: () => dispatch(fetchAllStatesStart()),
-	addCity: (city, callback) => dispatch(addCity({ city, callback })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddCity);

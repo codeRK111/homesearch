@@ -11,6 +11,10 @@ const citySchema = new Schema(
 			type: String,
 			required: [true, 'A state must be required'],
 		},
+		image: {
+			type: String,
+			default: null,
+		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

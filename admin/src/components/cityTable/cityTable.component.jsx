@@ -9,9 +9,9 @@ import {
 	fetchAllStatesStart as fetchStates,
 } from '../../redux/city/city.actions';
 
+import { Avatar } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import React from 'react';
 import RenderByAccess from '../roleRender/roleRender.component';
@@ -24,7 +24,6 @@ import TableRow from '@material-ui/core/TableRow';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
-import moment from 'moment';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -214,6 +213,9 @@ function Orders({
 								SL no
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
+								Image
+							</TableCell>
+							<TableCell style={{ color: '#ffffff' }}>
 								Name
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
@@ -226,6 +228,15 @@ function Orders({
 						{cities.map((c, i) => (
 							<TableRow key={i}>
 								<TableCell>{i + 1}</TableCell>
+								<TableCell>
+									{c.image ? (
+										<Avatar
+											src={`/assets/cities/${c.image}`}
+										/>
+									) : (
+										'-'
+									)}
+								</TableCell>
 								<TableCell>{c.name}</TableCell>
 								<TableCell>{c.state}</TableCell>
 								{actionDataParentNode(c)}
