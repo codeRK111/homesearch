@@ -9,10 +9,7 @@ const builderSchema = new Schema(
 			type: String,
 			required: [true, 'A developerName must be required'],
 		},
-		companyName: {
-			type: String,
-			required: [true, 'A companyName must be required'],
-		},
+		
 		description: {
 			type: String,
 			required: [true, 'A description must be required'],

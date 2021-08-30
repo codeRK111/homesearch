@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const validator = require('validator');
 
 const { Schema, model } = mongoose;
@@ -6,6 +7,9 @@ const propertyQuerySchema = new Schema(
 	{
 		userName: {
 			type: String,
+		},
+		docId: {
+			type: Number,
 		},
 
 		phoneNumber: {
@@ -130,6 +134,8 @@ const propertyQuerySchema = new Schema(
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+propertyQuerySchema.plugin(AutoIncrement, { inc_field: 'docId' });
 
 propertyQuerySchema.pre(/^find/, function (next) {
 	this.populate({

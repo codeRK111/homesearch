@@ -336,3 +336,46 @@ exports.managePrimary = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+
+exports.getBuilders = catchAsync(async (req, res) => {
+	const filter = {};
+	const page = req.body.page * 1 || 1;
+	const limit = req.body.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	if (req.body.developerName) {
+		filter.developerName = {
+			$regex: req.body.developerName,
+			$options: 'i',
+		};
+	}
+
+	if (req.body.email) {
+		filter.email = { $regex: req.body.email, $options: 'i' };
+	}
+	if (req.body.phoneNumber) {
+		filter.phoneNumber = { $regex: req.body.phoneNumber, $options: 'i' };
+	}
+
+	if (req.body.city) {
+		filter.city = req.body.city;
+	}
+	if (req.body.status) {
+		filter.status = req.body.status;
+	}
+
+	const totalDocs = await Builder.countDocuments(filter);
+
+	const builders = await Builder.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			builders,
+			totalDocs,
+		},
+	});
+});

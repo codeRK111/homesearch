@@ -1,4 +1,5 @@
 import { Link, useHistory, withRouter } from 'react-router-dom';
+import { hsiID, renderPropertyTypes } from '../../utils/render.utils';
 
 import Box from '@material-ui/core/Box';
 import CustomSelect from './selectBuilder.component';
@@ -13,7 +14,6 @@ import { Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import renderByRole from '../roleRender/roleRender.component';
-import { renderPropertyTypes } from '../../utils/render.utils';
 
 function preventDefault(event) {
 	event.preventDefault();
@@ -133,10 +133,13 @@ function Orders({ projects, fetchProjects }) {
 							}}
 						>
 							<TableCell style={{ color: '#ffffff' }}>
-								SL no
+								Project ID
 							</TableCell>
 							<TableCell style={{ color: '#ffffff' }}>
 								Title
+							</TableCell>
+							<TableCell style={{ color: '#ffffff' }}>
+								Builder
 							</TableCell>
 
 							<TableCell style={{ color: '#ffffff' }}>
@@ -153,6 +156,7 @@ function Orders({ projects, fetchProjects }) {
 							<TableCell style={{ color: '#ffffff' }}>
 								Location
 							</TableCell>
+
 							<TableCell style={{ color: '#ffffff' }}>
 								Builder
 							</TableCell>
@@ -169,8 +173,9 @@ function Orders({ projects, fetchProjects }) {
 					<TableBody>
 						{projects.map((c, i) => (
 							<TableRow key={i}>
-								<TableCell>{i + 1}</TableCell>
+								<TableCell>{hsiID(c.docNumber)}</TableCell>
 								<TableCell>{c.title}</TableCell>
+								<TableCell>{c.builder.developerName}</TableCell>
 								<TableCell>
 									{renderPropertyTypes(c.projectType)}
 								</TableCell>
@@ -207,11 +212,6 @@ function Orders({ projects, fetchProjects }) {
 						))}
 					</TableBody>
 				</Table>
-			</div>
-			<div className={classes.seeMore}>
-				<Link color="primary" href="#" onClick={preventDefault}>
-					{/* See more orders */}
-				</Link>
 			</div>
 		</React.Fragment>
 	);

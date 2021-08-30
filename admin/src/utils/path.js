@@ -7,3 +7,11 @@ export const renderProfileImage = (image) => {
 		return noUser;
 	}
 };
+
+export const renderBuilderImage = (image) => {
+	if (image) {
+		return `/assets/builders/${image}`;
+	} else {
+		return null;
+	}
+};

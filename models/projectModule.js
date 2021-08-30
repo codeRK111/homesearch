@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const { Schema, model } = mongoose;
 
 // const towerSchema = new Schema({
@@ -13,6 +13,9 @@ const { Schema, model } = mongoose;
 const towerSchema = new Schema({
 	name: {
 		type: String,
+	},
+	docNumber: {
+		type: Number,
 	},
 	floorPlan: {
 		type: String,
@@ -61,7 +64,6 @@ const projectSchema = new Schema(
 		},
 		slug: {
 			type: String,
-			unique: [true, 'slug already exists'],
 		},
 		description: {
 			type: String,
@@ -188,6 +190,20 @@ const projectSchema = new Schema(
 	}
 );
 
+projectSchema.pre('save', async function (next) {
+	this.slug = slugify(this.title, {
+		replacement: '-',
+		lower: true,
+	});
+	next();
+});
+
+projectSchema.plugin(AutoIncrement, {
+	id: 'doc_number',
+	inc_field: 'docNumber',
+	disable_hooks: true,
+});
+
 projectSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'city',
@@ -205,12 +221,5 @@ projectSchema.pre(/^find/, function (next) {
 	next();
 });
 
-projectSchema.pre('save', async function (next) {
-	this.slug = slugify(this.title, {
-		replacement: '-',
-		lower: true,
-	});
-	next();
-});
 const ProjectModel = model('Project', projectSchema);
 module.exports = ProjectModel;

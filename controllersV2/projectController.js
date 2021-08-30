@@ -65,14 +65,24 @@ exports.addProject = catchAsync(async (req, res) => {
 			errors: errors.array(),
 		});
 	}
-
+	// Project.counterReset('docNumber', function (err) {
+	// 	console.log(err);
+	// });
 	const project = await Project.create(req.body);
-	res.status(200).json({
-		status: 'success',
-		data: {
-			project,
-		},
-	});
+	if (project) {
+		project.setNext('doc_number', function (err, pr) {
+			if (err) {
+				return next(new AppError(err.msg));
+			} else {
+				return res.status(200).json({
+					status: 'success',
+					data: {
+						project,
+					},
+				});
+			}
+		});
+	}
 });
 exports.uploadPhotos = catchAsync(async (req, res, next) => {
 	const existingProject = await Project.findById(req.params.id);
@@ -626,6 +636,16 @@ exports.getProjects = catchAsync(async (req, res, next) => {
 	if (req.body.title) {
 		filter.title = { $regex: req.body.title, $options: 'i' };
 	}
+	if (req.body.id) {
+		const id = req.body.id;
+		if (!id.startsWith('HSI')) {
+			return next(new AppError('Invalid ID'));
+		}
+		const docNumber = id.split('HSI')[1];
+		if (Number(docNumber)) {
+			filter.docNumber = Number(docNumber);
+		}
+	}
 
 	if (req.body.projectType) {
 		filter.projectType = req.body.projectType;
@@ -654,5 +674,15 @@ exports.getProjects = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: { projects, totalDocs },
+	});
+});
+
+exports.removeProject = catchAsync(async (req, res) => {
+	const project = await Project.deleteOne({ _id: req.params.id });
+	res.status(200).json({
+		status: 'success',
+		data: {
+			project,
+		},
 	});
 });

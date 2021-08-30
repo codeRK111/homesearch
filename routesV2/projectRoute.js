@@ -75,10 +75,6 @@ router
 	);
 
 router
-	.route('/:id')
-	.get(adminController.protect, projectController.getProject)
-	.patch(adminController.protect, projectController.updateProject);
-router
 	.route('/phases/:projectId')
 	.patch(adminController.protect, projectController.addPhase);
 router
@@ -98,6 +94,11 @@ router
 router
 	.route('/get-projects')
 	.post(adminController.protect, projectController.getProjects);
+router
+	.route('/:id')
+	.get(adminController.protect, projectController.getProject)
+	.patch(adminController.protect, projectController.updateProject)
+	.delete(projectController.removeProject);
 router
 	.route('/')
 	.post(

@@ -68,5 +68,8 @@ router
 	.route('/:id')
 	.get(adminController.protect, builderController.getBuilderDetails)
 	.patch(adminController.protect, builderController.updateBuilder);
+router
+	.route('/get-all')
+	.post(adminController.protect, builderController.getBuilders);
 
 module.exports = router;

@@ -221,3 +221,25 @@ export const mangePrimaryPhoto = (id, data, cancelToken, setLoading) => {
 			});
 	});
 };
+
+export const getAllBuilders = (data, cancelToken, setLoading) => {
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.post(apiUrl(`/builder/get-all`, 'v2'), data, {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data);
+			})
+			.catch((error) => {
+				setLoading(false);
+				return reject(asyncError(error));
+			});
+	});
+};

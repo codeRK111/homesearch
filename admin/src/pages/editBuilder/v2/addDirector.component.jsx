@@ -93,6 +93,7 @@ function AddDirectorModal({
 					<p>Director Photo</p>
 					<input type="file" onChange={onFileChange} />
 				</DialogContent>
+
 				<DialogActions>
 					<Button onClick={handleClose} color="primary">
 						Cancel

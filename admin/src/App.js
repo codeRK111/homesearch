@@ -20,7 +20,7 @@ import AdminPage from './pages/adminsPage';
 import AgentQueryPage from './pages/agentQueries';
 import Authentication from './pages/authpage/authentication.component';
 import BuilderPackage from './pages/builderPackage/builderPackage.page';
-import BuilderPage from './pages/builders/builders.component';
+import BuilderPage from './pages/builders';
 import DashboardPage from './pages/dashboard/dashboatd.component';
 import DeleteCityPage from './pages/deleteCity/deleteCity.component';
 import DeleteLocationPage from './pages/deleteLocation/deleteLocation.component';

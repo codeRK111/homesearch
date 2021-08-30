@@ -16,7 +16,6 @@ import { createStructuredSelector } from 'reselect';
 import { fetchCityDetailsStart as fetchCityDetails } from '../../redux/city/city.actions';
 import { makeStyles } from '@material-ui/core/styles';
 import { updateCity } from '../../utils/asyncCity';
-import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -33,7 +32,6 @@ const EditComponent = ({
 	},
 }) => {
 	const cancelToken = useRef(null);
-	const history = useHistory();
 	const classes = useStyles();
 	const [asyncError, setAsyncError] = React.useState('');
 	const [cityDetails, setCityDetails] = React.useState({
@@ -58,14 +56,6 @@ const EditComponent = ({
 		}
 	};
 
-	const handleUpdateCity = (type, data) => {
-		if (type === 'success') {
-			setAsyncError('');
-			history.push(`/cities/${cityDetails.state}`);
-		} else {
-			setAsyncError(data);
-		}
-	};
 	React.useEffect(() => {
 		if (id) {
 			fetchCityDetails(id, handleFetchCityDetails);

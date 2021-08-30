@@ -116,14 +116,17 @@ const ProjectDetailsPage = ({
 					cancelTokenFindAgents.current,
 					setAgentLoading
 				);
-				setAgents(resp.agents);
+				if (resp) {
+					setAgents(resp.agents);
+				}
 			} catch (error) {
+				console.log({ error });
 				setError(error);
 			}
 		})();
 
 		return () => {
-			if (typeof cancelTokenFindAgents.current !== undefined) {
+			if (cancelTokenFindAgents.current) {
 				cancelTokenFindAgents.current.cancel();
 			}
 		};

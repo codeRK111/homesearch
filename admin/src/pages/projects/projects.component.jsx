@@ -2,6 +2,7 @@ import {
 	Button,
 	FormControl,
 	Grid,
+	InputAdornment,
 	InputLabel,
 	MenuItem,
 	Select,
@@ -11,10 +12,11 @@ import {
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import Box from '@material-ui/core/Box';
-import Pagination from '@material-ui/lab/Pagination';
 import Paper from '@material-ui/core/Paper';
 import ProjectTable from '../../components/projectTable/projectTable.component';
-import SearchPlace from '../../components/searchPlace';
+import SearchBuilder from '../../components/searchPlace/searchBuilders';
+import SearchPlace from '../../components/searchPlace/withReset';
+import TablePagination from '../builders/pagination.component';
 import TableSkeleton from '../../components/skeleton/table.component';
 import axios from 'axios';
 import { getAllProjects } from '../../utils/asyncProject';
@@ -33,7 +35,9 @@ const ProjectsListingPage = ({
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [title, setTitle] = useState('');
+	const [id, setId] = useState('');
 	const [city, setCity] = useState(null);
+	const [builder, setBuilder] = useState(null);
 	const [projectType, setProjectType] = useState('');
 	const [complitionStatus, setComplitionStatus] = useState('');
 	const [limit, setLimit] = useState(10);
@@ -47,7 +51,9 @@ const ProjectsListingPage = ({
 		setPage(1);
 		setError(null);
 		setTitle('');
+		setId('');
 		setCity(null);
+		setBuilder(null);
 		setProjectType('');
 		setComplitionStatus('');
 		setLimit(10);
@@ -67,6 +73,9 @@ const ProjectsListingPage = ({
 		if (title) {
 			data.title = title;
 		}
+		if (id) {
+			data.id = `HSI${id}`;
+		}
 		if (projectType) {
 			data.projectType = projectType;
 		}
@@ -75,6 +84,9 @@ const ProjectsListingPage = ({
 		}
 		if (city) {
 			data.city = city;
+		}
+		if (builder) {
+			data.builder = builder;
 		}
 		if (status) {
 			data.status = status;
@@ -89,9 +101,20 @@ const ProjectsListingPage = ({
 			setData(result);
 			setError(null);
 		} catch (error) {
+			console.log('---------------------------');
 			setError(error);
 		}
-	}, [page, limit, title, projectType, complitionStatus, status, city]);
+	}, [
+		page,
+		limit,
+		title,
+		projectType,
+		complitionStatus,
+		status,
+		city,
+		builder,
+		id,
+	]);
 
 	useEffect(() => {
 		fetchProjects();
@@ -110,10 +133,17 @@ const ProjectsListingPage = ({
 						<Grid item xs={6} md={2}>
 							<TextField
 								variant="filled"
-								label="Search by title"
-								value={title}
-								onChange={(e) => setTitle(e.target.value)}
+								label="Search by ID"
+								value={id}
+								onChange={(e) => setId(e.target.value)}
 								fullWidth
+								InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											HSI
+										</InputAdornment>
+									),
+								}}
 							/>
 						</Grid>
 						<Grid item xs={6} md={2}>
@@ -175,6 +205,15 @@ const ProjectsListingPage = ({
 							/>
 						</Grid>
 						<Grid item xs={6} md={2}>
+							<SearchBuilder
+								value={builder}
+								onSelect={(c) => {
+									setBuilder(c);
+								}}
+								padding={false}
+							/>
+						</Grid>
+						<Grid item xs={6} md={2}>
 							<Button
 								variant="contained"
 								color="secondary"
@@ -210,40 +249,28 @@ const ProjectsListingPage = ({
 								className={classes.error}
 								align="center"
 								gutterBottom
+								style={{ color: 'red' }}
 							>
 								{error}
 							</Typography>
 						)}
 
-						<Box>{loading && <TableSkeleton />}</Box>
-						{!loading && (
-							<div className={classes.flexWrapper}>
-								<Typography>
-									Total <b>{data.totalDocs}</b> projects found{' '}
-								</Typography>
-								<div className={classes.perPageWrapper}>
-									<TextField
-										variant="filled"
-										label="Queries per page"
-										size="small"
-										value={queriesPerPage}
-										onChange={(e) =>
-											setQueriesPerPage(e.target.value)
-										}
-									/>
-									<button
-										onClick={() => {
-											if (Number(queriesPerPage)) {
-												setPage(1);
-												setLimit(queriesPerPage);
-											}
-										}}
-									>
-										Apply
-									</button>
-								</div>
+						<div className={classes.flexWrapper}>
+							<Typography>
+								Total <b>{data.totalDocs}</b> projects found{' '}
+							</Typography>
+
+							<div className={classes.perPageWrapper}>
+								<TextField
+									variant="filled"
+									label="Search by title"
+									value={title}
+									onChange={(e) => setTitle(e.target.value)}
+									fullWidth
+								/>
 							</div>
-						)}
+						</div>
+						<Box>{loading && <TableSkeleton />}</Box>
 						{!loading && (
 							<Box mt="1rem">
 								<ProjectTable
@@ -252,19 +279,15 @@ const ProjectsListingPage = ({
 								/>
 							</Box>
 						)}
+
 						{!loading && (
-							<Box
-								mt="1rem"
-								display="flex"
-								justifyContent="center"
-							>
-								<Pagination
-									count={Math.ceil(data.totalDocs / limit)}
-									page={page}
-									onChange={handleChange}
-									color="primary"
-								/>
-							</Box>
+							<TablePagination
+								limit={limit}
+								setLimit={setLimit}
+								page={page}
+								setPage={handleChange}
+								totalDocs={data.totalDocs}
+							/>
 						)}
 					</Box>
 				</Paper>
