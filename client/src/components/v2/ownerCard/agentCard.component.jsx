@@ -1,4 +1,4 @@
-import { Avatar, Box, CircularProgress } from '@material-ui/core';
+import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import { badge, call, comment, logo, whatsapp } from '../../../utils/statc';
 import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
@@ -8,6 +8,7 @@ import axios from 'axios';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { hsiID } from '../../../utils/render.utils';
 import { selectAuthenticated } from '../../../redux/auth/auth.selectors';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './ownerCard.style';
@@ -187,6 +188,14 @@ const OwnerCard = ({
 					<div className={classes.ownerInfo}>
 						<div className={classes.ownerType}>Homesearch18</div>
 						<h2>{owner.name}</h2>
+						{hsiID(owner.docNumber) && (
+							<Typography
+								align="center"
+								className={classes.agentID}
+							>
+								ID: {hsiID(owner.docNumber)}
+							</Typography>
+						)}
 						{/* <Box
                                 className={clsx(
                                     globalClasses.justifySpaceBetween,

@@ -1,5 +1,6 @@
 import { Box, IconButton } from '@material-ui/core';
 import React, { useState } from 'react';
+import { capitalizeFirstLetter, hsiID } from '../../utils/render.utils';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import AddUserDialog from '../addUserDialog';
@@ -13,7 +14,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { capitalizeFirstLetter } from '../../utils/render.utils';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 
@@ -91,6 +91,7 @@ function UserTable({ loading, users, fetchUsers }) {
 						<TableHead>
 							<TableRow>
 								<StyledTableCell>SL Num.</StyledTableCell>
+								<StyledTableCell>Admin ID</StyledTableCell>
 								<StyledTableCell>Name</StyledTableCell>
 								<StyledTableCell>Username</StyledTableCell>
 								<StyledTableCell>Email</StyledTableCell>
@@ -110,6 +111,11 @@ function UserTable({ loading, users, fetchUsers }) {
 								<StyledTableRow key={row.id}>
 									<StyledTableCell>{i + 1}</StyledTableCell>
 
+									<StyledTableCell>
+										{hsiID(row.docNumber)
+											? hsiID(row.docNumber)
+											: '-'}
+									</StyledTableCell>
 									<StyledTableCell>
 										{row.name}
 									</StyledTableCell>

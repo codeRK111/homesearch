@@ -263,6 +263,7 @@ exports.manageFloorPlan = catchAsync(async (req, res) => {
 		{
 			new: true,
 			runValidators: true,
+			useFindAndModify: true,
 		}
 	);
 	res.status(200).json({
@@ -286,6 +287,7 @@ exports.manageTowerStatus = catchAsync(async (req, res) => {
 		{
 			new: true,
 			runValidators: true,
+			useFindAndModify: true,
 		}
 	);
 
@@ -319,6 +321,7 @@ exports.updateTowerName = catchAsync(async (req, res) => {
 		{
 			new: true,
 			runValidators: true,
+			useFindAndModify: true,
 		}
 	);
 
@@ -479,6 +482,7 @@ exports.copyTower = catchAsync(async (req, res, next) => {
 							{
 								new: true,
 								runValidators: true,
+								useFindAndModify: true,
 							}
 						);
 

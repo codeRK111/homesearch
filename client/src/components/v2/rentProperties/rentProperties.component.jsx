@@ -1,10 +1,9 @@
 import { Box, Grid } from '@material-ui/core';
 
 import Card from '../propertyCard/propertyCard.component';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Carousel from '../../carousel';
 import Chip from '../chip/chip.component';
 import React from 'react';
-import clsx from 'clsx';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './rentProperties.style';
 
@@ -47,31 +46,11 @@ const RentProperties = ({ data }) => {
 			)}
 			<Box mt="3rem">
 				{!!data && (
-					<div className={classes.propertiesWrapper}>
-						<div className={classes.content}>
-							<Grid container spacing={7}>
-								{data.properties.map((c) => (
-									<Grid item xs={12} md={4}>
-										<Card key={c.id} data={c} />
-									</Grid>
-								))}
-							</Grid>
-						</div>
-						{true && (
-							<div
-								className={clsx(
-									classes.scrollbarRight,
-									gClasses.smHide
-								)}
-							>
-								<div className={classes.scrollWrapper}>
-									<ChevronRightIcon
-										style={{ fontSize: 40 }}
-									/>
-								</div>
-							</div>
-						)}
-					</div>
+					<Carousel
+						docs={data.properties}
+						Card={Card}
+						defaultSlide={3}
+					/>
 				)}
 			</Box>
 		</div>

@@ -1,25 +1,12 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-	listWrapper: {
+	wrapper: {
+		boxSizing: 'border-box',
 		display: 'flex',
-		alignItems: 'center',
+		// justifyContent: 'space-between',
 		width: '100%',
-		flexWrap: 'wrap',
-	},
-
-	scrollbar: {
-		display: 'flex',
-		flex: 1,
-	},
-	scrollbarRight: {
-		display: 'flex',
-		flex: 1,
-		justifyContent: 'flex-end',
-	},
-	content: {
-		display: 'flex',
-		flex: 12,
+		alignItems: 'center',
 	},
 	scrollWrapper: {
 		height: '75px',
@@ -30,16 +17,18 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-	},
-	chipWrapper: {
-		marginRight: '1.5rem',
+		border: 'none',
 		[theme.breakpoints.down('sm')]: {
-			padding: '0.2rem',
-			marginRight: '0.5rem',
+			height: '50px',
+			width: '50px',
 		},
 	},
-	wrapper: {
+	cardArea: {
+		flex: 1,
 		boxSizing: 'border-box',
+		[theme.breakpoints.down('sm')]: {
+			maxWidth: '100%',
+		},
 	},
 }));
 export default useStyles;

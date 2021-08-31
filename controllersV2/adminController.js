@@ -10,6 +10,17 @@ exports.getAdmins = catchAsync(async (req, res) => {
 	const limit = req.body.limit * 1 || 10;
 	const skip = (page - 1) * limit;
 
+	if (req.body.id) {
+		const id = req.body.id;
+		if (!id.startsWith('HSI')) {
+			return next(new AppError('Invalid ID'));
+		}
+		const docNumber = id.split('HSI')[1];
+		if (Number(docNumber)) {
+			filter.docNumber = Number(docNumber);
+		}
+	}
+
 	if (req.body.name) {
 		filter.name = { $regex: req.body.name, $options: 'i' };
 	}

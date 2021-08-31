@@ -414,3 +414,7 @@ export const asyncError = (error) => {
 	}
 	return message;
 };
+
+export const hsiID = (id) => {
+	return id ? 'HSI' + id : null;
+};

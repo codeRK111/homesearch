@@ -5,6 +5,7 @@ import {
 	FormControl,
 	FormControlLabel,
 	Grid,
+	InputAdornment,
 	InputLabel,
 	MenuItem,
 	Radio,
@@ -41,6 +42,7 @@ const UsersPage = () => {
 	const [loading, setLoading] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [error, setError] = useState(null);
+	const [id, setId] = useState(null);
 	const [type, setRole] = useState([]);
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
@@ -102,6 +104,9 @@ const UsersPage = () => {
 			limit,
 			...filter,
 		};
+		if (id) {
+			filterData.id = `HSI${id}`;
+		}
 		if (type.length > 0) {
 			filterData.type = type;
 		}
@@ -116,7 +121,7 @@ const UsersPage = () => {
 			.catch((error) => {
 				setError(error);
 			});
-	}, [page, limit, filter, type]);
+	}, [page, limit, filter, type, id]);
 
 	useEffect(() => {
 		setPage(1);
@@ -239,6 +244,21 @@ const UsersPage = () => {
 					<b>Search Admin</b>
 				</Typography>
 				<Grid container spacing={1}>
+					<Grid item xs={6} md={3}>
+						<TextField
+							label="Search by ID"
+							value={id}
+							onChange={(e) => setId(e.target.value)}
+							fullWidth
+							InputProps={{
+								startAdornment: (
+									<InputAdornment position="start">
+										HSI-
+									</InputAdornment>
+								),
+							}}
+						/>
+					</Grid>
 					<Grid item xs={12} md={3}>
 						<TextField
 							name="name"

@@ -94,5 +94,5 @@ export const asyncError = (error) => {
 	return message;
 };
 export const hsiID = (id) => {
-	return 'HSI' + id;
+	return id ? 'HSI' + id : null;
 };

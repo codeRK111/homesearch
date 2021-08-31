@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const { Schema, model } = mongoose;
 const adminSchema = new Schema(
 	{
@@ -10,6 +10,9 @@ const adminSchema = new Schema(
 			type: String,
 			required: [true, 'A name must be required'],
 			maxlength: [25, 'Max 25 chars allowed'],
+		},
+		docNumber: {
+			type: Number,
 		},
 		number: {
 			type: String,
@@ -217,6 +220,10 @@ adminSchema.pre(/^find/, function (next) {
 		});
 
 	next();
+});
+
+adminSchema.plugin(AutoIncrement, {
+	inc_field: 'docNumber',
 });
 
 // QUERY MIDDLEWARE

@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 		'& h2': {
 			margin: 0,
-			padding: '0.5rem 0',
+			padding: '0.3rem 0',
 			fontSize: '1.2rem',
 		},
 	},
@@ -60,6 +60,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	iconPadding: {
 		padding: '0 0.7rem',
+	},
+	agentID: {
+		color: '#a7a6a6',
+		fontWeight: 'bold',
+		fontSize: '0.8rem',
+		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		letterSpacing: 1,
 	},
 }));
 export default useStyles;

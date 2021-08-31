@@ -1,5 +1,6 @@
 import About from '../../../components/v2/about/about.component';
 import { Box } from '@material-ui/core';
+import Carousel from '../../../components/carousel';
 import CustomerCount from '../../../components/v2/customerCount/customerCount.component';
 import Enquiry from '../../../components/v2/enquiryComponent/enquiry.component';
 import HeroArea from '../../../components/v2/heroArea/heroArea.component';
@@ -53,6 +54,9 @@ const HomePage = () => {
 			<HeroArea />
 			<Box className={classes.componentSpacer}>
 				<VirtualTour />
+			</Box>
+			<Box mt="5rem">
+				<Carousel />
 			</Box>
 			<Box
 				className={clsx(
