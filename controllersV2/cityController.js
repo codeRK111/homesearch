@@ -53,7 +53,13 @@ exports.addCity = catchAsync(async (req, res, next) => {
 });
 
 exports.updateCity = catchAsync(async (req, res, next) => {
-	if (!req.body.name && !req.body.state && !req.file) {
+	if (
+		!req.body.name &&
+		!req.body.state &&
+		!req.file &&
+		!req.body.top &&
+		!req.body.status
+	) {
 		removePhoto(req);
 		return next(new AppError('Request body is empty'));
 	}
@@ -76,6 +82,55 @@ exports.updateCity = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			city,
+		},
+	});
+});
+
+exports.getAllStates = catchAsync(async (req, res, next) => {
+	const states = await City.distinct('state');
+	res.status(200).json({
+		status: 'success',
+		data: {
+			states,
+		},
+	});
+});
+
+exports.getAllCities = catchAsync(async (req, res) => {
+	const filter = {};
+	const page = req.body.page * 1 || 1;
+	const limit = req.body.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	if (req.body.name) {
+		filter.name = { $regex: req.body.name, $options: 'i' };
+	}
+	if (req.body.state) {
+		filter.state = req.body.state;
+	}
+	if (req.body.status) {
+		if (req.body.status === 'active') {
+			filter.status = { $ne: 'inactive' };
+		} else {
+			filter.status = { $eq: 'inactive' };
+		}
+	}
+	if (req.body.top === true) {
+		filter.top = true;
+	}
+
+	const totalDocs = await City.countDocuments(filter);
+
+	const cities = await City.find(filter)
+		.sort('-top -name')
+		.skip(skip)
+		.limit(limit);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			cities,
+			totalDocs,
 		},
 	});
 });

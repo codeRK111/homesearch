@@ -47,6 +47,12 @@ export const updateCity = (id, data, cancelToken, setLoading) => {
 	if (data.state) {
 		formData.append('state', data.state);
 	}
+	if (data.status) {
+		formData.append('status', data.status);
+	}
+	if (data.top !== undefined && data.top !== null) {
+		formData.append('top', data.top);
+	}
 
 	return new Promise((resolve, reject) => {
 		setLoading(true);
@@ -61,6 +67,49 @@ export const updateCity = (id, data, cancelToken, setLoading) => {
 			.then((resp) => {
 				setLoading(false);
 				return resolve(resp.data.data.city);
+			})
+			.catch((error) => {
+				setLoading(false);
+				return reject(asyncError(error));
+			});
+	});
+};
+
+export const getAllStates = (cancelToken, setLoading) => {
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.get(apiUrl(`/city/states`, 'v2'), {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data.states);
+			})
+			.catch((error) => {
+				setLoading(false);
+				return reject(asyncError(error));
+			});
+	});
+};
+export const getAllCities = (filter, cancelToken, setLoading) => {
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.post(apiUrl(`/city/all-cities`, 'v2'), filter, {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data);
 			})
 			.catch((error) => {
 				setLoading(false);

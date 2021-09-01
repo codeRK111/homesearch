@@ -15,6 +15,18 @@ const citySchema = new Schema(
 			type: String,
 			default: null,
 		},
+		top: {
+			type: Boolean,
+			default: false,
+		},
+		status: {
+			type: String,
+			enum: {
+				values: ['active', 'inactive'],
+				message: 'role must be between <active> | <inactive>',
+			},
+			default: 'active',
+		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

@@ -1,32 +1,31 @@
+import { CircularProgress, Switch } from '@material-ui/core';
 import React, { memo, useEffect, useRef, useState } from 'react';
 
-import { CircularProgress } from '@material-ui/core';
-import IOSSwitch from '../iosSwitch';
 import axios from 'axios';
-import { updateAdmin } from '../../utils/asyncAdmin';
+import { updateCity } from '../../utils/asyncCity';
 import useGlobalStyles from '../../common.style';
 import { withAsync } from '../../hoc/withAsync';
 
-const StatusSwitch = memo(
-	({ id, adminStatus, loading, setLoading, error, setError }) => {
+const CityTopSwitch = memo(
+	({ id, top, loading, setLoading, error, setError }) => {
 		const globalStyle = useGlobalStyles();
 		const cancelToken = useRef(null);
-		const [status, setStatus] = useState(adminStatus);
+		const [status, setStatus] = useState(top);
 
 		const handleChange = async (event) => {
 			const { checked } = event.target;
 			try {
 				cancelToken.current = axios.CancelToken.source();
 				const body = {
-					status: checked ? 'active' : 'inactive',
+					top: checked,
 				};
-				const resp = await updateAdmin(
+				const resp = await updateCity(
 					id,
 					body,
 					cancelToken.current,
 					setLoading
 				);
-				setStatus(resp.status);
+				setStatus(resp.top);
 				setError(null);
 			} catch (_) {
 				setError('Failed !!');
@@ -34,14 +33,14 @@ const StatusSwitch = memo(
 		};
 
 		useEffect(() => {
-			setStatus(adminStatus);
+			setStatus(top);
 
 			return () => {
 				if (cancelToken.current) {
 					cancelToken.current.cancel();
 				}
 			};
-		}, [adminStatus]);
+		}, [top]);
 
 		const t = () => {
 			if (error) {
@@ -51,8 +50,8 @@ const StatusSwitch = memo(
 				return <CircularProgress size={15} color="inherit" />;
 			} else {
 				return (
-					<IOSSwitch
-						checked={status === 'active'}
+					<Switch
+						checked={status}
 						color="primary"
 						size="small"
 						onChange={handleChange}
@@ -65,4 +64,4 @@ const StatusSwitch = memo(
 	}
 );
 
-export default withAsync(StatusSwitch);
+export default withAsync(CityTopSwitch);
