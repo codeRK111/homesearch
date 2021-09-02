@@ -124,7 +124,7 @@ const PropertyCard = ({ data, showStatus = false }) => {
 										classes.rent
 									)}
 								>
-									Rs. {(data.salePrice / 100000).toFixed(2)}L
+									Rs. {(data.salePrice / 100000).toFixed(2)}
 								</h5>
 								<Box
 									className={classes.flexParentWrapper}

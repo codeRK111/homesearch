@@ -40,7 +40,7 @@ const PropertyCard = ({ property, propertyItems }) => {
 	};
 
 	return (
-		<div className={clsx(classes.wrapper, globalClasses.pointer)}>
+		<div className={clsx(classes.wrapper)}>
 			{/* <pre>{JSON.stringify(property, null, 2)}</pre> */}
 			<Grid container spacing={0}>
 				<Grid item xs={12} md={7}>
@@ -89,7 +89,13 @@ const PropertyCard = ({ property, propertyItems }) => {
 								</span>
 							</div>
 							<div>
-								<h2 className={clsx(classes.propertyName)}>
+								<h2
+									className={clsx(
+										classes.propertyName,
+										globalClasses.pointer,
+										classes.developerName
+									)}
+								>
 									{property.title}
 								</h2>
 								<span
@@ -144,10 +150,12 @@ const PropertyCard = ({ property, propertyItems }) => {
 									className={globalClasses.colorUtil}
 								/>
 								<h4 className={classes.locationText}>
-									<Link to={`/${property.builder.slug}`}>
+									<Link
+										to={`/${property.builder.slug}`}
+										className={classes.developerName}
+									>
 										{property.builder.developerName}
 									</Link>
-									,
 								</h4>
 							</div>
 						</Box>

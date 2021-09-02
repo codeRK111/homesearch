@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: '0.7rem 0.7rem 1.2rem 0.7rem',
 		background: theme.shadowColor,
 		borderRadius: '32px',
-		boxShadow: '12px 12px 21px #bebebe,-12px -12px 21px #ffffff',
+		boxShadow: '12px 12px 24px #aaaaaa,-12px -12px 24px #ffffff',
 		boxSizing: 'border-box',
 	},
 	img: {

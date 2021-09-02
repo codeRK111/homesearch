@@ -10,6 +10,7 @@ import { location2, logo, tag } from '../../../../utils/statc';
 
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import Land from '../../searchResultCardNewProjectLand/searchResultCard.component';
+import { Link } from 'react-router-dom';
 import React from 'react';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
@@ -35,10 +36,7 @@ const PropertyCard = ({ property, propertyItems }) => {
 		win.focus();
 	};
 	return (
-		<div
-			className={clsx(classes.wrapper, globalClasses.pointer)}
-			onClick={onClick}
-		>
+		<div className={clsx(classes.wrapper)} onClick={onClick}>
 			{/* <pre>{JSON.stringify(property, null, 2)}</pre> */}
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={7}>
@@ -75,7 +73,13 @@ const PropertyCard = ({ property, propertyItems }) => {
 							</span>
 						</div>
 						<div>
-							<h2 className={clsx(classes.propertyName)}>
+							<h2
+								className={clsx(
+									classes.propertyName,
+									globalClasses.pointer,
+									classes.developerName
+								)}
+							>
 								{property.title}
 							</h2>
 							<span
@@ -129,7 +133,12 @@ const PropertyCard = ({ property, propertyItems }) => {
 								className={globalClasses.colorUtil}
 							/>
 							<h4 className={classes.locationText}>
-								{property.builder.developerName},
+								<Link
+									to={`/${property.builder.slug}`}
+									className={classes.developerName}
+								>
+									{property.builder.developerName}
+								</Link>
 							</h4>
 						</div>
 					</Box>

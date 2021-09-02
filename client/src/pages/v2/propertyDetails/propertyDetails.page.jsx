@@ -21,10 +21,10 @@ import Loading from '../../../components/v2/loadingAnimation';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import OwnerCard from '../../../components/v2/ownerCard';
 import PropertyAction from './propertyAction.component';
+import PropertyComment from '../../../components/v2/comment';
 import React from 'react';
 import SimilarProperties from '../../../components/v2/similarProperties';
 import axios from 'axios';
-import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import useGlobalStyles from '../../../common.style';
@@ -529,38 +529,16 @@ const SearchPage = ({
 						{asyncState.property && (
 							<>
 								<PropertyAction id={id} />
-								<Box mt="3rem">
-									<input
-										type="text"
-										className={classes.comment}
-										placeholder="Leave A Comment !"
-										value={review}
-										onChange={handleChange}
-										onKeyDown={handleKeypress}
-										ref={input}
-										onFocus={(e) => {
-											if (input.current) {
-												input.current.placeholder = '';
-											}
-										}}
-										onBlur={(e) => {
-											if (input.current) {
-												input.current.placeholder =
-													'Leave A Comment !';
-											}
-										}}
-									/>
-								</Box>
-								<button
-									onClick={onComment}
-									className={clsx(
-										classes.button,
-										globalClasses.topMargin,
-										globalClasses.xsTopMargin
-									)}
-								>
-									Submit
-								</button>
+								<PropertyComment
+									type={'property'}
+									id={asyncState.property.id}
+									propertyItemType={
+										asyncState.property.type
+											? asyncState.property.type
+											: asyncState.property.sale_type
+									}
+									pFor={asyncState.property['for']}
+								/>
 								<Box mt="3rem">
 									{reviews.map((c) => (
 										<Box key={c.id} mt="1rem">

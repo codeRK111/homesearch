@@ -264,5 +264,12 @@ const useStyles = makeStyles((theme) => ({
 			fontSize: '1.4rem',
 		},
 	},
+	developerName: {
+		color: '#000000',
+		textDecoration: 'none',
+		'&:hover': {
+			textDecoration: 'underline',
+		},
+	},
 }));
 export default useStyles;

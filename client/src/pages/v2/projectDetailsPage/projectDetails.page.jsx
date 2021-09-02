@@ -11,6 +11,7 @@ import LegalClearance from '../propertyDetails/legalClearance.component';
 import { Link } from 'react-router-dom';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import Properties from './properties.component';
+import PropertyComment from '../../../components/v2/comment';
 import SimilarProperties from '../../../components/v2/similarProperties/project.component';
 import Skeleton from '../../../components/v2/skeleton/propertyHeader.component';
 import TextSkeleton from '@material-ui/lab/Skeleton';
@@ -465,6 +466,12 @@ const ProjectDetailsPage = ({
 										</div>
 									</Grid>
 								</Grid>
+								<PropertyComment
+									type={'project'}
+									id={data.project.id}
+									propertyItemType={data.project.projectType}
+									pFor={'project'}
+								/>
 							</>
 						)}
 					</Grid>

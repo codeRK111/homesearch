@@ -4,10 +4,6 @@ const validator = require('validator');
 const { Schema, model } = mongoose;
 const propertyReviewSchema = new Schema(
 	{
-		createdAt: {
-			type: Date,
-			default: Date.now(),
-		},
 		property: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Property',
@@ -38,28 +34,25 @@ const propertyReviewSchema = new Schema(
 				message: 'Please give project details',
 			},
 		},
-		projectProperty: {
-			type: mongoose.Schema.ObjectId,
-			ref: 'ProjectProperty',
-			validate: {
-				validator: function (value) {
-					if (this.propertyType === 'projectproperty') {
-						if (!value) {
-							return false;
-						}
-					}
-					return true;
-				},
-				message: 'Please give a property of the project',
-			},
-		},
 
 		propertyType: {
 			type: String,
 			enum: {
-				values: ['property', 'project', 'projectproperty'],
+				values: ['property', 'project'],
 			},
 			default: 'property',
+		},
+		propertyItemType: {
+			type: String,
+			enum: {
+				values: ['flat', 'independenthouse', 'land'],
+			},
+		},
+		pFor: {
+			type: String,
+			enum: {
+				values: ['rent', 'sale', 'project'],
+			},
 		},
 
 		message: {
@@ -70,8 +63,20 @@ const propertyReviewSchema = new Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
 		},
+		status: {
+			type: String,
+			enum: {
+				values: ['active', 'inactive'],
+				message: 'role must be between <active> | <inactive>',
+			},
+			default: 'inactive',
+		},
 	},
-	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
+	{
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+		timestamps: true,
+	}
 );
 
 propertyReviewSchema.pre(/^find/, function (next) {
@@ -86,22 +91,13 @@ propertyReviewSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'property',
 		select: 'id title',
-	})
-		.populate({
-			path: 'project',
-			select: 'id title ',
-		})
-		.populate({
-			path: 'projectProperty',
-			select: 'id title project',
-		});
+	}).populate({
+		path: 'project',
+		select: 'id title ',
+	});
 
 	next();
 });
 
-propertyReviewSchema.methods.correctOtp = function (otp) {
-	return String(otp) === this.otp;
-};
-
-const searchFeedBack = model('PropertyReview', propertyReviewSchema);
-module.exports = searchFeedBack;
+const propertyReview = model('PropertyReview', propertyReviewSchema);
+module.exports = propertyReview;

@@ -49,7 +49,7 @@ const RentProperties = ({ data }) => {
 					<Carousel
 						docs={data.properties}
 						Card={Card}
-						defaultSlide={3}
+						defaultSlide={4}
 					/>
 				)}
 			</Box>
