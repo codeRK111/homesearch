@@ -593,6 +593,39 @@ export const searchByCity = (city, cancelToken, setLoading) => {
 			});
 	});
 };
+export const searchByName = (title, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT');
+	return new Promise((resolve, reject) => {
+		const url = `/project/search-by-name`;
+		setLoading(true);
+		axios
+			.post(
+				apiUrl(url, 'v2'),
+				{ title },
+				{
+					cancelToken: cancelToken.token,
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data.projects);
+			})
+			.catch((error) => {
+				setLoading(false);
+				let message = '';
+				if (!!error.response) {
+					message = error.response.data.message;
+				} else {
+					message = error.message;
+				}
+				return reject(message);
+			});
+	});
+};
 
 export const addAgent = (data, cancelToken, setLoading) => {
 	const token = localStorage.getItem('JWT');

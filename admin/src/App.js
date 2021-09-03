@@ -59,6 +59,7 @@ import QueryConversation from './pages/queries/conversationPage';
 import QueryDetailsPage from './pages/queries/queryDetails.component';
 import React from 'react';
 import RequestsPage from './pages/requestPhotosPage/requestPhotos.page';
+import ReviewsPage from './pages/reviewsPage';
 import Snackbar from '@material-ui/core/Snackbar';
 import TypeHOC from './components/hoc/hocForAdminTYpe.component';
 import TypeProtected from './components/typeProtected/typeProtected.component';
@@ -78,6 +79,7 @@ import { withLoader } from './hoc/withLoader';
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const AgentQueryPageWithDrawer = Drawer(AgentQueryPage);
+const ReviewsPageWithDrawer = Drawer(ReviewsPage);
 const DigitalMarketingPageWithDrawer = Drawer(DigitalMarketingPage);
 const ManageTaskPropertyPageWithDrawer = Drawer(ManageTaskProperty);
 
@@ -175,6 +177,16 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 					render={() => (
 						<Protected
 							component={DashboardPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/reviews/:pFor"
+					render={() => (
+						<Protected
+							component={ReviewsPageWithDrawer}
 							{...props}
 						/>
 					)}

@@ -14,6 +14,9 @@ router
 	.route('/search-by-city')
 	.post(adminController.protect, projectController.searchByCity);
 router
+	.route('/search-by-name')
+	.post(adminController.protect, projectController.searchByName);
+router
 	.route('/add-agent')
 	.post(adminController.protect, projectController.addProjectAgent);
 router.route('/get-agents/:projectId').get(projectController.getAgents);

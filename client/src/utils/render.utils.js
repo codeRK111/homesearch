@@ -1,5 +1,14 @@
 import moment from 'moment';
+import noUser from '../assets/noUser.png';
 import { validateNumber } from './validation.utils';
+
+export const renderProfileImage = (image) => {
+	if (image) {
+		return `/profile/${image}`;
+	} else {
+		return noUser;
+	}
+};
 
 export const renderInfo = (info) => (info ? info : 'Not Specified');
 export const renderBool = (info) => (info ? 'Yes' : 'No');

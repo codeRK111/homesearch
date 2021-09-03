@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import Properties from './properties.component';
 import PropertyComment from '../../../components/v2/comment';
+import Reviews from '../../../components/v2/reviews';
 import SimilarProperties from '../../../components/v2/similarProperties/project.component';
 import Skeleton from '../../../components/v2/skeleton/propertyHeader.component';
 import TextSkeleton from '@material-ui/lab/Skeleton';
@@ -472,6 +473,7 @@ const ProjectDetailsPage = ({
 									propertyItemType={data.project.projectType}
 									pFor={'project'}
 								/>
+								<Reviews propertyType={'project'} id={id} />
 							</>
 						)}
 					</Grid>

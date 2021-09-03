@@ -569,6 +569,18 @@ exports.searchByCity = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+
+exports.searchByName = catchAsync(async (req, res, next) => {
+	const projects = await Project.find({
+		title: { $regex: req.body.title, $options: 'i' },
+	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			projects,
+		},
+	});
+});
 exports.addProjectAgent = catchAsync(async (req, res, next) => {
 	const isPresent = await ProjectAgent.findOne({
 		project: mongoose.Types.ObjectId(req.body.project),

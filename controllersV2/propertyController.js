@@ -355,3 +355,15 @@ exports.getMyProperties = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+
+exports.searchByName = catchAsync(async (req, res, next) => {
+	const properties = await Property.find({
+		title: { $regex: req.body.title, $options: 'i' },
+	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			properties,
+		},
+	});
+});

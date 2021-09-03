@@ -26,3 +26,6 @@ export const toggleKPI = () => ({
 export const togglePackage = () => ({
 	type: SidebarActionTypes.TOGGLE_PACKAGE,
 });
+export const toggleReview = () => ({
+	type: SidebarActionTypes.TOGGLE_REVIEW,
+});

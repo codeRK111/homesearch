@@ -7,6 +7,7 @@ import {
 	selectProject,
 	selectPropertyRent,
 	selectPropertySale,
+	selectReview,
 } from '../../redux/sidebar/sidebar.selector';
 import {
 	toggleBuilder,
@@ -17,6 +18,7 @@ import {
 	toggleProject,
 	togglePropertyRent,
 	togglePropertySale,
+	toggleReview,
 } from '../../redux/sidebar/sidebar.actions';
 
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -81,6 +83,8 @@ const MainListItems = ({
 	selectPackage,
 	toggleKPI,
 	togglePackage,
+	selectReview,
+	toggleReview,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -818,6 +822,47 @@ const MainListItems = ({
 				</ListItemIcon>
 				<ListItemText primary="Agent queries" />
 			</ListItem>
+			<ListItem button onClick={toggleReview}>
+				<ListItemIcon>
+					<ChatIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Comments" />
+				{selectReview ? <ExpandLess /> : <ExpandMore />}
+			</ListItem>
+			<Collapse in={selectReview} timeout="auto" unmountOnExit>
+				<List component="div" disablePadding>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/reviews/project')}
+					>
+						<ListItemIcon>
+							<ChatIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Project Comments" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/reviews/rent')}
+					>
+						<ListItemIcon>
+							<ChatIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Rent Comments" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/reviews/sale')}
+					>
+						<ListItemIcon>
+							<ChatIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Sale Comments" />
+					</ListItem>
+				</List>
+			</Collapse>
 
 			<ListItem button onClick={togglePackage}>
 				<ListItemIcon>
@@ -872,6 +917,7 @@ const mapStateToProps = createStructuredSelector({
 	selectKRA,
 	selectKPI,
 	selectPackage,
+	selectReview,
 });
 
 const dispatchStateToProps = (dispatch) => ({
@@ -883,6 +929,7 @@ const dispatchStateToProps = (dispatch) => ({
 	toggleKRA: () => dispatch(toggleKRA()),
 	toggleKPI: () => dispatch(toggleKPI()),
 	togglePackage: () => dispatch(togglePackage()),
+	toggleReview: () => dispatch(toggleReview()),
 });
 
 export default connect(mapStateToProps, dispatchStateToProps)(MainListItems);

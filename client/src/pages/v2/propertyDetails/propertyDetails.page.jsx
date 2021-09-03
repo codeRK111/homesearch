@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, Typography } from '@material-ui/core';
+import { Box, Grid } from '@material-ui/core';
 import {
 	capitalizeFirstLetter,
 	renderByPropertyFor,
@@ -23,6 +23,7 @@ import OwnerCard from '../../../components/v2/ownerCard';
 import PropertyAction from './propertyAction.component';
 import PropertyComment from '../../../components/v2/comment';
 import React from 'react';
+import Reviews from '../../../components/v2/reviews';
 import SimilarProperties from '../../../components/v2/similarProperties';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -539,52 +540,8 @@ const SearchPage = ({
 									}
 									pFor={asyncState.property['for']}
 								/>
-								<Box mt="3rem">
-									{reviews.map((c) => (
-										<Box key={c.id} mt="1rem">
-											<Grid container spacing={1}>
-												<Grid
-													item
-													xs={12}
-													md={1}
-													justify="center"
-												>
-													<div
-														className={
-															classes.avatarWrapper
-														}
-													>
-														<Avatar
-															alt="Remy Sharp"
-															src={
-																c.photo
-																	? `/profile/${c.photo}`
-																	: 'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100'
-															}
-															className={
-																classes.avatar
-															}
-														/>
-														<div
-															className={
-																classes.commentIcon
-															}
-														>
-															<span>&#8220;</span>
-														</div>
-													</div>
-												</Grid>
-												<Grid item xs={12} md={6}>
-													<Typography
-														variant={'caption'}
-													>
-														{c.message}
-													</Typography>
-												</Grid>
-											</Grid>
-										</Box>
-									))}
-								</Box>
+								<Reviews propertyType={'property'} id={id} />
+
 								<Box mt="2rem">
 									<h2>
 										Similar Properties For{' '}

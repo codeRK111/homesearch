@@ -6,6 +6,7 @@ const reviewController = require('../controllersV2/reviewController');
 const router = express.Router();
 
 // User
+router.route('/user/property/:id').get(reviewController.getReviewsOfAProperty);
 router
 	.route('/user')
 	.get(userController.protect, reviewController.getReviews)

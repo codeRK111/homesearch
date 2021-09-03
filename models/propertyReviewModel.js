@@ -71,6 +71,10 @@ const propertyReviewSchema = new Schema(
 			},
 			default: 'inactive',
 		},
+		top: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{
 		toJSON: { virtuals: true },
