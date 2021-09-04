@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 import {
 	setCurrentTab,
 	setSelectedCity,
@@ -24,7 +24,6 @@ import { searchProperties } from '../../../redux/property/property.actions';
 import { selectCurrentTab } from '../../../redux/actionTab/actionTab.selectors';
 import { selectPropertyLoading } from '../../../redux/property/property.selectors';
 import useGlobalStyles from '../../../common.style';
-import { useHistory } from 'react-router-dom';
 import useStyles from './searchPage.style';
 
 const SearchPage = ({
@@ -40,6 +39,7 @@ const SearchPage = ({
 	const [asyncError, setAsyncError] = React.useState(null);
 	// const [totalDos, setTotalDocs] = React.useState(0);
 	const [page, setPage] = React.useState(1);
+	const [initial, setInitial] = React.useState(1);
 	const [data, setData] = React.useState([]);
 	const [showNoResults, setShowNoResults] = React.useState(false);
 	const [propertyItems, setPropertyItems] = React.useState([]);
@@ -199,6 +199,22 @@ const SearchPage = ({
 		}
 		if (locations.length > 0) {
 			body.locations = locations;
+		}
+
+		if (parsed.t && initial === 1) {
+			if (typeof parsed.t === 'string') {
+				body.type = [parsed.t];
+			} else {
+				body.type = parsed.t;
+			}
+
+			body.type.forEach((c) => {
+				setTypes((prevState) => ({
+					...prevState,
+					[c]: true,
+				}));
+			});
+			setInitial(initial + 1);
 		}
 
 		handleCity({

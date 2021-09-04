@@ -4,6 +4,7 @@ import {
 	selectUser,
 } from '../../../redux/auth/auth.selectors';
 
+import ClearIcon from '@material-ui/icons/Clear';
 import Drawer from '../drawer';
 import MenuIcon from '@material-ui/icons/Menu';
 import React from 'react';
@@ -25,6 +26,11 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	// const [checked, setChecked] = React.useState(false);
 	const [openDrawer, setOpenDrawer] = React.useState(false);
+	const [topDrawer, setTopDrawer] = React.useState(false);
+
+	const toggleTopDrawer = () => {
+		setTopDrawer(!topDrawer);
+	};
 
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -56,9 +62,11 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 	};
 
 	return (
-		<>
-			<AppBar color={'transparent'} position={'fixed'} elevation={0}>
-				{/* {<SimpleGrow checked={checked}  />} */}
+		<div style={{ marginBottom: '3rem' }}>
+			<AppBar color={'transparent'} elevation={0}>
+				<div
+					className={clsx(classes.min, topDrawer && classes.max)}
+				></div>
 				<Drawer open={openDrawer} handleClose={handleCloseDrawer} />
 				<Box className={classes.wrapper}>
 					<div className={classes.logoWrapper}>
@@ -87,25 +95,35 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 
 						{!!isAuthenticated ? (
 							<div>
-								<Box
-									className={clsx(
-										classes.profileWrapper,
-										gClasses.smHide
-									)}
-									aria-controls="customized-menu"
-									aria-haspopup="true"
-									onClick={handleClick}
-								>
-									<img
-										src={
-											user.photo
-												? `/profile/${user.photo}`
-												: profile
-										}
-										alt="Profile"
-										className={gClasses.smHide}
-									/>
-								</Box>
+								{topDrawer ? (
+									<IconButton
+										onClick={toggleTopDrawer}
+										className={classes.iconButton}
+									>
+										<ClearIcon />
+									</IconButton>
+								) : (
+									<Box
+										className={clsx(
+											classes.profileWrapper,
+											gClasses.smHide,
+											gClasses.pointer
+										)}
+										aria-controls="customized-menu"
+										aria-haspopup="true"
+										onClick={toggleTopDrawer}
+									>
+										<img
+											src={
+												user.photo
+													? `/profile/${user.photo}`
+													: profile
+											}
+											alt="Profile"
+											className={gClasses.smHide}
+										/>
+									</Box>
+								)}
 								<Menu
 									id="customized-menu"
 									getContentAnchorEl={null}
@@ -147,7 +165,7 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 					</div>
 				</Box>
 			</AppBar>
-		</>
+		</div>
 	);
 };
 

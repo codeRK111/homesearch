@@ -68,5 +68,21 @@ const useStyles = makeStyles((theme) => ({
 			height: '15px',
 		},
 	},
+	min: {
+		background: theme.shadowColor,
+		transition: 'min-height .3s ease-in-out',
+		minHeight: 5,
+	},
+
+	max: {
+		transition: 'min-height .3s ease-in-out',
+		minHeight: 200,
+		padding: '1rem 3rem',
+	},
+	iconButton: {
+		marginLeft: '1rem',
+		borderRadius: 50,
+		boxShadow: '5px 5px 9px #a1a1a1,-5px -5px 9px #ffffff',
+	},
 }));
 export default useStyles;

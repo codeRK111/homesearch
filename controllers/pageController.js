@@ -12,11 +12,7 @@ const Admin = require('../models/adminModel');
 const mongoose = require('mongoose');
 
 exports.getHomePage = catchAsync(async (req, res, next) => {
-	const cities = await City.aggregate([
-		{
-			$limit: 10,
-		},
-	]);
+	const cities = await City.find({ top: true, status: { $ne: 'inactive' } });
 	const rentProperties = await Property.find({ for: 'rent' })
 		.sort('-createdAt')
 		.limit(3);

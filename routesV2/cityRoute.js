@@ -6,6 +6,7 @@ const uploadController = require('../controllersV2/fileUploadController');
 const router = express.Router();
 
 router.route('/states').get(cityController.getAllStates);
+router.route('/top-cities').get(cityController.getTopCities);
 router.route('/all-cities').post(cityController.getAllCities);
 router
 	.route('/:id')

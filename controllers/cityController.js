@@ -83,7 +83,7 @@ exports.searchCity = catchAsync(async (req, res, next) => {
 		return next(new AppError('Parameter name not found', 400));
 	const cities = await City.find({
 		name: { $regex: req.body.name, $options: 'i' },
-		status: 'active',
+		status: { $ne: 'inactive' },
 	});
 
 	res.status(200).json({

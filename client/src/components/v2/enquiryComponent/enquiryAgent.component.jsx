@@ -30,9 +30,11 @@ const Enquiry = () => {
 				<Grid item xs={12} md={9}>
 					<div className={classes.flexWrapper}>
 						<h1>
-							HomesearchIndia Business Assist Plan For Builders
+							HomesearchIndia Business Assist Plan For Realtors
 						</h1>
-						<h3>Get in touch with us to promote your projects.</h3>
+						<h3>
+							Get in touch with us to promote your portfolios.
+						</h3>
 						<button onClick={handleClickOpen}>ENQUIRY NOW</button>
 					</div>
 				</Grid>

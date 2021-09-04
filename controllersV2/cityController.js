@@ -134,3 +134,16 @@ exports.getAllCities = catchAsync(async (req, res) => {
 		},
 	});
 });
+
+exports.getTopCities = catchAsync(async (req, res) => {
+	const filter = { top: true, status: 'active' };
+
+	const cities = await City.find(filter).sort('-top -name');
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			cities,
+		},
+	});
+});

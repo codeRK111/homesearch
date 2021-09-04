@@ -3,6 +3,7 @@ import React, { Suspense, lazy, useEffect, useRef } from 'react';
 import { selectAuthenticated, selectUser } from './redux/auth/auth.selectors';
 
 import Footer from './components/footer/footer.component';
+import HomePageNew from './pages/v2/homePage/home.page';
 import { LoadingAnimationNormal } from './components/v2/loadingAnimation';
 import LogIn from './components/logInDialog/logInDialog.component';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -22,7 +23,7 @@ const PaymentPage = lazy(() =>
 
 const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
 
-const HomePageNew = lazy(() => import('./pages/v2/homePage/home.page'));
+// const HomePageNew = lazy(() => import('./pages/v2/homePage/home.page'));
 const BuilderPage = lazy(() => import('./pages/v2/builderPage'));
 const SearchPageNew = lazy(() => import('./pages/v2/searchPage/search.page'));
 const PropertyDetailsPageNew = lazy(() =>

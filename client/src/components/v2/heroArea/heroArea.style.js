@@ -29,10 +29,10 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	searchWrapper: {
-		width: '70rem',
+		width: '60rem',
 		padding: '0.7rem 1rem 0.7rem 1rem',
 		background: theme.shadowColor,
-		borderRadius: '25px',
+		borderRadius: '30px',
 		display: 'flex',
 		justifyContent: 'space-between',
 		boxShadow: 'inset 3px 3px 5px #b5b5b5,inset -3px -3px 5px #ffffff',
@@ -70,15 +70,12 @@ const useStyles = makeStyles((theme) => ({
 		width: '50px',
 	},
 	iconsWrapper: {
-		width: '70rem',
 		display: 'flex',
-		justifyContent: 'flex-end',
-		marginLeft: theme.leftPadding,
+		justifyContent: 'center',
 		'&>div': {
 			display: 'flex',
 			flexDirection: 'column',
 			alignItems: 'center',
-			marginLeft: '4rem',
 			'&>p': {
 				fontSize: '0.8rem',
 				fontWeight: 'bold',

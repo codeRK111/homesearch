@@ -1,9 +1,9 @@
 import About from '../../../components/v2/about/about.component';
 import { Box } from '@material-ui/core';
 import Carousel from '../../../components/carousel';
-import CustomerCount from '../../../components/v2/customerCount/customerCount.component';
 import Enquiry from '../../../components/v2/enquiryComponent/enquiry.component';
-import HeroArea from '../../../components/v2/heroArea/heroArea.component';
+import EnquiryAgent from '../../../components/v2/enquiryComponent/enquiryAgent.component';
+import HeroArea from '../../../components/v2/heroArea/v2';
 import NavBar from '../../../components/v2/nav/nav.component';
 import React from 'react';
 import RecentBlogs from '../../../components/v2/recentBlogs/recentBlogs.component';
@@ -16,6 +16,8 @@ import axios from 'axios';
 import clsx from 'clsx';
 import useStyles from './homePage.style';
 
+// import CustomerCount from '../../../components/v2/customerCount/customerCount.component';
+
 // import LatestRentProperties from '../../../components/v2/latestRentProperties/rentProperties.component';
 
 const HomePage = () => {
@@ -23,6 +25,7 @@ const HomePage = () => {
 	let cancelToken = React.useRef();
 
 	const [data, setData] = React.useState(null);
+	const [loading, setLoading] = React.useState(false);
 	React.useEffect(() => {
 		return () => {
 			if (typeof cancelToken.current != typeof undefined) {
@@ -34,6 +37,7 @@ const HomePage = () => {
 	React.useEffect(() => {
 		(async () => {
 			try {
+				setLoading(true);
 				cancelToken.current = axios.CancelToken.source();
 
 				const res = await axios.get(apiUrl('/page/homePage'), {
@@ -42,20 +46,25 @@ const HomePage = () => {
 
 				console.log(res.data.data);
 				setData(res.data.data);
+				setLoading(false);
 			} catch (error) {
 				setData(null);
 				console.log(error);
+				setLoading(false);
 			}
 		})();
 	}, []);
 	return (
 		<Box className={classes.wrapper}>
 			<NavBar />
-			<HeroArea />
+			<HeroArea
+				topCities={data ? data.cities : []}
+				initialLoading={loading}
+			/>
 			<Box className={classes.componentSpacer}>
 				<VirtualTour />
 			</Box>
-			<Box mt="5rem">
+			<Box>
 				<Carousel />
 			</Box>
 			<Box
@@ -77,8 +86,11 @@ const HomePage = () => {
 				</Box>
 			</Box>
 			<Box className={classes.componentSpacer}>
-				{data && <CustomerCount counts={data.counts} />}
+				<Enquiry />
 			</Box>
+			{/* <Box className={classes.componentSpacer}>
+				{data && <CustomerCount counts={data.counts} />}
+			</Box> */}
 			<Box
 				className={clsx(
 					classes.componentSpacer,
@@ -98,7 +110,7 @@ const HomePage = () => {
 				</Box>
 			</Box>
 			<Box className={classes.componentSpacer}>
-				<Enquiry />
+				<EnquiryAgent />
 			</Box>
 			<Box
 				className={clsx(
