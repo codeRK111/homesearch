@@ -27,7 +27,7 @@ import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import logoIcon from '../../../assets/icons/logo.svg';
-import profile from '../../../assets/icons/profile.png';
+import { profile } from '../../../utils/statc';
 import { searchCities } from '../../../redux/city/city.actions';
 import searchIcon from '../../../assets/search.svg';
 import { selectSearchCityLoading } from '../../../redux/city/city.selectors';

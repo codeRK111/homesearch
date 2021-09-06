@@ -20,6 +20,7 @@ const Enquiry = () => {
 				open={open}
 				handleClickOpen={handleClickOpen}
 				handleClose={handleClose}
+				type={'agent'}
 			/>
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={3}>

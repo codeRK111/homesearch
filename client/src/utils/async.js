@@ -24,3 +24,13 @@ export const getProjectProperty = (data, cancelToken, setLoading) => {
 			});
 	});
 };
+
+export const fakeAsync = (data, setLoading) => {
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		setTimeout(() => {
+			setLoading(false);
+			resolve('sdksdsgdkhgsk78789');
+		}, 2000);
+	});
+};

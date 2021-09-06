@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import logoIcon from '../../../assets/icons/logo.svg';
-import profile from '../../../assets/icons/profile.png';
+import { profile } from '../../../utils/statc';
 import { signOut } from '../../../redux/auth/auth.actions';
 import { toggleLoginPopup } from '../../../redux/ui/ui.actions';
 import useGlovalStyles from '../../../common.style';

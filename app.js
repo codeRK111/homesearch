@@ -45,6 +45,7 @@ const v2UserRoute = require('./routesV2/userRoute');
 const v2AdminRoute = require('./routesV2/adminRoute');
 const v2CityRoute = require('./routesV2/cityRoute');
 const v2ReviewRoute = require('./routesV2/reviewRoute');
+const v2JoinRequestRoute = require('./routesV2/joinRequestRoute');
 
 const app = express();
 
@@ -188,6 +189,7 @@ app.use('/api/v2/user', v2UserRoute);
 app.use('/api/v2/admin', v2AdminRoute);
 app.use('/api/v2/city', v2CityRoute);
 app.use('/api/v2/review', v2ReviewRoute);
+app.use('/api/v2/join', v2JoinRequestRoute);
 
 app.all('/api/*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));

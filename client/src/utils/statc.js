@@ -1,6 +1,7 @@
 const path = '/assets/static';
 
 export const admin = `${path}/admin.svg`;
+export const profile = `${path}/profile.png`;
 export const agent = `${path}/agent.svg`;
 export const area = `${path}/area.svg`;
 export const badge = `${path}/badge.svg`;

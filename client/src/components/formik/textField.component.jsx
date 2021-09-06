@@ -1,10 +1,10 @@
-import { Box, TextField } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 
 import React from 'react';
 import { useField } from 'formik';
 import useStyles from './formik.styles';
 
-const RowSelect = ({ formLabel, spacing = true, ...otherProps }) => {
+const RowSelect = ({ formLabel, spacing = true, error, ...otherProps }) => {
 	const classes = useStyles();
 	const [field, meta] = useField(otherProps);
 	let helperText = (meta.value || meta.touched) && meta.error;
@@ -33,6 +33,11 @@ const RowSelect = ({ formLabel, spacing = true, ...otherProps }) => {
 					{...otherProps}
 				/>
 			</Box>
+			{error && (
+				<Typography style={{ color: 'red' }} variant="caption">
+					{error}
+				</Typography>
+			)}
 		</Box>
 	);
 };
