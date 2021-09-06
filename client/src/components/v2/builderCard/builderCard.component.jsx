@@ -3,7 +3,7 @@ import { Avatar, Box, Grid } from '@material-ui/core';
 import React from 'react';
 import city from '../../../assets/city.jpg';
 import { logo } from '../../../utils/statc';
-import moment from 'moment';
+import moment from 'dayjs';
 import { shortLength } from '../../../utils/render.utils';
 import useStyles from './builderCard.style';
 

@@ -22,7 +22,7 @@ import SwipablePhotos from '../../swipableViews';
 import ViewFullImage from '../../viewFullImage';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
-import moment from 'moment';
+import moment from 'dayjs';
 import useGlobalStyles from '../../../../common.style';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from '../searchCard.style';

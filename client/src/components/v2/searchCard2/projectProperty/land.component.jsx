@@ -9,7 +9,7 @@ import ViewFullImage from '../../viewFullImage';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
 import logoIcon from '../../../../assets/icons/logo.svg';
-import moment from 'moment';
+import moment from 'dayjs';
 import useGlobalStyles from '../../../../common.style';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from '../searchCard.style';

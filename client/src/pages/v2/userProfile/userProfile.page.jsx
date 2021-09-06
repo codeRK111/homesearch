@@ -37,7 +37,7 @@ import badgeIcon from '../../../assets/icons/badge.svg';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import moment from 'moment';
+import moment from 'dayjs';
 import { selectUser } from '../../../redux/auth/auth.selectors';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './userProfile.style';

@@ -1,9 +1,9 @@
-import 'date-fns';
+import 'dayjs';
 
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 import { Box } from '@material-ui/core';
-import DateFnsUtils from '@date-io/date-fns';
+import DateFnsUtils from '@date-io/dayjs';
 import React from 'react';
 import Test from './test';
 import useStyles from './formik.styles';
@@ -19,7 +19,7 @@ const RowSelect = ({ formLabel, ...otherProps }) => {
 						fullWidth
 						disablePast
 						id="date-picker-dialog"
-						format="MM/dd/yyyy"
+						format="MM/DD/YYYY"
 						KeyboardButtonProps={{
 							'aria-label': 'change date',
 						}}

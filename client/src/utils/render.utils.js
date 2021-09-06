@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'dayjs';
 import noUser from '../assets/noUser.png';
 import { validateNumber } from './validation.utils';
 
@@ -14,7 +14,7 @@ export const renderInfo = (info) => (info ? info : 'Not Specified');
 export const renderBool = (info) => (info ? 'Yes' : 'No');
 export const parseDate = (date) => {
 	const m = moment(date);
-	return m.format('Do MMM YYYY');
+	return m.format('DD MMM YYYY');
 };
 
 export const renderByPropertyFor = (property, pFor, component) => {
