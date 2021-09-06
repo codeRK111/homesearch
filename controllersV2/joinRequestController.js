@@ -15,7 +15,7 @@ exports.addRequest = catchAsync(async (req, res, next) => {
 
 	const isExisting = await Request.findOne({
 		phoneNumber: req.body.phoneNumber,
-	});
+	}).select('+otp +otpExpiresAt');
 
 	const randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
 	if (isExisting) {
@@ -65,7 +65,9 @@ exports.verifyRequest = catchAsync(async (req, res, next) => {
 		}
 	});
 
-	const request = await Request.findById(req.params.id);
+	const request = await Request.findById(req.params.id).select(
+		'+otp +otpExpiresAt'
+	);
 
 	if (!request) {
 		return next(new AppError('Invalid request'));
