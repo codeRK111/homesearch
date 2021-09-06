@@ -11,6 +11,10 @@ const useStyles = makeStyles((theme) => ({
 
 		backgroundSize: 'contain',
 		backgroundPosition: 'bottom',
+		[theme.breakpoints.down('sm')]: {
+			padding: '2rem 0',
+			height: '75vh',
+		},
 	},
 	center: {
 		display: 'flex',
@@ -32,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: 'bolder',
 		color: theme.primaryHeadingColor,
 		cursor: 'pointer',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.2rem',
+		},
 	},
 	categorySelectedButton: {
 		color: theme.utilColor,
@@ -39,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
 	menuParent: {
 		position: 'relative',
 		marginTop: '2rem',
+		[theme.breakpoints.down('sm')]: {
+			marginTop: '1rem',
+			width: '100%',
+		},
 	},
 	menuWrapper: {
 		position: 'absolute',
@@ -109,6 +120,9 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.primaryHeadingColor,
 		fontWeight: 'bold',
 		fontSize: '0.8rem',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '0.7rem',
+		},
 	},
 }));
 export default useStyles;

@@ -36,10 +36,12 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		boxShadow: 'inset 3px 3px 5px #b5b5b5,inset -3px -3px 5px #ffffff',
+		boxSizing: 'border-box',
 		'&>input': {
 			border: 'none',
 			width: '100%',
 			background: 'transparent',
+			boxSizing: 'border-box',
 
 			'&:focus': {
 				outline: 'none',
