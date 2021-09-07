@@ -58,6 +58,7 @@ import Query from './pages/queries/queries.component';
 import QueryConversation from './pages/queries/conversationPage';
 import QueryDetailsPage from './pages/queries/queryDetails.component';
 import React from 'react';
+import RequestPage from './pages/requestPage';
 import RequestsPage from './pages/requestPhotosPage/requestPhotos.page';
 import ReviewsPage from './pages/reviewsPage';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -79,6 +80,7 @@ import { withLoader } from './hoc/withLoader';
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const AgentQueryPageWithDrawer = Drawer(AgentQueryPage);
+const RequestPageWithDrawer = Drawer(RequestPage);
 const ReviewsPageWithDrawer = Drawer(ReviewsPage);
 const DigitalMarketingPageWithDrawer = Drawer(DigitalMarketingPage);
 const ManageTaskPropertyPageWithDrawer = Drawer(ManageTaskProperty);
@@ -187,6 +189,16 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 					render={() => (
 						<Protected
 							component={ReviewsPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/join-requests/:type"
+					render={() => (
+						<Protected
+							component={RequestPageWithDrawer}
 							{...props}
 						/>
 					)}

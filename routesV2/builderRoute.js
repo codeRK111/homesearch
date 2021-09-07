@@ -41,6 +41,7 @@ router
 		uploadController.uploadBuilderPhoto,
 		builderController.handleImages
 	);
+router.route('/search-builder').get(builderController.searchBuilder);
 router
 	.route('/director/:id')
 	.post(

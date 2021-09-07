@@ -3,37 +3,14 @@ import { apiUrl, asyncError } from './render.utils';
 import axios from 'axios';
 import queryString from 'query-string';
 
-const token = localStorage.getItem('JWT_CLIENT');
+const token = localStorage.getItem('JWT');
 
-export const getBuilderDetails = (slug, cancelToken, setLoading) => {
-	setLoading(true);
+export const getJoinRequests = (data, cancelToken, setLoading) => {
+	const stringified = queryString.stringify(data);
 	return new Promise((resolve, reject) => {
-		axios
-			.get(apiUrl(`/builder/slug/${slug}`, 2), {
-				cancelToken: cancelToken.token,
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-			})
-			.then((resp) => {
-				setLoading(false);
-				return resolve(resp.data.data.builder);
-			})
-			.catch((error) => {
-				setLoading(false);
-				console.log(error);
-				return reject(asyncError(error));
-			});
-	});
-};
-
-export const searchBuilder = (data, cancelToken, setLoading) => {
-	return new Promise((resolve, reject) => {
-		const stringified = queryString.stringify(data);
 		setLoading(true);
 		axios
-			.get(apiUrl(`/builder/search-builder?${stringified}`, 2), {
+			.get(apiUrl(`/join/admin?${stringified}`, 'v2'), {
 				cancelToken: cancelToken.token,
 				headers: {
 					'Content-Type': 'application/json',
@@ -43,6 +20,28 @@ export const searchBuilder = (data, cancelToken, setLoading) => {
 			.then((resp) => {
 				setLoading(false);
 				return resolve(resp.data.data);
+			})
+			.catch((error) => {
+				setLoading(false);
+				return reject(asyncError(error));
+			});
+	});
+};
+
+export const updateJoinRequest = (id, data, cancelToken, setLoading) => {
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.patch(apiUrl(`/join/admin/${id}`, 'v2'), data, {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data.request);
 			})
 			.catch((error) => {
 				setLoading(false);

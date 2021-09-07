@@ -41,5 +41,12 @@ const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		boxSizing: 'border-box',
 	},
+	link: {
+		color: '#000000',
+		textDecoration: 'none',
+		'&:hover': {
+			textDecoration: 'underline',
+		},
+	},
 }));
 export default useStyles;

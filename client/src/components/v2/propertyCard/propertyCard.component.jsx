@@ -1,6 +1,7 @@
 import { area, bed, car, location2, tag, tub } from '../../../utils/statc';
 
 import { Box } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import React from 'react';
 import city from '../../../assets/city.jpg';
 import clsx from 'clsx';
@@ -42,7 +43,12 @@ const PropertyCard = ({ data }) => {
 								classes.title
 							)}
 						>
-							{data.title}
+							<Link
+								to={`/v2/property-details/${data.id}`}
+								className={classes.link}
+							>
+								{data.title}
+							</Link>
 						</h2>
 						<div className={classes.flexParentWrapper}>
 							<div className={classes.flexWrapper}>

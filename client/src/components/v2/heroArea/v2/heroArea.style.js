@@ -5,15 +5,18 @@ const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		padding: '4rem 1rem 1rem 1rem',
 		boxSizing: 'border-box',
-		height: '90vh',
-		backgroundImage: `url(${img})`,
-		backgroundRepeat: 'no-repeat',
 
-		backgroundSize: 'contain',
-		backgroundPosition: 'bottom',
 		[theme.breakpoints.down('sm')]: {
 			padding: '2rem 0',
-			height: '75vh',
+			height: '65vh',
+		},
+		[theme.breakpoints.up('sm')]: {
+			height: '90vh',
+			backgroundImage: `url(${img})`,
+			backgroundRepeat: 'no-repeat',
+
+			backgroundSize: 'contain',
+			backgroundPosition: 'bottom',
 		},
 	},
 	center: {

@@ -20,3 +20,7 @@ export const selectKRA = createSelector([selectSidebar], (u) => u.kra);
 export const selectKPI = createSelector([selectSidebar], (u) => u.kpi);
 export const selectPackage = createSelector([selectSidebar], (u) => u.package);
 export const selectReview = createSelector([selectSidebar], (u) => u.review);
+export const selectJoinRequest = createSelector(
+	[selectSidebar],
+	(u) => u.joinRequest
+);

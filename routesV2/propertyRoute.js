@@ -10,6 +10,7 @@ router.post(
 	authController.protect,
 	propertyController.addPropertyByUserForSale
 );
+router.get('/user/search-property', propertyController.searchProperty);
 router.post(
 	'/admin/search-by-name',
 	adminController.protect,

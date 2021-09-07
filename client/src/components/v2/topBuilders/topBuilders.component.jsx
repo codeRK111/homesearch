@@ -1,28 +1,76 @@
 import { Box, Grid } from '@material-ui/core';
-
-import Card from '../builderCard/builderCard.component';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Chip from '../chip/chip.component';
-import React from 'react';
+import axios from 'axios';
 import clsx from 'clsx';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useGlobalStyles from '../../../common.style';
+import { searchBuilder } from '../../../utils/asyncBuilder';
+import Card from '../builderCard/builderCard.component';
+import Chip from '../chip/chip.component';
 import useStyles from './topBuilders.style';
 
-const RentProperties = ({ data }) => {
+const RentProperties = ({ cities, loading, setLoading, error, setError }) => {
 	const classes = useStyles();
 	const gClasses = useGlobalStyles();
 
 	const [selected, setSelected] = React.useState(null);
+	const [data, setData] = useState({
+		totalDocs: 0,
+		builders: [],
+	});
+
+	// Cancel Token
+	const cancelToken = useRef(null);
+
+	//Callbacks
 
 	const onClick = (c) => {
 		setSelected(c);
 	};
+
+	// Fetch properties
+	const fetchRequests = useCallback(async () => {
+		try {
+			cancelToken.current = axios.CancelToken.source();
+			const filter = {
+				page: 1,
+				limit: 20,
+			};
+
+			if (selected) {
+				filter.city = selected;
+			}
+
+			const resp = await searchBuilder(
+				filter,
+				cancelToken.current,
+				setLoading
+			);
+			setData(resp);
+			setError(null);
+		} catch (error) {
+			setError(error);
+			// setData([]);
+		}
+	}, [setError, setLoading, selected]);
+
+	/* Fetch join requests */
+	useEffect(() => {
+		fetchRequests();
+
+		// Cancel request on unmount
+		return () => {
+			if (cancelToken.current) {
+				cancelToken.current.cancel();
+			}
+		};
+	}, [fetchRequests]);
 	return (
 		<div>
 			{!!data && (
 				<div className={classes.listWrapper}>
 					<Grid container spacing={1}>
-						{data.cities.map((c, i) => (
+						{cities.map((c, i) => (
 							<Grid item xs={4} md={1}>
 								<Chip
 									title={c.name}

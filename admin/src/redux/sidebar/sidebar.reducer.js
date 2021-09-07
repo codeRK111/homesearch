@@ -10,6 +10,7 @@ const INITIAL_STATE = {
 	kpi: false,
 	package: false,
 	review: false,
+	joinRequest: false,
 };
 
 const sidebarReducer = (state = INITIAL_STATE, action) => {
@@ -58,6 +59,11 @@ const sidebarReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				review: !state.review,
+			};
+		case SidebarActionTypes.TOGGLE_JOIN_REQUEST:
+			return {
+				...state,
+				joinRequest: !state.joinRequest,
 			};
 
 		default:

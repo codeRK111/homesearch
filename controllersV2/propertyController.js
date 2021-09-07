@@ -367,3 +367,31 @@ exports.searchByName = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+exports.searchProperty = catchAsync(async (req, res, next) => {
+	const filter = {
+		status: 'active',
+	};
+	const page = req.query.page * 1 || 1;
+	const limit = req.query.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	if (req.query['for']) {
+		filter['for'] = req.query['for'];
+	}
+
+	if (req.query.city) {
+		filter.city = req.query.city;
+	}
+	const totalDocs = await Property.countDocuments(filter);
+	const properties = await Property.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			totalDocs,
+			properties,
+		},
+	});
+});

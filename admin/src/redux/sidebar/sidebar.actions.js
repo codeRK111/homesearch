@@ -29,3 +29,6 @@ export const togglePackage = () => ({
 export const toggleReview = () => ({
 	type: SidebarActionTypes.TOGGLE_REVIEW,
 });
+export const toggleJoinRequest = () => ({
+	type: SidebarActionTypes.TOGGLE_JOIN_REQUEST,
+});

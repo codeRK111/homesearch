@@ -15,6 +15,9 @@ import OtpInput from 'react-otp-input';
 import Slide from '@material-ui/core/Slide';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectUser } from '../../../redux/auth/auth.selectors';
 import useStyles from './contactBuilder.style';
 import { withAsync } from '../../../hoc/withAsync';
 import { withStyles } from '@material-ui/core/styles';
@@ -67,6 +70,7 @@ const DialogContent = withStyles((theme) => ({
 }))(MuiDialogContent);
 
 const JoinHomesearch = ({
+	user,
 	open,
 	handleClose,
 	loading,
@@ -167,7 +171,7 @@ const JoinHomesearch = ({
 								}}
 							>
 								Thank you, for showing interest in homesearch18.
-								We will rich out to you soon
+								We will reach out to you soon
 							</Typography>
 							<Box
 								mt="1rem"
@@ -200,9 +204,9 @@ const JoinHomesearch = ({
 					) : (
 						<Formik
 							initialValues={{
-								phoneNumber: '',
-								name: '',
-								email: '',
+								phoneNumber: user.number,
+								name: user.name,
+								email: user.email,
 							}}
 							validationSchema={createValidation}
 							enableReinitialize
@@ -298,4 +302,8 @@ const JoinHomesearch = ({
 	);
 };
 
-export default withAsync(JoinHomesearch);
+const mapStateToProps = createStructuredSelector({
+	user: selectUser,
+});
+
+export default connect(mapStateToProps)(withAsync(JoinHomesearch));

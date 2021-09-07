@@ -1,5 +1,6 @@
 import {
 	selectBuilder,
+	selectJoinRequest,
 	selectKPI,
 	selectKRA,
 	selectLocation,
@@ -11,6 +12,7 @@ import {
 } from '../../redux/sidebar/sidebar.selector';
 import {
 	toggleBuilder,
+	toggleJoinRequest,
 	toggleKPI,
 	toggleKRA,
 	toggleLocation,
@@ -85,6 +87,8 @@ const MainListItems = ({
 	togglePackage,
 	selectReview,
 	toggleReview,
+	selectJoinRequest,
+	toggleJoinRequest,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -863,6 +867,37 @@ const MainListItems = ({
 					</ListItem>
 				</List>
 			</Collapse>
+			<ListItem button onClick={toggleJoinRequest}>
+				<ListItemIcon>
+					<ChatIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="Join Requests" />
+				{selectJoinRequest ? <ExpandLess /> : <ExpandMore />}
+			</ListItem>
+			<Collapse in={selectJoinRequest} timeout="auto" unmountOnExit>
+				<List component="div" disablePadding>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/join-requests/builder')}
+					>
+						<ListItemIcon>
+							<ChatIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Builder" />
+					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/join-requests/agent')}
+					>
+						<ListItemIcon>
+							<ChatIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Realtors" />
+					</ListItem>
+				</List>
+			</Collapse>
 
 			<ListItem button onClick={togglePackage}>
 				<ListItemIcon>
@@ -918,6 +953,7 @@ const mapStateToProps = createStructuredSelector({
 	selectKPI,
 	selectPackage,
 	selectReview,
+	selectJoinRequest,
 });
 
 const dispatchStateToProps = (dispatch) => ({
@@ -930,6 +966,7 @@ const dispatchStateToProps = (dispatch) => ({
 	toggleKPI: () => dispatch(toggleKPI()),
 	togglePackage: () => dispatch(togglePackage()),
 	toggleReview: () => dispatch(toggleReview()),
+	toggleJoinRequest: () => dispatch(toggleJoinRequest()),
 });
 
 export default connect(mapStateToProps, dispatchStateToProps)(MainListItems);

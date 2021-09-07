@@ -93,3 +93,88 @@ exports.verifyRequest = catchAsync(async (req, res, next) => {
 		return next(new AppError(error.message));
 	}
 });
+
+exports.getRequests = catchAsync(async (req, res, next) => {
+	const filter = {};
+	const page = req.query.page * 1 || 1;
+	const limit = req.query.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	// Search By name
+	if (req.query.name) {
+		filter.name = {
+			$regex: req.query.name,
+			$options: 'i',
+		};
+	}
+
+	// Search By email
+	if (req.query.email) {
+		filter.email = {
+			$regex: req.query.email,
+			$options: 'i',
+		};
+	}
+
+	// Search By phone number
+	if (req.query.phoneNumber) {
+		filter.phoneNumber = {
+			$regex: req.query.email,
+			$options: 'i',
+		};
+	}
+
+	if (req.query.type) {
+		filter.type = req.query.type;
+	}
+
+	if (
+		req.query.verified === true ||
+		req.query.verified === 'true' ||
+		req.query.verified === 1
+	) {
+		filter.verified = true;
+	} else if (
+		req.query.verified === false ||
+		req.query.verified === 'false' ||
+		req.query.verified === 0
+	) {
+		filter.verified = false;
+	} else {
+		if (filter.verified) {
+			delete filter.verified;
+		}
+	}
+
+	const totalDocs = await Request.countDocuments(filter);
+	const requests = await Request.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			totalDocs,
+			requests,
+		},
+	});
+});
+
+exports.updateRequest = catchAsync(async (req, res, next) => {
+	const data = {};
+	if (req.body.remark) {
+		data.remark = req.body.remark;
+	}
+	data.remarkBy = req.admin.id;
+
+	const request = await Request.findByIdAndUpdate(req.params.id, data, {
+		new: true,
+		runValidators: true,
+	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			request,
+		},
+	});
+});
