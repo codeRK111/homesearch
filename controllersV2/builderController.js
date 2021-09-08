@@ -389,7 +389,7 @@ exports.searchBuilder = catchAsync(async (req, res, next) => {
 	const skip = (page - 1) * limit;
 
 	if (req.query.city) {
-		filter.city = req.query.city;
+		filter.cities = mongoose.Types.ObjectId(req.query.city);
 	}
 	const totalDocs = await Builder.countDocuments(filter);
 	const builders = await Builder.find(filter)

@@ -2,6 +2,7 @@ const AppError = require('./../utils/appError');
 const ProjectSpeciality = require('./../models/projectSpeciality');
 const ProjectAgent = require('./../models/projectAgent');
 const Project = require('./../models/projectModule');
+const Opinion = require('./../models/projectOpinionModel');
 const ProjectProperty = require('./../models/projectPropertyModule');
 const catchAsync = require('./../utils/catchAsync');
 const mongoose = require('mongoose');
@@ -699,6 +700,215 @@ exports.removeProject = catchAsync(async (req, res) => {
 		status: 'success',
 		data: {
 			project,
+		},
+	});
+});
+
+exports.addOpinion = catchAsync(async (req, res) => {
+	if (req.body.status) {
+		delete req.body.status;
+	}
+
+	const existing = await Opinion.findOne({
+		user: req.user.id,
+		project: req.params.projectId,
+	});
+
+	if (existing) {
+		if (
+			req.body.parkingEasy !== null &&
+			req.body.parkingEasy !== undefined &&
+			typeof req.body.parkingEasy === 'boolean'
+		) {
+			existing.parkingEasy = req.body.parkingEasy;
+		}
+		if (
+			req.body.walkableDistanceFromMarket !== null &&
+			req.body.walkableDistanceFromMarket !== undefined &&
+			typeof req.body.walkableDistanceFromMarket === 'boolean'
+		) {
+			existing.walkableDistanceFromMarket =
+				req.body.walkableDistanceFromMarket;
+		}
+		if (
+			req.body.studentArea !== null &&
+			req.body.studentArea !== undefined &&
+			typeof req.body.studentArea === 'boolean'
+		) {
+			existing.studentArea = req.body.studentArea;
+		}
+		if (
+			req.body.dogFriendly !== null &&
+			req.body.dogFriendly !== undefined &&
+			typeof req.body.dogFriendly === 'boolean'
+		) {
+			existing.dogFriendly = req.body.dogFriendly;
+		}
+		if (
+			req.body.familyArea !== null &&
+			req.body.familyArea !== undefined &&
+			typeof req.body.familyArea === 'boolean'
+		) {
+			existing.familyArea = req.body.familyArea;
+		}
+		if (
+			req.body.safeArea !== null &&
+			req.body.safeArea !== undefined &&
+			typeof req.body.safeArea === 'boolean'
+		) {
+			existing.safeArea = req.body.safeArea;
+		}
+		await existing.save();
+
+		return res.status(200).json({
+			status: 'success',
+			data: {
+				opinion: existing,
+			},
+		});
+	}
+
+	req.body.user = req.user.id;
+	req.body.project = req.params.projectId;
+
+	const opinion = await Opinion.create(req.body);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			opinion,
+		},
+	});
+});
+exports.getOpinion = catchAsync(async (req, res) => {
+	const opinion = await Opinion.aggregate([
+		{
+			$match: {
+				project: mongoose.Types.ObjectId(req.params.projectId),
+			},
+		},
+		{
+			$group: {
+				_id: null,
+				totalVotes: {
+					$sum: 1,
+				},
+				parkingEasy: {
+					$sum: {
+						$cond: ['$parkingEasy', 1, 0],
+					},
+				},
+				walkableDistanceFromMarket: {
+					$sum: {
+						$cond: ['$walkableDistanceFromMarket', 1, 0],
+					},
+				},
+				studentArea: {
+					$sum: {
+						$cond: ['$studentArea', 1, 0],
+					},
+				},
+				dogFriendly: {
+					$sum: {
+						$cond: ['$dogFriendly', 1, 0],
+					},
+				},
+				familyArea: {
+					$sum: {
+						$cond: ['$familyArea', 1, 0],
+					},
+				},
+				safeArea: {
+					$sum: {
+						$cond: ['$familyArea', 1, 0],
+					},
+				},
+			},
+		},
+		{
+			$project: {
+				parkingEasy: {
+					$multiply: [
+						{
+							$divide: ['$parkingEasy', '$totalVotes'],
+						},
+						100,
+					],
+				},
+				walkableDistanceFromMarket: {
+					$multiply: [
+						{
+							$divide: [
+								'$walkableDistanceFromMarket',
+								'$totalVotes',
+							],
+						},
+						100,
+					],
+				},
+				studentArea: {
+					$multiply: [
+						{
+							$divide: ['$studentArea', '$totalVotes'],
+						},
+						100,
+					],
+				},
+				dogFriendly: {
+					$multiply: [
+						{
+							$divide: ['$dogFriendly', '$totalVotes'],
+						},
+						100,
+					],
+				},
+				familyArea: {
+					$multiply: [
+						{
+							$divide: ['$familyArea', '$totalVotes'],
+						},
+						100,
+					],
+				},
+				safeArea: {
+					$multiply: [
+						{
+							$divide: ['$safeArea', '$totalVotes'],
+						},
+						100,
+					],
+				},
+			},
+		},
+	]);
+
+	const myOpinion = await Opinion.findOne({
+		user: req.params.userId ? req.params.userId : null,
+		project: req.params.projectId,
+	}).select('-user -status -project -_id -updatedAt -id -__v');
+	res.status(200).json({
+		status: 'success',
+		data: {
+			opinion:
+				opinion.length > 0
+					? opinion[0]
+					: {
+							parkingEasy: 0,
+							walkableDistanceFromMarket: 0,
+							studentArea: 0,
+							dogFriendly: 0,
+							familyArea: 0,
+							safeArea: 0,
+					  },
+			myOpinion: myOpinion
+				? myOpinion
+				: {
+						parkingEasy: false,
+						walkableDistanceFromMarket: false,
+						studentArea: false,
+						dogFriendly: false,
+						familyArea: false,
+						safeArea: false,
+				  },
 		},
 	});
 });

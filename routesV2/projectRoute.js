@@ -3,6 +3,7 @@ const specialityController = require('../controllersV2/projectSpecialityControll
 const projectController = require('../controllersV2/projectController');
 const fileController = require('../controllersV2/fileUploadController');
 const adminController = require('../controllers/adminController');
+const authController = require('../controllers/authController');
 const validator = require('../validators/projectValidator');
 // const authController = require('../controllers/authController');
 
@@ -10,6 +11,12 @@ const router = express.Router();
 
 // Admin
 
+router
+	.route('/add-opinion/:projectId')
+	.post(authController.protect, projectController.addOpinion);
+router
+	.route('/get-opinion/:projectId/:userId?')
+	.get(projectController.getOpinion);
 router
 	.route('/search-by-city')
 	.post(adminController.protect, projectController.searchByCity);

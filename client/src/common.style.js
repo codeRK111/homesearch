@@ -160,6 +160,16 @@ const globalStyle = makeStyles((theme) => ({
 		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 		letterSpacing: 1,
 	},
+	buttonShadow: {
+		border: 'none',
+		background: theme.shadowColor,
+		borderRadius: '20px',
+		boxShadow: '10px 10px 20px #acacac,-10px -10px 20px #ffffff',
+		padding: '1rem 1.5rem',
+		cursor: 'pointer',
+		fontWeight: 'bold',
+		color: theme.primaryHeadingColor,
+	},
 }));
 
 export default globalStyle;

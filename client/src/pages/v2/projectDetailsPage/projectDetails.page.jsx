@@ -4,11 +4,10 @@ import React, { useEffect, useState } from 'react';
 import AgentCard from '../../../components/v2/ownerCard/agentCard.component';
 import Amenity from '../../../components/v2/amenity/amenity.component';
 import BuilderCard from '../../../components/v2/ownerCard/builderCard.component';
-import ChipWrapper from '../../../components/v2/chipWrapper/chipWrapper.component';
 import FlatHeader from '../../../components/v2/searchCard2/project/flatDetails.component';
 import LandHeader from '../../../components/v2/searchCard2/project/landDetails.component';
 import LegalClearance from '../propertyDetails/legalClearance.component';
-import { Link } from 'react-router-dom';
+import LocalOpinion from './localOpinion.component';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import Properties from './properties.component';
 import PropertyComment from '../../../components/v2/comment';
@@ -22,7 +21,6 @@ import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { getProjectAgents } from '../../../utils/asyncProject';
 import { getProjectProperty } from '../../../utils/async';
-import likeIcon from '../../../assets/icons/like.svg';
 import { setSnackbar } from '../../../redux/ui/ui.actions';
 import threeSixty from '../../../assets/360.png';
 import useGlobalStyles from '../../../common.style';
@@ -378,95 +376,9 @@ const ProjectDetailsPage = ({
 								</Box>
 								<Properties project={data.project} />
 
-								<Box mt="3rem" mb="2rem">
-									<h2 className={globalClasses.colorPrimary}>
-										What Locals Say About The Area
-									</h2>
+								<Box mt="2rem">
+									<LocalOpinion projectId={id} />
 								</Box>
-								<Grid container spacing={3}>
-									{locals.map((c, i) => (
-										<Grid key={i} item xs={12} md={4}>
-											<div
-												className={
-													globalClasses.alignCenter
-												}
-											>
-												<ChipWrapper>
-													<div
-														className={clsx(
-															globalClasses.alignCenter,
-															globalClasses.justifyCenter
-														)}
-													>
-														<img
-															src={likeIcon}
-															alt="Like"
-															className={
-																classes.likeIcon
-															}
-														/>
-														<Box ml="0.5rem">
-															<h4
-																className={clsx(
-																	globalClasses.colorPrimary,
-																	globalClasses.noSpace,
-																	classes.likeValue
-																)}
-															>
-																92%
-															</h4>
-														</Box>
-													</div>
-												</ChipWrapper>
-												<Box ml="1rem">
-													<h4
-														className={clsx(
-															globalClasses.colorPrimary,
-															globalClasses.noSpace
-														)}
-													>
-														{c}
-													</h4>
-												</Box>
-											</div>
-										</Grid>
-									))}
-									<Grid item xs={12} md={4}>
-										<div
-											className={
-												globalClasses.alignCenter
-											}
-										>
-											<ChipWrapper>
-												<div
-													className={clsx(
-														globalClasses.justifyCenter
-													)}
-												>
-													<h4
-														className={clsx(
-															globalClasses.colorPrimary,
-															globalClasses.noSpace
-														)}
-													>
-														See All
-													</h4>
-												</div>
-											</ChipWrapper>
-											<Box ml="1rem">
-												<Link
-													className={clsx(
-														globalClasses.colorPrimary,
-														globalClasses.bold,
-														globalClasses.xsText
-													)}
-												>
-													Take Part In The Survey
-												</Link>
-											</Box>
-										</div>
-									</Grid>
-								</Grid>
 								<PropertyComment
 									type={'project'}
 									id={data.project.id}

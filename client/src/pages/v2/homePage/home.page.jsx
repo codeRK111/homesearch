@@ -9,16 +9,12 @@ import React from 'react';
 import RecentBlogs from '../../../components/v2/recentBlogs/recentBlogs.component';
 import RentProperties from '../../../components/v2/rentProperties/rentProperties.component';
 import SaleProperties from '../../../components/v2/saleProperties/saleProperties.component';
+import TopBuilders from '../../../components/v2/topBuilders/topBuilders.component';
 import VirtualTour from '../../../components/v2/virtualTour/virtualTour.component';
 import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
 import clsx from 'clsx';
 import useStyles from './homePage.style';
-
-// import TopBuilders from '../../../components/v2/topBuilders/topBuilders.component';
-
-
-
 
 // import CustomerCount from '../../../components/v2/customerCount/customerCount.component';
 
@@ -102,7 +98,7 @@ const HomePage = () => {
 			<Box className={classes.componentSpacer}>
 				<EnquiryAgent />
 			</Box>
-			{/* <Box
+			<Box
 				className={clsx(
 					classes.componentSpacer,
 					classes.componentPadding
@@ -112,7 +108,7 @@ const HomePage = () => {
 				<Box mt="3rem">
 					<TopBuilders cities={data ? data.cities : []} />
 				</Box>
-			</Box> */}
+			</Box>
 			<Box
 				className={clsx(
 					classes.componentSpacer,

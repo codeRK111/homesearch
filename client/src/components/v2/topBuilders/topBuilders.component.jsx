@@ -1,13 +1,15 @@
 import { Box, Grid } from '@material-ui/core';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import axios from 'axios';
-import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import useGlobalStyles from '../../../common.style';
-import { searchBuilder } from '../../../utils/asyncBuilder';
+
 import Card from '../builderCard/builderCard.component';
+import Carousel from '../../carousel';
 import Chip from '../chip/chip.component';
+import SimilarPropertiesSkeleton from '../../skeleton/similarProperties.component';
+import axios from 'axios';
+import { searchBuilder } from '../../../utils/asyncBuilder';
+import useGlobalStyles from '../../../common.style';
 import useStyles from './topBuilders.style';
+import { withAsync } from '../../../hoc/withAsync';
 
 const RentProperties = ({ cities, loading, setLoading, error, setError }) => {
 	const classes = useStyles();
@@ -84,41 +86,18 @@ const RentProperties = ({ cities, loading, setLoading, error, setError }) => {
 				</div>
 			)}
 			<Box mt="3rem">
-				{!!data && (
-					<div className={classes.propertiesWrapper}>
-						{/* <div className={clsx(classes.scrollbar, gClasses.smHide)}>
-						<div className={classes.scrollWrapper}>
-							<ChevronLeftIcon style={{ fontSize: 40 }} />
-						</div>
-					</div> */}
-						<div className={classes.content}>
-							<Grid container spacing={5}>
-								{data.builders.map((c) => (
-									<Grid item xs={12} md={4} key={c.id}>
-										<Card data={c} />
-									</Grid>
-								))}
-							</Grid>
-						</div>
-						{data.builders.length > 3 && (
-							<div
-								className={clsx(
-									classes.scrollbarRight,
-									gClasses.smHide
-								)}
-							>
-								<div className={classes.scrollWrapper}>
-									<ChevronRightIcon
-										style={{ fontSize: 40 }}
-									/>
-								</div>
-							</div>
-						)}
-					</div>
+				{loading ? (
+					<SimilarPropertiesSkeleton />
+				) : (
+					<Carousel
+						docs={data.builders}
+						Card={Card}
+						defaultSlide={3}
+					/>
 				)}
 			</Box>
 		</div>
 	);
 };
 
-export default RentProperties;
+export default withAsync(RentProperties);
