@@ -50,6 +50,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import ProjectAdvertisement from './pages/projectAdvertisement/projectAdvertisement.page';
 import ProjectPage from './pages/projects/projects.component';
 import ProjectSpecialitiesPage from './pages/projectSpeciality';
+import ProjectSurvayPage from './pages/projectSurvey';
 import PropertyAdvertisement from './pages/propertyAdvertisement/propertyAdvertisement.page';
 import PropertyPackage from './pages/propertyPackage/propertyPackage.page';
 import PropertySale from './pages/properties/propertiesSale.component';
@@ -80,6 +81,7 @@ import { withLoader } from './hoc/withLoader';
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const AgentQueryPageWithDrawer = Drawer(AgentQueryPage);
+const ProjectSurvayPageWithDrawer = Drawer(ProjectSurvayPage);
 const RequestPageWithDrawer = Drawer(RequestPage);
 const ReviewsPageWithDrawer = Drawer(ReviewsPage);
 const DigitalMarketingPageWithDrawer = Drawer(DigitalMarketingPage);
@@ -179,6 +181,16 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 					render={() => (
 						<Protected
 							component={DashboardPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/project-survay"
+					render={() => (
+						<Protected
+							component={ProjectSurvayPageWithDrawer}
 							{...props}
 						/>
 					)}

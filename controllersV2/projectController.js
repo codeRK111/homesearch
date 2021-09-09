@@ -784,6 +784,7 @@ exports.getOpinion = catchAsync(async (req, res) => {
 		{
 			$match: {
 				project: mongoose.Types.ObjectId(req.params.projectId),
+				status: 'active',
 			},
 		},
 		{
@@ -819,7 +820,7 @@ exports.getOpinion = catchAsync(async (req, res) => {
 				},
 				safeArea: {
 					$sum: {
-						$cond: ['$familyArea', 1, 0],
+						$cond: ['$safeArea', 1, 0],
 					},
 				},
 			},
@@ -827,54 +828,84 @@ exports.getOpinion = catchAsync(async (req, res) => {
 		{
 			$project: {
 				parkingEasy: {
-					$multiply: [
+					$round: [
 						{
-							$divide: ['$parkingEasy', '$totalVotes'],
+							$multiply: [
+								{
+									$divide: ['$parkingEasy', '$totalVotes'],
+								},
+								100,
+							],
 						},
-						100,
+						0,
 					],
 				},
 				walkableDistanceFromMarket: {
-					$multiply: [
+					$round: [
 						{
-							$divide: [
-								'$walkableDistanceFromMarket',
-								'$totalVotes',
+							$multiply: [
+								{
+									$divide: [
+										'$walkableDistanceFromMarket',
+										'$totalVotes',
+									],
+								},
+								100,
 							],
 						},
-						100,
+						0,
 					],
 				},
 				studentArea: {
-					$multiply: [
+					$round: [
 						{
-							$divide: ['$studentArea', '$totalVotes'],
+							$multiply: [
+								{
+									$divide: ['$studentArea', '$totalVotes'],
+								},
+								100,
+							],
 						},
-						100,
+						0,
 					],
 				},
 				dogFriendly: {
-					$multiply: [
+					$round: [
 						{
-							$divide: ['$dogFriendly', '$totalVotes'],
+							$multiply: [
+								{
+									$divide: ['$dogFriendly', '$totalVotes'],
+								},
+								100,
+							],
 						},
-						100,
+						0,
 					],
 				},
 				familyArea: {
-					$multiply: [
+					$round: [
 						{
-							$divide: ['$familyArea', '$totalVotes'],
+							$multiply: [
+								{
+									$divide: ['$familyArea', '$totalVotes'],
+								},
+								100,
+							],
 						},
-						100,
+						0,
 					],
 				},
 				safeArea: {
-					$multiply: [
+					$round: [
 						{
-							$divide: ['$safeArea', '$totalVotes'],
+							$multiply: [
+								{
+									$divide: ['$safeArea', '$totalVotes'],
+								},
+								100,
+							],
 						},
-						100,
+						0,
 					],
 				},
 			},
@@ -909,6 +940,51 @@ exports.getOpinion = catchAsync(async (req, res) => {
 						familyArea: false,
 						safeArea: false,
 				  },
+		},
+	});
+});
+
+exports.getAllOpinions = catchAsync(async (req, res, next) => {
+	const filter = {};
+	const page = req.query.page * 1 || 1;
+	const limit = req.query.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	if (req.query.project) {
+		filter.project = req.query.project;
+	}
+	if (req.query.user) {
+		filter.user = req.query.user;
+	}
+
+	const totalDocs = await Opinion.countDocuments(filter);
+	const opinions = await Opinion.find(filter)
+		.sort({ top: -1, updatedAt: -1 })
+		.skip(skip)
+		.limit(limit);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			totalDocs,
+			opinions,
+		},
+	});
+});
+
+exports.updateOpinion = catchAsync(async (req, res, next) => {
+	const opinion = await Opinion.findByIdAndUpdate(
+		req.params.id,
+		{ status: req.body.status },
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			opinion,
 		},
 	});
 });

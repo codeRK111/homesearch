@@ -777,6 +777,16 @@ const MainListItems = ({
 						</ListItemIcon>
 						<ListItemText primary="Project Specialities" />
 					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/project-survay')}
+					>
+						<ListItemIcon>
+							<PeopleAltIcon style={{ color: green[500] }} />
+						</ListItemIcon>
+						<ListItemText primary="Project Survays" />
+					</ListItem>
 
 					{ViewPermissionNode(
 						'project',

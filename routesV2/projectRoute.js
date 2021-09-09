@@ -15,6 +15,12 @@ router
 	.route('/add-opinion/:projectId')
 	.post(authController.protect, projectController.addOpinion);
 router
+	.route('/get-all-opinions')
+	.get(adminController.protect, projectController.getAllOpinions);
+router
+	.route('/update-opinion/:id')
+	.patch(adminController.protect, projectController.updateOpinion);
+router
 	.route('/get-opinion/:projectId/:userId?')
 	.get(projectController.getOpinion);
 router

@@ -43,7 +43,7 @@ const projectOpinionSchema = new Schema(
 				values: ['active', 'inactive'],
 				message: 'role must be between <active> | <inactive>',
 			},
-			default: 'inactive',
+			default: 'active',
 		},
 	},
 	{
