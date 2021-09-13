@@ -66,6 +66,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import TypeHOC from './components/hoc/hocForAdminTYpe.component';
 import TypeProtected from './components/typeProtected/typeProtected.component';
 import UpdateProjectProperty from './pages/editProject/v2/projectProperty';
+import UserQueryPage from './pages/userQueries';
 import Users from './pages/usersPage';
 import ViewCitiesPage from './pages/getCities/getCities.componet';
 import WhQueries from './pages/whQueries/whQueries.component';
@@ -81,6 +82,7 @@ import { withLoader } from './hoc/withLoader';
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const AgentQueryPageWithDrawer = Drawer(AgentQueryPage);
+const UserQueryPageWithDrawer = Drawer(UserQueryPage);
 const ProjectSurvayPageWithDrawer = Drawer(ProjectSurvayPage);
 const RequestPageWithDrawer = Drawer(RequestPage);
 const ReviewsPageWithDrawer = Drawer(ReviewsPage);
@@ -241,6 +243,16 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 					render={(props) => (
 						<Protected
 							component={AgentQueryPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/user-queries"
+					render={(props) => (
+						<Protected
+							component={UserQueryPageWithDrawer}
 							{...props}
 						/>
 					)}

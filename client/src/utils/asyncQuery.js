@@ -25,3 +25,44 @@ export const addAgentQuery = (data, cancelToken, setLoading) => {
 			});
 	});
 };
+export const addUserQuery = (data, cancelToken, setLoading) => {
+	setLoading(true);
+	return new Promise((resolve, reject) => {
+		axios
+			.post(apiUrl('/query/user', 2), data, {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data);
+			})
+			.catch((error) => {
+				setLoading(false);
+				return reject(asyncError(error));
+			});
+	});
+};
+
+export const verifyUserQuery = (id, otp, cancelToken, setLoading) => {
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.get(apiUrl(`/query/validate-user-query/${id}/${otp}`, 2), {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data.data);
+			})
+			.catch((error) => {
+				setLoading(false);
+				return reject(asyncError(error));
+			});
+	});
+};

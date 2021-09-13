@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy, useEffect, useRef } from 'react';
 import { selectAuthenticated, selectUser } from './redux/auth/auth.selectors';
 
+import CreateQuery from './components/createQuery';
 import Footer from './components/footer/footer.component';
 import HomePageNew from './pages/v2/homePage/home.page';
 import { LoadingAnimationNormal } from './components/v2/loadingAnimation';
@@ -94,7 +95,7 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 			</Snackbar>
 			<LogIn />
 			<BrowserRouter>
-				{/* <SpeedDial /> */}
+				<CreateQuery />
 				<Switch>
 					<Route
 						exact

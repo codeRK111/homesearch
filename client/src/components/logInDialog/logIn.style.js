@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+	root: {
+		zIndex: '1500000 !important',
+	},
 	wrapper: {
 		width: '30vw',
 		// minHeight: '60vh',

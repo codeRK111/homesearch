@@ -836,6 +836,12 @@ const MainListItems = ({
 				</ListItemIcon>
 				<ListItemText primary="Agent queries" />
 			</ListItem>
+			<ListItem button onClick={onUsersClick('/user-queries')}>
+				<ListItemIcon>
+					<ChatIcon color="secondary" />
+				</ListItemIcon>
+				<ListItemText primary="User queries" />
+			</ListItem>
 			<ListItem button onClick={toggleReview}>
 				<ListItemIcon>
 					<ChatIcon color="secondary" />

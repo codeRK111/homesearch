@@ -69,7 +69,7 @@ const CDialogTitle = withStyles(styles)((props) => {
 
 // Custom components
 
-const CBackdrop = withStyles({
+export const CBackdrop = withStyles({
 	root: {
 		backgroundColor: 'rgba(0,0,0,0.8)',
 	},
@@ -285,6 +285,7 @@ function AlertDialogSlide({
 				aria-describedby="alert-dialog-slide-description"
 				classes={{
 					paper: classes.radius,
+					root: classes.root,
 				}}
 			>
 				<Box className={classes.wrapper}>

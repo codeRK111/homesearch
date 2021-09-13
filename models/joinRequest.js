@@ -65,7 +65,6 @@ joinRequestSchema.methods.correctOtp = function (otp) {
 };
 
 joinRequestSchema.methods.otpExpired = function () {
-	console.log(this.otpExpiresAt);
 	return moment().isSameOrAfter(this.otpExpiresAt);
 };
 

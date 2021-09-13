@@ -1,15 +1,19 @@
 const AppError = require('./../utils/appError');
 const PropertyQuery = require('./../models/propertyQueryModel');
 const AgentQuery = require('./../models/agentQueryModel');
+const UserQuery = require('./../models/userQueryModel');
 const Project = require('./../models/projectModule');
-const ProjectProperty = require('./../models/projectPropertyModule');
 const User = require('./../models/userModel');
+const ProjectProperty = require('./../models/projectPropertyModule');
 const catchAsync = require('./../utils/catchAsync');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
+const sendOtpMessage = require('../utils/sendOtp');
+const moment = require('moment');
+
 exports.addQuery = catchAsync(async (req, res, next) => {
 	const body = req.body;
-	let query = await PropertyQuery.create(body);
+	let query = await AgentQuery.create(body);
 
 	res.status(200).json({
 		status: 'success',
@@ -17,6 +21,75 @@ exports.addQuery = catchAsync(async (req, res, next) => {
 			query,
 		},
 	});
+});
+exports.addUserQuery = catchAsync(async (req, res, next) => {
+	const user = await User.findOne({
+		number: req.body.number,
+		numberVerified: true,
+	});
+	let query = null;
+	if (user) {
+		req.body.verified = true;
+		query = await UserQuery.create(req.body);
+		return res.status(200).json({
+			status: 'success',
+			data: {
+				query,
+				validate: false,
+			},
+		});
+	} else {
+		const randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+		await sendOtpMessage(req.body.number, randomNumber);
+		req.body.otp = randomNumber;
+		req.body.otpExpiresAt = moment().add(2, 'm');
+		query = await UserQuery.create(req.body);
+		return res.status(200).json({
+			status: 'success',
+			data: {
+				query,
+				validate: true,
+			},
+		});
+	}
+});
+
+exports.verifyUserQuery = catchAsync(async (req, res, next) => {
+	const requiredFields = ['id', 'otp'];
+	requiredFields.every((c) => {
+		if (!req.params[c]) {
+			next(new AppError(`${c} missing`));
+			return false;
+		}
+	});
+
+	const query = await UserQuery.findById(req.params.id).select(
+		'+otp +otpExpiresAt'
+	);
+
+	if (!query) {
+		return next(new AppError('Invalid query'));
+	}
+	if (!query.correctOtp(req.params.otp)) {
+		return next(new AppError('Please enter correct OTP', 401));
+	}
+	if (query.otpExpired()) {
+		return next(new AppError('Your OTP has been expired', 401));
+	}
+	try {
+		query.verified = true;
+		query.otp = null;
+		query.otpExpiresAt = null;
+		await query.save();
+		res.status(200).json({
+			status: 'success',
+			data: {
+				query,
+			},
+		});
+	} catch (error) {
+		return next(new AppError(error.message));
+	}
 });
 
 exports.getQueries = catchAsync(async (req, res, next) => {
@@ -53,6 +126,34 @@ exports.getQueries = catchAsync(async (req, res, next) => {
 	});
 });
 exports.getUserQueries = catchAsync(async (req, res, next) => {
+	const filter = {};
+	const page = req.body.page * 1 || 1;
+	const limit = req.body.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	if (req.body.status) {
+		filter.status = req.body.status;
+	}
+	if (req.body.verified !== null && req.body.verified !== undefined) {
+		filter.verified = req.body.verified;
+	}
+
+	const totalDocs = await UserQuery.countDocuments(filter);
+
+	const queries = await UserQuery.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			queries,
+			totalDocs,
+		},
+	});
+});
+exports.getUserPropertyQueries = catchAsync(async (req, res, next) => {
 	const page = req.query.page * 1 || 1;
 	const limit = req.query.limit * 1 || 10;
 	const skip = (page - 1) * limit;
@@ -185,6 +286,25 @@ exports.addAgentMessage = catchAsync(async (req, res) => {
 			runValidators: true,
 		}
 	);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			query,
+		},
+	});
+});
+
+exports.updateUserQuery = catchAsync(async (req, res, next) => {
+	const data = {};
+	if (req.body.response) {
+		data.response = req.body.response;
+	}
+	data.responseBy = req.admin.id;
+
+	const query = await UserQuery.findByIdAndUpdate(req.params.id, data, {
+		new: true,
+		runValidators: true,
+	});
 	res.status(200).json({
 		status: 'success',
 		data: {
