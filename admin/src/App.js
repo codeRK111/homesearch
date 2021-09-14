@@ -76,12 +76,16 @@ import { createStructuredSelector } from 'reselect';
 import { setSnackbar } from './redux/ui/ui.actions';
 import { snackbarDetails } from './redux/ui/ui.selectors';
 import { withLoader } from './hoc/withLoader';
+import LeadsPage from "./pages/leads";
+import AddLeadsPage from "./pages/leads/addLeads.component";
 
 // components
 
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const AgentQueryPageWithDrawer = Drawer(AgentQueryPage);
+const LeadsPageWithDrawer = Drawer(LeadsPage);
+const AddLeadsPageWithDrawer = Drawer(AddLeadsPage);
 const UserQueryPageWithDrawer = Drawer(UserQueryPage);
 const ProjectSurvayPageWithDrawer = Drawer(ProjectSurvayPage);
 const RequestPageWithDrawer = Drawer(RequestPage);
@@ -183,6 +187,26 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
 					render={() => (
 						<Protected
 							component={DashboardPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/leads"
+					render={() => (
+						<Protected
+							component={LeadsPageWithDrawer}
+							{...props}
+						/>
+					)}
+				/>
+				<Route
+					exact
+					path="/add-leads"
+					render={() => (
+						<Protected
+							component={AddLeadsPageWithDrawer}
 							{...props}
 						/>
 					)}

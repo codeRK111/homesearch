@@ -32,3 +32,6 @@ export const toggleReview = () => ({
 export const toggleJoinRequest = () => ({
 	type: SidebarActionTypes.TOGGLE_JOIN_REQUEST,
 });
+export const toggleLeads = () => ({
+	type: SidebarActionTypes.TOGGLE_LEADS,
+});

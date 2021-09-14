@@ -3,26 +3,28 @@ import {
 	selectJoinRequest,
 	selectKPI,
 	selectKRA,
+	selectLeads,
 	selectLocation,
 	selectPackage,
 	selectProject,
 	selectPropertyRent,
 	selectPropertySale,
-	selectReview,
+	selectReview
 } from '../../redux/sidebar/sidebar.selector';
 import {
 	toggleBuilder,
 	toggleJoinRequest,
 	toggleKPI,
 	toggleKRA,
+	toggleLeads,
 	toggleLocation,
 	togglePackage,
 	toggleProject,
 	togglePropertyRent,
 	togglePropertySale,
-	toggleReview,
+	toggleReview
 } from '../../redux/sidebar/sidebar.actions';
-
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import ChatIcon from '@material-ui/icons/Chat';
@@ -45,69 +47,57 @@ import React from 'react';
 import RenderByAdminType from '../roleRender/renderByRole.component';
 import RenderByRole from '../roleRender/roleRender.component';
 import WorkIcon from '@material-ui/icons/Work';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { green } from '@material-ui/core/colors';
-import { makeStyles } from '@material-ui/core/styles';
-import { selectCurrentUser } from '../../redux/user/user.selector';
-import { useHistory } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
+import {green} from '@material-ui/core/colors';
+import {makeStyles} from '@material-ui/core/styles';
+import {selectCurrentUser} from '../../redux/user/user.selector';
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	nested: {
-		paddingLeft: theme.spacing(4),
+		paddingLeft: theme.spacing(4)
 	},
 	name: {
 		paddingLeft: theme.spacing(2),
 		fontWeight: 'bold',
 		color: 'yellow',
-		fontSize: '1.5rem',
+		fontSize: '1.5rem'
 	},
 	whiteColor: {
-		color: '#ffffff',
-	},
+		color: '#ffffff'
+	}
 }));
 
 const MainListItems = ({
-	propertyRentOpen,
-	propertySaleOpen,
-	locationOpen,
-	togglePropertyRent,
-	togglePropertySale,
-	toggleLocation,
-	selectProject,
-	toggleProject,
-	selectBuilder,
-	toggleBuilder,
-	selectCurrentUser,
-	selectKRA,
-	toggleKRA,
-	selectKPI,
-	selectPackage,
-	toggleKPI,
-	togglePackage,
-	selectReview,
-	toggleReview,
-	selectJoinRequest,
-	toggleJoinRequest,
-}) => {
+						   propertyRentOpen,
+						   propertySaleOpen,
+						   locationOpen,
+						   togglePropertyRent,
+						   togglePropertySale,
+						   toggleLocation,
+						   selectProject,
+						   toggleProject,
+						   selectBuilder,
+						   toggleBuilder,
+						   selectCurrentUser,
+						   selectKRA,
+						   toggleKRA,
+						   selectKPI,
+						   selectPackage,
+						   toggleKPI,
+						   togglePackage,
+						   selectReview,
+						   toggleReview,
+						   selectJoinRequest,
+						   toggleJoinRequest,
+						   toggleLeads,
+						   selectLeads
+					   }) => {
 	const classes = useStyles();
 	const history = useHistory();
 	const onUsersClick = (route) => () => history.push(route);
-	const [open, setOpen] = React.useState(false);
 
-	const handleClick = () => {
-		setOpen(!open);
-	};
-	const [openCity, setOpenCity] = React.useState(false);
-
-	const handleCityClick = () => {
-		setOpenCity(!openCity);
-	};
-	const [openSaleProperty, setOpenSaleProperty] = React.useState(false);
-
-	const handleSalePropertyClick = () => {
-		setOpenSaleProperty(!openSaleProperty);
-	};
 
 	// Add property Rent Node
 	const AddPropertyRentNode = RenderByRole(
@@ -117,19 +107,19 @@ const MainListItems = ({
 			onClick={onUsersClick('/addProperty/rent')}
 		>
 			<ListItemIcon>
-				<AddBoxIcon style={{ color: green[500] }} />
+				<AddBoxIcon style={{color: green[500]}}/>
 			</ListItemIcon>
-			<ListItemText primary="Add Property" />
+			<ListItemText primary="Add Property"/>
 		</ListItem>,
 		[
 			{
 				type: 'propertyAccess',
-				value: 'rent',
+				value: 'rent'
 			},
 			{
 				type: 'propertyActions',
-				value: 'create',
-			},
+				value: 'create'
+			}
 		]
 	);
 	// Add property Sale Node
@@ -140,19 +130,19 @@ const MainListItems = ({
 			onClick={onUsersClick('/addProperty/sale')}
 		>
 			<ListItemIcon>
-				<AddBoxIcon style={{ color: green[500] }} />
+				<AddBoxIcon style={{color: green[500]}}/>
 			</ListItemIcon>
-			<ListItemText primary="Add Property" />
+			<ListItemText primary="Add Property"/>
 		</ListItem>,
 		[
 			{
 				type: 'propertyAccess',
-				value: 'sale',
+				value: 'sale'
 			},
 			{
 				type: 'propertyActions',
-				value: 'create',
-			},
+				value: 'create'
+			}
 		]
 	);
 	// Add project Node
@@ -163,19 +153,19 @@ const MainListItems = ({
 			onClick={onUsersClick('/addProject')}
 		>
 			<ListItemIcon>
-				<AddBoxIcon style={{ color: green[500] }} />
+				<AddBoxIcon style={{color: green[500]}}/>
 			</ListItemIcon>
-			<ListItemText primary="Add Project" />
+			<ListItemText primary="Add Project"/>
 		</ListItem>,
 		[
 			{
 				type: 'propertyAccess',
-				value: 'project',
+				value: 'project'
 			},
 			{
 				type: 'propertyActions',
-				value: 'create',
-			},
+				value: 'create'
+			}
 		]
 	);
 	// Add project Node
@@ -186,15 +176,15 @@ const MainListItems = ({
 			onClick={onUsersClick('/addBuilder')}
 		>
 			<ListItemIcon>
-				<AddBoxIcon style={{ color: green[500] }} />
+				<AddBoxIcon style={{color: green[500]}}/>
 			</ListItemIcon>
-			<ListItemText primary="Add builder" />
+			<ListItemText primary="Add builder"/>
 		</ListItem>,
 		[
 			{
 				type: 'builderActions',
-				value: 'create',
-			},
+				value: 'create'
+			}
 		]
 	);
 	// Add City Node
@@ -205,15 +195,15 @@ const MainListItems = ({
 			onClick={onUsersClick('/addCity')}
 		>
 			<ListItemIcon>
-				<AddBoxIcon style={{ color: green[500] }} />
+				<AddBoxIcon style={{color: green[500]}}/>
 			</ListItemIcon>
-			<ListItemText primary="Add City" />
+			<ListItemText primary="Add City"/>
 		</ListItem>,
 		[
 			{
 				type: 'cityActions',
-				value: 'create',
-			},
+				value: 'create'
+			}
 		]
 	);
 	// Add City Node
@@ -224,15 +214,15 @@ const MainListItems = ({
 			onClick={onUsersClick('/addLocation')}
 		>
 			<ListItemIcon>
-				<AddBoxIcon style={{ color: green[500] }} />
+				<AddBoxIcon style={{color: green[500]}}/>
 			</ListItemIcon>
-			<ListItemText primary="Add Location" />
+			<ListItemText primary="Add Location"/>
 		</ListItem>,
 		[
 			{
 				type: 'locationActions',
-				value: 'create',
-			},
+				value: 'create'
+			}
 		]
 	);
 	// View City Node
@@ -243,15 +233,15 @@ const MainListItems = ({
 			onClick={onUsersClick('/cities/Odisha')}
 		>
 			<ListItemIcon>
-				<ApartmentIcon style={{ color: green[500] }} />
+				<ApartmentIcon style={{color: green[500]}}/>
 			</ListItemIcon>
-			<ListItemText primary="All Cities" />
+			<ListItemText primary="All Cities"/>
 		</ListItem>,
 		[
 			{
 				type: 'cityActions',
-				value: 'view',
-			},
+				value: 'view'
+			}
 		]
 	);
 	// View City Node
@@ -262,15 +252,15 @@ const MainListItems = ({
 			onClick={onUsersClick('/locations/Odisha')}
 		>
 			<ListItemIcon>
-				<ApartmentIcon style={{ color: green[500] }} />
+				<ApartmentIcon style={{color: green[500]}}/>
 			</ListItemIcon>
-			<ListItemText primary="All Locations" />
+			<ListItemText primary="All Locations"/>
 		</ListItem>,
 		[
 			{
 				type: 'locationActions',
-				value: 'view',
-			},
+				value: 'view'
+			}
 		]
 	);
 
@@ -281,15 +271,15 @@ const MainListItems = ({
 					const Comp = RenderByRole(N, [
 						{
 							type: 'propertyAccess',
-							value: accessType,
+							value: accessType
 						},
 						{
 							type: 'propertyActions',
-							value: 'view',
-						},
+							value: 'view'
+						}
 					]);
 
-					return <Comp key={i} />;
+					return <Comp key={i}/>;
 				})}
 			</div>
 		);
@@ -301,11 +291,11 @@ const MainListItems = ({
 					const Comp = RenderByRole(N, [
 						{
 							type: 'builderActions',
-							value: 'view',
-						},
+							value: 'view'
+						}
 					]);
 
-					return <Comp key={i} />;
+					return <Comp key={i}/>;
 				})}
 			</div>
 		);
@@ -315,20 +305,20 @@ const MainListItems = ({
 	const PropertyForRentLabelNode = RenderByRole(
 		<ListItem button onClick={togglePropertyRent}>
 			<ListItemIcon>
-				<ApartmentIcon color="secondary" />
+				<ApartmentIcon color="secondary"/>
 			</ListItemIcon>
-			<ListItemText primary="Properties for rent" />
-			{propertyRentOpen ? <ExpandLess /> : <ExpandMore />}
+			<ListItemText primary="Properties for rent"/>
+			{propertyRentOpen ? <ExpandLess/> : <ExpandMore/>}
 		</ListItem>,
 		[
 			{
 				type: 'propertyActions',
-				value: 'create',
+				value: 'create'
 			},
 			{
 				type: 'propertyActions',
-				value: 'view',
-			},
+				value: 'view'
+			}
 		],
 		null,
 		true
@@ -339,20 +329,20 @@ const MainListItems = ({
 	const PropertyForSaleLabelNode = RenderByRole(
 		<ListItem button onClick={togglePropertySale}>
 			<ListItemIcon>
-				<ApartmentIcon color="secondary" />
+				<ApartmentIcon color="secondary"/>
 			</ListItemIcon>
-			<ListItemText primary="Properties for sale" />
-			{propertySaleOpen ? <ExpandLess /> : <ExpandMore />}
+			<ListItemText primary="Properties for sale"/>
+			{propertySaleOpen ? <ExpandLess/> : <ExpandMore/>}
 		</ListItem>,
 		[
 			{
 				type: 'propertyActions',
-				value: 'create',
+				value: 'create'
 			},
 			{
 				type: 'propertyActions',
-				value: 'view',
-			},
+				value: 'view'
+			}
 		],
 		null,
 		true
@@ -361,20 +351,20 @@ const MainListItems = ({
 	const ProjectLabelNode = RenderByRole(
 		<ListItem button onClick={toggleProject}>
 			<ListItemIcon>
-				<ApartmentIcon color="secondary" />
+				<ApartmentIcon color="secondary"/>
 			</ListItemIcon>
-			<ListItemText primary="Projects" />
-			{selectProject ? <ExpandLess /> : <ExpandMore />}
+			<ListItemText primary="Projects"/>
+			{selectProject ? <ExpandLess/> : <ExpandMore/>}
 		</ListItem>,
 		[
 			{
 				type: 'propertyActions',
-				value: 'create',
+				value: 'create'
 			},
 			{
 				type: 'propertyActions',
-				value: 'view',
-			},
+				value: 'view'
+			}
 		],
 		null,
 		true
@@ -383,19 +373,19 @@ const MainListItems = ({
 	const UserLabelNode = RenderByRole(
 		<ListItem button onClick={onUsersClick('/users')}>
 			<ListItemIcon>
-				<PeopleAltIcon color="secondary" />
+				<PeopleAltIcon color="secondary"/>
 			</ListItemIcon>
-			<ListItemText primary="Users" />
+			<ListItemText primary="Users"/>
 		</ListItem>,
 		[
 			{
 				type: 'userActions',
-				value: 'create',
+				value: 'create'
 			},
 			{
 				type: 'userActions',
-				value: 'view',
-			},
+				value: 'view'
+			}
 		],
 		null,
 		true
@@ -404,20 +394,20 @@ const MainListItems = ({
 	const BuilderLabelNode = RenderByRole(
 		<ListItem button onClick={toggleBuilder}>
 			<ListItemIcon>
-				<PeopleAltIcon color="secondary" />
+				<PeopleAltIcon color="secondary"/>
 			</ListItemIcon>
-			<ListItemText primary="Builders" />
-			{selectBuilder ? <ExpandLess /> : <ExpandMore />}
+			<ListItemText primary="Builders"/>
+			{selectBuilder ? <ExpandLess/> : <ExpandMore/>}
 		</ListItem>,
 		[
 			{
 				type: 'builderActions',
-				value: 'create',
+				value: 'create'
 			},
 			{
 				type: 'builderActions',
-				value: 'view',
-			},
+				value: 'view'
+			}
 		],
 		null,
 		true
@@ -426,50 +416,50 @@ const MainListItems = ({
 	const CityAndLocationHeadingNode = RenderByRole(
 		<ListItem button onClick={toggleLocation}>
 			<ListItemIcon>
-				<LocationCityIcon color="secondary" />
+				<LocationCityIcon color="secondary"/>
 			</ListItemIcon>
-			<ListItemText primary="Cities And Locations" />
-			{locationOpen ? <ExpandLess /> : <ExpandMore />}
+			<ListItemText primary="Cities And Locations"/>
+			{locationOpen ? <ExpandLess/> : <ExpandMore/>}
 		</ListItem>,
 		[
 			{
 				type: 'cityActions',
-				value: 'create',
+				value: 'create'
 			},
 			{
 				type: 'cityActions',
-				value: 'view',
+				value: 'view'
 			},
 			{
 				type: 'locationActions',
-				value: 'create',
+				value: 'create'
 			},
 			{
 				type: 'locationActions',
-				value: 'view',
-			},
+				value: 'view'
+			}
 		],
 		null,
 		true
 	);
 
-	const RentLabel = RenderByRole(<PropertyForRentLabelNode />, [
+	const RentLabel = RenderByRole(<PropertyForRentLabelNode/>, [
 		{
 			type: 'propertyAccess',
-			value: 'rent',
-		},
+			value: 'rent'
+		}
 	]);
-	const SaleLabel = RenderByRole(<PropertyForSaleLabelNode />, [
+	const SaleLabel = RenderByRole(<PropertyForSaleLabelNode/>, [
 		{
 			type: 'propertyAccess',
-			value: 'sale',
-		},
+			value: 'sale'
+		}
 	]);
-	const ProjectLabel = RenderByRole(<ProjectLabelNode />, [
+	const ProjectLabel = RenderByRole(<ProjectLabelNode/>, [
 		{
 			type: 'propertyAccess',
-			value: 'project',
-		},
+			value: 'project'
+		}
 	]);
 
 	const KRA = RenderByAdminType({
@@ -477,10 +467,10 @@ const MainListItems = ({
 			<div>
 				<ListItem button onClick={toggleKRA}>
 					<ListItemIcon>
-						<WorkIcon color="secondary" />
+						<WorkIcon color="secondary"/>
 					</ListItemIcon>
-					<ListItemText primary="KRA" />
-					{selectKRA ? <ExpandLess /> : <ExpandMore />}
+					<ListItemText primary="KRA"/>
+					{selectKRA ? <ExpandLess/> : <ExpandMore/>}
 				</ListItem>
 				<Collapse in={selectKRA} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
@@ -490,9 +480,9 @@ const MainListItems = ({
 							onClick={onUsersClick('/project-advertisement')}
 						>
 							<ListItemIcon>
-								<PhoneIcon style={{ color: green[500] }} />
+								<PhoneIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Project Advertisement" />
+							<ListItemText primary="Project Advertisement"/>
 						</ListItem>
 						<ListItem
 							button
@@ -500,9 +490,9 @@ const MainListItems = ({
 							onClick={onUsersClick('/property-advertisement')}
 						>
 							<ListItemIcon>
-								<PhoneIcon style={{ color: green[500] }} />
+								<PhoneIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Property Advertisement" />
+							<ListItemText primary="Property Advertisement"/>
 						</ListItem>
 					</List>
 				</Collapse>
@@ -512,10 +502,10 @@ const MainListItems = ({
 			<div>
 				<ListItem button onClick={toggleKRA}>
 					<ListItemIcon>
-						<WorkIcon color="secondary" />
+						<WorkIcon color="secondary"/>
 					</ListItemIcon>
-					<ListItemText primary="KRA" />
-					{selectKRA ? <ExpandLess /> : <ExpandMore />}
+					<ListItemText primary="KRA"/>
+					{selectKRA ? <ExpandLess/> : <ExpandMore/>}
 				</ListItem>
 				<Collapse in={selectKRA} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
@@ -525,24 +515,24 @@ const MainListItems = ({
 							onClick={onUsersClick('/project-advertisement')}
 						>
 							<ListItemIcon>
-								<PhoneIcon style={{ color: green[500] }} />
+								<PhoneIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Project Advertisement" />
+							<ListItemText primary="Project Advertisement"/>
 						</ListItem>
 					</List>
 				</Collapse>
 			</div>
-		),
+		)
 	});
 	const KPI = RenderByAdminType({
 		'super-admin': (
 			<div>
 				<ListItem button onClick={toggleKPI}>
 					<ListItemIcon>
-						<WorkIcon color="secondary" />
+						<WorkIcon color="secondary"/>
 					</ListItemIcon>
-					<ListItemText primary="KPI" />
-					{selectKPI ? <ExpandLess /> : <ExpandMore />}
+					<ListItemText primary="KPI"/>
+					{selectKPI ? <ExpandLess/> : <ExpandMore/>}
 				</ListItem>
 				<Collapse in={selectKPI} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
@@ -554,9 +544,9 @@ const MainListItems = ({
 							)}
 						>
 							<ListItemIcon>
-								<PhoneIcon style={{ color: green[500] }} />
+								<PhoneIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Project Advertisement" />
+							<ListItemText primary="Project Advertisement"/>
 						</ListItem>
 					</List>
 				</Collapse>
@@ -566,10 +556,10 @@ const MainListItems = ({
 			<div>
 				<ListItem button onClick={toggleKPI}>
 					<ListItemIcon>
-						<WorkIcon color="secondary" />
+						<WorkIcon color="secondary"/>
 					</ListItemIcon>
-					<ListItemText primary="KPI" />
-					{selectKPI ? <ExpandLess /> : <ExpandMore />}
+					<ListItemText primary="KPI"/>
+					{selectKPI ? <ExpandLess/> : <ExpandMore/>}
 				</ListItem>
 				<Collapse in={selectKPI} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
@@ -579,60 +569,60 @@ const MainListItems = ({
 							onClick={onUsersClick('/kpi/project-advertisement')}
 						>
 							<ListItemIcon>
-								<PhoneIcon style={{ color: green[500] }} />
+								<PhoneIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Project Advertisement" />
+							<ListItemText primary="Project Advertisement"/>
 						</ListItem>
 					</List>
 				</Collapse>
 			</div>
-		),
+		)
 	});
 
 	const Workspace = RenderByAdminType({
 		staff: (
 			<ListItem button onClick={onUsersClick('/workspace')}>
 				<ListItemIcon>
-					<WorkIcon color="secondary" />
+					<WorkIcon color="secondary"/>
 				</ListItemIcon>
-				<ListItemText primary="Workspace" />
+				<ListItemText primary="Workspace"/>
 			</ListItem>
-		),
+		)
 	});
 	return (
 		<div>
 			<h3
 				className={classes.name}
 			>{`Hello ${selectCurrentUser.name}`}</h3>
-			<Workspace />
+			<Workspace/>
 			<ListItem button onClick={onUsersClick('/dashboard')}>
 				<ListItemIcon>
-					<DashboardIcon color="secondary" />
+					<DashboardIcon color="secondary"/>
 				</ListItemIcon>
-				<ListItemText primary="Dashboard" />
+				<ListItemText primary="Dashboard"/>
 			</ListItem>
-			<UserLabelNode />
-			<Divider color="#fff" />
+			<UserLabelNode/>
+			<Divider color="#fff"/>
 			{selectCurrentUser.type === 'super-admin' && (
 				<ListItem button onClick={onUsersClick('/admins')}>
 					<ListItemIcon>
-						<PeopleOutlineIcon color="secondary" />
+						<PeopleOutlineIcon color="secondary"/>
 					</ListItemIcon>
-					<ListItemText primary="Admin / Staffs" />
+					<ListItemText primary="Admin / Staffs"/>
 				</ListItem>
 			)}
-			<Divider color="#fff" />
+			<Divider color="#fff"/>
 			<ListItem button onClick={onUsersClick('/authentication')}>
 				<ListItemIcon>
-					<LockIcon color="secondary" />
+					<LockIcon color="secondary"/>
 				</ListItemIcon>
-				<ListItemText primary="Authentication" />
+				<ListItemText primary="Authentication"/>
 			</ListItem>
-			<Divider color="#fff" />
-			<RentLabel />
+			<Divider color="#fff"/>
+			<RentLabel/>
 			<Collapse in={propertyRentOpen} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
-					<AddPropertyRentNode />
+					<AddPropertyRentNode/>
 					{ViewPermissionNode(
 						'rent',
 						<ListItem
@@ -641,9 +631,9 @@ const MainListItems = ({
 							onClick={onUsersClick('/all-properties/active')}
 						>
 							<ListItemIcon>
-								<ApartmentIcon style={{ color: green[500] }} />
+								<ApartmentIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Active properties" />
+							<ListItemText primary="Active properties"/>
 						</ListItem>,
 						<ListItem
 							button
@@ -653,9 +643,9 @@ const MainListItems = ({
 							)}
 						>
 							<ListItemIcon>
-								<ApartmentIcon style={{ color: green[500] }} />
+								<ApartmentIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Under screening properties" />
+							<ListItemText primary="Under screening properties"/>
 						</ListItem>,
 						<ListItem
 							button
@@ -663,9 +653,9 @@ const MainListItems = ({
 							onClick={onUsersClick('/all-properties/expired')}
 						>
 							<ListItemIcon>
-								<ApartmentIcon style={{ color: green[500] }} />
+								<ApartmentIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Expired properties" />
+							<ListItemText primary="Expired properties"/>
 						</ListItem>,
 						<ListItem
 							button
@@ -673,17 +663,17 @@ const MainListItems = ({
 							onClick={onUsersClick('/wh-queries/rent')}
 						>
 							<ListItemIcon>
-								<ApartmentIcon style={{ color: green[500] }} />
+								<ApartmentIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Whatsapp Queries" />
+							<ListItemText primary="Whatsapp Queries"/>
 						</ListItem>
 					)}
 				</List>
 			</Collapse>
-			<SaleLabel />
+			<SaleLabel/>
 			<Collapse in={propertySaleOpen} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
-					<AddPropertySaleNode />
+					<AddPropertySaleNode/>
 					{ViewPermissionNode(
 						'sale',
 						<ListItem
@@ -694,9 +684,9 @@ const MainListItems = ({
 							)}
 						>
 							<ListItemIcon>
-								<ApartmentIcon style={{ color: green[500] }} />
+								<ApartmentIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Active properties" />
+							<ListItemText primary="Active properties"/>
 						</ListItem>,
 						<ListItem
 							button
@@ -706,9 +696,9 @@ const MainListItems = ({
 							)}
 						>
 							<ListItemIcon>
-								<ApartmentIcon style={{ color: green[500] }} />
+								<ApartmentIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Under screening properties" />
+							<ListItemText primary="Under screening properties"/>
 						</ListItem>,
 						<ListItem
 							button
@@ -718,17 +708,17 @@ const MainListItems = ({
 							)}
 						>
 							<ListItemIcon>
-								<ApartmentIcon style={{ color: green[500] }} />
+								<ApartmentIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Expired properties" />
+							<ListItemText primary="Expired properties"/>
 						</ListItem>
 					)}
 				</List>
 			</Collapse>
-			<BuilderLabelNode />
+			<BuilderLabelNode/>
 			<Collapse in={selectBuilder} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
-					<AddBuilderNode />
+					<AddBuilderNode/>
 					{BuilderViewPermissionNode(
 						<ListItem
 							button
@@ -736,9 +726,9 @@ const MainListItems = ({
 							onClick={onUsersClick('/builders/active')}
 						>
 							<ListItemIcon>
-								<PeopleAltIcon style={{ color: green[500] }} />
+								<PeopleAltIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Active builders" />
+							<ListItemText primary="Active builders"/>
 						</ListItem>,
 						<ListItem
 							button
@@ -746,14 +736,14 @@ const MainListItems = ({
 							onClick={onUsersClick('/builders/inactive')}
 						>
 							<ListItemIcon>
-								<PeopleAltIcon style={{ color: green[500] }} />
+								<PeopleAltIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Inactive builders" />
+							<ListItemText primary="Inactive builders"/>
 						</ListItem>
 					)}
 				</List>
 			</Collapse>
-			<ProjectLabel />
+			<ProjectLabel/>
 			<Collapse in={selectProject} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
 					<ListItem
@@ -762,9 +752,9 @@ const MainListItems = ({
 						onClick={onUsersClick('/add-project-v2')}
 					>
 						<ListItemIcon>
-							<PeopleAltIcon style={{ color: green[500] }} />
+							<PeopleAltIcon style={{color: green[500]}}/>
 						</ListItemIcon>
-						<ListItemText primary="Add Project" />
+						<ListItemText primary="Add Project"/>
 					</ListItem>
 
 					<ListItem
@@ -773,9 +763,9 @@ const MainListItems = ({
 						onClick={onUsersClick('/project-specialities')}
 					>
 						<ListItemIcon>
-							<PeopleAltIcon style={{ color: green[500] }} />
+							<PeopleAltIcon style={{color: green[500]}}/>
 						</ListItemIcon>
-						<ListItemText primary="Project Specialities" />
+						<ListItemText primary="Project Specialities"/>
 					</ListItem>
 					<ListItem
 						button
@@ -783,9 +773,9 @@ const MainListItems = ({
 						onClick={onUsersClick('/project-survay')}
 					>
 						<ListItemIcon>
-							<PeopleAltIcon style={{ color: green[500] }} />
+							<PeopleAltIcon style={{color: green[500]}}/>
 						</ListItemIcon>
-						<ListItemText primary="Project Survays" />
+						<ListItemText primary="Project Survays"/>
 					</ListItem>
 
 					{ViewPermissionNode(
@@ -797,9 +787,9 @@ const MainListItems = ({
 							onClick={onUsersClick('/projects/active')}
 						>
 							<ListItemIcon>
-								<PeopleAltIcon style={{ color: green[500] }} />
+								<PeopleAltIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Active projects" />
+							<ListItemText primary="Active projects"/>
 						</ListItem>,
 						<ListItem
 							button
@@ -807,47 +797,48 @@ const MainListItems = ({
 							onClick={onUsersClick('/projects/inactive')}
 						>
 							<ListItemIcon>
-								<PeopleAltIcon style={{ color: green[500] }} />
+								<PeopleAltIcon style={{color: green[500]}}/>
 							</ListItemIcon>
-							<ListItemText primary="Inactive projects" />
+							<ListItemText primary="Inactive projects"/>
 						</ListItem>
 					)}
 				</List>
 			</Collapse>
-			<CityAndLocationHeadingNode />
+			<CityAndLocationHeadingNode/>
 
 			<Collapse in={locationOpen} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
-					<AddCityNode />
-					<AddLocationNode />
-					<ViewCityNode />
-					<ViewLocationNode />
+					<AddCityNode/>
+					<AddLocationNode/>
+					<ViewCityNode/>
+					<ViewLocationNode/>
 				</List>
 			</Collapse>
 			<ListItem button onClick={onUsersClick('/queries')}>
 				<ListItemIcon>
-					<ChatIcon color="secondary" />
+					<ChatIcon color="secondary"/>
 				</ListItemIcon>
-				<ListItemText primary="Property queries" />
+				<ListItemText primary="Property queries"/>
 			</ListItem>
 			<ListItem button onClick={onUsersClick('/agent-queries')}>
 				<ListItemIcon>
-					<ChatIcon color="secondary" />
+					<ChatIcon color="secondary"/>
 				</ListItemIcon>
-				<ListItemText primary="Agent queries" />
+				<ListItemText primary="Agent queries"/>
 			</ListItem>
 			<ListItem button onClick={onUsersClick('/user-queries')}>
 				<ListItemIcon>
-					<ChatIcon color="secondary" />
+					<ChatIcon color="secondary"/>
 				</ListItemIcon>
-				<ListItemText primary="User queries" />
+				<ListItemText primary="User queries"/>
 			</ListItem>
+
 			<ListItem button onClick={toggleReview}>
 				<ListItemIcon>
-					<ChatIcon color="secondary" />
+					<ChatIcon color="secondary"/>
 				</ListItemIcon>
-				<ListItemText primary="Comments" />
-				{selectReview ? <ExpandLess /> : <ExpandMore />}
+				<ListItemText primary="Comments"/>
+				{selectReview ? <ExpandLess/> : <ExpandMore/>}
 			</ListItem>
 			<Collapse in={selectReview} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
@@ -857,9 +848,9 @@ const MainListItems = ({
 						onClick={onUsersClick('/reviews/project')}
 					>
 						<ListItemIcon>
-							<ChatIcon style={{ color: green[500] }} />
+							<ChatIcon style={{color: green[500]}}/>
 						</ListItemIcon>
-						<ListItemText primary="Project Comments" />
+						<ListItemText primary="Project Comments"/>
 					</ListItem>
 					<ListItem
 						button
@@ -867,9 +858,9 @@ const MainListItems = ({
 						onClick={onUsersClick('/reviews/rent')}
 					>
 						<ListItemIcon>
-							<ChatIcon style={{ color: green[500] }} />
+							<ChatIcon style={{color: green[500]}}/>
 						</ListItemIcon>
-						<ListItemText primary="Rent Comments" />
+						<ListItemText primary="Rent Comments"/>
 					</ListItem>
 					<ListItem
 						button
@@ -877,18 +868,18 @@ const MainListItems = ({
 						onClick={onUsersClick('/reviews/sale')}
 					>
 						<ListItemIcon>
-							<ChatIcon style={{ color: green[500] }} />
+							<ChatIcon style={{color: green[500]}}/>
 						</ListItemIcon>
-						<ListItemText primary="Sale Comments" />
+						<ListItemText primary="Sale Comments"/>
 					</ListItem>
 				</List>
 			</Collapse>
 			<ListItem button onClick={toggleJoinRequest}>
 				<ListItemIcon>
-					<ChatIcon color="secondary" />
+					<ChatIcon color="secondary"/>
 				</ListItemIcon>
-				<ListItemText primary="Join Requests" />
-				{selectJoinRequest ? <ExpandLess /> : <ExpandMore />}
+				<ListItemText primary="Join Requests"/>
+				{selectJoinRequest ? <ExpandLess/> : <ExpandMore/>}
 			</ListItem>
 			<Collapse in={selectJoinRequest} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
@@ -898,9 +889,9 @@ const MainListItems = ({
 						onClick={onUsersClick('/join-requests/builder')}
 					>
 						<ListItemIcon>
-							<ChatIcon style={{ color: green[500] }} />
+							<ChatIcon style={{color: green[500]}}/>
 						</ListItemIcon>
-						<ListItemText primary="Builder" />
+						<ListItemText primary="Builder"/>
 					</ListItem>
 					<ListItem
 						button
@@ -908,19 +899,19 @@ const MainListItems = ({
 						onClick={onUsersClick('/join-requests/agent')}
 					>
 						<ListItemIcon>
-							<ChatIcon style={{ color: green[500] }} />
+							<ChatIcon style={{color: green[500]}}/>
 						</ListItemIcon>
-						<ListItemText primary="Realtors" />
+						<ListItemText primary="Realtors"/>
 					</ListItem>
 				</List>
 			</Collapse>
 
 			<ListItem button onClick={togglePackage}>
 				<ListItemIcon>
-					<MonetizationOnIcon color="secondary" />
+					<MonetizationOnIcon color="secondary"/>
 				</ListItemIcon>
-				<ListItemText primary="Packages" />
-				{selectKRA ? <ExpandLess /> : <ExpandMore />}
+				<ListItemText primary="Packages"/>
+				{selectKRA ? <ExpandLess/> : <ExpandMore/>}
 			</ListItem>
 			<Collapse in={selectPackage} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
@@ -930,9 +921,9 @@ const MainListItems = ({
 						onClick={onUsersClick('/builder-packages')}
 					>
 						<ListItemIcon>
-							<LocationCityIcon style={{ color: green[500] }} />
+							<LocationCityIcon style={{color: green[500]}}/>
 						</ListItemIcon>
-						<ListItemText primary="Builder Packages" />
+						<ListItemText primary="Builder Packages"/>
 					</ListItem>
 					<ListItem
 						button
@@ -940,10 +931,43 @@ const MainListItems = ({
 						onClick={onUsersClick('/property-packages')}
 					>
 						<ListItemIcon>
-							<LocationCityIcon style={{ color: green[500] }} />
+							<LocationCityIcon style={{color: green[500]}}/>
 						</ListItemIcon>
-						<ListItemText primary="Property Packages" />
+						<ListItemText primary="Property Packages"/>
 					</ListItem>
+				</List>
+			</Collapse>
+			<ListItem button onClick={toggleLeads}>
+				<ListItemIcon>
+					<AssignmentIcon color="secondary"/>
+				</ListItemIcon>
+				<ListItemText primary="Leads"/>
+				{selectLeads ? <ExpandLess/> : <ExpandMore/>}
+			</ListItem>
+			<Collapse in={selectLeads} timeout="auto" unmountOnExit>
+				<List component="div" disablePadding>
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/leads')}
+					>
+						<ListItemIcon> 
+							<LocationCityIcon style={{color: green[500]}}/>
+						</ListItemIcon>
+						<ListItemText primary="All Leads"/>
+					</ListItem>
+
+					<ListItem
+						button
+						className={classes.nested}
+						onClick={onUsersClick('/add-leads')}
+					>
+						<ListItemIcon>
+							<LocationCityIcon style={{color: green[500]}}/>
+						</ListItemIcon>
+						<ListItemText primary="Add Leads"/>
+					</ListItem>
+
 				</List>
 			</Collapse>
 			{/* <ListItem button onClick={onUsersClick('/photo-requests')}>
@@ -970,6 +994,7 @@ const mapStateToProps = createStructuredSelector({
 	selectPackage,
 	selectReview,
 	selectJoinRequest,
+	selectLeads
 });
 
 const dispatchStateToProps = (dispatch) => ({
@@ -983,6 +1008,7 @@ const dispatchStateToProps = (dispatch) => ({
 	togglePackage: () => dispatch(togglePackage()),
 	toggleReview: () => dispatch(toggleReview()),
 	toggleJoinRequest: () => dispatch(toggleJoinRequest()),
+	toggleLeads: () => dispatch(toggleLeads())
 });
 
 export default connect(mapStateToProps, dispatchStateToProps)(MainListItems);

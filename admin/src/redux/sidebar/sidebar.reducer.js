@@ -11,6 +11,7 @@ const INITIAL_STATE = {
 	package: false,
 	review: false,
 	joinRequest: false,
+	leads: false,
 };
 
 const sidebarReducer = (state = INITIAL_STATE, action) => {
@@ -64,6 +65,11 @@ const sidebarReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				joinRequest: !state.joinRequest,
+			};
+		case SidebarActionTypes.TOGGLE_LEADS:
+			return {
+				...state,
+				leads: !state.leads,
 			};
 
 		default:

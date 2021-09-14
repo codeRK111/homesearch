@@ -24,3 +24,7 @@ export const selectJoinRequest = createSelector(
 	[selectSidebar],
 	(u) => u.joinRequest
 );
+export const selectLeads = createSelector(
+	[selectSidebar],
+	(u) => u.leads
+);
