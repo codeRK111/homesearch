@@ -20,6 +20,20 @@ const leadsSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		clientSupport: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Admin',
+			default: null,
+		},
+		createdBy: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Admin',
+			default: null,
+		},
+		assignedAt: {
+			type: Date,
+			default: null,
+		},
 		number: {
 			type: String,
 			required: [true, 'number required'],
@@ -39,6 +53,18 @@ const leadsSchema = new Schema(
 		timestamps: true,
 	}
 );
+
+leadsSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'clientSupport',
+		select: 'id name',
+	}).populate({
+		path: 'createdBy',
+		select: 'id name',
+	});
+
+	next();
+});
 
 const leads = model('lead', leadsSchema);
 module.exports = leads;

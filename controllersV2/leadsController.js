@@ -27,7 +27,7 @@ exports.addLead = catchAsync(async (req, res, next) => {
 			delete req.body[c];
 		}
 	});
-
+	req.body.createdBy = req.admin.id;
 	const lead = await Leads.create(req.body);
 
 	res.status(200).json({
@@ -62,6 +62,28 @@ exports.getAllLeads = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.getMyLeads = catchAsync(async (req, res, next) => {
+	const filter = {};
+	const page = req.body.page * 1 || 1;
+	const limit = req.body.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	filter.status = 'active';
+	filter.clientSupport = req.admin.id;
+
+	// console.log(filter);
+	const totalDocs = await Leads.countDocuments(filter);
+
+	const leads = await Leads.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+	res.status(200).json({
+		status: 'success',
+		data: { leads, totalDocs },
+	});
+});
+
 exports.updateLead = catchAsync(async (req, res, next) => {
 	const data = {};
 	if (req.body.status) {
@@ -73,6 +95,66 @@ exports.updateLead = catchAsync(async (req, res, next) => {
 		new: true,
 		runValidators: true,
 	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			lead,
+		},
+	});
+});
+
+exports.updateBySupport = catchAsync(async (req, res, next) => {
+	const data = {};
+	if (req.body.name) {
+		data.name = req.body.name;
+	}
+	if (req.body.email) {
+		data.email = req.body.email;
+	}
+	if (req.body.number) {
+		data.number = req.body.number;
+	}
+	if (req.body.message) {
+		data.message = req.body.message;
+	}
+	if (req.body.feedback) {
+		data.feedback = req.body.feedback;
+	}
+	data.responseBy = req.admin.id;
+
+	const lead = await Leads.findByIdAndUpdate(req.params.id, data, {
+		new: true,
+		runValidators: true,
+	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			lead,
+		},
+	});
+});
+
+exports.getLeadDetails = catchAsync(async (req, res, next) => {
+	const lead = await Leads.findById(req.params.id);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			lead,
+		},
+	});
+});
+
+exports.assignClientSupport = catchAsync(async (req, res, next) => {
+	const lead = await Leads.updateMany(
+		{
+			_id: { $in: req.body.leads },
+		},
+		{
+			clientSupport: req.body.clientSupport,
+			attended: true,
+			assignedAt: Date.now(),
+		}
+	);
 	res.status(200).json({
 		status: 'success',
 		data: {
