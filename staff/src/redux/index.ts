@@ -1,4 +1,3 @@
-export * as actionCreators from './actionCreators';
 export * as authActionCreators from './actionCreators/auth';
 export * as uiActionCreators from './actionCreators/ui';
 export * from './reducers';
