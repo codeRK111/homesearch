@@ -5,5 +5,18 @@ export interface IStaff {
 	username: string;
 	email: string;
 	photo?: string;
-	type: 'staff' | 'clientSupport' | 'digitalMarketing';
+	type: StaffType;
 }
+
+export enum StaffType {
+	Staff = 'staff',
+	ClientSupport = 'clientSupport',
+	DigitalMarketing = 'digitalMarketing',
+	BDM = 'bdm',
+	GM = 'gm',
+}
+
+export type FetchAdminResponse = {
+	totalDocs: number;
+	admins: IStaff[];
+};

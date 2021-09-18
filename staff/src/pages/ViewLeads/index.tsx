@@ -1,10 +1,11 @@
+import { Box, Typography } from '@material-ui/core';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { FetchMyLeadsResponseData } from '../../model/lead.interface';
+import LeadStatusSwitch from '../../components/Switch';
 import LeadsTable from '../../components/Table/leads';
 import { PageWrapper } from '../../components/UI/Container';
 import TablePagination from '../../components/Table/pagination';
-import { Typography } from '@material-ui/core';
 import { asyncFetchMyLeads } from '../../API/lead';
 
 const ViewLeadsPage = () => {
@@ -56,7 +57,14 @@ const ViewLeadsPage = () => {
 			<p>
 				<b>{data.totalDocs}</b> leads found
 			</p>
-			<LeadsTable loading={loading} leads={data.leads} />
+			<Box mb="1rem">
+				<LeadStatusSwitch />
+			</Box>
+			<LeadsTable
+				loading={loading}
+				leads={data.leads}
+				fetchLeads={fetchLeads}
+			/>
 			<TablePagination
 				limit={limit}
 				setLimit={setLimit}

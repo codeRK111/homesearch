@@ -62,7 +62,7 @@ const AddLeadPage = () => {
 					onSubmit={onSubmit}
 					validationSchema={validationSchema}
 				>
-					{() => (
+						{() => (
 						<Form>
 							<Grid container spacing={1}>
 								<Grid item xs={12} md={6}>

@@ -1,41 +1,99 @@
+import { CircularProgress, MenuItem, Select } from '@material-ui/core';
+import {
+	ClientRequirementCategory,
+	ClientRequirementType,
+} from '../../model/lead.interface';
+import { FetchAdminResponse, StaffType } from '../../model/staff.interface';
+import React, { useCallback, useEffect, useState } from 'react';
+
 import Box from '@material-ui/core/Box';
+import DateTimePickerComponent from '../../components/Pickers/dateTime';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
+import { IClientRequirementState } from './form';
+import { Ptype } from '../../model/property.interface';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { asyncFetchAdmins } from '../../API/auth';
 
-export default function RadioButtonsGroup() {
-	const [requirement, setRequirement] = React.useState('hvp');
-	const [category, setCategory] = React.useState('');
-	const [pType, setPType] = React.useState('');
-	const [min, setMin] = React.useState('');
-	const [max, setMax] = React.useState('');
+export interface IClientRequirement extends IClientRequirementState {
+	setRequirement: (type: ClientRequirementType) => void;
+	setCategory: (cat: ClientRequirementCategory) => void;
+	setPType: (pType: Ptype) => void;
+	setMin: (value: string) => void;
+	setMax: (value: string) => void;
+	setHoldDate: (date: Date | null) => void;
+	setAction: (action: string) => void;
+}
 
+export default function ClientRequirement({
+	requirement,
+	pickerDate,
+	setRequirement,
+	category,
+	setCategory,
+	pType,
+	setPType,
+	minPrice,
+	setMin,
+	maxPrice,
+	setMax,
+	setHoldDate,
+	action,
+	setAction,
+}: IClientRequirement) {
+	const [bdmLoading, setBdmLoading] = useState(false);
+	const [data, setData] = useState<FetchAdminResponse>({
+		admins: [],
+		totalDocs: 0,
+	});
+	const handleChangeStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setAction(event.target.value);
+	};
 	const handleChangeRequirement = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		setRequirement((event.target as HTMLInputElement).value);
+		setRequirement(event.target.value as ClientRequirementType);
 	};
 	const handleChangeCategory = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		setCategory((event.target as HTMLInputElement).value);
+		setCategory(event.target.value as ClientRequirementCategory);
 	};
 	const handleChangePropertyType = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		setPType((event.target as HTMLInputElement).value);
+		setPType(event.target.value as Ptype);
 	};
+
+	const fetchAdmins = useCallback(async () => {
+		if (action === 'forward') {
+			try {
+				setBdmLoading(true);
+				const resp = await asyncFetchAdmins({
+					status: 'active',
+					type: StaffType.BDM,
+				});
+				setBdmLoading(false);
+				setData(resp);
+			} catch (error) {
+				setBdmLoading(false);
+			}
+		}
+	}, [action]);
+
+	useEffect(() => {
+		fetchAdmins();
+	}, [fetchAdmins]);
 
 	return (
 		<Box mt="1rem">
 			<Box>
 				<FormControl component="fieldset">
-					<FormLabel component="legend">Requirement</FormLabel>
+					<FormLabel component="legend">Client Type</FormLabel>
 					<RadioGroup
 						row
 						aria-label="requirement"
@@ -58,7 +116,7 @@ export default function RadioButtonsGroup() {
 			</Box>
 			<Box mt="1rem">
 				<FormControl component="fieldset">
-					<FormLabel component="legend">Category</FormLabel>
+					<FormLabel component="legend">Requirement Type</FormLabel>
 					<RadioGroup
 						row
 						aria-label="category"
@@ -69,7 +127,7 @@ export default function RadioButtonsGroup() {
 						<FormControlLabel
 							value="sale"
 							control={<Radio />}
-							label="Sale"
+							label="Buy"
 						/>
 						<FormControlLabel
 							value="rent"
@@ -136,20 +194,68 @@ export default function RadioButtonsGroup() {
 				</FormControl>
 				<Box display="flex" alignItems="center">
 					<TextField
+						type="number"
+						inputProps={{ inputmode: 'numeric', pattern: '[0-9]*' }}
 						variant="filled"
 						label="MIN"
-						value={min}
+						value={minPrice}
 						onChange={(e) => setMin(e.target.value)}
 					/>
 					<Typography>--</Typography>
 					<TextField
+						type="number"
 						variant="filled"
+						inputProps={{ inputmode: 'numeric', pattern: '[0-9]*' }}
 						label="MAX"
-						value={max}
+						value={maxPrice}
 						onChange={(e) => setMax(e.target.value)}
 					/>
 				</Box>
 			</Box>
+			<FormControl component="fieldset">
+				<FormLabel component="legend">Choose Action</FormLabel>
+				<RadioGroup
+					row
+					aria-label="action"
+					name="action"
+					value={action}
+					onChange={handleChangeStatus}
+				>
+					<FormControlLabel
+						value="hold"
+						control={<Radio />}
+						label="Hold"
+					/>
+					<FormControlLabel
+						value="forward"
+						control={<Radio />}
+						label="Forward"
+					/>
+				</RadioGroup>
+			</FormControl>
+			{action}
+			{action === 'hold' && (
+				<Box mt="1rem" mb="1rem">
+					<DateTimePickerComponent
+						label="Choose date and time"
+						handleDateChange={setHoldDate}
+						date={pickerDate}
+					/>
+				</Box>
+			)}
+			{action === 'forward' && (
+				<Box mt="1rem" mb="1rem">
+					{bdmLoading ? (
+						<CircularProgress size={20} color="inherit" />
+					) : (
+						<Select>
+							{data.admins.map((c) => (
+								<MenuItem key={c.id}>{c.name}</MenuItem>
+							))}
+						</Select>
+					)}
+				</Box>
+			)}
 		</Box>
 	);
 }

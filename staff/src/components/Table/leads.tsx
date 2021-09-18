@@ -1,29 +1,23 @@
 import { Box, CircularProgress, IconButton } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { parseDate, renderCellData } from '../../utils/render';
 
 import EditIcon from '@material-ui/icons/Edit';
 import { ILead } from '../../model/lead.interface';
+import LeadsComments from '../LeadComments';
 import Paper from '@material-ui/core/Paper';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TrimText from '../TrimText';
-import moment from 'dayjs';
 import { useHistory } from 'react-router';
 
 // import EditIcon from '@material-ui/icons/Edit';
 
-export const parseDate = (date: Date | undefined) => {
-	if (!date) {
-		return '-';
-	}
-	const m = moment(date);
-	return m.format('DD MMM YYYY hh:mm');
-};
 const StyledTableCell = withStyles((theme) => ({
 	head: {
 		backgroundColor: theme.palette.common.black,
@@ -51,18 +45,29 @@ const useStyles = makeStyles({
 interface ILeadsTable {
 	loading: boolean;
 	leads: ILead[];
+	fetchLeads: () => void;
 }
 
-const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads }) => {
+const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads, fetchLeads }) => {
 	const classes = useStyles();
 	const history = useHistory();
 
 	// State
 
 	const [data, setData] = useState<Array<ILead>>([]);
+	const [open, setOpen] = useState(false);
+	const [selectedLead, setSelectedLead] = useState<ILead | null>(null);
 
 	const onEdit = (id: string | undefined) => () =>
 		history.push(`/lead/${id}`);
+
+	const handleCloseModal = () => {
+		setOpen(false);
+	};
+	const openModal = (lead: ILead) => () => {
+		setSelectedLead(lead);
+		setOpen(true);
+	};
 
 	// Effects
 	useEffect(() => {
@@ -71,7 +76,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads }) => {
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: 9 }, (_, i) => i + 1).map((c) => (
+			{Array.from({ length: 7 }, (_, i) => i + 1).map((c) => (
 				<StyledTableCell key={c}>
 					<CircularProgress size={15} color="inherit" />
 				</StyledTableCell>
@@ -81,19 +86,29 @@ const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads }) => {
 
 	return (
 		<Box>
+			<LeadsComments
+				open={open}
+				handleClose={handleCloseModal}
+				id={selectedLead?.id}
+				comments={selectedLead?.comments}
+				number={selectedLead ? selectedLead.number : ''}
+				fetchLeads={fetchLeads}
+			/>
 			<TableContainer component={Paper}>
 				<Table className={classes.table} aria-label="customized table">
 					<TableHead>
 						<TableRow>
 							<StyledTableCell>SL Num.</StyledTableCell>
 							<StyledTableCell>Name</StyledTableCell>
-							<StyledTableCell>Email</StyledTableCell>
-							<StyledTableCell>Phone Number</StyledTableCell>
-							<StyledTableCell>Message</StyledTableCell>
+							<StyledTableCell>Contact Details</StyledTableCell>
+							<StyledTableCell>Requirement</StyledTableCell>
+							<StyledTableCell>Requirement Type</StyledTableCell>
+							<StyledTableCell>Property Type</StyledTableCell>
+							<StyledTableCell>Budget</StyledTableCell>
 							<StyledTableCell>Assigned On</StyledTableCell>
 							<StyledTableCell>Staff Feedback</StyledTableCell>
-							<StyledTableCell>Posted On</StyledTableCell>
 							<StyledTableCell>Update</StyledTableCell>
+							<StyledTableCell>Comments</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -114,22 +129,23 @@ const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads }) => {
 											{row.name ? row.name : '-'}
 										</StyledTableCell>
 										<StyledTableCell>
-											{row.email ? row.email : '-'}
+											<b>Email: </b>
+											{row.email ? row.email : '-'} <br />
+											<b>Phone: </b> {row.number}
 										</StyledTableCell>
 										<StyledTableCell>
-											{row.number}
+											{renderCellData(row.requirement)}
 										</StyledTableCell>
 										<StyledTableCell>
-											{row.message ? (
-												<TrimText
-													text={row.message}
-													num={50}
-												/>
-											) : (
-												'-'
-											)}
+											{renderCellData(row.category)}
 										</StyledTableCell>
-
+										<StyledTableCell>
+											{renderCellData(row.pType)}
+										</StyledTableCell>
+										<StyledTableCell>
+											{renderCellData(row.minPrice)} to{' '}
+											{renderCellData(row.maxPrice)}
+										</StyledTableCell>
 										<StyledTableCell>
 											{parseDate(row.assignedAt)}
 										</StyledTableCell>
@@ -137,14 +153,19 @@ const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads }) => {
 										<StyledTableCell>
 											{row.feedback}
 										</StyledTableCell>
-										<StyledTableCell>
-											{parseDate(row.createdAt)}
-										</StyledTableCell>
+
 										<StyledTableCell>
 											<IconButton
 												onClick={onEdit(row.id)}
 											>
 												<EditIcon color="primary" />
+											</IconButton>
+										</StyledTableCell>
+										<StyledTableCell>
+											<IconButton
+												onClick={openModal(row)}
+											>
+												<QuestionAnswerIcon color="primary" />
 											</IconButton>
 										</StyledTableCell>
 									</StyledTableRow>

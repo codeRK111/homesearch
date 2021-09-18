@@ -6,7 +6,7 @@ import { ServerResponse } from '../../model/apiResponse.interface';
 
 const token = localStorage.getItem('JWT_STAFF');
 
-export const asyncAddLead = async (lead: ILead): Promise<ILead> => {
+export const asyncAddLead = async (lead: ILead): Promise<ILead> => { 
 	try {
 		const resp = await APIV2.post<
 			ILead,
@@ -14,7 +14,7 @@ export const asyncAddLead = async (lead: ILead): Promise<ILead> => {
 		>(`${V2EndPoint.Lead}`, lead, {
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
+					Authorization: `Bearer ${token}`,
 			},
 		});
 		const leadData = resp.data.data;

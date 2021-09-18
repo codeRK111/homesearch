@@ -25,12 +25,25 @@ const leadsSchema = new Schema(
 			ref: 'Admin',
 			default: null,
 		},
+		bdm: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Admin',
+			default: null,
+		},
 		createdBy: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Admin',
 			default: null,
 		},
 		assignedAt: {
+			type: Date,
+			default: null,
+		},
+		hold: {
+			type: Boolean,
+			default: false,
+		},
+		holdDate: {
 			type: Date,
 			default: null,
 		},
@@ -46,6 +59,49 @@ const leadsSchema = new Schema(
 			},
 			default: 'active',
 		},
+		requirement: {
+			type: String,
+			enum: {
+				values: ['hvp', 'ndp'],
+			},
+		},
+		category: {
+			type: String,
+			enum: {
+				values: ['rent', 'sale', 'project'],
+			},
+		},
+		pType: {
+			type: String,
+			enum: {
+				values: ['flat', 'independenthouse', 'hostel', 'pg', 'land'],
+			},
+		},
+		minPrice: {
+			type: String,
+		},
+		maxPrice: {
+			type: String,
+		},
+		comments: [
+			{
+				from: {
+					type: mongoose.Schema.ObjectId,
+					ref: 'Admin',
+				},
+				message: {
+					type: String,
+				},
+				date: {
+					type: Date,
+					default: Date.now(),
+				},
+			},
+		],
+		stage: {
+			type: Boolean,
+			default: 0,
+		},
 	},
 	{
 		toJSON: { virtuals: true },
@@ -58,10 +114,15 @@ leadsSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'clientSupport',
 		select: 'id name',
-	}).populate({
-		path: 'createdBy',
-		select: 'id name',
-	});
+	})
+		.populate({
+			path: 'createdBy',
+			select: 'id name',
+		})
+		.populate({
+			path: 'comments.from',
+			select: 'id name',
+		});
 
 	next();
 });

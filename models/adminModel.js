@@ -111,6 +111,8 @@ const adminSchema = new Schema(
 				values: [
 					'super-admin',
 					'admin',
+					'gm',
+					'bdm',
 					'staff',
 					'clientSupport',
 					'digitalMarketing',

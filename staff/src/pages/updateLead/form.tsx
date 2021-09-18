@@ -1,23 +1,43 @@
 import * as Yup from 'yup';
 
 import { Button, CircularProgress, Grid } from '@material-ui/core';
+import {
+	ClientRequirementCategory,
+	ClientRequirementType,
+	ILead,
+} from '../../model/lead.interface';
 import { Form, Formik, FormikHelpers } from 'formik';
 import React, { useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
 import ClientRequirement from './requirement';
 import FTextField from '../../components/Formik/input';
-import { ILead } from '../../model/lead.interface';
+import { IStaff } from '../../model/staff.interface';
 import { PageWrapper } from '../../components/UI/Container';
+import { Ptype } from '../../model/property.interface';
 import Typography from '@material-ui/core/Typography';
 import { asyncUpdateLead } from '../../API/lead';
+import { useHistory } from 'react-router';
 
 interface IUpdateLeadForm {
 	initialValues: ILead;
 	id: string;
 }
 
+export interface IClientRequirementState {
+	requirement: ClientRequirementType;
+	category: ClientRequirementCategory;
+	pType: Ptype;
+	minPrice: string | number;
+	maxPrice: string | number;
+	action: string;
+	holdDate?: Date;
+	pickerDate: Date | null;
+	bdm: string | IStaff;
+}
+
 const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
+	const history = useHistory();
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	const validationSchema = Yup.object({
 		name: Yup.string().matches(/^[a-zA-Z ]+$/, 'Invalid Name'),
@@ -30,11 +50,83 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 
 	// State
 	const [loading, setLoading] = useState(false);
+	const [clientRequirement, setRequirement] =
+		useState<IClientRequirementState>({
+			requirement: initialValues.requirement
+				? initialValues.requirement
+				: ClientRequirementType.HVP,
+			category: initialValues.category
+				? initialValues.category
+				: ClientRequirementCategory.Sale,
+			pType: initialValues.pType ? initialValues.pType : Ptype.Apartment,
+			minPrice: initialValues.minPrice ? initialValues.minPrice : '',
+			maxPrice: initialValues.maxPrice ? initialValues.maxPrice : '',
+			action: initialValues.hold
+				? 'hold'
+				: initialValues.stage === 2
+				? 'forward'
+				: '',
+			pickerDate: initialValues.holdDate
+				? initialValues.holdDate
+				: new Date(),
+			bdm: initialValues.bdm
+				? typeof initialValues.bdm === 'string'
+					? initialValues.bdm
+					: (initialValues.bdm.id as string)
+				: '',
+		});
+
+	const manageRequirement = (value: ClientRequirementType) => {
+		setRequirement((prevState) => ({
+			...prevState,
+			requirement: value,
+		}));
+	};
+	const manageHoldDate = (value: Date | null) => {
+		setRequirement((prevState) => ({
+			...prevState,
+			pickerDate: value,
+		}));
+	};
+	const manageAction = (value: string) => {
+		setRequirement((prevState) => ({
+			...prevState,
+			action: value,
+		}));
+	};
+	const manageCategory = (value: ClientRequirementCategory) => {
+		setRequirement((prevState) => ({
+			...prevState,
+			category: value,
+		}));
+	};
+	const managePtype = (value: Ptype) => {
+		setRequirement((prevState) => ({
+			...prevState,
+			pType: value,
+		}));
+	};
+	const manageMinPrice = (value: string) => {
+		setRequirement((prevState) => ({
+			...prevState,
+			minPrice: value,
+		}));
+	};
+	const manageMaxPrice = (value: string) => {
+		setRequirement((prevState) => ({
+			...prevState,
+			maxPrice: value,
+		}));
+	};
 
 	const onSubmit = async (values: ILead, helpers: FormikHelpers<ILead>) => {
 		try {
 			setLoading(true);
-			await asyncUpdateLead(id, values);
+			const input = { ...values, ...clientRequirement };
+			if (clientRequirement.pickerDate) {
+				input.holdDate = clientRequirement.pickerDate;
+			}
+			await asyncUpdateLead(id, input);
 			setLoading(false);
 			helpers.resetForm();
 			setSnackbar({
@@ -42,6 +134,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 				message: 'Lead Updated successfully',
 				severity: 'success',
 			});
+			history.push('/leads');
 		} catch (err: any) {
 			console.log(err);
 			setLoading(false);
@@ -79,24 +172,17 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 										label="Phone Number"
 									/>
 								</Grid>
-								<Grid item xs={12}>
-									<FTextField
-										name={'message'}
-										multiline={true}
-										rows={5}
-										label="Message"
-									/>
-								</Grid>
-								<Grid item xs={12}>
-									<ClientRequirement />
-								</Grid>
 
 								<Grid item xs={12}>
-									<FTextField
-										name={'feedback'}
-										multiline={true}
-										rows={5}
-										label="Client Feedback"
+									<ClientRequirement
+										setMax={manageMaxPrice}
+										setAction={manageAction}
+										setMin={manageMinPrice}
+										setRequirement={manageRequirement}
+										setCategory={manageCategory}
+										setPType={managePtype}
+										setHoldDate={manageHoldDate}
+										{...clientRequirement}
 									/>
 								</Grid>
 

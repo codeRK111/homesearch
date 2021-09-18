@@ -151,6 +151,7 @@ app.use(
 // 	})
 // );
 app.use('/admin', express.static(path.join(__dirname, 'admin', 'build')));
+app.use('/workspace', express.static(path.join(__dirname, 'staff', 'build')));
 app.use(
 	'/homesearchIndia',
 	express.static(path.join(__dirname, 'homesearchIndia', 'build'))
@@ -199,6 +200,11 @@ app.all('/api/*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));
 });
 
+app.get('/workspace/*', function (req, res) {
+	res.sendFile(
+		require('path').resolve(__dirname, 'client', 'staff', 'index.html')
+	);
+});
 app.get('/*', function (req, res) {
 	res.sendFile(
 		require('path').resolve(__dirname, 'client', 'build', 'index.html')

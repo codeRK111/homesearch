@@ -115,10 +115,54 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 		data.number = req.body.number;
 	}
 	if (req.body.message) {
-		data.message = req.body.message;
+		data['$push'] = {
+			comments: {
+				$each: [
+					{
+						from: req.admin.id,
+						message: req.body.message,
+						date: Date.now(),
+					},
+				],
+				$sort: { date: -1 },
+			},
+		};
 	}
 	if (req.body.feedback) {
 		data.feedback = req.body.feedback;
+	}
+	if (req.body.requirement) {
+		data.requirement = req.body.requirement;
+	}
+	if (req.body.category) {
+		data.category = req.body.category;
+	}
+	if (req.body.pType) {
+		data.pType = req.body.pType;
+	}
+	if (req.body.minPrice) {
+		data.minPrice = req.body.minPrice;
+	}
+	if (req.body.maxPrice) {
+		data.maxPrice = req.body.maxPrice;
+	}
+	if (req.body.hold !== null && req.body.hold !== undefined) {
+		data.hold = req.body.hold;
+		if (!req.body.holdDate)
+			return next(new AppError('Hold date not found'));
+		data.holdDate = req.body.holdDate;
+	}
+
+	if (req.body.bdm) {
+		if (data.hold !== null && data.hold !== undefined) {
+			delete data.hold;
+		}
+		if (data.holdDate) {
+			delete data.holdDate;
+		}
+
+		data.bdm = req.body.bdm;
+		data.stage = 2;
 	}
 	data.responseBy = req.admin.id;
 
@@ -153,6 +197,7 @@ exports.assignClientSupport = catchAsync(async (req, res, next) => {
 			clientSupport: req.body.clientSupport,
 			attended: true,
 			assignedAt: Date.now(),
+			stage: 1,
 		}
 	);
 	res.status(200).json({
