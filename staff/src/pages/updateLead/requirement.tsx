@@ -1,4 +1,9 @@
-import { CircularProgress, MenuItem, Select } from '@material-ui/core';
+import {
+	CircularProgress,
+	InputLabel,
+	MenuItem,
+	Select,
+} from '@material-ui/core';
 import {
 	ClientRequirementCategory,
 	ClientRequirementType,
@@ -27,6 +32,7 @@ export interface IClientRequirement extends IClientRequirementState {
 	setMax: (value: string) => void;
 	setHoldDate: (date: Date | null) => void;
 	setAction: (action: string) => void;
+	setBDM: (bdm: string) => void;
 }
 
 export default function ClientRequirement({
@@ -44,6 +50,8 @@ export default function ClientRequirement({
 	setHoldDate,
 	action,
 	setAction,
+	setBDM,
+	bdm,
 }: IClientRequirement) {
 	const [bdmLoading, setBdmLoading] = useState(false);
 	const [data, setData] = useState<FetchAdminResponse>({
@@ -164,6 +172,11 @@ export default function ClientRequirement({
 							control={<Radio />}
 							label="House / Villa"
 						/>
+						<FormControlLabel
+							value="guestHouse"
+							control={<Radio />}
+							label="Guest House"
+						/>
 						{category !== 'rent' && (
 							<FormControlLabel
 								value="land"
@@ -233,7 +246,6 @@ export default function ClientRequirement({
 					/>
 				</RadioGroup>
 			</FormControl>
-			{action}
 			{action === 'hold' && (
 				<Box mt="1rem" mb="1rem">
 					<DateTimePickerComponent
@@ -248,11 +260,25 @@ export default function ClientRequirement({
 					{bdmLoading ? (
 						<CircularProgress size={20} color="inherit" />
 					) : (
-						<Select>
-							{data.admins.map((c) => (
-								<MenuItem key={c.id}>{c.name}</MenuItem>
-							))}
-						</Select>
+						<FormControl style={{ width: 200 }}>
+							<InputLabel id="demo-simple-select-label">
+								Select BDM
+							</InputLabel>
+							<Select
+								label="Select BDM"
+								value={bdm}
+								onChange={(e) => {
+									setBDM(e.target.value as string);
+								}}
+							>
+								<MenuItem value="">None</MenuItem>
+								{data.admins.map((c) => (
+									<MenuItem key={c.id} value={c.id}>
+										{c.name}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
 					)}
 				</Box>
 			)}

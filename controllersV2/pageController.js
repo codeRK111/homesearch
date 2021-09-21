@@ -9,6 +9,7 @@ const Furnish = require('./../models/furnishingModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const mongoose = require('mongoose');
+const Leads = require('./../models/leadsModel');
 
 exports.getPageInfo = catchAsync(async (req, res, next) => {
 	const postPropertyCount = await Property.count({
@@ -146,4 +147,89 @@ exports.addAgent = catchAsync(async (req, res, next) => {
 			projects,
 		},
 	});
+});
+
+exports.workspaceDashboard = catchAsync(async (req, res, next) => {
+	if (req.admin.type === 'gm') {
+		const totalLeads = await Leads.countDocuments({
+			status: 'active',
+		});
+		const newLeads = await Leads.countDocuments({
+			status: 'active',
+			stage: 0,
+		});
+		const activeLeads = await Leads.countDocuments({
+			status: 'active',
+			stage: { $ne: 0 },
+		});
+		const clientSupportLeads = await Leads.countDocuments({
+			status: 'active',
+			stage: { $in: [1, 2] },
+		});
+		const bdmLeads = await Leads.countDocuments({
+			status: 'active',
+			stage: 3,
+		});
+		const holdLeads = await Leads.countDocuments({
+			status: 'active',
+			stage: 2,
+		});
+
+		res.status(200).json({
+			status: 'success',
+			data: {
+				totalLeads,
+				newLeads,
+				activeLeads,
+				clientSupportLeads,
+				bdmLeads,
+				holdLeads,
+			},
+		});
+	} else if (req.admin.type === 'clientSupport') {
+		const totalLeads = await Leads.countDocuments({
+			status: 'active',
+			clientSupport: req.admin.id,
+		});
+
+		const activeLeads = await Leads.countDocuments({
+			status: 'active',
+			clientSupport: req.admin.id,
+			stage: { $in: [1, 2] },
+		});
+		const holdLeads = await Leads.countDocuments({
+			status: 'active',
+			clientSupport: req.admin.id,
+			stage: 2,
+		});
+		const forwardedLeads = await Leads.countDocuments({
+			status: 'active',
+			clientSupport: req.admin.id,
+			stage: 3,
+		});
+
+		res.status(200).json({
+			status: 'success',
+			data: {
+				totalLeads,
+				activeLeads,
+				holdLeads,
+				forwardedLeads,
+			},
+		});
+	} else if (req.admin.type === 'bdm') {
+		const totalLeads = await Leads.countDocuments({
+			status: 'active',
+			bdm: req.admin.id,
+		});
+
+		res.status(200).json({
+			status: 'success',
+			data: {
+				totalLeads,
+			},
+		});
+	} else {
+		return next(new AppError('Invalid user'));
+	}
 });

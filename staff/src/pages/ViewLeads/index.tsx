@@ -1,79 +1,25 @@
-import { Box, Typography } from '@material-ui/core';
-import React, { useCallback, useEffect, useState } from 'react';
+import GMLeadsPage from './gm';
+import React from 'react';
+import StaffLeadsPage from './staff';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-import { FetchMyLeadsResponseData } from '../../model/lead.interface';
-import LeadStatusSwitch from '../../components/Switch';
-import LeadsTable from '../../components/Table/leads';
-import { PageWrapper } from '../../components/UI/Container';
-import TablePagination from '../../components/Table/pagination';
-import { asyncFetchMyLeads } from '../../API/lead';
+const LeadsWrapper = () => {
+	const { user } = useTypedSelector((state) => state.auth);
 
-const ViewLeadsPage = () => {
-	// State
-	const [page, setPage] = useState(1);
-	const [limit, setLimit] = useState(10);
-	const [loading, setLoading] = useState(false);
-	const [data, setData] = useState<FetchMyLeadsResponseData>({
-		totalDocs: 0,
-		leads: [],
-	});
-
-	// Callback
-	const handlePage = (
-		event: React.ChangeEvent<unknown>,
-		pageNumber: number
-	) => {
-		setPage(pageNumber);
-	};
-
-	// Fetch leads
-	const fetchLeads = useCallback(async () => {
-		try {
-			setLoading(true);
-			const resp = await asyncFetchMyLeads(page, limit);
-			setData(resp);
-			setLoading(false);
-		} catch (error) {
-			setLoading(false);
-			setData({
-				totalDocs: 0,
-				leads: [],
-			});
-			setLoading(false);
+	const renderPage = (): JSX.Element => {
+		if (!user) {
+			return <h1>Invalid User</h1>;
 		}
-	}, [page, limit]);
-	useEffect(() => {
-		setPage(1);
-	}, [limit]);
-	useEffect(() => {
-		fetchLeads();
-	}, [fetchLeads]);
 
-	return (
-		<PageWrapper>
-			<Typography variant="h5" gutterBottom>
-				My Leads
-			</Typography>
-			<p>
-				<b>{data.totalDocs}</b> leads found
-			</p>
-			<Box mb="1rem">
-				<LeadStatusSwitch />
-			</Box>
-			<LeadsTable
-				loading={loading}
-				leads={data.leads}
-				fetchLeads={fetchLeads}
-			/>
-			<TablePagination
-				limit={limit}
-				setLimit={setLimit}
-				page={page}
-				setPage={handlePage}
-				totalDocs={data.totalDocs}
-			/>
-		</PageWrapper>
-	);
+		switch (user.type) {
+			case 'gm':
+				return <GMLeadsPage />;
+
+			default:
+				return <StaffLeadsPage />;
+		}
+	};
+	return <div>{renderPage()}</div>;
 };
 
-export default ViewLeadsPage;
+export default LeadsWrapper;

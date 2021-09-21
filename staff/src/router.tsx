@@ -1,6 +1,8 @@
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
+import AddBlogPage from './pages/AddBlog';
 import AddLeadPage from './pages/AddLead';
+import AddPropertyPage from './pages/AddProperty';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
 import NavBar from './components/NavBar';
@@ -28,6 +30,15 @@ const Router = () => {
 					{/* <ViewLeadsPage /> */}
 				</PrivateRoute>
 				<PrivateRoute path={'/lead/:id'} component={UpdateLeadPage}>
+					{/* <ViewLeadsPage /> */}
+				</PrivateRoute>
+				<PrivateRoute
+					path={'/add-property/:pType'}
+					component={AddPropertyPage}
+				>
+					{/* <ViewLeadsPage /> */}
+				</PrivateRoute>
+				<PrivateRoute path={'/add-blog'} component={AddBlogPage}>
 					{/* <ViewLeadsPage /> */}
 				</PrivateRoute>
 			</Switch>

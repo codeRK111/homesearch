@@ -13,15 +13,6 @@ const signToken = (id) => {
 
 const createSendToken = (user, statusCode, res) => {
 	const token = signToken(user._id);
-	const cookieOptions = {
-		expires: new Date(
-			Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-		),
-		httpOnly: true,
-	};
-	if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-
-	res.cookie('jwt', token, cookieOptions);
 
 	// Remove password from output
 	user.password = undefined;
@@ -54,7 +45,13 @@ exports.staffLogin = catchAsync(async (req, res, next) => {
 		return next(new AppError('Your account has been disabled', 401));
 	}
 
-	const validTypes = ['staff', 'clientSupport', 'digitalMarketing'];
+	const validTypes = [
+		'staff',
+		'clientSupport',
+		'digitalMarketing',
+		'bdm',
+		'gm',
+	];
 
 	if (!validTypes.includes(admin.type)) {
 		return next(new AppError('Please go to /admin route'));
@@ -134,5 +131,17 @@ exports.updateAdmin = catchAsync(async (req, res, next) => {
 		data: {
 			admin,
 		},
+	});
+});
+
+exports.logout = catchAsync(async (req, res, next) => {
+	if (req.admin) {
+		req.admin = undefined;
+		console.log('object');
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: null,
 	});
 });

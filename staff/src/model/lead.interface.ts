@@ -1,5 +1,5 @@
-import { Ptype } from './property.interface';
 import { IStaff } from './staff.interface';
+import { Ptype } from './property.interface';
 
 export type LeadComment = {
 	_id: string;
@@ -30,9 +30,15 @@ export interface ILead {
 	hold?: boolean;
 	holdDate?: Date;
 	stage?: number;
-	bdm?: string | IStaff;
+	bdm?: string | IStaff | null;
+	source?: LeadSource;
 }
 
+export type FetchLeadsInputType = {
+	limit: number;
+	page: number;
+	stage?: number;
+};
 export type FetchMyLeadsResponseData = {
 	leads: ILead[];
 	totalDocs: number;
@@ -46,4 +52,11 @@ export enum ClientRequirementCategory {
 	Rent = 'rent',
 	Sale = 'sale',
 	Project = 'project',
+}
+export enum LeadSource {
+	Outsource = 'outsource',
+	Consultant = 'consultant',
+	Staff = 'staff',
+	SocialMedia = 'socialMedia',
+	Website = 'website',
 }

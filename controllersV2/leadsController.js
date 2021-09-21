@@ -69,8 +69,16 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	const skip = (page - 1) * limit;
 
 	filter.status = 'active';
-	filter.clientSupport = req.admin.id;
+	if (req.admin.type === 'clientSupport') {
+		filter.clientSupport = req.admin.id;
+		filter.stage = 1;
+	}
+	if (req.body.stage !== null && req.body.stage !== undefined) {
+		filter.stage = req.body.stage;
+	}
 
+	// console.log(filter);
+	// console.log(req.admin);
 	// console.log(filter);
 	const totalDocs = await Leads.countDocuments(filter);
 
@@ -140,29 +148,27 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 	if (req.body.pType) {
 		data.pType = req.body.pType;
 	}
-	if (req.body.minPrice) {
+	if (req.body.minPrice !== null || req.body.minPrice !== undefined) {
 		data.minPrice = req.body.minPrice;
 	}
-	if (req.body.maxPrice) {
+	if (req.body.maxPrice !== null || req.body.maxPrice !== undefined) {
 		data.maxPrice = req.body.maxPrice;
 	}
 	if (req.body.hold !== null && req.body.hold !== undefined) {
 		data.hold = req.body.hold;
-		if (!req.body.holdDate)
+		if (req.body.hold === true && !req.body.holdDate)
 			return next(new AppError('Hold date not found'));
 		data.holdDate = req.body.holdDate;
+		data.stage = 2;
 	}
 
 	if (req.body.bdm) {
-		if (data.hold !== null && data.hold !== undefined) {
-			delete data.hold;
-		}
 		if (data.holdDate) {
-			delete data.holdDate;
+			data.holdDate = null;
 		}
 
 		data.bdm = req.body.bdm;
-		data.stage = 2;
+		data.stage = 3;
 	}
 	data.responseBy = req.admin.id;
 

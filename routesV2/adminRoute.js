@@ -5,10 +5,11 @@ const adminControllerV1 = require('../controllers/adminController');
 const router = express.Router();
 
 // Get All Admins
-router.route('/').post(adminControllerV1.protect, adminController.getAdmins);
+router.route('/logout').get(adminControllerV1.protect, adminController.logout);
 router
 	.route('/:id')
 	.patch(adminControllerV1.protect, adminController.updateAdmin);
+router.route('/').post(adminControllerV1.protect, adminController.getAdmins);
 
 // User
 // router

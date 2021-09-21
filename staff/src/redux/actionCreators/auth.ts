@@ -26,6 +26,7 @@ export const signInError =
 	};
 
 export const logOut = () => (dispatch: Dispatch<AuthAction>) => {
+	localStorage.removeItem('JWT_STAFF');
 	dispatch({
 		type: AuthActionType.LOG_OUT,
 	});

@@ -1,11 +1,11 @@
 import { Box, CircularProgress, IconButton } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { parseDate, renderCellData } from '../../utils/render';
+import { parseDate, renderCellData } from '../../../utils/render';
 
 import EditIcon from '@material-ui/icons/Edit';
-import { ILead } from '../../model/lead.interface';
-import LeadsComments from '../LeadComments';
+import { ILead } from '../../../model/lead.interface';
+import LeadsComments from '../../LeadComments';
 import Paper from '@material-ui/core/Paper';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import Table from '@material-ui/core/Table';
@@ -46,9 +46,15 @@ interface ILeadsTable {
 	loading: boolean;
 	leads: ILead[];
 	fetchLeads: () => void;
+	hold: boolean;
 }
 
-const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads, fetchLeads }) => {
+const LeadsTable: React.FC<ILeadsTable> = ({
+	loading,
+	leads,
+	fetchLeads,
+	hold,
+}) => {
 	const classes = useStyles();
 	const history = useHistory();
 
@@ -76,11 +82,13 @@ const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads, fetchLeads }) => {
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: 7 }, (_, i) => i + 1).map((c) => (
-				<StyledTableCell key={c}>
-					<CircularProgress size={15} color="inherit" />
-				</StyledTableCell>
-			))}
+			{Array.from({ length: hold ? 12 : 11 }, (_, i) => i + 1).map(
+				(c) => (
+					<StyledTableCell key={c}>
+						<CircularProgress size={15} color="inherit" />
+					</StyledTableCell>
+				)
+			)}
 		</StyledTableRow>
 	);
 
@@ -106,6 +114,9 @@ const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads, fetchLeads }) => {
 							<StyledTableCell>Property Type</StyledTableCell>
 							<StyledTableCell>Budget</StyledTableCell>
 							<StyledTableCell>Assigned On</StyledTableCell>
+							{hold && (
+								<StyledTableCell>Reconnect on</StyledTableCell>
+							)}
 							<StyledTableCell>Staff Feedback</StyledTableCell>
 							<StyledTableCell>Update</StyledTableCell>
 							<StyledTableCell>Comments</StyledTableCell>
@@ -149,6 +160,11 @@ const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads, fetchLeads }) => {
 										<StyledTableCell>
 											{parseDate(row.assignedAt)}
 										</StyledTableCell>
+										{hold && (
+											<StyledTableCell>
+												{parseDate(row.holdDate)}
+											</StyledTableCell>
+										)}
 
 										<StyledTableCell>
 											{row.feedback}

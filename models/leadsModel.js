@@ -77,6 +77,18 @@ const leadsSchema = new Schema(
 				values: ['flat', 'independenthouse', 'hostel', 'pg', 'land'],
 			},
 		},
+		source: {
+			type: String,
+			enum: {
+				values: [
+					'outsource',
+					'consultant',
+					'staff',
+					'socialMedia',
+					'website',
+				],
+			},
+		},
 		minPrice: {
 			type: String,
 		},
@@ -99,7 +111,7 @@ const leadsSchema = new Schema(
 			},
 		],
 		stage: {
-			type: Boolean,
+			type: Number,
 			default: 0,
 		},
 	},

@@ -33,7 +33,7 @@ export interface IClientRequirementState {
 	action: string;
 	holdDate?: Date;
 	pickerDate: Date | null;
-	bdm: string | IStaff;
+	bdm: string | IStaff | null;
 }
 
 const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
@@ -61,11 +61,12 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 			pType: initialValues.pType ? initialValues.pType : Ptype.Apartment,
 			minPrice: initialValues.minPrice ? initialValues.minPrice : '',
 			maxPrice: initialValues.maxPrice ? initialValues.maxPrice : '',
-			action: initialValues.hold
-				? 'hold'
-				: initialValues.stage === 2
-				? 'forward'
-				: '',
+			action:
+				initialValues.stage === 2
+					? 'hold'
+					: initialValues.stage === 3
+					? 'forward'
+					: '',
 			pickerDate: initialValues.holdDate
 				? initialValues.holdDate
 				: new Date(),
@@ -80,6 +81,12 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 		setRequirement((prevState) => ({
 			...prevState,
 			requirement: value,
+		}));
+	};
+	const manageBDM = (value: string) => {
+		setRequirement((prevState) => ({
+			...prevState,
+			bdm: value,
 		}));
 	};
 	const manageHoldDate = (value: Date | null) => {
@@ -123,9 +130,44 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 		try {
 			setLoading(true);
 			const input = { ...values, ...clientRequirement };
-			if (clientRequirement.pickerDate) {
-				input.holdDate = clientRequirement.pickerDate;
+			if (input.action === 'hold') {
+				if (clientRequirement.pickerDate) {
+					input.hold = true;
+					input.holdDate = clientRequirement.pickerDate;
+				}
+				if (input.bdm) {
+					input.bdm = null;
+				}
+			} else {
+				input.hold = false;
+				if (input.holdDate) {
+					delete input.holdDate;
+				}
 			}
+			const requiredFields: Array<
+				keyof ILead | keyof IClientRequirementState
+			> = [
+				'action',
+				'bdm',
+				'category',
+				'email',
+				'hold',
+				'holdDate',
+				'maxPrice',
+				'minPrice',
+				'name',
+				'number',
+				'pType',
+				'requirement',
+			];
+			const keyss = Object.keys(input) as Array<
+				keyof ILead | keyof IClientRequirementState
+			>;
+			keyss.forEach((c) => {
+				if (!requiredFields.includes(c)) {
+					delete input[c];
+				}
+			});
 			await asyncUpdateLead(id, input);
 			setLoading(false);
 			helpers.resetForm();
@@ -175,6 +217,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 
 								<Grid item xs={12}>
 									<ClientRequirement
+										setBDM={manageBDM}
 										setMax={manageMaxPrice}
 										setAction={manageAction}
 										setMin={manageMinPrice}

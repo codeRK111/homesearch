@@ -123,6 +123,8 @@ export default function LeadsComments({
 				open={open}
 				onClose={handleClose}
 				scroll={'paper'}
+				fullWidth
+				maxWidth="sm"
 				aria-labelledby="scroll-dialog-title"
 				aria-describedby="scroll-dialog-description"
 			>

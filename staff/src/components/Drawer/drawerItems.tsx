@@ -18,6 +18,7 @@ const DrawerItems: React.FC<IDrawerItems> = ({ closeDrawer }) => {
 		<div className={style.drawerWrapper}>
 			<SpaceBetween>
 				<Typography variant="h6">Homesearch18</Typography>
+
 				<IconButton onClick={closeDrawer}>
 					<CloseIcon />
 				</IconButton>

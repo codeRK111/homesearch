@@ -8,6 +8,9 @@ const router = express.Router();
 router
 	.route('/user/profile')
 	.get(authController.protect, pageController.getPageInfo);
+router
+	.route('/admin/workspace')
+	.get(adminController.protect, pageController.workspaceDashboard);
 router.get(
 	'/project/add-project',
 	adminController.protect,

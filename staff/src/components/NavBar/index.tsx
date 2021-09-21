@@ -5,10 +5,13 @@ import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import AppDrawer from '../Drawer';
 import Button from '@material-ui/core/Button';
+import { CircularProgress } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
+import { Link } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { asyncLogout } from '../../API/auth';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -32,10 +35,22 @@ const NavBar = () => {
 
 	// State
 	const [openDrawer, setOpenDrawer] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	// Callbacks
 	const manageDrawerState = (status: boolean) => () => {
 		setOpenDrawer(status);
+	};
+
+	const onLogOut = async () => {
+		try {
+			setLoading(true);
+			await asyncLogout();
+			setLoading(false);
+			logOut();
+		} catch (error) {
+			setLoading(false);
+		}
 	};
 
 	return (
@@ -57,11 +72,36 @@ const NavBar = () => {
 							<MenuIcon />
 						</IconButton>
 					)}
-					<Typography variant="h6" className={classes.title}>
-						Homesearch18
-					</Typography>
+					{user ? (
+						<Link
+							to="/"
+							className={classes.title}
+							style={{ color: '#ffffff', textDecoration: 'none' }}
+						>
+							<Typography variant="h6">Homesearch18</Typography>
+						</Link>
+					) : (
+						<Typography variant="h6" className={classes.title}>
+							Homesearch18
+						</Typography>
+					)}
+
 					{user && (
-						<Button color="inherit" onClick={logOut}>
+						<Button
+							color="inherit"
+							onClick={onLogOut}
+							disabled={loading}
+							endIcon={
+								loading ? (
+									<CircularProgress
+										size={20}
+										color="secondary"
+									/>
+								) : (
+									<></>
+								)
+							}
+						>
 							Logout
 						</Button>
 					)}

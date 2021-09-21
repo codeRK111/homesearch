@@ -1,20 +1,23 @@
 import { APIV2, V2EndPoint, asyncError } from '../instance';
-import { FetchMyLeadsResponseData, ILead } from './../../model/lead.interface';
+import {
+	FetchLeadsInputType,
+	FetchMyLeadsResponseData,
+	ILead,
+} from './../../model/lead.interface';
 
 import { AxiosResponse } from 'axios';
 import { ServerResponse } from '../../model/apiResponse.interface';
 
-const token = localStorage.getItem('JWT_STAFF');
-
-export const asyncAddLead = async (lead: ILead): Promise<ILead> => { 
+export const asyncAddLead = async (lead: ILead): Promise<ILead> => {
 	try {
+		const token = localStorage.getItem('JWT_STAFF');
 		const resp = await APIV2.post<
 			ILead,
 			AxiosResponse<ServerResponse<ILead>>
 		>(`${V2EndPoint.Lead}`, lead, {
 			headers: {
 				'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 		});
 		const leadData = resp.data.data;
@@ -27,22 +30,18 @@ export const asyncAddLead = async (lead: ILead): Promise<ILead> => {
 
 // Get all the leads assigned to the specific user
 
-type InputType = {
-	limit: number;
-	page: number;
-};
-
 export const asyncFetchMyLeads = async (
-	page: number,
-	limit: number
+	filters: FetchLeadsInputType
 ): Promise<FetchMyLeadsResponseData> => {
 	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		console.log({ myToken: token });
 		const resp = await APIV2.post<
-			InputType,
+			FetchLeadsInputType,
 			AxiosResponse<ServerResponse<FetchMyLeadsResponseData>>
 		>(
 			`${V2EndPoint.Lead}/get-assigned-leads`,
-			{ page, limit },
+			{ ...filters },
 			{
 				headers: {
 					'Content-Type': 'application/json',
@@ -64,6 +63,7 @@ interface FetchMyLeadDetailsData {
 
 export const asyncGetLeadDetails = async (id: string): Promise<ILead> => {
 	try {
+		const token = localStorage.getItem('JWT_STAFF');
 		const resp = await APIV2.get<
 			any,
 			AxiosResponse<ServerResponse<FetchMyLeadDetailsData>>
@@ -90,6 +90,7 @@ export const asyncUpdateLead = async (
 	lead: ILead
 ): Promise<ILead> => {
 	try {
+		const token = localStorage.getItem('JWT_STAFF');
 		const resp = await APIV2.patch<
 			ILead,
 			AxiosResponse<ServerResponse<ILead>>
@@ -102,6 +103,36 @@ export const asyncUpdateLead = async (
 		const leadData = resp.data.data;
 
 		return leadData;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+
+type AssignSupportServerResponse = {
+	lead: ILead;
+};
+export const asyncAssignSupport = async (
+	leads: string[],
+	clientSupport: string
+): Promise<ILead> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.post<
+			ILead,
+			AxiosResponse<ServerResponse<AssignSupportServerResponse>>
+		>(
+			`${V2EndPoint.Lead}/assign-support`,
+			{ leads, clientSupport },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		const leadData = resp.data.data;
+
+		return leadData.lead;
 	} catch (e: any) {
 		throw new Error(asyncError(e));
 	}

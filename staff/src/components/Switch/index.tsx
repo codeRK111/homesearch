@@ -3,14 +3,19 @@ import FormGroup from '@material-ui/core/FormGroup';
 import React from 'react';
 import Switch from '@material-ui/core/Switch';
 
-export default function SwitchLabels() {
-	const [state, setState] = React.useState({
-		checkedA: true,
-		checkedB: false,
-	});
+interface ISwitchLabels {
+	value: boolean;
+	setValue: (value: boolean) => void;
+	label?: string;
+}
 
+export default function SwitchLabels({
+	value,
+	setValue,
+	label = 'Hold Leads',
+}: ISwitchLabels) {
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ ...state, [event.target.name]: event.target.checked });
+		setValue(event.target.checked);
 	};
 
 	return (
@@ -18,13 +23,13 @@ export default function SwitchLabels() {
 			<FormControlLabel
 				control={
 					<Switch
-						checked={state.checkedB}
+						checked={value}
 						onChange={handleChange}
 						name="checkedB"
 						color="primary"
 					/>
 				}
-				label="Hold Leads"
+				label={label}
 			/>
 		</FormGroup>
 	);

@@ -1,18 +1,34 @@
 import * as Yup from 'yup';
 
-import { Button, CircularProgress, Grid, Typography } from '@material-ui/core';
+import {
+	Button,
+	CircularProgress,
+	Grid,
+	MenuItem,
+	Typography,
+} from '@material-ui/core';
 import { Form, Formik, FormikHelpers } from 'formik';
+import { ILead, LeadSource } from '../../model/lead.interface';
 import React, { useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
+import FSelect from '../../components/Formik/select';
 import FTextField from '../../components/Formik/input';
-import { ILead } from '../../model/lead.interface';
 import { PageWrapper } from '../../components/UI/Container';
 import { asyncAddLead } from '../../API/lead';
 
 const AddLeadPage = () => {
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	const validationSchema = Yup.object({
+		source: Yup.mixed()
+			.oneOf([
+				LeadSource.Consultant,
+				LeadSource.Outsource,
+				LeadSource.SocialMedia,
+				LeadSource.Staff,
+				LeadSource.Website,
+			])
+			.required('Source of lead required'),
 		name: Yup.string().matches(/^[a-zA-Z ]+$/, 'Invalid Name'),
 		email: Yup.string().email('Invalid email'),
 		number: Yup.string()
@@ -22,6 +38,7 @@ const AddLeadPage = () => {
 	});
 	const initialValues: ILead = {
 		name: '',
+		source: LeadSource.Staff,
 		email: '',
 		number: '',
 		message: '',
@@ -62,13 +79,34 @@ const AddLeadPage = () => {
 					onSubmit={onSubmit}
 					validationSchema={validationSchema}
 				>
-						{() => (
+					{() => (
 						<Form>
 							<Grid container spacing={1}>
-								<Grid item xs={12} md={6}>
+								<Grid item xs={12} md={4}>
+									<FSelect name={'source'} label="Source">
+										<MenuItem value={LeadSource.Consultant}>
+											Consultant
+										</MenuItem>
+										<MenuItem value={LeadSource.Outsource}>
+											Outsource
+										</MenuItem>
+										<MenuItem
+											value={LeadSource.SocialMedia}
+										>
+											SocialMedia
+										</MenuItem>
+										<MenuItem value={LeadSource.Staff}>
+											Staff
+										</MenuItem>
+										<MenuItem value={LeadSource.Website}>
+											Website
+										</MenuItem>
+									</FSelect>
+								</Grid>
+								<Grid item xs={12} md={4}>
 									<FTextField name={'name'} label="Name" />
 								</Grid>
-								<Grid item xs={12} md={6}>
+								<Grid item xs={12} md={4}>
 									<FTextField name={'email'} label="Email" />
 								</Grid>
 								<Grid item xs={12}>
