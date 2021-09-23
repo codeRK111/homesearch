@@ -37,6 +37,7 @@ const SearchComponent = ({
 	searchCityLoading,
 	searchCities,
 	topCities,
+	placeholder = 'Enter City Name',
 }) => {
 	const history = useHistory();
 	const theme = useTheme();
@@ -151,7 +152,7 @@ const SearchComponent = ({
 					) : (
 						<input
 							type="text"
-							placeholder="Enter City Name"
+							placeholder={placeholder}
 							onChange={handleCity}
 							value={userTypedCity}
 							ref={input}

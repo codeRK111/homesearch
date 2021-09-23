@@ -129,6 +129,10 @@ app.use(
 	express.static(path.join(__dirname, 'images', 'builder_images'))
 );
 app.use(
+	'/assets/blogs',
+	express.static(path.join(__dirname, 'images', 'blog_images'))
+);
+app.use(
 	'/assets/cities',
 	express.static(path.join(__dirname, 'images', 'city_images'))
 );

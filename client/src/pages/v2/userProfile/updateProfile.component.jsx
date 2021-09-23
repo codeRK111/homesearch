@@ -328,7 +328,7 @@ function ScrollDialog({ open, handleClose, user, setSnackbar, fetchUser }) {
 													);
 												}}
 											>
-												Agent
+												Realtor
 											</ChipSelect>
 										</Grid>
 										<Grid item xs={6} md={3}>

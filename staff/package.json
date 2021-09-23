@@ -23,7 +23,9 @@
     "date-fns": "^2.24.0",
     "dayjs": "1.10.6",
     "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
     "formik": "^2.2.9",
+    "html-to-draftjs": "^1.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-draft-wysiwyg": "^1.14.7",
@@ -64,6 +66,8 @@
   "proxy": "http://127.0.0.1:5000",
   "devDependencies": {
     "@types/draft-js": "^0.11.5",
+    "@types/draftjs-to-html": "^0.8.1",
+    "@types/html-to-draftjs": "^1.4.0",
     "@types/react-draft-wysiwyg": "^1.13.3",
     "@types/react-router-dom": "^5.1.9",
     "@types/react-swipeable-views": "^0.13.1"

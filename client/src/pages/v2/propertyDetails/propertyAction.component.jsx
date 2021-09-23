@@ -1,11 +1,4 @@
-import {
-	Avatar,
-	Box,
-	CircularProgress,
-	Grid,
-	Tooltip,
-	Typography,
-} from '@material-ui/core';
+import { Box, CircularProgress, Tooltip, Typography } from '@material-ui/core';
 import {
 	FacebookShareButton,
 	LinkedinShareButton,
@@ -31,7 +24,6 @@ import bookmarkIcon from '../../../assets/icons/bookmark.svg';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import fingerLikeIcon from '../../../assets/icons/fingerLike.svg';
 import { toggleLoginPopup } from '../../../redux/ui/ui.actions';
 import useGlobalStyles from '../../../common.style';
 import whatsappIcon from '../../../assets/icons/whatsappOutline.svg';

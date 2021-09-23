@@ -170,6 +170,13 @@ const globalStyle = makeStyles((theme) => ({
 		fontWeight: 'bold',
 		color: theme.primaryHeadingColor,
 	},
+	link: {
+		textDecoration: 'none',
+		color: '#000000',
+		'&:hover': {
+			color: theme.yellowColor,
+		},
+	},
 }));
 
 export default globalStyle;

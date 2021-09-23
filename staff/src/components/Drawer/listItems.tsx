@@ -1,7 +1,6 @@
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
 
-import ApartmentIcon from '@material-ui/icons/Apartment';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import ListDropDown from '../ListCollapse';
@@ -89,8 +88,26 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 						</ListItemIcon>
 						<ListItemText primary={'Add Blog'} />
 					</ListItem>
+					<ListItem
+						button
+						onClick={changeRoute('/blogs')}
+						className={clsx(
+							manageSelectedStyle('/blogs'),
+							style.nested
+						)}
+					>
+						<ListItemIcon>
+							<ListAltIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon('/blogs')
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'All Blogs'} />
+					</ListItem>
 				</ListDropDown>
-				<ListDropDown
+				{/* <ListDropDown
 					open={blogOpen}
 					toggle={setBlogOpen}
 					Icon={ApartmentIcon}
@@ -116,7 +133,7 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 						</ListItemIcon>
 						<ListItemText primary={'Add Property Rent'} />
 					</ListItem>
-				</ListDropDown>
+				</ListDropDown> */}
 			</List>
 		</div>
 	);

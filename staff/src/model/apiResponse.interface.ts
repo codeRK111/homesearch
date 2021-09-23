@@ -12,3 +12,9 @@ export interface DashboardData {
 	holdLeads: number;
 	forwardedLeads: number;
 }
+export interface ListFilter {
+	page: number;
+	limit: number;
+	status?: any;
+	[key: string]: any;
+}

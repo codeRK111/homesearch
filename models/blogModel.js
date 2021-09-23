@@ -10,6 +10,11 @@ const blogSchema = new Schema(
 			unique: true,
 			required: [true, 'Title required'],
 		},
+		author: {
+			type: String,
+			unique: true,
+			required: [true, 'Author required'],
+		},
 		shortDesc: {
 			type: String,
 			required: [true, 'Short description required'],
@@ -40,6 +45,13 @@ const blogSchema = new Schema(
 				values: ['active', 'inactive'],
 			},
 			default: 'active',
+		},
+		category: {
+			type: String,
+			enum: {
+				values: ['builder', 'project'],
+			},
+			required: [true, 'Category required'],
 		},
 		photo: {
 			type: String,

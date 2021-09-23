@@ -14,6 +14,15 @@ const userSchema = new Schema(
 			maxlength: [25, 'Max 25 chars allowed'],
 			default: null,
 		},
+		address: {
+			type: String,
+		},
+		description: {
+			type: String,
+		},
+		companyName: {
+			type: String,
+		},
 		hsID: {
 			type: String,
 			index: {
@@ -53,6 +62,10 @@ const userSchema = new Schema(
 			type: String,
 			default: null,
 		},
+		coverPhoto: {
+			type: String,
+			default: null,
+		},
 
 		gender: {
 			type: String,
@@ -70,6 +83,12 @@ const userSchema = new Schema(
 			},
 			required: true,
 		},
+		cities: [
+			{
+				type: mongoose.Schema.ObjectId,
+				ref: 'City',
+			},
+		],
 		otp: {
 			type: String,
 			default: null,

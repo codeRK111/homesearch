@@ -1,5 +1,6 @@
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
+import { Blog, BlogCategory } from '../../model/blog.interface';
 import {
 	Box,
 	CircularProgress,
@@ -11,21 +12,28 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core';
-import { EditorState, convertToRaw } from 'draft-js';
-import React, { useState } from 'react';
+import { ContentState, EditorState, convertToRaw } from 'draft-js';
+import React, { useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
-import { BlogCategory } from '../../model/blog.interface';
-import BlogTags from './tags';
+import BlogTags from '../AddBlog/tags';
 import { Button } from '../../components/UI/Button';
 import { Editor } from 'react-draft-wysiwyg';
-import { asyncAddBlog } from '../../API/blog';
+import { asyncUpdateBlog } from '../../API/blog';
 import draftToHtml from 'draftjs-to-html';
-import useStyles from './blog.style';
+import htmlToDraft from 'html-to-draftjs';
+import { useHistory } from 'react-router';
+import useStyles from '../AddBlog/blog.style';
 
-const AddBlogPage = () => {
+interface IUpdateBlogForm {
+	data: Blog;
+	id: string;
+}
+
+const UpdateBlogForm: React.FC<IUpdateBlogForm> = ({ data, id }) => {
 	const style = useStyles();
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
+	const history = useHistory();
 	// State
 	const [editorState, setEditorState] = React.useState(() =>
 		EditorState.createEmpty()
@@ -35,6 +43,8 @@ const AddBlogPage = () => {
 		shortDesc: '',
 		author: '',
 		category: '',
+		status: '',
+		views: 0,
 	});
 	const [tags, setTags] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
@@ -58,12 +68,38 @@ const AddBlogPage = () => {
 			category: e.target.value as string,
 		}));
 	};
+	const onSelectChangeStatus = (e: React.ChangeEvent<{ value: unknown }>) => {
+		setGeneralInfo((prevState) => ({
+			...prevState,
+			status: e.target.value as string,
+		}));
+	};
 	const addTag = (tag: string) => {
 		setTags([...tags, tag]);
 	};
 	const removeTag = (tag: string) => {
 		setTags(tags.filter((c) => c !== tag));
 	};
+
+	useEffect(() => {
+		setGeneralInfo({
+			title: data.title as string,
+			shortDesc: data.shortDesc as string,
+			author: data.author as string,
+			category: data.category as BlogCategory,
+			status: data.status as string,
+			views: data.views ? data.views : (0 as number),
+		});
+		setTags(data.tags as string[]);
+		const blocksFromHtml = htmlToDraft(data.description as string);
+		const { contentBlocks, entityMap } = blocksFromHtml;
+		const contentState = ContentState.createFromBlockArray(
+			contentBlocks,
+			entityMap
+		);
+		const editorState = EditorState.createWithContent(contentState);
+		setEditorState(editorState);
+	}, [data]);
 
 	const addBlog = async () => {
 		try {
@@ -83,6 +119,8 @@ const AddBlogPage = () => {
 			formData.append('shortDesc', generalInfo.shortDesc);
 			formData.append('category', generalInfo.category);
 			formData.append('author', generalInfo.author);
+			formData.append('status', generalInfo.status);
+			formData.append('views', `${generalInfo.views}`);
 			formData.append('description', description);
 			tags.forEach((c) => {
 				formData.append('tags', c);
@@ -91,22 +129,14 @@ const AddBlogPage = () => {
 				formData.append('photo', photo);
 			}
 			setLoading(true);
-			await asyncAddBlog(formData);
+			await asyncUpdateBlog(id, formData);
 			setLoading(false);
-			setPhoto(null);
-			setTags([]);
-			setGeneralInfo({
-				title: '',
-				shortDesc: '',
-				author: '',
-				category: '',
-			});
-			setEditorState(EditorState.createEmpty());
 			setSnackbar({
 				open: true,
-				message: 'Lead Posted successfully',
+				message: 'Lead Updated successfully',
 				severity: 'success',
 			});
+			history.push('/blogs');
 		} catch (error: any) {
 			setLoading(false);
 			setSnackbar({
@@ -121,7 +151,7 @@ const AddBlogPage = () => {
 		<Box className={style.wrapper}>
 			<Grid container spacing={3}>
 				<Grid item xs={12}>
-					<Typography variant="h5">Add Blog</Typography>
+					<Typography variant="h5">Update Blog</Typography>
 				</Grid>
 				<Grid item xs={12}>
 					<TextField
@@ -197,11 +227,52 @@ const AddBlogPage = () => {
 						/>
 					</Box>
 				</Grid>
+				{data.photo && (
+					<Grid item xs={12}>
+						<img
+							src={`/assets/blogs/${data.photo}`}
+							alt="blog"
+							style={{
+								height: 200,
+								width: 200,
+								objectFit: 'contain',
+							}}
+						/>
+					</Grid>
+				)}
 				<Grid item xs={12}>
 					<input
 						type="file"
 						onChange={onFileChange}
 						placeholder="Photo"
+					/>
+				</Grid>
+				<Grid item xs={12}>
+					<FormControl variant="filled" fullWidth>
+						<InputLabel id="demo-simple-select-filled-label">
+							Status
+						</InputLabel>
+						<Select
+							labelId="demo-simple-select-filled-label"
+							id="demo-simple-select-filled"
+							value={generalInfo.status}
+							name="status"
+							onChange={onSelectChangeStatus}
+						>
+							<MenuItem value={'active'}>Active</MenuItem>
+							<MenuItem value={'inactive'}>Inactive</MenuItem>
+						</Select>
+					</FormControl>
+				</Grid>
+				<Grid item xs={12}>
+					<TextField
+						variant="filled"
+						fullWidth
+						type="number"
+						label="Views"
+						value={generalInfo.views}
+						name="views"
+						onChange={onInputChange}
 					/>
 				</Grid>
 				<Grid item xs={12}>
@@ -231,4 +302,4 @@ const AddBlogPage = () => {
 	);
 };
 
-export default AddBlogPage;
+export default UpdateBlogForm;

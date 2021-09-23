@@ -550,7 +550,7 @@ function AlertDialogSlide({
 																			);
 																		}}
 																	>
-																		Agent
+																		Realtor
 																	</ChipSelect>
 																</Grid>
 																<Grid

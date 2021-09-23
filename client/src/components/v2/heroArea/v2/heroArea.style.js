@@ -118,6 +118,7 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
+		cursor: 'pointer',
 	},
 	iconText: {
 		color: theme.primaryHeadingColor,

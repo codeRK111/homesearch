@@ -9,6 +9,13 @@ export const renderProfileImage = (image) => {
 		return noUser;
 	}
 };
+export const renderBlogImage = (image) => {
+	if (image) {
+		return `/assets/blogs/${image}`;
+	} else {
+		return noUser;
+	}
+};
 
 export const renderInfo = (info) => (info ? info : 'Not Specified');
 export const renderBool = (info) => (info ? 'Yes' : 'No');

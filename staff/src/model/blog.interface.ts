@@ -2,6 +2,7 @@ import { IStaff } from './staff.interface';
 
 export interface Blog {
 	id?: string;
+	author?: string;
 	title?: string;
 	shortDesc?: string;
 	description?: string;
@@ -13,4 +14,10 @@ export interface Blog {
 	photo?: string;
 	createdAt?: Date;
 	updatedAtAt?: Date;
+	category?: BlogCategory;
+}
+
+export enum BlogCategory {
+	Builder = 'builder',
+	Project = 'project',
 }

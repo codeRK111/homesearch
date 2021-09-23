@@ -9,6 +9,7 @@ import { LoadingAnimationNormal } from './components/v2/loadingAnimation';
 import LogIn from './components/logInDialog/logInDialog.component';
 import MuiAlert from '@material-ui/lab/Alert';
 import Protected from './components/protected/protected.component';
+import ScrollToTop from './components/scrollToTop';
 import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -26,6 +27,11 @@ const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
 
 // const HomePageNew = lazy(() => import('./pages/v2/homePage/home.page'));
 const BuilderPage = lazy(() => import('./pages/v2/builderPage'));
+const AgentPage = lazy(() => import('./pages/v2/agentPage/agent.page.jsx'));
+const NewsPage = lazy(() => import('./pages/news'));
+const RealtorsPage = lazy(() => import('./pages/realtors'));
+// const RealtorDetailsPage = lazy(() => import('./pages/realtorDetails'));
+const NewsDetailsPage = lazy(() => import('./pages/newsDetails'));
 const SearchPageNew = lazy(() => import('./pages/v2/searchPage/search.page'));
 const PropertyDetailsPageNew = lazy(() =>
 	import('./pages/v2/propertyDetails/propertyDetails.page')
@@ -96,75 +102,99 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 			<LogIn />
 			<BrowserRouter>
 				<CreateQuery />
-				<Switch>
-					<Route
-						exact
-						path="/"
-						render={(props) => <HomePageNew {...props} />}
-					/>
-					<Route
-						exact
-						path="/v2/property-details/:id"
-						render={(props) => (
-							<PropertyDetailsPageNew {...props} />
-						)}
-					/>
-					<Route
-						exact
-						path="/project-details/:id"
-						render={(props) => <ProjectDetailsPageNew {...props} />}
-					/>
-					<Route
-						exact
-						path="/v2/search"
-						render={(props) => <SearchPageNew {...props} />}
-					/>
-					{/* <Route
-						exact
-						path="/v2/agent"
-						render={(props) => <AgentPageNew {...props} />}
-					/> */}
-					<Route
-						exact
-						path="/v2/post-property"
-						render={(props) => <PostPropertyPageNew {...props} />}
-					/>
-					{/* <Route
-						exact
-						path="/packages/:id"
-						render={(props) => <PackagePage {...props} />}
-					/> */}
-					<Route
-						exact
-						path="/profile"
-						render={(props) => (
-							<Protected component={ProfilePage} {...props} />
-						)}
-					/>
-
-					<Route
-						exact
-						path="/payment"
-						render={(props) => <PaymentPage {...props} />}
-					/>
-					<Route
-						exact
-						path="/project-property/:id"
-						render={(props) => (
-							<ProjectPropertyDetailsPage {...props} />
-						)}
-					/>
-					<Route
-						exact
-						path="/:slug"
-						render={(props) => <BuilderPage {...props} />}
-					/>
-
-					<Route
-						path="*"
-						render={(props) => <NotFound {...props} />}
-					/>
-				</Switch>
+				<ScrollToTop>
+					<Switch>
+						<Route
+							exact
+							path="/"
+							render={(props) => <HomePageNew {...props} />}
+						/>
+						<Route
+							exact
+							path="/realtors"
+							render={(props) => <RealtorsPage {...props} />}
+						/>
+						<Route
+							exact
+							path="/realtors/:id"
+							render={(props) => <AgentPage {...props} />}
+						/>
+						<Route
+							exact
+							path="/news"
+							render={(props) => <NewsPage {...props} />}
+						/>
+						<Route
+							exact
+							path="/news/:slug"
+							render={(props) => <NewsDetailsPage {...props} />}
+						/>
+						<Route
+							exact
+							path="/v2/property-details/:id"
+							render={(props) => (
+								<PropertyDetailsPageNew {...props} />
+							)}
+						/>
+						<Route
+							exact
+							path="/project-details/:id"
+							render={(props) => (
+								<ProjectDetailsPageNew {...props} />
+							)}
+						/>
+						<Route
+							exact
+							path="/v2/search"
+							render={(props) => <SearchPageNew {...props} />}
+						/>
+						{/* <Route
+							exact
+							path="/v2/agent"
+							render={(props) => <AgentPageNew {...props} />}
+						/> */}
+						<Route
+							exact
+							path="/v2/post-property"
+							render={(props) => (
+								<PostPropertyPageNew {...props} />
+							)}
+						/>
+						{/* <Route
+							exact
+							path="/packages/:id"
+							render={(props) => <PackagePage {...props} />}
+						/> */}
+						<Route
+							exact
+							path="/profile"
+							render={(props) => (
+								<Protected component={ProfilePage} {...props} />
+							)}
+						/>
+						<Route
+							exact
+							path="/payment"
+							render={(props) => <PaymentPage {...props} />}
+						/>
+						<Route
+							exact
+							path="/project-property/:id"
+							render={(props) => (
+								<ProjectPropertyDetailsPage {...props} />
+							)}
+						/>
+						<Route
+							exact
+							path="/:slug"
+							render={(props) => <BuilderPage {...props} />}
+						/>
+						<Route
+							path="*"
+							render={(props) => <NotFound {...props} />}
+						/>
+					</Switch>
+				</ScrollToTop>
 				<Footer />
 			</BrowserRouter>
 		</Suspense>
