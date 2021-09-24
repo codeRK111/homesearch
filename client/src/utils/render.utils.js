@@ -2,11 +2,11 @@ import moment from 'dayjs';
 import noUser from '../assets/noUser.png';
 import { validateNumber } from './validation.utils';
 
-export const renderProfileImage = (image) => {
+export const renderProfileImage = (image, customImage = null) => {
 	if (image) {
 		return `/profile/${image}`;
 	} else {
-		return noUser;
+		return customImage ? customImage : noUser;
 	}
 };
 export const renderBlogImage = (image) => {
@@ -169,10 +169,6 @@ export const renderTransactionType = (type) => {
 };
 
 export const renderMinAndMax = (arr) => {
-	console.log('------');
-	console.log(arr);
-	console.log(arr.length);
-	console.log('------');
 	return arr.length > 1
 		? `${Math.min(...arr)}-${Math.max(...arr)}`
 		: `${arr[0]}`;
@@ -433,4 +429,8 @@ export const asyncError = (error) => {
 
 export const hsiID = (id) => {
 	return id ? 'HSI' + id : null;
+};
+export const hideNumber = (number) => {
+	const copy = number;
+	return `${copy.substring(0, 4)} XXXXXX`;
 };

@@ -6,6 +6,9 @@ const uploadController = require('../controllersV2/fileUploadController');
 
 const router = express.Router();
 
+router.route('/get-realtors').post(userController.getRealtors);
+router.route('/realtor/:id').get(userController.getRealtorDetails);
+
 // Admin
 router
 	.route('/by-admin/create')

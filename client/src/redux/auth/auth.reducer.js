@@ -6,11 +6,15 @@ const defaultUser = {
 	name: '',
 	id: '',
 	number: '',
+	address: '',
+	description: '',
+	companyName: '',
 	numberVerified: false,
 	city: {
 		name: '',
 		id: '',
 	},
+	cities: [],
 };
 const initialState = {
 	// Initial Values

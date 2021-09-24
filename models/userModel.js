@@ -175,7 +175,7 @@ userSchema.index({
 // });
 
 userSchema.pre(/^find/, function (next) {
-	this.populate('city');
+	this.populate('city').populate('cities');
 	next();
 });
 

@@ -21,6 +21,10 @@ const getUserEssentials = (user) => ({
 	email: user.email,
 	numberVerified: user.numberVerified,
 	number: user.number,
+	address: user.address ? user.address : '',
+	description: user.description ? user.description : '',
+	companyName: user.companyName ? user.companyName : '',
+	cities: user.cities ? user.cities : [],
 });
 
 const signToken = (id) => {
@@ -749,6 +753,14 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 		email: req.body.email,
 		role: req.body.role,
 	};
+	if (req.body.role === 'agent') {
+		const checkFields = ['address', 'description', 'companyName', 'cities'];
+		checkFields.forEach((c) => {
+			if (req.body[c]) {
+				body[c] = req.body[c];
+			}
+		});
+	}
 	const doc = await User.findByIdAndUpdate(req.user.id, body, {
 		new: true,
 		runValidators: true,

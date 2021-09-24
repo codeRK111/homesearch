@@ -170,6 +170,18 @@ const globalStyle = makeStyles((theme) => ({
 		fontWeight: 'bold',
 		color: theme.primaryHeadingColor,
 	},
+	input: {
+		padding: '1rem',
+		width: '100%',
+		border: 'none',
+		background: theme.shadowColor,
+		borderRadius: 10,
+		boxSizing: 'border-box',
+		boxShadow: 'inset 3px 3px 5px #b5b5b5,inset -3px -3px 5px #ffffff',
+		'&:focus': {
+			outline: 'none',
+		},
+	},
 	link: {
 		textDecoration: 'none',
 		color: '#000000',

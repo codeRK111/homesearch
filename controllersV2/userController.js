@@ -4,22 +4,19 @@ const AppError = require('./../utils/appError');
 const fs = require('fs');
 const path = require('path');
 
-
-const handleUserPhoto =  (req,data,existingUser) => {
+const handleUserPhoto = (req, data, existingUser) => {
 	if (req.file) {
 		if (existingUser.photo) {
 			fs.unlink(
 				path.join(__dirname, '../', 'images', 'profile_images/') +
-				existingUser.photo,
+					existingUser.photo,
 				function (err) {}
 			);
 		}
 
 		data.photo = req.file.filename;
 	}
-
-
-}
+};
 
 exports.getUsers = catchAsync(async (req, res) => {
 	const filter = {};
@@ -58,14 +55,51 @@ exports.getUsers = catchAsync(async (req, res) => {
 		},
 	});
 });
+exports.getRealtors = catchAsync(async (req, res) => {
+	const filter = { status: 'active', role: 'agent' };
+	const page = req.body.page * 1 || 1;
+	const limit = req.body.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	if (req.body.city) {
+		filter.cities = req.body.city;
+	}
+
+	const totalDocs = await User.countDocuments(filter);
+
+	const users = await User.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			realtors: users,
+			totalDocs,
+		},
+	});
+});
+exports.getRealtorDetails = catchAsync(async (req, res) => {
+	const filter = { status: 'active', role: 'agent', _id: req.params.id };
+
+	const realtor = await User.findOne(filter);
+	if (!realtor) {
+		return next(new AppError('Realtor not found', 404));
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: realtor,
+	});
+});
 exports.updateUser = catchAsync(async (req, res, next) => {
 	const existingUser = await User.findById(req.params.id);
 	if (!existingUser) {
 		return next(new AppError('User not found', 404));
 	}
 	const data = req.body;
-	handleUserPhoto(req,data,existingUser)
-
+	handleUserPhoto(req, data, existingUser);
 
 	const user = await User.findByIdAndUpdate(req.params.id, data, {
 		new: true,
@@ -105,7 +139,7 @@ exports.updateMyProfile = catchAsync(async (req, res, next) => {
 			delete data[c];
 		}
 	});
-	handleUserPhoto(req,data,existingUser)
+	handleUserPhoto(req, data, existingUser);
 
 	const user = await User.findByIdAndUpdate(req.params.id, data, {
 		new: true,

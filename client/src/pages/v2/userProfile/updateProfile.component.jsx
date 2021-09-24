@@ -1,10 +1,9 @@
 import * as Yup from 'yup';
 
-import { Box, Grid, IconButton, Typography } from '@material-ui/core';
+import { Box, IconButton, Typography } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 
 import ChipHeader from '../../../components/v2/chipHeader/chipHeader.component';
-import ChipSelect from '../../../components/v2/chipSelect/chipSelectedFullWidth.component';
 import CloseIcon from '@material-ui/icons/Close';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,6 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import OtpInput from 'react-otp-input';
 import React from 'react';
 import TextField from '../../../components/formik/textFieldDefault.component';
+import UpdateMyBasicInfo from './updateBasicInfo';
 import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
 import clsx from 'clsx';
@@ -281,105 +281,12 @@ function ScrollDialog({ open, handleClose, user, setSnackbar, fetchUser }) {
 				</DialogTitle>
 				<DialogContent>
 					<ChipHeader title="Basic Details" />
-					<Formik
-						initialValues={{
-							name: user.name,
-							email: user.email,
-							role: user.role,
-						}}
-						validationSchema={basicValidation}
+					<UpdateMyBasicInfo
+						user={user}
+						updateBasicDetailsLoading={updateBasicDetailsLoading}
 						onSubmit={onBasicSubmit}
-					>
-						{({ values, setFieldValue }) => (
-							<Form>
-								<TextField name="name" />
-								<TextField name="email" />
+					/>
 
-								<Box mt="1rem">
-									<Grid
-										container
-										spacing={1}
-										justify="center"
-									>
-										<Grid item xs={6} md={3}>
-											<ChipSelect
-												selected={
-													values.role === 'builder'
-												}
-												onClick={() => {
-													setFieldValue(
-														'role',
-														'builder'
-													);
-												}}
-											>
-												Builder
-											</ChipSelect>
-										</Grid>
-										<Grid item xs={6} md={3}>
-											<ChipSelect
-												selected={
-													values.role === 'agent'
-												}
-												onClick={() => {
-													setFieldValue(
-														'role',
-														'agent'
-													);
-												}}
-											>
-												Realtor
-											</ChipSelect>
-										</Grid>
-										<Grid item xs={6} md={3}>
-											<ChipSelect
-												selected={
-													values.role === 'owner'
-												}
-												onClick={() => {
-													setFieldValue(
-														'role',
-														'owner'
-													);
-												}}
-											>
-												Owner
-											</ChipSelect>
-										</Grid>
-										<Grid item xs={6} md={3}>
-											<ChipSelect
-												selected={
-													values.role === 'tenant'
-												}
-												onClick={() => {
-													setFieldValue(
-														'role',
-														'tenant'
-													);
-												}}
-											>
-												Tenant
-											</ChipSelect>
-										</Grid>
-									</Grid>
-								</Box>
-								<Box mt="2rem" className={gClasses.flexCenter}>
-									<button
-										type="submit"
-										fullWidth
-										variant="contained"
-										color="primary"
-										className={classes.button}
-										size="large"
-									>
-										{updateBasicDetailsLoading
-											? 'Updating ...'
-											: 'Update'}
-									</button>
-								</Box>
-							</Form>
-						)}
-					</Formik>
 					<Box mt="2rem" mb="1rem">
 						<ChipHeader title="Number" />
 					</Box>
