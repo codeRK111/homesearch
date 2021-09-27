@@ -1,7 +1,12 @@
-import { Avatar, Badge, Box, Grid } from '@material-ui/core';
+import { Avatar, Badge, Box, Chip, Grid, Typography } from '@material-ui/core';
 import React, { useCallback, useRef, useState } from 'react';
+import {
+	capitalizeFirstLetter,
+	renderProfileImage,
+} from '../../../utils/render.utils';
 
 import ErrorBackdrop from '../../../components/v2/backdropMessage';
+import { Link } from 'react-router-dom';
 import LoaderBackdrop from '../../../components/LoaderBackdrop';
 import MailIcon from '@material-ui/icons/Mail';
 import Nav from '../../../components/v2/pageNav/nav.component';
@@ -9,7 +14,6 @@ import axios from 'axios';
 import badgeIcon from '../../../assets/icons/badge.svg';
 import clsx from 'clsx';
 import { getRealtorDetails } from '../../../utils/asyncUser';
-import { renderProfileImage } from '../../../utils/render.utils';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './agentPage.style';
 import { withAsync } from '../../../hoc/withAsync';
@@ -46,6 +50,14 @@ const AgentPage = ({
 			setError(error);
 		}
 	}, [setLoading, setError, id]);
+
+	const renderInfo = (type) => {
+		if (data[type]) {
+			return `${Number(data[type]) / 1000}K`;
+		} else {
+			return '0';
+		}
+	};
 
 	React.useEffect(() => {
 		fetchRealtors();
@@ -114,6 +126,11 @@ const AgentPage = ({
 											<div className={classes.ownerType}>
 												Realtor
 											</div>
+											<Link to="/update-profile/basic">
+												<Typography>
+													Manage Profile
+												</Typography>
+											</Link>
 										</div>
 										<Box
 											className={clsx(
@@ -159,6 +176,32 @@ const AgentPage = ({
 												</span>
 											</Box>
 										</Box>
+										<Box mt="1rem">
+											{data.cities.map((c) => (
+												<Chip
+													label={c.name}
+													key={c._id}
+												/>
+											))}
+										</Box>
+										<Box mt="1rem">{data.description}</Box>
+										<Box mt="1rem">
+											{data.managedPTypes.map((c, i) => (
+												<Chip
+													label={capitalizeFirstLetter(
+														c
+													)}
+													size="small"
+													key={i}
+													variant="outlined"
+													classes={{
+														outlined:
+															classes.chipBorder,
+													}}
+												/>
+											))}
+										</Box>
+
 										<Box
 											className={clsx(
 												globalClasses.alignCenter
@@ -175,7 +218,7 @@ const AgentPage = ({
 														globalClasses.colorUtil
 													}
 												>
-													1.25k
+													{renderInfo('connection')}
 												</h1>
 												<span
 													className={clsx(
@@ -197,7 +240,7 @@ const AgentPage = ({
 														globalClasses.colorUtil
 													}
 												>
-													1.5M
+													{renderInfo('network')}
 												</h1>
 												<span
 													className={clsx(
@@ -219,7 +262,7 @@ const AgentPage = ({
 														globalClasses.colorUtil
 													}
 												>
-													2K
+													{renderInfo('deals')}
 												</h1>
 												<span
 													className={clsx(
@@ -231,80 +274,125 @@ const AgentPage = ({
 												</span>
 											</Box>
 										</Box>
-										<Box
-											className={clsx(
-												globalClasses.alignCenter,
-												globalClasses.smFlexColumn
-											)}
+
+										<Grid
+											container
+											spacing={0}
+											justify="center"
+											component={Box}
 											mt="1rem"
 										>
-											<Box
-												className={
-													globalClasses.alignCenter
-												}
-											>
-												<Box
+											<Grid item xs={12} md={4}>
+												<Grid
+													container
+													spacing={1}
 													className={
-														classes.numberHiglight
+														classes.numberHeighLigftWrapper
 													}
-													mr="1rem"
+													justify="center"
 												>
-													<h1>10</h1>
-												</Box>
-												<span
-													className={clsx(
-														globalClasses.smText
-													)}
-												>
-													Total No. Of Listings
-												</span>
-											</Box>
-											<Box
-												className={clsx(
-													classes.keyNumberSpacer,
-													globalClasses.alignCenter
-												)}
-											>
-												<Box
+													<Grid item md={6}>
+														<Box
+															className={
+																classes.numberHiglight2
+															}
+															mr="1rem"
+														>
+															<h1>10</h1>
+														</Box>
+													</Grid>
+													<Grid
+														item
+														md={6}
+														className={
+															classes.numberHeighLightText
+														}
+													>
+														<span
+															className={clsx(
+																globalClasses.smText
+															)}
+														>
+															Customers visited
+														</span>
+													</Grid>
+												</Grid>
+											</Grid>
+											<Grid item xs={12} md={4}>
+												<Grid
+													container
+													spacing={1}
 													className={
-														classes.numberHiglight
+														classes.numberHeighLigftWrapper
 													}
-													mr="1rem"
+													justify="center"
 												>
-													<h1>60</h1>
-												</Box>
-												<span
-													className={clsx(
-														globalClasses.smText
-													)}
-												>
-													No. of leads received
-												</span>
-											</Box>
-											<Box
-												className={clsx(
-													classes.keyNumberSpacer,
-													globalClasses.alignCenter
-												)}
-												ml="2rem"
-											>
-												<Box
+													<Grid item md={6}>
+														<Box
+															className={
+																classes.numberHiglight2
+															}
+															mr="1rem"
+														>
+															<h1>10</h1>
+														</Box>
+													</Grid>
+													<Grid
+														item
+														md={6}
+														className={
+															classes.numberHeighLightText
+														}
+													>
+														<span
+															className={clsx(
+																globalClasses.smText
+															)}
+														>
+															Properties Leashed
+															Out
+														</span>
+													</Grid>
+												</Grid>
+											</Grid>
+											<Grid item xs={12} md={4}>
+												<Grid
+													container
+													spacing={1}
 													className={
-														classes.numberHiglight
+														classes.numberHeighLigftWrapper
 													}
-													mr="1rem"
+													justify="center"
 												>
-													<h1>55</h1>
-												</Box>
-												<span
-													className={clsx(
-														globalClasses.smText
-													)}
-												>
-													Customers visited
-												</span>
-											</Box>
-										</Box>
+													<Grid item md={6}>
+														<Box
+															className={
+																classes.numberHiglight2
+															}
+															mr="1rem"
+														>
+															<h1>10</h1>
+														</Box>
+													</Grid>
+													<Grid
+														item
+														md={6}
+														className={
+															classes.numberHeighLightText
+														}
+													>
+														<span
+															className={clsx(
+																globalClasses.smText
+															)}
+														>
+															Customers Been
+															Served
+														</span>
+													</Grid>
+												</Grid>
+											</Grid>
+										</Grid>
 									</Grid>
 
 									<Grid item xs={false} md={1}></Grid>

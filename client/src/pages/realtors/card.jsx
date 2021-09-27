@@ -2,6 +2,7 @@ import {
 	Avatar,
 	Box,
 	Button,
+	Chip,
 	Grid,
 	Paper,
 	Typography,
@@ -53,6 +54,9 @@ const RealtorCard = ({ realtor }) => {
 						{realtor.name}
 					</Typography>
 				</Link>
+				<Typography variant="button" display="block" gutterBottom>
+					{realtor.companyName}
+				</Typography>
 				<Typography variant="body2" gutterBottom>
 					{realtor.address}
 				</Typography>
@@ -62,9 +66,19 @@ const RealtorCard = ({ realtor }) => {
 				<Typography variant="button" display="block" gutterBottom>
 					ID: {realtor.hsID}
 				</Typography>
-				<Typography variant="button" display="block" gutterBottom>
-					{realtor.companyName}
-				</Typography>
+
+				<Box
+					sx={{
+						display: 'flex',
+						alignItems: 'center',
+						flexWrap: 'wrap',
+					}}
+					marginBottom="1rem"
+				>
+					{realtor.cities.map((c) => (
+						<Chip key={c._id} label={c.name} variant="outlined" />
+					))}
+				</Box>
 				<Grid container spacing={1}>
 					<Grid item xs={12} md={6}>
 						<Button

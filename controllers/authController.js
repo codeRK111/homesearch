@@ -753,8 +753,20 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 		email: req.body.email,
 		role: req.body.role,
 	};
+	if (req.body.city) {
+		body.city = req.body.city;
+	}
 	if (req.body.role === 'agent') {
-		const checkFields = ['address', 'description', 'companyName', 'cities'];
+		const checkFields = [
+			'address',
+			'description',
+			'companyName',
+			'cities',
+			'connection',
+			'network',
+			'deals',
+			'managedPTypes',
+		];
 		checkFields.forEach((c) => {
 			if (req.body[c]) {
 				body[c] = req.body[c];

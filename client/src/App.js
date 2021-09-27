@@ -27,6 +27,7 @@ const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
 
 // const HomePageNew = lazy(() => import('./pages/v2/homePage/home.page'));
 const BuilderPage = lazy(() => import('./pages/v2/builderPage'));
+const UpdateProfilePage = lazy(() => import('./pages/v2/updateProfile'));
 const AgentPage = lazy(() => import('./pages/v2/agentPage/agent.page.jsx'));
 const NewsPage = lazy(() => import('./pages/news'));
 const RealtorsPage = lazy(() => import('./pages/realtors'));
@@ -113,6 +114,16 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 							exact
 							path="/realtors"
 							render={(props) => <RealtorsPage {...props} />}
+						/>
+						<Route
+							exact
+							path="/update-profile/:iType"
+							render={(props) => (
+								<Protected
+									component={UpdateProfilePage}
+									{...props}
+								/>
+							)}
 						/>
 						<Route
 							exact

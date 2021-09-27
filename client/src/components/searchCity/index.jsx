@@ -10,6 +10,7 @@ import useGlobalStyles from '../../common.style';
 
 export default function ({
 	label = 'Enter City Name',
+	heading,
 	onSelect,
 	type = 'city',
 	city = null,
@@ -33,20 +34,23 @@ export default function ({
 		otherProps.value = location;
 	}
 
-	const onChange = (e, value, _) => {
+	const onChange = (e, value, reason) => {
 		setPlaceName(value);
+		console.log({ value });
 		if (value.length === 2 || value.length >= 4) {
 			cancelToken.current = axios.CancelToken.source();
 			if (type === 'city') {
-				searchPlace(
-					{
-						name: placeName,
-					},
-					cancelToken.current,
-					setLoading
-				).then((data) => {
-					setOptions(data);
-				});
+				if (reason === 'input') {
+					searchPlace(
+						{
+							name: placeName,
+						},
+						cancelToken.current,
+						setLoading
+					).then((data) => {
+						setOptions(data);
+					});
+				}
 			} else {
 				searchPlace(
 					{
@@ -73,6 +77,11 @@ export default function ({
 			{error && (
 				<Typography style={{ color: 'red' }} variant="caption">
 					{error}
+				</Typography>
+			)}
+			{!error && heading && (
+				<Typography variant="caption" display="block" gutterBottom>
+					{heading}
 				</Typography>
 			)}
 			<Autocomplete

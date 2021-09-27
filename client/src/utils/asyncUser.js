@@ -77,3 +77,109 @@ export const getRealtorDetails = (id, cancelToken, setLoading) => {
 			});
 	});
 };
+export const setProfilePhoto = (photo, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT_CLIENT');
+	const formData = new FormData();
+	formData.append('photo', photo);
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.patch(apiUrl('/users/handle-profile-image'), formData, {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data);
+			})
+			.catch((error) => {
+				setLoading(false);
+				return reject(asyncError(error));
+			});
+	});
+};
+export const updateBasicDetails = (data, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT_CLIENT');
+
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.patch(apiUrl('/users'), data, {
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data);
+			})
+			.catch((error) => {
+				setLoading(false);
+				return reject(asyncError(error));
+			});
+	});
+};
+export const sendOtp = (data, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT_CLIENT');
+
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.post(
+				apiUrl('/users/reset-my-number-otp'),
+				{
+					number: data.number,
+				},
+				{
+					cancelToken: cancelToken.token,
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data);
+			})
+			.catch((error) => {
+				setLoading(false);
+				return reject(asyncError(error));
+			});
+	});
+};
+export const validateOtp = (data, cancelToken, setLoading) => {
+	const token = localStorage.getItem('JWT_CLIENT');
+
+	return new Promise((resolve, reject) => {
+		setLoading(true);
+		axios
+			.post(
+				apiUrl('/users/update-my-number'),
+				{
+					number: data.number,
+					otp: data.otp,
+				},
+				{
+					cancelToken: cancelToken.token,
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then((resp) => {
+				setLoading(false);
+				return resolve(resp.data);
+			})
+			.catch((error) => {
+				setLoading(false);
+				return reject(asyncError(error));
+			});
+	});
+};

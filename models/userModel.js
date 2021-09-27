@@ -23,6 +23,15 @@ const userSchema = new Schema(
 		companyName: {
 			type: String,
 		},
+		connection: {
+			type: Number,
+		},
+		network: {
+			type: Number,
+		},
+		deals: {
+			type: Number,
+		},
 		hsID: {
 			type: String,
 			index: {
@@ -74,6 +83,11 @@ const userSchema = new Schema(
 				message: 'gender must be between <male> | <female> | <other>',
 			},
 		},
+		managedPTypes: [
+			{
+				type: String,
+			},
+		],
 		role: {
 			type: String,
 			enum: {

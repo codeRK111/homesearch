@@ -8,8 +8,7 @@ import useStyles from './formik.styles';
 
 // import useGlobalClasses from '../../common.style';
 
-
-const RowSelect = ({ spacing = true, ...otherProps }) => {
+const RowSelect = ({ spacing = true, iType = 'input', ...otherProps }) => {
 	const classes = useStyles();
 	// const globalClasses = useGlobalClasses();
 	const [field, meta] = useField(otherProps);
@@ -29,19 +28,37 @@ const RowSelect = ({ spacing = true, ...otherProps }) => {
 					{helperText}
 				</Typography>
 			)}
+			{!helperText && otherProps.label && (
+				<Typography variant="caption">{otherProps.label}</Typography>
+			)}
 			<Box {...margin}>
-				<input
-					className={classes.input}
-					focused={Boolean(helperText)}
-					fullWidth
-					size="small"
-					variant="filled"
-					error={!!helperText}
-					helperText={helperText}
-					onBlur={() => {}}
-					{...field}
-					{...otherProps}
-				/>
+				{iType === 'input' ? (
+					<input
+						className={classes.input}
+						focused={Boolean(helperText)}
+						fullWidth
+						size="small"
+						variant="filled"
+						error={!!helperText}
+						helperText={helperText}
+						onBlur={() => {}}
+						{...field}
+						{...otherProps}
+					/>
+				) : (
+					<textarea
+						className={classes.input}
+						focused={Boolean(helperText)}
+						fullWidth
+						size="small"
+						variant="filled"
+						error={!!helperText}
+						helperText={helperText}
+						onBlur={() => {}}
+						{...field}
+						{...otherProps}
+					/>
+				)}
 			</Box>
 		</Box>
 	);
