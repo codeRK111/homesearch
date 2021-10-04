@@ -36,6 +36,7 @@ exports.staffLogin = catchAsync(async (req, res, next) => {
 
 	// 2) Check if user exists && password is correct
 	const admin = await Admin.findOne({ username }).select('+password +status');
+	console.log(admin);
 
 	if (!admin || !(await admin.correctPassword(password, admin.password))) {
 		return next(new AppError('Incorrect username or password', 401));

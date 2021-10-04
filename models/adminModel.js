@@ -88,8 +88,7 @@ const adminSchema = new Schema(
 		},
 		password: {
 			type: String,
-			minlength: [6, 'Minimum 6 characters required'],
-			maxlength: [12, 'Minimum 12 characters required'],
+
 			default: null,
 			select: false,
 		},

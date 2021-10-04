@@ -14,6 +14,22 @@ const multerFilter = (req, file, cb) => {
 	}
 };
 
+// Handle Lead Images
+const leadStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, path.join(__dirname, '../', 'images', 'lead_images/'));
+	},
+	filename: (req, file, cb) => {
+		const ext = file.mimetype.split('/')[1];
+		cb(null, `${Date.now()}.${ext}`);
+	},
+});
+
+const lead = multer({
+	fileFilter: multerFilter,
+	storage: leadStorage,
+});
+
 // Handle Blog Images
 const blogStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -188,6 +204,7 @@ exports.uploadProjectPhotosV2 = projects.fields([
 	{ name: 'photos', maxCount: 7 },
 ]);
 exports.uploadProjectPhotos = projects.array('images');
+exports.uploadLeadPhotos = lead.array('images');
 exports.uploadFloorplans = floorPlans.array('images');
 exports.uploadFloorplan = floorPlans.single('floorPlan');
 exports.uploadBlogImage = blog.single('photo');

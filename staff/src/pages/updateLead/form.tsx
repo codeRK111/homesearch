@@ -214,6 +214,12 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 										label="Phone Number"
 									/>
 								</Grid>
+								<Grid item xs={12} md={8}>
+									<FTextField
+										name={'preferedLocation'}
+										label="Prefered Location"
+									/>
+								</Grid>
 
 								<Grid item xs={12}>
 									<ClientRequirement

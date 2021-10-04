@@ -143,6 +143,9 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											<b>Email: </b>
 											{row.email ? row.email : '-'} <br />
 											<b>Phone: </b> {row.number}
+											<br />
+											<b>Location: </b>{' '}
+											{row.preferedLocation}
 										</StyledTableCell>
 										<StyledTableCell>
 											{renderCellData(row.requirement)}

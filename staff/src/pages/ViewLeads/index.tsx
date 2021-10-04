@@ -1,3 +1,4 @@
+import BDMLeadsPage from './bdm';
 import GMLeadsPage from './gm';
 import React from 'react';
 import StaffLeadsPage from './staff';
@@ -14,6 +15,8 @@ const LeadsWrapper = () => {
 		switch (user.type) {
 			case 'gm':
 				return <GMLeadsPage />;
+			case 'bdm':
+				return <BDMLeadsPage />;
 
 			default:
 				return <StaffLeadsPage />;

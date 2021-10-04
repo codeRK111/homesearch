@@ -1,5 +1,6 @@
 const express = require('express');
 const leadController = require('../controllersV2/leadsController');
+const uploadController = require('../controllersV2/fileUploadController');
 const authController = require('../controllers/adminController');
 
 const router = express.Router();
@@ -20,6 +21,12 @@ router
 	.route('/:id')
 	.get(authController.protect, leadController.getLeadDetails)
 	.patch(authController.protect, leadController.updateLead);
-router.route('/').post(authController.protect, leadController.addLead);
+router
+	.route('/')
+	.post(
+		authController.protect,
+		uploadController.uploadLeadPhotos,
+		leadController.addLead
+	);
 
 module.exports = router;

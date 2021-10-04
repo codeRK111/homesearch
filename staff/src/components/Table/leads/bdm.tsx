@@ -1,11 +1,7 @@
-import { Box, Checkbox, CircularProgress, IconButton } from '@material-ui/core';
+import { Box, CircularProgress, IconButton } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import {
-	parseDate,
-	renderCellData,
-	renderLeadStage,
-} from '../../../utils/render';
+import { parseDate, renderCellData } from '../../../utils/render';
 
 import { ILead } from '../../../model/lead.interface';
 import LeadsComments from '../../LeadComments';
@@ -48,18 +44,12 @@ interface ILeadsTable {
 	loading: boolean;
 	leads: ILead[];
 	fetchLeads: () => void;
-	manageSelectedLeads: (id: string) => void;
-	hold: boolean;
-	selectedLeads: string[];
 }
 
-const LeadsTable: React.FC<ILeadsTable> = ({
+const LeadsBDMTable: React.FC<ILeadsTable> = ({
 	loading,
 	leads,
 	fetchLeads,
-	hold,
-	manageSelectedLeads,
-	selectedLeads,
 }) => {
 	const classes = useStyles();
 
@@ -68,12 +58,6 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 	const [data, setData] = useState<Array<ILead>>([]);
 	const [open, setOpen] = useState(false);
 	const [selectedLead, setSelectedLead] = useState<ILead | null>(null);
-
-	const handleChangeCheckbox = (
-		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		manageSelectedLeads(event.target.value);
-	};
 
 	const handleCloseModal = () => {
 		setOpen(false);
@@ -90,13 +74,11 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: hold ? 12 : 11 }, (_, i) => i + 1).map(
-				(c) => (
-					<StyledTableCell key={c}>
-						<CircularProgress size={15} color="inherit" />
-					</StyledTableCell>
-				)
-			)}
+			{Array.from({ length: 10 }, (_, i) => i + 1).map((c) => (
+				<StyledTableCell key={c}>
+					<CircularProgress size={15} color="inherit" />
+				</StyledTableCell>
+			))}
 		</StyledTableRow>
 	);
 
@@ -122,12 +104,9 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							<StyledTableCell>Property Type</StyledTableCell>
 							<StyledTableCell>Budget</StyledTableCell>
 							<StyledTableCell>Assigned On</StyledTableCell>
-							{hold && (
-								<StyledTableCell>Reconnect on</StyledTableCell>
-							)}
-							<StyledTableCell>Stage</StyledTableCell>
+
+							<StyledTableCell>Staff Feedback</StyledTableCell>
 							<StyledTableCell>Comments</StyledTableCell>
-							<StyledTableCell>Assign</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -150,7 +129,8 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 										<StyledTableCell>
 											<b>Email: </b>
 											{row.email ? row.email : '-'} <br />
-											<b>Phone: </b> {row.number} <br />
+											<b>Phone: </b> {row.number}
+											<br />
 											<b>Location: </b>{' '}
 											{row.preferedLocation}
 										</StyledTableCell>
@@ -170,31 +150,17 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 										<StyledTableCell>
 											{parseDate(row.assignedAt)}
 										</StyledTableCell>
-										{hold && (
-											<StyledTableCell>
-												{parseDate(row.holdDate)}
-											</StyledTableCell>
-										)}
 
 										<StyledTableCell>
-											{renderLeadStage(row.stage)}
+											{row.feedback}
 										</StyledTableCell>
+
 										<StyledTableCell>
 											<IconButton
 												onClick={openModal(row)}
 											>
 												<QuestionAnswerIcon color="primary" />
 											</IconButton>
-										</StyledTableCell>
-										<StyledTableCell>
-											<Checkbox
-												value={row.id}
-												onChange={handleChangeCheckbox}
-												color="primary"
-												checked={selectedLeads.includes(
-													row.id as string
-												)}
-											/>
 										</StyledTableCell>
 									</StyledTableRow>
 							  ))}
@@ -205,4 +171,4 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 	);
 };
 
-export default LeadsTable;
+export default LeadsBDMTable;

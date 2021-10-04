@@ -42,15 +42,24 @@ const AddLeadPage = () => {
 		email: '',
 		number: '',
 		message: '',
+		preferedLocation: '',
 	};
 
 	// State
 	const [loading, setLoading] = useState(false);
+	const [images, setImages] = useState<any>(null);
+
+	// Callbacks
+	const fileSelectedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files) {
+			setImages(e.target.files);
+		}
+	};
 
 	const onSubmit = async (values: ILead, helpers: FormikHelpers<ILead>) => {
 		try {
 			setLoading(true);
-			await asyncAddLead(values);
+			await asyncAddLead(values, Array.from(images));
 			setLoading(false);
 			helpers.resetForm();
 			setSnackbar({
@@ -117,10 +126,23 @@ const AddLeadPage = () => {
 								</Grid>
 								<Grid item xs={12}>
 									<FTextField
+										name={'preferedLocation'}
+										label="Prefered Location"
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<FTextField
 										name={'message'}
 										multiline={true}
 										rows={5}
 										label="Message"
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<input
+										type="file"
+										multiple
+										onChange={fileSelectedHandler}
 									/>
 								</Grid>
 

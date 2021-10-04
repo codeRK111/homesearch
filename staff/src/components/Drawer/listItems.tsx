@@ -1,12 +1,13 @@
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import React, { useState } from 'react';
-
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import ListAltIcon from '@material-ui/icons/ListAlt';
-import ListDropDown from '../ListCollapse';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import clsx from 'clsx';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
+import { StaffType } from '../../model/staff.interface';
+import ListDropDown from '../ListCollapse';
+import RenderByRole from '../RenderByRole';
 import useStyles from './drawer.style';
 
 interface IDrawerListItems {
@@ -64,49 +65,51 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 					</ListItemIcon>
 					<ListItemText primary={'My Leads'} />
 				</ListItem>
-				<ListDropDown
-					open={propertyOpen}
-					toggle={setPropertyOpen}
-					Icon={ChromeReaderModeIcon}
-					label={'Manage Blog'}
-				>
-					<ListItem
-						button
-						onClick={changeRoute('/add-blog')}
-						className={clsx(
-							manageSelectedStyle('/add-blog'),
-							style.nested
-						)}
+				<RenderByRole type={StaffType.GM}>
+					<ListDropDown
+						open={propertyOpen}
+						toggle={setPropertyOpen}
+						Icon={ChromeReaderModeIcon}
+						label={'Manage Blog'}
 					>
-						<ListItemIcon>
-							<ListAltIcon
-								color="primary"
-								className={clsx(
-									manageSelectedStyleIcon('/add-blog')
-								)}
-							/>
-						</ListItemIcon>
-						<ListItemText primary={'Add Blog'} />
-					</ListItem>
-					<ListItem
-						button
-						onClick={changeRoute('/blogs')}
-						className={clsx(
-							manageSelectedStyle('/blogs'),
-							style.nested
-						)}
-					>
-						<ListItemIcon>
-							<ListAltIcon
-								color="primary"
-								className={clsx(
-									manageSelectedStyleIcon('/blogs')
-								)}
-							/>
-						</ListItemIcon>
-						<ListItemText primary={'All Blogs'} />
-					</ListItem>
-				</ListDropDown>
+						<ListItem
+							button
+							onClick={changeRoute('/add-blog')}
+							className={clsx(
+								manageSelectedStyle('/add-blog'),
+								style.nested
+							)}
+						>
+							<ListItemIcon>
+								<ListAltIcon
+									color="primary"
+									className={clsx(
+										manageSelectedStyleIcon('/add-blog')
+									)}
+								/>
+							</ListItemIcon>
+							<ListItemText primary={'Add Blog'} />
+						</ListItem>
+						<ListItem
+							button
+							onClick={changeRoute('/blogs')}
+							className={clsx(
+								manageSelectedStyle('/blogs'),
+								style.nested
+							)}
+						>
+							<ListItemIcon>
+								<ListAltIcon
+									color="primary"
+									className={clsx(
+										manageSelectedStyleIcon('/blogs')
+									)}
+								/>
+							</ListItemIcon>
+							<ListItemText primary={'All Blogs'} />
+						</ListItem>
+					</ListDropDown>
+				</RenderByRole>
 				{/* <ListDropDown
 					open={blogOpen}
 					toggle={setBlogOpen}

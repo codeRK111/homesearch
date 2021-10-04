@@ -7,6 +7,7 @@ const ApiFeatures = require('../utils/apiFeatures');
 const PropertyQuery = require('./../models/propertyQueryModel');
 const path = require('path');
 var fs = require('fs');
+const bcrypt = require('bcryptjs');
 const { promisify } = require('util');
 
 const signToken = (id) => {
@@ -293,6 +294,9 @@ exports.getMyStaffs = catchAsync(async (req, res, next) => {
 });
 
 exports.updateAdmin = catchAsync(async (req, res, next) => {
+	if (req.body.password) {
+		req.body.password = await bcrypt.hash(req.body.password, 12);
+	}
 	const doc = await Admin.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 		runValidators: true,

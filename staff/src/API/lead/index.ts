@@ -8,13 +8,29 @@ import {
 import { AxiosResponse } from 'axios';
 import { ServerResponse } from '../../model/apiResponse.interface';
 
-export const asyncAddLead = async (lead: ILead): Promise<ILead> => {
+export const asyncAddLead = async (
+	lead: ILead,
+	images?: any
+): Promise<ILead> => {
 	try {
 		const token = localStorage.getItem('JWT_STAFF');
+		const formData = new FormData();
+		for (const key in lead) {
+			if (Object.prototype.hasOwnProperty.call(lead, key)) {
+				const element = lead[key as keyof ILead];
+				formData.append(key, `${element}`);
+			}
+		}
+		console.log(images);
+		if (images) {
+			images.forEach((c: any) => {
+				formData.append('images', c);
+			});
+		}
 		const resp = await APIV2.post<
-			ILead,
+			any,
 			AxiosResponse<ServerResponse<ILead>>
-		>(`${V2EndPoint.Lead}`, lead, {
+		>(`${V2EndPoint.Lead}`, formData, {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,

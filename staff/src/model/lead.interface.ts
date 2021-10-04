@@ -32,6 +32,8 @@ export interface ILead {
 	stage?: number;
 	bdm?: string | IStaff | null;
 	source?: LeadSource;
+	images?: Array<string>;
+	preferedLocation?: string;
 }
 
 export type FetchLeadsInputType = {

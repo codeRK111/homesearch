@@ -1,14 +1,13 @@
 import { Box, Button, Chip, CircularProgress, Grid } from "@material-ui/core";
 import { FieldArray, Form, Formik } from "formik";
-
-import { ADMIN_ROLE } from "../../utils/staticData";
-import CheckBox from "../formik/checkbox.component";
-import DividerHeading from "../dividerHeadinng/dividerHeading.component";
 import React from "react";
-import SearchCity from "../search/city.component";
+import { ADMIN_ROLE } from "../../utils/staticData";
+import DividerHeading from "../dividerHeadinng/dividerHeading.component";
+import CheckBox from "../formik/checkbox.component";
 import Select from "../formik/select.component";
-import StaffManagement from "./staffManagement.component";
 import TextField from "../formik/textField.component";
+import SearchCity from "../search/city.component";
+import StaffManagement from "./staffManagement.component";
 
 const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
     const buttonProps = {};
@@ -17,6 +16,7 @@ const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
         console.log(props);
         const data = {
             ...values,
+
             propertyAccessCities:
                 values.propertyAccessCities.length > 0
                     ? values.propertyAccessCities.map((c) => c.id)
@@ -26,6 +26,9 @@ const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
                     ? values.userAccessCities.map((c) => c.id)
                     : [],
         };
+        if (!data.password) {
+            delete data.password;
+        }
         onSubmit(data);
     };
 
@@ -37,6 +40,7 @@ const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
             <Formik
                 initialValues={{
                     ...initialValues,
+                    password: "",
                     builderAccessCities: initialValues.builderAccessCities
                         ? initialValues.builderAccessCities
                         : [],
@@ -67,6 +71,13 @@ const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
                                 <TextField
                                     formLabel="Username"
                                     name="username"
+                                    type="text"
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={4}>
+                                <TextField
+                                    formLabel="Password"
+                                    name="password"
                                     type="text"
                                 />
                             </Grid>

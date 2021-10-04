@@ -110,6 +110,14 @@ const leadsSchema = new Schema(
 				},
 			},
 		],
+		images: [
+			{
+				type: String,
+			},
+		],
+		preferedLocation: {
+			type: String,
+		},
 		stage: {
 			type: Number,
 			default: 0,

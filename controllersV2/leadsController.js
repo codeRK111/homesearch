@@ -1,11 +1,34 @@
 const AppError = require('./../utils/appError');
 const Leads = require('./../models/leadsModel');
 const catchAsync = require('./../utils/catchAsync');
+const fs = require('fs');
+const path = require('path');
+
+function deleteFiles(files, callback) {
+	var i = files.length;
+	files.forEach(function (filepath) {
+		fs.unlink(filepath, function (err) {
+			i--;
+			if (err) {
+				callback(err);
+				return;
+			} else if (i <= 0) {
+				callback(null);
+			}
+		});
+	});
+}
 
 exports.addLead = catchAsync(async (req, res, next) => {
 	const requiredFields = ['number'];
 	requiredFields.every((c) => {
 		if (!req.body[c]) {
+			if (req.files) {
+				deleteFiles(
+					req.files.map((c) => c.filename),
+					function (err) {}
+				);
+			}
 			next(new AppError(`${c} missing`));
 			return false;
 		}
@@ -18,6 +41,12 @@ exports.addLead = catchAsync(async (req, res, next) => {
 	});
 
 	if (isExisting) {
+		if (req.files) {
+			deleteFiles(
+				req.files.map((c) => c.filename),
+				function (err) {}
+			);
+		}
 		return next(new AppError('Already Exists'));
 	}
 
@@ -28,6 +57,9 @@ exports.addLead = catchAsync(async (req, res, next) => {
 		}
 	});
 	req.body.createdBy = req.admin.id;
+	if (req.files) {
+		req.body.images = req.files.map((c) => c.filename);
+	}
 	const lead = await Leads.create(req.body);
 
 	res.status(200).json({
@@ -72,6 +104,10 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	if (req.admin.type === 'clientSupport') {
 		filter.clientSupport = req.admin.id;
 		filter.stage = 1;
+	}
+	if (req.admin.type === 'bdm') {
+		filter.bdm = req.admin.id;
+		filter.stage = 3;
 	}
 	if (req.body.stage !== null && req.body.stage !== undefined) {
 		filter.stage = req.body.stage;
