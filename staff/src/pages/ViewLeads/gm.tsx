@@ -1,4 +1,5 @@
 import {
+	AppBar,
 	Box,
 	Button,
 	CircularProgress,
@@ -15,6 +16,7 @@ import {
 } from '../../model/lead.interface';
 import { IStaff, StaffType } from '../../model/staff.interface';
 import React, { useCallback, useEffect, useState } from 'react';
+import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 import { asyncAssignSupport, asyncFetchMyLeads } from '../../API/lead';
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -26,6 +28,7 @@ import TablePagination from '../../components/Table/pagination';
 import { asyncFetchAdmins } from '../../API/auth';
 
 const GMLeadsPage = () => {
+	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	// State
 	const [page, setPage] = useState(1);
 	const [showHolds, setShowHolds] = useState(false);
@@ -49,9 +52,21 @@ const GMLeadsPage = () => {
 			setAssignLoading(true);
 			await asyncAssignSupport(selectedLeads, staff);
 			setAssignLoading(false);
+			setSelectedLeads([]);
+			setStaff('');
 			fetchLeads();
-		} catch (error) {
+			setSnackbar({
+				open: true,
+				message: 'Assigned successfully',
+				severity: 'success',
+			});
+		} catch (error: any) {
 			setAssignLoading(false);
+			setSnackbar({
+				open: true,
+				message: error,
+				severity: 'error',
+			});
 		}
 	};
 	const handlePage = (
@@ -111,7 +126,7 @@ const GMLeadsPage = () => {
 	}, [page, limit, showHolds, showNewLeads]);
 	useEffect(() => {
 		setPage(1);
-	}, [limit]);
+	}, [limit, showHolds, showNewLeads]);
 	useEffect(() => {
 		fetchLeads();
 	}, [fetchLeads]);
@@ -127,70 +142,77 @@ const GMLeadsPage = () => {
 			<p>
 				<b>{data.totalDocs}</b> leads found
 			</p>
-			<Box mb="1rem">
-				<Grid container spacing={3} justify="center">
-					<Grid item xs={6} md={3}>
-						<LeadStatusSwitch
-							value={showHolds}
-							setValue={setShowHolds}
-						/>
-					</Grid>
-					<Grid item xs={6} md={3}>
-						<LeadStatusSwitch
-							value={showNewLeads}
-							setValue={setShowNewLeads}
-							label="New Leads"
-						/>
-					</Grid>
-					{selectedLeads.length > 0 && (
-						<Grid item xs={12} md={4}>
-							<Box display={'flex'}>
-								<FormControl variant="filled" fullWidth>
-									<InputLabel id="demo-simple-select-filled-label">
-										Client Support
-									</InputLabel>
-									<Select
-										value={staff}
-										onChange={(e) =>
-											setStaff(e.target.value as string)
-										}
-										labelId="demo-simple-select-filled-label"
-										id="demo-simple-select-filled"
-										IconComponent={
-											staffLoading
-												? HourglassEmptyIcon
-												: ArrowDropDownIcon
+			<AppBar position="sticky" color="inherit" elevation={0}>
+				<Box mb="1rem">
+					<Grid container spacing={3} justify="center">
+						<Grid item xs={6} md={3}>
+							<LeadStatusSwitch
+								value={showHolds}
+								setValue={setShowHolds}
+							/>
+						</Grid>
+						<Grid item xs={6} md={3}>
+							<LeadStatusSwitch
+								value={showNewLeads}
+								setValue={setShowNewLeads}
+								label="New Leads"
+							/>
+						</Grid>
+						{selectedLeads.length > 0 && (
+							<Grid item xs={12} md={4}>
+								<Box display={'flex'}>
+									<FormControl variant="filled" fullWidth>
+										<InputLabel id="demo-simple-select-filled-label">
+											Client Support
+										</InputLabel>
+										<Select
+											value={staff}
+											onChange={(e) =>
+												setStaff(
+													e.target.value as string
+												)
+											}
+											labelId="demo-simple-select-filled-label"
+											id="demo-simple-select-filled"
+											IconComponent={
+												staffLoading
+													? HourglassEmptyIcon
+													: ArrowDropDownIcon
+											}
+										>
+											{staffs.map((c) => (
+												<MenuItem
+													key={c.id}
+													value={c.id}
+												>
+													{c.name}
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
+									<Button
+										variant={'contained'}
+										onClick={onAssign}
+										disabled={assignLoading}
+										endIcon={
+											assignLoading ? (
+												<CircularProgress
+													color="inherit"
+													size={20}
+												/>
+											) : (
+												<></>
+											)
 										}
 									>
-										{staffs.map((c) => (
-											<MenuItem key={c.id} value={c.id}>
-												{c.name}
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
-								<Button
-									variant={'contained'}
-									onClick={onAssign}
-									disabled={assignLoading}
-									endIcon={
-										assignLoading ? (
-											<CircularProgress
-												color="inherit"
-												size={20}
-											/>
-										) : (
-											<></>
-										)
-									}
-								>
-									Assign
-								</Button>
-							</Box>
-						</Grid>
-					)}
-				</Grid>
-			</Box>
+										Assign
+									</Button>
+								</Box>
+							</Grid>
+						)}
+					</Grid>
+				</Box>
+			</AppBar>
 			<LeadsTable
 				manageSelectedLeads={manageSelectedLeads}
 				selectedLeads={selectedLeads}

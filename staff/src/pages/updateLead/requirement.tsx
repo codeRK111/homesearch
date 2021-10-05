@@ -83,7 +83,7 @@ export default function ClientRequirement({
 				setBdmLoading(true);
 				const resp = await asyncFetchAdmins({
 					status: 'active',
-					type: StaffType.BDM,
+					types: [StaffType.BDM, StaffType.AssistantSalesManager],
 				});
 				setBdmLoading(false);
 				setData(resp);
@@ -262,10 +262,10 @@ export default function ClientRequirement({
 					) : (
 						<FormControl style={{ width: 200 }}>
 							<InputLabel id="demo-simple-select-label">
-								Select BDM
+								Select Staff
 							</InputLabel>
 							<Select
-								label="Select BDM"
+								label="Select Staff"
 								value={bdm}
 								onChange={(e) => {
 									setBDM(e.target.value as string);

@@ -72,7 +72,9 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 						<ListItemText primary={'My Leads'} />
 					</ListItem>
 				</RenderByMultipleRole>
-				<RenderByMultipleRole types={[StaffType.LeadStrategist]}>
+				<RenderByMultipleRole
+					types={[StaffType.GM, StaffType.LeadStrategist]}
+				>
 					<ListItem
 						button
 						onClick={changeRoute('/lead-strategies')}

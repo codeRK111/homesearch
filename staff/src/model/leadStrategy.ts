@@ -1,3 +1,5 @@
+import { IStaff } from './staff.interface';
+
 export interface ILeadStrategy {
 	id: string;
 	url: string;
@@ -7,6 +9,7 @@ export interface ILeadStrategy {
 	createdAt: Date;
 	updatedAt: Date;
 	docNumber: number;
+	staff: IStaff;
 }
 
 export type FetchMyLeadStrategiesResponseData = {

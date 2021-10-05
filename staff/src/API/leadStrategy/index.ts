@@ -80,3 +80,44 @@ export const asyncFetchMyStrategies = async (
 		throw new Error(asyncError(e));
 	}
 };
+
+export interface IUpdateLeadStrategyData {
+	id: string;
+	url?: string;
+	description?: string;
+	photo?: string | File;
+}
+
+export const asyncUpdateLeadStrategy = async (
+	lead: IUpdateLeadStrategyData
+): Promise<ILeadStrategy> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const formData = new FormData();
+		for (const key in lead) {
+			if (Object.prototype.hasOwnProperty.call(lead, key)) {
+				const element = lead[key as keyof IUpdateLeadStrategyData];
+				if (typeof element === 'string') {
+					formData.append(key, `${element}`);
+				} else if (element) {
+					formData.append(key, element);
+				}
+			}
+		}
+
+		const resp = await APIV2.patch<
+			any,
+			AxiosResponse<ServerResponse<ILeadStrategy>>
+		>(`${V2EndPoint.LeadStrategy}/${lead.id}`, formData, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const leadData = resp.data.data;
+
+		return leadData;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};

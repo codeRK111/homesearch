@@ -67,3 +67,34 @@ exports.getMyStrategies = catchAsync(async (req, res, next) => {
 		data: { leads, totalDocs },
 	});
 });
+
+exports.updateLeadStrategy = catchAsync(async (req, res, next) => {
+	const strategy = await Leads.findById(req.params.id);
+	if (!strategy) {
+		if (req.file) {
+			deleteFile(req.file.filename, function (err) {});
+		}
+		return next(new AppError('Strategy not found'));
+	}
+
+	const requiredFields = ['url', 'description', 'status'];
+
+	requiredFields.forEach((c) => {
+		if (req.body[c]) {
+			strategy[c] = req.body[c];
+		}
+	});
+	if (req.file) {
+		if (strategy.photo) {
+			deleteFile(strategy.photo, function (err) {});
+		}
+		strategy.photo = req.file.filename;
+	}
+
+	await strategy.save();
+
+	res.status(200).json({
+		status: 'success',
+		data: strategy,
+	});
+});

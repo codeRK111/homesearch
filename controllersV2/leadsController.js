@@ -105,7 +105,10 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 		filter.clientSupport = req.admin.id;
 		filter.stage = 1;
 	}
-	if (req.admin.type === 'bdm') {
+	if (
+		req.admin.type === 'bdm' ||
+		req.admin.type === 'assistantSalesManager'
+	) {
 		filter.bdm = req.admin.id;
 		filter.stage = 3;
 	}

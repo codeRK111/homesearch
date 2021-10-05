@@ -1,13 +1,22 @@
 import * as Yup from 'yup';
 
-import { CircularProgress, Grid, Typography } from '@material-ui/core';
+import {
+	CircularProgress,
+	Grid,
+	MenuItem,
+	Typography,
+} from '@material-ui/core';
 import { Form, Formik, FormikHelpers } from 'formik';
 import React, { useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
 import { Button } from '../UI/Button';
+import FSelect from '../Formik/select';
 import FTextField from '../Formik/input';
 import { ILeadStrategy } from '../../model/leadStrategy';
+import RenderByMultipleRole from '../RenderByRole/multiple';
+import { StaffType } from '../../model/staff.interface';
+import { asyncUpdateLeadStrategy } from '../../API/leadStrategy';
 
 export interface IAddLeadStrategyData {
 	url: string;
@@ -57,7 +66,7 @@ const UpdateLeadStrategyForm: React.FC<IAddLeadStrategyForm> = ({
 	) => {
 		try {
 			setLoading(true);
-			// await asyncAddLeadStrategy(values);
+			await asyncUpdateLeadStrategy(values);
 			setLoading(false);
 			helpers.resetForm();
 			if (onSuccess) {
@@ -65,7 +74,7 @@ const UpdateLeadStrategyForm: React.FC<IAddLeadStrategyForm> = ({
 			}
 			setSnackbar({
 				open: true,
-				message: 'Strategy Posted successfully',
+				message: 'Strategy Updated successfully',
 				severity: 'success',
 			});
 		} catch (err: any) {
@@ -136,7 +145,18 @@ const UpdateLeadStrategyForm: React.FC<IAddLeadStrategyForm> = ({
 									}}
 								/>
 							</Grid>
-
+							<RenderByMultipleRole types={[StaffType.GM]}>
+								<Grid item xs={12}>
+									<FSelect name={'status'} label="Status">
+										<MenuItem value={'active'}>
+											Active
+										</MenuItem>
+										<MenuItem value={'inactive'}>
+											Inactive
+										</MenuItem>
+									</FSelect>
+								</Grid>
+							</RenderByMultipleRole>
 							<Grid item xs={12}>
 								<Button
 									variant={'contained'}

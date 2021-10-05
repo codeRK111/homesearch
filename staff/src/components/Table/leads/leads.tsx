@@ -117,7 +117,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							{hold && (
 								<StyledTableCell>Reconnect on</StyledTableCell>
 							)}
-							<StyledTableCell>Staff Feedback</StyledTableCell>
+							<StyledTableCell>Hint</StyledTableCell>
 							<StyledTableCell>Update</StyledTableCell>
 							<StyledTableCell>Comments</StyledTableCell>
 
@@ -170,7 +170,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 										)}
 
 										<StyledTableCell>
-											{row.feedback}
+											{row.message}
 										</StyledTableCell>
 
 										<StyledTableCell>

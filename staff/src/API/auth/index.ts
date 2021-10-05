@@ -39,7 +39,8 @@ export const asyncLogIn = async (
 
 type FetchAdminInputType = {
 	status?: 'active' | 'inactive';
-	type: StaffType;
+	type?: StaffType;
+	types?: StaffType[];
 };
 export const asyncFetchAdmins = async (
 	filter: FetchAdminInputType

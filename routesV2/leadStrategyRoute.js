@@ -6,6 +6,13 @@ const authController = require('../controllers/adminController');
 const router = express.Router();
 
 router
+	.route('/:id')
+	.patch(
+		authController.protect,
+		uploadController.uploadLeadStrategy,
+		leadController.updateLeadStrategy
+	);
+router
 	.route('/')
 	.get(authController.protect, leadController.getMyStrategies)
 	.post(

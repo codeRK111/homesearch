@@ -53,6 +53,7 @@ exports.staffLogin = catchAsync(async (req, res, next) => {
 		'bdm',
 		'gm',
 		'leadStrategist',
+		'assistantSalesManager',
 	];
 
 	if (!validTypes.includes(admin.type)) {
@@ -95,6 +96,9 @@ exports.getAdmins = catchAsync(async (req, res) => {
 	}
 	if (req.body.type) {
 		filter.type = { $in: req.body.type };
+	}
+	if (req.body.types) {
+		filter.type = { $in: req.body.types };
 	}
 	if (req.body.status) {
 		filter.status = req.body.status;

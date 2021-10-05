@@ -26,7 +26,7 @@ const TablePagination: React.FC<ITablePagination> = ({
 	setPage,
 	totalDocs,
 	title = 'Results per page',
-	pages = [5, 10, 20, 30, 50],
+	pages = [5, 10, 20, 30, 50, 100],
 }) => {
 	return (
 		<Box

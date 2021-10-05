@@ -16,6 +16,7 @@ const LeadsWrapper = () => {
 			case 'gm':
 				return <GMLeadsPage />;
 			case 'bdm':
+			case 'assistantSalesManager':
 				return <BDMLeadsPage />;
 
 			default:
