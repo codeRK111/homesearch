@@ -30,6 +30,25 @@ const lead = multer({
 	storage: leadStorage,
 });
 
+// Handle Lead Strategy Images
+const leadStrategyStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(
+			null,
+			path.join(__dirname, '../', 'images', 'lead_strategy_images/')
+		);
+	},
+	filename: (req, file, cb) => {
+		const ext = file.mimetype.split('/')[1];
+		cb(null, `${Date.now()}.${ext}`);
+	},
+});
+
+const leadStrategy = multer({
+	fileFilter: multerFilter,
+	storage: leadStrategyStorage,
+});
+
 // Handle Blog Images
 const blogStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -195,6 +214,7 @@ exports.uploadBuilderPhoto = builder.fields([
 	{ name: 'directors', maxCount: 30 },
 ]);
 exports.uploadDirector = builder.single('image');
+exports.uploadLeadStrategy = leadStrategy.single('photo');
 exports.uploadCity = city.single('image');
 exports.uploadPropertiesPhoto = properties.array('images');
 exports.uploadProjectPhotosV2 = projects.fields([

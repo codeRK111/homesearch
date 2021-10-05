@@ -14,6 +14,9 @@ export enum StaffType {
 	DigitalMarketing = 'digitalMarketing',
 	BDM = 'bdm',
 	GM = 'gm',
+	LeadStrategist = 'leadStrategist',
+	SalesExecutive = 'salesExecutive',
+	AssistantSalesManager = 'assistantSalesManager',
 }
 
 export type FetchAdminResponse = {

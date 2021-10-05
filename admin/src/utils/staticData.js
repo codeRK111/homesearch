@@ -8,6 +8,9 @@ export const ADMIN_ROLE = {
     staff: "staff",
     clientSupport: "clientSupport",
     digitalMarketing: "digitalMarketing",
+    leadStrategist: "leadStrategist",
+    salesExecutive: "salesExecutive",
+    assistantSalesManager: "assistantSalesManager",
 };
 
 export const furnishMenuItems = [

@@ -164,6 +164,18 @@ const AddAdminForm = ({ loading, onSubmit }) => {
                                             value: ADMIN_ROLE.GM,
                                             label: "GM",
                                         },
+                                        {
+                                            value: ADMIN_ROLE.leadStrategist,
+                                            label: "Lead Strategist",
+                                        },
+                                        {
+                                            value: ADMIN_ROLE.salesExecutive,
+                                            label: "Sales Executive",
+                                        },
+                                        {
+                                            value: ADMIN_ROLE.assistantSalesManager,
+                                            label: "Assistant Sales Manager",
+                                        },
                                     ]}
                                 />
                             </Grid>

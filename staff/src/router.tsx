@@ -5,6 +5,7 @@ import AddLeadPage from './pages/AddLead';
 import AddPropertyPage from './pages/AddProperty';
 import BlogsPage from './pages/BlogList';
 import HomePage from './pages/Home';
+import LeadStrategyPage from './pages/LeadStrategy';
 import LoginPage from './pages/Login';
 import NavBar from './components/NavBar';
 import PrivateRoute from './components/ProtectedRoute';
@@ -53,6 +54,11 @@ const Router = () => {
 				>
 					{/* <ViewLeadsPage /> */}
 				</PrivateRoute>
+				<PrivateRoute
+					path={'/lead-strategies'}
+					exact
+					component={LeadStrategyPage}
+				/>
 			</Switch>
 		</HashRouter>
 	);

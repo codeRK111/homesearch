@@ -1,13 +1,14 @@
 import { Box, Button, Chip, CircularProgress, Grid } from "@material-ui/core";
 import { FieldArray, Form, Formik } from "formik";
-import React from "react";
+
 import { ADMIN_ROLE } from "../../utils/staticData";
-import DividerHeading from "../dividerHeadinng/dividerHeading.component";
 import CheckBox from "../formik/checkbox.component";
-import Select from "../formik/select.component";
-import TextField from "../formik/textField.component";
+import DividerHeading from "../dividerHeadinng/dividerHeading.component";
+import React from "react";
 import SearchCity from "../search/city.component";
+import Select from "../formik/select.component";
 import StaffManagement from "./staffManagement.component";
+import TextField from "../formik/textField.component";
 
 const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
     const buttonProps = {};
@@ -153,6 +154,18 @@ const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
                                         {
                                             value: ADMIN_ROLE.GM,
                                             label: "GM",
+                                        },
+                                        {
+                                            value: ADMIN_ROLE.leadStrategist,
+                                            label: "Lead Strategist",
+                                        },
+                                        {
+                                            value: ADMIN_ROLE.salesExecutive,
+                                            label: "Sales Executive",
+                                        },
+                                        {
+                                            value: ADMIN_ROLE.assistantSalesManager,
+                                            label: "Assistant Sales Manager",
                                         },
                                     ]}
                                 />

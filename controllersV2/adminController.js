@@ -52,6 +52,7 @@ exports.staffLogin = catchAsync(async (req, res, next) => {
 		'digitalMarketing',
 		'bdm',
 		'gm',
+		'leadStrategist',
 	];
 
 	if (!validTypes.includes(admin.type)) {

@@ -59,7 +59,8 @@ const AddLeadPage = () => {
 	const onSubmit = async (values: ILead, helpers: FormikHelpers<ILead>) => {
 		try {
 			setLoading(true);
-			await asyncAddLead(values, Array.from(images));
+			const img = images ? Array.from(images) : undefined;
+			await asyncAddLead(values, img);
 			setLoading(false);
 			helpers.resetForm();
 			setSnackbar({
