@@ -144,6 +144,8 @@ const leadsSchema = new Schema(
 	}
 );
 
+console.log(moment().subtract(7, 'd').format());
+
 leadsSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'clientSupport',

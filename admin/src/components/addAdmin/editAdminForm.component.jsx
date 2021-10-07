@@ -171,6 +171,18 @@ const AddAdminForm = ({ loading, onSubmit, initialValues }) => {
                                 />
                             </Grid>
                             <Grid item xs={12} md={4}>
+                                <TextField
+                                    formLabel="Leads Target"
+                                    name="leadTarget"
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={4}>
+                                <TextField
+                                    formLabel="Deals Target"
+                                    name="dealTarget"
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={4}>
                                 <SearchCity
                                     setSelectedCity={setFieldValue}
                                     defaultValue={values.city}

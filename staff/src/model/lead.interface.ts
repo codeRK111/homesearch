@@ -26,7 +26,7 @@ export interface ILead {
 	number: string;
 	attended?: boolean;
 	status?: 'active' | 'inactive';
-	createdAt?: Date;
+	createdAt?: Date | string;
 	updatedAt?: Date;
 	clientSupport?: IStaff;
 	assignedAt?: Date;
@@ -47,6 +47,8 @@ export interface ILead {
 }
 
 export type FetchLeadsInputType = {
+	userCategory?: null | string;
+	leadStatus?: null | string;
 	limit: number;
 	page: number;
 	stage?: number;

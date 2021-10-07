@@ -14,6 +14,22 @@ const adminSchema = new Schema(
 		docNumber: {
 			type: Number,
 		},
+		leadTarget: {
+			type: Number,
+			default: 0,
+		},
+		completeLeadTarget: {
+			type: Number,
+			default: 0,
+		},
+		dealTarget: {
+			type: Number,
+			default: 0,
+		},
+		completeDealTarget: {
+			type: Number,
+			default: 0,
+		},
 		number: {
 			type: String,
 			maxlength: [10, 'Max 10 chars allowed'],

@@ -1,11 +1,12 @@
 import { Box, Checkbox, CircularProgress, IconButton } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {
+	isToday,
 	parseDate,
 	renderCellData,
 	renderLeadStage,
 } from '../../../utils/render';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import { ILead } from '../../../model/lead.interface';
 import LeadsComments from '../../LeadComments';
@@ -172,7 +173,9 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											{renderCellData(row.maxPrice)}
 										</StyledTableCell>
 										<StyledTableCell>
-											{parseDate(row.assignedAt)}
+											<span>{`${isToday(
+												row.createdAt
+											)}`}</span>
 										</StyledTableCell>
 										{hold && (
 											<StyledTableCell>

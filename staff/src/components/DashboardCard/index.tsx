@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CountUp from 'react-countup';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -16,22 +17,38 @@ const useStyles = makeStyles((theme: Theme) =>
 			fontSize: '3rem',
 			color: theme.palette.primary.main,
 		},
+		cursor: {
+			cursor: 'pointer',
+		},
 	})
 );
 
 interface IDashboardCard {
 	label: string;
 	value: number;
-	Icon: typeof SvgIcon;
+	Icon?: typeof SvgIcon;
+	clickValue: any;
+	onClick: (value: any) => void;
+	selected?: boolean;
 }
 
-export default function DashboardCard({ label, value, Icon }: IDashboardCard) {
+export default function DashboardCard({
+	label,
+	value,
+	clickValue,
+	onClick,
+	selected,
+}: IDashboardCard) {
 	const classes = useStyles();
 
 	return (
-		<Card className={classes.fullHeight}>
+		<Card
+			className={clsx(classes.fullHeight, classes.cursor)}
+			elevation={selected ? 10 : 0}
+			onClick={() => onClick(clickValue)}
+		>
 			<Grid container className={classes.fullHeight}>
-				<Grid item xs={7}>
+				<Grid item xs={12}>
 					<CardContent>
 						<Typography variant="h6" align="center">
 							{label}
@@ -45,7 +62,7 @@ export default function DashboardCard({ label, value, Icon }: IDashboardCard) {
 						<CountUp
 							start={0}
 							end={value}
-							duration={2.75}
+							duration={1}
 							onEnd={() => console.log('Ended! 👏')}
 							onStart={() => console.log('Started! 💨')}
 							delay={0}
@@ -57,20 +74,6 @@ export default function DashboardCard({ label, value, Icon }: IDashboardCard) {
 							)}
 						</CountUp>
 					</Typography>
-				</Grid>
-				<Grid item xs={5}>
-					<Box
-						sx={{
-							display: 'flex',
-							width: '100%',
-							height: '100%',
-							justifyContent: 'center',
-							alignItems: 'center',
-							bgcolor: '#dad4d4',
-						}}
-					>
-						<Icon className={classes.icon} />
-					</Box>
 				</Grid>
 			</Grid>
 		</Card>

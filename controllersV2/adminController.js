@@ -36,7 +36,6 @@ exports.staffLogin = catchAsync(async (req, res, next) => {
 
 	// 2) Check if user exists && password is correct
 	const admin = await Admin.findOne({ username }).select('+password +status');
-	console.log(admin);
 
 	if (!admin || !(await admin.correctPassword(password, admin.password))) {
 		return next(new AppError('Incorrect username or password', 401));
@@ -140,11 +139,26 @@ exports.updateAdmin = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+exports.getMyTargets = catchAsync(async (req, res, next) => {
+	const existingAdmin = await Admin.findById(req.admin.id);
+	if (!existingAdmin) {
+		return next(new AppError('Staff not found', 404));
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			leadTarget: existingAdmin.leadTarget,
+			completeLeadTarget: existingAdmin.completeLeadTarget,
+			dealTarget: existingAdmin.dealTarget,
+			completeDealTarget: existingAdmin.completeDealTarget,
+		},
+	});
+});
 
 exports.logout = catchAsync(async (req, res, next) => {
 	if (req.admin) {
 		req.admin = undefined;
-		console.log('object');
 	}
 
 	res.status(200).json({

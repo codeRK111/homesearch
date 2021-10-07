@@ -5,6 +5,7 @@ import {
 	CircularProgress,
 	Container,
 	Grid,
+	IconButton,
 	MenuItem,
 	Typography,
 } from '@material-ui/core';
@@ -14,15 +15,18 @@ import {
 	LeadSource,
 	LeadUserCategory,
 } from '../../model/lead.interface';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
+import CloseIcon from '@material-ui/icons/Close';
 import FSelect from '../../components/Formik/select';
 import FTextField from '../../components/Formik/input';
 import { PageWrapper } from '../../components/UI/Container';
+import { SpaceBetween } from '../../components/UI/Flex';
 import { asyncAddLead } from '../../API/lead';
 
 const AddLeadPage = () => {
+	const inputEl = useRef<null | HTMLInputElement>(null);
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	const validationSchema = Yup.object({
 		source: Yup.mixed()
@@ -34,7 +38,7 @@ const AddLeadPage = () => {
 				LeadSource.Website,
 			])
 			.required('Source of lead required'),
-		name: Yup.string().matches(/^[a-zA-Z ]+$/, 'Invalid Name'),
+		name: Yup.string(),
 		email: Yup.string().email('Invalid email'),
 		number: Yup.string()
 			.length(10, '10 digits required')
@@ -196,11 +200,27 @@ const AddLeadPage = () => {
 										/>
 									</Grid>
 									<Grid item xs={12}>
-										<input
-											type="file"
-											multiple
-											onChange={fileSelectedHandler}
-										/>
+										<SpaceBetween>
+											<input
+												type="file"
+												multiple
+												ref={inputEl}
+												onChange={fileSelectedHandler}
+											/>
+											{images && (
+												<IconButton
+													onClick={() => {
+														setImages(null);
+														if (inputEl.current) {
+															inputEl.current.value =
+																'';
+														}
+													}}
+												>
+													<CloseIcon />
+												</IconButton>
+											)}
+										</SpaceBetween>
 									</Grid>
 									<Grid item xs={12} md={2}>
 										<Button

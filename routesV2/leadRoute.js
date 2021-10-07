@@ -9,6 +9,9 @@ router
 	.route('/assign-support')
 	.post(authController.protect, leadController.assignClientSupport);
 router
+	.route('/gm-lead-count')
+	.get(authController.protect, leadController.countLeads);
+router
 	.route('/support-update/:id')
 	.patch(authController.protect, leadController.updateBySupport);
 router

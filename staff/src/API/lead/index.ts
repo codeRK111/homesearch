@@ -1,11 +1,11 @@
 import { APIV2, V2EndPoint, asyncError } from '../instance';
+import { AxiosResponse, CancelTokenSource } from 'axios';
 import {
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
 	ILead,
 } from './../../model/lead.interface';
 
-import { AxiosResponse } from 'axios';
 import { ServerResponse } from '../../model/apiResponse.interface';
 
 export const asyncAddLead = async (
@@ -150,6 +150,44 @@ export const asyncAssignSupport = async (
 
 		return leadData.lead;
 	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+
+export type GMLeadCounts = {
+	Tenant: number;
+	Buyer: number;
+	Owner: number;
+	Realtor: number;
+	Builder: number;
+	Unknown: number;
+	Active: number;
+	Inactive: number;
+};
+
+export const asyncGetGMLeadCounts = async (
+	setLoading: (val: boolean) => void,
+	cancelToken: CancelTokenSource
+): Promise<GMLeadCounts[]> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		setLoading(true);
+
+		const resp = await APIV2.get<
+			unknown,
+			AxiosResponse<ServerResponse<GMLeadCounts[]>>
+		>(`${V2EndPoint.Lead}/gm-lead-count`, {
+			cancelToken: cancelToken.token,
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const staffData = resp.data.data;
+		setLoading(false);
+		return staffData;
+	} catch (e: any) {
+		setLoading(false);
 		throw new Error(asyncError(e));
 	}
 };

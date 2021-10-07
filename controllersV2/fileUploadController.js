@@ -28,6 +28,11 @@ const leadStorage = multer.diskStorage({
 const lead = multer({
 	fileFilter: multerFilter,
 	storage: leadStorage,
+	limits: {
+		fields: 10,
+		fileSize: 500 * 1024,
+		files: 1,
+	},
 });
 
 // Handle Lead Strategy Images

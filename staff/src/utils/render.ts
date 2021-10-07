@@ -5,6 +5,10 @@ export const renderCellData = (value: any) => {
 	return !!value ? value : '-';
 };
 
+export const isToday = (date: any) => {
+	return dayjs().isSame(dayjs.unix(Date.parse(date) / 1000), 'day');
+};
+
 export const parseDate = (date: Date | undefined) => {
 	if (!date) {
 		return '-';

@@ -37,6 +37,8 @@ const AddAdminForm = ({ loading, onSubmit }) => {
         userAccessCities: [],
         builderAccessCities: [],
         staffAccess: [],
+        leadTarget: 0,
+        dealTarget: 0,
     };
 
     const buttonProps = {};
@@ -177,6 +179,18 @@ const AddAdminForm = ({ loading, onSubmit }) => {
                                             label: "Assistant Sales Manager",
                                         },
                                     ]}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={4}>
+                                <TextField
+                                    formLabel="Leads Target"
+                                    name="leadTarget"
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={4}>
+                                <TextField
+                                    formLabel="Deals Target"
+                                    name="dealTarget"
                                 />
                             </Grid>
                             <Grid item xs={12} md={4}>

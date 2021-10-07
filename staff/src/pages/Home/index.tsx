@@ -25,8 +25,8 @@ const HomePage = () => {
 		}
 	};
 	return (
-		<Container component={Box} mt="1rem">
-			{renderPage()}
+		<Container maxWidth="xl">
+			<Box mt="1rem">{renderPage()}</Box>
 		</Container>
 	);
 };

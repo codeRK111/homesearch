@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 	drawerWrapper: {
-		width: 300,
+		width: 400,
 		padding: theme.spacing(2),
 		boxSizing: 'border-box',
 		[theme.breakpoints.down]: {

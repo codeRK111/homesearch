@@ -3,6 +3,7 @@ const Leads = require('./../models/leadsModel');
 const catchAsync = require('./../utils/catchAsync');
 const fs = require('fs');
 const path = require('path');
+const moment = require('moment');
 
 function deleteFiles(files, callback) {
 	var i = files.length;
@@ -110,6 +111,13 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	const skip = (page - 1) * limit;
 
 	filter.status = 'active';
+	if (req.admin.type === 'gm') {
+		if (req.body.status) {
+			filter.status = req.admin.status;
+		} else {
+			delete filter.status;
+		}
+	}
 	if (req.admin.type === 'clientSupport') {
 		filter.clientSupport = req.admin.id;
 		filter.stage = 1;
@@ -123,6 +131,18 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	}
 	if (req.body.stage !== null && req.body.stage !== undefined) {
 		filter.stage = req.body.stage;
+	}
+	if (req.body.userCategory) {
+		filter.userCategory = req.body.userCategory;
+	}
+	if (req.body.leadStatus) {
+		if (req.body.leadStatus === 'active') {
+			filter.stage = { $ne: 0 };
+		} else {
+			filter.updatedAt = {
+				$lt: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
+			};
+		}
 	}
 
 	// console.log(filter);
@@ -259,5 +279,74 @@ exports.assignClientSupport = catchAsync(async (req, res, next) => {
 		data: {
 			lead,
 		},
+	});
+});
+exports.countLeads = catchAsync(async (req, res, next) => {
+	const counts = await Leads.aggregate([
+		{
+			$facet: {
+				Tenant: [
+					{ $match: { userCategory: 'tenant' } },
+					{ $count: 'Tenant' },
+				],
+				Buyer: [
+					{ $match: { userCategory: 'buyer' } },
+					{ $count: 'Buyer' },
+				],
+				Owner: [
+					{ $match: { userCategory: 'owner' } },
+					{ $count: 'Owner' },
+				],
+				Realtor: [
+					{ $match: { userCategory: 'realtor' } },
+					{ $count: 'Realtor' },
+				],
+				Builder: [
+					{ $match: { userCategory: 'builder' } },
+					{ $count: 'Builder' },
+				],
+				Unknown: [
+					{ $match: { userCategory: 'unknown' } },
+					{ $count: 'Unknown' },
+				],
+				Active: [
+					{
+						$match: {
+							stage: { $ne: 0 },
+						},
+					},
+					{ $count: 'Active' },
+				],
+				Inactive: [
+					{
+						$match: {
+							updatedAt: {
+								$lt: new Date(
+									new Date().getTime() -
+										7 * 24 * 60 * 60 * 1000
+								),
+							},
+						},
+					},
+					{ $count: 'Inactive' },
+				],
+			},
+		},
+		{
+			$project: {
+				Tenant: { $arrayElemAt: ['$Tenant.Tenant', 0] },
+				Buyer: { $arrayElemAt: ['$Buyer.Buyer', 0] },
+				Owner: { $arrayElemAt: ['$Owner.Owner', 0] },
+				Realtor: { $arrayElemAt: ['$Realtor.Realtor', 0] },
+				Builder: { $arrayElemAt: ['$Builder.Builder', 0] },
+				Unknown: { $arrayElemAt: ['$Unknown.Unknown', 0] },
+				Active: { $arrayElemAt: ['$Active.Active', 0] },
+				Inactive: { $arrayElemAt: ['$Inactive.Inactive', 0] },
+			},
+		},
+	]);
+	res.status(200).json({
+		status: 'success',
+		data: counts,
 	});
 });
