@@ -79,7 +79,7 @@ const GMLeadsStrategiesTable: React.FC<ILeadsTable> = ({
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: 9 }, (_, i) => i + 1).map((c) => (
+			{Array.from({ length: 10 }, (_, i) => i + 1).map((c) => (
 				<StyledTableCell key={c}>
 					<CircularProgress size={15} color="inherit" />
 				</StyledTableCell>
@@ -102,6 +102,7 @@ const GMLeadsStrategiesTable: React.FC<ILeadsTable> = ({
 					<TableHead>
 						<TableRow>
 							<StyledTableCell>SL Num.</StyledTableCell>
+							<StyledTableCell>ID</StyledTableCell>
 							<StyledTableCell>URL</StyledTableCell>
 							<StyledTableCell>Photo</StyledTableCell>
 							<StyledTableCell>Description</StyledTableCell>
@@ -124,6 +125,9 @@ const GMLeadsStrategiesTable: React.FC<ILeadsTable> = ({
 									<StyledTableRow key={row.id}>
 										<StyledTableCell>
 											{i + 1}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.docID}
 										</StyledTableCell>
 
 										<StyledTableCell>

@@ -59,6 +59,20 @@ const leadsSchema = new Schema(
 			},
 			default: 'active',
 		},
+		userCategory: {
+			type: String,
+			enum: {
+				values: [
+					'tenant',
+					'buyer',
+					'owner',
+					'realtor',
+					'builder',
+					'unknown',
+				],
+			},
+			default: 'unknown',
+		},
 		requirement: {
 			type: String,
 			enum: {
@@ -141,7 +155,7 @@ leadsSchema.pre(/^find/, function (next) {
 		})
 		.populate({
 			path: 'comments.from',
-			select: 'id name',
+			select: 'id name type',
 		});
 
 	next();

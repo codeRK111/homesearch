@@ -117,7 +117,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							<StyledTableCell>SL Num.</StyledTableCell>
 							<StyledTableCell>Name</StyledTableCell>
 							<StyledTableCell>Contact Details</StyledTableCell>
-							<StyledTableCell>Hint</StyledTableCell>
+							<StyledTableCell>Category</StyledTableCell>
 							<StyledTableCell>Requirement</StyledTableCell>
 							<StyledTableCell>Requirement Type</StyledTableCell>
 							<StyledTableCell>Property Type</StyledTableCell>
@@ -156,7 +156,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											{row.preferedLocation}
 										</StyledTableCell>
 										<StyledTableCell>
-											{renderCellData(row.message)}
+											{renderCellData(row.userCategory)}
 										</StyledTableCell>
 										<StyledTableCell>
 											{renderCellData(row.requirement)}

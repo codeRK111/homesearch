@@ -60,6 +60,15 @@ exports.addLead = catchAsync(async (req, res, next) => {
 	if (req.files) {
 		req.body.images = req.files.map((c) => c.filename);
 	}
+	if (req.body.message) {
+		req.body.comments = [
+			{
+				from: req.admin.id,
+				message: req.body.message,
+				date: Date.now(),
+			},
+		];
+	}
 	const lead = await Leads.create(req.body);
 
 	res.status(200).json({

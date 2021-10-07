@@ -3,12 +3,17 @@ import * as Yup from 'yup';
 import {
 	Button,
 	CircularProgress,
+	Container,
 	Grid,
 	MenuItem,
 	Typography,
 } from '@material-ui/core';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { ILead, LeadSource } from '../../model/lead.interface';
+import {
+	ILead,
+	LeadSource,
+	LeadUserCategory,
+} from '../../model/lead.interface';
 import React, { useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
@@ -43,6 +48,7 @@ const AddLeadPage = () => {
 		number: '',
 		message: '',
 		preferedLocation: '',
+		userCategory: LeadUserCategory.Unknown,
 	};
 
 	// State
@@ -81,97 +87,148 @@ const AddLeadPage = () => {
 	return (
 		<div>
 			<PageWrapper>
-				<Typography variant="h5" gutterBottom>
-					Add Lead
-				</Typography>
-				<Formik
-					initialValues={initialValues}
-					onSubmit={onSubmit}
-					validationSchema={validationSchema}
-				>
-					{() => (
-						<Form>
-							<Grid container spacing={1}>
-								<Grid item xs={12} md={4}>
-									<FSelect name={'source'} label="Source">
-										<MenuItem value={LeadSource.Consultant}>
-											Consultant
-										</MenuItem>
-										<MenuItem value={LeadSource.Outsource}>
-											Outsource
-										</MenuItem>
-										<MenuItem
-											value={LeadSource.SocialMedia}
+				<Container>
+					<Typography variant="h4" gutterBottom align="center">
+						Add Lead
+					</Typography>
+					<Formik
+						initialValues={initialValues}
+						onSubmit={onSubmit}
+						validationSchema={validationSchema}
+					>
+						{() => (
+							<Form>
+								<Grid container spacing={1}>
+									<Grid item xs={12} md={6}>
+										<FSelect name={'source'} label="Source">
+											<MenuItem
+												value={LeadSource.Consultant}
+											>
+												Consultant
+											</MenuItem>
+											<MenuItem
+												value={LeadSource.Outsource}
+											>
+												Outsource
+											</MenuItem>
+											<MenuItem
+												value={LeadSource.SocialMedia}
+											>
+												SocialMedia
+											</MenuItem>
+											<MenuItem value={LeadSource.Staff}>
+												Staff
+											</MenuItem>
+											<MenuItem
+												value={LeadSource.Website}
+											>
+												Website
+											</MenuItem>
+										</FSelect>
+									</Grid>
+									<Grid item xs={12} md={6}>
+										<FSelect
+											name={'userCategory'}
+											label="Category"
 										>
-											SocialMedia
-										</MenuItem>
-										<MenuItem value={LeadSource.Staff}>
-											Staff
-										</MenuItem>
-										<MenuItem value={LeadSource.Website}>
-											Website
-										</MenuItem>
-									</FSelect>
+											<MenuItem
+												value={LeadUserCategory.Builder}
+											>
+												Builder
+											</MenuItem>
+											<MenuItem
+												value={LeadUserCategory.Buyer}
+											>
+												Buyer
+											</MenuItem>
+											<MenuItem
+												value={LeadUserCategory.Owner}
+											>
+												Owner
+											</MenuItem>
+											<MenuItem
+												value={LeadUserCategory.Realtor}
+											>
+												Realtor
+											</MenuItem>
+											<MenuItem
+												value={LeadUserCategory.Tenant}
+											>
+												Tenant
+											</MenuItem>
+											<MenuItem
+												value={LeadUserCategory.Unknown}
+											>
+												Unknown
+											</MenuItem>
+										</FSelect>
+									</Grid>
+									<Grid item xs={12}>
+										<FTextField
+											name={'name'}
+											label="Name"
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<FTextField
+											name={'email'}
+											label="Email"
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<FTextField
+											name={'number'}
+											label="Phone Number"
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<FTextField
+											name={'preferedLocation'}
+											label="Prefered Location"
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<FTextField
+											name={'message'}
+											multiline={true}
+											rows={5}
+											label="Message"
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<input
+											type="file"
+											multiple
+											onChange={fileSelectedHandler}
+										/>
+									</Grid>
+									<Grid item xs={12} md={2}>
+										<Button
+											fullWidth
+											variant={'contained'}
+											color={'primary'}
+											size={'large'}
+											type={'submit'}
+											disabled={loading}
+											endIcon={
+												loading ? (
+													<CircularProgress
+														size={20}
+														color={'inherit'}
+													/>
+												) : (
+													<></>
+												)
+											}
+										>
+											Submit
+										</Button>
+									</Grid>
 								</Grid>
-								<Grid item xs={12} md={4}>
-									<FTextField name={'name'} label="Name" />
-								</Grid>
-								<Grid item xs={12} md={4}>
-									<FTextField name={'email'} label="Email" />
-								</Grid>
-								<Grid item xs={12}>
-									<FTextField
-										name={'number'}
-										label="Phone Number"
-									/>
-								</Grid>
-								<Grid item xs={12}>
-									<FTextField
-										name={'preferedLocation'}
-										label="Prefered Location"
-									/>
-								</Grid>
-								<Grid item xs={12}>
-									<FTextField
-										name={'message'}
-										multiline={true}
-										rows={5}
-										label="Message"
-									/>
-								</Grid>
-								<Grid item xs={12}>
-									<input
-										type="file"
-										multiple
-										onChange={fileSelectedHandler}
-									/>
-								</Grid>
-
-								<Grid item xs={12}>
-									<Button
-										variant={'contained'}
-										color={'primary'}
-										size={'large'}
-										type={'submit'}
-										disabled={loading}
-										endIcon={
-											loading ? (
-												<CircularProgress
-													size={20}
-													color={'inherit'}
-												/>
-											) : (
-												<></>
-											)
-										}
-									>
-										Submit
-									</Button>
-								</Grid>
-							</Grid>
-						</Form>
-					)}
-				</Formik>
+							</Form>
+						)}
+					</Formik>
+				</Container>
 			</PageWrapper>
 		</div>
 	);

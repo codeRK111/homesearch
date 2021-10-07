@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const { pad, idPrefix } = require('../utils/helper');
 const { Schema, model } = mongoose;
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const leadsStrategySchema = new Schema(
 	{
 		staff: {
@@ -29,7 +31,7 @@ const leadsStrategySchema = new Schema(
 			},
 			default: 'active',
 		},
-		docNumber: {
+		strategyNumber: {
 			type: Number,
 		},
 	},
@@ -40,6 +42,10 @@ const leadsStrategySchema = new Schema(
 	}
 );
 
+leadsStrategySchema.plugin(AutoIncrement, {
+	inc_field: 'strategyNumber',
+});
+
 leadsStrategySchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'staff',
@@ -47,6 +53,10 @@ leadsStrategySchema.pre(/^find/, function (next) {
 	});
 
 	next();
+});
+
+leadsStrategySchema.virtual('docID').get(function () {
+	return `${idPrefix.default}${pad(this.strategyNumber, 3)}`;
 });
 
 const leadStrategy = model('leadStrategy', leadsStrategySchema);

@@ -2,6 +2,7 @@ import {
 	Avatar,
 	Box,
 	CircularProgress,
+	Divider,
 	IconButton,
 	List,
 	ListItem,
@@ -11,6 +12,7 @@ import {
 	Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
+import { parseDate, renderStaffRole } from '../../utils/render';
 
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
@@ -20,7 +22,6 @@ import Grid from '@material-ui/core/Grid';
 import { LeadComment } from '../../model/lead.interface';
 import Paper from '@material-ui/core/Paper';
 import { asyncUpdateLead } from '../../API/lead';
-import { parseDate } from '../../utils/render';
 
 interface ILeadsComments {
 	open: boolean;
@@ -88,6 +89,12 @@ export default function LeadsComments({
 											primary={c.from.name}
 											secondary={
 												<React.Fragment>
+													<b>
+														{renderStaffRole(
+															c.from.type
+														)}
+													</b>{' '}
+													<br />
 													<Typography
 														component="span"
 														variant="caption"
@@ -96,6 +103,9 @@ export default function LeadsComments({
 														{parseDate(c.date)}
 													</Typography>{' '}
 													<br />
+													<Box p="0.3rem">
+														<Divider />
+													</Box>
 													<Typography
 														variant="body2"
 														color="textPrimary"

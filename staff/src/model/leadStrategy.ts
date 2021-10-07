@@ -9,6 +9,7 @@ export interface ILeadStrategy {
 	createdAt: Date;
 	updatedAt: Date;
 	docNumber: number;
+	docID: string;
 	staff: IStaff;
 }
 

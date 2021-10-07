@@ -8,6 +8,15 @@ export type LeadComment = {
 	date: Date;
 };
 
+export enum LeadUserCategory {
+	Tenant = 'tenant',
+	Buyer = 'buyer',
+	Owner = 'owner',
+	Realtor = 'realtor',
+	Builder = 'builder',
+	Unknown = 'unknown',
+}
+
 export interface ILead {
 	id?: string;
 	name?: string;
@@ -34,6 +43,7 @@ export interface ILead {
 	source?: LeadSource;
 	images?: Array<string>;
 	preferedLocation?: string;
+	userCategory?: LeadUserCategory;
 }
 
 export type FetchLeadsInputType = {
