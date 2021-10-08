@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const moment = require('moment');
 const { Schema, model } = mongoose;
+const AppError = require('./../utils/appError');
+const Admin = require('./adminModel');
 const leadsSchema = new Schema(
 	{
 		name: {
@@ -145,6 +147,17 @@ const leadsSchema = new Schema(
 );
 
 console.log(moment().subtract(7, 'd').format());
+
+leadsSchema.pre('save', function (next) {
+	Admin.findByIdAndUpdate(this.createdBy, {
+		$inc: { completeLeadTarget: 1 },
+	})
+		.then((c) => {
+			console.log(c);
+			next();
+		})
+		.catch((_) => next());
+});
 
 leadsSchema.pre(/^find/, function (next) {
 	this.populate({

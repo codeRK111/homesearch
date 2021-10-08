@@ -11,12 +11,33 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function LeadsTab() {
+interface ILeadTab {
+	setTimeInterval: (value: string) => void;
+}
+
+export default function LeadsTab({ setTimeInterval }: ILeadTab) {
 	const classes = useStyles();
 	const [value, setValue] = React.useState(0);
 
 	const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
 		setValue(newValue);
+		switch (newValue) {
+			case 0:
+				setTimeInterval('today');
+				break;
+			case 1:
+				setTimeInterval('yesterday');
+				break;
+			case 2:
+				setTimeInterval('lastWeek');
+				break;
+			case 3:
+				setTimeInterval('lastMonth');
+				break;
+
+			default:
+				break;
+		}
 	};
 
 	return (

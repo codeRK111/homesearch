@@ -135,6 +135,43 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	if (req.body.userCategory) {
 		filter.userCategory = req.body.userCategory;
 	}
+	if (req.body.timeInterval) {
+		switch (req.body.timeInterval) {
+			case 'today':
+				var start = moment().startOf('day'); // set to 12:00 am today
+				var end = moment().endOf('day');
+				filter.createdAt = {
+					$gte: start,
+					$lt: end,
+				};
+				break;
+			case 'yesterday':
+				var start = moment().add(-1, 'days'); // set to 12:00 am yesterday
+				var end = moment().startOf('day');
+				filter.createdAt = {
+					$gte: start,
+					$lt: end,
+				};
+				break;
+			case 'lastWeek':
+				var start = moment().startOf('week'); // set to 12:00 am yesterday
+
+				filter.createdAt = {
+					$gte: start,
+				};
+				break;
+			case 'lastMonth':
+				var start = moment().startOf('month'); // set to 12:00 am yesterday
+
+				filter.createdAt = {
+					$gte: start,
+				};
+				break;
+
+			default:
+				break;
+		}
+	}
 	if (req.body.leadStatus) {
 		if (req.body.leadStatus === 'active') {
 			filter.stage = { $ne: 0 };
@@ -145,7 +182,7 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 		}
 	}
 
-	// console.log(filter);
+	console.log(filter);
 	// console.log(req.admin);
 	// console.log(filter);
 	const totalDocs = await Leads.countDocuments(filter);

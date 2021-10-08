@@ -48,6 +48,7 @@ export interface ILead {
 
 export type FetchLeadsInputType = {
 	userCategory?: null | string;
+	timeInterval?: null | string;
 	leadStatus?: null | string;
 	limit: number;
 	page: number;

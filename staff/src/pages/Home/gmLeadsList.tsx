@@ -39,6 +39,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	// State
 	const [page, setPage] = useState(1);
+	const [timeInterval, setTimeInterval] = useState('today');
 	const [showHolds, setShowHolds] = useState(false);
 	const [showNewLeads, setShowNewLeads] = useState(false);
 	const [limit, setLimit] = useState(10);
@@ -127,6 +128,9 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			if (leadStatus) {
 				filter.leadStatus = leadStatus;
 			}
+			if (timeInterval) {
+				filter.timeInterval = timeInterval;
+			}
 			const resp = await asyncFetchMyLeads(filter);
 			setData(resp);
 			const tLeads = resp.leads.filter((c) => isToday(c.createdAt));
@@ -140,10 +144,25 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			});
 			setLoading(false);
 		}
-	}, [page, limit, showHolds, showNewLeads, userCategory, leadStatus]);
+	}, [
+		page,
+		limit,
+		showHolds,
+		showNewLeads,
+		userCategory,
+		leadStatus,
+		timeInterval,
+	]);
 	useEffect(() => {
 		setPage(1);
-	}, [limit, showHolds, showNewLeads, userCategory, leadStatus]);
+	}, [
+		limit,
+		showHolds,
+		showNewLeads,
+		userCategory,
+		leadStatus,
+		timeInterval,
+	]);
 	useEffect(() => {
 		fetchLeads();
 	}, [fetchLeads]);
@@ -231,7 +250,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 				</Box>
 			</AppBar>
 			<Box mb="1rem">
-				<LeadsTab />
+				<LeadsTab setTimeInterval={setTimeInterval} />
 			</Box>
 			{/* <Box mb="1rem">
 				<h1>Leads Of Today</h1>
