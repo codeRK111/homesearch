@@ -83,11 +83,7 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 					<ListItemText primary={'Posted Leads'} />
 				</ListItem>
 				<RenderByMultipleRole
-					types={[
-						StaffType.GM,
-						StaffType.ClientSupport,
-						StaffType.AssistantSalesManager,
-					]}
+					types={[StaffType.GM, StaffType.AssistantSalesManager]}
 				>
 					<ListItem
 						button

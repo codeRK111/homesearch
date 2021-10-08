@@ -2,6 +2,7 @@ import { Box, CircularProgress } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
+import { City } from '../../../model/city.interface';
 import { ILead } from '../../../model/lead.interface';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -61,7 +62,7 @@ const MyPostedLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: 8 }, (_, i) => i + 1).map((c) => (
+			{Array.from({ length: 9 }, (_, i) => i + 1).map((c) => (
 				<StyledTableCell key={c}>
 					<CircularProgress size={15} color="inherit" />
 				</StyledTableCell>
@@ -80,6 +81,7 @@ const MyPostedLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 							<StyledTableCell>Name</StyledTableCell>
 							<StyledTableCell>Email</StyledTableCell>
 							<StyledTableCell>Phone Number</StyledTableCell>
+							<StyledTableCell>City</StyledTableCell>
 							<StyledTableCell>Location</StyledTableCell>
 							<StyledTableCell>Category</StyledTableCell>
 							<StyledTableCell>Posted On</StyledTableCell>
@@ -110,6 +112,11 @@ const MyPostedLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 										</StyledTableCell>
 										<StyledTableCell>
 											{row.number ? row.number : '-'}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.city
+												? (row.city as City).name
+												: '-'}
 										</StyledTableCell>
 										<StyledTableCell>
 											{row.preferedLocation

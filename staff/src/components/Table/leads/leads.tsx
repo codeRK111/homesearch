@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { parseDate, renderCellData } from '../../../utils/render';
 
+import { City } from '../../../model/city.interface';
 import EditIcon from '@material-ui/icons/Edit';
 import { ILead } from '../../../model/lead.interface';
 import LeadsComments from '../../LeadComments';
@@ -22,9 +23,10 @@ const StyledTableCell = withStyles((theme) => ({
 	head: {
 		backgroundColor: theme.palette.common.black,
 		color: theme.palette.common.white,
+		fontSize: 13,
 	},
 	body: {
-		fontSize: 14,
+		fontSize: 13,
 	},
 }))(TableCell);
 
@@ -109,6 +111,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							<StyledTableCell>SL Num.</StyledTableCell>
 							<StyledTableCell>Name</StyledTableCell>
 							<StyledTableCell>Contact Details</StyledTableCell>
+							<StyledTableCell>Category</StyledTableCell>
 							<StyledTableCell>Requirement</StyledTableCell>
 							<StyledTableCell>Requirement Type</StyledTableCell>
 							<StyledTableCell>Property Type</StyledTableCell>
@@ -117,7 +120,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							{hold && (
 								<StyledTableCell>Reconnect on</StyledTableCell>
 							)}
-							<StyledTableCell>Hint</StyledTableCell>
+
 							<StyledTableCell>Update</StyledTableCell>
 							<StyledTableCell>Comments</StyledTableCell>
 
@@ -144,8 +147,16 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											{row.email ? row.email : '-'} <br />
 											<b>Phone: </b> {row.number}
 											<br />
+											<b>City: </b>{' '}
+											{row.city
+												? (row.city as City).name
+												: '-'}{' '}
+											<br />
 											<b>Location: </b>{' '}
 											{row.preferedLocation}
+										</StyledTableCell>
+										<StyledTableCell>
+											{renderCellData(row.userCategory)}
 										</StyledTableCell>
 										<StyledTableCell>
 											{renderCellData(row.requirement)}
@@ -168,10 +179,6 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 												{parseDate(row.holdDate)}
 											</StyledTableCell>
 										)}
-
-										<StyledTableCell>
-											{row.message}
-										</StyledTableCell>
 
 										<StyledTableCell>
 											<IconButton

@@ -1,5 +1,6 @@
 import { Box, Container, Typography } from '@material-ui/core';
 
+import ClientSupportHome from './clientSupport';
 import GmHome from './gm';
 import React from 'react';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -19,6 +20,8 @@ const HomePage = () => {
 		switch (user.type) {
 			case 'gm':
 				return <GmHome />;
+			case 'clientSupport':
+				return <ClientSupportHome />;
 
 			default:
 				return <h1>Work in progress</h1>;

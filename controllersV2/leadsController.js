@@ -4,6 +4,7 @@ const catchAsync = require('./../utils/catchAsync');
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
+const mongoose = require('mongoose');
 
 function deleteFiles(files, callback) {
 	var i = files.length;
@@ -387,31 +388,40 @@ exports.assignClientSupport = catchAsync(async (req, res, next) => {
 	});
 });
 exports.countLeads = catchAsync(async (req, res, next) => {
+	const filterByRole = {};
+	const types = ['super-admin', 'gm'];
+	if (!types.includes(req.admin.type)) {
+		if (req.admin.type === 'clientSupport') {
+			filterByRole.clientSupport = mongoose.Types.ObjectId(req.admin.id);
+			filterByRole.stage = 1;
+		}
+	}
+
 	const counts = await Leads.aggregate([
 		{
 			$facet: {
 				Tenant: [
-					{ $match: { userCategory: 'tenant' } },
+					{ $match: { userCategory: 'tenant', ...filterByRole } },
 					{ $count: 'Tenant' },
 				],
 				Buyer: [
-					{ $match: { userCategory: 'buyer' } },
+					{ $match: { userCategory: 'buyer', ...filterByRole } },
 					{ $count: 'Buyer' },
 				],
 				Owner: [
-					{ $match: { userCategory: 'owner' } },
+					{ $match: { userCategory: 'owner', ...filterByRole } },
 					{ $count: 'Owner' },
 				],
 				Realtor: [
-					{ $match: { userCategory: 'realtor' } },
+					{ $match: { userCategory: 'realtor', ...filterByRole } },
 					{ $count: 'Realtor' },
 				],
 				Builder: [
-					{ $match: { userCategory: 'builder' } },
+					{ $match: { userCategory: 'builder', ...filterByRole } },
 					{ $count: 'Builder' },
 				],
 				Unknown: [
-					{ $match: { userCategory: 'unknown' } },
+					{ $match: { userCategory: 'unknown', ...filterByRole } },
 					{ $count: 'Unknown' },
 				],
 				Active: [

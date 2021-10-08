@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		fullHeight: {
 			height: '100%',
+			'&:hover': {
+				background: '#c1c1c1',
+			},
 		},
 		icon: {
 			fontSize: '3rem',

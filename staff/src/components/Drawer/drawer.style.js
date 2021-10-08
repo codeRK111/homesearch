@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
 		width: 400,
 		padding: theme.spacing(2),
 		boxSizing: 'border-box',
-		[theme.breakpoints.down]: {
+		[theme.breakpoints.down('sm')]: {
 			width: '80%',
 			padding: theme.spacing(1),
 		},

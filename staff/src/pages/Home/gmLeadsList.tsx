@@ -25,6 +25,7 @@ import LeadsTab from '../../components/LeadsTab';
 import LeadsTable from '../../components/Table/leads/gm';
 import TablePagination from '../../components/Table/pagination';
 import { asyncFetchAdmins } from '../../API/auth';
+import { renderStaffRole } from '../../utils/render';
 
 interface IGMLeadsList {
 	userCategory: any;
@@ -209,7 +210,12 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 													key={c.id}
 													value={c.id}
 												>
-													{c.name}
+													{c.name} -{' '}
+													<b>
+														{renderStaffRole(
+															c.type
+														)}
+													</b>
 												</MenuItem>
 											))}
 										</Select>
