@@ -18,7 +18,14 @@ export const asyncAddLead = async (
 		for (const key in lead) {
 			if (Object.prototype.hasOwnProperty.call(lead, key)) {
 				const element = lead[key as keyof ILead];
-				formData.append(key, `${element}`);
+				if (key === 'propertyRequirements') {
+					const c = element as string[];
+					c.forEach((b) => {
+						formData.append(key, `${b}`);
+					});
+				} else {
+					formData.append(key, `${element}`);
+				}
 			}
 		}
 		console.log(images);
@@ -69,6 +76,36 @@ export const asyncFetchMyLeads = async (
 
 		return data;
 	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+export const asyncFetchMyPostedLeads = async (
+	filters: FetchLeadsInputType,
+
+	cancelToken: CancelTokenSource
+): Promise<FetchMyLeadsResponseData> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.post<
+			FetchLeadsInputType,
+			AxiosResponse<ServerResponse<FetchMyLeadsResponseData>>
+		>(
+			`${V2EndPoint.Lead}/get-posted-leads`,
+			{ ...filters },
+			{
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		const data = resp.data.data;
+
+		return data;
+	} catch (e: any) {
+		console.log(e);
 		throw new Error(asyncError(e));
 	}
 };

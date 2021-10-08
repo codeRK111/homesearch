@@ -1,3 +1,4 @@
+import { City } from './city.interface';
 import { IStaff } from './staff.interface';
 import { Ptype } from './property.interface';
 
@@ -19,6 +20,7 @@ export enum LeadUserCategory {
 
 export interface ILead {
 	id?: string;
+	city?: null | City | string;
 	name?: string;
 	email?: string;
 	message?: string;
@@ -29,6 +31,7 @@ export interface ILead {
 	createdAt?: Date | string;
 	updatedAt?: Date;
 	clientSupport?: IStaff;
+	createdBy?: IStaff;
 	assignedAt?: Date;
 	requirement?: ClientRequirementType;
 	category?: ClientRequirementCategory;
@@ -44,10 +47,12 @@ export interface ILead {
 	images?: Array<string>;
 	preferedLocation?: string;
 	userCategory?: LeadUserCategory;
+	propertyRequirements?: string[];
 }
 
 export type FetchLeadsInputType = {
 	userCategory?: null | string;
+	preferedLocation?: string;
 	timeInterval?: null | string;
 	leadStatus?: null | string;
 	limit: number;
@@ -74,4 +79,5 @@ export enum LeadSource {
 	Staff = 'staff',
 	SocialMedia = 'socialMedia',
 	Website = 'website',
+	Homesearch = 'homesearch',
 }

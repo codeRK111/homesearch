@@ -19,6 +19,9 @@ export enum V2EndPoint {
 	Staff = '/staff',
 	Blog = '/blog',
 }
+export enum V1EndPoint {
+	City = '/cities',
+}
 
 export const APIV1 = axios.create({
 	baseURL: '/api/v1',

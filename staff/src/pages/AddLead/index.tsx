@@ -18,10 +18,13 @@ import {
 import React, { useRef, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
+import { City } from '../../model/city.interface';
 import CloseIcon from '@material-ui/icons/Close';
+import FCheckbox from '../../components/Formik/checkbox';
 import FSelect from '../../components/Formik/select';
 import FTextField from '../../components/Formik/input';
 import { PageWrapper } from '../../components/UI/Container';
+import SearchCity from '../../components/Search/city';
 import { SpaceBetween } from '../../components/UI/Flex';
 import { asyncAddLead } from '../../API/lead';
 
@@ -36,9 +39,11 @@ const AddLeadPage = () => {
 				LeadSource.SocialMedia,
 				LeadSource.Staff,
 				LeadSource.Website,
+				LeadSource.Homesearch,
 			])
 			.required('Source of lead required'),
 		name: Yup.string(),
+		preferedLocation: Yup.string().max(50, 'Max 50 characters allowed'),
 		email: Yup.string().email('Invalid email'),
 		number: Yup.string()
 			.length(10, '10 digits required')
@@ -53,6 +58,10 @@ const AddLeadPage = () => {
 		message: '',
 		preferedLocation: '',
 		userCategory: LeadUserCategory.Unknown,
+		minPrice: 0,
+		maxPrice: 0,
+		propertyRequirements: [],
+		city: null,
 	};
 
 	// State
@@ -70,7 +79,11 @@ const AddLeadPage = () => {
 		try {
 			setLoading(true);
 			const img = images ? Array.from(images) : undefined;
-			await asyncAddLead(values, img);
+			const inputData = { ...values };
+			if (values.city) {
+				inputData.city = (values.city as City).id;
+			}
+			await asyncAddLead(inputData, img);
 			setLoading(false);
 			helpers.resetForm();
 			setSnackbar({
@@ -100,7 +113,7 @@ const AddLeadPage = () => {
 						onSubmit={onSubmit}
 						validationSchema={validationSchema}
 					>
-						{() => (
+						{({ values, setFieldValue }) => (
 							<Form>
 								<Grid container spacing={1}>
 									<Grid item xs={12} md={6}>
@@ -126,7 +139,12 @@ const AddLeadPage = () => {
 											<MenuItem
 												value={LeadSource.Website}
 											>
-												Website
+												Other Website
+											</MenuItem>
+											<MenuItem
+												value={LeadSource.Homesearch}
+											>
+												Homesearch
 											</MenuItem>
 										</FSelect>
 									</Grid>
@@ -136,15 +154,16 @@ const AddLeadPage = () => {
 											label="Category"
 										>
 											<MenuItem
-												value={LeadUserCategory.Builder}
+												value={LeadUserCategory.Tenant}
 											>
-												Builder
+												Tenant
 											</MenuItem>
 											<MenuItem
 												value={LeadUserCategory.Buyer}
 											>
 												Buyer
 											</MenuItem>
+
 											<MenuItem
 												value={LeadUserCategory.Owner}
 											>
@@ -156,10 +175,11 @@ const AddLeadPage = () => {
 												Realtor
 											</MenuItem>
 											<MenuItem
-												value={LeadUserCategory.Tenant}
+												value={LeadUserCategory.Builder}
 											>
-												Tenant
+												Builder
 											</MenuItem>
+
 											<MenuItem
 												value={LeadUserCategory.Unknown}
 											>
@@ -186,9 +206,92 @@ const AddLeadPage = () => {
 										/>
 									</Grid>
 									<Grid item xs={12}>
+										<SearchCity
+											value={values.city as null | City}
+											onSelect={(val) => {
+												setFieldValue('city', val);
+											}}
+										/>
+									</Grid>
+									<Grid item xs={12}>
 										<FTextField
 											name={'preferedLocation'}
-											label="Prefered Location"
+											label="Prefered Location ( Max 50 Characters)"
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<Typography variant="caption">
+											Property Types
+										</Typography>
+										<Grid container spacing={1}>
+											<Grid item>
+												<FCheckbox
+													type="checkbox"
+													name="propertyRequirements"
+													value={'Flat'}
+													label="Flat"
+												/>
+											</Grid>
+											<Grid item>
+												<FCheckbox
+													type="checkbox"
+													name="propertyRequirements"
+													value={'Duplex'}
+													label="Duplex"
+												/>
+											</Grid>
+											<Grid item>
+												<FCheckbox
+													type="checkbox"
+													name="propertyRequirements"
+													value={'1BHK'}
+													label="1BHK"
+												/>
+											</Grid>
+											<Grid item>
+												<FCheckbox
+													type="checkbox"
+													name="propertyRequirements"
+													value={'2BHK'}
+													label="2BHK"
+												/>
+											</Grid>
+											<Grid item>
+												<FCheckbox
+													type="checkbox"
+													name="propertyRequirements"
+													value={'3BHK'}
+													label="3BHK"
+												/>
+											</Grid>
+											<Grid item>
+												<FCheckbox
+													type="checkbox"
+													name="propertyRequirements"
+													value={'4BHK'}
+													label="4BHK"
+												/>
+											</Grid>
+											<Grid item>
+												<FCheckbox
+													type="checkbox"
+													name="propertyRequirements"
+													value={'Fully Furnished'}
+													label="Fully Furnished"
+												/>
+											</Grid>
+										</Grid>
+									</Grid>
+									<Grid item xs={6}>
+										<FTextField
+											name={'minPrice'}
+											label="Min Budget"
+										/>
+									</Grid>
+									<Grid item xs={6}>
+										<FTextField
+											name={'maxPrice'}
+											label="Max Budget"
 										/>
 									</Grid>
 									<Grid item xs={12}>

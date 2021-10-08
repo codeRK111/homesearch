@@ -18,6 +18,9 @@ router
 	.route('/get-assigned-leads')
 	.post(authController.protect, leadController.getMyLeads);
 router
+	.route('/get-posted-leads')
+	.post(authController.protect, leadController.getPostedLeads);
+router
 	.route('/get-all')
 	.post(authController.protect, leadController.getAllLeads);
 router

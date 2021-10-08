@@ -102,6 +102,7 @@ const leadsSchema = new Schema(
 					'staff',
 					'socialMedia',
 					'website',
+					'homesearch',
 				],
 			},
 		},
@@ -131,12 +132,21 @@ const leadsSchema = new Schema(
 				type: String,
 			},
 		],
+		propertyRequirements: [
+			{
+				type: String,
+			},
+		],
 		preferedLocation: {
 			type: String,
 		},
 		stage: {
 			type: Number,
 			default: 0,
+		},
+		city: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'City',
 		},
 	},
 	{
@@ -171,7 +181,8 @@ leadsSchema.pre(/^find/, function (next) {
 		.populate({
 			path: 'comments.from',
 			select: 'id name type',
-		});
+		})
+		.populate('city');
 
 	next();
 });

@@ -8,6 +8,7 @@ import HomePage from './pages/Home';
 import LeadStrategyPage from './pages/LeadStrategy';
 import LoginPage from './pages/Login';
 import NavBar from './components/NavBar';
+import PostedLeadsPage from './pages/PostedLeads';
 import PrivateRoute from './components/ProtectedRoute';
 import React from 'react';
 import UpdateBlogPage from './pages/UpdateBlog';
@@ -58,6 +59,11 @@ const Router = () => {
 					path={'/lead-strategies'}
 					exact
 					component={LeadStrategyPage}
+				/>
+				<PrivateRoute
+					path={'/posted-leads'}
+					exact
+					component={PostedLeadsPage}
 				/>
 			</Switch>
 		</HashRouter>

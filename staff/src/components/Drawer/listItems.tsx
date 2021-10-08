@@ -2,6 +2,7 @@ import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
 
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
+import HomeIcon from '@material-ui/icons/Home';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import ListDropDown from '../ListCollapse';
 import PostAddIcon from '@material-ui/icons/PostAdd';
@@ -40,6 +41,19 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 			<List>
 				<ListItem
 					button
+					onClick={changeRoute('/')}
+					className={clsx(manageSelectedStyle('/'))}
+				>
+					<ListItemIcon>
+						<HomeIcon
+							color="primary"
+							className={clsx(manageSelectedStyleIcon('/'))}
+						/>
+					</ListItemIcon>
+					<ListItemText primary={'Home'} />
+				</ListItem>
+				<ListItem
+					button
 					onClick={changeRoute('/add-lead')}
 					className={clsx(manageSelectedStyle('/add-lead'))}
 				>
@@ -52,6 +66,21 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 						/>
 					</ListItemIcon>
 					<ListItemText primary={'Add Lead'} />
+				</ListItem>
+				<ListItem
+					button
+					onClick={changeRoute('/posted-leads')}
+					className={clsx(manageSelectedStyle('/posted-leads'))}
+				>
+					<ListItemIcon>
+						<ListAltIcon
+							color="primary"
+							className={clsx(
+								manageSelectedStyleIcon('/posted-leads')
+							)}
+						/>
+					</ListItemIcon>
+					<ListItemText primary={'Posted Leads'} />
 				</ListItem>
 				<RenderByMultipleRole
 					types={[

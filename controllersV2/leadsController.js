@@ -182,7 +182,75 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 		}
 	}
 
-	console.log(filter);
+	// console.log(req.admin);
+	// console.log(filter);
+	const totalDocs = await Leads.countDocuments(filter);
+
+	const leads = await Leads.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+	res.status(200).json({
+		status: 'success',
+		data: { leads, totalDocs },
+	});
+});
+exports.getPostedLeads = catchAsync(async (req, res, next) => {
+	const filter = {};
+	const page = req.body.page * 1 || 1;
+	const limit = req.body.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	filter.status = 'active';
+	filter.createdBy = req.admin.id;
+
+	if (req.body.userCategory) {
+		filter.userCategory = req.body.userCategory;
+	}
+	if (req.body.preferedLocation) {
+		filter.preferedLocation = {
+			$regex: req.body.preferedLocation,
+			$options: 'i',
+		};
+	}
+	if (req.body.timeInterval) {
+		switch (req.body.timeInterval) {
+			case 'today':
+				var start = moment().startOf('day'); // set to 12:00 am today
+				var end = moment().endOf('day');
+				filter.createdAt = {
+					$gte: start,
+					$lt: end,
+				};
+				break;
+			case 'yesterday':
+				var start = moment().add(-1, 'days'); // set to 12:00 am yesterday
+				var end = moment().startOf('day');
+				filter.createdAt = {
+					$gte: start,
+					$lt: end,
+				};
+				break;
+			case 'lastWeek':
+				var start = moment().startOf('week'); // set to 12:00 am yesterday
+
+				filter.createdAt = {
+					$gte: start,
+				};
+				break;
+			case 'lastMonth':
+				var start = moment().startOf('month'); // set to 12:00 am yesterday
+
+				filter.createdAt = {
+					$gte: start,
+				};
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	// console.log(req.admin);
 	// console.log(filter);
 	const totalDocs = await Leads.countDocuments(filter);

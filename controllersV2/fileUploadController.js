@@ -29,7 +29,7 @@ const lead = multer({
 	fileFilter: multerFilter,
 	storage: leadStorage,
 	limits: {
-		fields: 10,
+		fields: 30,
 		fileSize: 500 * 1024,
 		files: 1,
 	},

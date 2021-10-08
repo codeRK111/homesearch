@@ -23,15 +23,18 @@ export default function LeadsTab({ setTimeInterval }: ILeadTab) {
 		setValue(newValue);
 		switch (newValue) {
 			case 0:
-				setTimeInterval('today');
+				setTimeInterval('all');
 				break;
 			case 1:
-				setTimeInterval('yesterday');
+				setTimeInterval('today');
 				break;
 			case 2:
-				setTimeInterval('lastWeek');
+				setTimeInterval('yesterday');
 				break;
 			case 3:
+				setTimeInterval('lastWeek');
+				break;
+			case 4:
 				setTimeInterval('lastMonth');
 				break;
 
@@ -47,8 +50,9 @@ export default function LeadsTab({ setTimeInterval }: ILeadTab) {
 				onChange={handleChange}
 				indicatorColor="primary"
 				textColor="primary"
-				centered
+				scrollButtons="auto"
 			>
+				<Tab label="All" icon={<TodayIcon />} />
 				<Tab label="Today" icon={<TodayIcon />} />
 				<Tab label="Yesterday" icon={<TodayIcon />} />
 				<Tab label="Last Week" icon={<TodayIcon />} />

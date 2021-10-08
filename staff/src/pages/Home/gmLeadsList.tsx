@@ -8,12 +8,10 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
-	Typography,
 } from '@material-ui/core';
 import {
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
-	ILead,
 } from '../../model/lead.interface';
 import { IStaff, StaffType } from '../../model/staff.interface';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -25,10 +23,8 @@ import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import LeadStatusSwitch from '../../components/Switch';
 import LeadsTab from '../../components/LeadsTab';
 import LeadsTable from '../../components/Table/leads/gm';
-import { PageWrapper } from '../../components/UI/Container';
 import TablePagination from '../../components/Table/pagination';
 import { asyncFetchAdmins } from '../../API/auth';
-import { isToday } from '../../utils/render';
 
 interface IGMLeadsList {
 	userCategory: any;
@@ -39,7 +35,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	// State
 	const [page, setPage] = useState(1);
-	const [timeInterval, setTimeInterval] = useState('today');
+	const [timeInterval, setTimeInterval] = useState('all');
 	const [showHolds, setShowHolds] = useState(false);
 	const [showNewLeads, setShowNewLeads] = useState(false);
 	const [limit, setLimit] = useState(10);
@@ -49,7 +45,6 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 	const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
 	const [staffs, setStaffs] = useState<IStaff[]>([]);
 	const [staff, setStaff] = useState('');
-	const [todayLeads, setTodayLeads] = useState<Array<ILead>>([]);
 	const [data, setData] = useState<FetchMyLeadsResponseData>({
 		totalDocs: 0,
 		leads: [],
@@ -133,8 +128,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			}
 			const resp = await asyncFetchMyLeads(filter);
 			setData(resp);
-			const tLeads = resp.leads.filter((c) => isToday(c.createdAt));
-			setTodayLeads(tLeads);
+
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
@@ -171,13 +165,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 	}, [fetchStaffs]);
 
 	return (
-		<PageWrapper>
-			<Typography variant="h5" gutterBottom>
-				All Leads
-			</Typography>
-			<p>
-				<b>{data.totalDocs}</b> leads found
-			</p>
+		<Box mt="1rem">
 			<AppBar position="sticky" color="inherit" elevation={0}>
 				<Box mb="1rem">
 					<Grid container spacing={3} justify="center">
@@ -252,6 +240,9 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			<Box mb="1rem">
 				<LeadsTab setTimeInterval={setTimeInterval} />
 			</Box>
+			<p>
+				<b>{data.totalDocs}</b> leads found
+			</p>
 			{/* <Box mb="1rem">
 				<h1>Leads Of Today</h1>
 				<LeadsTable
@@ -278,7 +269,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 				setPage={handlePage}
 				totalDocs={data.totalDocs}
 			/>
-		</PageWrapper>
+		</Box>
 	);
 };
 

@@ -7,6 +7,7 @@ import {
 	renderLeadStage,
 } from '../../../utils/render';
 
+import { City } from '../../../model/city.interface';
 import { ILead } from '../../../model/lead.interface';
 import LeadsComments from '../../LeadComments';
 import Paper from '@material-ui/core/Paper';
@@ -24,9 +25,11 @@ const StyledTableCell = withStyles((theme) => ({
 	head: {
 		backgroundColor: theme.palette.common.black,
 		color: theme.palette.common.white,
+		fontSize: 12,
 	},
 	body: {
-		fontSize: 14,
+		fontSize: 13,
+		fontWeight: 500,
 	},
 }))(TableCell);
 
@@ -123,6 +126,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							<StyledTableCell>Property Type</StyledTableCell>
 							<StyledTableCell>Budget</StyledTableCell>
 							<StyledTableCell>Created At</StyledTableCell>
+							<StyledTableCell>Posted By</StyledTableCell>
 							{hold && (
 								<StyledTableCell>Reconnect on</StyledTableCell>
 							)}
@@ -152,6 +156,11 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											<b>Email: </b>
 											{row.email ? row.email : '-'} <br />
 											<b>Phone: </b> {row.number} <br />
+											<b>City: </b>{' '}
+											{row.city
+												? (row.city as City).name
+												: '-'}{' '}
+											<br />
 											<b>Location: </b>{' '}
 											{row.preferedLocation}
 										</StyledTableCell>
@@ -173,6 +182,9 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 										</StyledTableCell>
 										<StyledTableCell>
 											{parseDate(row.createdAt as Date)}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.createdBy?.name}
 										</StyledTableCell>
 										{hold && (
 											<StyledTableCell>

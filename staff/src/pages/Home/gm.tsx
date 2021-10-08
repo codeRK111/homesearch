@@ -1,4 +1,4 @@
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 import {
 	FetchCountLoader,
 	FetchTargetLoader,
@@ -9,11 +9,14 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import axios, { CancelTokenSource } from 'axios';
 
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import ButtonCard from '../../components/ButtonCard';
 import DashboardCard from '../../components/DashboardCard';
 import GMLeadsList from './gmLeadsList';
 import TargetCard from '../../components/TargetCard';
+import { useHistory } from 'react-router-dom';
 
 const GmHome = () => {
+	const history = useHistory();
 	// Token
 	const targetSource = useRef<CancelTokenSource | null>(null);
 	const countSource = useRef<CancelTokenSource | null>(null);
@@ -27,10 +30,18 @@ const GmHome = () => {
 
 	const manageLeadType = (type: any) => {
 		setUserCategory(null);
-		setLeadType(type);
+		if (leadType) {
+			setLeadType(null);
+		} else {
+			setLeadType(type);
+		}
 	};
 	const manageUserCategory = (category: any) => {
-		setUserCategory(category);
+		if (userCategory) {
+			setUserCategory(null);
+		} else {
+			setUserCategory(category);
+		}
 		setLeadType(null);
 	};
 
@@ -73,9 +84,74 @@ const GmHome = () => {
 
 	return (
 		<>
+			{targetLoading && (
+				<Box mt="4rem">
+					<FetchTargetLoader count={4} />
+				</Box>
+			)}
+			{myTarget && (
+				<Box mt="2rem" mb="2rem">
+					<Grid container spacing={1} justifyContent="space-between">
+						<Grid item xs={12} md={2}>
+							<ButtonCard
+								onClick={() => history.push('/add-lead')}
+							>
+								<Typography variant="h5">Add Lead</Typography>
+							</ButtonCard>
+						</Grid>
+						<Grid item xs={12} md={2}>
+							<ButtonCard
+								onClick={() => history.push('/posted-leads')}
+							>
+								<Typography variant="h5">My Leads</Typography>
+							</ButtonCard>
+						</Grid>
+						<Grid item xs={12} md={3}>
+							<TargetCard
+								label="Leads Target"
+								total={myTarget.leadTarget}
+								available={
+									myTarget.leadTarget -
+									myTarget.completeLeadTarget
+								}
+							/>
+						</Grid>
+						<Grid item xs={12} md={3}>
+							<TargetCard
+								label="Deals Target"
+								total={myTarget.dealTarget}
+								available={
+									myTarget.dealTarget -
+									myTarget.completeDealTarget
+								}
+							/>
+						</Grid>
+					</Grid>
+				</Box>
+			)}
 			{countLoading && <FetchCountLoader count={5} />}
 			{counts && (
 				<Grid container spacing={3} justifyContent="center">
+					<Grid item xs={12} md={2}>
+						<DashboardCard
+							label="Tenant"
+							value={counts.Tenant}
+							Icon={AssignmentIcon}
+							clickValue={'tenant'}
+							onClick={manageUserCategory}
+							selected={userCategory === 'tenant'}
+						/>
+					</Grid>
+					<Grid item xs={12} md={2}>
+						<DashboardCard
+							label="Buyer"
+							value={counts.Buyer}
+							Icon={AssignmentIcon}
+							clickValue={'buyer'}
+							onClick={manageUserCategory}
+							selected={userCategory === 'buyer'}
+						/>
+					</Grid>
 					<Grid item xs={12} md={2}>
 						<DashboardCard
 							label="Owner"
@@ -104,6 +180,16 @@ const GmHome = () => {
 							clickValue={'builder'}
 							onClick={manageUserCategory}
 							selected={userCategory === 'builder'}
+						/>
+					</Grid>
+					<Grid item xs={12} md={2}>
+						<DashboardCard
+							label="Unknown"
+							value={counts.Unknown}
+							Icon={AssignmentIcon}
+							clickValue={'unknown'}
+							onClick={manageUserCategory}
+							selected={userCategory === 'unknown'}
 						/>
 					</Grid>
 					{/* <Grid item xs={12} md={2}>
@@ -142,37 +228,7 @@ const GmHome = () => {
 					</Grid> */}
 				</Grid>
 			)}
-			{targetLoading && (
-				<Box mt="4rem">
-					<FetchTargetLoader count={2} />
-				</Box>
-			)}
-			{myTarget && (
-				<Box mt="4rem">
-					<Grid container spacing={1} justifyContent="space-between">
-						<Grid item xs={12} md={3}>
-							<TargetCard
-								label="Leads Target"
-								total={myTarget.leadTarget}
-								available={
-									myTarget.leadTarget -
-									myTarget.completeLeadTarget
-								}
-							/>
-						</Grid>
-						<Grid item xs={12} md={3}>
-							<TargetCard
-								label="Deals Target"
-								total={myTarget.dealTarget}
-								available={
-									myTarget.dealTarget -
-									myTarget.completeDealTarget
-								}
-							/>
-						</Grid>
-					</Grid>
-				</Box>
-			)}
+
 			<GMLeadsList userCategory={userCategory} leadStatus={leadType} />
 		</>
 	);
