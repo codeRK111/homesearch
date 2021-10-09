@@ -82,6 +82,8 @@ const AddLeadPage = () => {
 			const inputData = { ...values };
 			if (values.city) {
 				inputData.city = (values.city as City).id;
+			} else {
+				delete inputData.city;
 			}
 			await asyncAddLead(inputData, img);
 			setLoading(false);

@@ -83,25 +83,6 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 					<ListItemText primary={'Posted Leads'} />
 				</ListItem>
 				<RenderByMultipleRole
-					types={[StaffType.GM, StaffType.AssistantSalesManager]}
-				>
-					<ListItem
-						button
-						onClick={changeRoute('/leads')}
-						className={clsx(manageSelectedStyle('/leads'))}
-					>
-						<ListItemIcon>
-							<ListAltIcon
-								color="primary"
-								className={clsx(
-									manageSelectedStyleIcon('/leads')
-								)}
-							/>
-						</ListItemIcon>
-						<ListItemText primary={'My Leads'} />
-					</ListItem>
-				</RenderByMultipleRole>
-				<RenderByMultipleRole
 					types={[StaffType.GM, StaffType.LeadStrategist]}
 				>
 					<ListItem

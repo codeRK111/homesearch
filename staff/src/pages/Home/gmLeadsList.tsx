@@ -21,7 +21,7 @@ import { asyncAssignSupport, asyncFetchMyLeads } from '../../API/lead';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import LeadStatusSwitch from '../../components/Switch';
-import LeadsTab from '../../components/LeadsTab';
+import LeadsTab from '../../components/Tab/leadFilter';
 import LeadsTable from '../../components/Table/leads/gm';
 import TablePagination from '../../components/Table/pagination';
 import { asyncFetchAdmins } from '../../API/auth';
@@ -56,7 +56,9 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 	const onAssign = async () => {
 		try {
 			setAssignLoading(true);
-			await asyncAssignSupport(selectedLeads, staff);
+			const staffType = staffs.find((c) => c.id === staff);
+			if (!staffType) return;
+			await asyncAssignSupport(selectedLeads, staff, staffType.type);
 			setAssignLoading(false);
 			setSelectedLeads([]);
 			setStaff('');
@@ -97,7 +99,10 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			setStaffLoading(true);
 			const resp = await asyncFetchAdmins({
 				status: 'active',
-				type: StaffType.ClientSupport,
+				types: [
+					StaffType.ClientSupport,
+					StaffType.AssistantSalesManager,
+				],
 			});
 			setStaffLoading(false);
 			setStaffs(resp.admins);

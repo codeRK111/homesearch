@@ -107,7 +107,7 @@ exports.getAdmins = catchAsync(async (req, res) => {
 	const totalDocs = await Admin.countDocuments(filter);
 
 	const admins = await Admin.find(filter)
-		.sort('-createdAt')
+		.sort('name')
 		.skip(skip)
 		.limit(limit);
 

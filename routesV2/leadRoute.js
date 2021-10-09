@@ -7,7 +7,7 @@ const router = express.Router();
 
 router
 	.route('/assign-support')
-	.post(authController.protect, leadController.assignClientSupport);
+	.post(authController.protect, leadController.assignSupport);
 router
 	.route('/gm-lead-count')
 	.get(authController.protect, leadController.countLeads);
@@ -23,6 +23,9 @@ router
 router
 	.route('/get-all')
 	.post(authController.protect, leadController.getAllLeads);
+router
+	.route('/close-deal/:id')
+	.patch(authController.protect, leadController.closeDeal);
 router
 	.route('/:id')
 	.get(authController.protect, leadController.getLeadDetails)

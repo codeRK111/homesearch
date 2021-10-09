@@ -1,15 +1,13 @@
-import { Box, Checkbox, CircularProgress, IconButton } from '@material-ui/core';
+import { Box, CircularProgress, IconButton } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import {
-	parseDate,
-	renderCellData,
-	renderLeadStage,
-} from '../../../utils/render';
+import { parseDate, renderCellData } from '../../../utils/render';
 
 import { City } from '../../../model/city.interface';
+import EditIcon from '@material-ui/icons/Edit';
 import { ILead } from '../../../model/lead.interface';
 import LeadsComments from '../../LeadComments';
+import ManageLeadDialog from '../../Dialogs/manageLead';
 import Paper from '@material-ui/core/Paper';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import Table from '@material-ui/core/Table';
@@ -18,6 +16,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { useHistory } from 'react-router';
 
 // import EditIcon from '@material-ui/icons/Edit';
 
@@ -25,11 +24,9 @@ const StyledTableCell = withStyles((theme) => ({
 	head: {
 		backgroundColor: theme.palette.common.black,
 		color: theme.palette.common.white,
-		fontSize: 12,
 	},
 	body: {
-		fontSize: 13,
-		fontWeight: 500,
+		fontSize: 14,
 	},
 }))(TableCell);
 
@@ -51,39 +48,35 @@ interface ILeadsTable {
 	loading: boolean;
 	leads: ILead[];
 	fetchLeads: () => void;
-	manageSelectedLeads: (id: string) => void;
-	hold: boolean;
-	selectedLeads: string[];
 }
 
-const LeadsTable: React.FC<ILeadsTable> = ({
+const LeatsSETable: React.FC<ILeadsTable> = ({
 	loading,
 	leads,
 	fetchLeads,
-	hold,
-	manageSelectedLeads,
-	selectedLeads,
 }) => {
 	const classes = useStyles();
-
+	const history = useHistory();
 	// State
 
 	const [data, setData] = useState<Array<ILead>>([]);
 	const [open, setOpen] = useState(false);
+	const [manageOpen, setManageOpen] = useState(false);
 	const [selectedLead, setSelectedLead] = useState<ILead | null>(null);
-
-	const handleChangeCheckbox = (
-		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		manageSelectedLeads(event.target.value);
-	};
 
 	const handleCloseModal = () => {
 		setOpen(false);
 	};
+	const handleCloseManageModal = () => {
+		setManageOpen(false);
+	};
 	const openModal = (lead: ILead) => () => {
 		setSelectedLead(lead);
 		setOpen(true);
+	};
+	const openManageModal = (lead: ILead) => () => {
+		setSelectedLead(lead);
+		setManageOpen(true);
 	};
 
 	// Effects
@@ -93,13 +86,11 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: hold ? 12 : 11 }, (_, i) => i + 1).map(
-				(c) => (
-					<StyledTableCell key={c}>
-						<CircularProgress size={15} color="inherit" />
-					</StyledTableCell>
-				)
-			)}
+			{Array.from({ length: 11 }, (_, i) => i + 1).map((c) => (
+				<StyledTableCell key={c}>
+					<CircularProgress size={15} color="inherit" />
+				</StyledTableCell>
+			))}
 		</StyledTableRow>
 	);
 
@@ -111,6 +102,12 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 				id={selectedLead?.id}
 				comments={selectedLead?.comments}
 				number={selectedLead ? selectedLead.number : ''}
+				fetchLeads={fetchLeads}
+			/>
+			<ManageLeadDialog
+				open={manageOpen}
+				handleClose={handleCloseManageModal}
+				id={selectedLead?.id}
 				fetchLeads={fetchLeads}
 			/>
 			<TableContainer component={Paper}>
@@ -125,14 +122,10 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							<StyledTableCell>Requirement Type</StyledTableCell>
 							<StyledTableCell>Property Type</StyledTableCell>
 							<StyledTableCell>Budget</StyledTableCell>
-							<StyledTableCell>Created At</StyledTableCell>
-							<StyledTableCell>Posted By</StyledTableCell>
-							{hold && (
-								<StyledTableCell>Reconnect on</StyledTableCell>
-							)}
-							<StyledTableCell>Stage</StyledTableCell>
+							<StyledTableCell>Assigned On</StyledTableCell>
+
 							<StyledTableCell>Comments</StyledTableCell>
-							<StyledTableCell>Assign</StyledTableCell>
+							<StyledTableCell>Update</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -155,7 +148,8 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 										<StyledTableCell>
 											<b>Email: </b>
 											{row.email ? row.email : '-'} <br />
-											<b>Phone: </b> {row.number} <br />
+											<b>Phone: </b> {row.number}
+											<br />
 											<b>City: </b>{' '}
 											{row.city
 												? (row.city as City).name
@@ -181,20 +175,11 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											{renderCellData(row.maxPrice)}
 										</StyledTableCell>
 										<StyledTableCell>
-											{parseDate(row.createdAt as Date)}
+											{parseDate(
+												row.saleExecutiveAssignedAt
+											)}
 										</StyledTableCell>
-										<StyledTableCell>
-											{row.createdBy?.name}
-										</StyledTableCell>
-										{hold && (
-											<StyledTableCell>
-												{parseDate(row.holdDate)}
-											</StyledTableCell>
-										)}
 
-										<StyledTableCell>
-											{renderLeadStage(row)}
-										</StyledTableCell>
 										<StyledTableCell>
 											<IconButton
 												onClick={openModal(row)}
@@ -203,14 +188,11 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											</IconButton>
 										</StyledTableCell>
 										<StyledTableCell>
-											<Checkbox
-												value={row.id}
-												onChange={handleChangeCheckbox}
-												color="primary"
-												checked={selectedLeads.includes(
-													row.id as string
-												)}
-											/>
+											<IconButton
+												onClick={openManageModal(row)}
+											>
+												<EditIcon color="primary" />
+											</IconButton>
 										</StyledTableCell>
 									</StyledTableRow>
 							  ))}
@@ -221,4 +203,4 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 	);
 };
 
-export default LeadsTable;
+export default LeatsSETable;

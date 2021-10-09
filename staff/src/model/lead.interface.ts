@@ -1,5 +1,6 @@
+import { IStaff, StaffType } from './staff.interface';
+
 import { City } from './city.interface';
-import { IStaff } from './staff.interface';
 import { Ptype } from './property.interface';
 
 export type LeadComment = {
@@ -41,13 +42,17 @@ export interface ILead {
 	comments?: Array<LeadComment>;
 	hold?: boolean;
 	holdDate?: Date;
+	saleAssignedAt?: Date;
+	saleExecutiveAssignedAt?: Date;
 	stage?: number;
 	bdm?: string | IStaff | null;
+	executive?: string | IStaff | null;
 	source?: LeadSource;
 	images?: Array<string>;
 	preferedLocation?: string;
 	userCategory?: LeadUserCategory;
 	propertyRequirements?: string[];
+	saleStaffType?: StaffType;
 }
 
 export type FetchLeadsInputType = {

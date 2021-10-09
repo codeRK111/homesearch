@@ -7,6 +7,7 @@ import {
 } from './../../model/lead.interface';
 
 import { ServerResponse } from '../../model/apiResponse.interface';
+import { StaffType } from '../../model/staff.interface';
 
 export const asyncAddLead = async (
 	lead: ILead,
@@ -160,13 +161,40 @@ export const asyncUpdateLead = async (
 		throw new Error(asyncError(e));
 	}
 };
+type CloseLeadData = {
+	revenue: number;
+	revenueFeedback: string;
+};
+export const asyncCloseLead = async (
+	id: string,
+	inputData: CloseLeadData
+): Promise<ILead> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.patch<
+			CloseLeadData,
+			AxiosResponse<ServerResponse<ILead>>
+		>(`${V2EndPoint.Lead}/close-deal/${id}`, inputData, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const leadData = resp.data.data;
+
+		return leadData;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
 
 type AssignSupportServerResponse = {
 	lead: ILead;
 };
 export const asyncAssignSupport = async (
 	leads: string[],
-	clientSupport: string
+	clientSupport: string,
+	staffType: StaffType
 ): Promise<ILead> => {
 	try {
 		const token = localStorage.getItem('JWT_STAFF');
@@ -175,7 +203,7 @@ export const asyncAssignSupport = async (
 			AxiosResponse<ServerResponse<AssignSupportServerResponse>>
 		>(
 			`${V2EndPoint.Lead}/assign-support`,
-			{ leads, clientSupport },
+			{ leads, id: clientSupport, staffType },
 			{
 				headers: {
 					'Content-Type': 'application/json',

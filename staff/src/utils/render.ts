@@ -1,4 +1,6 @@
-import { StaffType } from '../model/staff.interface';
+import { IStaff, StaffType } from './../model/staff.interface';
+
+import { ILead } from '../model/lead.interface';
 import dayjs from 'dayjs';
 
 export const renderCellData = (value: any) => {
@@ -16,16 +18,22 @@ export const parseDate = (date: Date | undefined) => {
 	const m = dayjs(date);
 	return m.format('DD MMM YYYY hh:mm a');
 };
-export const renderLeadStage = (stage?: number): string => {
-	switch (stage) {
+export const renderLeadStage = (lead?: ILead): string => {
+	switch (lead?.stage) {
 		case 0:
 			return 'Not Assigned';
 		case 1:
-			return 'Client Support';
+			return `Client Support (${lead.clientSupport?.name})`;
 		case 2:
-			return 'Hold';
+			return `Hold (${lead.clientSupport?.name})`;
 		case 3:
-			return 'BDM';
+			if (lead.saleStaffType === StaffType.AssistantSalesManager) {
+				return `ASM (${(lead.bdm as IStaff).name})`;
+			} else {
+				return `BDM (${(lead.bdm as IStaff).name})`;
+			}
+		case 4:
+			return `Sales Executive (${(lead.executive as IStaff).name})`;
 
 		default:
 			return 'Not Found';

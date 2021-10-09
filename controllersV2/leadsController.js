@@ -62,6 +62,7 @@ exports.addLead = catchAsync(async (req, res, next) => {
 	if (req.files) {
 		req.body.images = req.files.map((c) => c.filename);
 	}
+
 	if (req.body.message) {
 		req.body.comments = [
 			{
@@ -128,10 +129,16 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 		req.admin.type === 'assistantSalesManager'
 	) {
 		filter.bdm = req.admin.id;
-		filter.stage = 3;
+		filter.stage = { $in: [3, 4] };
+	}
+	if (req.admin.type === 'salesExecutive') {
+		filter.executive = req.admin.id;
+		filter.stage = 4;
 	}
 	if (req.body.stage !== null && req.body.stage !== undefined) {
 		filter.stage = req.body.stage;
+	} else {
+		filter.stage = { $ne: 10 };
 	}
 	if (req.body.userCategory) {
 		filter.userCategory = req.body.userCategory;
@@ -284,6 +291,50 @@ exports.updateLead = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+exports.closeDeal = catchAsync(async (req, res, next) => {
+	if (!req.body.revenue) {
+		return next(new AppError('Revenue Required'));
+	}
+	if (!req.body.revenue) {
+		return next(new AppError('Feedback Required'));
+	}
+	const existingLeads = await Leads.findById(req.params.id);
+	if (!existingLeads) {
+		return next(new AppError('Invalid leads'));
+	}
+
+	if (existingLeads.status === 'inactive') {
+		return next(new AppError('This lead is currently inactive'));
+	}
+	if (existingLeads.stage === 10) {
+		return next(new AppError('Already closed'));
+	}
+	existingLeads.revenue = req.body.revenue;
+	existingLeads.stage = 10;
+	existingLeads.revenueFeedback = req.body.revenueFeedback;
+	existingLeads.closedBy = req.admin.id;
+	// if (existingLeads.comments.length > 0) {
+	// 	existingLeads.comments.push({
+	// 		from: req.admin.id,
+	// 		message: req.body.revenueFeedback,
+	// 		closeFeedback: true,
+	// 	});
+	// } else {
+	// 	existingLeads.comments = [
+	// 		{
+	// 			from: req.admin.id,
+	// 			message: req.body.revenueFeedback,
+	// 			closeFeedback: true,
+	// 		},
+	// 	];
+	// }
+
+	await existingLeads.save();
+	res.status(200).json({
+		status: 'success',
+		data: existingLeads,
+	});
+});
 
 exports.updateBySupport = catchAsync(async (req, res, next) => {
 	const data = {};
@@ -368,17 +419,38 @@ exports.getLeadDetails = catchAsync(async (req, res, next) => {
 	});
 });
 
-exports.assignClientSupport = catchAsync(async (req, res, next) => {
+exports.assignSupport = catchAsync(async (req, res, next) => {
+	if (!req.body.staffType) {
+		return next(new AppError('Staff role required'));
+	}
+	const saleTypes = ['bdm', 'assistantSalesManager', 'salesExecutive'];
+	const dataToUpdate = {
+		attended: true,
+	};
+
+	if (req.body.staffType === 'clientSupport') {
+		dataToUpdate.clientSupport = req.body.id;
+		dataToUpdate.stage = 1;
+		dataToUpdate.assignedAt = Date.now();
+	} else if (req.body.staffType === 'salesExecutive') {
+		dataToUpdate.executive = req.body.id;
+		dataToUpdate.stage = 4;
+		dataToUpdate.saleExecutiveAssignedAt = Date.now();
+	} else if (saleTypes.includes(req.body.staffType)) {
+		dataToUpdate.saleStaffType = req.body.staffType;
+		dataToUpdate.bdm = req.body.id;
+		dataToUpdate.stage = 3;
+		dataToUpdate.saleAssignedAt = Date.now();
+	} else {
+		return next(new AppError('Invalid user type'));
+	}
+
+	console.log(dataToUpdate);
 	const lead = await Leads.updateMany(
 		{
 			_id: { $in: req.body.leads },
 		},
-		{
-			clientSupport: req.body.clientSupport,
-			attended: true,
-			assignedAt: Date.now(),
-			stage: 1,
-		}
+		dataToUpdate
 	);
 	res.status(200).json({
 		status: 'success',
@@ -394,6 +466,14 @@ exports.countLeads = catchAsync(async (req, res, next) => {
 		if (req.admin.type === 'clientSupport') {
 			filterByRole.clientSupport = mongoose.Types.ObjectId(req.admin.id);
 			filterByRole.stage = 1;
+		} else if (req.admin.type === 'assistantSalesManager') {
+			filterByRole.bdm = mongoose.Types.ObjectId(req.admin.id);
+			filterByRole.stage = 3;
+			filterByRole.saleStaffType = 'assistantSalesManager';
+		} else if (req.admin.type === 'salesExecutive') {
+			filterByRole.bdm = mongoose.Types.ObjectId(req.admin.id);
+			filterByRole.stage = 3;
+			filterByRole.saleStaffType = 'salesExecutive';
 		}
 	}
 

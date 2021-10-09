@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		cursor: 'pointer',
+		minHeight: 75,
 		'&:hover': {
 			background: '#c1c1c1',
 		},

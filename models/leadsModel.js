@@ -32,12 +32,30 @@ const leadsSchema = new Schema(
 			ref: 'Admin',
 			default: null,
 		},
+		executive: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Admin',
+			default: null,
+		},
+		closedBy: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Admin',
+			default: null,
+		},
 		createdBy: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Admin',
 			default: null,
 		},
 		assignedAt: {
+			type: Date,
+			default: null,
+		},
+		saleAssignedAt: {
+			type: Date,
+			default: null,
+		},
+		saleExecutiveAssignedAt: {
 			type: Date,
 			default: null,
 		},
@@ -125,6 +143,10 @@ const leadsSchema = new Schema(
 					type: Date,
 					default: Date.now(),
 				},
+				closeFeedback: {
+					type: Boolean,
+					default: false,
+				},
 			},
 		],
 		images: [
@@ -148,6 +170,18 @@ const leadsSchema = new Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: 'City',
 		},
+		revenue: {
+			type: Number,
+		},
+		revenueFeedback: {
+			type: String,
+		},
+		saleStaffType: {
+			type: String,
+			enum: {
+				values: ['bdm', 'assistantSalesManager', 'salesExecutive'],
+			},
+		},
 	},
 	{
 		toJSON: { virtuals: true },
@@ -169,11 +203,52 @@ leadsSchema.pre('save', function (next) {
 		.catch((_) => next());
 });
 
+leadsSchema.pre('save', function (next) {
+	if (this.isNew) {
+		Admin.findByIdAndUpdate(this.createdBy, {
+			$inc: { completeLeadTarget: 1 },
+		})
+			.then((c) => {
+				console.log(c);
+				next();
+			})
+			.catch((_) => next());
+	} else {
+		console.log(this.isModified('stage'));
+		console.log(this.stage);
+		if (this.isModified('stage') && this.stage === 10) {
+			Admin.findByIdAndUpdate(this.closedBy, {
+				$inc: { completeDealTarget: 1 },
+			})
+				.then((c) => {
+					console.log(c);
+					next();
+				})
+				.catch((_) => next());
+		} else {
+			next();
+		}
+		next();
+	}
+});
+
 leadsSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'clientSupport',
 		select: 'id name',
 	})
+		.populate({
+			path: 'bdm',
+			select: 'id name',
+		})
+		.populate({
+			path: 'executive',
+			select: 'id name',
+		})
+		.populate({
+			path: 'closedBy',
+			select: 'id name',
+		})
 		.populate({
 			path: 'createdBy',
 			select: 'id name',

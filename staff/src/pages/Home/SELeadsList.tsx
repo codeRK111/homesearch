@@ -5,20 +5,18 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Box } from '@material-ui/core';
-import LeadStatusSwitch from '../../components/Switch';
 import LeadsTab from '../../components/Tab/leadFilter';
-import LeadsTable from '../../components/Table/leads/leads';
+import LeatsSETable from '../../components/Table/leads/se';
 import TablePagination from '../../components/Table/pagination';
 import { asyncFetchMyLeads } from '../../API/lead';
 
 interface IClientSupportLeadsList {
 	userCategory: any;
 }
-const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
+const SELeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	// State
 	const [page, setPage] = useState(1);
 	const [timeInterval, setTimeInterval] = useState('all');
-	const [showHolds, setShowHolds] = useState(false);
 	const [limit, setLimit] = useState(10);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState<FetchMyLeadsResponseData>({
@@ -39,9 +37,7 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		try {
 			setLoading(true);
 			const filter: FetchLeadsInputType = { page, limit };
-			if (showHolds) {
-				filter.stage = 2;
-			}
+
 			if (userCategory) {
 				filter.userCategory = userCategory;
 			}
@@ -59,7 +55,7 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 			});
 			setLoading(false);
 		}
-	}, [page, limit, showHolds, userCategory, timeInterval]);
+	}, [page, limit, userCategory, timeInterval]);
 	useEffect(() => {
 		setPage(1);
 	}, [limit, userCategory, timeInterval]);
@@ -70,19 +66,15 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	return (
 		<Box mt="1rem">
 			<Box mb="1rem">
-				<LeadStatusSwitch value={showHolds} setValue={setShowHolds} />
-			</Box>
-			<Box mb="1rem">
 				<LeadsTab setTimeInterval={setTimeInterval} />
 			</Box>
 			<p>
 				<b>{data.totalDocs}</b> leads found
 			</p>
-			<LeadsTable
+			<LeatsSETable
 				loading={loading}
 				leads={data.leads}
 				fetchLeads={fetchLeads}
-				hold={showHolds}
 			/>
 
 			<TablePagination
@@ -96,4 +88,4 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	);
 };
 
-export default ClientSupportLeadsList;
+export default SELeadsList;

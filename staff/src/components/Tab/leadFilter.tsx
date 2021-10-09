@@ -44,13 +44,13 @@ export default function LeadsTab({ setTimeInterval }: ILeadTab) {
 	};
 
 	return (
-		<Paper className={classes.root}>
+		<Paper>
 			<Tabs
 				value={value}
 				onChange={handleChange}
 				indicatorColor="primary"
 				textColor="primary"
-				scrollButtons="auto"
+				scrollButtons="desktop"
 			>
 				<Tab label="All" icon={<TodayIcon />} />
 				<Tab label="Today" icon={<TodayIcon />} />
