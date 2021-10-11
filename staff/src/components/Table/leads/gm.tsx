@@ -1,13 +1,22 @@
-import { Box, Checkbox, CircularProgress, IconButton } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {
+	Box,
+	Checkbox,
+	Chip,
+	CircularProgress,
+	IconButton,
+} from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import {
+	isReschedule,
 	parseDate,
 	renderCellData,
 	renderLeadStage,
 } from '../../../utils/render';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { City } from '../../../model/city.interface';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { ILead } from '../../../model/lead.interface';
 import LeadsComments from '../../LeadComments';
 import Paper from '@material-ui/core/Paper';
@@ -18,6 +27,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
 // import EditIcon from '@material-ui/icons/Edit';
 
@@ -51,6 +61,7 @@ interface ILeadsTable {
 	loading: boolean;
 	leads: ILead[];
 	fetchLeads: () => void;
+	onDelete: (value: string) => void;
 	manageSelectedLeads: (id: string) => void;
 	hold: boolean;
 	selectedLeads: string[];
@@ -63,12 +74,14 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 	hold,
 	manageSelectedLeads,
 	selectedLeads,
+	onDelete,
 }) => {
 	const classes = useStyles();
-
+	const { user } = useTypedSelector((state) => state.auth);
 	// State
 
 	const [data, setData] = useState<Array<ILead>>([]);
+	const [days, setDays] = useState<any>(2);
 	const [open, setOpen] = useState(false);
 	const [selectedLead, setSelectedLead] = useState<ILead | null>(null);
 
@@ -118,6 +131,18 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 					<TableHead>
 						<TableRow>
 							<StyledTableCell>SL Num.</StyledTableCell>
+							<StyledTableCell>
+								Reschedule <br />
+								<select
+									value={days}
+									onChange={(e) => setDays(e.target.value)}
+								>
+									<option value={2}>2</option>
+									<option value={3}>3</option>
+									<option value={5}>5</option>
+									<option value={7}>7</option>
+								</select>
+							</StyledTableCell>
 							<StyledTableCell>Name</StyledTableCell>
 							<StyledTableCell>Contact Details</StyledTableCell>
 							<StyledTableCell>Category</StyledTableCell>
@@ -133,6 +158,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							<StyledTableCell>Stage</StyledTableCell>
 							<StyledTableCell>Comments</StyledTableCell>
 							<StyledTableCell>Assign</StyledTableCell>
+							<StyledTableCell>Delete</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -148,7 +174,31 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 										<StyledTableCell>
 											{i + 1}
 										</StyledTableCell>
-
+										<StyledTableCell>
+											{user &&
+											isReschedule(
+												row.comments?.find(
+													(c) =>
+														c.from.id === user.id &&
+														c.reschedule
+												)?.reschedule,
+												days
+											) ? (
+												<Chip
+													icon={<AccessTimeIcon />}
+													label={parseDate(
+														row.comments?.find(
+															(c) =>
+																c.from.id ===
+																	user.id &&
+																c.reschedule
+														)?.reschedule as Date
+													)}
+												/>
+											) : (
+												'-'
+											)}
+										</StyledTableCell>
 										<StyledTableCell>
 											{row.name ? row.name : '-'}
 										</StyledTableCell>
@@ -175,6 +225,18 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 										</StyledTableCell>
 										<StyledTableCell>
 											{renderCellData(row.pType)}
+											{row.propertyRequirements && (
+												<Box>
+													{row.propertyRequirements.map(
+														(c, i) => (
+															<Chip
+																key={i}
+																label={c}
+															/>
+														)
+													)}
+												</Box>
+											)}
 										</StyledTableCell>
 										<StyledTableCell>
 											{renderCellData(row.minPrice)} to{' '}
@@ -211,6 +273,15 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 													row.id as string
 												)}
 											/>
+										</StyledTableCell>
+										<StyledTableCell>
+											<IconButton
+												onClick={() =>
+													onDelete(row.id as string)
+												}
+											>
+												<DeleteIcon color="secondary" />
+											</IconButton>
 										</StyledTableCell>
 									</StyledTableRow>
 							  ))}

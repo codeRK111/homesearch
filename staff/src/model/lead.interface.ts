@@ -8,6 +8,7 @@ export type LeadComment = {
 	from: IStaff;
 	message: string;
 	date: Date;
+	reschedule: Date | null;
 };
 
 export enum LeadUserCategory {
@@ -63,6 +64,7 @@ export type FetchLeadsInputType = {
 	limit: number;
 	page: number;
 	stage?: number;
+	city?: string;
 };
 export type FetchMyLeadsResponseData = {
 	leads: ILead[];

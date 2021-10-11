@@ -1,8 +1,9 @@
-import { Box, CircularProgress, IconButton } from '@material-ui/core';
+import { Box, Chip, CircularProgress, IconButton } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { isReschedule, parseDate, renderCellData } from '../../../utils/render';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { parseDate, renderCellData } from '../../../utils/render';
 
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { City } from '../../../model/city.interface';
 import EditIcon from '@material-ui/icons/Edit';
 import { ILead } from '../../../model/lead.interface';
@@ -16,6 +17,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { useHistory } from 'react-router';
+import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
 // import EditIcon from '@material-ui/icons/Edit';
 
@@ -59,11 +61,12 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
-
+	const { user } = useTypedSelector((state) => state.auth);
 	// State
 
 	const [data, setData] = useState<Array<ILead>>([]);
 	const [open, setOpen] = useState(false);
+	const [days, setDays] = useState<any>(2);
 	const [selectedLead, setSelectedLead] = useState<ILead | null>(null);
 
 	const onEdit = (id: string | undefined) => () =>
@@ -109,6 +112,18 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 					<TableHead>
 						<TableRow>
 							<StyledTableCell>SL Num.</StyledTableCell>
+							<StyledTableCell>
+								Reschedule <br />
+								<select
+									value={days}
+									onChange={(e) => setDays(e.target.value)}
+								>
+									<option value={2}>2</option>
+									<option value={3}>3</option>
+									<option value={5}>5</option>
+									<option value={7}>7</option>
+								</select>
+							</StyledTableCell>
 							<StyledTableCell>Name</StyledTableCell>
 							<StyledTableCell>Contact Details</StyledTableCell>
 							<StyledTableCell>Category</StyledTableCell>
@@ -138,6 +153,31 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 										<StyledTableCell>
 											{i + 1}
 										</StyledTableCell>
+										<StyledTableCell>
+											{user &&
+											isReschedule(
+												row.comments?.find(
+													(c) =>
+														c.from.id === user.id &&
+														c.reschedule
+												)?.reschedule,
+												days
+											) ? (
+												<Chip
+													icon={<AccessTimeIcon />}
+													label={parseDate(
+														row.comments?.find(
+															(c) =>
+																c.from.id ===
+																	user.id &&
+																c.reschedule
+														)?.reschedule as Date
+													)}
+												/>
+											) : (
+												'-'
+											)}
+										</StyledTableCell>
 
 										<StyledTableCell>
 											{row.name ? row.name : '-'}
@@ -166,6 +206,18 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 										</StyledTableCell>
 										<StyledTableCell>
 											{renderCellData(row.pType)}
+											{row.propertyRequirements && (
+												<Box mt="0.3rem">
+													{row.propertyRequirements.map(
+														(c, i) => (
+															<Chip
+																key={i}
+																label={c}
+															/>
+														)
+													)}
+												</Box>
+											)}
 										</StyledTableCell>
 										<StyledTableCell>
 											{renderCellData(row.minPrice)} to{' '}

@@ -16,12 +16,17 @@ import {
 import { IStaff, StaffType } from '../../model/staff.interface';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
-import { asyncAssignSupport, asyncFetchMyLeads } from '../../API/lead';
+import {
+	asyncAssignSupport,
+	asyncDeleteLead,
+	asyncFetchMyLeads,
+} from '../../API/lead';
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import { City } from '../../model/city.interface';
+import FilterLeads from './filterLeads';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import LeadStatusSwitch from '../../components/Switch';
-import LeadsTab from '../../components/Tab/leadFilter';
 import LeadsTable from '../../components/Table/leads/gm';
 import TablePagination from '../../components/Table/pagination';
 import { asyncFetchAdmins } from '../../API/auth';
@@ -37,10 +42,12 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 	// State
 	const [page, setPage] = useState(1);
 	const [timeInterval, setTimeInterval] = useState('all');
+	const [city, setCity] = useState<City | null>(null);
 	const [showHolds, setShowHolds] = useState(false);
 	const [showNewLeads, setShowNewLeads] = useState(false);
 	const [limit, setLimit] = useState(10);
 	const [loading, setLoading] = useState(false);
+	const [deleteLoading, setDeleteLoading] = useState(false);
 	const [staffLoading, setStaffLoading] = useState(false);
 	const [assignLoading, setAssignLoading] = useState(false);
 	const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
@@ -77,6 +84,28 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			});
 		}
 	};
+	const onDelete = async (id: string) => {
+		try {
+			setDeleteLoading(true);
+
+			await asyncDeleteLead(id);
+
+			setDeleteLoading(false);
+			fetchLeads();
+			setSnackbar({
+				open: true,
+				message: 'Deleted successfully',
+				severity: 'success',
+			});
+		} catch (error: any) {
+			setDeleteLoading(false);
+			setSnackbar({
+				open: true,
+				message: error.message,
+				severity: 'error',
+			});
+		}
+	};
 	const handlePage = (
 		event: React.ChangeEvent<unknown>,
 		pageNumber: number
@@ -102,6 +131,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 				types: [
 					StaffType.ClientSupport,
 					StaffType.AssistantSalesManager,
+					StaffType.SalesExecutive,
 				],
 			});
 			setStaffLoading(false);
@@ -126,6 +156,8 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			if (userCategory) {
 				filter.userCategory = userCategory;
 			}
+			filter.city = city?.id;
+
 			if (leadStatus) {
 				filter.leadStatus = leadStatus;
 			}
@@ -152,6 +184,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 		userCategory,
 		leadStatus,
 		timeInterval,
+		city,
 	]);
 	useEffect(() => {
 		setPage(1);
@@ -162,6 +195,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 		userCategory,
 		leadStatus,
 		timeInterval,
+		city,
 	]);
 	useEffect(() => {
 		fetchLeads();
@@ -248,9 +282,11 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 					</Grid>
 				</Box>
 			</AppBar>
-			<Box mb="1rem">
-				<LeadsTab setTimeInterval={setTimeInterval} />
-			</Box>
+			<FilterLeads
+				setTimeInterval={setTimeInterval}
+				city={city}
+				setCity={setCity}
+			/>
 			<p>
 				<b>{data.totalDocs}</b> leads found
 			</p>
@@ -272,6 +308,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 				leads={data.leads}
 				fetchLeads={fetchLeads}
 				hold={showHolds}
+				onDelete={onDelete}
 			/>
 			<TablePagination
 				limit={limit}

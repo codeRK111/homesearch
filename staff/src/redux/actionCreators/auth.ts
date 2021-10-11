@@ -16,6 +16,12 @@ export const signInSuccess =
 			payload: user,
 		});
 	};
+export const setUser = (user: IStaff) => (dispatch: Dispatch<AuthAction>) => {
+	dispatch({
+		type: AuthActionType.SET_USER,
+		payload: user,
+	});
+};
 
 export const signInError =
 	(error: string) => (dispatch: Dispatch<AuthAction>) => {

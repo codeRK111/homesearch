@@ -143,6 +143,9 @@ const leadsSchema = new Schema(
 					type: Date,
 					default: Date.now(),
 				},
+				reschedule: {
+					type: Date,
+				},
 				closeFeedback: {
 					type: Boolean,
 					default: false,
@@ -176,6 +179,10 @@ const leadsSchema = new Schema(
 		revenueFeedback: {
 			type: String,
 		},
+		notInterested: {
+			type: Boolean,
+			default: false,
+		},
 		saleStaffType: {
 			type: String,
 			enum: {
@@ -189,8 +196,6 @@ const leadsSchema = new Schema(
 		timestamps: true,
 	}
 );
-
-console.log(moment().subtract(7, 'd').format());
 
 leadsSchema.pre('save', function (next) {
 	Admin.findByIdAndUpdate(this.createdBy, {

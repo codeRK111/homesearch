@@ -5,7 +5,6 @@ import React from 'react';
 
 // import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
-
 interface IDateTimePickerComponent {
 	label: string;
 	date?: Date | null;
@@ -20,6 +19,7 @@ function DateTimePickerComponent({
 	return (
 		<MuiPickersUtilsProvider utils={DateFnsUtils}>
 			<DateTimePicker
+				fullWidth
 				disablePast
 				label={label}
 				value={date}

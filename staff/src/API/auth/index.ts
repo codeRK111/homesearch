@@ -1,4 +1,4 @@
-import { APIV2, V2EndPoint, asyncError } from '../instance';
+import { APIV1, APIV2, V1EndPoint, V2EndPoint, asyncError } from '../instance';
 import { AxiosResponse, CancelTokenSource } from 'axios';
 import {
 	FetchAdminResponse,
@@ -57,6 +57,30 @@ export const asyncFetchAdmins = async (
 			},
 		});
 		const staffData = resp.data.data;
+
+		return staffData;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+
+export type FetchAdminInfoResponse = {
+	admin: IStaff;
+};
+
+export const asyncFetchAdminInfo = async (): Promise<IStaff> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV1.get<
+			FetchAdminInputType,
+			AxiosResponse<ServerResponse<FetchAdminInfoResponse>>
+		>(`${V1EndPoint.Admin}/getAdminInfo`, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const staffData = resp.data.data.admin;
 
 		return staffData;
 	} catch (e: any) {

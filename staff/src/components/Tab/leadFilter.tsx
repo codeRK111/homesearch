@@ -51,6 +51,7 @@ export default function LeadsTab({ setTimeInterval }: ILeadTab) {
 				indicatorColor="primary"
 				textColor="primary"
 				scrollButtons="desktop"
+				centered
 			>
 				<Tab label="All" icon={<TodayIcon />} />
 				<Tab label="Today" icon={<TodayIcon />} />

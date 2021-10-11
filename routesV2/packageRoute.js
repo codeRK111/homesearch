@@ -7,8 +7,6 @@ const authController = require('../controllers/adminController');
 
 const router = express.Router();
 
-console.log(UtilityValidator.validate('createBuilderPackages'));
-
 router
 	.route('/builder-package')
 	.post(

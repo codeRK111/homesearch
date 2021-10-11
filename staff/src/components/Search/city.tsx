@@ -1,7 +1,6 @@
 // *https://www.registers.service.gov.uk/registers/country/use-the-api*
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { Box } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { City } from '../../model/city.interface';
 import React from 'react';
@@ -9,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import { asyncSearchCity } from '../../API/city';
 
 interface ISearchCity {
-	onSelect: (city: City) => void;
+	onSelect: (city: City | null) => void;
 	value: City | null;
 	label?: string;
 }
@@ -42,53 +41,56 @@ export default function SearchCity({
 	};
 
 	return (
-		<Box>
-			<Autocomplete
-				id="asynchronous-demo"
-				style={{ width: '100%' }}
-				open={open}
-				onOpen={() => {
-					setOpen(true);
-				}}
-				onClose={() => {
-					setOpen(false);
-				}}
-				// getOptionSelected={(option, value) =>
-				// 	option.name === value.name
-				// }
-				onChange={(_, value) => {
+		<Autocomplete
+			id="asynchronous-demo"
+			style={{ width: '100%' }}
+			open={open}
+			onOpen={() => {
+				setOpen(true);
+			}}
+			onClose={() => {
+				setOpen(false);
+			}}
+			// getOptionSelected={(option, value) =>
+			// 	option.name === value.name
+			// }
+			onChange={(_, value, reason) => {
+				if (reason === 'clear') {
+					onSelect(null);
+				} else {
 					if (value) {
 						onSelect(value);
 					}
-				}}
-				value={value}
-				getOptionLabel={(option) => option.name}
-				options={options}
-				loading={loading}
-				renderInput={(params) => (
-					<TextField
-						{...params}
-						label={label}
-						variant="filled"
-						value={placeName}
-						onChange={onChange}
-						InputProps={{
-							...params.InputProps,
-							endAdornment: (
-								<React.Fragment>
-									{loading ? (
-										<CircularProgress
-											color="inherit"
-											size={20}
-										/>
-									) : null}
-									{params.InputProps.endAdornment}
-								</React.Fragment>
-							),
-						}}
-					/>
-				)}
-			/>
-		</Box>
+				}
+			}}
+			value={value}
+			getOptionLabel={(option) => option.name}
+			options={options}
+			loading={loading}
+			renderInput={(params) => (
+				<TextField
+					{...params}
+					label={label}
+					size="small"
+					variant="filled"
+					value={placeName}
+					onChange={onChange}
+					InputProps={{
+						...params.InputProps,
+						endAdornment: (
+							<React.Fragment>
+								{loading ? (
+									<CircularProgress
+										color="inherit"
+										size={20}
+									/>
+								) : null}
+								{params.InputProps.endAdornment}
+							</React.Fragment>
+						),
+					}}
+				/>
+			)}
+		/>
 	);
 }

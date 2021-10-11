@@ -139,9 +139,13 @@ export const asyncGetLeadDetails = async (id: string): Promise<ILead> => {
 	}
 };
 
+export interface UpdateLeadData extends ILead {
+	reschedule?: null | Date;
+}
+
 export const asyncUpdateLead = async (
 	id: string,
-	lead: ILead
+	lead: UpdateLeadData
 ): Promise<ILead> => {
 	try {
 		const token = localStorage.getItem('JWT_STAFF');
@@ -149,6 +153,25 @@ export const asyncUpdateLead = async (
 			ILead,
 			AxiosResponse<ServerResponse<ILead>>
 		>(`${V2EndPoint.Lead}/support-update/${id}`, lead, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const leadData = resp.data.data;
+
+		return leadData;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+export const asyncDeleteLead = async (id: string): Promise<ILead> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.delete<
+			any,
+			AxiosResponse<ServerResponse<ILead>>
+		>(`${V2EndPoint.Lead}/${id}`, {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,

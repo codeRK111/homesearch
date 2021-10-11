@@ -1,20 +1,25 @@
 import * as Yup from 'yup';
 
-import { Button, CircularProgress, Grid } from '@material-ui/core';
+import { Button, CircularProgress, Grid, MenuItem } from '@material-ui/core';
 import {
 	ClientRequirementCategory,
 	ClientRequirementType,
 	ILead,
+	LeadUserCategory,
 } from '../../model/lead.interface';
 import { Form, Formik, FormikHelpers } from 'formik';
 import React, { useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
+import { City } from '../../model/city.interface';
 import ClientRequirement from './requirement';
+import FCheckbox from '../../components/Formik/checkbox';
+import FSelect from '../../components/Formik/select';
 import FTextField from '../../components/Formik/input';
 import { IStaff } from '../../model/staff.interface';
 import { PageWrapper } from '../../components/UI/Container';
 import { Ptype } from '../../model/property.interface';
+import SearchCity from '../../components/Search/city';
 import Typography from '@material-ui/core/Typography';
 import { asyncUpdateLead } from '../../API/lead';
 import { useHistory } from 'react-router';
@@ -130,6 +135,9 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 		try {
 			setLoading(true);
 			const input = { ...values, ...clientRequirement };
+			if (input.city) {
+				input.city = (input.city as City).id;
+			}
 			if (input.action === 'hold') {
 				if (clientRequirement.pickerDate) {
 					input.hold = true;
@@ -159,6 +167,9 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 				'number',
 				'pType',
 				'requirement',
+				'city',
+				'userCategory',
+				'propertyRequirements',
 			];
 			const keyss = Object.keys(input) as Array<
 				keyof ILead | keyof IClientRequirementState
@@ -176,7 +187,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 				message: 'Lead Updated successfully',
 				severity: 'success',
 			});
-			history.push('/leads');
+			history.push('/');
 		} catch (err: any) {
 			console.log(err);
 			setLoading(false);
@@ -199,26 +210,136 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 					validationSchema={validationSchema}
 					enableReinitialize
 				>
-					{() => (
+					{({ values, setFieldValue }) => (
 						<Form>
 							<Grid container spacing={1}>
-								<Grid item xs={12} md={4}>
+								<Grid item xs={12} md={6}>
+									<FSelect
+										name={'userCategory'}
+										label="Category"
+									>
+										<MenuItem
+											value={LeadUserCategory.Tenant}
+										>
+											Tenant
+										</MenuItem>
+										<MenuItem
+											value={LeadUserCategory.Buyer}
+										>
+											Buyer
+										</MenuItem>
+
+										<MenuItem
+											value={LeadUserCategory.Owner}
+										>
+											Owner
+										</MenuItem>
+										<MenuItem
+											value={LeadUserCategory.Realtor}
+										>
+											Realtor
+										</MenuItem>
+										<MenuItem
+											value={LeadUserCategory.Builder}
+										>
+											Builder
+										</MenuItem>
+
+										<MenuItem
+											value={LeadUserCategory.Unknown}
+										>
+											Unknown
+										</MenuItem>
+									</FSelect>
+								</Grid>
+								<Grid item xs={12} md={6}>
 									<FTextField name={'name'} label="Name" />
 								</Grid>
-								<Grid item xs={12} md={4}>
+								<Grid item xs={12} md={6}>
 									<FTextField name={'email'} label="Email" />
 								</Grid>
-								<Grid item xs={12} md={4}>
+								<Grid item xs={12} md={6}>
 									<FTextField
 										name={'number'}
 										label="Phone Number"
 									/>
 								</Grid>
-								<Grid item xs={12} md={8}>
+								<Grid item xs={12} md={6}>
+									<SearchCity
+										value={values.city as null | City}
+										onSelect={(val) => {
+											setFieldValue('city', val);
+										}}
+									/>
+								</Grid>
+								<Grid item xs={12} md={6}>
 									<FTextField
 										name={'preferedLocation'}
 										label="Prefered Location"
 									/>
+								</Grid>
+								<Grid item xs={12}>
+									<Typography variant="caption">
+										Property Types
+									</Typography>
+									<Grid container spacing={1}>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="propertyRequirements"
+												value={'Flat'}
+												label="Flat"
+											/>
+										</Grid>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="propertyRequirements"
+												value={'Duplex'}
+												label="Duplex"
+											/>
+										</Grid>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="propertyRequirements"
+												value={'1BHK'}
+												label="1BHK"
+											/>
+										</Grid>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="propertyRequirements"
+												value={'2BHK'}
+												label="2BHK"
+											/>
+										</Grid>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="propertyRequirements"
+												value={'3BHK'}
+												label="3BHK"
+											/>
+										</Grid>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="propertyRequirements"
+												value={'4BHK'}
+												label="4BHK"
+											/>
+										</Grid>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="propertyRequirements"
+												value={'Fully Furnished'}
+												label="Fully Furnished"
+											/>
+										</Grid>
+									</Grid>
 								</Grid>
 
 								<Grid item xs={12}>

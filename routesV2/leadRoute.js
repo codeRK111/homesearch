@@ -2,6 +2,7 @@ const express = require('express');
 const leadController = require('../controllersV2/leadsController');
 const uploadController = require('../controllersV2/fileUploadController');
 const authController = require('../controllers/adminController');
+const authControllerV2 = require('../controllersV2/adminController');
 
 const router = express.Router();
 
@@ -29,7 +30,12 @@ router
 router
 	.route('/:id')
 	.get(authController.protect, leadController.getLeadDetails)
-	.patch(authController.protect, leadController.updateLead);
+	.patch(authController.protect, leadController.updateLead)
+	.delete(
+		authController.protect,
+		authControllerV2.restrictAdminTo('gm'),
+		leadController.deleteLead
+	);
 router
 	.route('/')
 	.post(

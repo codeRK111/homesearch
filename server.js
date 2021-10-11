@@ -8,7 +8,6 @@ const moment = require('moment');
 // HANDLE GLOBAL UNHANDLED EXCEPTION
 process.on('uncaughtException', (error) => {
 	console.log('UNHANDLED REJECTION');
-	console.log(error.name, error.message);
 	process.exit(1);
 });
 

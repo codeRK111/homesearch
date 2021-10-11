@@ -6,8 +6,9 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(2),
 		boxSizing: 'border-box',
 		[theme.breakpoints.down('sm')]: {
-			width: '80%',
-			padding: theme.spacing(1),
+			width: '90%',
+
+			padding: '0.3rem',
 		},
 	},
 	selectedRoute: {

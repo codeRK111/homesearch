@@ -3,25 +3,30 @@ import {
 	Box,
 	CircularProgress,
 	Divider,
+	FormControlLabel,
 	IconButton,
 	List,
 	ListItem,
 	ListItemAvatar,
 	ListItemText,
+	Switch,
 	TextField,
 	Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
+import { UpdateLeadData, asyncUpdateLead } from '../../API/lead';
 import { parseDate, renderStaffRole } from '../../utils/render';
 
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
+import DateTimePickerComponent from '../Pickers/dateTime';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import Grid from '@material-ui/core/Grid';
 import { LeadComment } from '../../model/lead.interface';
 import Paper from '@material-ui/core/Paper';
-import { asyncUpdateLead } from '../../API/lead';
+import { StaffType } from '../../model/staff.interface';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 interface ILeadsComments {
 	open: boolean;
@@ -41,9 +46,19 @@ export default function LeadsComments({
 	fetchLeads,
 }: ILeadsComments) {
 	const descriptionElementRef = React.useRef<HTMLElement>(null);
-
+	const { user } = useTypedSelector((state) => state.auth);
 	const [message, setMessage] = useState('');
+	const [date, setDate] = useState<null | Date>(new Date());
+	const [reschdule, setReschdule] = useState(false);
 	const [loading, setLoading] = useState(false);
+
+	const manageReschdule = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setReschdule(event.target.checked);
+	};
+
+	const manageDate = (value: Date | null) => {
+		setDate(value);
+	};
 	React.useEffect(() => {
 		if (open) {
 			const { current: descriptionElement } = descriptionElementRef;
@@ -56,9 +71,15 @@ export default function LeadsComments({
 	const onSubmit = async () => {
 		if (!id) return;
 		if (!message) return;
+		const info: UpdateLeadData = { message, number };
+		if (reschdule) {
+			info['reschedule'] = date;
+		} else {
+			info['reschedule'] = undefined;
+		}
 		try {
 			setLoading(true);
-			await asyncUpdateLead(id, { message, number });
+			await asyncUpdateLead(id, info);
 			setLoading(false);
 			fetchLeads();
 			setMessage('');
@@ -103,6 +124,21 @@ export default function LeadsComments({
 														{parseDate(c.date)}
 													</Typography>{' '}
 													<br />
+													{user &&
+														(user.id ===
+															c.from.id ||
+															user.type ===
+																StaffType.GM) &&
+														c.reschedule && (
+															<Typography variant="caption">
+																Reschedule on{' '}
+																<b>
+																	{parseDate(
+																		c.reschedule
+																	)}
+																</b>{' '}
+															</Typography>
+														)}
 													<Box p="0.3rem">
 														<Divider />
 													</Box>
@@ -152,6 +188,29 @@ export default function LeadsComments({
 				<DialogContent dividers={true}>
 					{comments && renderComments()}
 				</DialogContent>
+				<Box pl="1rem">
+					<FormControlLabel
+						control={
+							<Switch
+								checked={reschdule}
+								onChange={manageReschdule}
+								name="checkedB"
+								color="primary"
+							/>
+						}
+						label="Reschedule"
+					/>
+				</Box>
+				{reschdule && (
+					<Box p="1rem">
+						<DateTimePickerComponent
+							label="Choose reschedule date and time"
+							handleDateChange={manageDate}
+							date={date}
+						/>
+					</Box>
+				)}
+
 				<Box p="1rem" display="flex">
 					<Box width="100%">
 						<TextField

@@ -23,6 +23,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { asyncFetchAdmins } from '../../API/auth';
+import { renderStaffRole } from '../../utils/render';
 
 export interface IClientRequirement extends IClientRequirementState {
 	setRequirement: (type: ClientRequirementType) => void;
@@ -83,7 +84,11 @@ export default function ClientRequirement({
 				setBdmLoading(true);
 				const resp = await asyncFetchAdmins({
 					status: 'active',
-					types: [StaffType.BDM, StaffType.AssistantSalesManager],
+					types: [
+						StaffType.BDM,
+						StaffType.AssistantSalesManager,
+						StaffType.SalesExecutive,
+					],
 				});
 				setBdmLoading(false);
 				setData(resp);
@@ -244,6 +249,18 @@ export default function ClientRequirement({
 						control={<Radio />}
 						label="Forward"
 					/>
+					<FormControlLabel
+						value="notInterested"
+						control={<Radio />}
+						label="Not Interested"
+					/>
+					{requirement === 'hvp' && (
+						<FormControlLabel
+							value="post"
+							control={<Radio />}
+							label="Post Requirement"
+						/>
+					)}
 				</RadioGroup>
 			</FormControl>
 			{action === 'hold' && (
@@ -274,7 +291,8 @@ export default function ClientRequirement({
 								<MenuItem value="">None</MenuItem>
 								{data.admins.map((c) => (
 									<MenuItem key={c.id} value={c.id}>
-										{c.name}
+										{c.name} -{' '}
+										<b>{renderStaffRole(c.type)}</b>
 									</MenuItem>
 								))}
 							</Select>

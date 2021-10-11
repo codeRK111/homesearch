@@ -211,6 +211,8 @@ const adminSchema = new Schema(
 		],
 
 		passwordChangedAt: Date,
+		lastLogin: Date,
+
 		// passwordResetToken: String,
 		// passwordResetTokenExipersAt: Date,
 	},

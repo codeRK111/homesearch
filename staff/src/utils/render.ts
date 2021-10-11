@@ -10,6 +10,11 @@ export const renderCellData = (value: any) => {
 export const isToday = (date: any) => {
 	return dayjs().isSame(dayjs.unix(Date.parse(date) / 1000), 'day');
 };
+export const isReschedule = (date: any, days = 2) => {
+	if (!date) return false;
+	const before2Day = dayjs(date).subtract(days, 'd');
+	return before2Day.isBefore(dayjs());
+};
 
 export const parseDate = (date: Date | undefined) => {
 	if (!date) {

@@ -143,6 +143,9 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	if (req.body.userCategory) {
 		filter.userCategory = req.body.userCategory;
 	}
+	if (req.body.city) {
+		filter.city = req.body.city;
+	}
 	if (req.body.timeInterval) {
 		switch (req.body.timeInterval) {
 			case 'today':
@@ -162,7 +165,7 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 				};
 				break;
 			case 'lastWeek':
-				var start = moment().startOf('week'); // set to 12:00 am yesterday
+				var start = moment().add(-7, 'days'); // set to 12:00 am yesterday
 
 				filter.createdAt = {
 					$gte: start,
@@ -347,6 +350,15 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 	if (req.body.number) {
 		data.number = req.body.number;
 	}
+	if (req.body.city) {
+		data.city = req.body.city;
+	}
+	if (req.body.userCategory) {
+		data.userCategory = req.body.userCategory;
+	}
+	if (req.body.propertyRequirements) {
+		data.propertyRequirements = req.body.propertyRequirements;
+	}
 	if (req.body.message) {
 		data['$push'] = {
 			comments: {
@@ -355,6 +367,9 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 						from: req.admin.id,
 						message: req.body.message,
 						date: Date.now(),
+						reschedule: req.body.reschedule
+							? req.body.reschedule
+							: undefined,
 					},
 				],
 				$sort: { date: -1 },
@@ -373,6 +388,7 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 	if (req.body.pType) {
 		data.pType = req.body.pType;
 	}
+
 	if (req.body.minPrice !== null || req.body.minPrice !== undefined) {
 		data.minPrice = req.body.minPrice;
 	}
@@ -385,17 +401,29 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 			return next(new AppError('Hold date not found'));
 		data.holdDate = req.body.holdDate;
 		data.stage = 2;
+		data.bdm = undefined;
+		data.executive = undefined;
 	}
 
-	if (req.body.bdm) {
-		if (data.holdDate) {
-			data.holdDate = null;
-		}
-
-		data.bdm = req.body.bdm;
+	const saleTypes = ['bdm', 'assistantSalesManager'];
+	if (req.body.staffType === 'salesExecutive') {
+		data.executive = req.body.staffId;
+		data.stage = 4;
+		data.saleExecutiveAssignedAt = Date.now();
+	} else if (saleTypes.includes(req.body.staffType)) {
+		data.saleStaffType = req.body.staffType;
+		data.bdm = req.body.staffId;
 		data.stage = 3;
+		data.saleAssignedAt = Date.now();
 	}
-	data.responseBy = req.admin.id;
+
+	if (req.body.notInterested) {
+		data.notInterested = req.body.notInterested;
+		data.stage = 0;
+	}
+	if (req.body.postProperty) {
+		data.stage = 9;
+	}
 
 	const lead = await Leads.findByIdAndUpdate(req.params.id, data, {
 		new: true,
@@ -423,7 +451,7 @@ exports.assignSupport = catchAsync(async (req, res, next) => {
 	if (!req.body.staffType) {
 		return next(new AppError('Staff role required'));
 	}
-	const saleTypes = ['bdm', 'assistantSalesManager', 'salesExecutive'];
+	const saleTypes = ['bdm', 'assistantSalesManager'];
 	const dataToUpdate = {
 		attended: true,
 	};
@@ -471,9 +499,8 @@ exports.countLeads = catchAsync(async (req, res, next) => {
 			filterByRole.stage = 3;
 			filterByRole.saleStaffType = 'assistantSalesManager';
 		} else if (req.admin.type === 'salesExecutive') {
-			filterByRole.bdm = mongoose.Types.ObjectId(req.admin.id);
-			filterByRole.stage = 3;
-			filterByRole.saleStaffType = 'salesExecutive';
+			filterByRole.executive = mongoose.Types.ObjectId(req.admin.id);
+			filterByRole.stage = 4;
 		}
 	}
 
@@ -543,5 +570,14 @@ exports.countLeads = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: counts,
+	});
+});
+
+exports.deleteLead = catchAsync(async (req, res, next) => {
+	const lead = await Leads.findByIdAndDelete(req.params.id);
+
+	res.status(200).json({
+		status: 'success',
+		data: lead,
 	});
 });
