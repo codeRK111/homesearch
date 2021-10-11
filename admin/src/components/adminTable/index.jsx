@@ -1,20 +1,21 @@
 import { Box, IconButton } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
+import React, { useState } from "react";
+import { capitalizeFirstLetter, hsiID } from "../../utils/render.utils";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+
+import AddUserDialog from "../addUserDialog";
+import EditIcon from "@material-ui/icons/Edit";
+import Paper from "@material-ui/core/Paper";
+import Skeleton from "@material-ui/lab/Skeleton";
+import StatusSwitch from "./statusSwitch";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import EditIcon from "@material-ui/icons/Edit";
-import Skeleton from "@material-ui/lab/Skeleton";
 import moment from "moment";
-import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { capitalizeFirstLetter, hsiID } from "../../utils/render.utils";
-import AddUserDialog from "../addUserDialog";
-import StatusSwitch from "./statusSwitch";
 
 // import EditIcon from '@material-ui/icons/Edit';
 
@@ -22,13 +23,19 @@ export const parseDate = (date) => {
     const m = moment(date);
     return m.format("Do MMM YYYY");
 };
+export const parseDateStrict = (date) => {
+    if (!date) return "-";
+    const m = moment(date);
+    return m.format("Do MMM YYYY  hh:mm a");
+};
 const StyledTableCell = withStyles((theme) => ({
     head: {
         backgroundColor: theme.palette.common.black,
         color: theme.palette.common.white,
+        fontSize: 13,
     },
     body: {
-        fontSize: 14,
+        fontSize: 13,
     },
 }))(TableCell);
 
@@ -99,6 +106,7 @@ function UserTable({ loading, users, fetchUsers }) {
                                 <StyledTableCell>Lead Target</StyledTableCell>
                                 <StyledTableCell>Deal Target</StyledTableCell>
                                 <StyledTableCell>Created</StyledTableCell>
+                                <StyledTableCell>Last Login</StyledTableCell>
                                 <StyledTableCell>Status</StyledTableCell>
                                 <StyledTableCell>Update</StyledTableCell>
                                 {/* <StyledTableCell align="center">
@@ -140,6 +148,9 @@ function UserTable({ loading, users, fetchUsers }) {
                                     </StyledTableCell>
                                     <StyledTableCell>
                                         {parseDate(row.createdAt)}
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        {parseDateStrict(row.lastLogin)}
                                     </StyledTableCell>
 
                                     <StyledTableCell>
