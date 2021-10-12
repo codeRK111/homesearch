@@ -53,6 +53,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 	const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
 	const [staffs, setStaffs] = useState<IStaff[]>([]);
 	const [staff, setStaff] = useState('');
+	const [number, setNumber] = useState('');
 	const [data, setData] = useState<FetchMyLeadsResponseData>({
 		totalDocs: 0,
 		leads: [],
@@ -150,6 +151,9 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			if (showHolds) {
 				filter.stage = 2;
 			}
+			if (number) {
+				filter.number = number;
+			}
 			if (showNewLeads) {
 				filter.stage = 0;
 			}
@@ -185,6 +189,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 		leadStatus,
 		timeInterval,
 		city,
+		number,
 	]);
 	useEffect(() => {
 		setPage(1);
@@ -196,6 +201,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 		leadStatus,
 		timeInterval,
 		city,
+		number,
 	]);
 	useEffect(() => {
 		fetchLeads();
@@ -286,6 +292,8 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 				setTimeInterval={setTimeInterval}
 				city={city}
 				setCity={setCity}
+				number={number}
+				setNumber={setNumber}
 			/>
 			<p>
 				<b>{data.totalDocs}</b> leads found

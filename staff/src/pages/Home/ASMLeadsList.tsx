@@ -5,8 +5,9 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Box } from '@material-ui/core';
+import { City } from '../../model/city.interface';
+import FilterLeads from './filterLeads';
 import LeadsASMTable from '../../components/Table/leads/asm';
-import LeadsTab from '../../components/Tab/leadFilter';
 import TablePagination from '../../components/Table/pagination';
 import { asyncFetchMyLeads } from '../../API/lead';
 
@@ -23,6 +24,8 @@ const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		totalDocs: 0,
 		leads: [],
 	});
+	const [city, setCity] = useState<City | null>(null);
+	const [number, setNumber] = useState('');
 
 	// Callback
 	const handlePage = (
@@ -44,6 +47,10 @@ const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 			if (timeInterval) {
 				filter.timeInterval = timeInterval;
 			}
+			filter.city = city?.id;
+			if (number) {
+				filter.number = number;
+			}
 			const resp = await asyncFetchMyLeads(filter);
 			setData(resp);
 			setLoading(false);
@@ -55,10 +62,10 @@ const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 			});
 			setLoading(false);
 		}
-	}, [page, limit, userCategory, timeInterval]);
+	}, [page, limit, userCategory, timeInterval, city, number]);
 	useEffect(() => {
 		setPage(1);
-	}, [limit, userCategory, timeInterval]);
+	}, [limit, userCategory, timeInterval, city, number]);
 	useEffect(() => {
 		fetchLeads();
 	}, [fetchLeads]);
@@ -66,7 +73,13 @@ const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	return (
 		<Box mt="1rem">
 			<Box mb="1rem">
-				<LeadsTab setTimeInterval={setTimeInterval} />
+				<FilterLeads
+					setTimeInterval={setTimeInterval}
+					city={city}
+					setCity={setCity}
+					number={number}
+					setNumber={setNumber}
+				/>
 			</Box>
 			<p>
 				<b>{data.totalDocs}</b> leads found

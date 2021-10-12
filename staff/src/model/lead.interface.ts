@@ -67,6 +67,7 @@ export type FetchLeadsInputType = {
 	page: number;
 	stage?: number;
 	city?: string;
+	number?: string;
 };
 export type FetchMyLeadsResponseData = {
 	leads: ILead[];

@@ -143,6 +143,12 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	if (req.body.userCategory) {
 		filter.userCategory = req.body.userCategory;
 	}
+	if (req.body.number) {
+		filter.number = {
+			$regex: req.body.number,
+			$options: 'i',
+		};
+	}
 	if (req.body.city) {
 		filter.city = req.body.city;
 	}
