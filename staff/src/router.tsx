@@ -6,6 +6,7 @@ import AddBlogPage from './pages/AddBlog';
 import AddLeadPage from './pages/AddLead';
 import AddPropertyPage from './pages/AddProperty';
 import BlogsPage from './pages/BlogList';
+import BrowsePropertiesPage from './pages/BrowseProperties';
 import HomePage from './pages/Home';
 import LeadStrategyPage from './pages/LeadStrategy';
 import Loader from './components/Loader';
@@ -102,6 +103,11 @@ const Router = () => {
 					path={'/manage-lead/:id'}
 					exact
 					component={ManageLeadPage}
+				/>
+				<PrivateRoute
+					path={'/browse-properties'}
+					exact
+					component={BrowsePropertiesPage}
 				/>
 			</Switch>
 		</HashRouter>

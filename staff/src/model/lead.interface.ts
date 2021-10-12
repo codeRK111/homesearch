@@ -54,6 +54,8 @@ export interface ILead {
 	userCategory?: LeadUserCategory;
 	propertyRequirements?: string[];
 	saleStaffType?: StaffType;
+	notInterested?: boolean;
+	postProperty?: boolean;
 }
 
 export type FetchLeadsInputType = {

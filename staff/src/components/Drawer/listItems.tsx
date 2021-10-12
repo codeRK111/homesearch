@@ -1,6 +1,8 @@
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
 
+import AddIcon from '@material-ui/icons/Add';
+import ApartmentIcon from '@material-ui/icons/Apartment';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import HomeIcon from '@material-ui/icons/Home';
 import ListAltIcon from '@material-ui/icons/ListAlt';
@@ -8,6 +10,7 @@ import ListDropDown from '../ListCollapse';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import RenderByMultipleRole from '../RenderByRole/multiple';
 import RenderByRole from '../RenderByRole';
+import SearchIcon from '@material-ui/icons/Search';
 import { StaffType } from '../../model/staff.interface';
 import clsx from 'clsx';
 import { useHistory } from 'react-router';
@@ -23,6 +26,7 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 
 	// State
 	const [propertyOpen, setPropertyOpen] = useState(false);
+	const [blogOpen, setBlogOpen] = useState(false);
 
 	// Callbacks
 	const changeRoute = (path: string) => () => {
@@ -69,6 +73,21 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 				</ListItem>
 				<ListItem
 					button
+					onClick={changeRoute('/browse-properties')}
+					className={clsx(manageSelectedStyle('/browse-properties'))}
+				>
+					<ListItemIcon>
+						<SearchIcon
+							color="primary"
+							className={clsx(
+								manageSelectedStyleIcon('/browse-properties')
+							)}
+						/>
+					</ListItemIcon>
+					<ListItemText primary={'Browse Properties'} />
+				</ListItem>
+				<ListItem
+					button
 					onClick={changeRoute('/posted-leads')}
 					className={clsx(manageSelectedStyle('/posted-leads'))}
 				>
@@ -105,8 +124,8 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 				</RenderByMultipleRole>
 				<RenderByRole type={StaffType.GM}>
 					<ListDropDown
-						open={propertyOpen}
-						toggle={setPropertyOpen}
+						open={blogOpen}
+						toggle={setBlogOpen}
 						Icon={ChromeReaderModeIcon}
 						label={'Manage Blog'}
 					>
@@ -148,9 +167,9 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 						</ListItem>
 					</ListDropDown>
 				</RenderByRole>
-				{/* <ListDropDown
-					open={blogOpen}
-					toggle={setBlogOpen}
+				<ListDropDown
+					open={propertyOpen}
+					toggle={setPropertyOpen}
 					Icon={ApartmentIcon}
 					label={'Manage Property'}
 				>
@@ -163,7 +182,7 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 						)}
 					>
 						<ListItemIcon>
-							<ListAltIcon
+							<AddIcon
 								color="primary"
 								className={clsx(
 									manageSelectedStyleIcon(
@@ -172,9 +191,29 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 								)}
 							/>
 						</ListItemIcon>
-						<ListItemText primary={'Add Property Rent'} />
+						<ListItemText primary={'Add Property For Rent'} />
 					</ListItem>
-				</ListDropDown> */}
+					<ListItem
+						button
+						onClick={changeRoute('/add-property/sale')}
+						className={clsx(
+							manageSelectedStyle('/add-property/sale'),
+							style.nested
+						)}
+					>
+						<ListItemIcon>
+							<AddIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon(
+										'/add-property/sale'
+									)
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Add Property For Sale'} />
+					</ListItem>
+				</ListDropDown>
 			</List>
 		</div>
 	);

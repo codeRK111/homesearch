@@ -410,11 +410,15 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 		data.executive = req.body.staffId;
 		data.stage = 4;
 		data.saleExecutiveAssignedAt = Date.now();
+		data.notInterested = false;
+		data.holdDate = null;
 	} else if (saleTypes.includes(req.body.staffType)) {
 		data.saleStaffType = req.body.staffType;
 		data.bdm = req.body.staffId;
 		data.stage = 3;
 		data.saleAssignedAt = Date.now();
+		data.notInterested = false;
+		data.holdDate = null;
 	}
 
 	if (req.body.notInterested) {
@@ -423,6 +427,7 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 	}
 	if (req.body.postProperty) {
 		data.stage = 9;
+		data.notInterested = false;
 	}
 
 	const lead = await Leads.findByIdAndUpdate(req.params.id, data, {
@@ -579,5 +584,50 @@ exports.deleteLead = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: lead,
+	});
+});
+
+exports.browseLeads = catchAsync(async (req, res, next) => {
+	const filter = {};
+	const page = req.body.page * 1 || 1;
+	const limit = req.body.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	filter.status = 'active';
+	filter.userCategory = { $in: ['owner', 'builder'] };
+
+	if (req.body.userCategory) {
+		filter.userCategory = req.body.userCategory;
+	}
+	if (req.body.location) {
+		filter.preferedLocation = {
+			$regex: req.body.location,
+			$options: 'i',
+		};
+	}
+
+	if (req.body.city) {
+		filter.city = req.body.city;
+	}
+	if (
+		req.body.propertyRequirements &&
+		req.body.propertyRequirements.length > 0
+	) {
+		filter.propertyRequirements = {
+			$all: req.body.propertyRequirements,
+		};
+	}
+
+	// console.log(req.admin);
+	// console.log(filter);
+	const totalDocs = await Leads.countDocuments(filter);
+
+	const leads = await Leads.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+	res.status(200).json({
+		status: 'success',
+		data: { leads, totalDocs },
 	});
 });

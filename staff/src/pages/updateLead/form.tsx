@@ -39,7 +39,27 @@ export interface IClientRequirementState {
 	holdDate?: Date;
 	pickerDate: Date | null;
 	bdm: string | IStaff | null;
+	staffId?: string;
+	staffType?: string;
+	notInterested?: boolean;
+	postProperty?: boolean;
 }
+
+const renderAction = (lead: ILead): string => {
+	if (lead.stage === 2 && !lead.notInterested) {
+		return 'hold';
+	} else if (
+		(lead.stage === 3 || lead.stage === 4) &&
+		!lead.notInterested &&
+		!lead.postProperty
+	) {
+		return 'forward';
+	} else if (lead.stage === 0 && lead.notInterested) {
+		return 'notInterested';
+	} else {
+		return 'postProperty';
+	}
+};
 
 const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 	const history = useHistory();
@@ -66,12 +86,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 			pType: initialValues.pType ? initialValues.pType : Ptype.Apartment,
 			minPrice: initialValues.minPrice ? initialValues.minPrice : '',
 			maxPrice: initialValues.maxPrice ? initialValues.maxPrice : '',
-			action:
-				initialValues.stage === 2
-					? 'hold'
-					: initialValues.stage === 3
-					? 'forward'
-					: '',
+			action: renderAction(initialValues),
 			pickerDate: initialValues.holdDate
 				? initialValues.holdDate
 				: new Date(),
@@ -88,10 +103,17 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 			requirement: value,
 		}));
 	};
+	const manageStaffType = (value: string) => {
+		setRequirement((prevState) => ({
+			...prevState,
+			staffType: value,
+		}));
+	};
 	const manageBDM = (value: string) => {
 		setRequirement((prevState) => ({
 			...prevState,
 			bdm: value,
+			staffId: value,
 		}));
 	};
 	const manageHoldDate = (value: Date | null) => {
@@ -138,6 +160,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 			if (input.city) {
 				input.city = (input.city as City).id;
 			}
+			console.log(input.action);
 			if (input.action === 'hold') {
 				if (clientRequirement.pickerDate) {
 					input.hold = true;
@@ -146,10 +169,49 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 				if (input.bdm) {
 					input.bdm = null;
 				}
+				if (input.postProperty) {
+					delete input.postProperty;
+				}
+				if (input.staffType) {
+					delete input.staffType;
+				}
+				if (input.notInterested) {
+					delete input.notInterested;
+				}
+			} else if (input.action === 'notInterested') {
+				input.hold = false;
+				if (input.holdDate) {
+					delete input.holdDate;
+				}
+				if (input.postProperty) {
+					delete input.postProperty;
+				}
+				if (input.staffType) {
+					delete input.staffType;
+				}
+				input.notInterested = true;
+			} else if (input.action === 'postProperty') {
+				input.hold = false;
+				if (input.holdDate) {
+					delete input.holdDate;
+				}
+				if (input.notInterested) {
+					delete input.notInterested;
+				}
+				if (input.staffType) {
+					delete input.staffType;
+				}
+				input.postProperty = true;
 			} else {
 				input.hold = false;
 				if (input.holdDate) {
 					delete input.holdDate;
+				}
+				if (input.postProperty) {
+					delete input.postProperty;
+				}
+				if (input.notInterested) {
+					delete input.notInterested;
 				}
 			}
 			const requiredFields: Array<
@@ -170,6 +232,10 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 				'city',
 				'userCategory',
 				'propertyRequirements',
+				'notInterested',
+				'postProperty',
+				'staffType',
+				'staffId',
 			];
 			const keyss = Object.keys(input) as Array<
 				keyof ILead | keyof IClientRequirementState
@@ -352,6 +418,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 										setCategory={manageCategory}
 										setPType={managePtype}
 										setHoldDate={manageHoldDate}
+										manageStaffType={manageStaffType}
 										{...clientRequirement}
 									/>
 								</Grid>

@@ -2,35 +2,37 @@
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { City } from '../../model/city.interface';
+import { Location } from '../../model/location.interface';
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import { asyncSearchCity } from '../../API/city';
+import { asyncSearchLocation } from '../../API/city';
 
-interface ISearchCity {
-	onSelect: (city: City | null) => void;
-	value: City | null;
+interface ISearchLocation {
+	city: string;
+	onSelect: (city: Location | null) => void;
+	value: Location | null;
 	label?: string;
 	error?: string;
 }
 
-export default function SearchCity({
+export default function SearchLocation({
 	label = 'Enter City Name',
 	onSelect,
 	value,
+	city,
 	error,
-}: ISearchCity) {
+}: ISearchLocation) {
 	const [open, setOpen] = React.useState(false);
 	const [placeName, setPlaceName] = React.useState('');
-	const [options, setOptions] = React.useState<City[]>([]);
+	const [options, setOptions] = React.useState<Location[]>([]);
 	const [loading, setLoading] = React.useState(false);
 
 	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
 		setPlaceName(value);
-		if (value.length === 2 || value.length >= 4) {
+		if ((value.length === 2 || value.length >= 4) && city) {
 			setLoading(true);
-			asyncSearchCity(value)
+			asyncSearchLocation(value, city)
 				.then((resp) => {
 					setLoading(false);
 					setOptions(resp);

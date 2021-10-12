@@ -34,6 +34,7 @@ export interface IClientRequirement extends IClientRequirementState {
 	setHoldDate: (date: Date | null) => void;
 	setAction: (action: string) => void;
 	setBDM: (bdm: string) => void;
+	manageStaffType: (bdm: string) => void;
 }
 
 export default function ClientRequirement({
@@ -53,6 +54,7 @@ export default function ClientRequirement({
 	setAction,
 	setBDM,
 	bdm,
+	manageStaffType,
 }: IClientRequirement) {
 	const [bdmLoading, setBdmLoading] = useState(false);
 	const [data, setData] = useState<FetchAdminResponse>({
@@ -256,7 +258,7 @@ export default function ClientRequirement({
 					/>
 					{requirement === 'hvp' && (
 						<FormControlLabel
-							value="post"
+							value="postProperty"
 							control={<Radio />}
 							label="Post Requirement"
 						/>
@@ -286,6 +288,11 @@ export default function ClientRequirement({
 								value={bdm}
 								onChange={(e) => {
 									setBDM(e.target.value as string);
+									manageStaffType(
+										data.admins.find(
+											(c) => c.id === e.target.value
+										)?.type as string
+									);
 								}}
 							>
 								<MenuItem value="">None</MenuItem>
