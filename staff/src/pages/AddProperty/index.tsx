@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import AddPropertyRent from './Rent';
+import AddPropertySale from './Sale';
 import AddUserDialog from '../../components/Dialogs/addUser';
 import { RouteComponentProps } from 'react-router';
 import useStyles from './addProperty.style';
@@ -32,9 +33,9 @@ const AddPropertyPage: React.FC<IAddPropertyPage> = ({
 			{(() => {
 				switch (pType) {
 					case 'rent':
-					case 'sale':
 						return <AddPropertyRent />;
-
+					case 'sale':
+						return <AddPropertySale />;
 					default:
 						break;
 				}

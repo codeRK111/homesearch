@@ -12,6 +12,7 @@ import LeadStrategyPage from './pages/LeadStrategy';
 import Loader from './components/Loader';
 import LoginPage from './pages/Login';
 import ManageLeadPage from './pages/ManageLead';
+import ManageLeadsPage from './pages/ManageProperty';
 import NavBar from './components/NavBar';
 import PostedLeadsPage from './pages/PostedLeads';
 import PrivateRoute from './components/ProtectedRoute';
@@ -73,6 +74,12 @@ const Router = () => {
 				<PrivateRoute
 					path={'/add-property/:pType'}
 					component={AddPropertyPage}
+				>
+					{/* <ViewLeadsPage /> */}
+				</PrivateRoute>
+				<PrivateRoute
+					path={'/manage-property/:pType'}
+					component={ManageLeadsPage}
 				>
 					{/* <ViewLeadsPage /> */}
 				</PrivateRoute>

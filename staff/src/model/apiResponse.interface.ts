@@ -1,6 +1,7 @@
 export interface ServerResponse<T> {
 	status: 'success' | 'fail';
 	token?: string;
+	count?: number;
 	data: T;
 }
 export interface DashboardData {

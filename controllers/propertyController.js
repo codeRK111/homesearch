@@ -777,16 +777,10 @@ exports.addPropertyForSale = catchAsync(async (req, res, next) => {
 
 exports.getProperties = catchAsync(async (req, res, next) => {
 	let query = { ...req.query };
-	console.log(req.admin.id);
 	const admin = await Admin.findById(req.admin.id);
-	console.log(admin);
 	const cities = admin.propertyAccessCities.map((c) =>
 		mongoose.Types.ObjectId(c.id)
 	);
-	if (admin.type !== 'super-admin') {
-		query['city'] = { $in: cities };
-		query['for'] = { $in: admin.propertyAccess };
-	}
 
 	console.log(query);
 	const page = query.page * 1 || 1;

@@ -22,6 +22,7 @@ export enum V2EndPoint {
 export enum V1EndPoint {
 	City = '/cities',
 	Admin = '/admins',
+	Property = '/properties',
 }
 
 export const APIV1 = axios.create({

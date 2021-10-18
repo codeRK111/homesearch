@@ -10,6 +10,11 @@ router.post(
 	authController.protect,
 	propertyController.addPropertyByUserForSale
 );
+router.post(
+	'/homesearch/post-property-rent',
+	adminController.protect,
+	propertyController.addPropertyHomesearchForRent
+);
 router.get('/user/search-property', propertyController.searchProperty);
 router.post(
 	'/admin/search-by-name',

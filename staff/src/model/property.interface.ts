@@ -1,3 +1,6 @@
+import { City } from './city.interface';
+import { Location } from './location.interface';
+
 export enum Ptype {
 	Apartment = 'flat',
 	Villa = 'independenthouse',
@@ -38,7 +41,7 @@ export type PLegalClearance = {
 	name: LegalClearance;
 	label: string;
 	details: string;
-	value: string;
+	value: boolean;
 };
 
 export enum PFacing {
@@ -87,11 +90,20 @@ export enum PStatus {
 	UnderScreening = 'underScreening',
 }
 
-interface Property {
+export interface RentProperty {
+	type: Ptype;
+}
+
+export interface Property {
 	id: string;
 	for: 'rent' | 'sale';
 	title: string;
 	usp: string;
+	city: City;
+	location: Location;
+	status: PStatus;
+	createdAt: Date;
+	sale_type?: Ptype;
 }
 
 interface AddPropertyData {

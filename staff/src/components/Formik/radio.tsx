@@ -11,7 +11,7 @@ import React, { useEffect, useRef } from 'react';
 
 interface IFSelect {
 	options: Array<{
-		value: string;
+		value: any;
 		label: string;
 	}>;
 	groupLabel: string;

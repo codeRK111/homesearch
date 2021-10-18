@@ -26,6 +26,7 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 
 	// State
 	const [propertyOpen, setPropertyOpen] = useState(false);
+	const [propertySaleOpen, setPropertySaleOpen] = useState(false);
 	const [blogOpen, setBlogOpen] = useState(false);
 
 	// Callbacks
@@ -171,8 +172,28 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 					open={propertyOpen}
 					toggle={setPropertyOpen}
 					Icon={ApartmentIcon}
-					label={'Manage Property'}
+					label={'Manage Properties For Rent'}
 				>
+					<ListItem
+						button
+						onClick={changeRoute('/manage-property/rent')}
+						className={clsx(
+							manageSelectedStyle('/manage-property/rent'),
+							style.nested
+						)}
+					>
+						<ListItemIcon>
+							<ApartmentIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon(
+										'/manage-property/rent'
+									)
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Properties For Rent'} />
+					</ListItem>
 					<ListItem
 						button
 						onClick={changeRoute('/add-property/rent')}
@@ -192,6 +213,33 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 							/>
 						</ListItemIcon>
 						<ListItemText primary={'Add Property For Rent'} />
+					</ListItem>
+				</ListDropDown>
+				<ListDropDown
+					open={propertySaleOpen}
+					toggle={setPropertySaleOpen}
+					Icon={ApartmentIcon}
+					label={'Manage Properties For Sale'}
+				>
+					<ListItem
+						button
+						onClick={changeRoute('/manage-property/sale')}
+						className={clsx(
+							manageSelectedStyle('/manage-property/sale'),
+							style.nested
+						)}
+					>
+						<ListItemIcon>
+							<ApartmentIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon(
+										'/manage-property/sale'
+									)
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Properties For Sale'} />
 					</ListItem>
 					<ListItem
 						button

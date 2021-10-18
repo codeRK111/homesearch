@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
-import RentBasicInfo, { RentBasicInfoData } from './basicInfo';
+import RentBasicInfo, { SaleBasicInfoData } from './basicInfo';
 import { ResourceType, useRepositoryAction } from '../../../hooks/useAction';
 
 import AddPropertyStepper from '../stepper';
 import { Box } from '@material-ui/core';
 import { Property } from '../../../model/property.interface';
-import RentDetailsWrapper from './PropertyDetails';
 import RentImageContainer from './imageContainer';
 import { asyncAddPropertyRent } from '../../../API/property';
 
-const AddPropertyRent = () => {
+const AddPropertySale = () => {
 	const propertyId = '616d23dea771942f60db0733';
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	const [step, setStep] = useState(0);
 	const [addPropertyLoading, setAddPropertyLoading] = useState(false);
-	const [basicInfo, setBasicInfo] = useState<RentBasicInfoData | null>(null);
+	const [basicInfo, setBasicInfo] = useState<SaleBasicInfoData | null>(null);
 	const [propertyDetails, setPropertyDetails] = useState<any | null>(null);
 	const [property, setProperty] = useState<Property | null>(null);
 
 	// onSubmit
-	const onBasicSubmit = (values: RentBasicInfoData) => {
+	const onBasicSubmit = (values: SaleBasicInfoData) => {
 		setStep(step + 1);
 		setBasicInfo(values);
 	};
@@ -61,12 +60,7 @@ const AddPropertyRent = () => {
 					<RentBasicInfo onSubmit={onBasicSubmit} />;
 				</div>
 				<div style={{ display: step === 1 ? 'block' : 'none' }}>
-					<RentDetailsWrapper
-						type={basicInfo?.type}
-						onSubmit={onPropertyDetailsSubmit}
-						onBack={onBack}
-						addPropertyLoading={addPropertyLoading}
-					/>
+					<h3>Under Testing</h3>
 				</div>
 				<div style={{ display: step === 2 ? 'block' : 'none' }}>
 					<RentImageContainer
@@ -79,4 +73,4 @@ const AddPropertyRent = () => {
 	);
 };
 
-export default AddPropertyRent;
+export default AddPropertySale;

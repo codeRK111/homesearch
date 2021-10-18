@@ -1,23 +1,22 @@
 import { Box, Grid, IconButton, Typography } from '@material-ui/core';
+import TodayIcon from '@material-ui/icons/Today';
+import clsx from 'clsx';
 import { Field, Form, Formik } from 'formik';
-
-import CheckBox from '../../../../components/formik/checkbox.component';
-import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
-import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
-import Picker from '../../../../components/formik/datePickerCustom.component';
 import React from 'react';
-import Select from '../../../../components/v2/chipSelect/chipSelected.component';
+import { connect } from 'react-redux';
+import useGlobalStyles from '../../../../common.style';
+import CheckBox from '../../../../components/formik/checkbox.component';
+import Picker from '../../../../components/formik/datePickerCustom.component';
 import TextArea from '../../../../components/formik/textArea.component';
 import TextField from '../../../../components/formik/textFieldDefault.component';
-import TodayIcon from '@material-ui/icons/Today';
-import UploadPhoto from '../components/uploadPhoto';
-import clsx from 'clsx';
-import { connect } from 'react-redux';
+import Select from '../../../../components/v2/chipSelect/chipSelected.component';
+import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
+import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
 import { setSnackbar } from '../../../../redux/ui/ui.actions';
 import { toHumanReadbleString } from '../../../../utils/render.utils';
-import useGlobalStyles from '../../../../common.style';
-import useStyles from '../postPage.style';
 import { validateNumber } from '../../../../utils/validation.utils';
+import UploadPhoto from '../components/uploadPhoto';
+import useStyles from '../postPage.style';
 
 const initialValues = {
 	for: 'rent',

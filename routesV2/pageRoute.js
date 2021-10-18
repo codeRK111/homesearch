@@ -17,6 +17,11 @@ router.get(
 	pageController.getAddProjectPageInfo
 );
 router.get(
+	'/property/add-property',
+	adminController.protect,
+	pageController.getAddPropertyPageInfo
+);
+router.get(
 	'/project/add-agent',
 	adminController.protect,
 	pageController.addAgent
