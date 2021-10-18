@@ -113,33 +113,44 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	const skip = (page - 1) * limit;
 
 	filter.status = 'active';
-	if (req.admin.type === 'gm') {
-		if (req.body.status) {
-			filter.status = req.admin.status;
-		} else {
-			delete filter.status;
-		}
+
+	switch (req.admin.type) {
+		case 'gm':
+			if (req.body.status) {
+				filter.status = req.admin.status;
+			} else {
+				delete filter.status;
+			}
+			if (req.body.stage !== null && req.body.stage !== undefined) {
+				filter.stage = req.body.stage;
+			} else {
+				filter.stage = { $ne: 10 };
+			}
+			break;
+		case 'clientSupport':
+			filter.clientSupport = req.admin.id;
+			filter.status = 'active';
+			filter.stage = 1;
+			if (req.body.stage) {
+				filter.stage = req.body.stage;
+			}
+			break;
+		case 'bdm':
+		case 'assistantSalesManager':
+			filter.status = 'active';
+			filter.bdm = req.admin.id;
+			filter.stage = { $in: [3, 4] };
+			break;
+		case 'salesExecutive':
+			filter.status = 'active';
+			filter.executive = req.admin.id;
+			filter.stage = 4;
+			break;
+
+		default:
+			break;
 	}
-	if (req.admin.type === 'clientSupport') {
-		filter.clientSupport = req.admin.id;
-		filter.stage = 1;
-	}
-	if (
-		req.admin.type === 'bdm' ||
-		req.admin.type === 'assistantSalesManager'
-	) {
-		filter.bdm = req.admin.id;
-		filter.stage = { $in: [3, 4] };
-	}
-	if (req.admin.type === 'salesExecutive') {
-		filter.executive = req.admin.id;
-		filter.stage = 4;
-	}
-	if (req.body.stage !== null && req.body.stage !== undefined) {
-		filter.stage = req.body.stage;
-	} else {
-		filter.stage = { $ne: 10 };
-	}
+
 	if (req.body.userCategory) {
 		filter.userCategory = req.body.userCategory;
 	}

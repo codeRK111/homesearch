@@ -56,8 +56,10 @@ const renderAction = (lead: ILead): string => {
 		return 'forward';
 	} else if (lead.stage === 0 && lead.notInterested) {
 		return 'notInterested';
-	} else {
+	} else if (lead.stage === 9) {
 		return 'postProperty';
+	} else {
+		return '';
 	}
 };
 

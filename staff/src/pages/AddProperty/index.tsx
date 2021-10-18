@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import AddPropertyRent from './Rent';
 import AddUserDialog from '../../components/Dialogs/addUser';
 import { RouteComponentProps } from 'react-router';
-import { SpaceBetween } from '../../components/UI/Flex';
 import useStyles from './addProperty.style';
 
 type Params = {
@@ -30,17 +29,16 @@ const AddPropertyPage: React.FC<IAddPropertyPage> = ({
 	return (
 		<div className={style.wrapper}>
 			<AddUserDialog open={open} handleClose={toggleDialog(false)} />
-			<SpaceBetween>
-				{(() => {
-					switch (pType) {
-						case 'rent':
-							return <AddPropertyRent />;
+			{(() => {
+				switch (pType) {
+					case 'rent':
+					case 'sale':
+						return <AddPropertyRent />;
 
-						default:
-							break;
-					}
-				})()}
-			</SpaceBetween>
+					default:
+						break;
+				}
+			})()}
 		</div>
 	);
 };
