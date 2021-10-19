@@ -339,7 +339,7 @@ const TenantPackageConfirmationPage = ({
 														</React.Fragment>
 													) : (
 														<React.Fragment>
-															&#x20B9; 2999
+															&#x20B9; 999
 														</React.Fragment>
 													)}
 												</span>
