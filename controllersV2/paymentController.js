@@ -37,6 +37,45 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 		res.status(500).send(error);
 	}
 });
+exports.createOrderTenantPackage = catchAsync(async (req, res, next) => {
+	try {
+		const key_id =
+			process.env.NODE_ENV === 'development'
+				? process.env.RAZORPAY_KEY_ID
+				: process.env.RAZORPAY_KEY_LIVE_ID;
+		const key_secret =
+			process.env.NODE_ENV === 'development'
+				? process.env.RAZORPAY_KEY_SECRET
+				: process.env.RAZORPAY_KEY_LIVE_SECRET;
+		const instance = new Razorpay({
+			key_id,
+			key_secret,
+		});
+
+		let amount = 0;
+		if (req.body.packageName === 'b') {
+			amount = 2999 * 100;
+		} else if (req.body.packageName === 'oc') {
+			amount = 999 * 100;
+		} else {
+			return res.status(500).send('Invalid Package');
+		}
+
+		const options = {
+			amount, // amount in smallest currency unit
+			currency: 'INR',
+			receipt: nanoid(),
+		};
+
+		const order = await instance.orders.create(options);
+
+		if (!order) return res.status(500).send('Some error occured');
+
+		res.json(order);
+	} catch (error) {
+		res.status(500).send(error);
+	}
+});
 exports.success = catchAsync(async (req, res, next) => {
 	try {
 		// getting the details back from our font-end

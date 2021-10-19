@@ -55,6 +55,9 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 	const goToProfile = () => {
 		history.push('/profile');
 	};
+	const goToTenantPackages = () => {
+		history.push('/tenant-packages');
+	};
 
 	const onLogOut = () => {
 		signOut();
@@ -76,6 +79,16 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 						</span>
 					</div>
 					<div className={classes.rightSide}>
+						<Box
+							mr="1rem"
+							className={clsx(
+								classes.listButton,
+								gClasses.smHide
+							)}
+							onClick={goToTenantPackages}
+						>
+							Tenant Packages
+						</Box>
 						<div
 							className={clsx(
 								classes.listButton,

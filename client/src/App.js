@@ -33,6 +33,10 @@ const NewsPage = lazy(() => import('./pages/news'));
 const RealtorsPage = lazy(() => import('./pages/realtors'));
 // const RealtorDetailsPage = lazy(() => import('./pages/realtorDetails'));
 const NewsDetailsPage = lazy(() => import('./pages/newsDetails'));
+const TenantPackagePage = lazy(() => import('./pages/tenantPackages'));
+const TenantPackageConfirmationPage = lazy(() =>
+	import('./pages/tenantPackages/confirmation')
+);
 const SearchPageNew = lazy(() => import('./pages/v2/searchPage/search.page'));
 const PropertyDetailsPageNew = lazy(() =>
 	import('./pages/v2/propertyDetails/propertyDetails.page')
@@ -109,6 +113,18 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 							exact
 							path="/"
 							render={(props) => <HomePageNew {...props} />}
+						/>
+						<Route
+							exact
+							path="/tenant-packages"
+							render={(props) => <TenantPackagePage {...props} />}
+						/>
+						<Route
+							exact
+							path="/confirm-package/:packageName"
+							render={(props) => (
+								<TenantPackageConfirmationPage {...props} />
+							)}
 						/>
 						<Route
 							exact

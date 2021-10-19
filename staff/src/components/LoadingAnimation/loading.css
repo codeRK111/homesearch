@@ -1,0 +1,141 @@
+#loading {
+	width: 125px;
+	height: 118px;
+	position: relative;
+}
+
+#loading > #image-wrapper {
+	position: absolute;
+	z-index: 99;
+	color: black;
+	font-size: 12px;
+	font-family: 'Alegreya Sans SC', sans-serif;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/* display: flex;
+	justify-content: center;
+	align-items: center; */
+	animation: dots 2s steps(2) linear infinite;
+	-webkit-animation: dots 2s steps(2) infinite;
+	-moz-animation: dots 2s steps(2) linear infinite;
+	-o-animation: dots 2s steps(2) linear infinite;
+}
+
+/* @keyframes dots {
+	0% {
+		width: 22px;
+	}
+	50% {
+		width: 30px;
+	}
+	100% {
+		width: 40px;
+	}
+}
+@-webkit-keyframes dots {
+	0% {
+		width: 22px;
+	}
+	50% {
+		width: 30px;
+	}
+	100% {
+		width: 40px;
+	}
+}
+@-moz-keyframes dots {
+	0% {
+		width: 22px;
+	}
+	50% {
+		width: 30px;
+	}
+	100% {
+		width: 40px;
+	}
+}
+@-o-keyframes dots {
+	0% {
+		width: 22px;
+	}
+	50% {
+		width: 30px;
+	}
+	100% {
+		width: 40px;
+	}
+} */
+
+#loading > #animate {
+	height: 100%;
+	margin: 10% auto;
+	background: #ffffff;
+	border-right: 7px solid #2aaaac;
+	border-bottom: 7px solid transparent;
+	border-radius: 100%;
+	animation: spin 0.9s linear infinite;
+	-webkit-animation: spin 0.9s linear infinite;
+	-moz-animation: spin 0.9s linear infinite;
+	-o-animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+		border-right-color: #2aaaac;
+	}
+	50% {
+		transform: rotate(180deg);
+		border-right-color: #2aaaac;
+	}
+	100% {
+		transform: rotate(359deg);
+		border-right-color: #2aaaac;
+	}
+}
+@-webkit-keyframes spin {
+	0% {
+		transform: rotate(0deg);
+		border-right-color: #2aaaac;
+	}
+	50% {
+		transform: rotate(180deg);
+		border-right-color: #2aaaac;
+	}
+	100% {
+		transform: rotate(359deg);
+		border-right-color: #2aaaac;
+	}
+}
+@-moz-keyframes spin {
+	0% {
+		transform: rotate(0deg);
+		border-right-color: #2aaaac;
+	}
+	50% {
+		transform: rotate(180deg);
+		border-right-color: #2aaaac;
+	}
+	100% {
+		transform: rotate(359deg);
+		border-right-color: #2aaaac;
+	}
+}
+@-o-keyframes spin {
+	0% {
+		transform: rotate(0deg);
+		border-right-color: #2aaaac;
+	}
+	50% {
+		transform: rotate(180deg);
+		border-right-color: #2aaaac;
+	}
+	100% {
+		transform: rotate(359deg);
+		border-right-color: #2aaaac;
+	}
+}

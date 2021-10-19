@@ -50,6 +50,7 @@ const leadRoute = require('./routesV2/leadRoute');
 const leadStrategyRoute = require('./routesV2/leadStrategyRoute');
 const staffRoute = require('./routesV2/staffRoute');
 const blogRoute = require('./routesV2/blogRoute');
+const paymentRoute = require('./routesV2/paymentRoute');
 
 const app = express();
 
@@ -211,6 +212,7 @@ app.use('/api/v2/lead', leadRoute);
 app.use('/api/v2/lead-strategy', leadStrategyRoute);
 app.use('/api/v2/staff', staffRoute);
 app.use('/api/v2/blog', blogRoute);
+app.use('/api/v2/payment', paymentRoute);
 
 app.all('/api/*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));

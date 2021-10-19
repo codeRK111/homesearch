@@ -67,6 +67,10 @@ function TemporaryDrawer({
 		handleClose();
 	};
 
+	const goToTenantPackages = () => {
+		history.push('/tenant-packages');
+	};
+
 	const toggleDrawer = (event) => {
 		if (
 			event.type === 'keydown' &&
@@ -123,6 +127,14 @@ function TemporaryDrawer({
 					)}
 
 					<List>
+						<ListItem button onClick={goToTenantPackages}>
+							<ListItemIcon>
+								<MonetizationOnIcon
+									className={gClasses.colorUtil}
+								/>
+							</ListItemIcon>
+							<ListItemText primary={'Tenant Packages'} />
+						</ListItem>
 						<ListItem button onClick={redirectToPostPage}>
 							<ListItemIcon>
 								<PostAddIcon className={gClasses.colorUtil} />
