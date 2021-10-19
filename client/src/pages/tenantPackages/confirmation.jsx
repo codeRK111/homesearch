@@ -184,11 +184,7 @@ const TenantPackageConfirmationPage = ({
 					setSuccess(false);
 				}
 			},
-			prefill: {
-				name: user.name,
-				email: user.email,
-				contact: user.number,
-			},
+
 			notes: {
 				address: 'Grovis Pvt. Ltd.',
 			},
