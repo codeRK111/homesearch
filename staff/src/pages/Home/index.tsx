@@ -3,6 +3,7 @@ import { Box, Container, Typography } from '@material-ui/core';
 import ASMHome from './asm';
 import ClientSupportHome from './clientSupport';
 import GmHome from './gm';
+import LeadStrategistHome from './leadStrategist';
 import React from 'react';
 import SEHome from './se';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -30,7 +31,7 @@ const HomePage = () => {
 				return <SEHome />;
 
 			default:
-				return <h1>Work in progress</h1>;
+				return <LeadStrategistHome />;
 		}
 	};
 	return (
