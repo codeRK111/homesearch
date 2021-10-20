@@ -8,5 +8,10 @@ router.post(
 	authController.protect,
 	paymentController.createOrderTenantPackage
 );
+router.post(
+	'/buy-tenant-package-success',
+	authController.protect,
+	paymentController.success
+);
 
 module.exports = router;

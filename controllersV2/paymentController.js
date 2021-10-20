@@ -1,5 +1,6 @@
 const Razorpay = require('razorpay');
 const catchAsync = require('./../utils/catchAsync');
+const Subscription = require('./../models/subscriptionModel');
 const crypto = require('crypto');
 const { nanoid } = require('nanoid');
 
@@ -101,6 +102,17 @@ exports.success = catchAsync(async (req, res, next) => {
 		if (digest !== razorpaySignature)
 			return res.status(400).json({ msg: 'Transaction not legit!' });
 
+		const subscription = await Subscription.create({
+			mainAmount: req.body.mainAmount,
+			paidAmount: req.body.paidAmount,
+			package: req.body.package,
+			totalPropertyAllowed: 5,
+			orderId: razorpayOrderId,
+			paymentId: razorpayPaymentId,
+			user: req.user.id,
+			packageType: 'tenantPackage',
+		});
+
 		// THE PAYMENT IS LEGIT & VERIFIED
 		// YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
 
@@ -108,6 +120,7 @@ exports.success = catchAsync(async (req, res, next) => {
 			msg: 'success',
 			orderId: razorpayOrderId,
 			paymentId: razorpayPaymentId,
+			subscription,
 		});
 	} catch (error) {
 		console.log(error.message);

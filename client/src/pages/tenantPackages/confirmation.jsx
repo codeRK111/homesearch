@@ -7,26 +7,25 @@ import {
 	Paper,
 	Typography,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import AbsentIcon from '@material-ui/icons/Cancel';
+import PresentIcon from '@material-ui/icons/CheckCircle';
+import RoomIcon from '@material-ui/icons/Room';
+import Alert from '@material-ui/lab/Alert';
+import axios from 'axios';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import logo from '../../assets/icons/logo.svg';
+import Nav from '../../components/v2/pageNav/nav.component';
 import {
 	selectAuthenticated,
 	selectUser,
 } from '../../redux/auth/auth.selectors';
-
-import AbsentIcon from '@material-ui/icons/Cancel';
-import Alert from '@material-ui/lab/Alert';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import Nav from '../../components/v2/pageNav/nav.component';
-import PaymentSuccess from './successPage';
-import PresentIcon from '@material-ui/icons/CheckCircle';
-import RoomIcon from '@material-ui/icons/Room';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import logo from '../../assets/icons/logo.svg';
-import { makeStyles } from '@material-ui/core/styles';
-import { parseDate } from '../../utils/render.utils';
 import { toggleLoginPopup } from '../../redux/ui/ui.actions';
+import { parseDate } from '../../utils/render.utils';
+import PaymentSuccess from './successPage';
 
 const useStyles = makeStyles((theme) => ({
 	orderWrapper: {
@@ -170,14 +169,30 @@ const TenantPackageConfirmationPage = ({
 			image: logo,
 			handler: async function (response) {
 				try {
+					const mainAmount = packageName === 'b' ? 3499 : 1499;
+					const paidAmount = packageName === 'b' ? 2999 : 999;
 					const data = {
 						orderCreationId: order_id,
 						razorpayPaymentId: response.razorpay_payment_id,
 						razorpayOrderId: response.razorpay_order_id,
 						razorpaySignature: response.razorpay_signature,
+						package: packageName,
+						mainAmount,
+						paidAmount,
 					};
 
-					await axios.post('/api/v1/api-test/success', data);
+					await axios.post(
+						'/api/v2/payment/buy-tenant-package-success',
+						data,
+						{
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: `Bearer ${localStorage.getItem(
+									'JWT_CLIENT'
+								)}`,
+							},
+						}
+					);
 					setSuccess(true);
 				} catch (error) {
 					alert(error.data.message);
@@ -189,7 +204,7 @@ const TenantPackageConfirmationPage = ({
 				address: 'Grovis Pvt. Ltd.',
 			},
 			theme: {
-				color: '#61dafb',
+				color: '#2AAAAC',
 			},
 			modal: {
 				confirm_close: true,
