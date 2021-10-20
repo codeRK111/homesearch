@@ -13,6 +13,7 @@ import Loader from './components/Loader';
 import LoginPage from './pages/Login';
 import ManageLeadPage from './pages/ManageLead';
 import ManageLeadsPage from './pages/ManageProperty';
+import ManagePaymentPage from './pages/ManagePayment';
 import NavBar from './components/NavBar';
 import PostedLeadsPage from './pages/PostedLeads';
 import PrivateRoute from './components/ProtectedRoute';
@@ -93,6 +94,11 @@ const Router = () => {
 					path={'/blogs/:id'}
 					exact
 					component={UpdateBlogPage}
+				></PrivateRoute>
+				<PrivateRoute
+					path={'/subscriptions'}
+					exact
+					component={ManagePaymentPage}
 				>
 					{/* <ViewLeadsPage /> */}
 				</PrivateRoute>

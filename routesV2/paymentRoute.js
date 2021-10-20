@@ -13,5 +13,10 @@ router.post(
 	authController.protect,
 	paymentController.success
 );
+router.get(
+	'/subscription',
+	authController.protect,
+	paymentController.getSubscriptions
+);
 
 module.exports = router;

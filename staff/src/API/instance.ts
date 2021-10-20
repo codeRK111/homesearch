@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios';
 
 export enum V2EndPoint {
 	Builder = '/builder',
+	Payment = '/payment',
 	Utility = '/utility',
 	Property = '/property',
 	SaveProperty = '/save-property',

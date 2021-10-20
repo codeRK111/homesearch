@@ -127,3 +127,20 @@ exports.success = catchAsync(async (req, res, next) => {
 		res.status(500).json(error);
 	}
 });
+exports.getSubscriptions = catchAsync(async (req, res, next) => {
+	const filter = {};
+	const page = req.query.page * 1 || 1;
+	const limit = req.query.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	const totalDocs = await Subscription.countDocuments(filter);
+
+	const subscriptions = await Subscription.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+	res.status(200).json({
+		status: 'success',
+		data: { subscriptions, totalDocs },
+	});
+});
