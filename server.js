@@ -53,6 +53,7 @@ const server = app.listen(port, () => {
 // HANDLE GLOBAL UNHANDLED REJECTION
 process.on('unhandledRejection', (error) => {
 	console.log('UNHANDLED REJECTION');
+	console.log(error);
 	console.log(error.name, error.message);
 	server.close(() => process.exit(1));
 });

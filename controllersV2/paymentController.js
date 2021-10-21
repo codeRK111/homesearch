@@ -1,8 +1,10 @@
 const Razorpay = require('razorpay');
 const catchAsync = require('./../utils/catchAsync');
 const Subscription = require('./../models/subscriptionModel');
+const Link = require('./../models/paymentLinkModel');
 const crypto = require('crypto');
 const { nanoid } = require('nanoid');
+const AppError = require('../utils/appError');
 
 exports.createOrder = catchAsync(async (req, res, next) => {
 	try {
@@ -142,5 +144,17 @@ exports.getSubscriptions = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: { subscriptions, totalDocs },
+	});
+});
+exports.createPaymentLink = catchAsync(async (req, res, next) => {
+	if (!req.body.payment) {
+		return next(new AppError('payment required'));
+	}
+
+	const link = await Link.create(req.body);
+
+	res.status(200).json({
+		status: 'success',
+		data: { link: `homesearch18.com/pay?pl=${link.id}` },
 	});
 });

@@ -3,12 +3,13 @@ import { IMyTarget, asyncGetMyTargets } from '../../API/auth';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import axios, { CancelTokenSource } from 'axios';
 
+import AccountantList from './accountantList';
 import ButtonCard from '../../components/ButtonCard';
 import { FetchTargetLoader } from '../../components/Loader/HomePage';
 import TargetCard from '../../components/TargetCard';
 import { useHistory } from 'react-router-dom';
 
-const LeadStrategistHome = () => {
+const AccountantHome = () => {
 	const history = useHistory();
 	// Token
 	const targetSource = useRef<CancelTokenSource | null>(null);
@@ -59,6 +60,15 @@ const LeadStrategistHome = () => {
 								<Typography variant="h5">My Leads</Typography>
 							</ButtonCard>
 						</Grid>
+						<Grid item xs={12} md={2}>
+							<ButtonCard
+								onClick={() => history.push('/payment-link')}
+							>
+								<Typography variant="h5">
+									Create Payment Link
+								</Typography>
+							</ButtonCard>
+						</Grid>
 						<Grid item xs={12} md={3}>
 							<TargetCard
 								label="Leads Target"
@@ -69,21 +79,12 @@ const LeadStrategistHome = () => {
 								}
 							/>
 						</Grid>
-						<Grid item xs={12} md={3}>
-							<TargetCard
-								label="Deals Target"
-								total={myTarget.dealTarget}
-								available={
-									myTarget.dealTarget -
-									myTarget.completeDealTarget
-								}
-							/>
-						</Grid>
 					</Grid>
+					<AccountantList />
 				</Box>
 			)}
 		</>
 	);
 };
 
-export default LeadStrategistHome;
+export default AccountantHome;

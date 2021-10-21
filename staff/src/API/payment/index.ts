@@ -33,7 +33,7 @@ export const asyncFetchSubscriptions = async (
 			any,
 			AxiosResponse<ServerResponse<FetchSubscriptionResponse>>
 		>(
-			`${V2EndPoint.Payment}${b}`,
+			`${V2EndPoint.Payment}/subscription${b}`,
 
 			{
 				headers: {

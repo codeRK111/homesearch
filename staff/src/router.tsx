@@ -14,7 +14,6 @@ import { asyncFetchAdminInfo } from './API/auth';
 
 // import LeadStrategyPage from './pages/LeadStrategy';
 
-
 // import LoginPage from './pages/Login';
 // import ManageLeadPage from './pages/ManageLead';
 // import ManageLeadsPage from './pages/ManageProperty';
@@ -22,15 +21,14 @@ import { asyncFetchAdminInfo } from './API/auth';
 
 // import PostedLeadsPage from './pages/PostedLeads';
 
-
 // import AddBlogPage from './pages/AddBlog';
 // import AddLeadPage from './pages/AddLead';
 // import AddPropertyPage from './pages/AddProperty';
 // import BlogsPage from './pages/BlogList';
 // import BrowsePropertiesPage from './pages/BrowseProperties';
 
-
 const AddBlogPage = lazy(() => import('./pages/AddBlog'));
+const PaymentLinkPage = lazy(() => import('./pages/PaymentLink'));
 const AddLeadPage = lazy(() => import('./pages/AddLead'));
 const AddPropertyPage = lazy(() => import('./pages/AddProperty'));
 const BlogsPage = lazy(() => import('./pages/BlogList'));
@@ -89,6 +87,10 @@ const Router = () => {
 					/>
 					<Route path={'/login'} component={LoginPage} />
 					<PrivateRoute path={'/add-lead'} component={AddLeadPage} />
+					<PrivateRoute
+						path={'/payment-link'}
+						component={PaymentLinkPage}
+					/>
 					<PrivateRoute
 						path={'/lead/:id'}
 						component={UpdateLeadPage}

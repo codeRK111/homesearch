@@ -7,25 +7,27 @@ import {
 	Paper,
 	Typography,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import AbsentIcon from '@material-ui/icons/Cancel';
-import PresentIcon from '@material-ui/icons/CheckCircle';
-import RoomIcon from '@material-ui/icons/Room';
-import Alert from '@material-ui/lab/Alert';
-import axios from 'axios';
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import logo from '../../assets/icons/logo.svg';
-import Nav from '../../components/v2/pageNav/nav.component';
 import {
 	selectAuthenticated,
 	selectUser,
 } from '../../redux/auth/auth.selectors';
-import { toggleLoginPopup } from '../../redux/ui/ui.actions';
-import { parseDate } from '../../utils/render.utils';
+
+import AbsentIcon from '@material-ui/icons/Cancel';
+import Alert from '@material-ui/lab/Alert';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import { Link } from 'react-router-dom';
+import Nav from '../../components/v2/pageNav/nav.component';
 import PaymentSuccess from './successPage';
+import PresentIcon from '@material-ui/icons/CheckCircle';
+import RoomIcon from '@material-ui/icons/Room';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import logo from '../../assets/icons/logo.svg';
+import { makeStyles } from '@material-ui/core/styles';
+import { parseDate } from '../../utils/render.utils';
+import { toggleLoginPopup } from '../../redux/ui/ui.actions';
 
 const useStyles = makeStyles((theme) => ({
 	orderWrapper: {
@@ -165,6 +167,11 @@ const TenantPackageConfirmationPage = ({
 			currency: currency,
 			name: 'Homesearch India',
 			description: 'Buy Tenant Package',
+			customer: {
+				name: 'Gaurav Kumar',
+				contact: '+919999999999',
+				email: 'gaurav.kumar@example.com',
+			},
 			order_id: order_id,
 			image: logo,
 			handler: async function (response) {
@@ -208,6 +215,17 @@ const TenantPackageConfirmationPage = ({
 			},
 			modal: {
 				confirm_close: true,
+			},
+			prefill: {
+				name: user.name,
+				email: user.email,
+			},
+			method: {
+				netbanking: false,
+				card: false,
+				wallet: false,
+				upi: true,
+				emi: false,
 			},
 		};
 
@@ -374,6 +392,15 @@ const TenantPackageConfirmationPage = ({
 													</Box>
 												)}
 											</button>
+											<Box mt="1rem">
+												<Typography variant="caption">
+													* By confirming you will
+													agree to our{' '}
+													<Link to="#">
+														terms and conditions
+													</Link>
+												</Typography>
+											</Box>
 										</Box>
 									</Paper>
 								</Grid>

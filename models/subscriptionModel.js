@@ -62,7 +62,7 @@ subscriptionSchema.plugin(AutoIncrement, {
 subscriptionSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'user',
-		select: 'id name',
+		select: 'id name email number',
 	});
 
 	next();
