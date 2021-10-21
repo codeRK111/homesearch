@@ -134,6 +134,7 @@ const adminSchema = new Schema(
 					'leadStrategist',
 					'salesExecutive',
 					'assistantSalesManager',
+					'accountant',
 				],
 				message:
 					'role must be between <super-admin> | <admin> | <staff>',

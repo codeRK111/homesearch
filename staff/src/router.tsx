@@ -1,25 +1,48 @@
 import { HashRouter, Route, Switch } from 'react-router-dom';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from './hooks/useAction';
 
-import AddBlogPage from './pages/AddBlog';
-import AddLeadPage from './pages/AddLead';
-import AddPropertyPage from './pages/AddProperty';
-import BlogsPage from './pages/BlogList';
-import BrowsePropertiesPage from './pages/BrowseProperties';
 import HomePage from './pages/Home';
-import LeadStrategyPage from './pages/LeadStrategy';
 import Loader from './components/Loader';
-import LoginPage from './pages/Login';
-import ManageLeadPage from './pages/ManageLead';
-import ManageLeadsPage from './pages/ManageProperty';
-import ManagePaymentPage from './pages/ManagePayment';
+import { LoadingAnimationNormal } from './components/LoadingAnimation';
 import NavBar from './components/NavBar';
-import PostedLeadsPage from './pages/PostedLeads';
 import PrivateRoute from './components/ProtectedRoute';
-import UpdateBlogPage from './pages/UpdateBlog';
-import UpdateLeadPage from './pages/updateLead';
 import { asyncFetchAdminInfo } from './API/auth';
+
+// import UpdateBlogPage from './pages/UpdateBlog';
+// import UpdateLeadPage from './pages/updateLead';
+
+// import LeadStrategyPage from './pages/LeadStrategy';
+
+
+// import LoginPage from './pages/Login';
+// import ManageLeadPage from './pages/ManageLead';
+// import ManageLeadsPage from './pages/ManageProperty';
+// import ManagePaymentPage from './pages/ManagePayment';
+
+// import PostedLeadsPage from './pages/PostedLeads';
+
+
+// import AddBlogPage from './pages/AddBlog';
+// import AddLeadPage from './pages/AddLead';
+// import AddPropertyPage from './pages/AddProperty';
+// import BlogsPage from './pages/BlogList';
+// import BrowsePropertiesPage from './pages/BrowseProperties';
+
+
+const AddBlogPage = lazy(() => import('./pages/AddBlog'));
+const AddLeadPage = lazy(() => import('./pages/AddLead'));
+const AddPropertyPage = lazy(() => import('./pages/AddProperty'));
+const BlogsPage = lazy(() => import('./pages/BlogList'));
+const BrowsePropertiesPage = lazy(() => import('./pages/BrowseProperties'));
+const LeadStrategyPage = lazy(() => import('./pages/LeadStrategy'));
+const LoginPage = lazy(() => import('./pages/Login'));
+const ManageLeadPage = lazy(() => import('./pages/ManageLead'));
+const ManageLeadsPage = lazy(() => import('./pages/ManageProperty'));
+const ManagePaymentPage = lazy(() => import('./pages/ManagePayment'));
+const PostedLeadsPage = lazy(() => import('./pages/PostedLeads'));
+const UpdateBlogPage = lazy(() => import('./pages/UpdateBlog'));
+const UpdateLeadPage = lazy(() => import('./pages/updateLead'));
 
 const Router = () => {
 	const { setUser } = useRepositoryAction(ResourceType.Auth);
@@ -57,72 +80,61 @@ const Router = () => {
 	) : (
 		<HashRouter>
 			<NavBar />
-			<Switch>
-				<PrivateRoute
-					path={'/'}
-					exact={true}
-					component={HomePage}
-				></PrivateRoute>
-				<Route path={'/login'} component={LoginPage}></Route>
-				<PrivateRoute
-					path={'/add-lead'}
-					component={AddLeadPage}
-				></PrivateRoute>
-
-				<PrivateRoute path={'/lead/:id'} component={UpdateLeadPage}>
-					{/* <ViewLeadsPage /> */}
-				</PrivateRoute>
-				<PrivateRoute
-					path={'/add-property/:pType'}
-					component={AddPropertyPage}
-				>
-					{/* <ViewLeadsPage /> */}
-				</PrivateRoute>
-				<PrivateRoute
-					path={'/manage-property/:pType'}
-					component={ManageLeadsPage}
-				>
-					{/* <ViewLeadsPage /> */}
-				</PrivateRoute>
-				<PrivateRoute path={'/add-blog'} component={AddBlogPage}>
-					{/* <ViewLeadsPage /> */}
-				</PrivateRoute>
-				<PrivateRoute path={'/blogs'} exact component={BlogsPage}>
-					{/* <ViewLeadsPage /> */}
-				</PrivateRoute>
-				<PrivateRoute
-					path={'/blogs/:id'}
-					exact
-					component={UpdateBlogPage}
-				></PrivateRoute>
-				<PrivateRoute
-					path={'/subscriptions'}
-					exact
-					component={ManagePaymentPage}
-				>
-					{/* <ViewLeadsPage /> */}
-				</PrivateRoute>
-				<PrivateRoute
-					path={'/lead-strategies'}
-					exact
-					component={LeadStrategyPage}
-				/>
-				<PrivateRoute
-					path={'/posted-leads'}
-					exact
-					component={PostedLeadsPage}
-				/>
-				<PrivateRoute
-					path={'/manage-lead/:id'}
-					exact
-					component={ManageLeadPage}
-				/>
-				<PrivateRoute
-					path={'/browse-properties'}
-					exact
-					component={BrowsePropertiesPage}
-				/>
-			</Switch>
+			<Suspense fallback={<LoadingAnimationNormal />}>
+				<Switch>
+					<PrivateRoute
+						path={'/'}
+						exact={true}
+						component={HomePage}
+					/>
+					<Route path={'/login'} component={LoginPage} />
+					<PrivateRoute path={'/add-lead'} component={AddLeadPage} />
+					<PrivateRoute
+						path={'/lead/:id'}
+						component={UpdateLeadPage}
+					/>
+					<PrivateRoute
+						path={'/add-property/:pType'}
+						component={AddPropertyPage}
+					/>
+					<PrivateRoute
+						path={'/manage-property/:pType'}
+						component={ManageLeadsPage}
+					/>
+					<PrivateRoute path={'/add-blog'} component={AddBlogPage} />
+					<PrivateRoute path={'/blogs'} exact component={BlogsPage} />
+					<PrivateRoute
+						path={'/blogs/:id'}
+						exact
+						component={UpdateBlogPage}
+					/>
+					<PrivateRoute
+						path={'/subscriptions'}
+						exact
+						component={ManagePaymentPage}
+					/>
+					<PrivateRoute
+						path={'/lead-strategies'}
+						exact
+						component={LeadStrategyPage}
+					/>
+					<PrivateRoute
+						path={'/posted-leads'}
+						exact
+						component={PostedLeadsPage}
+					/>
+					<PrivateRoute
+						path={'/manage-lead/:id'}
+						exact
+						component={ManageLeadPage}
+					/>
+					<PrivateRoute
+						path={'/browse-properties'}
+						exact
+						component={BrowsePropertiesPage}
+					/>
+				</Switch>
+			</Suspense>
 		</HashRouter>
 	);
 };

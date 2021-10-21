@@ -105,10 +105,3 @@ export interface Property {
 	createdAt: Date;
 	sale_type?: Ptype;
 }
-
-interface AddPropertyData {
-	for: 'rent' | 'sale';
-	title: string;
-	usp: string;
-	sale_type?: Array<Ptype>;
-}

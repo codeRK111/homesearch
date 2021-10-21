@@ -3,20 +3,12 @@ import React from 'react';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import TodayIcon from '@material-ui/icons/Today';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-	root: {
-		flexGrow: 1,
-	},
-});
 
 interface ILeadTab {
 	setTimeInterval: (value: string) => void;
 }
 
 export default function LeadsTab({ setTimeInterval }: ILeadTab) {
-	const classes = useStyles();
 	const [value, setValue] = React.useState(0);
 
 	const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {

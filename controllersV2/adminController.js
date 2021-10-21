@@ -54,6 +54,7 @@ exports.staffLogin = catchAsync(async (req, res, next) => {
 		'leadStrategist',
 		'assistantSalesManager',
 		'salesExecutive',
+		'accountant',
 	];
 
 	if (!validTypes.includes(admin.type)) {

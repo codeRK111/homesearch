@@ -30,7 +30,7 @@ interface ISuspenseLoader {
 	open: boolean;
 }
 
-export function LoadingAnimationNormal({ open }: ISuspenseLoader) {
+export function LoadingAnimationNormal() {
 	const classes = useStyles();
 
 	return (

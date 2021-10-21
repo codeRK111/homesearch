@@ -17,7 +17,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { useHistory } from 'react-router';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
 // import EditIcon from '@material-ui/icons/Edit';
@@ -59,7 +58,6 @@ const LeatsSETable: React.FC<ILeadsTable> = ({
 }) => {
 	const { user } = useTypedSelector((state) => state.auth);
 	const classes = useStyles();
-	const history = useHistory();
 	// State
 	const [days, setDays] = useState<any>(2);
 	const [data, setData] = useState<Array<ILead>>([]);

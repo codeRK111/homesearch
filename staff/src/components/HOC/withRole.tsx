@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { ComponentType } from 'react';
+
 import { Redirect } from 'react-router';
 import { StaffType } from '../../model/staff.interface';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 export const withAccess = (
-	Component: React.ElementType,
+	Component: ComponentType<any>,
 	access?: Array<StaffType>
-): React.ElementType => {
+): ComponentType<any> => {
 	const D = (props: any) => {
 		const { user } = useTypedSelector((state) => state.auth);
 

@@ -62,6 +62,8 @@ export const renderStaffRole = (type: StaffType): string => {
 			return 'Client Support';
 		case StaffType.Staff:
 			return 'Staff';
+		case StaffType.Accountant:
+			return 'Accountant';
 
 		default:
 			return 'Not Found';

@@ -11,6 +11,7 @@ export const ADMIN_ROLE = {
     leadStrategist: "leadStrategist",
     salesExecutive: "salesExecutive",
     assistantSalesManager: "assistantSalesManager",
+    accountant: "accountant",
 };
 
 export const furnishMenuItems = [
