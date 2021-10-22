@@ -5,6 +5,7 @@ const Link = require('./../models/paymentLinkModel');
 const crypto = require('crypto');
 const { nanoid } = require('nanoid');
 const AppError = require('../utils/appError');
+const moment = require('moment');
 
 exports.createOrder = catchAsync(async (req, res, next) => {
 	try {
@@ -34,6 +35,42 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 		});
 
 		if (!order) return res.status(500).send('Some error occured');
+
+		res.json(order);
+	} catch (error) {
+		res.status(500).send(error);
+	}
+});
+exports.paymentLinkCreateOrder = catchAsync(async (req, res, next) => {
+	try {
+		const key_id =
+			process.env.NODE_ENV === 'development'
+				? process.env.RAZORPAY_KEY_ID
+				: process.env.RAZORPAY_KEY_LIVE_ID;
+		const key_secret =
+			process.env.NODE_ENV === 'development'
+				? process.env.RAZORPAY_KEY_SECRET
+				: process.env.RAZORPAY_KEY_LIVE_SECRET;
+		const instance = new Razorpay({
+			key_id,
+			key_secret,
+		});
+
+		const link = await Link.findById(req.params.id);
+		if (link.status !== 'active') {
+			return next(new AppError('Link expired'));
+		}
+
+		const options = {
+			amount: link.amount * 100, // amount in smallest currency unit
+			currency: 'INR',
+			receipt: nanoid(),
+		};
+
+		const order = await instance.orders.create(options);
+
+		if (!order)
+			return next(new AppError('Unable to make any payment right now'));
 
 		res.json(order);
 	} catch (error) {
@@ -129,6 +166,59 @@ exports.success = catchAsync(async (req, res, next) => {
 		res.status(500).json(error);
 	}
 });
+exports.paymentLinkSuccess = catchAsync(async (req, res, next) => {
+	try {
+		// getting the details back from our font-end
+		const {
+			orderCreationId,
+			razorpayPaymentId,
+			razorpayOrderId,
+			razorpaySignature,
+		} = req.body;
+
+		// Creating our own digest
+		// The format should be like this:
+		// digest = hmac_sha256(orderCreationId + "|" + razorpayPaymentId, secret);
+		const key_secret =
+			process.env.NODE_ENV === 'development'
+				? process.env.RAZORPAY_KEY_SECRET
+				: process.env.RAZORPAY_KEY_LIVE_SECRET;
+		const shasum = crypto.createHmac('sha256', key_secret);
+		shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
+		const digest = shasum.digest('hex');
+
+		// comaparing our digest with the actual signature
+		if (digest !== razorpaySignature)
+			return res.status(400).json({ msg: 'Transaction not legit!' });
+
+		const subscription = await Subscription.create({
+			paidAmount: req.body.paidAmount,
+			paymentLink: req.body.paymentLink,
+			orderId: razorpayOrderId,
+			paymentId: razorpayPaymentId,
+			user: req.user.id,
+			packageType: 'paymentLink',
+		});
+		if (req.body.paymentLink) {
+			await Link.findByIdAndUpdate(req.body.paymentLink, {
+				status: 'inactive',
+			});
+		}
+
+		// THE PAYMENT IS LEGIT & VERIFIED
+		// YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
+
+		res.json({
+			msg: 'success',
+			orderId: razorpayOrderId,
+			paymentId: razorpayPaymentId,
+			subscription,
+		});
+	} catch (error) {
+		console.log(error.message);
+		res.status(500).json(error);
+	}
+});
 exports.getSubscriptions = catchAsync(async (req, res, next) => {
 	const filter = {};
 	const page = req.query.page * 1 || 1;
@@ -147,14 +237,27 @@ exports.getSubscriptions = catchAsync(async (req, res, next) => {
 	});
 });
 exports.createPaymentLink = catchAsync(async (req, res, next) => {
-	if (!req.body.payment) {
-		return next(new AppError('payment required'));
+	if (!req.body.amount) {
+		return next(new AppError('amount required'));
 	}
 
 	const link = await Link.create(req.body);
 
 	res.status(200).json({
 		status: 'success',
-		data: { link: `homesearch18.com/pay?pl=${link.id}` },
+		data: { link: `https://homesearch18.com/pay?pl=${link.id}` },
+	});
+});
+
+exports.getPaymentLinkDetails = catchAsync(async (req, res, next) => {
+	const link = await Link.findById(req.params.id);
+	const isBefore = moment().isBefore(link.expiryDate);
+	if (link.status !== 'active' || !isBefore) {
+		return next(new AppError('This payment link is expired'));
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: { link },
 	});
 });

@@ -168,100 +168,104 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 						</ListItem>
 					</ListDropDown>
 				</RenderByRole>
-				<ListDropDown
-					open={propertyOpen}
-					toggle={setPropertyOpen}
-					Icon={ApartmentIcon}
-					label={'Manage Properties For Rent'}
+				<RenderByMultipleRole
+					types={[StaffType.GM, StaffType.ClientSupport]}
 				>
-					<ListItem
-						button
-						onClick={changeRoute('/manage-property/rent')}
-						className={clsx(
-							manageSelectedStyle('/manage-property/rent'),
-							style.nested
-						)}
+					<ListDropDown
+						open={propertyOpen}
+						toggle={setPropertyOpen}
+						Icon={ApartmentIcon}
+						label={'Manage Properties For Rent'}
 					>
-						<ListItemIcon>
-							<ApartmentIcon
-								color="primary"
-								className={clsx(
-									manageSelectedStyleIcon(
-										'/manage-property/rent'
-									)
-								)}
-							/>
-						</ListItemIcon>
-						<ListItemText primary={'Properties For Rent'} />
-					</ListItem>
-					<ListItem
-						button
-						onClick={changeRoute('/add-property/rent')}
-						className={clsx(
-							manageSelectedStyle('/add-property/rent'),
-							style.nested
-						)}
+						<ListItem
+							button
+							onClick={changeRoute('/manage-property/rent')}
+							className={clsx(
+								manageSelectedStyle('/manage-property/rent'),
+								style.nested
+							)}
+						>
+							<ListItemIcon>
+								<ApartmentIcon
+									color="primary"
+									className={clsx(
+										manageSelectedStyleIcon(
+											'/manage-property/rent'
+										)
+									)}
+								/>
+							</ListItemIcon>
+							<ListItemText primary={'Properties For Rent'} />
+						</ListItem>
+						<ListItem
+							button
+							onClick={changeRoute('/add-property/rent')}
+							className={clsx(
+								manageSelectedStyle('/add-property/rent'),
+								style.nested
+							)}
+						>
+							<ListItemIcon>
+								<AddIcon
+									color="primary"
+									className={clsx(
+										manageSelectedStyleIcon(
+											'/add-property/rent'
+										)
+									)}
+								/>
+							</ListItemIcon>
+							<ListItemText primary={'Add Property For Rent'} />
+						</ListItem>
+					</ListDropDown>
+					<ListDropDown
+						open={propertySaleOpen}
+						toggle={setPropertySaleOpen}
+						Icon={ApartmentIcon}
+						label={'Manage Properties For Sale'}
 					>
-						<ListItemIcon>
-							<AddIcon
-								color="primary"
-								className={clsx(
-									manageSelectedStyleIcon(
-										'/add-property/rent'
-									)
-								)}
-							/>
-						</ListItemIcon>
-						<ListItemText primary={'Add Property For Rent'} />
-					</ListItem>
-				</ListDropDown>
-				<ListDropDown
-					open={propertySaleOpen}
-					toggle={setPropertySaleOpen}
-					Icon={ApartmentIcon}
-					label={'Manage Properties For Sale'}
-				>
-					<ListItem
-						button
-						onClick={changeRoute('/manage-property/sale')}
-						className={clsx(
-							manageSelectedStyle('/manage-property/sale'),
-							style.nested
-						)}
-					>
-						<ListItemIcon>
-							<ApartmentIcon
-								color="primary"
-								className={clsx(
-									manageSelectedStyleIcon(
-										'/manage-property/sale'
-									)
-								)}
-							/>
-						</ListItemIcon>
-						<ListItemText primary={'Properties For Sale'} />
-					</ListItem>
-					<ListItem
-						button
-						onClick={changeRoute('/add-property/sale')}
-						className={clsx(
-							manageSelectedStyle('/add-property/sale'),
-							style.nested
-						)}
-					>
-						<ListItemIcon>
-							<AddIcon
-								color="primary"
-								className={clsx(
-									manageSelectedStyleIcon(
-										'/add-property/sale'
-									)
-								)}
-							/>
-						</ListItemIcon>
-						<ListItemText primary={'Add Property For Sale'} />
-					</ListItem>
-				</ListDropDown>
+						<ListItem
+							button
+							onClick={changeRoute('/manage-property/sale')}
+							className={clsx(
+								manageSelectedStyle('/manage-property/sale'),
+								style.nested
+							)}
+						>
+							<ListItemIcon>
+								<ApartmentIcon
+									color="primary"
+									className={clsx(
+										manageSelectedStyleIcon(
+											'/manage-property/sale'
+										)
+									)}
+								/>
+							</ListItemIcon>
+							<ListItemText primary={'Properties For Sale'} />
+						</ListItem>
+						<ListItem
+							button
+							onClick={changeRoute('/add-property/sale')}
+							className={clsx(
+								manageSelectedStyle('/add-property/sale'),
+								style.nested
+							)}
+						>
+							<ListItemIcon>
+								<AddIcon
+									color="primary"
+									className={clsx(
+										manageSelectedStyleIcon(
+											'/add-property/sale'
+										)
+									)}
+								/>
+							</ListItemIcon>
+							<ListItemText primary={'Add Property For Sale'} />
+						</ListItem>
+					</ListDropDown>
+				</RenderByMultipleRole>
 			</List>
 		</div>
 	);

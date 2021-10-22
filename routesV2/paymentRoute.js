@@ -9,11 +9,22 @@ router.post(
 	authController.protect,
 	paymentController.createOrderTenantPackage
 );
+router.get(
+	'/pay-by-link/:id',
+	authController.protect,
+	paymentController.paymentLinkCreateOrder
+);
 router.post(
 	'/buy-tenant-package-success',
 	authController.protect,
 	paymentController.success
 );
+router.post(
+	'/payment-link-success',
+	authController.protect,
+	paymentController.paymentLinkSuccess
+);
+router.get('/payment-link/:id', paymentController.getPaymentLinkDetails);
 router.get(
 	'/subscription',
 	adminController.protect,

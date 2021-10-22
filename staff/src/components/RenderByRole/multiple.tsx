@@ -1,6 +1,6 @@
 import React from 'react';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { StaffType } from '../../model/staff.interface';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 interface IRenderByRole {
 	types: StaffType[];

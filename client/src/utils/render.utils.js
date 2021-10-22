@@ -9,6 +9,9 @@ export const renderProfileImage = (image, customImage = null) => {
 		return customImage ? customImage : noUser;
 	}
 };
+export const renderOnDom = (data) => {
+	return JSON.stringify(data, null, 2);
+};
 export const renderBlogImage = (image) => {
 	if (image) {
 		return `/assets/blogs/${image}`;

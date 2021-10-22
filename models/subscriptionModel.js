@@ -9,7 +9,6 @@ const subscriptionSchema = new Schema(
 	{
 		mainAmount: {
 			type: Number,
-			required: [true, 'Please provide main price'],
 		},
 		paidAmount: {
 			type: Number,
@@ -20,17 +19,21 @@ const subscriptionSchema = new Schema(
 			ref: 'User',
 			default: null,
 		},
+		paymentLink: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'paymentlink',
+			default: null,
+		},
 
 		packageType: {
 			type: String,
 			enum: {
-				values: ['tenantPackage'],
+				values: ['tenantPackage', 'paymentLink'],
 			},
 			default: 'tenantPackage',
 		},
 		package: {
 			type: String,
-			required: [true, 'Package Required'],
 		},
 		totalPropertyAllowed: {
 			type: Number,

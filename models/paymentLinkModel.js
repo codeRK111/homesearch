@@ -26,6 +26,9 @@ const paymentLinkSchema = new Schema(
 			},
 			default: 'active',
 		},
+		expiryDate: {
+			type: Date,
+		},
 	},
 	{
 		toJSON: { virtuals: true },

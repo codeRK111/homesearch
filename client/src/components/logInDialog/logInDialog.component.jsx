@@ -654,6 +654,9 @@ function AlertDialogSlide({
 																	isInputNum={
 																		true
 																	}
+																	shouldAutoFocus={
+																		true
+																	}
 																/>
 
 																<Countdown

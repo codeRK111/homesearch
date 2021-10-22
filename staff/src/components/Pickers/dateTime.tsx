@@ -24,6 +24,7 @@ function DateTimePickerComponent({
 				label={label}
 				value={date}
 				onChange={handleDateChange}
+				views={['date', 'year', 'month', 'hours', 'minutes']}
 			/>
 		</MuiPickersUtilsProvider>
 	);

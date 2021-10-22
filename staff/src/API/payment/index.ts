@@ -47,3 +47,32 @@ export const asyncFetchSubscriptions = async (
 		throw new Error(asyncError(e));
 	}
 };
+
+export type CreatePaymentLinkInputType = {
+	amount: string;
+	name: string;
+	phone: string;
+	notes: string;
+	expiryDate: Date | null;
+};
+
+export const asyncCreatePaymentLink = async (
+	data: CreatePaymentLinkInputType
+): Promise<string> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.post<
+			any,
+			AxiosResponse<ServerResponse<{ link: string }>>
+		>(`${V2EndPoint.Payment}/create-payment-link`, data, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return resp.data.data.link;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};

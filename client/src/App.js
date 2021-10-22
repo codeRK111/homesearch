@@ -8,6 +8,7 @@ import HomePageNew from './pages/v2/homePage/home.page';
 import { LoadingAnimationNormal } from './components/v2/loadingAnimation';
 import LogIn from './components/logInDialog/logInDialog.component';
 import MuiAlert from '@material-ui/lab/Alert';
+import PayPage from './pages/pay';
 import Protected from './components/protected/protected.component';
 import ScrollToTop from './components/scrollToTop';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -114,10 +115,11 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 							path="/"
 							render={(props) => <HomePageNew {...props} />}
 						/>
+
 						<Route
 							exact
-							path="/tenant-packages"
-							render={(props) => <TenantPackagePage {...props} />}
+							path="/pay"
+							render={(props) => <PayPage {...props} />}
 						/>
 						<Route
 							exact

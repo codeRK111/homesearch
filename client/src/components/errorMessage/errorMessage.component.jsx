@@ -1,7 +1,7 @@
-import React from 'react';
 import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
+import IconButton from '@material-ui/core/IconButton';
+import React from 'react';
 
 const ErrorMessage = ({ message, onClear }) => {
 	return (
@@ -11,13 +11,15 @@ const ErrorMessage = ({ message, onClear }) => {
 			color="#ffffff"
 			bgcolor="#c0392b"
 			alignItems="center"
-			pl="0.5rem"
+			p="0.5rem"
 			borderRadius="5px"
 		>
 			{message}
-			<IconButton aria-label="delete" onClick={onClear}>
-				<ClearIcon fontSize="small" style={{ color: '#ffffff' }} />
-			</IconButton>
+			{onClear && (
+				<IconButton aria-label="delete" onClick={onClear}>
+					<ClearIcon fontSize="small" style={{ color: '#ffffff' }} />
+				</IconButton>
+			)}
 		</Box>
 	);
 };
