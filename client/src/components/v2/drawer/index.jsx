@@ -133,7 +133,7 @@ function TemporaryDrawer({
 									className={gClasses.colorUtil}
 								/>
 							</ListItemIcon>
-							<ListItemText primary={'Tenant Packages'} />
+							<ListItemText primary={'Packages'} />
 						</ListItem>
 						<ListItem button onClick={redirectToPostPage}>
 							<ListItemIcon>

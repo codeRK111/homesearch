@@ -261,3 +261,21 @@ exports.getPaymentLinkDetails = catchAsync(async (req, res, next) => {
 		data: { link },
 	});
 });
+
+exports.getAllLinks = catchAsync(async (req, res, next) => {
+	const filter = {};
+	const page = req.query.page * 1 || 1;
+	const limit = req.query.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	const totalDocs = await Link.countDocuments(filter);
+	const links = await Link.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+
+	res.status(200).json({
+		status: 'success',
+		data: { links, totalDocs },
+	});
+});

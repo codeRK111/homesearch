@@ -1,10 +1,11 @@
 import { APIV2, V2EndPoint, asyncError } from '../instance';
 
 import { AxiosResponse } from 'axios';
+import { PaymentLink } from '../../model/payment.interface';
 import { ServerResponse } from '../../model/apiResponse.interface';
 import { Subscription } from '../../model/subscription.interface';
 
-export type FetchSubscriptionInput = {
+export type FetchBasicInput = {
 	page: number;
 	limit: number;
 };
@@ -14,7 +15,7 @@ export type FetchSubscriptionResponse = {
 };
 
 export const asyncFetchSubscriptions = async (
-	filter: FetchSubscriptionInput
+	filter: FetchBasicInput
 ): Promise<FetchSubscriptionResponse> => {
 	try {
 		const token = localStorage.getItem('JWT_STAFF');
@@ -24,7 +25,7 @@ export const asyncFetchSubscriptions = async (
 			if (i === 0) {
 				b += '?';
 			}
-			b += `${c}=${filter[c as keyof FetchSubscriptionInput]}`;
+			b += `${c}=${filter[c as keyof FetchBasicInput]}`;
 			if (i !== a.length - 1) {
 				b += '&';
 			}
@@ -34,6 +35,46 @@ export const asyncFetchSubscriptions = async (
 			AxiosResponse<ServerResponse<FetchSubscriptionResponse>>
 		>(
 			`${V2EndPoint.Payment}/subscription${b}`,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+
+export type FetchPaymentLinksResponse = {
+	totalDocs: number;
+	links: Array<PaymentLink>;
+};
+
+export const asyncFetchPaymentLinks = async (
+	filter: FetchBasicInput
+): Promise<FetchPaymentLinksResponse> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		let a = Object.keys(filter);
+		let b = '';
+		a.forEach((c, i) => {
+			if (i === 0) {
+				b += '?';
+			}
+			b += `${c}=${filter[c as keyof FetchBasicInput]}`;
+			if (i !== a.length - 1) {
+				b += '&';
+			}
+		});
+		const resp = await APIV2.get<
+			any,
+			AxiosResponse<ServerResponse<FetchPaymentLinksResponse>>
+		>(
+			`${V2EndPoint.Payment}/payment-links${b}`,
 
 			{
 				headers: {

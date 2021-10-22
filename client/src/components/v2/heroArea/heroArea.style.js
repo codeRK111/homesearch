@@ -101,6 +101,9 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down('sm')]: {
 			padding: '0.5rem',
 		},
+		'&:hover': {
+			background: theme.yellowColor,
+		},
 	},
 	whatsappShadow: {
 		background: theme.shadowColor,

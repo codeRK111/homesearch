@@ -30,6 +30,11 @@ router.get(
 	adminController.protect,
 	paymentController.getSubscriptions
 );
+router.get(
+	'/payment-links',
+	adminController.protect,
+	paymentController.getAllLinks
+);
 router.post(
 	'/create-payment-link',
 	adminController.protect,

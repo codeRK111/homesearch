@@ -89,7 +89,7 @@ const TenantPackagePage = () => {
 						component="h1"
 						gutterBottom
 					>
-						Tenant Packages
+						Packages
 					</Typography>
 					<Box mt="2rem">
 						<Grid container spacing={3} justify="center">

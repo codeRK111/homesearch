@@ -1,25 +1,24 @@
+import { Box, Container, Typography } from '@material-ui/core';
 import {
 	FetchBasicInput,
-	FetchSubscriptionResponse,
-	asyncFetchSubscriptions,
+	FetchPaymentLinksResponse,
+	asyncFetchPaymentLinks,
 } from '../../API/payment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
-import { Box } from '@material-ui/core';
+import PaymentLinkTable from '../../components/Table/payment/paymentLink';
 import TablePagination from '../../components/Table/pagination';
-import TenantSubscriptionTable from '../../components/Table/payment/subscription';
 
-const AccountantList = () => {
+const PaymentLinksPage = () => {
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	const [loading, setLoading] = useState(false);
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
-	const [data, setData] = useState<FetchSubscriptionResponse>({
+	const [data, setData] = useState<FetchPaymentLinksResponse>({
 		totalDocs: 0,
-		subscriptions: [],
+		links: [],
 	});
-
 	// Callback
 	const handlePage = (
 		event: React.ChangeEvent<unknown>,
@@ -29,19 +28,19 @@ const AccountantList = () => {
 	};
 
 	// Fetch subscriptios
-	const fetchSubscriptions = useCallback(async () => {
+	const fetchLinks = useCallback(async () => {
 		try {
 			setLoading(true);
 			const filter: FetchBasicInput = { page, limit };
 
-			const resp = await asyncFetchSubscriptions(filter);
+			const resp = await asyncFetchPaymentLinks(filter);
 			setData(resp);
 			setLoading(false);
 		} catch (error: any) {
 			setLoading(false);
 			setData({
 				totalDocs: 0,
-				subscriptions: [],
+				links: [],
 			});
 			setLoading(false);
 			setSnackbar({
@@ -54,16 +53,20 @@ const AccountantList = () => {
 	}, [page, limit]);
 
 	useEffect(() => {
-		fetchSubscriptions();
-	}, [fetchSubscriptions]);
-
+		fetchLinks();
+	}, [fetchLinks]);
 	return (
-		<Box mt="1rem">
-			<p> </p>
-			<TenantSubscriptionTable
-				loading={loading}
-				subscriptions={data.subscriptions}
-			/>
+		<Container>
+			<Box mt="2rem">
+				<Typography variant="h6" gutterBottom>
+					Payment Links
+				</Typography>
+			</Box>
+			<p>
+				{' '}
+				<b>{data.totalDocs}</b> links found
+			</p>
+			<PaymentLinkTable links={data.links} loading={loading} />
 			<TablePagination
 				limit={limit}
 				setLimit={setLimit}
@@ -71,8 +74,8 @@ const AccountantList = () => {
 				setPage={handlePage}
 				totalDocs={data.totalDocs}
 			/>
-		</Box>
+		</Container>
 	);
 };
 
-export default AccountantList;
+export default PaymentLinksPage;

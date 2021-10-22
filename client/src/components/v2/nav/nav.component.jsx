@@ -87,7 +87,7 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 							)}
 							onClick={goToTenantPackages}
 						>
-							Tenant Packages
+							Packages
 						</Box>
 						<div
 							className={clsx(

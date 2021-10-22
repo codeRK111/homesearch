@@ -69,6 +69,15 @@ const AccountantHome = () => {
 								</Typography>
 							</ButtonCard>
 						</Grid>
+						<Grid item xs={12} md={2}>
+							<ButtonCard
+								onClick={() => history.push('/payment-links')}
+							>
+								<Typography variant="h5">
+									Payment Links
+								</Typography>
+							</ButtonCard>
+						</Grid>
 						<Grid item xs={12} md={3}>
 							<TargetCard
 								label="Leads Target"

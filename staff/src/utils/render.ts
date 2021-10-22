@@ -1,6 +1,7 @@
 import { IStaff, StaffType } from './../model/staff.interface';
 
 import { ILead } from '../model/lead.interface';
+import { SubscriptionPackageType } from '../model/subscription.interface';
 import dayjs from 'dayjs';
 
 export const renderCellData = (value: any) => {
@@ -22,6 +23,24 @@ export const parseDate = (date: Date | undefined) => {
 	}
 	const m = dayjs(date);
 	return m.format('DD MMM YYYY hh:mm a');
+};
+export const isExpired = (date?: Date): boolean => {
+	if (!date) {
+		return true;
+	}
+	const m = dayjs(date);
+	return dayjs().isAfter(m);
+};
+
+export const renderPackageName = (
+	packageType: SubscriptionPackageType,
+	packageName: string
+) => {
+	if (packageType === SubscriptionPackageType.TenantPackage) {
+		return packageName === 'b' ? 'Bhubaneswar' : 'Other City';
+	} else {
+		return 'Payment Link';
+	}
 };
 export const renderLeadStage = (lead?: ILead): string => {
 	switch (lead?.stage) {

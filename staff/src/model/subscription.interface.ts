@@ -2,6 +2,7 @@ import { User } from './user.interface';
 
 export enum SubscriptionPackageType {
 	TenantPackage = 'tenantPackage',
+	PaymentLink = 'paymentLink',
 }
 
 export interface Subscription {

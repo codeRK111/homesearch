@@ -1,10 +1,12 @@
 import { Box, CircularProgress } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { isExpired, parseDate } from '../../../utils/render';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { parseDate, renderPackageName } from '../../../utils/render';
 
+import CancelIcon from '@material-ui/icons/Cancel';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Paper from '@material-ui/core/Paper';
-import { Subscription } from '../../../model/subscription.interface';
+import { PaymentLink } from '../../../model/payment.interface';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -41,27 +43,27 @@ const useStyles = makeStyles({
 
 interface IMyPostedLeadsTable {
 	loading: boolean;
-	subscriptions: Subscription[];
+	links: PaymentLink[];
 }
 
-const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
+const PaymentLinkTable: React.FC<IMyPostedLeadsTable> = ({
 	loading,
-	subscriptions,
+	links,
 }) => {
 	const classes = useStyles();
 
 	// State
 
-	const [data, setData] = useState<Array<Subscription>>([]);
+	const [data, setData] = useState<Array<PaymentLink>>([]);
 
 	// Effects
 	useEffect(() => {
-		setData(subscriptions);
-	}, [subscriptions]);
+		setData(links);
+	}, [links]);
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: 12 }, (_, i) => i + 1).map((c) => (
+			{Array.from({ length: 11 }, (_, i) => i + 1).map((c) => (
 				<StyledTableCell key={c}>
 					<CircularProgress size={15} color="inherit" />
 				</StyledTableCell>
@@ -76,17 +78,16 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 					<TableHead>
 						<TableRow>
 							<StyledTableCell>SL Num.</StyledTableCell>
-							<StyledTableCell>Subscription ID</StyledTableCell>
-							<StyledTableCell>Payment ID</StyledTableCell>
-							<StyledTableCell>Date</StyledTableCell>
+							<StyledTableCell>Payment Link ID</StyledTableCell>
+							<StyledTableCell>Amount</StyledTableCell>
 							<StyledTableCell>Client Name</StyledTableCell>
 							<StyledTableCell>Client Number</StyledTableCell>
-							<StyledTableCell>Client Email</StyledTableCell>
-							<StyledTableCell>Package Name</StyledTableCell>
-							<StyledTableCell>Main Amount</StyledTableCell>
-							<StyledTableCell>Amount Paid</StyledTableCell>
-							<StyledTableCell>Feedback</StyledTableCell>
-							<StyledTableCell>Rating</StyledTableCell>
+							<StyledTableCell>Notes</StyledTableCell>
+							<StyledTableCell>Payment Status</StyledTableCell>
+							<StyledTableCell>Generated Date</StyledTableCell>
+							<StyledTableCell>Expiry Date</StyledTableCell>
+							<StyledTableCell>Is expired</StyledTableCell>
+							<StyledTableCell>Link</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -104,37 +105,47 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 										</StyledTableCell>
 
 										<StyledTableCell>
-											{row.subscriptionNumber}
+											{row.paymentLinkNumber}
 										</StyledTableCell>
 										<StyledTableCell>
-											{row.paymentId}
+											&#x20B9; {row.amount}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.name}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.phone}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.notes}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.statis === 'active' ? (
+												<CancelIcon color="secondary" />
+											) : (
+												<CheckCircleIcon color="primary" />
+											)}
 										</StyledTableCell>
 										<StyledTableCell>
 											{parseDate(row.createdAt as Date)}
 										</StyledTableCell>
 										<StyledTableCell>
-											{row.user.name}
+											{parseDate(row.expiryDate as Date)}
 										</StyledTableCell>
 										<StyledTableCell>
-											{row.user.number}
-										</StyledTableCell>
-										<StyledTableCell>
-											{row.user.email}
-										</StyledTableCell>
-										<StyledTableCell>
-											{renderPackageName(
-												row.packageType,
-												row.package
+											{isExpired(row.expiryDate) ? (
+												<CheckCircleIcon color="secondary" />
+											) : (
+												<CancelIcon color="primary" />
 											)}
 										</StyledTableCell>
 										<StyledTableCell>
-											{row.mainAmount}
+											<a
+												href={`https://homesearch18.com/pay?pl=${row.id}`}
+												target="_blank"
+												rel="noreferrer"
+											>{`https://homesearch18.com/pay?pl=${row.id}`}</a>
 										</StyledTableCell>
-										<StyledTableCell>
-											{row.paidAmount}
-										</StyledTableCell>
-										<StyledTableCell>-</StyledTableCell>
-										<StyledTableCell>-</StyledTableCell>
 									</StyledTableRow>
 							  ))}
 					</TableBody>
@@ -144,4 +155,4 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 	);
 };
 
-export default TenantSubscriptionTable;
+export default PaymentLinkTable;
