@@ -118,6 +118,11 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 
 						<Route
 							exact
+							path="/tenant-packages"
+							render={(props) => <TenantPackagePage {...props} />}
+						/>
+						<Route
+							exact
 							path="/pay"
 							render={(props) => <PayPage {...props} />}
 						/>
