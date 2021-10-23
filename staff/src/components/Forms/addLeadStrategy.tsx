@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-import { CircularProgress, Grid, Typography } from '@material-ui/core';
+import { CircularProgress, Grid } from '@material-ui/core';
 import { Form, Formik, FormikHelpers } from 'formik';
 import React, { useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
@@ -24,7 +24,6 @@ const AddLeadStrategyForm: React.FC<IAddLeadStrategyForm> = ({ onSuccess }) => {
 	const validationSchema = Yup.object({
 		url: Yup.string().required('URL required'),
 		description: Yup.string().required('Description required'),
-		photo: Yup.mixed().required('Photo Required'),
 	});
 
 	const initialValues: IAddLeadStrategyData = {
@@ -88,16 +87,6 @@ const AddLeadStrategyForm: React.FC<IAddLeadStrategyForm> = ({ onSuccess }) => {
 							</Grid>
 
 							<Grid item xs={12}>
-								{errors.photo && (
-									<Typography
-										color="error"
-										variant="caption"
-										display="block"
-										gutterBottom
-									>
-										{errors.photo}
-									</Typography>
-								)}
 								<input
 									type="file"
 									onChange={(e) => {

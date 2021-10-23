@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@material-ui/core';
+import { Box, Container, Grid, TextField, Typography } from '@material-ui/core';
 import {
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
@@ -17,6 +17,7 @@ const PostedLeadsPage = () => {
 	const source = useRef<CancelTokenSource | null>(null);
 	// State
 	const [error, setError] = useState('');
+	const [number, setNumber] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
@@ -41,7 +42,9 @@ const PostedLeadsPage = () => {
 				page,
 				limit,
 			};
-
+			if (number) {
+				filter.number = number;
+			}
 			setLoading(true);
 			const resp = await asyncFetchMyPostedLeads(
 				filter,
@@ -60,11 +63,11 @@ const PostedLeadsPage = () => {
 				leads: [],
 			});
 		}
-	}, [page, limit]);
+	}, [page, limit, number]);
 
 	useEffect(() => {
 		setPage(1);
-	}, [limit]);
+	}, [limit, number]);
 	useEffect(() => {
 		fetchLeads();
 	}, [fetchLeads]);
@@ -84,7 +87,20 @@ const PostedLeadsPage = () => {
 			<Typography variant="h5" gutterBottom align="center">
 				Leads posted by me
 			</Typography>
-
+			<Grid container spacing={1} justifyContent="center">
+				<Grid item xs={12} md={4}>
+					<TextField
+						label="Filter By Number"
+						variant="filled"
+						size="small"
+						fullWidth
+						value={number}
+						onChange={(e) => {
+							setNumber(e.target.value);
+						}}
+					/>
+				</Grid>
+			</Grid>
 			<MyPostedLeadsTable loading={loading} leads={data.leads} />
 			<TablePagination
 				limit={limit}

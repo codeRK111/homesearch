@@ -235,9 +235,18 @@ exports.getPostedLeads = catchAsync(async (req, res, next) => {
 	if (req.body.userCategory) {
 		filter.userCategory = req.body.userCategory;
 	}
+	if (req.body.city) {
+		filter.city = req.body.city;
+	}
 	if (req.body.preferedLocation) {
 		filter.preferedLocation = {
 			$regex: req.body.preferedLocation,
+			$options: 'i',
+		};
+	}
+	if (req.body.number) {
+		filter.number = {
+			$regex: req.body.number,
 			$options: 'i',
 		};
 	}
@@ -412,7 +421,11 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 	if (req.body.maxPrice !== null || req.body.maxPrice !== undefined) {
 		data.maxPrice = req.body.maxPrice;
 	}
-	if (req.body.hold !== null && req.body.hold !== undefined) {
+	if (
+		req.body.hold !== null &&
+		req.body.hold !== undefined &&
+		req.body.hold !== false
+	) {
 		data.hold = req.body.hold;
 		if (req.body.hold === true && !req.body.holdDate)
 			return next(new AppError('Hold date not found'));
@@ -611,7 +624,7 @@ exports.browseLeads = catchAsync(async (req, res, next) => {
 	const skip = (page - 1) * limit;
 
 	filter.status = 'active';
-	filter.userCategory = { $in: ['owner', 'builder'] };
+	filter.userCategory = { $in: ['owner', 'builder', 'realtor'] };
 
 	if (req.body.userCategory) {
 		filter.userCategory = req.body.userCategory;

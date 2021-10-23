@@ -29,6 +29,7 @@ import { asyncFetchAdminInfo } from './API/auth';
 
 const AddBlogPage = lazy(() => import('./pages/AddBlog'));
 const PaymentLinksPage = lazy(() => import('./pages/PaymentLinks'));
+const AddPropertyLeadPage = lazy(() => import('./pages/AddPropertyLead'));
 const PaymentLinkPage = lazy(() => import('./pages/PaymentLink'));
 const AddLeadPage = lazy(() => import('./pages/AddLead'));
 const AddPropertyPage = lazy(() => import('./pages/AddProperty'));
@@ -87,6 +88,10 @@ const Router = () => {
 						component={HomePage}
 					/>
 					<Route path={'/login'} component={LoginPage} />
+					<Route
+						path={'/add-property-lead'}
+						component={AddPropertyLeadPage}
+					/>
 					<Route
 						path={'/payment-links'}
 						component={PaymentLinksPage}

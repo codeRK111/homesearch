@@ -138,7 +138,7 @@ const LeatsSETable: React.FC<ILeadsTable> = ({
 							<StyledTableCell>Assigned On</StyledTableCell>
 
 							<StyledTableCell>Comments</StyledTableCell>
-							<StyledTableCell>Update</StyledTableCell>
+							<StyledTableCell>Close</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions

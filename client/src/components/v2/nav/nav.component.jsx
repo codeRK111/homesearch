@@ -1,4 +1,15 @@
-import { AppBar, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
+import {
+	AppBar,
+	Box,
+	Grid,
+	IconButton,
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Menu,
+	MenuItem,
+} from '@material-ui/core';
 import {
 	selectAuthenticated,
 	selectUser,
@@ -6,7 +17,9 @@ import {
 
 import ClearIcon from '@material-ui/icons/Clear';
 import Drawer from '../drawer';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MenuIcon from '@material-ui/icons/Menu';
+import PersonIcon from '@material-ui/icons/Person';
 import React from 'react';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
@@ -67,9 +80,34 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 	return (
 		<div style={{ marginBottom: '3rem' }}>
 			<AppBar color={'transparent'} elevation={0}>
-				<div
-					className={clsx(classes.min, topDrawer && classes.max)}
-				></div>
+				{isAuthenticated && (
+					<div
+						className={clsx(classes.min, topDrawer && classes.max)}
+					>
+						<Grid container justify="flex-end" spacing={3}>
+							<Grid item xs={12} md={3}>
+								<List>
+									<ListItem button onClick={goToProfile}>
+										<ListItemIcon>
+											<PersonIcon
+												className={gClasses.colorUtil}
+											/>
+										</ListItemIcon>
+										<ListItemText primary={'Profile'} />
+									</ListItem>
+									<ListItem button onClick={onLogOut}>
+										<ListItemIcon>
+											<ExitToAppIcon
+												className={gClasses.colorUtil}
+											/>
+										</ListItemIcon>
+										<ListItemText primary={'Logout'} />
+									</ListItem>
+								</List>
+							</Grid>
+						</Grid>
+					</div>
+				)}
 				<Drawer open={openDrawer} handleClose={handleCloseDrawer} />
 				<Box className={classes.wrapper}>
 					<div className={classes.logoWrapper}>

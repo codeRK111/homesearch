@@ -1,12 +1,16 @@
-const Lead = require('./models/leadsModel');
+const sendEmail = require('./utils/sendFromSMTp');
 
-Lead.updateMany(
-	{
-		bdm: '615c528ab653662e4099dba0',
-	},
-	{
-		saleStaffType: 'assistantSalesManager',
+async function test() {
+	try {
+		const res = await sendEmail(
+			'rakeshchandrra@gmail.com',
+			'payment',
+			'For payment purpose'
+		);
+		console.log(res);
+	} catch (error) {
+		console.log(JSON.stringify({ message: error.message }));
 	}
-)
-	.then((c) => console.log(c))
-	.catch((e) => console.log(e));
+}
+
+// test();

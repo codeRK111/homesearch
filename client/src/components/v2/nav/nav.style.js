@@ -70,12 +70,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 	min: {
 		background: theme.shadowColor,
-		transition: 'min-height .3s ease-in-out',
+		transition: 'display .3s ease-in-out,min-height .3s ease-in-out',
 		minHeight: 5,
+		display: 'none',
 	},
 
 	max: {
-		transition: 'min-height .3s ease-in-out',
+		display: 'block',
+		transition: 'display .3s ease-in-out,min-height .3s ease-in-out,',
 		minHeight: 200,
 		padding: '1rem 3rem',
 	},

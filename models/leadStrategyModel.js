@@ -17,7 +17,6 @@ const leadsStrategySchema = new Schema(
 		},
 		photo: {
 			type: String,
-			required: [true, 'A photo must be required'],
 		},
 		description: {
 			type: String,
