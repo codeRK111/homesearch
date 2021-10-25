@@ -417,7 +417,7 @@ const AddPropertyLeadForm: React.FC<IAddPropertyLeadForm> = ({
 											<FCheckbox
 												type="checkbox"
 												name="availableFor"
-												value={'Job holder (Men)'}
+												value={'Job holder (Women)'}
 												label="Job holder (Women)"
 											/>
 										</Grid>
