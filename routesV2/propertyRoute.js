@@ -1,5 +1,6 @@
 const express = require('express');
 const propertyController = require('../controllersV2/propertyController');
+const fileUploadController = require('../controllersV2/fileUploadController');
 const authController = require('../controllers/authController');
 const adminController = require('../controllers/adminController');
 
@@ -25,6 +26,17 @@ router.post(
 	'/user/post-property-rent',
 	authController.protect,
 	propertyController.addPropertyByUserForRent
+);
+router.patch(
+	'/property-lead/image/:id',
+	adminController.protect,
+	fileUploadController.uploadPropertyLeadPhoto,
+	propertyController.uploadSingleLeadPhoto
+);
+router.post(
+	'/property-lead',
+	adminController.protect,
+	propertyController.createPropertyLead
 );
 router.get(
 	'/user/my-properties/:type',

@@ -222,6 +222,7 @@ exports.uploadDirector = builder.single('image');
 exports.uploadLeadStrategy = leadStrategy.single('photo');
 exports.uploadCity = city.single('image');
 exports.uploadPropertiesPhoto = properties.array('images');
+exports.uploadPropertyLeadPhoto = properties.single('photo');
 exports.uploadProjectPhotosV2 = projects.fields([
 	{ name: 'thumbnailImage', maxCount: 1 },
 	{ name: 'masterFloorPlan', maxCount: 1 },

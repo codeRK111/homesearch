@@ -12,11 +12,13 @@ import React from 'react';
 
 interface IFSelect {
 	label: string;
+	showNone?: boolean;
 }
 
-const FSelect: React.FC<IFSelect & SelectProps & FieldHookConfig<string>> = (
-	props
-) => {
+const FSelect: React.FC<IFSelect & SelectProps & FieldHookConfig<string>> = ({
+	showNone = true,
+	...props
+}) => {
 	const [field, meta] = useField(props);
 	let helperText = (meta.value || meta.touched) && meta.error;
 	return (
@@ -31,9 +33,11 @@ const FSelect: React.FC<IFSelect & SelectProps & FieldHookConfig<string>> = (
 				{...field}
 				{...props}
 			>
-				<MenuItem value="">
-					<em>None</em>
-				</MenuItem>
+				{showNone && (
+					<MenuItem value="">
+						<em>None</em>
+					</MenuItem>
+				)}
 				{props.children}
 			</Select>
 			{!!helperText && <FormHelperText>Error</FormHelperText>}

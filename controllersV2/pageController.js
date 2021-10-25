@@ -134,7 +134,7 @@ exports.getAddProjectPageInfo = catchAsync(async (req, res, next) => {
 	});
 });
 exports.getAddPropertyPageInfo = catchAsync(async (req, res, next) => {
-	const amenities = await Amenity.find();
+	const amenities = await Amenity.find().sort({ name: 1 });
 	const furnishes = await Furnish.find();
 	const legalClearances = [
 		{

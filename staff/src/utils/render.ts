@@ -89,5 +89,32 @@ export const renderStaffRole = (type: StaffType): string => {
 	}
 };
 
+export const renderPropertyOnFoor = (totalFloors: number) => {
+	const numbers = [
+		{
+			value: 'Ground Fooor',
+			label: 'Ground Fooor',
+		},
+	];
+	for (let index = 1; index <= totalFloors; index++) {
+		numbers.push({
+			value: `${index}`,
+			label: `${index}`,
+		});
+	}
+
+	if (totalFloors > 1) {
+		numbers.push({
+			value: 'Entire Building',
+			label: 'Entire Building',
+		});
+	}
+	return numbers;
+};
+
+export const StaticPaths = {
+	property: (image: string) => `/assets/properties/${image}`,
+};
+
 export const capitalizeFirstLetter = (input: string): string =>
 	input.charAt(0).toUpperCase() + input.slice(1);

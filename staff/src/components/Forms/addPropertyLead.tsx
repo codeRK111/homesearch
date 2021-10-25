@@ -1,50 +1,110 @@
 import * as Yup from 'yup';
 
 import {
+	AddPropertyLeadData,
+	BooleanValue,
+} from '../../model/propertyLead.interface';
+import {
+	AddPropertyPageResponse,
+	asyncGetAddPropertyPageResources,
+} from '../../API/page';
+import {
 	Button,
 	CircularProgress,
 	Grid,
-	IconButton,
+	MenuItem,
 	Typography,
 } from '@material-ui/core';
 import { Form, Formik, FormikHelpers } from 'formik';
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
-import { AddPropertyLeadData } from '../../model/propertyLead.interface';
 import { City } from '../../model/city.interface';
-import CloseIcon from '@material-ui/icons/Close';
 import FCheckbox from '../Formik/checkbox';
 import FRadio from '../Formik/radio';
+import FSelect from '../Formik/select';
 import FTextField from '../Formik/input';
-import { LeadSource } from '../../model/lead.interface';
 import { Location } from '../../model/location.interface';
+import { PFacing } from '../../model/property.interface';
 import SearchCity from '../Search/city';
 import SearchLocation from '../Search/location';
-import { SpaceBetween } from '../UI/Flex';
+import { asyncAddPropertyLead } from '../../API/property';
+import { renderPropertyOnFoor } from '../../utils/render';
 
-const AddPropertyLeadForm = () => {
-	const inputEl = useRef<null | HTMLInputElement>(null);
+interface IAddPropertyLeadForm {
+	lat: null | number;
+	lng: null | number;
+	onSuccess: (id: string) => void;
+}
+
+const prepareData = (data: AddPropertyLeadData): any => {
+	if (data.for === 'sale') {
+		const deleteFields: Array<keyof AddPropertyLeadData> = [
+			'availableFor',
+			'maintainanceFee',
+			'petAllowed',
+		];
+		deleteFields.forEach((c) => {
+			if (data[c] !== undefined) {
+				delete data[c];
+			}
+		});
+	}
+	return data;
+};
+
+const AddPropertyLeadForm: React.FC<IAddPropertyLeadForm> = ({
+	lat,
+	lng,
+	onSuccess,
+}) => {
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
+	const [fetchData, setFetchData] = useState<AddPropertyPageResponse | null>(
+		null
+	);
+	const [fetchLoading, setFetchLoading] = useState(false);
+	const [addLoading, setAddLoading] = useState(false);
 	const validationSchema = Yup.object({
-		source: Yup.mixed()
-			.oneOf([
-				LeadSource.Consultant,
-				LeadSource.Outsource,
-				LeadSource.SocialMedia,
-				LeadSource.Staff,
-				LeadSource.Website,
-				LeadSource.Homesearch,
-			])
-			.required('Source of lead required'),
 		name: Yup.string(),
-		preferedLocation: Yup.string().max(50, 'Max 50 characters allowed'),
 		email: Yup.string().email('Invalid email'),
 		number: Yup.string()
 			.length(10, '10 digits required')
 			.matches(/^\d{10}$/, 'Invalid Number')
 			.required('Phone number required'),
+		minPrice: Yup.string()
+			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g, 'Invalid Number')
+			.required('Min price required'),
+		maxPrice: Yup.string()
+			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g, 'Invalid Number')
+			.required('Max price required'),
+		maintainanceFee: Yup.string().matches(
+			/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g,
+			'Invalid Number'
+		),
+		superBuiltupArea: Yup.string().matches(
+			/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g,
+			'Invalid Number'
+		),
+		carpetArea: Yup.string().matches(
+			/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g,
+			'Invalid Number'
+		),
 	});
+
+	const fetchResources = useCallback(async () => {
+		try {
+			setFetchLoading(true);
+			const data = await asyncGetAddPropertyPageResources();
+			setFetchData(data);
+		} catch (error: any) {
+			setSnackbar({
+				open: true,
+				message: error.message,
+				severity: 'error',
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 	const initialValues: AddPropertyLeadData = {
 		name: '',
 		email: '',
@@ -54,31 +114,49 @@ const AddPropertyLeadForm = () => {
 		maxPrice: 0,
 		propertyRequirements: [],
 		availableFor: [],
+		amenities: [],
 		city: null,
 		for: 'rent',
 		photos: [],
-	};
-
-	// State
-	const [loading, setLoading] = useState(false);
-	const [images, setImages] = useState<any>(null);
-
-	// Callbacks
-	const fileSelectedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files) {
-			setImages(e.target.files);
-		}
+		facing: PFacing.East,
+		petAllowed: BooleanValue.True,
+		floor: 1,
+		propertyOnFloor: '',
+		maintainanceFee: 0,
+		superBuiltupArea: '',
+		carpetArea: '',
 	};
 
 	const onSubmit = async (
 		values: AddPropertyLeadData,
 		helpers: FormikHelpers<AddPropertyLeadData>
-	) => {};
+	) => {
+		const inputData = prepareData(values);
+		try {
+			setAddLoading(true);
+			const resp = await asyncAddPropertyLead({ lat, lng, ...inputData });
+			setAddLoading(false);
+			onSuccess(resp.id);
+			helpers.resetForm();
+		} catch (error: any) {
+			setAddLoading(false);
+			setSnackbar({
+				open: true,
+				message: error.message,
+				severity: 'error',
+			});
+		}
+	};
+
+	useEffect(() => {
+		fetchResources();
+	}, [fetchResources]);
 	return (
 		<Formik
 			initialValues={initialValues}
 			onSubmit={onSubmit}
 			validationSchema={validationSchema}
+			enableReinitialize
 		>
 			{({ values, setFieldValue, touched, errors }) => (
 				<Form>
@@ -101,13 +179,41 @@ const AddPropertyLeadForm = () => {
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<FTextField name={'name'} label="Name" />
+							<FRadio
+								row
+								groupLabel="Property Facing"
+								name={'facing'}
+								options={[
+									{
+										label: 'East',
+										value: PFacing.East,
+									},
+									{
+										label: 'West',
+										value: PFacing.West,
+									},
+									{
+										label: 'North',
+										value: PFacing.North,
+									},
+									{
+										label: 'South',
+										value: PFacing.South,
+									},
+								]}
+							/>
 						</Grid>
 						<Grid item xs={12}>
-							<FTextField name={'email'} label="Email" />
+							<FTextField name={'name'} label="Client Name" />
 						</Grid>
 						<Grid item xs={12}>
-							<FTextField name={'number'} label="Phone Number" />
+							<FTextField name={'email'} label="Client Email" />
+						</Grid>
+						<Grid item xs={12}>
+							<FTextField
+								name={'number'}
+								label="Client Phone Number"
+							/>
 						</Grid>
 						<Grid item xs={12}>
 							<SearchCity
@@ -191,8 +297,32 @@ const AddPropertyLeadForm = () => {
 									<FCheckbox
 										type="checkbox"
 										name="propertyRequirements"
+										value={'5BHK'}
+										label="5BHK"
+									/>
+								</Grid>
+								<Grid item>
+									<FCheckbox
+										type="checkbox"
+										name="propertyRequirements"
 										value={'Fully Furnished'}
 										label="Fully Furnished"
+									/>
+								</Grid>
+								<Grid item>
+									<FCheckbox
+										type="checkbox"
+										name="propertyRequirements"
+										value={'Semi Furnished'}
+										label="Semi Furnished"
+									/>
+								</Grid>
+								<Grid item>
+									<FCheckbox
+										type="checkbox"
+										name="propertyRequirements"
+										value={'Unfurnished'}
+										label="Unfurnished"
 									/>
 								</Grid>
 							</Grid>
@@ -203,77 +333,132 @@ const AddPropertyLeadForm = () => {
 						<Grid item xs={6}>
 							<FTextField name={'maxPrice'} label="Max Budget" />
 						</Grid>
+						<Grid item xs={6}>
+							<FTextField
+								name={'superBuiltupArea'}
+								label="SBA in Sq Ft"
+							/>
+						</Grid>
+						<Grid item xs={6}>
+							<FTextField
+								name={'carpetArea'}
+								label="CA in Sq. ft"
+							/>
+						</Grid>
 						{values.for === 'rent' && (
 							<Grid item xs={12}>
+								<FTextField
+									name={'maintainanceFee'}
+									label="Maintainance Fee (If any)"
+								/>
+							</Grid>
+						)}
+						<Grid item xs={6}>
+							<FTextField
+								name={'floor'}
+								label="Total Number of floor"
+							/>
+						</Grid>
+						<Grid item xs={6}>
+							<FSelect
+								name={'propertyOnFloor'}
+								label="Property On Floor"
+								showNone={false}
+							>
+								{renderPropertyOnFoor(
+									values.floor as number
+								).map((c, i) => (
+									<MenuItem value={c.value} key={i}>
+										{c.label}
+									</MenuItem>
+								))}
+							</FSelect>
+						</Grid>
+						{values.for === 'rent' && (
+							<>
+								<Grid item xs={12}>
+									<Typography variant="caption">
+										Available For
+									</Typography>
+									<Grid container spacing={1}>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="availableFor"
+												value={'Family'}
+												label="Family"
+											/>
+										</Grid>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="availableFor"
+												value={'Bachelors (Men)'}
+												label="Bachelors (Men)"
+											/>
+										</Grid>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="availableFor"
+												value={'Bachelors (Women)'}
+												label="Bachelors (Women)"
+											/>
+										</Grid>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="availableFor"
+												value={'Job holder (Men)'}
+												label="Job holder (Men)"
+											/>
+										</Grid>
+										<Grid item>
+											<FCheckbox
+												type="checkbox"
+												name="availableFor"
+												value={'Job holder (Men)'}
+												label="Job holder (Women)"
+											/>
+										</Grid>
+									</Grid>
+								</Grid>
+								<Grid item xs={12}>
+									<FSelect
+										name={'petAllowed'}
+										label="Pet Friendly"
+										showNone={false}
+									>
+										<MenuItem value={BooleanValue.True}>
+											Yes
+										</MenuItem>
+										<MenuItem value={BooleanValue.False}>
+											No
+										</MenuItem>
+									</FSelect>
+								</Grid>
+							</>
+						)}
+						{fetchData && (
+							<Grid item xs={12}>
 								<Typography variant="caption">
-									Available For
+									Amenities
 								</Typography>
 								<Grid container spacing={1}>
-									<Grid item>
-										<FCheckbox
-											type="checkbox"
-											name="availableFor"
-											value={'Family'}
-											label="Family"
-										/>
-									</Grid>
-									<Grid item>
-										<FCheckbox
-											type="checkbox"
-											name="availableFor"
-											value={'Bachelors (Men)'}
-											label="Bachelors (Men)"
-										/>
-									</Grid>
-									<Grid item>
-										<FCheckbox
-											type="checkbox"
-											name="availableFor"
-											value={'Bachelors (Women)'}
-											label="Bachelors (Women)"
-										/>
-									</Grid>
-									<Grid item>
-										<FCheckbox
-											type="checkbox"
-											name="availableFor"
-											value={'Job holder (Men)'}
-											label="Job holder (Men)"
-										/>
-									</Grid>
-									<Grid item>
-										<FCheckbox
-											type="checkbox"
-											name="availableFor"
-											value={'Job holder (Men)'}
-											label="Job holder (Women)"
-										/>
-									</Grid>
+									{fetchData.amenities.map((c) => (
+										<Grid item xs={6} md={2} key={c.id}>
+											<FCheckbox
+												type="checkbox"
+												name="amenities"
+												value={c.id}
+												label={c.name}
+											/>
+										</Grid>
+									))}
 								</Grid>
 							</Grid>
 						)}
-						<Grid item xs={12}>
-							<SpaceBetween>
-								<input
-									type="file"
-									multiple
-									ref={inputEl}
-									onChange={fileSelectedHandler}
-								/>
-								{images && (
-									<IconButton
-										onClick={() => {
-											setImages(null);
-											if (inputEl.current) {
-												inputEl.current.value = '';
-											}
-										}}
-									>
-										<CloseIcon />
-									</IconButton>
-								)}
-							</SpaceBetween>
-						</Grid>
+
 						<Grid item xs={12} md={2}>
 							<Button
 								fullWidth
@@ -281,9 +466,9 @@ const AddPropertyLeadForm = () => {
 								color={'primary'}
 								size={'large'}
 								type={'submit'}
-								disabled={loading}
+								disabled={addLoading}
 								endIcon={
-									loading ? (
+									addLoading ? (
 										<CircularProgress
 											size={20}
 											color={'inherit'}
@@ -293,7 +478,7 @@ const AddPropertyLeadForm = () => {
 									)
 								}
 							>
-								Submit
+								Next
 							</Button>
 						</Grid>
 					</Grid>

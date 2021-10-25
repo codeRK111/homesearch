@@ -1,4 +1,5 @@
 const Property = require('./../models/propertyModel');
+const PropertyLead = require('./../models/propertyLeadModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const mongoose = require('mongoose');
@@ -575,4 +576,39 @@ exports.searchProperty = catchAsync(async (req, res, next) => {
 			properties,
 		},
 	});
+});
+
+exports.createPropertyLead = catchAsync(async (req, res, next) => {
+	const inputData = req.body;
+	inputData.createdBy = req.admin.id;
+	const propertyLead = await PropertyLead.create(inputData);
+	res.status(200).json({
+		status: 'success',
+		data: {
+			propertyLead,
+		},
+	});
+});
+exports.uploadSingleLeadPhoto = catchAsync(async (req, res, next) => {
+	if (req.file) {
+		console.log(req.file);
+		const propertyLead = await PropertyLead.findByIdAndUpdate(
+			req.params.id,
+			{
+				$push: { photos: req.file.filename },
+			},
+			{
+				runValidators: true,
+				new: true,
+			}
+		);
+		res.status(200).json({
+			status: 'success',
+			data: {
+				propertyLead,
+			},
+		});
+	} else {
+		return next(new AppError('Photo not found'));
+	}
 });

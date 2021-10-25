@@ -5,14 +5,38 @@ import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 import AddPropertyLeadForm from '../../components/Forms/addPropertyLead';
 import LoadingBackdrop from '../../components/Backdrop';
 import { StaffType } from '../../model/staff.interface';
+import UploadLeadImage from './uploadImage';
 import { withAccess } from '../../components/HOC/withRole';
 
 const AddPropertyLeadPage = () => {
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	const [lat, setLat] = useState<null | number>(null);
+	const [id, setId] = useState<null | string>();
 	const [fetchGeoLocation, setFetchGeoLocation] = useState(false);
 	const [lng, setLng] = useState<null | number>(null);
 	const [showForm, setShowForm] = useState(false);
+
+	const onSuccess = (id: string) => {
+		setId(id);
+	};
+
+	const renderChild = (): JSX.Element => {
+		if (showForm) {
+			if (id) {
+				return <UploadLeadImage id={id} />;
+			} else {
+				return (
+					<AddPropertyLeadForm
+						lat={lat}
+						lng={lng}
+						onSuccess={onSuccess}
+					/>
+				);
+			}
+		} else {
+			return <></>;
+		}
+	};
 
 	const getLocation = useCallback(() => {
 		setFetchGeoLocation(true);
@@ -47,6 +71,9 @@ const AddPropertyLeadPage = () => {
 	useEffect(() => {
 		getLocation();
 	}, [getLocation]);
+	useEffect(() => {
+		setId('');
+	}, []);
 
 	return (
 		<Container>
@@ -58,11 +85,7 @@ const AddPropertyLeadPage = () => {
 				<Typography variant="caption" display="block" gutterBottom>
 					* Please post at the exact location of property
 				</Typography>
-				{showForm && (
-					<Box>
-						<AddPropertyLeadForm />
-					</Box>
-				)}
+				{renderChild()}
 			</Box>
 		</Container>
 	);
