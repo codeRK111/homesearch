@@ -46,7 +46,6 @@ const UploadLeadImage: React.FC<IUploadLeadImage> = ({ id }) => {
 
 	const uploadImage = async (image: File) => {
 		try {
-			setLoading(true);
 			const resp = await asyncAddPropertyLeadPhoto(id, image);
 			setLoading(false);
 			setPhotos(resp.photos);
@@ -84,11 +83,11 @@ const UploadLeadImage: React.FC<IUploadLeadImage> = ({ id }) => {
 			// First argument is the file object from the input
 			// Second argument is the options object with the
 			// config
+			setLoading(true);
 			imageCompression(file, options)
 				.then((compressedBlob) => {
 					// Compressed file is of Blob type
 					// You can drop off here if you want to work with a Blob file
-					console.log(compressedBlob);
 
 					// If you want to work with the File
 					// Let's convert it here, by adding a couple of attributes
@@ -103,6 +102,12 @@ const UploadLeadImage: React.FC<IUploadLeadImage> = ({ id }) => {
 					// Here you are free to call any method you are gonna use to upload your file example uploadToCloudinaryUsingPreset(convertedBlobFile)
 				})
 				.catch((e) => {
+					setLoading(false);
+					setSnackbar({
+						open: true,
+						message: e.message,
+						severity: 'error',
+					});
 					// Show the user a toast message or notification that something went wrong while compressing file
 				});
 		}
