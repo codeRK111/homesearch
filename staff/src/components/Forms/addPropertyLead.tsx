@@ -207,7 +207,11 @@ const AddPropertyLeadForm: React.FC<IAddPropertyLeadForm> = ({
 							<FTextField name={'name'} label="Client Name" />
 						</Grid>
 						<Grid item xs={12}>
-							<FTextField name={'email'} label="Client Email" />
+							<FTextField
+								name={'email'}
+								label="Client Email"
+								type="email"
+							/>
 						</Grid>
 						<Grid item xs={12}>
 							<FTextField

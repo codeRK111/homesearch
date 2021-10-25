@@ -5,6 +5,7 @@ import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { StaticPaths } from '../../utils/render';
 import { asyncAddPropertyLeadPhoto } from '../../API/property';
+import imageCompression from 'browser-image-compression';
 import { makeStyles } from '@material-ui/core/styles';
 
 interface IUploadLeadImage {
@@ -67,8 +68,43 @@ const UploadLeadImage: React.FC<IUploadLeadImage> = ({ id }) => {
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (loading) return;
 		if (e.target.files) {
-			const t = e.target.files[0];
-			uploadImage(t);
+			const file = e.target.files[0];
+
+			// Compression config
+			const options = {
+				// As the key specify the maximum size
+				// Leave blank for infinity
+				maxSizeMB: 0.5,
+				// Use webworker for faster compression with
+				// the help of threads
+				useWebWorker: true,
+			};
+
+			// Initialize compression
+			// First argument is the file object from the input
+			// Second argument is the options object with the
+			// config
+			imageCompression(file, options)
+				.then((compressedBlob) => {
+					// Compressed file is of Blob type
+					// You can drop off here if you want to work with a Blob file
+					console.log(compressedBlob);
+
+					// If you want to work with the File
+					// Let's convert it here, by adding a couple of attributes
+
+					// Conver the blob to file
+					const convertedBlobFile = new File(
+						[compressedBlob],
+						file.name,
+						{ type: file.type, lastModified: Date.now() }
+					);
+					uploadImage(convertedBlobFile);
+					// Here you are free to call any method you are gonna use to upload your file example uploadToCloudinaryUsingPreset(convertedBlobFile)
+				})
+				.catch((e) => {
+					// Show the user a toast message or notification that something went wrong while compressing file
+				});
 		}
 	};
 	return (
