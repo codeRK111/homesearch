@@ -103,7 +103,8 @@ const propertyLeadSchema = new Schema(
 			},
 		],
 		location: {
-			type: String,
+			type: mongoose.Schema.ObjectId,
+			ref: 'Location',
 		},
 
 		city: {

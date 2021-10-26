@@ -134,6 +134,7 @@ const AddPropertyLeadForm: React.FC<IAddPropertyLeadForm> = ({
 		const inputData = prepareData(values);
 		try {
 			setAddLoading(true);
+			console.log(inputData);
 			const resp = await asyncAddPropertyLead({ lat, lng, ...inputData });
 			setAddLoading(false);
 			onSuccess(resp.id);

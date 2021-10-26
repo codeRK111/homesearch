@@ -34,7 +34,7 @@ const PaymentLinkPage = lazy(() => import('./pages/PaymentLink'));
 const AddLeadPage = lazy(() => import('./pages/AddLead'));
 const AddPropertyPage = lazy(() => import('./pages/AddProperty'));
 const BlogsPage = lazy(() => import('./pages/BlogList'));
-const BrowsePropertiesPage = lazy(() => import('./pages/BrowseProperties'));
+const BrowsePropertiesPage = lazy(() => import('./pages/BrowseProperties/v2'));
 const LeadStrategyPage = lazy(() => import('./pages/LeadStrategy'));
 const LoginPage = lazy(() => import('./pages/Login'));
 const ManageLeadPage = lazy(() => import('./pages/ManageLead'));

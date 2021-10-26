@@ -25,6 +25,9 @@ router
 	.route('/browse-leads')
 	.post(authController.protect, leadController.browseLeads);
 router
+	.route('/search-all')
+	.post(authController.protect, leadController.searchAll);
+router
 	.route('/get-all')
 	.post(authController.protect, leadController.getAllLeads);
 router

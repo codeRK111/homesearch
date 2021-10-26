@@ -6,6 +6,7 @@ import {
 	ILead,
 } from './../../model/lead.interface';
 
+import { PropertyLead } from '../../model/propertyLead.interface';
 import { ServerResponse } from '../../model/apiResponse.interface';
 import { StaffType } from '../../model/staff.interface';
 
@@ -311,5 +312,32 @@ export const asyncGetGMLeadCounts = async (
 	} catch (e: any) {
 		setLoading(false);
 		throw new Error(asyncError(e));
+	}
+};
+
+export type SearchAllResponse = {
+	leads: Array<ILead>;
+	sales: Array<PropertyLead>;
+	totalLeadDocs: number;
+	totalSalesDocs: number;
+};
+
+export const searchAll = async (input: any): Promise<SearchAllResponse> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.post<
+			unknown,
+			AxiosResponse<ServerResponse<SearchAllResponse>>
+		>(`${V2EndPoint.Lead}/search-all`, input, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const staffData = resp.data.data;
+
+		return staffData;
+	} catch (error: any) {
+		throw new Error(asyncError(error));
 	}
 };

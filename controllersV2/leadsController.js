@@ -1,5 +1,6 @@
 const AppError = require('./../utils/appError');
 const Leads = require('./../models/leadsModel');
+const PropertyLead = require('./../models/propertyLeadModel');
 const catchAsync = require('./../utils/catchAsync');
 const fs = require('fs');
 const path = require('path');
@@ -659,5 +660,93 @@ exports.browseLeads = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: { leads, totalDocs },
+	});
+});
+
+exports.searchAll = catchAsync(async (req, res, next) => {
+	// Demo Input Data
+	// {
+	// 	"leadsPage": 1,
+	// 	"leadsLimit": 10,
+	// 	"salesPage": 1,
+	// 	"salesLimit": 10,
+	// 	"city": "5f2cf831ab6d0b12da114161",
+	// 	"location": "5f4667f2f1998651d7854d08",
+	// 	"locationName": "Patia",
+	// 	"for": "rent",
+	// 	"facing": "north",
+	// 	"propertyRequirements": [
+	// 		"Flat",
+	// 		"Duplex",
+	// 		"1BHK"
+	// 	],
+	// 	"availableFor": [
+	// 		"Bachelors (Men)",
+	// 		"Bachelors (Women)"
+	// 	]
+	// }
+
+	// Leads Pagination
+	const leadsPage = req.body.leadsPage * 1 || 1;
+	const leadsLimit = req.body.leadsLimit * 1 || 10;
+	const leadsSkip = (leadsPage - 1) * leadsLimit;
+
+	// Sales Pagination
+	const salesPage = req.body.salesPage * 1 || 1;
+	const salesLimit = req.body.salesLimit * 1 || 10;
+	const salesSkip = (salesPage - 1) * salesLimit;
+
+	const leadsFilter = {};
+	const salesFilter = {};
+
+	if (req.body.city) {
+		leadsFilter.city = req.body.city;
+		salesFilter.city = req.body.city;
+	}
+	if (
+		req.body.propertyRequirements &&
+		req.body.propertyRequirements.length > 0
+	) {
+		leadsFilter.propertyRequirements = {
+			$all: req.body.propertyRequirements,
+		};
+		salesFilter.propertyRequirements = {
+			$all: req.body.propertyRequirements,
+		};
+	}
+	if (req.body.availableFor && req.body.availableFor.length > 0) {
+		salesFilter.availableFor = {
+			$all: req.body.availableFor,
+		};
+	}
+	if (req.body.for) {
+		salesFilter.for = req.body.for;
+	}
+	if (req.body.facing) {
+		salesFilter.facing = req.body.facing;
+	}
+	if (req.body.location) {
+		salesFilter.location = req.body.location;
+		if (req.body.locationName) {
+			leadsFilter.preferedLocation = {
+				$regex: req.body.locationName,
+				$options: 'i',
+			};
+		}
+	}
+
+	const totalLeadDocs = await Leads.countDocuments(leadsFilter);
+	const leads = await Leads.find(leadsFilter)
+		.sort('-createdAt')
+		.skip(leadsSkip)
+		.limit(leadsLimit);
+	const totalSalesDocs = await PropertyLead.countDocuments(salesFilter);
+	const sales = await PropertyLead.find(salesFilter)
+		.sort('-createdAt')
+		.skip(salesSkip)
+		.limit(salesLimit);
+	res.status(200).json({
+		status: 'success',
+		data: { leads, sales, totalLeadDocs, totalSalesDocs },
 	});
 });
