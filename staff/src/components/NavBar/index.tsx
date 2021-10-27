@@ -86,6 +86,14 @@ const NavBar = () => {
 						</Typography>
 					)}
 
+					<Button
+						color="inherit"
+						onClick={onLogOut}
+						disabled={loading}
+					>
+						Share Package Link
+					</Button>
+
 					{user && (
 						<Button
 							color="inherit"

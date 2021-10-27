@@ -168,6 +168,13 @@ const leadsSchema = new Schema(
 		stage: {
 			type: Number,
 			default: 0,
+			// 0 - No Action | Not Intersted
+			// 1 - Client SUpport
+			// 2 - Hold Date
+			// 3 - BDM | ASM
+			// 4 - SE
+			// 9 - Post Property
+			// 10 - Close
 		},
 		city: {
 			type: mongoose.Schema.ObjectId,

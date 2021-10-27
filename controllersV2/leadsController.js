@@ -129,9 +129,9 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 			}
 			break;
 		case 'clientSupport':
-			filter.clientSupport = req.admin.id;
 			filter.status = 'active';
-			filter.stage = 1;
+			// filter.clientSupport = req.admin.id;
+			// filter.stage = 1;
 			if (req.body.stage) {
 				filter.stage = req.body.stage;
 			}
