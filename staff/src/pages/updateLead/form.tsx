@@ -73,6 +73,14 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 			.length(10, '10 digits required')
 			.matches(/^\d{10}$/, 'Invalid Number')
 			.required('Phone number required'),
+		minPrice: Yup.string().matches(
+			/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g,
+			'Invalid Number'
+		),
+		maxPrice: Yup.string().matches(
+			/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g,
+			'Invalid Number'
+		),
 	});
 
 	// State
