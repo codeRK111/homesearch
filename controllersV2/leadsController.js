@@ -703,6 +703,10 @@ exports.searchAll = catchAsync(async (req, res, next) => {
 		leadsFilter.city = req.body.city;
 		salesFilter.city = req.body.city;
 	}
+	if (req.body.myData) {
+		leadsFilter.createdBy = req.admin.id;
+		salesFilter.createdBy = req.admin.id;
+	}
 	if (
 		req.body.propertyRequirements &&
 		req.body.propertyRequirements.length > 0

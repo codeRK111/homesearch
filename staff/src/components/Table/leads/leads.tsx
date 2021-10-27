@@ -87,7 +87,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: hold ? 12 : 11 }, (_, i) => i + 1).map(
+			{Array.from({ length: hold ? 14 : 13 }, (_, i) => i + 1).map(
 				(c) => (
 					<StyledTableCell key={c}>
 						<CircularProgress size={15} color="inherit" />
@@ -131,7 +131,8 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							<StyledTableCell>Requirement Type</StyledTableCell>
 							<StyledTableCell>Property Type</StyledTableCell>
 							<StyledTableCell>Budget</StyledTableCell>
-							<StyledTableCell>Assigned On</StyledTableCell>
+							<StyledTableCell>Created On</StyledTableCell>
+							<StyledTableCell>Posted By</StyledTableCell>
 							{hold && (
 								<StyledTableCell>Reconnect on</StyledTableCell>
 							)}
@@ -224,7 +225,10 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											{renderCellData(row.maxPrice)}
 										</StyledTableCell>
 										<StyledTableCell>
-											{parseDate(row.assignedAt)}
+											{parseDate(row.createdAt as Date)}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.createdBy?.name}
 										</StyledTableCell>
 										{hold && (
 											<StyledTableCell>
