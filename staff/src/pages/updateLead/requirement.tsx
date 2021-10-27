@@ -264,6 +264,16 @@ export default function ClientRequirement({
 							label="Post Requirement"
 						/>
 					)}
+					<FormControlLabel
+						value="package"
+						control={<Radio />}
+						label="Package"
+					/>
+					<FormControlLabel
+						value="brokerage"
+						control={<Radio />}
+						label="Brokerage"
+					/>
 				</RadioGroup>
 			</FormControl>
 			{action === 'hold' && (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import AppBar from '@material-ui/core/AppBar';
 import AppDrawer from '../Drawer';
 import Button from '@material-ui/core/Button';
@@ -9,6 +9,7 @@ import { CircularProgress } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
+import SharePackageLinkModal from '../Dialogs/sharePackage';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { asyncLogout } from '../../API/auth';
@@ -30,16 +31,21 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const NavBar = () => {
 	const classes = useStyles();
+	 const smallScreen = useMediaQuery('(max-width:600px)');
 	const { user } = useTypedSelector((state) => state.auth);
 	const { logOut } = useRepositoryAction(ResourceType.Auth);
 
 	// State
 	const [openDrawer, setOpenDrawer] = useState(false);
+	const [sharePackage, setSharePackage] = useState(false);
 	const [loading, setLoading] = useState(false);
 
 	// Callbacks
 	const manageDrawerState = (status: boolean) => () => {
 		setOpenDrawer(status);
+	};
+	const manageSharePackage = (status: boolean) => () => {
+		setSharePackage(status);
 	};
 
 	const onLogOut = async () => {
@@ -59,6 +65,10 @@ const NavBar = () => {
 				<AppDrawer
 					open={openDrawer}
 					onClose={manageDrawerState(false)}
+				/>
+				<SharePackageLinkModal
+					open={sharePackage}
+					handleClose={manageSharePackage(false)}
 				/>
 				<Toolbar>
 					{user && (
@@ -86,13 +96,13 @@ const NavBar = () => {
 						</Typography>
 					)}
 
-					<Button
+					{!smallScreen && <Button
 						color="inherit"
-						onClick={onLogOut}
+						onClick={manageSharePackage(true)}
 						disabled={loading}
 					>
 						Share Package Link
-					</Button>
+					</Button>}
 
 					{user && (
 						<Button

@@ -1,4 +1,11 @@
-import { Box, Container, Grid, Typography } from '@material-ui/core';
+import {
+	Box,
+	Container,
+	FormControlLabel,
+	Grid,
+	Switch,
+	Typography,
+} from '@material-ui/core';
 import React, { useCallback, useEffect, useState } from 'react';
 import { SearchAllResponse, searchAll } from '../../../API/lead';
 
@@ -13,6 +20,7 @@ import TablePagination from '../../../components/Table/pagination';
 const SearchProperty = () => {
 	// State
 	const [loading, setLoading] = useState(false);
+	const [myData, setMyData] = useState(false);
 	const [tab, setTab] = useState(0);
 	const [city, setCity] = useState<City | null>(null);
 	const [leadsPage, setLeadsPage] = useState(1);
@@ -45,9 +53,18 @@ const SearchProperty = () => {
 	) => {
 		setSalesPage(pageNumber);
 	};
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setMyData(event.target.checked);
+	};
 
 	const fetchProperties = useCallback(async () => {
-		const filter: any = { leadsPage, leadsLimit, salesPage, salesLimit };
+		const filter: any = {
+			leadsPage,
+			leadsLimit,
+			salesPage,
+			salesLimit,
+			myData,
+		};
 		if (city) {
 			filter.city = city.id;
 		}
@@ -87,6 +104,7 @@ const SearchProperty = () => {
 		salesPage,
 		salesLimit,
 		location,
+		myData,
 	]);
 
 	useEffect(() => {
@@ -106,6 +124,7 @@ const SearchProperty = () => {
 		setPropertyRequirements,
 		availableFor,
 		setAvailableFor,
+		myData,
 	};
 	return (
 		<Container maxWidth="xl">
@@ -118,6 +137,19 @@ const SearchProperty = () => {
 						<SideBar {...sidebarProps} />
 					</Grid>
 					<Grid item xs={12} md={9}>
+						<Box>
+							<FormControlLabel
+								control={
+									<Switch
+										checked={myData}
+										onChange={handleChange}
+										name="checkedA"
+									/>
+								}
+								label="My Posted Data"
+							/>
+						</Box>
+
 						<Tab value={tab} setValue={setTab} />
 						{tab === 0 && (
 							<Box mt="1rem">
