@@ -88,6 +88,7 @@ const TenantPackageConfirmationPage = ({
 	match: {
 		params: { packageName },
 	},
+	...props
 }) => {
 	const [initialLoading, setInitialLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
@@ -99,6 +100,10 @@ const TenantPackageConfirmationPage = ({
 		orderWrapper,
 		lineThrough,
 	} = useStyles();
+	const getQueryString = () => {
+		const query = new URLSearchParams(props.location.search);
+		return query.get('hs');
+	};
 
 	const onPayment = () => {
 		if (!isAuthenticated) {
@@ -187,6 +192,9 @@ const TenantPackageConfirmationPage = ({
 						mainAmount,
 						paidAmount,
 					};
+					if (getQueryString()) {
+						data.homeSearchStaff = getQueryString();
+					}
 
 					await axios.post(
 						'/api/v2/payment/buy-tenant-package-success',

@@ -2,6 +2,7 @@ const Razorpay = require('razorpay');
 const catchAsync = require('./../utils/catchAsync');
 const Subscription = require('./../models/subscriptionModel');
 const Link = require('./../models/paymentLinkModel');
+const Admin = require('./../models/adminModel');
 const crypto = require('crypto');
 const { nanoid } = require('nanoid');
 const AppError = require('../utils/appError');
@@ -141,7 +142,7 @@ exports.success = catchAsync(async (req, res, next) => {
 		if (digest !== razorpaySignature)
 			return res.status(400).json({ msg: 'Transaction not legit!' });
 
-		const subscription = await Subscription.create({
+		const options = {
 			mainAmount: req.body.mainAmount,
 			paidAmount: req.body.paidAmount,
 			package: req.body.package,
@@ -150,7 +151,19 @@ exports.success = catchAsync(async (req, res, next) => {
 			paymentId: razorpayPaymentId,
 			user: req.user.id,
 			packageType: 'tenantPackage',
-		});
+		};
+
+		if (req.body.homeSearchStaff) {
+			const staff = await Admin.findById(req.body.homeSearchStaff);
+			console.log(staff);
+			if (staff) {
+				options.dealBy = req.body.homeSearchStaff;
+				staff.completeDealTarget = staff.completeDealTarget + 1;
+				await staff.save();
+			}
+		}
+
+		const subscription = await Subscription.create(options);
 
 		// THE PAYMENT IS LEGIT & VERIFIED
 		// YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
@@ -191,14 +204,26 @@ exports.paymentLinkSuccess = catchAsync(async (req, res, next) => {
 		if (digest !== razorpaySignature)
 			return res.status(400).json({ msg: 'Transaction not legit!' });
 
-		const subscription = await Subscription.create({
+		const options = {
 			paidAmount: req.body.paidAmount,
 			paymentLink: req.body.paymentLink,
 			orderId: razorpayOrderId,
 			paymentId: razorpayPaymentId,
 			user: req.user.id,
 			packageType: 'paymentLink',
-		});
+		};
+
+		if (req.body.homeSearchStaff) {
+			const staff = await Admin.findById(req.body.homeSearchStaff);
+			console.log(staff);
+			if (staff) {
+				options.dealBy = req.body.homeSearchStaff;
+				staff.completeDealTarget = staff.completeDealTarget + 1;
+				await staff.save();
+			}
+		}
+
+		const subscription = await Subscription.create(options);
 		if (req.body.paymentLink) {
 			await Link.findByIdAndUpdate(req.body.paymentLink, {
 				status: 'inactive',

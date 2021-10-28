@@ -1,3 +1,4 @@
+import { IStaff } from './staff.interface';
 import { User } from './user.interface';
 
 export enum SubscriptionPackageType {
@@ -19,4 +20,5 @@ export interface Subscription {
 	paymentId: string;
 	createdAt: Date;
 	updatedAt: Date;
+	dealBy: null | IStaff;
 }

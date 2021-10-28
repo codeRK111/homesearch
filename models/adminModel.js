@@ -267,7 +267,7 @@ adminSchema.pre('save', async function (next) {
 });
 
 adminSchema.pre('save', function (next) {
-	if (!this.isModified(this.password) || this.isNew) return next();
+	if (!this.isModified('password') || this.isNew) return next();
 	this.passwordChangedAt = Date.now() - 1000;
 	next();
 });
