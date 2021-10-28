@@ -79,6 +79,7 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 							<StyledTableCell>Subscription ID</StyledTableCell>
 							<StyledTableCell>Payment ID</StyledTableCell>
 							<StyledTableCell>Date</StyledTableCell>
+							<StyledTableCell>Close By</StyledTableCell>
 							<StyledTableCell>Client Name</StyledTableCell>
 							<StyledTableCell>Client Number</StyledTableCell>
 							<StyledTableCell>Client Email</StyledTableCell>
@@ -111,6 +112,9 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 										</StyledTableCell>
 										<StyledTableCell>
 											{parseDate(row.createdAt as Date)}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.dealBy ? row.dealBy.name : '-'}
 										</StyledTableCell>
 										<StyledTableCell>
 											{row.user.name}

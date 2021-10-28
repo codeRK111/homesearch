@@ -19,6 +19,11 @@ const subscriptionSchema = new Schema(
 			ref: 'User',
 			default: null,
 		},
+		dealBy: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Admin',
+			default: null,
+		},
 		paymentLink: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'paymentlink',
@@ -66,6 +71,9 @@ subscriptionSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'user',
 		select: 'id name email number',
+	}).populate({
+		path: 'dealBy',
+		select: 'id name',
 	});
 
 	next();

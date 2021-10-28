@@ -43,6 +43,7 @@ export interface IClientRequirementState {
 	staffType?: string;
 	notInterested?: boolean;
 	postProperty?: boolean;
+	preferedLocation?: string;
 }
 
 const renderAction = (lead: ILead): string => {
@@ -73,14 +74,12 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 			.length(10, '10 digits required')
 			.matches(/^\d{10}$/, 'Invalid Number')
 			.required('Phone number required'),
-		minPrice: Yup.string().matches(
-			/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g,
-			'Invalid Number'
-		),
-		maxPrice: Yup.string().matches(
-			/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g,
-			'Invalid Number'
-		),
+		minPrice: Yup.string()
+			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g, 'Invalid Number')
+			.nullable(),
+		maxPrice: Yup.string()
+			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g, 'Invalid Number')
+			.nullable(),
 	});
 
 	// State
@@ -96,6 +95,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 			pType: initialValues.pType ? initialValues.pType : Ptype.Apartment,
 			minPrice: initialValues.minPrice ? initialValues.minPrice : '',
 			maxPrice: initialValues.maxPrice ? initialValues.maxPrice : '',
+
 			action: renderAction(initialValues),
 			pickerDate: initialValues.holdDate
 				? initialValues.holdDate
@@ -246,6 +246,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 				'postProperty',
 				'staffType',
 				'staffId',
+				'preferedLocation',
 			];
 			const keyss = Object.keys(input) as Array<
 				keyof ILead | keyof IClientRequirementState
@@ -286,8 +287,11 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 					validationSchema={validationSchema}
 					enableReinitialize
 				>
-					{({ values, setFieldValue }) => (
+					{({ values, setFieldValue, errors }) => (
 						<Form>
+							{/* <p>
+								<pre>{JSON.stringify(errors, null, 2)}</pre>
+							</p> */}
 							<Grid container spacing={1}>
 								<Grid item xs={12} md={6}>
 									<FSelect

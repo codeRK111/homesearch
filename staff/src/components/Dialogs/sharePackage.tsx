@@ -20,6 +20,7 @@ import { SpaceBetween } from '../UI/Flex';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 interface ISharePackageLink {
 	open: boolean;
@@ -32,6 +33,7 @@ const SharePackageLinkModal: React.FC<ISharePackageLink> = ({
 }) => {
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+	const { user } = useTypedSelector((state) => state.auth);
 	const [text, setText] = useState('');
 	const [value, setValue] = React.useState('');
 
@@ -46,23 +48,25 @@ const SharePackageLinkModal: React.FC<ISharePackageLink> = ({
 		let url = '';
 		switch (value) {
 			case 'b':
-				url = 'https://homesearch18.com/confirm-package/b';
+				url = `https://homesearch18.com/confirm-package/b?hs=${user?.id}`;
 				break;
 			case 'oc':
-				url = 'https://homesearch18.com/confirm-package/oc';
+				url = `https://homesearch18.com/confirm-package/oc?hs=${user?.id}`;
 				break;
 
 			default:
-				url = 'https://homesearch18.com/tenant-packages';
+				url = `https://homesearch18.com/tenant-packages?hs=${user?.id}`;
 				break;
 		}
 
-		window.open(
-			`https://wa.me/91${text}?text=${encodeURI(
-				`Homesearch18 Packages\n${url}`
-			)}`,
-			'_blank'
-		);
+		alert(url);
+
+		// window.open(
+		// 	`https://wa.me/91${text}?text=${encodeURI(
+		// 		`Homesearch18 Packages\n${url}`
+		// 	)}`,
+		// 	'_blank'
+		// );
 	};
 
 	return (

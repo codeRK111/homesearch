@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const TenantPackagePage = () => {
+const TenantPackagePage = (props) => {
 	const {
 		packageWrapper,
 		line,
@@ -74,10 +74,20 @@ const TenantPackagePage = () => {
 		lineThrough,
 	} = useStyles();
 	const history = useHistory();
+	const getQueryString = () => {
+		const query = new URLSearchParams(props.location.search);
+		return query.get('hs');
+	};
 
 	const onBuy = (packageName) => () => {
-		history.push(`/confirm-package/${packageName}`);
+		const redirectURL = getQueryString()
+			? `/confirm-package/${packageName}?hs=${getQueryString()}`
+			: `/confirm-package/${packageName}`;
+		history.push(redirectURL);
 	};
+
+	console.log(getQueryString());
+
 	return (
 		<div>
 			<Nav />

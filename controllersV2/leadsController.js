@@ -371,6 +371,9 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 	if (req.body.name) {
 		data.name = req.body.name;
 	}
+	if (req.body.preferedLocation) {
+		data.preferedLocation = req.body.preferedLocation;
+	}
 	if (req.body.email) {
 		data.email = req.body.email;
 	}
