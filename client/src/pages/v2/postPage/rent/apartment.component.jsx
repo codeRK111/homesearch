@@ -8,6 +8,7 @@ import {
 import CheckBox from '../../../../components/formik/checkbox.component';
 import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
 import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
+import ErrorContainer from '../../../../components/formik/errorContainer';
 import Picker from '../../../../components/formik/datePickerCustom.component';
 import React from 'react';
 import Select from '../../../../components/v2/chipSelect/chipSelected.component';
@@ -74,14 +75,10 @@ const RentApartment = ({
 
 	const validateForm = (values) => {
 		const error = {};
-		// console.log({ test: validateNumber(values.toiletIndian) });
-		if (!values.numberOfBedRooms) {
-			error.numberOfBedRooms = 'Please choose a unit type';
-		}
-
 		if (!values.title) {
 			error.title = 'Enter project name';
 		}
+		// console.log({ test: validateNumber(values.toiletIndian) });
 
 		if (!validateNumber(values.numberOfBalconies)) {
 			error.numberOfBalconies = 'Please enter a number';
@@ -155,6 +152,10 @@ const RentApartment = ({
 		if (!validateLength(values.numberOfBalconies, 1)) {
 			error.numberOfBalconies = '1 digit allowed';
 		}
+		if (values.availableFor.length === 0) {
+			error.availableFor =
+				'Please choose suitable candidate for your property';
+		}
 
 		if (!values.description) {
 			error.description = 'Please add some description';
@@ -170,12 +171,12 @@ const RentApartment = ({
 			}
 		}
 
-		if (values.availableFor.length === 0) {
-			error.availableFor =
-				'Please choose suitable candidate for your property';
-		}
 		if (values.usp.trim().length > 20) {
 			error.usp = 'Max 20 characters allowed';
+		}
+
+		if (!values.numberOfBedRooms) {
+			error.numberOfBedRooms = 'Please choose a unit type';
 		}
 
 		return error;
@@ -242,7 +243,7 @@ const RentApartment = ({
 				enableReinitialize
 				onSubmit={submitForm}
 			>
-				{({ values, setFieldValue, errors }) => (
+				{({ values, setFieldValue, errors, isSubmitting }) => (
 					<Form>
 						{/* <pre>{JSON.stringify(errors, null, 2)}</pre> */}
 						<Box className={classes.rowWrapper2}>
@@ -290,16 +291,12 @@ const RentApartment = ({
 							>
 								Unit Type
 							</Typography>
-							{errors.numberOfBedRooms && (
-								<Box align="center">
-									<Typography
-										className={gClasses.colorWarning}
-										variant="caption"
-									>
-										{errors.numberOfBedRooms}
-									</Typography>
-								</Box>
-							)}
+
+							<ErrorContainer
+								errors={errors}
+								name="numberOfBedRooms"
+								isSubmitting={isSubmitting}
+							/>
 
 							<Box mt="1rem">
 								<Grid container spacing={3}>
@@ -659,16 +656,14 @@ const RentApartment = ({
 							>
 								Available For
 							</Typography>
-							{errors.availableFor && (
-								<Box align="center">
-									<Typography
-										className={gClasses.colorWarning}
-										variant="caption"
-									>
-										{errors.availableFor}
-									</Typography>
-								</Box>
-							)}
+
+							<Box display="flex" justifyContent="center">
+								<ErrorContainer
+									errors={errors}
+									name="availableFor"
+									isSubmitting={isSubmitting}
+								/>
+							</Box>
 							<Box className={classes.rowWrapper2}>
 								<Box className={classes.columnWrapper2}>
 									<CheckBox

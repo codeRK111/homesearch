@@ -1,22 +1,24 @@
 import { Box, Grid, IconButton, Typography } from '@material-ui/core';
-import TodayIcon from '@material-ui/icons/Today';
-import clsx from 'clsx';
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
-import { connect } from 'react-redux';
-import useGlobalStyles from '../../../../common.style';
+
 import CheckBox from '../../../../components/formik/checkbox.component';
-import Picker from '../../../../components/formik/datePickerCustom.component';
-import TextArea from '../../../../components/formik/textArea.component';
-import TextField from '../../../../components/formik/textFieldDefault.component';
-import Select from '../../../../components/v2/chipSelect/chipSelected.component';
 import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
 import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
+import ErrorContainer from '../../../../components/formik/errorContainer';
+import Picker from '../../../../components/formik/datePickerCustom.component';
+import React from 'react';
+import Select from '../../../../components/v2/chipSelect/chipSelected.component';
+import TextArea from '../../../../components/formik/textArea.component';
+import TextField from '../../../../components/formik/textFieldDefault.component';
+import TodayIcon from '@material-ui/icons/Today';
+import UploadPhoto from '../components/uploadPhoto';
+import clsx from 'clsx';
+import { connect } from 'react-redux';
 import { setSnackbar } from '../../../../redux/ui/ui.actions';
 import { toHumanReadbleString } from '../../../../utils/render.utils';
-import { validateNumber } from '../../../../utils/validation.utils';
-import UploadPhoto from '../components/uploadPhoto';
+import useGlobalStyles from '../../../../common.style';
 import useStyles from '../postPage.style';
+import { validateNumber } from '../../../../utils/validation.utils';
 
 const initialValues = {
 	for: 'rent',
@@ -152,7 +154,7 @@ const RentHostel = ({
 				enableReinitialize
 				onSubmit={submitForm}
 			>
-				{({ values, setFieldValue, errors }) => (
+				{({ values, setFieldValue, errors, isSubmitting }) => (
 					<Form>
 						<Box className={classes.rowWrapper2}>
 							<Box className={classes.columnWrapper}>
@@ -718,16 +720,13 @@ const RentHostel = ({
 							>
 								Available For
 							</Typography>
-							{errors.availableFor && (
-								<Box align="center">
-									<Typography
-										className={gClasses.colorWarning}
-										variant="caption"
-									>
-										{errors.availableFor}
-									</Typography>
-								</Box>
-							)}
+							<Box display="flex" justifyContent="center">
+								<ErrorContainer
+									errors={errors}
+									name="availableFor"
+									isSubmitting={isSubmitting}
+								/>
+							</Box>
 							<Box className={classes.rowWrapper2}>
 								<Box className={classes.columnWrapper2}>
 									<CheckBox

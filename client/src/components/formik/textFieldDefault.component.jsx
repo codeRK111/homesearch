@@ -1,7 +1,7 @@
 import { Box, Typography } from '@material-ui/core';
+import React, { useEffect, useRef } from 'react';
+import { useField, useFormikContext } from 'formik';
 
-import React from 'react';
-import { useField } from 'formik';
 import useStyles from './formik.styles';
 
 // import clsx from 'clsx';
@@ -12,6 +12,8 @@ const RowSelect = ({ spacing = true, iType = 'input', ...otherProps }) => {
 	const classes = useStyles();
 	// const globalClasses = useGlobalClasses();
 	const [field, meta] = useField(otherProps);
+	const formikBag = useFormikContext();
+	const fieldRef = useRef(null);
 	let helperText = (meta.value || meta.touched) && meta.error;
 
 	const padding = {};
@@ -21,8 +23,19 @@ const RowSelect = ({ spacing = true, iType = 'input', ...otherProps }) => {
 		margin.mt = '0.3rem';
 	}
 
+	useEffect(() => {
+		const firstError = Object.keys(formikBag.errors)[0];
+
+		if (formikBag.isSubmitting && firstError === otherProps.name) {
+			fieldRef.current.scrollIntoView({
+				behavior: 'smooth',
+				block: 'center',
+			});
+		}
+	}, [meta.error, formikBag.isSubmitting, otherProps.name, formikBag.errors]);
+
 	return (
-		<Box {...padding}>
+		<Box ref={fieldRef} {...padding}>
 			{!!helperText && (
 				<Typography color="error" variant="caption">
 					{helperText}

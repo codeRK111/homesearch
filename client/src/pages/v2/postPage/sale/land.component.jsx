@@ -3,6 +3,7 @@ import { Field, FieldArray, Form, Formik } from 'formik';
 
 import CheckBox from '../../../../components/formik/checkbox.component';
 import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
+import ErrorContainer from '../../../../components/formik/errorContainer';
 import React from 'react';
 import Select from '../../../../components/v2/chipSelect/chipSelected.component';
 import TextArea from '../../../../components/formik/textArea.component';
@@ -174,7 +175,7 @@ const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 				enableReinitialize
 				onSubmit={submitForm}
 			>
-				{({ values, setFieldValue, errors }) => (
+				{({ values, setFieldValue, errors, isSubmitting }) => (
 					<Form>
 						<Box className={classes.rowWrapper2}>
 							<Box className={classes.columnWrapper}>
@@ -488,16 +489,14 @@ const ResaleLand = ({ pType, onPost, setSnackbar, loading }) => {
 							>
 								Legal Clearance
 							</Typography>
-							{errors.legalClearance && (
-								<Box align="center">
-									<Typography
-										className={gClasses.colorWarning}
-										variant="caption"
-									>
-										{errors.legalClearance}
-									</Typography>
-								</Box>
-							)}
+							<Box align="center">
+								<ErrorContainer
+									name="legalClearance"
+									errors={errors}
+									isSubmitting={isSubmitting}
+								/>
+							</Box>
+
 							<Grid container spacing={0}>
 								<FieldArray name="legalClearance">
 									{(arrayHelpers) => (

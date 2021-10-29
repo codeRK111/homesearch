@@ -8,6 +8,7 @@ import {
 import CheckBox from '../../../../components/formik/checkbox.component';
 import ChipWrapper from '../../../../components/v2/chipWrapper/chipWrapper.component';
 import DropDown from '../../../../components/v2/dropdown/chipSelected.component';
+import ErrorContainer from '../../../../components/formik/errorContainer';
 import Picker from '../../../../components/formik/datePickerCustom.component';
 import React from 'react';
 import Select from '../../../../components/v2/chipSelect/chipSelected.component';
@@ -258,7 +259,7 @@ const RentApartment = ({
 				enableReinitialize
 				onSubmit={submitForm}
 			>
-				{({ values, setFieldValue, errors }) => (
+				{({ values, setFieldValue, errors, isSubmitting }) => (
 					<Form>
 						{/* <pre>{JSON.stringify(errors, null, 2)}</pre> */}
 						<Box className={classes.rowWrapper2}>
@@ -308,16 +309,12 @@ const RentApartment = ({
 							>
 								Unit Type
 							</Typography>
-							{errors.numberOfBedRooms && (
-								<Box align="center">
-									<Typography
-										className={gClasses.colorWarning}
-										variant="caption"
-									>
-										{errors.numberOfBedRooms}
-									</Typography>
-								</Box>
-							)}
+
+							<ErrorContainer
+								errors={errors}
+								name="numberOfBedRooms"
+								isSubmitting={isSubmitting}
+							/>
 							<Box mt="1rem">
 								<Grid container spacing={3}>
 									{Array.from(
