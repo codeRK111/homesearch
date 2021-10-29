@@ -1,38 +1,23 @@
-import { Box, CircularProgress } from '@material-ui/core';
+import { Box, CircularProgress, IconButton } from '@material-ui/core';
+import { MyTableCell, MyTableRow } from '../../UI/Table';
 import React, { useEffect, useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import { City } from '../../../model/city.interface';
 import Paper from '@material-ui/core/Paper';
+import PriceRangeCell from '../priceRangeCell';
 import { PropertyLead } from '../../../model/propertyLead.interface';
+import PropertyLeadStatusButton from '../utility/PropertyLeadStatusButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { parseDate } from '../../../utils/render';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import { makeStyles } from '@material-ui/core/styles';
+import { parseAndShowOnlyDate } from '../../../utils/render';
+import { useHistory } from 'react-router-dom';
 
 // import EditIcon from '@material-ui/icons/Edit';
-
-const StyledTableCell = withStyles((theme) => ({
-	head: {
-		backgroundColor: theme.palette.common.black,
-		color: theme.palette.common.white,
-		fontSize: 13,
-	},
-	body: {
-		fontSize: 13,
-	},
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-	root: {
-		'&:nth-of-type(odd)': {
-			backgroundColor: theme.palette.action.hover,
-		},
-	},
-}))(TableRow);
 
 const useStyles = makeStyles({
 	table: {
@@ -50,10 +35,15 @@ const PropertyLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 	leads,
 }) => {
 	const classes = useStyles();
+	const history = useHistory();
 
 	// State
 
 	const [data, setData] = useState<Array<PropertyLead>>([]);
+
+	const onRedirect = (path: string) => () => {
+		history.push(path);
+	};
 
 	// Effects
 	useEffect(() => {
@@ -61,13 +51,13 @@ const PropertyLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 	}, [leads]);
 
 	const Loader = (
-		<StyledTableRow>
-			{Array.from({ length: 7 }, (_, i) => i + 1).map((c) => (
-				<StyledTableCell key={c}>
+		<MyTableRow>
+			{Array.from({ length: 10 }, (_, i) => i + 1).map((c) => (
+				<MyTableCell key={c}>
 					<CircularProgress size={15} color="inherit" />
-				</StyledTableCell>
+				</MyTableCell>
 			))}
-		</StyledTableRow>
+		</MyTableRow>
 	);
 
 	return (
@@ -76,17 +66,20 @@ const PropertyLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 				<Table className={classes.table} aria-label="customized table">
 					<TableHead>
 						<TableRow>
-							<StyledTableCell>SL Num.</StyledTableCell>
-							<StyledTableCell>Name</StyledTableCell>
-							<StyledTableCell>Email</StyledTableCell>
-							<StyledTableCell>Phone Number</StyledTableCell>
-							<StyledTableCell>City</StyledTableCell>
-							<StyledTableCell>Location</StyledTableCell>
-							<StyledTableCell>Posted On</StyledTableCell>
+							<MyTableCell>SL Num.</MyTableCell>
+							<MyTableCell>For</MyTableCell>
+							<MyTableCell>Client Details</MyTableCell>
+							<MyTableCell>City</MyTableCell>
+							<MyTableCell>Location</MyTableCell>
+							<MyTableCell>Price Range</MyTableCell>
+							<MyTableCell>Posted On</MyTableCell>
+							<MyTableCell>Posted By</MyTableCell>
+							<MyTableCell>Is Possesed</MyTableCell>
+							<MyTableCell>View Details</MyTableCell>
 
-							{/* <StyledTableCell align="center">
+							{/* <MyTableCell align="center">
 									Actions
-								</StyledTableCell> */}
+								</MyTableCell> */}
 						</TableRow>
 					</TableHead>
 
@@ -94,35 +87,65 @@ const PropertyLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 						{loading
 							? Loader
 							: data.map((row, i) => (
-									<StyledTableRow key={row.id}>
-										<StyledTableCell>
-											{i + 1}
-										</StyledTableCell>
+									<MyTableRow key={row.id}>
+										<MyTableCell>{i + 1}</MyTableCell>
 
-										<StyledTableCell>
-											{row.name ? row.name : '-'}
-										</StyledTableCell>
-										<StyledTableCell>
-											{row.email ? row.email : '-'}
-										</StyledTableCell>
-										<StyledTableCell>
-											{row.number ? row.number : '-'}
-										</StyledTableCell>
-										<StyledTableCell>
+										<MyTableCell>
+											{row.for ? row.for : '-'}
+										</MyTableCell>
+										<MyTableCell>
+											Name -{' '}
+											<b>{row.name ? row.name : 'N/A'}</b>{' '}
+											<br />
+											Email -{' '}
+											<b>
+												{row.email ? row.email : 'N/A'}
+											</b>{' '}
+											<br />
+											Phone -{' '}
+											<b>
+												{row.number ? row.number : '-'}
+											</b>
+										</MyTableCell>
+
+										<MyTableCell>
 											{row.city
 												? (row.city as City).name
 												: '-'}
-										</StyledTableCell>
-										<StyledTableCell>
+										</MyTableCell>
+										<MyTableCell>
 											{row.location
 												? row.location.name
 												: '-'}
-										</StyledTableCell>
-
-										<StyledTableCell>
-											{parseDate(row.createdAt as Date)}
-										</StyledTableCell>
-									</StyledTableRow>
+										</MyTableCell>
+										<PriceRangeCell
+											minPrice={row.minPrice as number}
+											maxPrice={row.maxPrice as number}
+										/>
+										<MyTableCell>
+											{parseAndShowOnlyDate(
+												row.createdAt as Date
+											)}
+										</MyTableCell>
+										<MyTableCell>
+											{row.createdBy.name}
+										</MyTableCell>
+										<MyTableCell>
+											<PropertyLeadStatusButton
+												id={row.id}
+												initialStatus={row.isPossessed}
+											/>
+										</MyTableCell>
+										<MyTableCell>
+											<IconButton
+												onClick={onRedirect(
+													`/property-leads/${row.id}`
+												)}
+											>
+												<VisibilityIcon color="primary" />
+											</IconButton>
+										</MyTableCell>
+									</MyTableRow>
 							  ))}
 					</TableBody>
 				</Table>

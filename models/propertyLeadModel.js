@@ -106,6 +106,10 @@ const propertyLeadSchema = new Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: 'Location',
 		},
+		isPossessed: {
+			type: Boolean,
+			default: false,
+		},
 
 		city: {
 			type: mongoose.Schema.ObjectId,

@@ -9,6 +9,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { ILead } from '../../../model/lead.interface';
 import LeadsComments from '../../LeadComments';
 import Paper from '@material-ui/core/Paper';
+import PriceRangeCell from '../priceRangeCell';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -220,10 +221,16 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 												</Box>
 											)}
 										</StyledTableCell>
-										<StyledTableCell>
-											{renderCellData(row.minPrice)} to{' '}
-											{renderCellData(row.maxPrice)}
-										</StyledTableCell>
+										{
+											<PriceRangeCell
+												minPrice={
+													row.minPrice as number
+												}
+												maxPrice={
+													row.maxPrice as number
+												}
+											/>
+										}
 										<StyledTableCell>
 											{parseDate(row.createdAt as Date)}
 										</StyledTableCell>

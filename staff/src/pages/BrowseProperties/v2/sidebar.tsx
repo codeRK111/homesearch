@@ -10,19 +10,22 @@ import {
 	Radio,
 	RadioGroup,
 } from '@material-ui/core';
+import { FetchAdminResponse, StaffType } from '../../../model/staff.interface';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { City } from '../../../model/city.interface';
 import { Location } from '../../../model/location.interface';
 import { PFacing } from '../../../model/property.interface';
-import React from 'react';
 import SearchCity from '../../../components/Search/city';
 import SearchLocation from '../../../components/Search/location';
+import { asyncFetchAdmins } from '../../../API/auth';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		[theme.breakpoints.up('sm')]: {
-			height: '80vh',
+			minHeight: '80vh',
+			height: '100%',
 			overflow: 'auto',
 			boxSizing: 'border-box',
 			width: '100%',
@@ -43,6 +46,8 @@ interface ISideBar {
 	setPropertyRequirements: any;
 	availableFor: any;
 	setAvailableFor: any;
+	createdBy: any;
+	setCreatedBy: any;
 }
 
 const SideBar: React.FC<ISideBar> = ({
@@ -58,18 +63,48 @@ const SideBar: React.FC<ISideBar> = ({
 	setPropertyRequirements,
 	availableFor,
 	setAvailableFor,
+	createdBy,
+	setCreatedBy,
 }) => {
 	const { wrapper } = useStyles();
 
 	// State
+	const [bdmLoading, setBdmLoading] = useState(false);
+	const [data, setData] = useState<FetchAdminResponse>({
+		admins: [],
+		totalDocs: 0,
+	});
 
 	// Callbacks
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setPFor((event.target as HTMLInputElement).value);
 	};
+	const handleChangeCreatedBy = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setCreatedBy((event.target as HTMLInputElement).value);
+	};
 	const handleChangeFacing = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setFacing((event.target as HTMLInputElement).value);
 	};
+
+	const fetchAdmins = useCallback(async () => {
+		try {
+			setBdmLoading(true);
+			const resp = await asyncFetchAdmins({
+				status: 'active',
+				types: [
+					StaffType.BDM,
+					StaffType.AssistantSalesManager,
+					StaffType.SalesExecutive,
+				],
+			});
+			setBdmLoading(false);
+			setData(resp);
+		} catch (error) {
+			setBdmLoading(false);
+		}
+	}, []);
 
 	const handleChangePropertyRequirement = (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -96,6 +131,10 @@ const SideBar: React.FC<ISideBar> = ({
 			);
 		}
 	};
+
+	useEffect(() => {
+		fetchAdmins();
+	}, [fetchAdmins]);
 
 	return (
 		<Paper className={wrapper}>
@@ -135,6 +174,11 @@ const SideBar: React.FC<ISideBar> = ({
 								row
 							>
 								<FormControlLabel
+									value=""
+									control={<Radio />}
+									label="All"
+								/>
+								<FormControlLabel
 									value="rent"
 									control={<Radio />}
 									label="Rent"
@@ -157,6 +201,11 @@ const SideBar: React.FC<ISideBar> = ({
 								onChange={handleChangeFacing}
 								row
 							>
+								<FormControlLabel
+									value={''}
+									control={<Radio />}
+									label="All"
+								/>
 								<FormControlLabel
 									value={PFacing.East}
 									control={<Radio />}
@@ -354,6 +403,31 @@ const SideBar: React.FC<ISideBar> = ({
 							</FormGroup>
 						</Grid>
 					)}
+					<Grid item xs={12}>
+						<FormControl component="fieldset">
+							<FormLabel component="legend">Posted By</FormLabel>
+							<RadioGroup
+								aria-label="gender"
+								name="gender1"
+								value={createdBy}
+								onChange={handleChangeCreatedBy}
+							>
+								<FormControlLabel
+									value=""
+									control={<Radio />}
+									label="All"
+								/>
+								{data.admins.map((c) => (
+									<FormControlLabel
+										value={c.id}
+										key={c.id}
+										control={<Radio />}
+										label={c.name}
+									/>
+								))}
+							</RadioGroup>
+						</FormControl>
+					</Grid>
 				</Grid>
 			</Box>
 		</Paper>

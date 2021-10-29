@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import UpdateLeadForm from './form';
 import { asyncGetLeadDetails } from '../../API/lead';
 
-interface IParam {
+export interface IParam {
 	id: string;
 }
 const UpdateLeadPage: React.FC<RouteComponentProps<IParam>> = ({
