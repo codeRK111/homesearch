@@ -706,6 +706,10 @@ exports.searchAll = catchAsync(async (req, res, next) => {
 		leadsFilter.city = req.body.city;
 		salesFilter.city = req.body.city;
 	}
+	if (req.body.createdBy) {
+		salesFilter.createdBy = req.body.createdBy;
+		leadsFilter.createdBy = req.body.createdBy;
+	}
 	if (req.body.myData) {
 		leadsFilter.createdBy = req.admin.id;
 		salesFilter.createdBy = req.admin.id;
@@ -755,5 +759,31 @@ exports.searchAll = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: { leads, sales, totalLeadDocs, totalSalesDocs },
+	});
+});
+
+exports.propertyLeadDetails = catchAsync(async (req, res, next) => {
+	const propertyLead = await PropertyLead.findById(req.params.id);
+	res.status(200).json({
+		status: 'success',
+		data: { propertyLead },
+	});
+});
+exports.propertyLeadUpdate = catchAsync(async (req, res, next) => {
+	const options = {};
+	if (req.body.isPossessed !== null && req.body.isPossessed !== undefined) {
+		options.isPossessed = req.body.isPossessed;
+	}
+	const propertyLead = await PropertyLead.findByIdAndUpdate(
+		req.params.id,
+		options,
+		{
+			new: true,
+			runValidators: true,
+		}
+	);
+	res.status(200).json({
+		status: 'success',
+		data: { propertyLead },
 	});
 });

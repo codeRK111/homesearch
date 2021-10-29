@@ -28,6 +28,7 @@ const SearchProperty = () => {
 	const [salesPage, setSalesPage] = useState(1);
 	const [salesLimit, setSalesLimit] = useState(10);
 	const [pFor, setPFor] = useState('');
+	const [createdBy, setCreatedBy] = useState('');
 	const [facing, setFacing] = useState('');
 	const [location, setLoaction] = useState<Location | null>(null);
 	const [propertyRequirements, setPropertyRequirements] = useState<string[]>(
@@ -68,6 +69,9 @@ const SearchProperty = () => {
 		if (city) {
 			filter.city = city.id;
 		}
+		if (createdBy) {
+			filter.createdBy = createdBy;
+		}
 		if (location) {
 			filter.location = location.id;
 			filter.locationName = location.name;
@@ -105,11 +109,28 @@ const SearchProperty = () => {
 		salesLimit,
 		location,
 		myData,
+		createdBy,
 	]);
 
 	useEffect(() => {
 		fetchProperties();
 	}, [fetchProperties]);
+
+	useEffect(() => {
+		setLeadsPage(1);
+		setSalesPage(1);
+	}, [
+		city,
+		pFor,
+		facing,
+		propertyRequirements,
+		availableFor,
+		leadsLimit,
+		salesLimit,
+		location,
+		myData,
+		createdBy,
+	]);
 
 	const sidebarProps = {
 		city,
@@ -125,6 +146,8 @@ const SearchProperty = () => {
 		availableFor,
 		setAvailableFor,
 		myData,
+		createdBy,
+		setCreatedBy,
 	};
 	return (
 		<Container maxWidth="xl">

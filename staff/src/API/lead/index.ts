@@ -341,3 +341,50 @@ export const searchAll = async (input: any): Promise<SearchAllResponse> => {
 		throw new Error(asyncError(error));
 	}
 };
+
+type GetPropertyLeadDetailsResponse = {
+	propertyLead: PropertyLead;
+};
+export const getPropertyLeadDetails = async (
+	id: string
+): Promise<PropertyLead> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.get<
+			unknown,
+			AxiosResponse<ServerResponse<GetPropertyLeadDetailsResponse>>
+		>(`${V2EndPoint.Lead}/property-lead/${id}`, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const staffData = resp.data.data;
+
+		return staffData.propertyLead;
+	} catch (error: any) {
+		throw new Error(asyncError(error));
+	}
+};
+export const updatePropertyLeadDetails = async (
+	id: string,
+	inputData: any
+): Promise<PropertyLead> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.patch<
+			unknown,
+			AxiosResponse<ServerResponse<GetPropertyLeadDetailsResponse>>
+		>(`${V2EndPoint.Lead}/property-lead/${id}`, inputData, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const staffData = resp.data.data;
+
+		return staffData.propertyLead;
+	} catch (error: any) {
+		throw new Error(asyncError(error));
+	}
+};

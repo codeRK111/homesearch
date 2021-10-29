@@ -58,4 +58,5 @@ export interface PropertyLead {
 	status: 'active' | 'inactive';
 	createdAt: Date;
 	updatedAt: Date;
+	isPossessed: boolean;
 }

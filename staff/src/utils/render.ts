@@ -7,6 +7,15 @@ import dayjs from 'dayjs';
 export const renderCellData = (value: any) => {
 	return !!value ? value : '-';
 };
+export const toHumanReadable = (value: number) => {
+	return !!value
+		? Number(value).toLocaleString('en-IN', {
+				style: 'currency',
+				currency: 'INR',
+				minimumFractionDigits: 0,
+		  })
+		: '-';
+};
 
 export const isToday = (date: any) => {
 	return dayjs().isSame(dayjs.unix(Date.parse(date) / 1000), 'day');
@@ -23,6 +32,13 @@ export const parseDate = (date: Date | undefined) => {
 	}
 	const m = dayjs(date);
 	return m.format('DD MMM YYYY hh:mm a');
+};
+export const parseAndShowOnlyDate = (date: Date | undefined) => {
+	if (!date) {
+		return '-';
+	}
+	const m = dayjs(date);
+	return m.format('DD MMM YY');
 };
 export const isExpired = (date?: Date): boolean => {
 	if (!date) {

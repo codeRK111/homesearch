@@ -34,6 +34,11 @@ router
 	.route('/close-deal/:id')
 	.patch(authController.protect, leadController.closeDeal);
 router
+	.route('/property-lead/:id')
+	.get(authController.protect, leadController.propertyLeadDetails)
+	.patch(authController.protect, leadController.propertyLeadUpdate);
+
+router
 	.route('/:id')
 	.get(authController.protect, leadController.getLeadDetails)
 	.patch(authController.protect, leadController.updateLead)
