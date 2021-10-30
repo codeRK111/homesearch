@@ -1,5 +1,3 @@
-import * as Yup from 'yup';
-
 import {
 	Button,
 	CircularProgress,
@@ -9,24 +7,24 @@ import {
 	MenuItem,
 	Typography,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { Form, Formik, FormikHelpers } from 'formik';
+import React, { useRef, useState } from 'react';
+import * as Yup from 'yup';
+import { asyncAddLead } from '../../API/lead';
+import FCheckbox from '../../components/Formik/checkbox';
+import FTextField from '../../components/Formik/input';
+import FSelect from '../../components/Formik/select';
+import SearchCity from '../../components/Search/city';
+import { PageWrapper } from '../../components/UI/Container';
+import { SpaceBetween } from '../../components/UI/Flex';
+import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
+import { City } from '../../model/city.interface';
 import {
 	ILead,
 	LeadSource,
 	LeadUserCategory,
 } from '../../model/lead.interface';
-import React, { useRef, useState } from 'react';
-import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
-
-import { City } from '../../model/city.interface';
-import CloseIcon from '@material-ui/icons/Close';
-import FCheckbox from '../../components/Formik/checkbox';
-import FSelect from '../../components/Formik/select';
-import FTextField from '../../components/Formik/input';
-import { PageWrapper } from '../../components/UI/Container';
-import SearchCity from '../../components/Search/city';
-import { SpaceBetween } from '../../components/UI/Flex';
-import { asyncAddLead } from '../../API/lead';
 
 const AddLeadPage = () => {
 	const inputEl = useRef<null | HTMLInputElement>(null);
@@ -248,6 +246,14 @@ const AddLeadPage = () => {
 													name="propertyRequirements"
 													value={'Duplex'}
 													label="Duplex"
+												/>
+											</Grid>
+											<Grid item>
+												<FCheckbox
+													type="checkbox"
+													name="propertyRequirements"
+													value={'1RK'}
+													label="1RK"
 												/>
 											</Grid>
 											<Grid item>

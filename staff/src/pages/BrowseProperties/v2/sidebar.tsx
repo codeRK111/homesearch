@@ -265,6 +265,20 @@ const SideBar: React.FC<ISideBar> = ({
 							<FormControlLabel
 								control={
 									<Checkbox
+										value={'1RK'}
+										checked={propertyRequirements.includes(
+											'1RK'
+										)}
+										onChange={
+											handleChangePropertyRequirement
+										}
+									/>
+								}
+								label="1RK"
+							/>
+							<FormControlLabel
+								control={
+									<Checkbox
 										value={'1BHK'}
 										checked={propertyRequirements.includes(
 											'1BHK'

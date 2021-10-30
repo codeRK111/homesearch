@@ -380,6 +380,14 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 											/>
 										</Grid>
 										<Grid item>
+												<FCheckbox
+													type="checkbox"
+													name="propertyRequirements"
+													value={'1RK'}
+													label="1RK"
+												/>
+											</Grid>
+										<Grid item>
 											<FCheckbox
 												type="checkbox"
 												name="propertyRequirements"

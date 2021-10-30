@@ -265,6 +265,14 @@ const AddPropertyLeadForm: React.FC<IAddPropertyLeadForm> = ({
 										value={'Duplex'}
 										label="Duplex"
 									/>
+								</Grid> 
+								<Grid item>
+									<FCheckbox
+										type="checkbox"
+										name="propertyRequirements"
+										value={'1RK'}
+										label="1RK"
+									/>
 								</Grid>
 								<Grid item>
 									<FCheckbox
