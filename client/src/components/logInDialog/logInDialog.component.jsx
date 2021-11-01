@@ -457,6 +457,17 @@ function AlertDialogSlide({
 																{otpSent
 																	? 'Sign In'
 																	: 'Send OTP'}
+																{(asyncState.loading ||
+																	validateOtpLoading) && (
+																	<Box ml="1rem">
+																		<CircularProgress
+																			color="inherit"
+																			size={
+																				15
+																			}
+																		/>
+																	</Box>
+																)}
 															</button>
 														</Box>
 													</Form>

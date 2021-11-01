@@ -12,6 +12,7 @@ var fs = require('fs');
 const Admin = require('../models/adminModel');
 const mongoose = require('mongoose');
 const moment = require('moment');
+const sendEmailOTP = require('../utils/sendMailOTP');
 const ObjectId = mongoose.Types.ObjectId;
 // const sendEmail = require('./../utils/email');
 
@@ -111,6 +112,14 @@ exports.signIn = catchAsync(async (req, res, next) => {
 	);
 
 	const otpResponse = await sendOtpMessage(req.body.number, randomNumber);
+	if (user.email) {
+		const resp = await sendEmailOTP(
+			user.email,
+			'OTP for homesearch',
+			randomNumber
+		);
+		console.log(resp);
+	}
 	if (otpResponse.data.startsWith('OK')) {
 		res.status(200).json({
 			status: 'success',

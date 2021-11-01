@@ -132,6 +132,7 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 			filter.status = 'active';
 			// filter.clientSupport = req.admin.id;
 			// filter.stage = 1;
+
 			if (req.body.stage) {
 				filter.stage = req.body.stage;
 			}
@@ -530,10 +531,7 @@ exports.countLeads = catchAsync(async (req, res, next) => {
 	const filterByRole = {};
 	const types = ['super-admin', 'gm'];
 	if (!types.includes(req.admin.type)) {
-		if (req.admin.type === 'clientSupport') {
-			filterByRole.clientSupport = mongoose.Types.ObjectId(req.admin.id);
-			filterByRole.stage = 1;
-		} else if (req.admin.type === 'assistantSalesManager') {
+		if (req.admin.type === 'assistantSalesManager') {
 			filterByRole.bdm = mongoose.Types.ObjectId(req.admin.id);
 			filterByRole.stage = 3;
 			filterByRole.saleStaffType = 'assistantSalesManager';

@@ -106,7 +106,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: hold ? 12 : 11 }, (_, i) => i + 1).map(
+			{Array.from({ length: hold ? 11 : 10 }, (_, i) => i + 1).map(
 				(c) => (
 					<StyledTableCell key={c}>
 						<CircularProgress size={15} color="inherit" />
@@ -158,7 +158,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							<StyledTableCell>Stage</StyledTableCell>
 							<StyledTableCell>Comments</StyledTableCell>
 							<StyledTableCell>Assign</StyledTableCell>
-							<StyledTableCell>Delete</StyledTableCell>
+							{/* <StyledTableCell>Delete</StyledTableCell> */}
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -274,7 +274,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 												)}
 											/>
 										</StyledTableCell>
-										<StyledTableCell>
+										{/* <StyledTableCell>
 											<IconButton
 												onClick={() =>
 													onDelete(row.id as string)
@@ -282,7 +282,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											>
 												<DeleteIcon color="secondary" />
 											</IconButton>
-										</StyledTableCell>
+										</StyledTableCell> */}
 									</StyledTableRow>
 							  ))}
 					</TableBody>
