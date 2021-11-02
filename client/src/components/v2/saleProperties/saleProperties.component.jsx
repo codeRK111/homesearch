@@ -36,7 +36,8 @@ const SaleProperties = ({ cities, loading, setLoading, error, setError }) => {
 			const filter = {
 				page: 1,
 				limit: 20,
-				for: 'rent',
+				for: 'sale',
+				type: ['flat', 'independenthouse'],
 			};
 
 			if (selected) {

@@ -10,8 +10,6 @@ import axios from 'axios';
 import { getRealtors } from '../../utils/asyncUser';
 import { withAsync } from '../../hoc/withAsync';
 
-const arr = Array.from({ length: 12 }, (_, i) => i++);
-
 const RealtorsPage = ({ loading, setLoading, error, setError }) => {
 	const cancelToken = useRef();
 

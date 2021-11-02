@@ -12,13 +12,18 @@ const About = () => {
 			<Box>
 				<span className={classes.text}>
 					<i>
-						Since the days of its inception Z Estates has focused on
-						some essential core values- Quality, Excellency and
-						Customer Satisfaction. Z Estates have been recognized as
-						a top Real Estate Developer in Odisha. We have
-						established a culture of creating a customer friendly
-						environment and ensure a long lasting relationship by
-						practicing the highest quality and genuine standards.
+						Homesearch18.com is the fastest growing India&#39;s most
+						innovative real estate advertising platform for
+						homebuyers, landlords, developers, and real estate
+						brokers with world extending services to all property
+						hunters. The webvsite offers listings for new homes,
+						resale homes, rentals, plots and residential projects in
+						pan India.But often he misses some critical pieces of
+						the puzzle. If you are fed up with the countless online
+						options and fake listings, your search for the perfect
+						property and a great success of real estate investing
+						lies in finding out the best property and tenants ends
+						here.
 					</i>
 				</span>
 			</Box>

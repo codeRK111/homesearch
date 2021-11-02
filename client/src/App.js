@@ -34,6 +34,11 @@ const NewsPage = lazy(() => import('./pages/news'));
 const RealtorsPage = lazy(() => import('./pages/realtors'));
 // const RealtorDetailsPage = lazy(() => import('./pages/realtorDetails'));
 const NewsDetailsPage = lazy(() => import('./pages/newsDetails'));
+const AboutUsPage = lazy(() => import('./pages/aboutUs'));
+const TermsPage = lazy(() => import('./pages/terms'));
+const PrivacyPoliciesPage = lazy(() => import('./pages/privacy'));
+const ContactUsPage = lazy(() => import('./pages/contact'));
+const RefundPage = lazy(() => import('./pages/refund'));
 const TenantPackagePage = lazy(() => import('./pages/tenantPackages'));
 const TenantPackageConfirmationPage = lazy(() =>
 	import('./pages/tenantPackages/confirmation')
@@ -120,6 +125,33 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 							exact
 							path="/tenant-packages"
 							render={(props) => <TenantPackagePage {...props} />}
+						/>
+						<Route
+							exact
+							path="/about-us"
+							render={(props) => <AboutUsPage {...props} />}
+						/>
+						<Route
+							exact
+							path="/terms"
+							render={(props) => <TermsPage {...props} />}
+						/>
+						<Route
+							exact
+							path="/privacy"
+							render={(props) => (
+								<PrivacyPoliciesPage {...props} />
+							)}
+						/>
+						<Route
+							exact
+							path="/contact-us"
+							render={(props) => <ContactUsPage {...props} />}
+						/>
+						<Route
+							exact
+							path="/refund"
+							render={(props) => <RefundPage {...props} />}
 						/>
 						<Route
 							exact

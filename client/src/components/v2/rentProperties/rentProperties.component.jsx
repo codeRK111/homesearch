@@ -34,6 +34,7 @@ const RentProperties = ({ cities, loading, setLoading, error, setError }) => {
 				page: 1,
 				limit: 20,
 				for: 'rent',
+				type: ['flat', 'independenthouse'],
 			};
 
 			if (selected) {

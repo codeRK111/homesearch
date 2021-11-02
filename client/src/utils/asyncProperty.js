@@ -7,7 +7,9 @@ const token = localStorage.getItem('JWT_CLIENT');
 
 export const searchProperty = (data, cancelToken, setLoading) => {
 	return new Promise((resolve, reject) => {
-		const stringified = queryString.stringify(data);
+		const stringified = queryString.stringify(data, {
+			arrayFormat: 'comma',
+		});
 		setLoading(true);
 		axios
 			.get(apiUrl(`/property/user/search-property?${stringified}`, 2), {

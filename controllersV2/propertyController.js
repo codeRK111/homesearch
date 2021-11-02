@@ -560,10 +560,20 @@ exports.searchProperty = catchAsync(async (req, res, next) => {
 	if (req.query['for']) {
 		filter['for'] = req.query['for'];
 	}
+	if (req.query.type) {
+		const type = req.query.type.split(',');
+		if (req.query.for === 'sale') {
+			filter['sale_type'] = { $in: type };
+		} else {
+			filter['type'] = { $in: type };
+		}
+	}
 
 	if (req.query.city) {
 		filter.city = req.query.city;
 	}
+	console.log(filter);
+	console.log(req.originalUrl);
 	const totalDocs = await Property.countDocuments(filter);
 	const properties = await Property.find(filter)
 		.sort('-createdAt')

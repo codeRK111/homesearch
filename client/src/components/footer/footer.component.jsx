@@ -66,10 +66,10 @@ const Footer = () => {
 					</Box>
 				</Grid> */}
 
-				<Grid item xs={6} md={2}>
+				<Grid item xs={6} md={3}>
 					<h3>Overview</h3>
 					<Box>
-						<Link className={classes.link} to="/">
+						<Link className={classes.link} to="/about-us">
 							About us
 						</Link>
 					</Box>
@@ -79,71 +79,36 @@ const Footer = () => {
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link} to="/">
+						<Link className={classes.link} to="/terms">
 							Terms & Conditions
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link} to="/">
+						<Link className={classes.link} to="/privacy">
 							Privacy Policy
 						</Link>
 					</Box>
 					<Box>
-						<Link className={classes.link} to="/">
-							Rental Agreement
+						<Link className={classes.link} to="/refund">
+							Refund & Cancelation Policy
 						</Link>
 					</Box>
+
 					<Box>
 						<Link className={classes.link} to="/">
 							Testimonials
 						</Link>
 					</Box>
 				</Grid>
-				<Grid item xs={6} md={2}>
-					<h3>Network sites</h3>
-					<Box>
-						<Link className={classes.link} to="/">
-							About us
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							Careers
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							Terms & Conditions
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							Privacy Policy
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							Rental Agreement
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							Testimonials
-						</Link>
-					</Box>
-				</Grid>
+
 				<Grid item xs={6} md={2}>
 					<h3>Contact Us</h3>
 					<Box>
-						<Link className={classes.link} to="/">
+						<Link className={classes.link} to="/contact-us">
 							Contact Us
 						</Link>
 					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
-							Corporate Enquiry
-						</Link>
-					</Box>
+
 					<Box>
 						<Link className={classes.link} to="/">
 							Facebook
@@ -166,9 +131,14 @@ const Footer = () => {
 						<Avatar className={classes.avatar}>
 							<FacebookIcon className={classes.iconFb} />
 						</Avatar>
-						<Link className={classes.link} to="/">
+						<a
+							className={classes.link}
+							href="https://www.facebook.com/Homesearch18"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							Share on facebook
-						</Link>
+						</a>
 					</Box>
 					<Box display="flex" alignItems="center" mt="1rem">
 						<Avatar className={classes.avatar}>
@@ -239,14 +209,19 @@ const Footer = () => {
 						<Box pr="1rem">
 							<h3>About Us</h3>
 							<Typography variant="caption">
-								Lorem ipsum dolor, sit amet consectetur
-								adipisicing elit. Dolorem nihil, molestias ab
-								facere ad impedit temporibus architecto vel quis
-								pariatur, aliquid laborum nulla iure minus,
-								eligendi inventore cupiditate ex ullam
-								voluptatum fuga sed. Eum blanditiis earum rerum
-								optio sint. Quos eum magnam, nisi vitae dicta
-								ipsa corrupti quia rem ipsam.
+								Homesearch18.com is the fastest growing
+								India&#39;s most innovative real estate
+								advertising platform for homebuyers, landlords,
+								developers, and real estate brokers with world
+								extending services to all property hunters. The
+								webvsite offers listings for new homes, resale
+								homes, rentals, plots and residential projects
+								in pan India.But often he misses some critical
+								pieces of the puzzle. If you are fed up with the
+								countless online options and fake listings, your
+								search for the perfect property and a great
+								success of real estate investing lies in finding
+								out the best property and tenants ends here.
 							</Typography>
 						</Box>
 					</Grid>

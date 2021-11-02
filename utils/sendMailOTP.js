@@ -15,17 +15,6 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-// var readHTMLFile = function (path, callback) {
-// 	fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
-// 		if (err) {
-// 			callback(err);
-// 			throw err;
-// 		} else {
-// 			callback(null, html);
-// 		}
-// 	});
-// };
-
 const readHTMLFile = async (path) => {
 	try {
 		const html = await readFile(path, { encoding: 'utf-8' });
@@ -56,12 +45,6 @@ const sendEmailOTP = async (to, subject, otp) => {
 	} catch (error) {
 		throw new Error(error.message);
 	}
-
-	readHTMLFile(htmlPath, function (err, html) {
-		if (err) {
-			return callback(err);
-		}
-	});
 };
 
 module.exports = sendEmailOTP;
