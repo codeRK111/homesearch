@@ -404,9 +404,14 @@ const TenantPackageConfirmationPage = ({
 												<Typography variant="caption">
 													* By confirming you will
 													agree to our{' '}
-													<Link to="#">
+													<Link to="/terms">
 														terms and conditions
-													</Link>
+													</Link>{' '}
+													{/* &{' '}
+													<Link to="/refund">
+														refund & canceltaion
+														policy
+													</Link> */}
 												</Typography>
 											</Box>
 										</Box>

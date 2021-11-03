@@ -26,7 +26,6 @@ import logo from '../../assets/icons/logo.svg';
 import { makeStyles } from '@material-ui/core/styles';
 import { toggleLoginPopup } from '../../redux/ui/ui.actions';
 import useAxios from '../../hooks/useAxiosv2';
-import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
 	packageWrapper: {
@@ -73,7 +72,6 @@ const useStyles = makeStyles((theme) => ({
 
 const PayPage = ({ isAuthenticated, toggleLoginPopup, user, ...props }) => {
 	const { packageWrapper, line, price, button, notes } = useStyles();
-	const history = useHistory();
 	const [initialLoading, setInitialLoading] = useState(false);
 	const [afterPaymentLoading, setAfterPaymentLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
@@ -353,10 +351,16 @@ const PayPage = ({ isAuthenticated, toggleLoginPopup, user, ...props }) => {
 														<Typography variant="caption">
 															* By confirming you
 															will agree to our{' '}
-															<Link to="#">
+															<Link to="/terms">
 																terms and
 																conditions
-															</Link>
+															</Link>{' '}
+															{/* &{' '}
+															<Link to="/refund">
+																refund &
+																canceltaion
+																policy
+															</Link> */}
 														</Typography>
 													</Box>
 												</Box>

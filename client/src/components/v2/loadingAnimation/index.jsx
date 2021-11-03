@@ -34,7 +34,7 @@ export function LoadingAnimationNormal({ open }) {
 			<Box className={classes.wrapper}>
 				<Paper className={classes.paper} elevation={0}>
 					<div id="loading">
-						<div id="image-wrapper">Homeearch18</div>
+						<div id="image-wrapper">Homesearch18</div>
 						<div id="animate"></div>
 					</div>
 				</Paper>
