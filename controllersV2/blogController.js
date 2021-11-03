@@ -47,10 +47,15 @@ exports.getBlogs = catchAsync(async (req, res, next) => {
 });
 exports.getBlogsByUser = catchAsync(async (req, res, next) => {
 	const filter = {};
-
+	const page = req.query.page * 1 || 1;
+	const limit = req.query.limit * 1 || 10;
+	const skip = (page - 1) * limit;
 	filter.status = 'active';
 
-	const blogs = await Blog.find(filter).sort('-views -createdAt');
+	const blogs = await Blog.find(filter)
+		.sort('-views -createdAt')
+		.skip(skip)
+		.limit(limit);
 
 	res.status(200).json({
 		status: 'success',

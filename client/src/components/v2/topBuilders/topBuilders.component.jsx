@@ -1,4 +1,4 @@
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import Card from '../builderCard/builderCard.component';
@@ -16,6 +16,7 @@ const RentProperties = ({ cities, loading, setLoading, error, setError }) => {
 	const gClasses = useGlobalStyles();
 
 	const [selected, setSelected] = React.useState(null);
+	const [noResults, setNoResults] = React.useState(false);
 	const [data, setData] = useState({
 		totalDocs: 0,
 		builders: [],
@@ -48,6 +49,11 @@ const RentProperties = ({ cities, loading, setLoading, error, setError }) => {
 				cancelToken.current,
 				setLoading
 			);
+			if (resp.builders.length === 0) {
+				setNoResults(true);
+			} else {
+				setNoResults(false);
+			}
 			setData(resp);
 			setError(null);
 		} catch (error) {
@@ -88,6 +94,10 @@ const RentProperties = ({ cities, loading, setLoading, error, setError }) => {
 			<Box mt="3rem">
 				{loading ? (
 					<SimilarPropertiesSkeleton />
+				) : noResults ? (
+					<Typography variant="h6" align="center">
+						No results found
+					</Typography>
 				) : (
 					<Carousel
 						docs={data.builders}

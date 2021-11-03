@@ -63,8 +63,8 @@ const useStyles = makeStyles((theme) => ({
 		height: '30px',
 		width: '30px',
 		[theme.breakpoints.down('sm')]: {
-			height: '20px',
-			width: '20px',
+			height: '5vh',
+			width: '5vh',
 		},
 	},
 	whatsappIcon: {

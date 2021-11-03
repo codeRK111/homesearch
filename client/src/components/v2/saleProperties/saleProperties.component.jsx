@@ -1,4 +1,4 @@
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import Card from '../salePropertyCard/propertyCard.component';
@@ -15,6 +15,7 @@ import { withAsync } from '../../../hoc/withAsync';
 const SaleProperties = ({ cities, loading, setLoading, error, setError }) => {
 	const classes = useStyles();
 	const [selected, setSelected] = React.useState(null);
+	const [noResults, setNoResults] = React.useState(false);
 	const [data, setData] = useState({
 		totalDocs: 0,
 		properties: [],
@@ -49,9 +50,15 @@ const SaleProperties = ({ cities, loading, setLoading, error, setError }) => {
 				cancelToken.current,
 				setLoading
 			);
+			if (resp.properties.length === 0) {
+				setNoResults(true);
+			} else {
+				setNoResults(false);
+			}
 			setData(resp);
 			setError(null);
 		} catch (error) {
+			setNoResults(false);
 			setError(error);
 			setData([]);
 		}
@@ -89,6 +96,10 @@ const SaleProperties = ({ cities, loading, setLoading, error, setError }) => {
 			<Box mt="3rem">
 				{loading ? (
 					<SimilarPropertiesSkeleton />
+				) : noResults ? (
+					<Typography variant="h6" align="center">
+						No results found
+					</Typography>
 				) : (
 					<Carousel
 						docs={data.properties}

@@ -437,3 +437,8 @@ export const hideNumber = (number) => {
 	const copy = number;
 	return `${copy.substring(0, 4)} XXXXXX`;
 };
+
+export const StaticPaths = {
+	property: (image) => `/assets/properties/${image}`,
+	blog: (image) => `/assets/blogs/${image}`,
+};

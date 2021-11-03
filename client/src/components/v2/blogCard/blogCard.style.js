@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
 		background: theme.shadowColor,
 		borderRadius: '32px',
 		boxShadow: '23px 23px 46px #a4a4a4,-23px -23px 46px #ffffff',
+		height: '100%',
 	},
 	imageWrapper: (props) => ({
 		position: 'relative',
@@ -83,6 +84,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	rotate: {
 		transform: 'rotate(-30deg)',
+	},
+	link: {
+		textDecoration: 'none',
+		color: 'inherit',
+		'&:hover': {
+			textDecoration: 'underline',
+		},
 	},
 }));
 export default useStyles;

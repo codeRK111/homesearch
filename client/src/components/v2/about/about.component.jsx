@@ -36,7 +36,9 @@ const About = () => {
 						<h1 className={classes.title}>
 							Find A New Home In Some Clicks
 						</h1>
-						<h2>Download our app</h2>
+						<h2>
+							Download our app <br /> (Coming soon ...){' '}
+						</h2>
 						<img
 							src={store}
 							alt="Store"

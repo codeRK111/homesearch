@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
 
 		[theme.breakpoints.down('sm')]: {
 			padding: '2rem 0',
-			height: '65vh',
+			minHeight: '65vh',
 		},
 		[theme.breakpoints.up('sm')]: {
 			height: '90vh',

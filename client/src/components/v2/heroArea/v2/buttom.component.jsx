@@ -22,7 +22,7 @@ const BottomLinkComponent = () => {
 
 	const gridProps = {};
 	if (smallScreen) {
-		gridProps.xs = 3;
+		gridProps.xs = 4;
 	} else {
 		if (gridProps.xs) {
 			delete gridProps.xs;
@@ -89,7 +89,7 @@ const BottomLinkComponent = () => {
 							style.iconText
 						)}
 					>
-						Property Valuation
+						Property Valuation <br />( Coming Soon )
 					</p>
 				</div>
 			</Grid>
@@ -104,7 +104,7 @@ const BottomLinkComponent = () => {
 							style.iconText
 						)}
 					>
-						Loan
+						Loan <br />( Coming Soon )
 					</p>
 				</div>
 			</Grid>
