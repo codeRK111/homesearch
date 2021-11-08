@@ -314,7 +314,7 @@ exports.sendFeedback = catchAsync(async (req, res, next) => {
 		return next(new AppError('email not found'));
 	}
 
-	const link = `${req.hostname}/package-feedback/${subscription.id}`;
+	const link = `https://homesearch18.com/package-feedback/${subscription.id}`;
 	console.log(link);
 	try {
 		const resp = await sendEmailSubscriptionFeedback(

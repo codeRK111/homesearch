@@ -130,6 +130,7 @@ export const renderPropertyOnFoor = (totalFloors: number) => {
 
 export const StaticPaths = {
 	property: (image: string) => `/assets/properties/${image}`,
+	domain: 'https://homesearch18.com',
 };
 
 export const capitalizeFirstLetter = (input: string): string =>
