@@ -55,6 +55,8 @@ const testRoutev2 = require('./routesV2/testRoute');
 
 const app = express();
 
+require('./utils/createInvoice');
+
 app.use(cors());
 
 // app.use(expressValidator());

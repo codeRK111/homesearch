@@ -1,6 +1,8 @@
 const Razorpay = require('razorpay');
 const catchAsync = require('./../utils/catchAsync');
+const createInvoice = require('./../utils/createInvoice');
 const sendEmailSubscriptionFeedback = require('./../utils/sendMailReview');
+const sendEmailInvoice = require('./../utils/sendMailInvoice');
 const Subscription = require('./../models/subscriptionModel');
 const Link = require('./../models/paymentLinkModel');
 const Admin = require('./../models/adminModel');
@@ -165,7 +167,34 @@ exports.success = catchAsync(async (req, res, next) => {
 		}
 
 		const subscription = await Subscription.create(options);
+		const newDoc = await Subscription.findById(subscription.id);
 
+		const invoiceName = await createInvoice(
+			{
+				name: newDoc.user.name,
+				email: newDoc.user.email,
+				number: newDoc.user.number,
+			},
+			{
+				paymentID: razorpayPaymentId,
+				products: [
+					{
+						id: `HSI-${subscription.subscriptionNumber}`,
+						package: 'Tenanant Package',
+						totalAmount: req.body.mainAmount,
+						amountPaid: req.body.paidAmount,
+					},
+				],
+
+				totalValue: req.body.paidAmount,
+			}
+		);
+		const respEmail = await sendEmailInvoice(
+			newDoc.user.email,
+			'Homesearch package invoice',
+			invoiceName
+		);
+		console.log(respEmail);
 		// THE PAYMENT IS LEGIT & VERIFIED
 		// YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
 

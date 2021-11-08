@@ -24,19 +24,28 @@ const readHTMLFile = async (path) => {
 	}
 };
 
-const htmlPath = path.join(__dirname, '../', 'static', 'html', 'feedback.html');
+const htmlPath = path.join(__dirname, '../', 'static', 'html', 'invoice.html');
 
-const sendEmailInvoice = async (to, subject) => {
+const sendEmailOTP = async (to, subject, invoice) => {
 	try {
 		const html = await readHTMLFile(htmlPath);
 		var template = handlebars.compile(html);
-
-		var htmlToSend = template();
+		var replacements = {
+			otp: '',
+		};
+		var htmlToSend = template(replacements);
 		var mailOptions = {
 			from: 'payment@homesearchindia.com',
 			to,
 			subject,
 			html: htmlToSend,
+			attachments: [
+				{
+					filename: 'invoice.pdf',
+					path: invoice,
+					cid: 'uniq-mailtrap.png',
+				},
+			],
 		};
 		const resp = await transporter.sendMail(mailOptions);
 		return resp;
@@ -45,4 +54,4 @@ const sendEmailInvoice = async (to, subject) => {
 	}
 };
 
-module.exports = sendEmailInvoice;
+module.exports = sendEmailOTP;
