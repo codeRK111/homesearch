@@ -117,3 +117,28 @@ export const asyncCreatePaymentLink = async (
 		throw new Error(asyncError(e));
 	}
 };
+
+export const asyncSendFeedbackForm = async (
+	id: string
+): Promise<Subscription> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.get<
+			any,
+			AxiosResponse<ServerResponse<Subscription>>
+		>(
+			`${V2EndPoint.Payment}/send-feedback-mail/${id}`,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};

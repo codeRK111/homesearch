@@ -4,6 +4,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { parseDate, renderPackageName } from '../../../utils/render';
 
 import Paper from '@material-ui/core/Paper';
+import SendSubscriptionFeedbackButton from '../utility/SendFeedbackButton';
 import { Subscription } from '../../../model/subscription.interface';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,6 +12,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TrimText from '../../TrimText';
 
 // import EditIcon from '@material-ui/icons/Edit';
 
@@ -88,6 +90,7 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 							<StyledTableCell>Amount Paid</StyledTableCell>
 							<StyledTableCell>Feedback</StyledTableCell>
 							<StyledTableCell>Rating</StyledTableCell>
+							<StyledTableCell>Feedback Status</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -137,8 +140,27 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 										<StyledTableCell>
 											{row.paidAmount}
 										</StyledTableCell>
-										<StyledTableCell>-</StyledTableCell>
-										<StyledTableCell>-</StyledTableCell>
+										<StyledTableCell>
+											{row.paymentReview ? (
+												<TrimText
+													text={row.paymentReview}
+													num={100}
+												/>
+											) : (
+												<></>
+											)}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.paymentRating}
+										</StyledTableCell>
+										<StyledTableCell>
+											<SendSubscriptionFeedbackButton
+												id={row.id}
+												initialStatus={
+													row.paymentReviewStatus
+												}
+											/>
+										</StyledTableCell>
 									</StyledTableRow>
 							  ))}
 					</TableBody>

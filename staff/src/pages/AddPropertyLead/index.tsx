@@ -11,7 +11,7 @@ import { withAccess } from '../../components/HOC/withRole';
 const AddPropertyLeadPage = () => {
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	const [lat, setLat] = useState<null | number>(null);
-	const [id, setId] = useState<null | string>();
+	const [id, setId] = useState<null | string>('');
 	const [fetchGeoLocation, setFetchGeoLocation] = useState(false);
 	const [lng, setLng] = useState<null | number>(null);
 	const [showForm, setShowForm] = useState(false);

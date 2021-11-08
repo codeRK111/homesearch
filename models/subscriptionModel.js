@@ -55,6 +55,20 @@ const subscriptionSchema = new Schema(
 		subscriptionNumber: {
 			type: Number,
 		},
+		paymentReviewStatus: {
+			type: String,
+			enum: ['not-sent', 'sent', 'received'],
+			default: 'not-sent',
+		},
+		paymentReview: {
+			type: String,
+		},
+		paymentRating: {
+			type: Number,
+		},
+		feedbackAt: {
+			type: Date,
+		},
 	},
 	{
 		toJSON: { virtuals: true },

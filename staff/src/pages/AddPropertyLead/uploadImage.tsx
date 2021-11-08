@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Grid } from '@material-ui/core';
+import { Box, CircularProgress, Grid, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
@@ -130,6 +130,11 @@ const UploadLeadImage: React.FC<IUploadLeadImage> = ({ id }) => {
 					)}
 				</label>
 			</Box>
+			{loading && (
+				<Typography align="center">
+					Please be patient,it may take a while...
+				</Typography>
+			)}
 			<Grid container spacing={3}>
 				{photos.map((c, i) => (
 					<Grid

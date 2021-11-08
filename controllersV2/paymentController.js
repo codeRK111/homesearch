@@ -1,5 +1,6 @@
 const Razorpay = require('razorpay');
 const catchAsync = require('./../utils/catchAsync');
+const sendEmailSubscriptionFeedback = require('./../utils/sendMailReview');
 const Subscription = require('./../models/subscriptionModel');
 const Link = require('./../models/paymentLinkModel');
 const Admin = require('./../models/adminModel');
@@ -302,5 +303,71 @@ exports.getAllLinks = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: { links, totalDocs },
+	});
+});
+exports.sendFeedback = catchAsync(async (req, res, next) => {
+	const subscription = await Subscription.findById(req.params.id);
+	if (!subscription) {
+		return next(new AppError('subscription not found'));
+	}
+	if (!subscription.user.email) {
+		return next(new AppError('email not found'));
+	}
+
+	const link = `${req.hostname}/package-feedback/${subscription.id}`;
+	console.log(link);
+	try {
+		const resp = await sendEmailSubscriptionFeedback(
+			subscription.user.email,
+			'Homesearch Package Feedback',
+			link
+		);
+		subscription.paymentReviewStatus = 'sent';
+		await subscription.save();
+		console.log(resp);
+		res.status(200).json({
+			status: 'success',
+			data: subscription,
+		});
+	} catch (error) {
+		return next(new AppError(error.message));
+	}
+});
+exports.submitFeedback = catchAsync(async (req, res, next) => {
+	const subscription = await Subscription.findById(req.params.id);
+	if (!subscription) {
+		return next(new AppError('subscription not found'));
+	}
+	if (subscription.user.id !== req.user.id) {
+		return next(new AppError('Not authorized'));
+	}
+
+	if (req.body.paymentReview) {
+		subscription.paymentReview = req.body.paymentReview;
+	}
+	if (req.body.paymentRating) {
+		subscription.paymentRating = req.body.paymentRating;
+	}
+
+	try {
+		subscription.paymentReviewStatus = 'received';
+		subscription.feedbackAt = Date.now();
+		await subscription.save();
+		res.status(200).json({
+			status: 'success',
+			data: subscription,
+		});
+	} catch (error) {
+		return next(new AppError(error.message));
+	}
+});
+exports.getSubscriptionDetails = catchAsync(async (req, res, next) => {
+	const subscription = await Subscription.findById(req.params.id);
+	if (!subscription) {
+		return next(new AppError('subscription not found'));
+	}
+	res.status(200).json({
+		status: 'success',
+		data: subscription,
 	});
 });

@@ -6,6 +6,24 @@ export enum SubscriptionPackageType {
 	PaymentLink = 'paymentLink',
 }
 
+export enum PaymentReviewStatus {
+	NotSent = 'not-sent',
+	Sent = 'sent',
+	Received = 'received',
+}
+
+// paymentReviewStatus: {
+// 	type: String,
+// 	enum: ['not-sent', 'sent', 'received'],
+// 	default: 'not-sent',
+// },
+// paymentReview: {
+// 	type: String,
+// },
+// paymentRating: {
+// 	type: Number,
+// },
+
 export interface Subscription {
 	id: string;
 	mainAmount: number;
@@ -21,4 +39,7 @@ export interface Subscription {
 	createdAt: Date;
 	updatedAt: Date;
 	dealBy: null | IStaff;
+	paymentReviewStatus: PaymentReviewStatus;
+	paymentReview: string;
+	paymentRating: number;
 }

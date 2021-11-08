@@ -36,6 +36,7 @@ const RealtorsPage = lazy(() => import('./pages/realtors'));
 const NewsDetailsPage = lazy(() => import('./pages/newsDetails'));
 const AboutUsPage = lazy(() => import('./pages/aboutUs'));
 const TermsPage = lazy(() => import('./pages/terms'));
+const PackageFeedbackPage = lazy(() => import('./pages/packageFeedback'));
 const PrivacyPoliciesPage = lazy(() => import('./pages/privacy'));
 const ContactUsPage = lazy(() => import('./pages/contact'));
 const RefundPage = lazy(() => import('./pages/refund'));
@@ -176,6 +177,16 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 							render={(props) => (
 								<Protected
 									component={UpdateProfilePage}
+									{...props}
+								/>
+							)}
+						/>
+						<Route
+							exact
+							path="/package-feedback/:id"
+							render={(props) => (
+								<Protected
+									component={PackageFeedbackPage}
 									{...props}
 								/>
 							)}

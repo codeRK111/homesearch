@@ -220,13 +220,6 @@ const TenantPackageConfirmationPage = ({
 				name: user.name,
 				email: user.email,
 			},
-			method: {
-				netbanking: false,
-				card: false,
-				wallet: false,
-				upi: true,
-				emi: false,
-			},
 		};
 
 		const paymentObject = new window.Razorpay(options);

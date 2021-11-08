@@ -31,6 +31,11 @@ router.get(
 	paymentController.getSubscriptions
 );
 router.get(
+	'/subscription/:id',
+	authController.protect,
+	paymentController.getSubscriptionDetails
+);
+router.get(
 	'/payment-links',
 	adminController.protect,
 	paymentController.getAllLinks
@@ -39,6 +44,16 @@ router.post(
 	'/create-payment-link',
 	adminController.protect,
 	paymentController.createPaymentLink
+);
+router.get(
+	'/send-feedback-mail/:id',
+	adminController.protect,
+	paymentController.sendFeedback
+);
+router.post(
+	'/submit-feedback/:id',
+	authController.protect,
+	paymentController.submitFeedback
 );
 
 module.exports = router;
