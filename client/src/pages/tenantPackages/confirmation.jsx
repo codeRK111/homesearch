@@ -91,6 +91,7 @@ const TenantPackageConfirmationPage = ({
 	...props
 }) => {
 	const [initialLoading, setInitialLoading] = useState(false);
+	const [successLoading, setSuccessLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 	const {
 		bold,
@@ -181,6 +182,7 @@ const TenantPackageConfirmationPage = ({
 			image: logo,
 			handler: async function (response) {
 				try {
+					setSuccessLoading(true);
 					const mainAmount = packageName === 'b' ? 3499 : 1499;
 					const paidAmount = packageName === 'b' ? 2999 : 999;
 					const data = {
@@ -208,8 +210,10 @@ const TenantPackageConfirmationPage = ({
 							},
 						}
 					);
+					setSuccessLoading(false);
 					setSuccess(true);
 				} catch (error) {
+					setSuccessLoading(false);
 					alert(error.data.message);
 					setSuccess(false);
 				}
@@ -381,10 +385,17 @@ const TenantPackageConfirmationPage = ({
 											<button
 												className={button}
 												onClick={onPayment}
-												disabled={initialLoading}
+												disabled={
+													initialLoading ||
+													successLoading
+												}
 											>
-												Confirm & Pay
-												{initialLoading && (
+												{successLoading
+													? 'Processing your payment'
+													: 'Confirm & Pay'}
+
+												{(initialLoading ||
+													successLoading) && (
 													<Box ml="0.5rem">
 														<CircularProgress
 															size={15}
