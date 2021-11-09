@@ -40,7 +40,7 @@ const FSelect: React.FC<IFSelect & SelectProps & FieldHookConfig<string>> = ({
 				)}
 				{props.children}
 			</Select>
-			{!!helperText && <FormHelperText>Error</FormHelperText>}
+			{!!helperText && <FormHelperText>{helperText}</FormHelperText>}
 		</FormControl>
 	);
 };

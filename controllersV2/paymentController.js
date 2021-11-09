@@ -400,3 +400,39 @@ exports.getSubscriptionDetails = catchAsync(async (req, res, next) => {
 		data: subscription,
 	});
 });
+
+exports.createSubscription = catchAsync(async (req, res, next) => {
+	const requireFields = [
+		'mainAmount',
+		'paidAmount',
+		'dealBy',
+		'package',
+		'name',
+		'email',
+		'number',
+		'paymentMode',
+	];
+	const excludedFields = [];
+	requireFields.forEach((c) => {
+		if (!req.body[c]) {
+			excludedFields.push(c);
+		}
+	});
+	if (excludedFields.length > 0) {
+		return next(
+			new AppError(`Missing fields - ${excludedFields.join(',')}`)
+		);
+	}
+	const keys = Object.keys(req.body);
+	keys.forEach((c) => {
+		if (!requireFields.includes(c)) {
+			delete req.body[c];
+		}
+	});
+	const subscription = await Subscription.create(req.body);
+
+	res.status(200).json({
+		status: 'success',
+		data: subscription,
+	});
+});

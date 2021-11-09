@@ -1,11 +1,14 @@
 import { Box, CircularProgress } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import {
+	Subscription,
+	SubscriptionPaymentMode,
+} from '../../../model/subscription.interface';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { parseDate, renderPackageName } from '../../../utils/render';
 
 import Paper from '@material-ui/core/Paper';
 import SendSubscriptionFeedbackButton from '../utility/SendFeedbackButton';
-import { Subscription } from '../../../model/subscription.interface';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,8 +16,17 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TrimText from '../../TrimText';
+import { User } from '../../../model/user.interface';
 
 // import EditIcon from '@material-ui/icons/Edit';
+
+const renderClientDetails = (sub: Subscription, field: any) => {
+	if (sub.paymentMode === SubscriptionPaymentMode.Cash) {
+		return sub[field as keyof Subscription] as string;
+	} else {
+		return sub.user[field as keyof User];
+	}
+};
 
 const StyledTableCell = withStyles((theme) => ({
 	head: {
@@ -63,7 +75,7 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: 12 }, (_, i) => i + 1).map((c) => (
+			{Array.from({ length: 13 }, (_, i) => i + 1).map((c) => (
 				<StyledTableCell key={c}>
 					<CircularProgress size={15} color="inherit" />
 				</StyledTableCell>
@@ -82,12 +94,12 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 							<StyledTableCell>Payment ID</StyledTableCell>
 							<StyledTableCell>Date</StyledTableCell>
 							<StyledTableCell>Close By</StyledTableCell>
-							<StyledTableCell>Client Name</StyledTableCell>
-							<StyledTableCell>Client Number</StyledTableCell>
-							<StyledTableCell>Client Email</StyledTableCell>
+							<StyledTableCell>Client Details</StyledTableCell>
+
 							<StyledTableCell>Package Name</StyledTableCell>
 							<StyledTableCell>Main Amount</StyledTableCell>
 							<StyledTableCell>Amount Paid</StyledTableCell>
+							<StyledTableCell>Payment Mode</StyledTableCell>
 							<StyledTableCell>Feedback</StyledTableCell>
 							<StyledTableCell>Rating</StyledTableCell>
 							<StyledTableCell>Feedback Status</StyledTableCell>
@@ -120,14 +132,31 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 											{row.dealBy ? row.dealBy.name : '-'}
 										</StyledTableCell>
 										<StyledTableCell>
-											{row.user.name}
+											Name -{' '}
+											<b>
+												{renderClientDetails(
+													row,
+													'name'
+												)}
+											</b>{' '}
+											<br />
+											Number -{' '}
+											<b>
+												{renderClientDetails(
+													row,
+													'number'
+												)}
+											</b>{' '}
+											<br />
+											Email -{' '}
+											<b>
+												{renderClientDetails(
+													row,
+													'email'
+												)}
+											</b>
 										</StyledTableCell>
-										<StyledTableCell>
-											{row.user.number}
-										</StyledTableCell>
-										<StyledTableCell>
-											{row.user.email}
-										</StyledTableCell>
+
 										<StyledTableCell>
 											{renderPackageName(
 												row.packageType,
@@ -139,6 +168,9 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 										</StyledTableCell>
 										<StyledTableCell>
 											{row.paidAmount}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.paymentMode}
 										</StyledTableCell>
 										<StyledTableCell>
 											{row.paymentReview ? (

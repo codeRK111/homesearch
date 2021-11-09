@@ -7,6 +7,15 @@ const AppError = require('./../utils/appError');
 const Admin = require('./adminModel');
 const subscriptionSchema = new Schema(
 	{
+		name: {
+			type: String,
+		},
+		email: {
+			type: String,
+		},
+		number: {
+			type: String,
+		},
 		mainAmount: {
 			type: Number,
 		},
@@ -59,6 +68,11 @@ const subscriptionSchema = new Schema(
 			type: String,
 			enum: ['not-sent', 'sent', 'received'],
 			default: 'not-sent',
+		},
+		paymentMode: {
+			type: String,
+			enum: ['cash', 'online'],
+			default: 'online',
 		},
 		paymentReview: {
 			type: String,

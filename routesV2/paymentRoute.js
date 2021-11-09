@@ -30,6 +30,11 @@ router.get(
 	adminController.protect,
 	paymentController.getSubscriptions
 );
+router.post(
+	'/subscription',
+	adminController.protect,
+	paymentController.createSubscription
+);
 router.get(
 	'/subscription/:id',
 	authController.protect,

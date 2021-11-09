@@ -5,6 +5,10 @@ export enum SubscriptionPackageType {
 	TenantPackage = 'tenantPackage',
 	PaymentLink = 'paymentLink',
 }
+export enum SubscriptionPaymentMode {
+	Online = 'online',
+	Cash = 'cash',
+}
 
 export enum PaymentReviewStatus {
 	NotSent = 'not-sent',
@@ -42,4 +46,8 @@ export interface Subscription {
 	paymentReviewStatus: PaymentReviewStatus;
 	paymentReview: string;
 	paymentRating: number;
+	paymentMode: SubscriptionPaymentMode;
+	name?: string;
+	email?: string;
+	number?: string;
 }

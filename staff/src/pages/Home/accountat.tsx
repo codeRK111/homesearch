@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Button, Grid, Typography } from '@material-ui/core';
 import { IMyTarget, asyncGetMyTargets } from '../../API/auth';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import axios, { CancelTokenSource } from 'axios';
@@ -25,6 +25,10 @@ const AccountantHome = () => {
 			console.log(error);
 		}
 	}, []);
+
+	const redirectTo = (path: string): void => {
+		history.push(path);
+	};
 
 	useEffect(() => {
 		targetSource.current = axios.CancelToken.source();
@@ -89,6 +93,15 @@ const AccountantHome = () => {
 							/>
 						</Grid>
 					</Grid>
+					<Box mt="1rem" display="flex" justifyContent="flex-end">
+						<Button
+							variant="contained"
+							color="primary"
+							onClick={() => redirectTo('/add-subscription')}
+						>
+							Add Subscription
+						</Button>
+					</Box>
 					<AccountantList />
 				</Box>
 			)}

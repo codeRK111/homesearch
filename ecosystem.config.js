@@ -8,7 +8,7 @@ module.exports = {
 				PORT: 8080,
 			},
 			watch: true,
-			ignore_watch: ['node_modules', 'images'],
+			ignore_watch: ['node_modules', 'images', 'static/invoices'],
 		},
 	],
 };

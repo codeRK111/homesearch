@@ -32,6 +32,7 @@ const PropertyLeadsDetailsPage = lazy(
 	() => import('./pages/PropertyLeadDetails')
 );
 const PaymentLinksPage = lazy(() => import('./pages/PaymentLinks'));
+const AddSubscriptionPage = lazy(() => import('./pages/AddSubscription'));
 const AddPropertyLeadPage = lazy(() => import('./pages/AddPropertyLead'));
 const PaymentLinkPage = lazy(() => import('./pages/PaymentLink'));
 const AddLeadPage = lazy(() => import('./pages/AddLead'));
@@ -100,6 +101,10 @@ const Router = () => {
 						component={PaymentLinksPage}
 					/>
 					<PrivateRoute path={'/add-lead'} component={AddLeadPage} />
+					<PrivateRoute
+						path={'/add-subscription'}
+						component={AddSubscriptionPage}
+					/>
 					<PrivateRoute
 						path={'/payment-link'}
 						component={PaymentLinkPage}

@@ -1,6 +1,7 @@
 import { APIV2, V2EndPoint, asyncError } from '../instance';
 
 import { AxiosResponse } from 'axios';
+import { IcreateSubscriptionData } from '../../components/Forms/createSubscription';
 import { PaymentLink } from '../../model/payment.interface';
 import { ServerResponse } from '../../model/apiResponse.interface';
 import { Subscription } from '../../model/subscription.interface';
@@ -129,6 +130,31 @@ export const asyncSendFeedbackForm = async (
 			AxiosResponse<ServerResponse<Subscription>>
 		>(
 			`${V2EndPoint.Payment}/send-feedback-mail/${id}`,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+export const asyncCreateSubscription = async (
+	data: IcreateSubscriptionData
+): Promise<Subscription> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.post<
+			any,
+			AxiosResponse<ServerResponse<Subscription>>
+		>(
+			`${V2EndPoint.Payment}/subscription`,
+			data,
 
 			{
 				headers: {
