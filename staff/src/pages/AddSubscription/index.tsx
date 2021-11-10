@@ -11,6 +11,7 @@ const AddSubscriptionPage = () => {
 		<Container>
 			<Box mt="2rem">
 				<GoBack />
+
 				<Typography variant="h5" gutterBottom>
 					Add Subscription
 				</Typography>

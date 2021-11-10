@@ -26,7 +26,7 @@ const readHTMLFile = async (path) => {
 
 const htmlPath = path.join(__dirname, '../', 'static', 'html', 'invoice.html');
 
-const sendEmailOTP = async (to, subject, invoice) => {
+const sendEmailOTP = async (to, subject, invoicePath, invoiceName) => {
 	try {
 		const html = await readHTMLFile(htmlPath);
 		var template = handlebars.compile(html);
@@ -41,8 +41,8 @@ const sendEmailOTP = async (to, subject, invoice) => {
 			html: htmlToSend,
 			attachments: [
 				{
-					filename: 'invoice.pdf',
-					path: invoice,
+					filename: invoiceName,
+					path: invoicePath,
 					cid: 'uniq-mailtrap.png',
 				},
 			],

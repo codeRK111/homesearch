@@ -1,6 +1,6 @@
 const Razorpay = require('razorpay');
 const catchAsync = require('./../utils/catchAsync');
-const createInvoice = require('./../utils/createInvoice');
+const createInvoice = require('./../utils/createTenantInvoice');
 const sendEmailSubscriptionFeedback = require('./../utils/sendMailReview');
 const sendEmailInvoice = require('./../utils/sendMailInvoice');
 const Subscription = require('./../models/subscriptionModel');
@@ -177,22 +177,21 @@ exports.success = catchAsync(async (req, res, next) => {
 			},
 			{
 				paymentID: razorpayPaymentId,
-				products: [
-					{
-						id: `HSI-${subscription.subscriptionNumber}`,
-						package: 'Tenanant Package',
-						totalAmount: req.body.mainAmount,
-						amountPaid: req.body.paidAmount,
-					},
-				],
-
-				totalValue: req.body.paidAmount,
+				id: subscription.subscriptionNumber,
+				package: 'Tenant Package',
+				totalAmount: req.body.mainAmount,
+				amountPaid: req.body.paidAmount,
+				discount: 500,
+				tax: 0,
 			}
 		);
+
+		console.log(invoiceName);
 		const respEmail = await sendEmailInvoice(
 			newDoc.user.email,
 			'Homesearch package invoice',
-			invoiceName
+			invoiceName.fileName,
+			`${invoiceName.docName}.pdf`
 		);
 		console.log(respEmail);
 		// THE PAYMENT IS LEGIT & VERIFIED
