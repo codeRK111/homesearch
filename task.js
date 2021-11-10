@@ -1,16 +1,21 @@
-const sendEmail = require('./utils/sendFromSMTp');
+// const sendEmail = require('./utils/sendFromSMTp');
+// const Sub = require('./models/subscriptionModel');
 
-async function test() {
-	try {
-		const res = await sendEmail(
-			'rakeshchandrra@gmail.com',
-			'payment',
-			'For payment purpose'
-		);
-		console.log(res);
-	} catch (error) {
-		console.log(JSON.stringify({ message: error.message }));
-	}
-}
+// async function test() {
+// 	try {
+// 		await Sub.updateMany(
+// 			{},
+// 			{
+// 				$set: {
+// 					paymentReviewStatus: 'not-sent',
+// 					paymentReview: undefined,
+// 					paymentRating: undefined,
+// 				},
+// 			}
+// 		);
+// 	} catch (error) {
+// 		console.log(JSON.stringify({ message: error.message }));
+// 	}
+// }
 
 // test();

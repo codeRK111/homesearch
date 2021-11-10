@@ -18,6 +18,7 @@ export enum StaffType {
 	SalesExecutive = 'salesExecutive',
 	AssistantSalesManager = 'assistantSalesManager',
 	Accountant = 'accountant',
+	SuperAdmin = 'super-admin',
 }
 
 export type FetchAdminResponse = {

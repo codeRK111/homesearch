@@ -4,10 +4,12 @@ import { User } from './user.interface';
 export enum SubscriptionPackageType {
 	TenantPackage = 'tenantPackage',
 	PaymentLink = 'paymentLink',
+	ConsultantFee = 'consultantFee',
 }
 export enum SubscriptionPaymentMode {
 	Online = 'online',
 	Cash = 'cash',
+	Gateway = 'gateway',
 }
 
 export enum PaymentReviewStatus {

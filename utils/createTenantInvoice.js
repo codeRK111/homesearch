@@ -58,21 +58,26 @@ function createInvoice(customerInfo, orderInfo) {
 			.fillColor('#000000')
 			.font(fontNormal)
 			.fontSize(10)
-			.text(customerInfo.name, 32, 115, {
-				width: 150,
-			});
-		pdfDoc
-			.fillColor('#000000')
-			.font(fontNormal)
-			.fontSize(10)
-			.text(customerInfo.email, 32, 130, {
+			.text(`Name - ${customerInfo.name}`, 32, 115, {
 				width: 200,
 			});
 		pdfDoc
 			.fillColor('#000000')
 			.font(fontNormal)
 			.fontSize(10)
-			.text(customerInfo.number, 32, 145, {
+			.text(
+				`Email - ${customerInfo.email ? customerInfo.email : ''}`,
+				32,
+				140,
+				{
+					width: 200,
+				}
+			);
+		pdfDoc
+			.fillColor('#000000')
+			.font(fontNormal)
+			.fontSize(10)
+			.text(`Phone - ${customerInfo.number}`, 32, 155, {
 				width: 200,
 			});
 

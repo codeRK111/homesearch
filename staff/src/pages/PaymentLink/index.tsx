@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from '@material-ui/core';
 
-import CreatePaymentLinkForm from '../../components/Forms/createSubscription';
+import CreatePaymentLinkForm from '../../components/Forms/createPaymentLink';
 import React from 'react';
 
 const PaymentLinkPage = () => {

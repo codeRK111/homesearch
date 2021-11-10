@@ -10,8 +10,8 @@ const transporter = nodemailer.createTransport({
 	port: 587,
 	secure: false, // use TLS
 	auth: {
-		user: 'payment@homesearchindia.com',
-		pass: 'hdf@876R',
+		user: 'support@homesearchindia.com',
+		pass: 'hsi@319KIIT',
 	},
 });
 
@@ -26,14 +26,17 @@ const readHTMLFile = async (path) => {
 
 const htmlPath = path.join(__dirname, '../', 'static', 'html', 'feedback.html');
 
-const sendEmailInvoice = async (to, subject) => {
+const sendEmailInvoice = async (to, subject, url) => {
 	try {
 		const html = await readHTMLFile(htmlPath);
 		var template = handlebars.compile(html);
 
-		var htmlToSend = template();
+		var replacements = {
+			url,
+		};
+		var htmlToSend = template(replacements);
 		var mailOptions = {
-			from: 'payment@homesearchindia.com',
+			from: 'support@homesearchindia.com',
 			to,
 			subject,
 			html: htmlToSend,

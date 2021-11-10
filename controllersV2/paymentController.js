@@ -405,9 +405,19 @@ exports.createSubscription = catchAsync(async (req, res, next) => {
 		'mainAmount',
 		'paidAmount',
 		'dealBy',
-		'package',
+		'packageType',
 		'name',
+		'number',
+		'paymentMode',
+	];
+	const validFields = [
+		'mainAmount',
+		'paidAmount',
+		'dealBy',
+		'packageType',
+		'package',
 		'email',
+		'name',
 		'number',
 		'paymentMode',
 	];
@@ -424,11 +434,48 @@ exports.createSubscription = catchAsync(async (req, res, next) => {
 	}
 	const keys = Object.keys(req.body);
 	keys.forEach((c) => {
-		if (!requireFields.includes(c)) {
+		if (!validFields.includes(c)) {
 			delete req.body[c];
 		}
 	});
 	const subscription = await Subscription.create(req.body);
+	let package;
+	if (req.body.packageType === 'tenantPackage') {
+		package = 'Tenant Package';
+	} else if (req.body.packageType === 'paymentLink') {
+		package = 'Custom Requirements';
+	} else {
+		package = 'Consultant Fee';
+	}
+
+	const discount = req.body.mainAmount - req.body.paidAmount;
+
+	const invoiceName = await createInvoice(
+		{
+			name: req.body.name,
+			email: req.body.email ? req.body.email : null,
+			number: req.body.number,
+		},
+		{
+			id: subscription.subscriptionNumber,
+			package,
+			totalAmount: req.body.mainAmount,
+			amountPaid: req.body.paidAmount,
+			discount,
+			tax: 0,
+		}
+	);
+
+	console.log(invoiceName);
+	if (req.body.email) {
+		const respEmail = await sendEmailInvoice(
+			req.body.email,
+			'Homesearch package invoice',
+			invoiceName.fileName,
+			`${invoiceName.docName}.pdf`
+		);
+		console.log(respEmail);
+	}
 
 	res.status(200).json({
 		status: 'success',

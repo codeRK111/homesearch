@@ -5,11 +5,14 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import { IStaff, StaffType } from '../../model/staff.interface';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
+import {
+	SubscriptionPackageType,
+	SubscriptionPaymentMode,
+} from '../../model/subscription.interface';
 
 import { Button } from '../UI/Button';
 import FSelect from '../Formik/select';
 import FTextField from '../Formik/input';
-import { SubscriptionPaymentMode } from '../../model/subscription.interface';
 import { asyncCreateSubscription } from '../../API/payment';
 import { asyncFetchAdmins } from '../../API/auth';
 
@@ -17,11 +20,12 @@ export interface IcreateSubscriptionData {
 	mainAmount: number;
 	paidAmount: number;
 	dealBy: string;
-	package: string;
+	package?: string;
 	name: string;
 	email: string;
 	number: string;
 	paymentMode: SubscriptionPaymentMode;
+	packageType: SubscriptionPackageType;
 }
 
 interface IAddLeadStrategyForm {
@@ -35,8 +39,6 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	const validationSchema = Yup.object({
 		name: Yup.string().required('name required'),
-		email: Yup.string().required('email required'),
-		package: Yup.string().required('package required'),
 		dealBy: Yup.string().required('Deal by required'),
 		mainAmount: Yup.number().required('mainAmount required'),
 		paidAmount: Yup.number().required('paidAmount required'),
@@ -50,11 +52,12 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 		mainAmount: 0,
 		paidAmount: 0,
 		dealBy: '',
-		package: 'b',
+		package: '',
 		name: '',
 		email: '',
 		number: '',
 		paymentMode: SubscriptionPaymentMode.Cash,
+		packageType: SubscriptionPackageType.ConsultantFee,
 	};
 
 	// State
@@ -71,6 +74,7 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 					StaffType.ClientSupport,
 					StaffType.AssistantSalesManager,
 					StaffType.SalesExecutive,
+					StaffType.SuperAdmin,
 				],
 			});
 			setStaffLoading(false);
@@ -88,6 +92,9 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 	) => {
 		try {
 			setLoading(true);
+			if (values.packageType !== SubscriptionPackageType.TenantPackage) {
+				delete values.package;
+			}
 			await asyncCreateSubscription(values);
 			// setLink(response);
 			setLoading(false);
@@ -141,16 +148,66 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 									label="Client Number *"
 								/>
 							</Grid>
-							<Grid item xs={12} md={6}>
+							<Grid item xs={12}>
 								<FSelect
-									name={'package'}
-									label="Package"
+									name={'packageType'}
+									label="Package Type"
 									showNone={false}
 								>
-									<MenuItem value={'b'}>Bhubaneswar</MenuItem>
-									<MenuItem value={'oc'}>Other City</MenuItem>
+									<MenuItem
+										value={
+											SubscriptionPackageType.TenantPackage
+										}
+									>
+										Tenant Package
+									</MenuItem>
+									<MenuItem
+										value={
+											SubscriptionPackageType.PaymentLink
+										}
+									>
+										Payment Link
+									</MenuItem>
+									<MenuItem
+										value={
+											SubscriptionPackageType.ConsultantFee
+										}
+									>
+										Consultant Fee
+									</MenuItem>
 								</FSelect>
 							</Grid>
+							{values.packageType ===
+								SubscriptionPackageType.TenantPackage && (
+								<Grid item xs={12}>
+									<FSelect
+										name={'package'}
+										label="Package"
+										showNone={false}
+									>
+										<MenuItem value={'b'}>
+											Bhubaneswar
+										</MenuItem>
+										<MenuItem value={'oc'}>
+											Other City
+										</MenuItem>
+									</FSelect>
+								</Grid>
+							)}
+							<FSelect
+								name={'paymentMode'}
+								label="Payment Mode"
+								showNone={false}
+							>
+								<MenuItem
+									value={SubscriptionPaymentMode.Gateway}
+								>
+									Razorpay
+								</MenuItem>
+								<MenuItem value={SubscriptionPaymentMode.Cash}>
+									Cash
+								</MenuItem>
+							</FSelect>
 							<Grid item xs={12} md={6}>
 								<FSelect
 									name={'dealBy'}

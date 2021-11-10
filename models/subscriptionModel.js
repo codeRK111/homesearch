@@ -42,7 +42,7 @@ const subscriptionSchema = new Schema(
 		packageType: {
 			type: String,
 			enum: {
-				values: ['tenantPackage', 'paymentLink'],
+				values: ['tenantPackage', 'paymentLink', 'consultantFee'],
 			},
 			default: 'tenantPackage',
 		},
@@ -71,7 +71,7 @@ const subscriptionSchema = new Schema(
 		},
 		paymentMode: {
 			type: String,
-			enum: ['cash', 'online'],
+			enum: ['cash', 'online', 'gateway'],
 			default: 'online',
 		},
 		paymentReview: {

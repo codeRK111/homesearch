@@ -21,12 +21,17 @@ import { User } from '../../../model/user.interface';
 // import EditIcon from '@material-ui/icons/Edit';
 
 const renderClientDetails = (sub: Subscription, field: any) => {
-	if (sub.paymentMode === SubscriptionPaymentMode.Cash) {
+	if (
+		sub.paymentMode === SubscriptionPaymentMode.Cash ||
+		sub.paymentMode === SubscriptionPaymentMode.Gateway
+	) {
 		return sub[field as keyof Subscription] as string;
 	} else {
 		return sub.user[field as keyof User];
 	}
 };
+
+// 9778538778
 
 const StyledTableCell = withStyles((theme) => ({
 	head: {
