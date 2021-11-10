@@ -4,6 +4,7 @@ const path = require('path');
 const moment = require('moment');
 
 let companyLogo = path.join(__dirname, '../static', 'images', 'gr-logo.png');
+let stamp = path.join(__dirname, '../static', 'images', 'stamp.png');
 const docName = Date.now();
 let fileName = path.join(__dirname, '../static', 'invoices', `${docName}.pdf`);
 let fontNormal = 'Helvetica';
@@ -16,22 +17,12 @@ function pad(num, size) {
 	return num;
 }
 
-let sellerInfo = {
-	companyName: 'Homesearchindia',
-	address: '2nd, Floor, JSS STP Tower 1, Infocity, Patia',
-	city: 'Bhubaneswar',
-	state: 'Odisha ',
-	pincode: '751024',
-	country: 'India',
-	contactNo: '+91 9090-91-7676',
-};
-
 function createInvoice(customerInfo, orderInfo) {
 	try {
 		let pdfDoc = new PDFDocument({ autoFirstPage: false });
 		pdfDoc.addPage({ margin: 36 });
 		pdfDoc.pipe(fs.createWriteStream(fileName));
-		pdfDoc.image(companyLogo, { width: 100, height: 40 });
+		pdfDoc.image(companyLogo, { width: 100, height: 30 });
 
 		pdfDoc.font(fontBold).fontSize(16).text('Tax  Invoice', 200, 50);
 		pdfDoc
@@ -153,18 +144,24 @@ function createInvoice(customerInfo, orderInfo) {
 			});
 		pdfDoc
 			.fillColor('#000000')
-			.font(fontNormal)
+			.font(fontBold)
 			.fontSize(10)
-			.text('PAN - AAICG873C', 220, 260, {
+			.text('PAN - ', 220, 260, {
 				width: 150,
-			});
+				continued: true,
+			})
+			.font(fontNormal)
+			.text('AAICG873C');
 		pdfDoc
 			.fillColor('#000000')
-			.font(fontNormal)
+			.font(fontBold)
 			.fontSize(10)
-			.text('TAN - BLRG25733B', 220, 275, {
+			.text('TAN - ', 220, 275, {
 				width: 150,
-			});
+				continued: true,
+			})
+			.font(fontNormal)
+			.text('BLRG25733B');
 		pdfDoc
 			.fillColor('#000000')
 			.font(fontNormal)
@@ -226,18 +223,23 @@ function createInvoice(customerInfo, orderInfo) {
 		pdfDoc.text(orderInfo.amountPaid, 500, 380, { width: 100 });
 		pdfDoc.rect(32, 400, 560, 1).fill('#000').stroke('#FC427B');
 		pdfDoc.text('Total', 400, 420, { width: 100 });
+		pdfDoc.rect(470, 423, 30, 0.5).fill('#000').stroke('#FC427B');
 		pdfDoc
 			.font(fontBold)
 			.text(orderInfo.totalAmount, 540, 420, { width: 100 });
 		pdfDoc.font(fontNormal).text('Discount', 400, 440, { width: 100 });
+		pdfDoc.rect(470, 443, 30, 0.5).fill('#000').stroke('#FC427B');
 		pdfDoc
 			.font(fontBold)
 			.text(orderInfo.discount, 540, 440, { width: 100 });
 		pdfDoc.font(fontNormal).text('SGST (9%)', 400, 460, { width: 100 });
+		pdfDoc.rect(470, 463, 30, 0.5).fill('#000').stroke('#FC427B');
 		pdfDoc.font(fontBold).text('0', 540, 460, { width: 100 });
 		pdfDoc.font(fontNormal).text('CGST (9%)', 400, 480, { width: 100 });
+		pdfDoc.rect(470, 483, 30, 0.5).fill('#000').stroke('#FC427B');
 		pdfDoc.font(fontBold).text('0', 540, 480, { width: 100 });
 		pdfDoc.font(fontNormal).text('IGST (9%)', 400, 500, { width: 100 });
+		pdfDoc.rect(470, 503, 30, 0.5).fill('#000').stroke('#FC427B');
 		pdfDoc.font(fontBold).text('0', 540, 500, { width: 100 });
 		pdfDoc.rect(400, 520, 170, 1).fill('#000').stroke('#FC427B');
 		pdfDoc.font(fontBold).text('Total', 400, 530, { width: 100 });
@@ -248,6 +250,7 @@ function createInvoice(customerInfo, orderInfo) {
 			.text(`${Number(totalAmount).toLocaleString('en-IN')}`, 540, 530, {
 				width: 100,
 			});
+		pdfDoc.image(stamp, 500, 560, { width: 60, height: 60 });
 
 		pdfDoc
 			.font(fontNormal)

@@ -98,9 +98,16 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 			await asyncCreateSubscription(values);
 			// setLink(response);
 			setLoading(false);
+			let successMessage = '';
+			if (values.email) {
+				successMessage =
+					'Subscription created and invoice sent to email successfully';
+			} else {
+				successMessage = 'Subscription created successfully';
+			}
 			setSnackbar({
 				open: true,
-				message: 'Subscription created successfully',
+				message: successMessage,
 				severity: 'success',
 			});
 			helpers.resetForm();

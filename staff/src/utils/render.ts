@@ -54,6 +54,8 @@ export const renderPackageName = (
 ) => {
 	if (packageType === SubscriptionPackageType.TenantPackage) {
 		return packageName === 'b' ? 'Bhubaneswar' : 'Other City';
+	} else if (packageType === SubscriptionPackageType.ConsultantFee) {
+		return 'Consultant Fee';
 	} else {
 		return 'Payment Link';
 	}
