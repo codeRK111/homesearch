@@ -13,11 +13,15 @@ import { City } from '../../../model/city.interface';
 import { Location } from '../../../model/location.interface';
 import MyPostedLeadsTable from '../../../components/Table/leads/myLeads';
 import PropertyLeadsTable from '../../../components/Table/leads/propertyLead';
+import { RouteComponentProps } from 'react-router';
 import SideBar from './sidebar';
 import Tab from '../tab';
 import TablePagination from '../../../components/Table/pagination';
+import queryString from 'query-string';
 
-const SearchProperty = () => {
+const SearchProperty: React.FC<RouteComponentProps> = ({
+	location: { search },
+}) => {
 	// State
 	const [loading, setLoading] = useState(false);
 	const [myData, setMyData] = useState(false);
@@ -40,6 +44,9 @@ const SearchProperty = () => {
 		sales: [],
 		totalLeadDocs: 0,
 		totalSalesDocs: 0,
+	});
+	const parsed: any = queryString.parse(search, {
+		arrayFormat: 'comma',
 	});
 
 	const handleLeadsPage = (
@@ -112,6 +119,11 @@ const SearchProperty = () => {
 		createdBy,
 	]);
 
+	useEffect(() => {
+		if (parsed.t) {
+			setTab(Number(parsed.t));
+		}
+	}, [parsed]);
 	useEffect(() => {
 		fetchProperties();
 	}, [fetchProperties]);

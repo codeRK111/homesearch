@@ -43,5 +43,6 @@ router.get(
 	authController.protect,
 	propertyController.getMyProperties
 );
+router.get('/user/properties/:id', propertyController.getPropertiesOfUser);
 
 module.exports = router;

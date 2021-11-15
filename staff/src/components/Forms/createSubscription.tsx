@@ -76,6 +76,8 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 					StaffType.SalesExecutive,
 					StaffType.SuperAdmin,
 				],
+				page: 1,
+				limit: 100,
 			});
 			setStaffLoading(false);
 			setStaffs(resp.admins);

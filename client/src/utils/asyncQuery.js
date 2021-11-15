@@ -66,3 +66,22 @@ export const verifyUserQuery = (id, otp, cancelToken, setLoading) => {
 			});
 	});
 };
+
+export const addQueryV2 = async (data) => {
+	try {
+		const token = localStorage.getItem('JWT_CLIENT');
+		const resp = await axios.post(
+			apiUrl(`/query/user/add-query`, 2),
+			data,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data;
+	} catch (error) {
+		throw new Error(asyncError(error));
+	}
+};

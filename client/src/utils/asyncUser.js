@@ -38,7 +38,7 @@ export const getRealtors = (data, cancelToken, setLoading) => {
 	return new Promise((resolve, reject) => {
 		setLoading(true);
 		axios
-			.post(apiUrl(`/user/get-realtors`, 2), data, {
+			.post(apiUrl(`/user/get-realtors-new`, 2), data, {
 				cancelToken: cancelToken.token,
 				headers: {
 					'Content-Type': 'application/json',

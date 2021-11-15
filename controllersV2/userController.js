@@ -3,6 +3,8 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const fs = require('fs');
 const path = require('path');
+const mongoose = require('mongoose');
+const oId = mongoose.Types.ObjectId;
 
 const handleUserPhoto = (req, data, existingUser) => {
 	if (req.file) {
@@ -79,6 +81,102 @@ exports.getRealtors = catchAsync(async (req, res) => {
 			totalDocs,
 		},
 	});
+});
+exports.getRealtorsNew = catchAsync(async (req, res) => {
+	const page = req.body.page * 1 || 1;
+	const limit = req.body.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+	const filter = {
+		status: 'active',
+		role: 'agent',
+	};
+	const cityFilter = {};
+	if (req.body.city) {
+		cityFilter['has'] = true;
+	}
+	const users = await User.aggregate([
+		{
+			$match: filter,
+		},
+		{
+			$project: {
+				name: 1,
+				number: 1,
+				email: 1,
+				city: 1,
+				hsID: 1,
+				cities: { $ifNull: ['$cities', []] },
+				photo: 1,
+				companyName: 1,
+				address: 1,
+			},
+		},
+		{
+			$addFields: {
+				has: { $in: [oId(req.body.city), '$cities'] },
+			},
+		},
+		{
+			$match: cityFilter,
+		},
+
+		{
+			$lookup: {
+				from: 'cities',
+				localField: 'cities',
+				foreignField: '_id',
+				as: 'cities',
+			},
+		},
+		{
+			$lookup: {
+				from: 'properties',
+				let: { user_id: '$_id' },
+				as: 'properties',
+				pipeline: [
+					{
+						$match: {
+							$expr: {
+								$and: [
+									{ $eq: ['$userId', '$$user_id'] },
+									{ $eq: ['$status', 'active'] },
+								],
+							},
+						},
+					},
+				],
+			},
+		},
+		{
+			$project: {
+				name: 1,
+				number: 1,
+				email: 1,
+				city: 1,
+				hsID: 1,
+				cities: 1,
+				photo: 1,
+				companyName: 1,
+				address: 1,
+				has: 1,
+				propertyCount: { $size: '$properties' },
+			},
+		},
+		{
+			$skip: skip,
+		},
+		{
+			$limit: limit,
+		},
+	]);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			realtors: users,
+		},
+	});
+	console.log('Do this stuff');
 });
 exports.getRealtorDetails = catchAsync(async (req, res) => {
 	const filter = { status: 'active', role: 'agent', _id: req.params.id };

@@ -238,7 +238,7 @@ function createInvoice(customerInfo, orderInfo) {
 		pdfDoc.font(fontNormal).text('CGST (9%)', 400, 480, { width: 100 });
 		pdfDoc.rect(470, 483, 30, 0.5).fill('#000').stroke('#FC427B');
 		pdfDoc.font(fontBold).text('0', 540, 480, { width: 100 });
-		pdfDoc.font(fontNormal).text('IGST (9%)', 400, 500, { width: 100 });
+		pdfDoc.font(fontNormal).text('IGST (18%)', 400, 500, { width: 100 });
 		pdfDoc.rect(470, 503, 30, 0.5).fill('#000').stroke('#FC427B');
 		pdfDoc.font(fontBold).text('0', 540, 500, { width: 100 });
 		pdfDoc.rect(400, 520, 170, 1).fill('#000').stroke('#FC427B');

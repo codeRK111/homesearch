@@ -31,17 +31,17 @@ const useStyles = makeStyles((theme) => ({
 		height: '15px',
 		width: '15px',
 	},
-	title: {
+	title: (props) => ({
 		fontWeight: 'boldest',
 		padding: '0.5rem',
 		margin: 0,
-		fontSize: '1.7rem',
+		fontSize: props.variant === 'medium' ? '1.7rem' : '1.2rem',
 		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 		letterSpacing: 1,
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '1rem',
 		},
-	},
+	}),
 	rent: {
 		fontWeight: 'boldest',
 		padding: '0.5rem',

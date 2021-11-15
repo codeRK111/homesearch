@@ -7,6 +7,11 @@ const router = express.Router();
 
 // Admin
 router.post(
+	'/user/add-query',
+	authController.protect,
+	queryController.addQueryV2
+);
+router.post(
 	'/get-all-queries',
 	adminController.protect,
 	queryController.getQueries

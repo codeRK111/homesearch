@@ -537,6 +537,27 @@ exports.getMyProperties = catchAsync(async (req, res, next) => {
 		},
 	});
 });
+exports.getPropertiesOfUser = catchAsync(async (req, res, next) => {
+	const page = req.body.page * 1 || 1;
+	const limit = req.body.limit * 1 || 100;
+	const skip = (page - 1) * limit;
+
+	const filter = {
+		userId: mongoose.Types.ObjectId(req.params.id),
+	};
+
+	const properties = await Property.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			properties,
+		},
+	});
+});
 
 exports.searchByName = catchAsync(async (req, res, next) => {
 	const properties = await Property.find({

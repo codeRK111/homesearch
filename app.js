@@ -233,7 +233,7 @@ app.get('/*', function (req, res) {
 	);
 });
 
-require('./task');
+// require('./task');
 
 // GLOBAL ERROR HANDLING MIDDLEWARE
 app.use(globalErrorHandler);

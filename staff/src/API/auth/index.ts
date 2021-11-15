@@ -41,6 +41,8 @@ type FetchAdminInputType = {
 	status?: 'active' | 'inactive';
 	type?: StaffType;
 	types?: StaffType[];
+	page?: number;
+	limit?: number;
 };
 export const asyncFetchAdmins = async (
 	filter: FetchAdminInputType

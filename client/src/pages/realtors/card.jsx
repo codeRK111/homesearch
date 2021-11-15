@@ -3,19 +3,28 @@ import {
 	Box,
 	Button,
 	Chip,
+	CircularProgress,
 	Grid,
 	Paper,
 	Typography,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
 import { hideNumber, renderProfileImage } from '../../utils/render.utils';
+import {
+	selectAuthenticated,
+	selectUser,
+} from '../../redux/auth/auth.selectors';
 
 import CallIcon from '@material-ui/icons/Call';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
 import PersonIcon from '@material-ui/icons/Person';
-import React from 'react';
+import { addQueryV2 } from '../../utils/asyncQuery';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
+import { toggleLoginPopup } from '../../redux/ui/ui.actions';
 import useGlobalStyles from '../../common.style';
-import user from '../../assets/demoUser.jfif';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
@@ -30,18 +39,81 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	imageWrapper: {
-		height: 75,
-		width: 75,
+		height: 60,
+		width: 60,
+		backgroundColor: theme.palette.primary.main,
 	},
 	contentWrapper: {
 		flexGrow: 1,
+		'& > *': {
+			lineHeight: 1.5,
+			letterSpacing: 1,
+			fontWeight: 600,
+		},
+	},
+	primaryBg: {
+		backgroundColor: theme.palette.primary,
+	},
+	button: {
+		border: `2px solid ${theme.palette.primary.main}`,
+		backgroundColor: 'transparent',
+		// padding: '0.5rem 2rem',
+		fontSize: '1rem',
+		textTransform: 'uppercase',
+		letterSpacing: 1,
+		cursor: 'pointer',
+		'&:hover': {
+			backgroundColor: theme.palette.primary.main,
+			color: '#ffffff',
+		},
 	},
 }));
 
-const RealtorCard = ({ realtor }) => {
+const RealtorCard = ({ realtor, isAuthenticated, toggleLoginPopup, user }) => {
 	const style = useStyles();
 	const history = useHistory();
 	const { bold, link } = useGlobalStyles();
+
+	// State
+	const [viewNumberLoading, setViewNumberLoading] = useState(false);
+	const [showNumber, setShowNumber] = useState(false);
+
+	const addQuery = async (data, setLoading, callback) => {
+		try {
+			setLoading(true);
+			const resp = await addQueryV2(data);
+			setLoading(false);
+			callback(null, resp);
+		} catch (error) {
+			setLoading(false);
+			callback(error.message, null);
+		}
+	};
+
+	const onNumberClick = () => {
+		if (!isAuthenticated) {
+			toggleLoginPopup(true);
+			return;
+		}
+		if (!showNumber) {
+			addQuery(
+				{
+					queryForUser: realtor._id,
+					queryFor: 'agent',
+					queryType: 'number',
+				},
+				setViewNumberLoading,
+				(error, data) => {
+					if (error) {
+						setShowNumber(false);
+						return;
+					}
+					setShowNumber(true);
+				}
+			);
+		}
+	};
+
 	return (
 		<Paper elevation={5} component={Box} p="1rem" className={style.wrapper}>
 			<Avatar
@@ -49,19 +121,19 @@ const RealtorCard = ({ realtor }) => {
 				className={style.imageWrapper}
 			/>
 			<Box ml="1rem" className={style.contentWrapper}>
-				<Link to={`/realtors/${realtor.id}`} className={link}>
+				<Link to={`/realtors/${realtor._id}`} className={link}>
 					<Typography variant="h6" className={bold} gutterBottom>
 						{realtor.name}
 					</Typography>
 				</Link>
 				<Typography variant="button" display="block" gutterBottom>
-					{realtor.companyName}
+					<b>{realtor.companyName}</b>
 				</Typography>
 				<Typography variant="body2" gutterBottom>
 					{realtor.address}
 				</Typography>
 				<Typography variant="body2" gutterBottom>
-					<b>10</b> Active properties
+					<b>{realtor.propertyCount}</b> Active properties
 				</Typography>
 				<Typography variant="button" display="block" gutterBottom>
 					ID: {realtor.hsID}
@@ -76,30 +148,51 @@ const RealtorCard = ({ realtor }) => {
 					marginBottom="1rem"
 				>
 					{realtor.cities.map((c) => (
-						<Chip key={c._id} label={c.name} variant="outlined" />
+						<Chip
+							icon={<LocationCityIcon />}
+							key={c._id}
+							label={c.name}
+							variant="outlined"
+						/>
 					))}
 				</Box>
 				<Grid container spacing={1}>
 					<Grid item xs={12} md={6}>
 						<Button
+							className={style.button}
 							variant="outlined"
 							color="primary"
 							size="large"
 							fullWidth
 							startIcon={<CallIcon />}
+							onClick={onNumberClick}
+							disabled={viewNumberLoading}
+							endIcon={
+								viewNumberLoading ? (
+									<CircularProgress
+										size={15}
+										color="inherit"
+									/>
+								) : (
+									<></>
+								)
+							}
 						>
-							{hideNumber(realtor.number)}
+							{showNumber
+								? realtor.number
+								: hideNumber(realtor.number)}
 						</Button>
 					</Grid>
 					<Grid item xs={12} md={6}>
 						<Button
 							variant="outlined"
+							className={style.button}
 							color="primary"
 							size="large"
 							fullWidth
 							startIcon={<PersonIcon />}
 							onClick={() =>
-								history.push(`/realtors/${realtor.id}`)
+								history.push(`/realtors/${realtor._id}`)
 							}
 						>
 							View Profile
@@ -111,4 +204,13 @@ const RealtorCard = ({ realtor }) => {
 	);
 };
 
-export default RealtorCard;
+const mapStateToProps = createStructuredSelector({
+	isAuthenticated: selectAuthenticated,
+	user: selectUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	toggleLoginPopup: (status) => dispatch(toggleLoginPopup(status)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RealtorCard);

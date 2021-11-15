@@ -4,6 +4,8 @@ import AppBar from '@material-ui/core/AppBar';
 import React from 'react';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
+import queryString from 'query-string';
+import { useHistory } from 'react-router';
 
 function a11yProps(index: any) {
 	return {
@@ -30,9 +32,11 @@ export default function ScrollableTabsButtonAuto({
 	setValue,
 }: IScrollableTabsButtonAuto) {
 	const classes = useStyles();
+	const history = useHistory();
 
 	const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-		setValue(newValue);
+		const filter = queryString.stringify({ t: newValue });
+		history.push(`/browse-properties?${filter}`);
 	};
 
 	return (

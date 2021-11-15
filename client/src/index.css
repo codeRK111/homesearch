@@ -46,3 +46,12 @@ code {
 .ReactModal__Overlay {
 	z-index: 100000 !important;
 }
+
+.react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar {
+	display: none;
+}
+
+.react-horizontal-scrolling-menu--scroll-container {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}

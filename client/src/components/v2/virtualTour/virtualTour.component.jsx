@@ -40,10 +40,6 @@ const VirtualTour = () => {
 							/>
 						</Grid>
 					</Grid>
-					<p className={classes.bottomLink}>
-						Create virtual tour of your house or project.{' '}
-						<a href="/">Download the app.</a>
-					</p>
 				</Grid>
 				<Grid item xs={12} md={5}>
 					<img

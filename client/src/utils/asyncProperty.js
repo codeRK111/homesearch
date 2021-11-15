@@ -29,3 +29,22 @@ export const searchProperty = (data, cancelToken, setLoading) => {
 			});
 	});
 };
+
+export const asyncGetPropertyOfAUser = async (id, cancelToken) => {
+	try {
+		const token = localStorage.getItem('JWT_CLIENT');
+		const resp = await axios.get(
+			apiUrl(`/property/user/properties/${id}`, 2),
+			{
+				cancelToken: cancelToken.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data.properties;
+	} catch (error) {
+		throw new Error(asyncError(error));
+	}
+};

@@ -1,5 +1,6 @@
 const AppError = require('./../utils/appError');
 const PropertyQuery = require('./../models/propertyQueryModel');
+const Query = require('./../models/queryModel');
 const AgentQuery = require('./../models/agentQueryModel');
 const UserQuery = require('./../models/userQueryModel');
 const Project = require('./../models/projectModule');
@@ -310,5 +311,34 @@ exports.updateUserQuery = catchAsync(async (req, res, next) => {
 		data: {
 			query,
 		},
+	});
+});
+
+exports.addQueryV2 = catchAsync(async (req, res, next) => {
+	const body = req.body;
+	if (!body.queryFor) {
+		return next(new AppError('Missing queryFor'));
+	}
+	if (!body.queryType) {
+		return next(new AppError('Missing queryType'));
+	}
+	const requiredFields = ['queryFor', 'queryType'];
+
+	if (body.queryFor === 'agent') {
+		requiredFields.push('queryForUser');
+	}
+
+	const keys = Object.keys(body);
+	keys.forEach((c) => {
+		if (!requiredFields.includes(c)) {
+			delete body[c];
+		}
+	});
+	body.queryByUser = req.user.id;
+
+	const query = await Query.create(body);
+	res.status(200).json({
+		status: 'success',
+		data: query,
 	});
 });

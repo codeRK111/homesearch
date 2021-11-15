@@ -22,13 +22,13 @@ const TYPES = {
 	independenthouse: 'Villa',
 };
 
-const PropertyCard = ({ data, showStatus = false }) => {
+const PropertyCard = ({ data, showStatus = false, variant = 'medium' }) => {
 	const img = data.photos[0]
 		? data.photos.find((c) => c.default)
 			? `/assets/properties/${data.photos.find((c) => c.default).image}`
 			: `/assets/properties/${data.photos[0].image}`
 		: city;
-	const classes = useStyles({ img });
+	const classes = useStyles({ img, variant });
 	const globalClasses = useGlobalStyles();
 
 	const renderStatus = () => {

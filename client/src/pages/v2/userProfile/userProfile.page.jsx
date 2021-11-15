@@ -1,33 +1,22 @@
 import {
-	Accordion,
-	AccordionDetails,
-	AccordionSummary,
 	Avatar,
 	Box,
 	Button,
-	CircularProgress,
 	Grid,
 	IconButton,
 	List,
 	ListItem,
 	ListItemIcon,
 	ListItemText,
-	Menu,
-	Typography,
 } from '@material-ui/core';
 import { apiUrl, capitalizeFirstLetter } from '../../../utils/render.utils';
 
-import ApartmentIcon from '@material-ui/icons/Apartment';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import CreateIcon from '@material-ui/icons/Create';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LikedProperties from '../../../components/v2/likeProperties';
-import { Link } from 'react-router-dom';
 import MailIcon from '@material-ui/icons/Mail';
 import MyProperties from '../../../components/v2/myProperties';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import PersonIcon from '@material-ui/icons/Person';
 import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import React from 'react';
 import SavedProperties from '../../../components/v2/savedProperties';
@@ -37,21 +26,20 @@ import badgeIcon from '../../../assets/icons/badge.svg';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import moment from 'dayjs';
 import { selectUser } from '../../../redux/auth/auth.selectors';
 import useGlobalStyles from '../../../common.style';
+import { useHistory } from 'react-router-dom';
 import useStyles from './userProfile.style';
 
 const defaultImage =
 	'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100';
 
 const AgentPage = ({ user }) => {
+	const history = useHistory();
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
 	const [updateProfileOpen, setUpdateProfileOpen] = React.useState(false);
-	const [queries, setQueries] = React.useState([]);
-	const [anchorEl, setAnchorEl] = React.useState(null);
-	const [queryLoading, setQueryLoading] = React.useState(false);
+
 	let cancelToken = React.useRef(undefined);
 	const [count, setCount] = React.useState({
 		postPropertyCount: 0,
@@ -60,10 +48,7 @@ const AgentPage = ({ user }) => {
 	});
 
 	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-	const handleClose = () => {
-		setAnchorEl(null);
+		history.push('/my-queries');
 	};
 
 	const handleUpdateProfileClickOpen = () => {
@@ -102,93 +87,6 @@ const AgentPage = ({ user }) => {
 			}
 		})();
 	}, []);
-	React.useEffect(() => {
-		(async () => {
-			try {
-				setQueryLoading(true);
-				cancelToken.current = axios.CancelToken.source();
-				const token = localStorage.getItem('JWT_CLIENT');
-				const {
-					data: { data },
-				} = await axios.get(
-					apiUrl('/query', 2),
-
-					{
-						cancelToken: cancelToken.current.token,
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${token}`,
-						},
-					}
-				);
-				console.log(data);
-				setQueries(data.queries);
-				setQueryLoading(false);
-			} catch (error) {
-				setQueries([]);
-				setQueryLoading(false);
-				// setCount({
-				// 	postPropertyCount: 0,
-				// 	savedPropertyCount: 0,
-				// 	likedPropertyCount: 0,
-				// });
-			}
-		})();
-	}, []);
-
-	const rendrPropertyTitle = (query) => {
-		switch (query.type) {
-			case 'property':
-				return `${query.property.title}`;
-			case 'project':
-				return `${query.project.title}`;
-			case 'projectproperty':
-				return `${query.projectProperty.title}`;
-
-			default:
-				break;
-		}
-	};
-	const rendrQueryTitle = (query) => {
-		switch (query.queryType) {
-			case 'number':
-				return `${
-					query.userName
-				} viewed your number on property - ${rendrPropertyTitle(
-					query
-				)}`;
-			case 'message':
-				return `${
-					query.userName
-				} wants to contact with you on property - ${rendrPropertyTitle(
-					query
-				)}`;
-			case 'whatsapp':
-				return `${
-					query.userName
-				} wants to chat with you on property - ${rendrPropertyTitle(
-					query
-				)}`;
-
-			default:
-				break;
-		}
-	};
-
-	const getLink = (query) => {
-		switch (query.type) {
-			case 'property':
-				return `/v2/property-details/${query.property.id}`;
-			case 'project':
-				return `/project-details/${query.property.id}`;
-
-			case 'projectproperty':
-				return `/v2/project-property/${query.projectProperty.id}`;
-
-			default:
-				break;
-		}
-	};
 
 	return (
 		<div>
@@ -203,126 +101,9 @@ const AgentPage = ({ user }) => {
 					<span className={globalClasses.smXsText}>
 						Home/ Profile / {user.name}
 					</span>
-					{queryLoading ? (
-						<CircularProgress color="primary" />
-					) : (
-						<IconButton onClick={handleClick}>
-							<NotificationsIcon color="primary" />
-						</IconButton>
-					)}
-
-					<Menu
-						id="customized-menu"
-						getContentAnchorEl={null}
-						anchorEl={anchorEl}
-						keepMounted
-						open={Boolean(anchorEl)}
-						onClose={handleClose}
-						anchorOrigin={{
-							vertical: 'bottom',
-							horizontal: 'center',
-						}}
-						transformOrigin={{
-							vertical: 'top',
-							horizontal: 'center',
-						}}
-					>
-						<Box className={classes.queriesWrapper}>
-							{queries.length === 0 ? (
-								<Typography align="center">
-									No queries
-								</Typography>
-							) : (
-								queries.map((c) => (
-									<Accordion key={c.id}>
-										<AccordionSummary
-											expandIcon={<ExpandMoreIcon />}
-											aria-controls="panel2a-content"
-											id="panel2a-header"
-										>
-											<Typography
-												className={classes.heading}
-											>
-												{rendrQueryTitle(c)}
-											</Typography>
-										</AccordionSummary>
-										<AccordionDetails>
-											<List component="nav">
-												<ListItem dense>
-													<ListItemIcon>
-														<PersonIcon
-															className={
-																classes.iconColor
-															}
-														/>
-													</ListItemIcon>
-													<ListItemText
-														primary={c.userName}
-													/>
-												</ListItem>
-												<ListItem dense>
-													<ListItemIcon>
-														<MailIcon
-															className={
-																classes.iconColor
-															}
-														/>
-													</ListItemIcon>
-													<ListItemText
-														primary={c.email}
-													/>
-												</ListItem>
-												<ListItem dense>
-													<ListItemIcon>
-														<PhoneAndroidIcon
-															className={
-																classes.iconColor
-															}
-														/>
-													</ListItemIcon>
-													<ListItemText
-														primary={c.phoneNumber}
-													/>
-												</ListItem>
-												<ListItem dense>
-													<ListItemIcon>
-														<CalendarTodayIcon
-															className={
-																classes.iconColor
-															}
-														/>
-													</ListItemIcon>
-													<ListItemText
-														primary={moment(
-															c.createdAt
-														).format('Do MMM')}
-													/>
-												</ListItem>
-												<ListItem dense>
-													<ListItemIcon>
-														<ApartmentIcon
-															className={
-																classes.iconColor
-															}
-														/>
-													</ListItemIcon>
-													<ListItemText
-														primary={
-															<Link
-																to={getLink(c)}
-															>
-																View Property
-															</Link>
-														}
-													/>
-												</ListItem>
-											</List>
-										</AccordionDetails>
-									</Accordion>
-								))
-							)}
-						</Box>
-					</Menu>
+					<IconButton onClick={handleClick}>
+						<NotificationsIcon color="primary" />
+					</IconButton>
 				</Box>
 			</div>
 			<div className={classes.profileWrapper}>

@@ -101,7 +101,7 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 				</ListItem>
 				<ListItem
 					button
-					onClick={changeRoute('/browse-properties')}
+					onClick={changeRoute('/browse-properties?t=0')}
 					className={clsx(manageSelectedStyle('/browse-properties'))}
 				>
 					<ListItemIcon>
