@@ -324,8 +324,18 @@ exports.addQueryV2 = catchAsync(async (req, res, next) => {
 	}
 	const requiredFields = ['queryFor', 'queryType'];
 
-	if (body.queryFor === 'agent') {
+	if (body.queryFor === 'agent' || body.queryFor === 'owner') {
 		requiredFields.push('queryForUser');
+	}
+	if (
+		body.queryFor === 'owner' &&
+		(body.queryType === 'number' ||
+			body.queryType === 'message' ||
+			body.queryType === 'whatsapp')
+	) {
+		requiredFields.push('queryOn');
+		requiredFields.push('property');
+		requiredFields.push('details');
 	}
 
 	const keys = Object.keys(body);
@@ -340,5 +350,15 @@ exports.addQueryV2 = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: query,
+	});
+});
+
+exports.getQueriesv2 = catchAsync(async (req, res, next) => {
+	const body = req.body;
+
+	const queries = await Query.find(body).sort('-createdAt');
+	res.status(200).json({
+		status: 'success',
+		data: queries,
 	});
 });

@@ -7,8 +7,7 @@ import {
 } from '../../../redux/auth/auth.selectors';
 import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
 
-import { apiUrl } from '../../../utils/render.utils';
-import axios from 'axios';
+import { addQueryV2 } from '../../../utils/asyncQuery';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -33,7 +32,6 @@ const OwnerCard = ({
 	pType = null,
 }) => {
 	const classes = useStyles();
-	const cancelToken = React.useRef(undefined);
 	const globalClasses = useGlobalStyles();
 	const [numberInfo, setNumberInfo] = useState({
 		display: false,
@@ -48,48 +46,6 @@ const OwnerCard = ({
 	const [error, setError] = useState(null);
 	const [success, setSuccess] = useState(null);
 
-	const onClick = (queryType) => {
-		return new Promise((resolve, reject) => {
-			const data = {
-				userName: user.name,
-				phoneNumber: user.number,
-				email: user.email,
-				type,
-				[renderKey[type]]: property._id,
-				user: user.id,
-				owner: property.userId._id,
-				queryType,
-				pFor,
-				pType,
-			};
-
-			cancelToken.current = axios.CancelToken.source();
-			const token = localStorage.getItem('JWT_CLIENT');
-			axios
-				.post(apiUrl(`/query`, 2), data, {
-					cancelToken: cancelToken.current.token,
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`,
-					},
-				})
-				.then((resp) => {
-					console.log(resp);
-					resolve(resp.data);
-				})
-				.catch((error) => {
-					let message = '';
-					if (!!error.response) {
-						message = error.response.data.message;
-					} else {
-						message = error.message;
-					}
-					console.log(message);
-					reject(message);
-				});
-		});
-	};
-
 	const onCallClick = () => {
 		if (!isAuthenticated) {
 			toggleLoginPopup(true);
@@ -98,7 +54,19 @@ const OwnerCard = ({
 				...prevState,
 				call: true,
 			}));
-			onClick('number')
+
+			const data = {
+				queryForUser: property.userId._id,
+				queryOn: 'property',
+				queryFor: 'owner',
+				queryType: 'number',
+				[renderKey[type]]: property._id,
+				details: {
+					pFor,
+					pType,
+				},
+			};
+			addQueryV2(data)
 				.then((resp) => {
 					setLoading((prevState) => ({
 						...prevState,
@@ -115,7 +83,7 @@ const OwnerCard = ({
 						display: true,
 						number: owner.number,
 					});
-					setError(err);
+					setError(err.message);
 				});
 		}
 	};
@@ -127,7 +95,18 @@ const OwnerCard = ({
 				...prevState,
 				message: true,
 			}));
-			onClick('message')
+			const data = {
+				queryForUser: property.userId._id,
+				queryOn: 'property',
+				queryFor: 'owner',
+				queryType: 'message',
+				[renderKey[type]]: property._id,
+				details: {
+					pFor,
+					pType,
+				},
+			};
+			addQueryV2(data)
 				.then((resp) => {
 					setLoading((prevState) => ({
 						...prevState,
@@ -159,7 +138,18 @@ const OwnerCard = ({
 				...prevState,
 				whatspp: true,
 			}));
-			onClick('whatsapp')
+			const data = {
+				queryForUser: property.userId._id,
+				queryOn: 'property',
+				queryFor: 'owner',
+				queryType: 'whatsapp',
+				[renderKey[type]]: property._id,
+				details: {
+					pFor,
+					pType,
+				},
+			};
+			addQueryV2(data)
 				.then((resp) => {
 					setLoading((prevState) => ({
 						...prevState,

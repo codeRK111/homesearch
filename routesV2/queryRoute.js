@@ -12,6 +12,11 @@ router.post(
 	queryController.addQueryV2
 );
 router.post(
+	'/user/get-queries',
+	authController.protect,
+	queryController.getQueriesv2
+);
+router.post(
 	'/get-all-queries',
 	adminController.protect,
 	queryController.getQueries

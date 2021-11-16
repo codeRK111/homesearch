@@ -1,3 +1,9 @@
+import {
+	StaticPaths,
+	capitalizeFirstLetter,
+	parseDate,
+} from '../../utils/render.utils';
+
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -14,7 +20,6 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -37,11 +42,19 @@ const useStyles = makeStyles((theme) => ({
 		transform: 'rotate(180deg)',
 	},
 	avatar: {
-		backgroundColor: red[500],
+		backgroundColor: theme.palette.primary.main,
+	},
+	tag: {
+		backgroundColor: theme.palette.primary.main,
+		color: '#ffffff',
+		padding: '0.7rem 0.5rem',
+		fontWeight: 'bold',
+		fontSize: 12,
+		borderRadius: 10,
 	},
 }));
 
-export default function RecipeReviewCard() {
+export default function RecipeReviewCard({ query }) {
 	const classes = useStyles();
 	const [expanded, setExpanded] = React.useState(false);
 
@@ -53,12 +66,21 @@ export default function RecipeReviewCard() {
 		<Card className={classes.root} elevation={5}>
 			<CardHeader
 				avatar={
-					<Avatar aria-label="recipe" className={classes.avatar}>
+					<Avatar
+						aria-label="recipe"
+						className={classes.avatar}
+						src={StaticPaths.profile(query.queryByUser.photo)}
+					>
 						R
 					</Avatar>
 				}
-				title="Rakesh Chandra Dash"
-				subheader="September 14, 2016"
+				action={
+					<div className={classes.tag}>
+						{capitalizeFirstLetter(query.queryType)}
+					</div>
+				}
+				title={query.queryByUser.name}
+				subheader={parseDate(query.createdAt)}
 			/>
 
 			<CardContent>
@@ -87,19 +109,19 @@ export default function RecipeReviewCard() {
 					<Box display="flex" alignItems="center">
 						<PermIdentityIcon />
 						<Box ml="1rem">
-							<b>Rakesh Chandra Dash</b>
+							<b>{query.queryByUser.name}</b>
 						</Box>
 					</Box>
 					<Box display="flex" alignItems="center" mt="1rem">
 						<MailOutlineIcon />
 						<Box ml="1rem">
-							<b>rakeshchandrra@gmail.com</b>
+							<b>{query.queryByUser.email}</b>
 						</Box>
 					</Box>
 					<Box display="flex" alignItems="center" mt="1rem">
 						<PhoneIcon />
 						<Box ml="1rem">
-							<b>9853325956</b>
+							<b>{query.queryByUser.number}</b>
 						</Box>
 					</Box>
 				</CardContent>

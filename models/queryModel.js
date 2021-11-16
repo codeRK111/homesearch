@@ -41,6 +41,11 @@ const querySchema = new Schema(
 				values: ['property', 'project'],
 			},
 		},
+		property: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Property',
+			default: null,
+		},
 		details: {
 			pType: {
 				type: String,
@@ -53,6 +58,12 @@ const querySchema = new Schema(
 						'guesthouse',
 						'serviceapartment',
 					],
+				},
+			},
+			pFor: {
+				type: String,
+				enum: {
+					values: ['rent', 'sale'],
 				},
 			},
 		},
@@ -87,6 +98,14 @@ querySchema.pre(/^find/, function (next) {
 		select: 'id name email number',
 	});
 
+	next();
+});
+
+querySchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'queryByUser',
+		select: '-city -googleId -photoStatus -createdAt -paymentStatus  -serialNumber -gender -createdBy -registerThrough -registerVia -passwordChangedAt -__v ',
+	});
 	next();
 });
 

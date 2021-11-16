@@ -85,3 +85,21 @@ export const addQueryV2 = async (data) => {
 		throw new Error(asyncError(error));
 	}
 };
+export const getQueriesV2 = async (data) => {
+	try {
+		const token = localStorage.getItem('JWT_CLIENT');
+		const resp = await axios.post(
+			apiUrl(`/query/user/get-queries`, 2),
+			data,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data;
+	} catch (error) {
+		throw new Error(asyncError(error));
+	}
+};
