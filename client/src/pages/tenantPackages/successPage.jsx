@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 const PaymentSuccess = ({
 	heading = 'Payment Successful!',
 	text = 'Our executive will contact with you soon.',
+	data = null,
 }) => {
 	const { successWrapper, icon, bold } = useStyles();
 
@@ -39,8 +40,17 @@ const PaymentSuccess = ({
 							{heading}
 						</Typography>
 					</Box>
+					{data && (
+						<Box mt="1rem">
+							<Typography className={bold} align="center">
+								{data}
+							</Typography>
+						</Box>
+					)}
 					<Box mt="1rem">
-						<Typography className={bold}>{text}</Typography>
+						<Typography className={bold} align="center">
+							{text}
+						</Typography>
 					</Box>
 				</Paper>
 			</Container>

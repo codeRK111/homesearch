@@ -1,8 +1,8 @@
 import { APIV2, V2EndPoint, asyncError } from '../instance';
+import { PaymentLink, RazorpayPayment } from '../../model/payment.interface';
 
 import { AxiosResponse } from 'axios';
 import { IcreateSubscriptionData } from '../../components/Forms/createSubscription';
-import { PaymentLink } from '../../model/payment.interface';
 import { ServerResponse } from '../../model/apiResponse.interface';
 import { Subscription } from '../../model/subscription.interface';
 
@@ -195,6 +195,35 @@ export const asyncCreateSubscription = async (
 			}
 		);
 		return resp.data.data;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+
+type VerifyPaymentResponse = {
+	paymentDetails: RazorpayPayment;
+};
+
+export const asyncVerifyPayment = async (
+	id: string
+): Promise<RazorpayPayment> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.get<
+			string,
+			AxiosResponse<ServerResponse<VerifyPaymentResponse>>
+		>(
+			`${V2EndPoint.Payment}/verify-payment/${id}`,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data.paymentDetails;
 	} catch (e: any) {
 		throw new Error(asyncError(e));
 	}

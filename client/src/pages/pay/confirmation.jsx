@@ -18,7 +18,7 @@ import Alert from '@material-ui/lab/Alert';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { Link } from 'react-router-dom';
 import Nav from '../../components/v2/pageNav/nav.component';
-import PaymentSuccess from './successPage';
+import PaymentSuccess from '../tenantPackages/successPage';
 import PresentIcon from '@material-ui/icons/CheckCircle';
 import RoomIcon from '@material-ui/icons/Room';
 import axios from 'axios';
@@ -91,6 +91,7 @@ const TenantPackageConfirmationPage = ({
 }) => {
 	const [initialLoading, setInitialLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
+	const [paymentId, setPaymentId] = useState(null);
 	const {
 		bold,
 		specificationWrapper,
@@ -178,6 +179,7 @@ const TenantPackageConfirmationPage = ({
 				try {
 					const mainAmount = packageName === 'b' ? 3499 : 1499;
 					const paidAmount = packageName === 'b' ? 2999 : 999;
+					setPaymentId(response.razorpay_payment_id);
 					const data = {
 						orderCreationId: order_id,
 						razorpayPaymentId: response.razorpay_payment_id,
@@ -230,7 +232,9 @@ const TenantPackageConfirmationPage = ({
 			<Nav />
 			<Box mt="2rem" mb="2rem">
 				{success ? (
-					<PaymentSuccess />
+					<PaymentSuccess
+						data={paymentId ? `Payment ID: ${paymentId}` : null}
+					/>
 				) : (
 					<Container>
 						<Typography

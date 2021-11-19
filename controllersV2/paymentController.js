@@ -121,6 +121,42 @@ exports.createOrderTenantPackage = catchAsync(async (req, res, next) => {
 		res.status(500).send(error);
 	}
 });
+exports.verifyPayment = catchAsync(async (req, res, next) => {
+	try {
+		if (!req.params.paymentId) {
+			res.status(500).send('Payment Id not found');
+		}
+		const key_id =
+			process.env.NODE_ENV === 'development'
+				? process.env.RAZORPAY_KEY_ID
+				: process.env.RAZORPAY_KEY_LIVE_ID;
+		const key_secret =
+			process.env.NODE_ENV === 'development'
+				? process.env.RAZORPAY_KEY_SECRET
+				: process.env.RAZORPAY_KEY_LIVE_SECRET;
+		const instance = new Razorpay({
+			key_id,
+			key_secret,
+		});
+
+		const paymentDetails = await instance.payments.fetch(
+			req.params.paymentId
+		);
+		res.status(200).json({
+			status: 'success',
+			data: { paymentDetails },
+		});
+	} catch (error) {
+		JSON.stringify(error);
+		let message = '';
+		if (error.description) {
+			message = error.description;
+		} else {
+			message = 'Invalid Id';
+		}
+		return next(new AppError(message));
+	}
+});
 exports.success = catchAsync(async (req, res, next) => {
 	try {
 		// getting the details back from our font-end

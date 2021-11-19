@@ -1,6 +1,6 @@
 {
   "name": "redux-ts",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "private": true,
   "homepage": "workspace",
   "dependencies": {

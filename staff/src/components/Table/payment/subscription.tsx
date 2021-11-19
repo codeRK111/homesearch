@@ -97,6 +97,7 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 							<StyledTableCell>SL Num.</StyledTableCell>
 							<StyledTableCell>Subscription ID</StyledTableCell>
 							<StyledTableCell>Payment ID</StyledTableCell>
+							<StyledTableCell>Order ID</StyledTableCell>
 							<StyledTableCell>Date</StyledTableCell>
 							<StyledTableCell>Close By</StyledTableCell>
 							<StyledTableCell>Client Details</StyledTableCell>
@@ -129,6 +130,9 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 										</StyledTableCell>
 										<StyledTableCell>
 											{row.paymentId}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.orderId}
 										</StyledTableCell>
 										<StyledTableCell>
 											{parseDate(row.createdAt as Date)}

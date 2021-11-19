@@ -91,6 +91,7 @@ const TenantPackageConfirmationPage = ({
 	...props
 }) => {
 	const [initialLoading, setInitialLoading] = useState(false);
+	const [paymentId, setPaymentId] = useState(null);
 	const [successLoading, setSuccessLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 	const {
@@ -183,6 +184,7 @@ const TenantPackageConfirmationPage = ({
 			handler: async function (response) {
 				try {
 					setSuccessLoading(true);
+					setPaymentId(response.razorpay_payment_id);
 					const mainAmount = packageName === 'b' ? 3499 : 1499;
 					const paidAmount = packageName === 'b' ? 2999 : 999;
 					const data = {
@@ -242,7 +244,9 @@ const TenantPackageConfirmationPage = ({
 			<Nav />
 			<Box mt="2rem" mb="2rem">
 				{success ? (
-					<PaymentSuccess />
+					<PaymentSuccess
+						data={paymentId ? `Payment ID: ${paymentId}` : null}
+					/>
 				) : (
 					<Container>
 						<Typography

@@ -1,8 +1,6 @@
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
 
-import AddIcon from '@material-ui/icons/Add';
-import ApartmentIcon from '@material-ui/icons/Apartment';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import HomeIcon from '@material-ui/icons/Home';
 import ListAltIcon from '@material-ui/icons/ListAlt';
@@ -12,6 +10,7 @@ import RenderByMultipleRole from '../RenderByRole/multiple';
 import RenderByRole from '../RenderByRole';
 import SearchIcon from '@material-ui/icons/Search';
 import { StaffType } from '../../model/staff.interface';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import clsx from 'clsx';
 import { useHistory } from 'react-router';
 import useStyles from './drawer.style';
@@ -25,8 +24,8 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 	const style = useStyles();
 
 	// State
-	const [propertyOpen, setPropertyOpen] = useState(false);
-	const [propertySaleOpen, setPropertySaleOpen] = useState(false);
+	// const [propertyOpen, setPropertyOpen] = useState(false);
+	// const [propertySaleOpen, setPropertySaleOpen] = useState(false);
 	const [blogOpen, setBlogOpen] = useState(false);
 
 	// Callbacks
@@ -196,102 +195,27 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 					</ListDropDown>
 				</RenderByRole>
 				<RenderByMultipleRole
-					types={[StaffType.GM, StaffType.ClientSupport]}
+					types={[
+						StaffType.GM,
+						StaffType.ClientSupport,
+						StaffType.Accountant,
+					]}
 				>
-					<ListDropDown
-						open={propertyOpen}
-						toggle={setPropertyOpen}
-						Icon={ApartmentIcon}
-						label={'Manage Properties For Rent'}
+					<ListItem
+						button
+						onClick={changeRoute('/verify-payment')}
+						className={clsx(manageSelectedStyle('/verify-payment'))}
 					>
-						<ListItem
-							button
-							onClick={changeRoute('/manage-property/rent')}
-							className={clsx(
-								manageSelectedStyle('/manage-property/rent'),
-								style.nested
-							)}
-						>
-							<ListItemIcon>
-								<ApartmentIcon
-									color="primary"
-									className={clsx(
-										manageSelectedStyleIcon(
-											'/manage-property/rent'
-										)
-									)}
-								/>
-							</ListItemIcon>
-							<ListItemText primary={'Properties For Rent'} />
-						</ListItem>
-						<ListItem
-							button
-							onClick={changeRoute('/add-property/rent')}
-							className={clsx(
-								manageSelectedStyle('/add-property/rent'),
-								style.nested
-							)}
-						>
-							<ListItemIcon>
-								<AddIcon
-									color="primary"
-									className={clsx(
-										manageSelectedStyleIcon(
-											'/add-property/rent'
-										)
-									)}
-								/>
-							</ListItemIcon>
-							<ListItemText primary={'Add Property For Rent'} />
-						</ListItem>
-					</ListDropDown>
-					<ListDropDown
-						open={propertySaleOpen}
-						toggle={setPropertySaleOpen}
-						Icon={ApartmentIcon}
-						label={'Manage Properties For Sale'}
-					>
-						<ListItem
-							button
-							onClick={changeRoute('/manage-property/sale')}
-							className={clsx(
-								manageSelectedStyle('/manage-property/sale'),
-								style.nested
-							)}
-						>
-							<ListItemIcon>
-								<ApartmentIcon
-									color="primary"
-									className={clsx(
-										manageSelectedStyleIcon(
-											'/manage-property/sale'
-										)
-									)}
-								/>
-							</ListItemIcon>
-							<ListItemText primary={'Properties For Sale'} />
-						</ListItem>
-						<ListItem
-							button
-							onClick={changeRoute('/add-property/sale')}
-							className={clsx(
-								manageSelectedStyle('/add-property/sale'),
-								style.nested
-							)}
-						>
-							<ListItemIcon>
-								<AddIcon
-									color="primary"
-									className={clsx(
-										manageSelectedStyleIcon(
-											'/add-property/sale'
-										)
-									)}
-								/>
-							</ListItemIcon>
-							<ListItemText primary={'Add Property For Sale'} />
-						</ListItem>
-					</ListDropDown>
+						<ListItemIcon>
+							<VerifiedUserIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon('/verify-payment')
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Verify Payment'} />
+					</ListItem>
 				</RenderByMultipleRole>
 			</List>
 		</div>

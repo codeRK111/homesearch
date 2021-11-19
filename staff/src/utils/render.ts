@@ -26,11 +26,18 @@ export const isReschedule = (date: any, days = 2) => {
 	return before2Day.isBefore(dayjs());
 };
 
-export const parseDate = (date: Date | undefined) => {
+export const parseDate = (date: Date | undefined | number) => {
 	if (!date) {
 		return '-';
 	}
 	const m = dayjs(date);
+	return m.format('DD MMM YYYY hh:mm a');
+};
+export const parseDateUnixSecond = (date: number) => {
+	if (!date) {
+		return '-';
+	}
+	const m = dayjs.unix(date);
 	return m.format('DD MMM YYYY hh:mm a');
 };
 export const parseAndShowOnlyDate = (date: Date | undefined) => {
