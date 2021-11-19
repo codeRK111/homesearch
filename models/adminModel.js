@@ -213,6 +213,10 @@ const adminSchema = new Schema(
 
 		passwordChangedAt: Date,
 		lastLogin: Date,
+		testAccount: {
+			type: Boolean,
+			default: false,
+		},
 
 		// passwordResetToken: String,
 		// passwordResetTokenExipersAt: Date,

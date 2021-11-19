@@ -106,6 +106,8 @@ exports.getAdmins = catchAsync(async (req, res) => {
 		filter.status = req.body.status;
 	}
 
+	filter.testAccountant = { $ne: true };
+
 	const totalDocs = await Admin.countDocuments(filter);
 
 	const admins = await Admin.find(filter)

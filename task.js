@@ -1,24 +1,23 @@
-// const sendEmailInvoice = require('./utils/sendMailInvoice');
-// const Sub = require('./models/subscriptionModel');
+// const Admin = require('./models/adminModel');
 // const path = require('path');
 
-// const htmlPath = path.join(
-// 	__dirname,
-// 	'static',
-// 	'invoices',
-// 	'1636788175720.pdf'
-// );
 // async function test() {
 // 	try {
-// 		const respEmail = await sendEmailInvoice(
-// 			'milanpanigrahi002@gmail.com',
-// 			'Homesearch package invoice',
-// 			htmlPath,
-// 			`1636788175720.pdf`
+// 		const names = [
+// 			'Client Support',
+// 			'Client Support 2',
+// 			'Aswin Dash',
+// 			'Sidhant Mishra',
+// 			'Amiya Behera',
+// 		];
+// 		const resp = await Admin.updateMany(
+// 			{ name: { $in: names } },
+// 			{ testAccount: true },
+// 			{ runValidators: true, new: true }
 // 		);
-// 		console.log(respEmail);
+// 		console.log(resp);
 // 	} catch (error) {
-// 		console.log(JSON.stringify({ message: error.message }));
+// 		console.log(error);
 // 	}
 // }
 
