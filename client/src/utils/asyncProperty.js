@@ -48,3 +48,22 @@ export const asyncGetPropertyOfAUser = async (id, cancelToken) => {
 		throw new Error(asyncError(error));
 	}
 };
+
+export const asyncGetMyProperties = async () => {
+	try {
+		const token = localStorage.getItem('JWT_CLIENT');
+		const {
+			data: {
+				data: { properties },
+			},
+		} = await axios.get(apiUrl('/property/user/my-properties/all', 2), {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return properties;
+	} catch (error) {
+		throw new Error(asyncError(error));
+	}
+};

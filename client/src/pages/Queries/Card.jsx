@@ -4,6 +4,7 @@ import {
 	parseDate,
 } from '../../utils/render.utils';
 
+import ApartmentIcon from '@material-ui/icons/Apartment';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -12,11 +13,13 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import PhoneIcon from '@material-ui/icons/Phone';
 import React from 'react';
+import RoomIcon from '@material-ui/icons/Room';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -92,7 +95,7 @@ export default function RecipeReviewCard({ query }) {
 				</Typography>
 			</CardContent>
 			<CardActions disableSpacing>
-				<Typography>View User Details</Typography>
+				<Typography>View Details</Typography>
 				<IconButton
 					className={clsx(classes.expand, {
 						[classes.expandOpen]: expanded,
@@ -106,24 +109,68 @@ export default function RecipeReviewCard({ query }) {
 			</CardActions>
 			<Collapse in={expanded} timeout="auto" unmountOnExit>
 				<CardContent>
-					<Box display="flex" alignItems="center">
-						<PermIdentityIcon />
-						<Box ml="1rem">
-							<b>{query.queryByUser.name}</b>
-						</Box>
-					</Box>
-					<Box display="flex" alignItems="center" mt="1rem">
-						<MailOutlineIcon />
-						<Box ml="1rem">
-							<b>{query.queryByUser.email}</b>
-						</Box>
-					</Box>
-					<Box display="flex" alignItems="center" mt="1rem">
-						<PhoneIcon />
-						<Box ml="1rem">
-							<b>{query.queryByUser.number}</b>
-						</Box>
-					</Box>
+					<Grid container spacing={3}>
+						<Grid item xs={12} md={6}>
+							<Typography variant="h6" gutterBottom>
+								<b>User Details</b>
+							</Typography>
+							<Box display="flex" alignItems="center">
+								<PermIdentityIcon />
+								<Box ml="1rem">
+									<b>{query.queryByUser.name}</b>
+								</Box>
+							</Box>
+							<Box display="flex" alignItems="center" mt="1rem">
+								<MailOutlineIcon />
+								<Box ml="1rem">
+									<b>{query.queryByUser.email}</b>
+								</Box>
+							</Box>
+							<Box display="flex" alignItems="center" mt="1rem">
+								<PhoneIcon />
+								<Box ml="1rem">
+									<b>{query.queryByUser.number}</b>
+								</Box>
+							</Box>
+						</Grid>
+						{query.queryOn &&
+							query.queryOn === 'property' &&
+							query.property && (
+								<Grid item xs={12} md={6}>
+									<Typography variant="h6" gutterBottom>
+										<b>Property Details</b>
+									</Typography>
+									<Box display="flex" alignItems="center">
+										<ApartmentIcon />
+										<Box ml="1rem">
+											<b>{query.property.title}</b>
+										</Box>
+									</Box>
+									<Box
+										display="flex"
+										alignItems="center"
+										mt="1rem"
+									>
+										<RoomIcon />
+										<Box ml="1rem">
+											<b>{query.property.city.name}</b>
+										</Box>
+									</Box>
+									<Box
+										display="flex"
+										alignItems="center"
+										mt="1rem"
+									>
+										<RoomIcon />
+										<Box ml="1rem">
+											<b>
+												{query.property.location.name}
+											</b>
+										</Box>
+									</Box>
+								</Grid>
+							)}
+					</Grid>
 				</CardContent>
 			</Collapse>
 		</Card>

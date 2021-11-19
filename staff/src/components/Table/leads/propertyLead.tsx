@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import { City } from '../../../model/city.interface';
 import Paper from '@material-ui/core/Paper';
+import PostAddIcon from '@material-ui/icons/PostAdd';
 import PriceRangeCell from '../priceRangeCell';
 import { PropertyLead } from '../../../model/propertyLead.interface';
 import PropertyLeadStatusButton from '../utility/PropertyLeadStatusButton';
@@ -52,7 +53,7 @@ const PropertyLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 
 	const Loader = (
 		<MyTableRow>
-			{Array.from({ length: 10 }, (_, i) => i + 1).map((c) => (
+			{Array.from({ length: 11 }, (_, i) => i + 1).map((c) => (
 				<MyTableCell key={c}>
 					<CircularProgress size={15} color="inherit" />
 				</MyTableCell>
@@ -76,6 +77,7 @@ const PropertyLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 							<MyTableCell>Posted By</MyTableCell>
 							<MyTableCell>Is Possesed</MyTableCell>
 							<MyTableCell>View Details</MyTableCell>
+							<MyTableCell>Publish Property</MyTableCell>
 
 							{/* <MyTableCell align="center">
 									Actions
@@ -143,6 +145,15 @@ const PropertyLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 												)}
 											>
 												<VisibilityIcon color="primary" />
+											</IconButton>
+										</MyTableCell>
+										<MyTableCell>
+											<IconButton
+												onClick={onRedirect(
+													`/post-from-leads/${row.id}`
+												)}
+											>
+												<PostAddIcon color="primary" />
 											</IconButton>
 										</MyTableCell>
 									</MyTableRow>

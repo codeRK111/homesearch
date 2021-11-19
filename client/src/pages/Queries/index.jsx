@@ -1,13 +1,26 @@
-import { Box, Container, Grid } from '@material-ui/core';
+import { Box, Container, Drawer, Grid, IconButton } from '@material-ui/core';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import Card from './Card';
+import Filter from './Filter';
+import FilterListIcon from '@material-ui/icons/FilterList';
 import Nav from '../../components/v2/pageNav/nav.component';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { getQueriesV2 } from '../../utils/asyncQuery';
+import { makeStyles } from '@material-ui/core/styles';
 import { selectUser } from '../../redux/auth/auth.selectors';
+
+const useStyles = makeStyles({
+	list: {
+		width: 250,
+		padding: '1rem',
+	},
+	fullList: {
+		width: 'auto',
+	},
+});
 
 const Loader = () => {
 	return (
@@ -23,8 +36,21 @@ const Loader = () => {
 };
 
 const MyQueriesPage = ({ user }) => {
+	const classes = useStyles();
 	const [loading, setLoading] = useState(false);
 	const [queries, setQueries] = useState([]);
+	const [openDrawer, setOpenDrawer] = useState(false);
+	const [today, setToday] = useState(false);
+
+	const toggleDrawer = (open) => (event) => {
+		if (
+			event.type === 'keydown' &&
+			(event.key === 'Tab' || event.key === 'Shift')
+		) {
+			return;
+		}
+		setOpenDrawer(open);
+	};
 
 	const fetchQueries = useCallback(async () => {
 		try {
@@ -47,7 +73,19 @@ const MyQueriesPage = ({ user }) => {
 			<Container>
 				<Box mt="2rem ">
 					{/* <Tab /> */}
-					<Box mt="2rem">
+					<IconButton size="medium" onClick={toggleDrawer(true)}>
+						<FilterListIcon />
+					</IconButton>
+					<Drawer
+						anchor={'left'}
+						open={openDrawer}
+						onClose={toggleDrawer(false)}
+					>
+						<div className={classes.list} align="center">
+							<Filter today={today} setToday={setToday} />
+						</div>
+					</Drawer>
+					<Box mt="1rem">
 						{loading && <Loader />}
 						<Grid container spacing={3}>
 							{queries.map((c, i) => (

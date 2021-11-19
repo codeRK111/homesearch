@@ -10,6 +10,7 @@ const crypto = require('crypto');
 const { nanoid } = require('nanoid');
 const AppError = require('../utils/appError');
 const moment = require('moment');
+const mongoose = require('mongoose');
 
 exports.createOrder = catchAsync(async (req, res, next) => {
 	try {
@@ -278,6 +279,29 @@ exports.getSubscriptions = catchAsync(async (req, res, next) => {
 	const page = req.query.page * 1 || 1;
 	const limit = req.query.limit * 1 || 10;
 	const skip = (page - 1) * limit;
+	let year = new Date().getFullYear();
+	if (req.query.dealBy) {
+		filter.dealBy = req.query.dealBy;
+	}
+	if (req.query.year) {
+		year = req.query.year;
+		filter.createdAt = {
+			$gte: moment(year).startOf('day').format(),
+			$lt: moment(`${Number(year) + 1}`)
+				.startOf('day')
+				.format(),
+		};
+	}
+	if (req.query.month) {
+		const startMonth = Number(req.query.month) + 1;
+		const endMonth = startMonth + 1;
+		filter.createdAt = {
+			$gte: moment(`${year}-${startMonth}`).startOf('day').format(),
+			$lt: moment(`${year}-${endMonth}`).startOf('day').format(),
+		};
+	}
+
+	// console.log(filter);
 
 	const totalDocs = await Subscription.countDocuments(filter);
 
@@ -288,6 +312,58 @@ exports.getSubscriptions = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: { subscriptions, totalDocs },
+	});
+});
+exports.getRevenue = catchAsync(async (req, res, next) => {
+	const filter = {};
+
+	let year = new Date().getFullYear();
+	if (req.query.dealBy) {
+		filter.dealBy = mongoose.Types.ObjectId(req.query.dealBy);
+	}
+	if (req.query.year) {
+		year = req.query.year;
+		filter.createdAt = {
+			$gte: moment(year).startOf('day').toDate(),
+			$lt: moment(`${Number(year) + 1}`)
+				.startOf('day')
+				.toDate(),
+		};
+	}
+	if (req.query.month) {
+		const startMonth = Number(req.query.month) + 1;
+		const endMonth = startMonth + 1;
+		const gte = moment(`${year}-${startMonth}`).startOf('day').toDate();
+		const lt = moment(`${year}-${endMonth}`).startOf('day').toDate();
+		if (filter.createdAt) {
+			delete filter.createdAt;
+		}
+		filter['$and'] = [
+			{ createdAt: { $gte: gte } },
+			{ createdAt: { $lt: lt } },
+		];
+	}
+
+	console.log(JSON.stringify(filter));
+
+	const totalAmount = await Subscription.aggregate([
+		{
+			$addFields: {
+				createdAt: { $toDate: '$createdAt' },
+			},
+		},
+		{ $match: filter },
+		{
+			$group: {
+				_id: null,
+				total: { $sum: '$paidAmount' },
+			},
+		},
+	]);
+
+	res.status(200).json({
+		status: 'success',
+		data: { totalAmount },
 	});
 });
 exports.createPaymentLink = catchAsync(async (req, res, next) => {

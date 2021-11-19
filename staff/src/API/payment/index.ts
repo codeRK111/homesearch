@@ -16,7 +16,7 @@ export type FetchSubscriptionResponse = {
 };
 
 export const asyncFetchSubscriptions = async (
-	filter: FetchBasicInput
+	filter: any
 ): Promise<FetchSubscriptionResponse> => {
 	try {
 		const token = localStorage.getItem('JWT_STAFF');
@@ -36,6 +36,37 @@ export const asyncFetchSubscriptions = async (
 			AxiosResponse<ServerResponse<FetchSubscriptionResponse>>
 		>(
 			`${V2EndPoint.Payment}/subscription${b}`,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+export const asyncFetchSubscriptionRevenue = async (
+	filter: any
+): Promise<any> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		let a = Object.keys(filter);
+		let b = '';
+		a.forEach((c, i) => {
+			if (i === 0) {
+				b += '?';
+			}
+			b += `${c}=${filter[c as keyof FetchBasicInput]}`;
+			if (i !== a.length - 1) {
+				b += '&';
+			}
+		});
+		const resp = await APIV2.get<any, AxiosResponse<ServerResponse<any>>>(
+			`${V2EndPoint.Payment}/get-revenue${b}`,
 
 			{
 				headers: {

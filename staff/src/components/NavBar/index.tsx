@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 import AppBar from '@material-ui/core/AppBar';
 import AppDrawer from '../Drawer';
 import Button from '@material-ui/core/Button';
@@ -13,6 +13,7 @@ import SharePackageLinkModal from '../Dialogs/sharePackage';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { asyncLogout } from '../../API/auth';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const NavBar = () => {
 	const classes = useStyles();
-	 const smallScreen = useMediaQuery('(max-width:600px)');
+	const smallScreen = useMediaQuery('(max-width:600px)');
 	const { user } = useTypedSelector((state) => state.auth);
 	const { logOut } = useRepositoryAction(ResourceType.Auth);
 
@@ -89,6 +90,7 @@ const NavBar = () => {
 							style={{ color: '#ffffff', textDecoration: 'none' }}
 						>
 							<Typography variant="h6">Homesearch18</Typography>
+							<Typography>({user.name})</Typography>
 						</Link>
 					) : (
 						<Typography variant="h6" className={classes.title}>
@@ -96,13 +98,15 @@ const NavBar = () => {
 						</Typography>
 					)}
 
-					{!smallScreen && <Button
-						color="inherit"
-						onClick={manageSharePackage(true)}
-						disabled={loading}
-					>
-						Share Package Link
-					</Button>}
+					{!smallScreen && (
+						<Button
+							color="inherit"
+							onClick={manageSharePackage(true)}
+							disabled={loading}
+						>
+							Share Package Link
+						</Button>
+					)}
 
 					{user && (
 						<Button

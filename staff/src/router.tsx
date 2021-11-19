@@ -47,6 +47,7 @@ const ManagePaymentPage = lazy(() => import('./pages/ManagePayment'));
 const PostedLeadsPage = lazy(() => import('./pages/PostedLeads'));
 const UpdateBlogPage = lazy(() => import('./pages/UpdateBlog'));
 const UpdateLeadPage = lazy(() => import('./pages/updateLead'));
+const PostFromLeadPage = lazy(() => import('./pages/PostFromLead'));
 
 const Router = () => {
 	const { setUser } = useRepositoryAction(ResourceType.Auth);
@@ -157,6 +158,11 @@ const Router = () => {
 						path={'/property-leads/:id'}
 						exact
 						component={PropertyLeadsDetailsPage}
+					/>
+					<PrivateRoute
+						path={'/post-from-leads/:id'}
+						exact
+						component={PostFromLeadPage}
 					/>
 				</Switch>
 			</Suspense>

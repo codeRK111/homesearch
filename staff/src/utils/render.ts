@@ -137,3 +137,19 @@ export const StaticPaths = {
 
 export const capitalizeFirstLetter = (input: string): string =>
 	input.charAt(0).toUpperCase() + input.slice(1);
+
+export const years = ['2021'];
+export const months = [
+	'Jan',
+	'Feb',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'Aug',
+	'Sept',
+	'Oct',
+	'Nov',
+	'Dec',
+];

@@ -57,6 +57,7 @@ const querySchema = new Schema(
 						'pg',
 						'guesthouse',
 						'serviceapartment',
+						'land',
 					],
 				},
 			},
@@ -93,10 +94,15 @@ querySchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'queryByUser',
 		select: 'id name email number',
-	}).populate({
-		path: 'queryForUser',
-		select: 'id name email number',
-	});
+	})
+		.populate({
+			path: 'queryForUser',
+			select: 'id name email number',
+		})
+		.populate({
+			path: 'property',
+			select: 'id title',
+		});
 
 	next();
 });
