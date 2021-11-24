@@ -16,7 +16,6 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { City } from '../../../model/city.interface';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { ILead } from '../../../model/lead.interface';
 import LeadsComments from '../../LeadComments';
 import Paper from '@material-ui/core/Paper';

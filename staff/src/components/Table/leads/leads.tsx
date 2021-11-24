@@ -1,6 +1,11 @@
 import { Box, Chip, CircularProgress, IconButton } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { isReschedule, parseDate, renderCellData } from '../../../utils/render';
+import {
+	isReschedule,
+	parseDate,
+	renderCellData,
+	renderLeadStage,
+} from '../../../utils/render';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -134,6 +139,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							<StyledTableCell>Budget</StyledTableCell>
 							<StyledTableCell>Created On</StyledTableCell>
 							<StyledTableCell>Posted By</StyledTableCell>
+							<StyledTableCell>Stage</StyledTableCell>
 							{hold && (
 								<StyledTableCell>Reconnect on</StyledTableCell>
 							)}
@@ -236,6 +242,9 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 										</StyledTableCell>
 										<StyledTableCell>
 											{row.createdBy?.name}
+										</StyledTableCell>
+										<StyledTableCell>
+											{renderLeadStage(row)}
 										</StyledTableCell>
 										{hold && (
 											<StyledTableCell>

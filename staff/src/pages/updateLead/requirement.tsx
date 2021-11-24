@@ -243,11 +243,6 @@ export default function ClientRequirement({
 					onChange={handleChangeStatus}
 				>
 					<FormControlLabel
-						value="hold"
-						control={<Radio />}
-						label="Hold"
-					/>
-					<FormControlLabel
 						value="forward"
 						control={<Radio />}
 						label="Forward"

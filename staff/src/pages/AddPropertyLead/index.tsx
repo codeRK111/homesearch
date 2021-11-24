@@ -21,20 +21,32 @@ const AddPropertyLeadPage = () => {
 	};
 
 	const renderChild = (): JSX.Element => {
-		if (showForm) {
-			if (id) {
-				return <UploadLeadImage id={id} />;
-			} else {
-				return (
-					<AddPropertyLeadForm
-						lat={lat}
-						lng={lng}
-						onSuccess={onSuccess}
-					/>
-				);
-			}
+		// if (showForm) {
+		// 	if (id) {
+		// 		return <UploadLeadImage id={id} />;
+		// 	} else {
+		// 		return (
+		// 			<AddPropertyLeadForm
+		// 				lat={lat}
+		// 				lng={lng}
+		// 				onSuccess={onSuccess}
+		// 			/>
+		// 		);
+		// 	}
+		// } else {
+		// 	return <></>;
+		// }
+
+		if (id) {
+			return <UploadLeadImage id={id} />;
 		} else {
-			return <></>;
+			return (
+				<AddPropertyLeadForm
+					lat={lat}
+					lng={lng}
+					onSuccess={onSuccess}
+				/>
+			);
 		}
 	};
 
