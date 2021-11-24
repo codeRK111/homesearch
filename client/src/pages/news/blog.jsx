@@ -69,13 +69,13 @@ const BlogCard = ({ blog }) => {
 	const { bold, link, colorGray } = useGlobalStyles();
 	return (
 		<Grid container spacing={3} component={Box} height={300}>
-			<Grid item xs={6}>
+			<Grid item xs={12} md={6}>
 				<CardMedia
 					image={renderBlogImage(blog.photo)}
 					className={style.fullHeight}
 				/>
 			</Grid>
-			<Grid item xs={6}>
+			<Grid item xs={12} md={6}>
 				<Chip
 					label={capitalizeFirstLetter(blog.category)}
 					variant="outlined"

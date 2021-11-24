@@ -31,8 +31,20 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import axios from 'axios';
 import { getBlogDetails } from '../../utils/asyncBlog';
+import { makeStyles } from '@material-ui/core/styles';
 import useGlobalStyles from '../../common.style';
 import { withAsync } from '../../hoc/withAsync';
+
+const useStyles = makeStyles((theme) => ({
+	headingWrapper: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		[theme.breakpoints.down('sm')]: {
+			flexDirection: 'column',
+		},
+	},
+}));
 
 const NewsDetailsPage = ({
 	match: {
@@ -45,6 +57,7 @@ const NewsDetailsPage = ({
 }) => {
 	// API Cancel Token
 	const cancelBlogsTokeb = useRef();
+	const style = useStyles();
 
 	const { bold, alignCenter } = useGlobalStyles();
 
@@ -100,12 +113,7 @@ const NewsDetailsPage = ({
 								{data.title}
 							</Typography>
 						</Box>
-						<Box
-							mt="1rem"
-							display="flex"
-							justifyContent="space-between"
-							alignItems="center"
-						>
+						<Box mt="1rem" className={style.headingWrapper}>
 							<ListItem>
 								<ListItemAvatar>
 									<Avatar

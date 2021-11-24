@@ -29,5 +29,12 @@ const useStyles = makeStyles((theme) => ({
 	fullHeight: {
 		height: '100%',
 	},
+	headingWrapper: {
+		display: 'flex',
+		width: '100%',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		[theme.breakpoints.down('sm')]: {},
+	},
 }));
 export default useStyles;
