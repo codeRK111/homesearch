@@ -9,6 +9,7 @@ import {
 	Paper,
 	Radio,
 	RadioGroup,
+	TextField,
 } from '@material-ui/core';
 import { FetchAdminResponse, StaffType } from '../../../model/staff.interface';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -48,6 +49,8 @@ interface ISideBar {
 	setAvailableFor: any;
 	createdBy: any;
 	setCreatedBy: any;
+	number: string;
+	setNumber: (val: string) => void;
 }
 
 const SideBar: React.FC<ISideBar> = ({
@@ -65,6 +68,8 @@ const SideBar: React.FC<ISideBar> = ({
 	setAvailableFor,
 	createdBy,
 	setCreatedBy,
+	number,
+	setNumber,
 }) => {
 	const { wrapper } = useStyles();
 
@@ -140,6 +145,15 @@ const SideBar: React.FC<ISideBar> = ({
 		<Paper className={wrapper}>
 			<Box p="1rem">
 				<Grid container spacing={3}>
+					<Grid item xs={12}>
+						<TextField
+							value={number}
+							onChange={(e) => setNumber(e.target.value)}
+							variant="filled"
+							fullWidth
+							placeholder="Search By Number"
+						/>
+					</Grid>
 					<Grid item xs={12}>
 						<SearchCity
 							label="Search By City"

@@ -704,6 +704,16 @@ exports.searchAll = catchAsync(async (req, res, next) => {
 		leadsFilter.city = req.body.city;
 		salesFilter.city = req.body.city;
 	}
+	if (req.body.number) {
+		leadsFilter.number = {
+			$regex: req.body.number,
+			$options: 'i',
+		};
+		salesFilter.number = {
+			$regex: req.body.number,
+			$options: 'i',
+		};
+	}
 	if (req.body.createdBy) {
 		salesFilter.createdBy = req.body.createdBy;
 		leadsFilter.createdBy = req.body.createdBy;

@@ -13,6 +13,7 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core';
+import { ILead, LeadComment } from '../../model/lead.interface';
 import React, { useState } from 'react';
 import { UpdateLeadData, asyncUpdateLead } from '../../API/lead';
 import { parseDate, renderStaffRole } from '../../utils/render';
@@ -23,7 +24,6 @@ import DateTimePickerComponent from '../Pickers/dateTime';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import Grid from '@material-ui/core/Grid';
-import { LeadComment } from '../../model/lead.interface';
 import Paper from '@material-ui/core/Paper';
 import { StaffType } from '../../model/staff.interface';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -34,7 +34,8 @@ interface ILeadsComments {
 	comments?: Array<LeadComment>;
 	id?: string;
 	number: string;
-	fetchLeads: () => void;
+	fetchLeads?: () => void;
+	updateLeadComment?: (lead: ILead) => void;
 }
 
 export default function LeadsComments({
@@ -44,6 +45,7 @@ export default function LeadsComments({
 	comments,
 	number,
 	fetchLeads,
+	updateLeadComment,
 }: ILeadsComments) {
 	const descriptionElementRef = React.useRef<HTMLElement>(null);
 	const { user } = useTypedSelector((state) => state.auth);
@@ -79,9 +81,14 @@ export default function LeadsComments({
 		}
 		try {
 			setLoading(true);
-			await asyncUpdateLead(id, info);
+			const newLead = await asyncUpdateLead(id, info);
 			setLoading(false);
-			fetchLeads();
+			if (fetchLeads) {
+				fetchLeads();
+			}
+			if (updateLeadComment) {
+				updateLeadComment(newLead);
+			}
 			setMessage('');
 			handleClose();
 		} catch (err: any) {

@@ -186,7 +186,7 @@ export const asyncUpdateLead = async (
 		const token = localStorage.getItem('JWT_STAFF');
 		const resp = await APIV2.patch<
 			ILead,
-			AxiosResponse<ServerResponse<ILead>>
+			AxiosResponse<ServerResponse<{ lead: ILead }>>
 		>(`${V2EndPoint.Lead}/support-update/${id}`, lead, {
 			headers: {
 				'Content-Type': 'application/json',
@@ -195,7 +195,7 @@ export const asyncUpdateLead = async (
 		});
 		const leadData = resp.data.data;
 
-		return leadData;
+		return leadData.lead;
 	} catch (e: any) {
 		throw new Error(asyncError(e));
 	}

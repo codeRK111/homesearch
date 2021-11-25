@@ -10,6 +10,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { SearchAllResponse, searchAll } from '../../../API/lead';
 
 import { City } from '../../../model/city.interface';
+import { ILead } from '../../../model/lead.interface';
 import { Location } from '../../../model/location.interface';
 import MyPostedLeadsTable from '../../../components/Table/leads/myLeads';
 import PropertyLeadsTable from '../../../components/Table/leads/propertyLead';
@@ -32,6 +33,7 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 	const [salesPage, setSalesPage] = useState(1);
 	const [salesLimit, setSalesLimit] = useState(10);
 	const [pFor, setPFor] = useState('');
+	const [number, setNumber] = useState('');
 	const [createdBy, setCreatedBy] = useState('');
 	const [facing, setFacing] = useState('');
 	const [location, setLoaction] = useState<Location | null>(null);
@@ -45,6 +47,20 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 		totalLeadDocs: 0,
 		totalSalesDocs: 0,
 	});
+
+	const updateLeadComment = (lead: ILead) => {
+		setData((prevState) => {
+			return {
+				...prevState,
+				leads: prevState.leads.map((c) => {
+					if (c.id === lead.id) {
+						c.comments = lead.comments;
+					}
+					return c;
+				}),
+			};
+		});
+	};
 	const parsed: any = queryString.parse(search, {
 		arrayFormat: 'comma',
 	});
@@ -75,6 +91,9 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 		};
 		if (city) {
 			filter.city = city.id;
+		}
+		if (number) {
+			filter.number = number;
 		}
 		if (createdBy) {
 			filter.createdBy = createdBy;
@@ -117,6 +136,7 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 		location,
 		myData,
 		createdBy,
+		number,
 	]);
 
 	useEffect(() => {
@@ -142,6 +162,7 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 		location,
 		myData,
 		createdBy,
+		number,
 	]);
 
 	const sidebarProps = {
@@ -160,6 +181,8 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 		myData,
 		createdBy,
 		setCreatedBy,
+		number,
+		setNumber,
 	};
 	return (
 		<Container maxWidth="xl">
@@ -191,6 +214,7 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 								<MyPostedLeadsTable
 									loading={loading}
 									leads={data.leads}
+									updateLeadComment={updateLeadComment}
 								/>
 								<TablePagination
 									limit={leadsLimit}

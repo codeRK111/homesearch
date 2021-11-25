@@ -1,10 +1,12 @@
-import { Box, CircularProgress } from '@material-ui/core';
+import { Box, CircularProgress, IconButton } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import { City } from '../../../model/city.interface';
 import { ILead } from '../../../model/lead.interface';
+import LeadsComments from '../../LeadComments';
 import Paper from '@material-ui/core/Paper';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -43,17 +45,29 @@ const useStyles = makeStyles({
 interface IMyPostedLeadsTable {
 	loading: boolean;
 	leads: ILead[];
+	updateLeadComment?: (lead: ILead) => void;
 }
 
 const MyPostedLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 	loading,
 	leads,
+	updateLeadComment,
 }) => {
 	const classes = useStyles();
 
 	// State
 
 	const [data, setData] = useState<Array<ILead>>([]);
+	const [open, setOpen] = useState(false);
+	const [selectedLead, setSelectedLead] = useState<ILead | null>(null);
+
+	const handleCloseModal = () => {
+		setOpen(false);
+	};
+	const openModal = (lead: ILead) => () => {
+		setSelectedLead(lead);
+		setOpen(true);
+	};
 
 	// Effects
 	useEffect(() => {
@@ -72,6 +86,14 @@ const MyPostedLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 
 	return (
 		<Box>
+			<LeadsComments
+				open={open}
+				handleClose={handleCloseModal}
+				id={selectedLead?.id}
+				comments={selectedLead?.comments}
+				number={selectedLead ? selectedLead.number : ''}
+				updateLeadComment={updateLeadComment}
+			/>
 			<TableContainer component={Paper}>
 				<Table className={classes.table} aria-label="customized table">
 					<TableHead>
@@ -85,6 +107,7 @@ const MyPostedLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 							<StyledTableCell>Location</StyledTableCell>
 							<StyledTableCell>Category</StyledTableCell>
 							<StyledTableCell>Posted On</StyledTableCell>
+							<StyledTableCell>Comments</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -130,6 +153,13 @@ const MyPostedLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 										</StyledTableCell>
 										<StyledTableCell>
 											{parseDate(row.createdAt as Date)}
+										</StyledTableCell>
+										<StyledTableCell>
+											<IconButton
+												onClick={openModal(row)}
+											>
+												<QuestionAnswerIcon color="primary" />
+											</IconButton>
 										</StyledTableCell>
 									</StyledTableRow>
 							  ))}
