@@ -228,3 +228,36 @@ export const asyncVerifyPayment = async (
 		throw new Error(asyncError(e));
 	}
 };
+
+export type SendProposalData = {
+	proposalPackage: 'b' | 'oc' | 'custom';
+	proposalPrice: number;
+	propertyToBeShown: number;
+	leadId: string;
+};
+
+export const asyncsendProposal = async (
+	data: SendProposalData
+): Promise<any> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.post<
+			SendProposalData,
+			AxiosResponse<ServerResponse<any>>
+		>(
+			`${V2EndPoint.Payment}/send-proposal`,
+			data,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};

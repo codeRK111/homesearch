@@ -7,6 +7,8 @@ import { ILead } from '../../../model/lead.interface';
 import LeadsComments from '../../LeadComments';
 import Paper from '@material-ui/core/Paper';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import RenderByMultipleRole from '../../RenderByRole/multiple';
+import { StaffType } from '../../../model/staff.interface';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -107,7 +109,11 @@ const MyPostedLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 							<StyledTableCell>Location</StyledTableCell>
 							<StyledTableCell>Category</StyledTableCell>
 							<StyledTableCell>Posted On</StyledTableCell>
-							<StyledTableCell>Comments</StyledTableCell>
+							<RenderByMultipleRole
+								types={[StaffType.AssistantSalesManager]}
+							>
+								<StyledTableCell>Comments</StyledTableCell>
+							</RenderByMultipleRole>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -154,13 +160,19 @@ const MyPostedLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 										<StyledTableCell>
 											{parseDate(row.createdAt as Date)}
 										</StyledTableCell>
-										<StyledTableCell>
-											<IconButton
-												onClick={openModal(row)}
-											>
-												<QuestionAnswerIcon color="primary" />
-											</IconButton>
-										</StyledTableCell>
+										<RenderByMultipleRole
+											types={[
+												StaffType.AssistantSalesManager,
+											]}
+										>
+											<StyledTableCell>
+												<IconButton
+													onClick={openModal(row)}
+												>
+													<QuestionAnswerIcon color="primary" />
+												</IconButton>
+											</StyledTableCell>
+										</RenderByMultipleRole>
 									</StyledTableRow>
 							  ))}
 					</TableBody>

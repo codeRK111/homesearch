@@ -20,7 +20,7 @@ export interface RentBasicInfoData {
 
 interface IRentBasicInfo {
 	onSubmit: (val: any) => void;
-	initialData: RentBasicInfoData;
+	initialData: any;
 }
 
 const validateForm = (values: RentBasicInfoData) => {
@@ -140,6 +140,12 @@ const RentBasicInfo = ({ onSubmit, initialData }: IRentBasicInfo) => {
 										/>
 									</Grid>
 								)}
+								<Grid item xs={6}>
+									<FTextField
+										name="floor"
+										label="Total number of floor"
+									/>
+								</Grid>
 								<Grid item xs={12}>
 									<Box
 										display="flex"

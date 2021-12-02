@@ -140,9 +140,9 @@ export default function ClientRequirement({
 						onChange={handleChangeCategory}
 					>
 						<FormControlLabel
-							value="sale"
+							value={requirement === 'hvp' ? 'sale' : 'buy'}
 							control={<Radio />}
-							label="Buy"
+							label={requirement === 'hvp' ? 'Sale' : 'Buy'}
 						/>
 						<FormControlLabel
 							value="rent"

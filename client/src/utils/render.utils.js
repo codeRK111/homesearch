@@ -23,7 +23,7 @@ export const renderBlogImage = (image) => {
 export const renderInfo = (info) => (info ? info : 'Not Specified');
 export const renderBool = (info) => (info ? 'Yes' : 'No');
 export const parseDate = (date) => {
-	const m = moment(date);
+	const m = date ? moment(date) : moment();
 	return m.format('DD MMM YYYY');
 };
 
@@ -442,4 +442,13 @@ export const StaticPaths = {
 	property: (image) => `/assets/properties/${image}`,
 	blog: (image) => `/assets/blogs/${image}`,
 	profile: (image) => `/assets/profile/${image}`,
+};
+
+export const toCurrency = (value) => {
+	return !!value
+		? Number(value).toLocaleString('en-IN', {
+				currency: 'INR',
+				minimumFractionDigits: 0,
+		  })
+		: '-';
 };

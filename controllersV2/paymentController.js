@@ -1,9 +1,12 @@
 const Razorpay = require('razorpay');
 const catchAsync = require('./../utils/catchAsync');
 const createInvoice = require('./../utils/createTenantInvoice');
+const sendEmailProposal = require('./../utils/sendMailProposal');
+const sendMessageProposal = require('./../utils/sendProposal');
 const sendEmailSubscriptionFeedback = require('./../utils/sendMailReview');
 const sendEmailInvoice = require('./../utils/sendMailInvoice');
 const Subscription = require('./../models/subscriptionModel');
+const Lead = require('./../models/leadsModel');
 const Link = require('./../models/paymentLinkModel');
 const Admin = require('./../models/adminModel');
 const crypto = require('crypto');
@@ -592,5 +595,103 @@ exports.createSubscription = catchAsync(async (req, res, next) => {
 	res.status(200).json({
 		status: 'success',
 		data: subscription,
+	});
+});
+exports.sendProposal = catchAsync(async (req, res, next) => {
+	const requireFields = [
+		'proposalPackage',
+		'proposalPrice',
+		'propertyToBeShown',
+		'leadId',
+	];
+
+	const excludedFields = [];
+	requireFields.forEach((c) => {
+		if (!req.body[c]) {
+			excludedFields.push(c);
+		}
+	});
+	if (excludedFields.length > 0) {
+		return next(
+			new AppError(`Missing fields - ${excludedFields.join(',')}`)
+		);
+	}
+
+	const lead = await Lead.findById(req.body.leadId);
+	if (!lead) {
+		return next(new AppError('Lead not found'));
+	}
+	// if (lead.proposalStatus === 'sent') {
+	// 	return next(new AppError('Proposal already sent'));
+	// }
+
+	const leadRequireFields = [
+		'name',
+		'email',
+		'number',
+		'city',
+		'preferedLocation',
+		'minPrice',
+		'maxPrice',
+	];
+	const excludedLeadFields = [];
+	leadRequireFields.forEach((c) => {
+		if (!lead[c]) {
+			excludedLeadFields.push(c);
+		}
+	});
+	if (excludedLeadFields.length > 0) {
+		return next(
+			new AppError(`Missing fields - ${excludedLeadFields.join(',')}`)
+		);
+	}
+
+	lead.proposalStatus = 'sent';
+	lead.proposalPackage = req.body.proposalPackage;
+	lead.proposalPrice = req.body.proposalPrice;
+	lead.propertyToBeShown = req.body.propertyToBeShown;
+	lead.proposedBy = req.admin.id;
+	await lead.save();
+	const url = `/manage-proposal/${lead.id}`;
+	res.status(200).json({
+		status: 'success',
+		data: {
+			lead,
+			url,
+		},
+	});
+	const smsResult = await sendEmailProposal(
+		lead.email,
+		'Homesearch Proposal',
+		url
+	);
+	const sm = await sendMessageProposal('18', lead.id, lead.number);
+	// console.log(smsResult);
+	console.log(sm.data);
+});
+
+exports.getProposalDetails = catchAsync(async (req, res, next) => {
+	const lead = await Lead.findById(req.params.id);
+	if (!lead) return next(new AppError('Lead not found', 404));
+	const resp = {
+		id: lead.id,
+		name: lead.name,
+		email: lead.email,
+		number: lead.number,
+		minPrice: lead.minPrice,
+		maxPrice: lead.maxPrice,
+		propertyRequirements: lead.propertyRequirements,
+		preferedLocation: lead.preferedLocation,
+		preferedLocation: lead.preferedLocation,
+		city: lead.city,
+		proposalPackage: lead.proposalPackage,
+		proposalPrice: lead.proposalPrice,
+		proposalComments: lead.proposalComments,
+		proposedBy: lead.proposedBy,
+	};
+
+	res.status(200).json({
+		status: 'success',
+		data: resp,
 	});
 });

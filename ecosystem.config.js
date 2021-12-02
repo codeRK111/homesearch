@@ -8,6 +8,9 @@ module.exports = {
 				PORT: 8080,
 			},
 			watch: true,
+			watch_options: {
+				usePolling: true,
+			},
 			ignore_watch: ['node_modules', 'images', 'static/invoices'],
 		},
 	],

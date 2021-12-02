@@ -39,6 +39,7 @@ const PostFromLead: React.FC<RouteComponentProps<IParam>> = ({
 			setBasicInfo({
 				...basicInfo,
 				...lead,
+				title: lead.name ? lead.name : '',
 			});
 			setLoading(false);
 		} catch (error: any) {

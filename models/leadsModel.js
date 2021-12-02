@@ -102,7 +102,7 @@ const leadsSchema = new Schema(
 		category: {
 			type: String,
 			enum: {
-				values: ['rent', 'sale', 'project'],
+				values: ['rent', 'sale', 'project', 'buy'],
 			},
 		},
 		pType: {
@@ -195,6 +195,58 @@ const leadsSchema = new Schema(
 			enum: {
 				values: ['bdm', 'assistantSalesManager', 'salesExecutive'],
 			},
+		},
+		proposalStatus: {
+			type: String,
+			enum: {
+				values: ['sent', 'not-sent', 'accepted', 'declined'],
+			},
+			default: 'not-sent',
+		},
+		proposalPackage: {
+			type: String,
+			enum: {
+				values: ['b', 'oc', 'custom'],
+			},
+			default: 'b',
+		},
+		proposalPrice: {
+			type: Number,
+		},
+		paymentLink: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'paymentlink',
+			default: null,
+		},
+		proposalComments: [
+			{
+				comment: {
+					type: String,
+				},
+				createdAt: {
+					type: Date,
+					default: Date.now(),
+				},
+				action: {
+					type: String,
+					enum: {
+						values: ['accepted', 'declined'],
+					},
+					default: 'accepted',
+				},
+			},
+		],
+		proposedBy: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Admin',
+			default: null,
+		},
+		propertyToBeShown: {
+			type: Number,
+			default: 5,
+		},
+		invoice: {
+			type: String,
 		},
 	},
 	{

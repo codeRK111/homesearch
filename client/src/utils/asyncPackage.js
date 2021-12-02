@@ -1,6 +1,5 @@
-import { apiUrl, asyncError } from './render.utils';
-
 import axios from 'axios';
+import { apiUrl, asyncError } from './render.utils';
 
 export const asyncGetSubscriptionDetails = async (
 	id,
@@ -43,6 +42,18 @@ export const asyncSubmitFeedack = async (id, data, cancelToken, setLoading) => {
 		return resp.data.data;
 	} catch (error) {
 		setLoading(false);
+		throw new Error(asyncError(error));
+	}
+};
+export const asyncGetProposalDetails = async (id) => {
+	try {
+		const resp = await axios.get(apiUrl(`/payment/proposal/${id}`, 2), {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		return resp.data.data;
+	} catch (error) {
 		throw new Error(asyncError(error));
 	}
 };

@@ -16,6 +16,7 @@ import LeadsComments from '../../LeadComments';
 import Paper from '@material-ui/core/Paper';
 import PriceRangeCell from '../priceRangeCell';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import SendProposal from '../sendProposal';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -146,6 +147,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 							<StyledTableCell>Update</StyledTableCell>
 							<StyledTableCell>Comments</StyledTableCell>
+							<StyledTableCell>Send Query</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -265,6 +267,9 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											>
 												<QuestionAnswerIcon color="primary" />
 											</IconButton>
+										</StyledTableCell>
+										<StyledTableCell>
+											<SendProposal lead={row} />
 										</StyledTableCell>
 									</StyledTableRow>
 							  ))}

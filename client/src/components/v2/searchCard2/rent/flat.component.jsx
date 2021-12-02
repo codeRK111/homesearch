@@ -206,7 +206,15 @@ const PropertyCard = ({ property, edit = false }) => {
 											className={classes.keyValue}
 										>
 											<Box className="test">
-												<h1>1.5K</h1>
+												<h1>
+													₹
+													{property.maintainanceFee
+														? `${
+																property.maintainanceFee /
+																1000
+														  }K`
+														: 0}{' '}
+												</h1>
 											</Box>
 										</Grid>
 										<Grid

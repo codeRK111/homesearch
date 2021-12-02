@@ -28,6 +28,7 @@ const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
 
 // const HomePageNew = lazy(() => import('./pages/v2/homePage/home.page'));
 const BuilderPage = lazy(() => import('./pages/v2/builderPage'));
+const ManageProposalPage = lazy(() => import('./pages/proposal'));
 const UpdateProfilePage = lazy(() => import('./pages/v2/updateProfile'));
 const AgentPage = lazy(() => import('./pages/realtorDetailsv2'));
 const MyQueriesPage = lazy(() => import('./pages/Queries'));
@@ -127,6 +128,13 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 							exact
 							path="/tenant-packages"
 							render={(props) => <TenantPackagePage {...props} />}
+						/>
+						<Route
+							exact
+							path="/manage-proposal/:id"
+							render={(props) => (
+								<ManageProposalPage {...props} />
+							)}
 						/>
 						<Route
 							exact

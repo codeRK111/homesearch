@@ -50,6 +50,7 @@ router.get(
 	authController.protect,
 	paymentController.getSubscriptionDetails
 );
+router.get('/proposal/:id', paymentController.getProposalDetails);
 router.get(
 	'/payment-links',
 	adminController.protect,
@@ -64,6 +65,11 @@ router.get(
 	'/send-feedback-mail/:id',
 	adminController.protect,
 	paymentController.sendFeedback
+);
+router.post(
+	'/send-proposal',
+	adminController.protect,
+	paymentController.sendProposal
 );
 router.post(
 	'/submit-feedback/:id',
