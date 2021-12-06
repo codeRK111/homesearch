@@ -16,6 +16,7 @@ interface IClientSupportLeadsList {
 }
 const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	// State
+
 	const [page, setPage] = useState(1);
 	const [timeInterval, setTimeInterval] = useState('all');
 	const [limit, setLimit] = useState(10);

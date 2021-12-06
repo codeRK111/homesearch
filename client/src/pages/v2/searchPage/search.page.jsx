@@ -10,7 +10,7 @@ import Nav from '../../../components/v2/pageNav/nav.component';
 import React from 'react';
 import SearchCardProjectFlat from '../../../components/v2/searchCard2/project/flat.component';
 import SearchCardProjectLand from '../../../components/v2/searchCard2/project/land.component';
-import SearchCardRentFlat from '../../../components/v2/searchCard2/rent/flat.component';
+import SearchCardRentFlat from '../../../components/v2/searchCard2/rent/flat-v2.component';
 import SearchCardRentHostel from '../../../components/v2/searchCard2/rent/hostel.component';
 import SearchCardSaleFlat from '../../../components/v2/searchCard2/sale/flat.component';
 import SearchCardSaleLand from '../../../components/v2/searchCard2/sale/land.component';

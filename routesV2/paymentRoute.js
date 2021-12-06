@@ -51,6 +51,11 @@ router.get(
 	paymentController.getSubscriptionDetails
 );
 router.get('/proposal/:id', paymentController.getProposalDetails);
+router.post(
+	'/proposal-response/:id',
+	authController.protect,
+	paymentController.proposalResponse
+);
 router.get(
 	'/payment-links',
 	adminController.protect,

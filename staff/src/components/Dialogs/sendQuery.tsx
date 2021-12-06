@@ -202,6 +202,12 @@ const SendQueryDialog: React.FC<SendQueryDialogProps> = ({
 								</TableCell>
 							</TableRow>
 							<TableRow>
+								<TableCell>Category</TableCell>
+								<TableCell>
+									<Typography>{lead.category}</Typography>
+								</TableCell>
+							</TableRow>
+							<TableRow>
 								<TableCell>Email</TableCell>
 								<TableCell>
 									<Typography>{lead.email}</Typography>

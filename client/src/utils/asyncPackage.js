@@ -1,5 +1,6 @@
-import axios from 'axios';
 import { apiUrl, asyncError } from './render.utils';
+
+import axios from 'axios';
 
 export const asyncGetSubscriptionDetails = async (
 	id,
@@ -52,6 +53,24 @@ export const asyncGetProposalDetails = async (id) => {
 				'Content-Type': 'application/json',
 			},
 		});
+		return resp.data.data;
+	} catch (error) {
+		throw new Error(asyncError(error));
+	}
+};
+export const asyncProposalResponse = async (id, data) => {
+	try {
+		const token = localStorage.getItem('JWT_CLIENT');
+		const resp = await axios.post(
+			apiUrl(`/payment/proposal-response/${id}`, 2),
+			data,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		return resp.data.data;
 	} catch (error) {
 		throw new Error(asyncError(error));

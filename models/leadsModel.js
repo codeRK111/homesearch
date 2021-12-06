@@ -203,6 +203,12 @@ const leadsSchema = new Schema(
 			},
 			default: 'not-sent',
 		},
+		proposalAcceptDate: {
+			type: Date,
+		},
+		propertyVisitDate: {
+			type: Date,
+		},
 		proposalPackage: {
 			type: String,
 			enum: {

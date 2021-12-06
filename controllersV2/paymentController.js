@@ -688,10 +688,46 @@ exports.getProposalDetails = catchAsync(async (req, res, next) => {
 		proposalPrice: lead.proposalPrice,
 		proposalComments: lead.proposalComments,
 		proposedBy: lead.proposedBy,
+		category: lead.category,
 	};
 
 	res.status(200).json({
 		status: 'success',
 		data: resp,
+	});
+});
+
+exports.proposalResponse = catchAsync(async (req, res, next) => {
+	const dataToupdate = {};
+
+	if (!req.body.proposalStatus) {
+		return next(new AppError('proposal status is missing'));
+	}
+	if (req.body.proposalStatus === 'declined' && !req.body.comment) {
+		return next(new AppError('comment is missing'));
+	}
+	dataToupdate.proposalStatus = req.body.proposalStatus;
+	if (req.body.comment) {
+		dataToupdate['$push'] = {
+			proposalComments: {
+				comment: req.body.comment,
+				action: req.body.proposalStatus,
+			},
+		};
+	}
+
+	if (req.body.proposalStatus === 'accepted') {
+		dataToupdate.proposalAcceptDate = Date.now();
+		dataToupdate.propertyVisitDate = req.body.propertyVisitDate;
+	}
+
+	const lead = await Lead.findByIdAndUpdate(req.params.id, dataToupdate, {
+		runValidators: true,
+		new: true,
+	});
+
+	res.status(200).json({
+		status: 'success',
+		data: lead.id,
 	});
 });
