@@ -319,8 +319,12 @@ exports.getSubscriptions = catchAsync(async (req, res, next) => {
 	const limit = req.query.limit * 1 || 10;
 	const skip = (page - 1) * limit;
 	let year = new Date().getFullYear();
+	let yearEnd = new Date().getFullYear();
 	if (req.query.dealBy) {
 		filter.dealBy = req.query.dealBy;
+	}
+	if (req.query.paymentMode) {
+		filter.paymentMode = req.query.paymentMode;
 	}
 	if (req.query.year) {
 		year = req.query.year;
@@ -333,10 +337,16 @@ exports.getSubscriptions = catchAsync(async (req, res, next) => {
 	}
 	if (req.query.month) {
 		const startMonth = Number(req.query.month) + 1;
-		const endMonth = startMonth + 1;
+		let endMonth;
+		if (startMonth === 12) {
+			endMonth = 1;
+			yearEnd = yearEnd + 1;
+		} else {
+			endMonth = startMonth + 1;
+		}
 		filter.createdAt = {
 			$gte: moment(`${year}-${startMonth}`).startOf('day').format(),
-			$lt: moment(`${year}-${endMonth}`).startOf('day').format(),
+			$lt: moment(`${yearEnd}-${endMonth}`).startOf('day').format(),
 		};
 	}
 
@@ -357,8 +367,12 @@ exports.getRevenue = catchAsync(async (req, res, next) => {
 	const filter = {};
 
 	let year = new Date().getFullYear();
+	let yearEnd = new Date().getFullYear();
 	if (req.query.dealBy) {
 		filter.dealBy = mongoose.Types.ObjectId(req.query.dealBy);
+	}
+	if (req.query.paymentMode) {
+		filter.paymentMode = req.query.paymentMode;
 	}
 	if (req.query.year) {
 		year = req.query.year;
@@ -371,9 +385,16 @@ exports.getRevenue = catchAsync(async (req, res, next) => {
 	}
 	if (req.query.month) {
 		const startMonth = Number(req.query.month) + 1;
-		const endMonth = startMonth + 1;
+		let endMonth;
+		if (startMonth === 12) {
+			endMonth = 1;
+			yearEnd = yearEnd + 1;
+		} else {
+			endMonth = startMonth + 1;
+		}
+
 		const gte = moment(`${year}-${startMonth}`).startOf('day').toDate();
-		const lt = moment(`${year}-${endMonth}`).startOf('day').toDate();
+		const lt = moment(`${yearEnd}-${endMonth}`).startOf('day').toDate();
 		if (filter.createdAt) {
 			delete filter.createdAt;
 		}
@@ -535,6 +556,7 @@ exports.createSubscription = catchAsync(async (req, res, next) => {
 		'name',
 		'number',
 		'paymentMode',
+		'createdAt',
 	];
 	const excludedFields = [];
 	requireFields.forEach((c) => {

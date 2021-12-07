@@ -16,7 +16,12 @@ import {
 } from '../../API/payment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
-import { months, toHumanReadable, years } from '../../utils/render';
+import {
+	months,
+	paymentModes,
+	toHumanReadable,
+	years,
+} from '../../utils/render';
 
 import TablePagination from '../../components/Table/pagination';
 import TenantSubscriptionTable from '../../components/Table/payment/subscription';
@@ -30,6 +35,7 @@ const AccountantList = () => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 	const [year, setYear] = useState('');
+	const [paymentMode, setPaymentMode] = useState('');
 	const [month, setMonth] = useState<string | number>('');
 	const [revenue, setRevenue] = useState<number>(0);
 	const [data, setData] = useState<FetchSubscriptionResponse>({
@@ -74,11 +80,26 @@ const AccountantList = () => {
 		setMonth(value === '' ? '' : Number(value));
 	};
 
+	const handleChangePaymentMode = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		const value = (event.target as HTMLInputElement).value;
+
+		setPaymentMode(value);
+	};
+
 	// Fetch subscriptios
 	const fetchSubscriptions = useCallback(async () => {
 		try {
 			setLoading(true);
-			const filter: any = { page, limit, dealBy: createdBy, year, month };
+			const filter: any = {
+				page,
+				limit,
+				dealBy: createdBy,
+				year,
+				month,
+				paymentMode,
+			};
 
 			const resp = await asyncFetchSubscriptions(filter);
 			setData(resp);
@@ -97,12 +118,12 @@ const AccountantList = () => {
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [page, limit, createdBy, year, month]);
+	}, [page, limit, createdBy, year, month, paymentMode]);
 
 	const fetchRevenue = useCallback(async () => {
 		try {
 			setRevenueLoading(true);
-			const filter: any = { dealBy: createdBy, year, month };
+			const filter: any = { dealBy: createdBy, year, month, paymentMode };
 
 			const { totalAmount: resp } = await asyncFetchSubscriptionRevenue(
 				filter
@@ -125,14 +146,19 @@ const AccountantList = () => {
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [createdBy, year, month]);
+	}, [createdBy, year, month, paymentMode]);
 
 	const fetchAdmins = useCallback(async () => {
 		try {
 			setBdmLoading(true);
 			const resp = await asyncFetchAdmins({
 				status: 'active',
-				types: [StaffType.ClientSupport, StaffType.SuperAdmin],
+				types: [
+					StaffType.ClientSupport,
+					StaffType.SuperAdmin,
+					StaffType.AssistantSalesManager,
+					StaffType.SalesExecutive,
+				],
 			});
 			setBdmLoading(false);
 			setAdminData(resp);
@@ -229,6 +255,33 @@ const AccountantList = () => {
 						{months.map((c, i) => (
 							<FormControlLabel
 								value={i}
+								key={i}
+								control={<Radio />}
+								label={c}
+							/>
+						))}
+					</RadioGroup>
+				</FormControl>
+			</Box>
+			<Box>
+				<FormControl component="fieldset">
+					<FormLabel component="legend">Payment Mode</FormLabel>
+					<RadioGroup
+						aria-label="gender"
+						name="gender1"
+						value={paymentMode}
+						onChange={handleChangePaymentMode}
+						row
+					>
+						<FormControlLabel
+							value=""
+							control={<Radio />}
+							label="All"
+						/>
+
+						{paymentModes.map((c, i) => (
+							<FormControlLabel
+								value={c}
 								key={i}
 								control={<Radio />}
 								label={c}

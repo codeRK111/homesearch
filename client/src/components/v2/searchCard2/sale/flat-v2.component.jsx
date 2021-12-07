@@ -2,6 +2,10 @@ import '../extra.css';
 
 import { Box, Grid } from '@material-ui/core';
 import { location2, tag } from '../../../../utils/statc';
+import {
+	renderTransactionType,
+	renderTypes,
+} from '../../../../utils/render.utils';
 
 import HighlightContainer from '../highlightContainer';
 import LogoWithText from '../logo';
@@ -10,7 +14,6 @@ import TitleContainer from '../titleContainer';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
 import moment from 'dayjs';
-import { renderTypes } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useStyles from '../searchCard-v2.style';
 
@@ -52,13 +55,19 @@ const PropertyCard = ({ property, edit = false }) => {
 				<Grid item xs={12} md={5}>
 					<Box>
 						<Box display="flex">
-							<LogoWithText text="For Rent" />
+							<LogoWithText
+								text={renderTransactionType(
+									property.transactionType
+								)}
+							/>
 							<TitleContainer
 								ml="1rem"
 								title={property.title}
 								desc={`${
 									property.numberOfBedRooms
-								}BHK ${renderTypes(property.type)} For Rent`}
+								}BHK ${renderTypes(
+									property.sale_type
+								)} For Sale`}
 							/>
 						</Box>
 						<Box mt="1rem">
@@ -82,9 +91,9 @@ const PropertyCard = ({ property, edit = false }) => {
 									className={clsx(classes.icon)}
 								/>
 								<h4 className={classes.locationText}>
-									{renderTypes(property.type)}, &nbsp;&nbsp;
-									{property.superBuiltupArea}
-									Sq.Ft, &nbsp;&nbsp;{property.usp}
+									{renderTypes(property.sale_type)},
+									&nbsp;&nbsp;{property.superBuiltupArea}
+									Sq.Ft,&nbsp;&nbsp;{property.usp}
 								</h4>
 							</div>
 						</Box>
@@ -98,27 +107,21 @@ const PropertyCard = ({ property, edit = false }) => {
 								</Grid>
 								<Grid item xs={12} md={6}>
 									<HighlightContainer
-										title="Rent / Month"
-										value={`${property.rent / 1000}K`}
+										title="Price [Registration Extra]"
+										value={`${property.salePrice / 100000}
+										L`}
 									/>
 								</Grid>
 								<Grid item xs={12} md={6}>
 									<HighlightContainer
-										title="Notice Period [In days]"
-										value={property.noticePeriod}
+										title="Carpet Area"
+										value={property.carpetArea}
 									/>
 								</Grid>
 								<Grid item xs={12} md={6}>
 									<HighlightContainer
-										title="Maintainance Fee Per Month"
-										value={
-											property.maintainanceFee
-												? `${
-														property.maintainanceFee /
-														1000
-												  }K`
-												: 0
-										}
+										title="Bedrooms"
+										value={property.numberOfBedRooms}
 									/>
 								</Grid>
 							</Grid>

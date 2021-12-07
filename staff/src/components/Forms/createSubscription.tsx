@@ -11,6 +11,7 @@ import {
 } from '../../model/subscription.interface';
 
 import { Button } from '../UI/Button';
+import DateTimePickerComponent from '../Pickers/dateTime';
 import FSelect from '../Formik/select';
 import FTextField from '../Formik/input';
 import { asyncCreateSubscription } from '../../API/payment';
@@ -26,6 +27,7 @@ export interface IcreateSubscriptionData {
 	number: string;
 	paymentMode: SubscriptionPaymentMode;
 	packageType: SubscriptionPackageType;
+	createdAt: Date;
 }
 
 interface IAddLeadStrategyForm {
@@ -58,6 +60,7 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 		number: '',
 		paymentMode: SubscriptionPaymentMode.Cash,
 		packageType: SubscriptionPackageType.ConsultantFee,
+		createdAt: new Date(),
 	};
 
 	// State
@@ -245,6 +248,16 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 									name={'paidAmount'}
 									label="Paid Amount *"
 									type="number"
+								/>
+							</Grid>
+							<Grid item xs={12} md={6}>
+								<DateTimePickerComponent
+									label="Date"
+									handleDateChange={(date: Date | null) => {
+										setFieldValue('createdAt', date);
+									}}
+									date={values.createdAt}
+									disablePast={false}
 								/>
 							</Grid>
 

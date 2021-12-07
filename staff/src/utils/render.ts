@@ -160,3 +160,4 @@ export const months = [
 	'Nov',
 	'Dec',
 ];
+export const paymentModes = ['cash', 'online', 'gateway'];

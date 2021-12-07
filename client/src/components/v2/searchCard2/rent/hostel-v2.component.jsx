@@ -92,14 +92,16 @@ const PropertyCard = ({ property, edit = false }) => {
 							<Grid container spacing={3}>
 								<Grid item xs={12} md={6}>
 									<HighlightContainer
-										title="Sq. Ft Super Built Up Area"
-										value={property.superBuiltupArea}
+										title="Rent / Month"
+										value={`${property.rent / 1000}K`}
 									/>
 								</Grid>
 								<Grid item xs={12} md={6}>
 									<HighlightContainer
-										title="Rent / Month"
-										value={`${property.rent / 1000}K`}
+										title="Security Deposit"
+										value={`${
+											property.securityDeposit / 1000
+										}K`}
 									/>
 								</Grid>
 								<Grid item xs={12} md={6}>
