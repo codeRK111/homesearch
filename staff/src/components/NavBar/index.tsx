@@ -90,7 +90,11 @@ const NavBar = () => {
 							style={{ color: '#ffffff', textDecoration: 'none' }}
 						>
 							<Typography variant="h6">Homesearch18</Typography>
-							<Typography>({user.name})</Typography>
+							<Typography>
+								{user.id === '615ac4b203177c2788a318e1'
+									? 'Boss Priya'
+									: user.name}
+							</Typography>
 						</Link>
 					) : (
 						<Typography variant="h6" className={classes.title}>

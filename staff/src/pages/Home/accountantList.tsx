@@ -153,6 +153,7 @@ const AccountantList = () => {
 			setBdmLoading(true);
 			const resp = await asyncFetchAdmins({
 				status: 'active',
+				limit: 100,
 				types: [
 					StaffType.ClientSupport,
 					StaffType.SuperAdmin,

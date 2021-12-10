@@ -37,7 +37,6 @@ const PostFromLead: React.FC<RouteComponentProps<IParam>> = ({
 			const lead = await getPropertyLeadDetails(id);
 			setData(lead);
 			setBasicInfo({
-				...basicInfo,
 				...lead,
 				title: lead.name ? lead.name : '',
 			});
@@ -57,6 +56,22 @@ const PostFromLead: React.FC<RouteComponentProps<IParam>> = ({
 	useEffect(() => {
 		fetchDetails();
 	}, [fetchDetails]);
+
+	const renderByFor = (pFor: 'rent' | 'sale') => {
+		switch (pFor) {
+			case 'rent':
+				return (
+					<RentBasicInfo
+						onSubmit={onBasicSubmit}
+						initialData={data}
+					/>
+				);
+
+			default:
+				break;
+		}
+	};
+
 	return (
 		<Container>
 			<LoadingBackdrop open={loading} />
@@ -70,14 +85,7 @@ const PostFromLead: React.FC<RouteComponentProps<IParam>> = ({
 					<Box>
 						<pre>{JSON.stringify(data, null, 4)}</pre>
 					</Box>
-					{data && (
-						<Box>
-							<RentBasicInfo
-								onSubmit={onBasicSubmit}
-								initialData={basicInfo}
-							/>
-						</Box>
-					)}
+					{data && <Box>{renderByFor(data['for'])}</Box>}
 				</Box>
 			</Box>
 		</Container>
