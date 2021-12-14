@@ -264,7 +264,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 				message: 'Lead Updated successfully',
 				severity: 'success',
 			});
-			history.push('/');
+			history.goBack();
 		} catch (err: any) {
 			console.log(err);
 			setLoading(false);
@@ -380,13 +380,13 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 											/>
 										</Grid>
 										<Grid item>
-												<FCheckbox
-													type="checkbox"
-													name="propertyRequirements"
-													value={'1RK'}
-													label="1RK"
-												/>
-											</Grid>
+											<FCheckbox
+												type="checkbox"
+												name="propertyRequirements"
+												value={'1RK'}
+												label="1RK"
+											/>
+										</Grid>
 										<Grid item>
 											<FCheckbox
 												type="checkbox"
