@@ -26,7 +26,7 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	const parsed: any = queryString.parse(search, {
 		arrayFormat: 'comma',
 	});
-	const [page, setPage] = useState(parsed.page ? Number(parsed.page) : 1);
+	const [page, setPage] = useState(1);
 	const [timeInterval, setTimeInterval] = useState('all');
 	const [showHolds, setShowHolds] = useState(false);
 	const [limit, setLimit] = useState(10);
@@ -39,6 +39,20 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	const [number, setNumber] = useState('');
 
 	// Callback
+
+	const manageCityChange = (val: City | null) => {
+		setCity(val);
+		push(`?page=1`);
+	};
+	const manageNumberChange = (val: string) => {
+		setNumber(val);
+		push(`?page=1`);
+	};
+	const manageTimeInterval = (val: string) => {
+		setTimeInterval(val);
+		push(`?page=1`);
+	};
+
 	const handlePage = (
 		event: React.ChangeEvent<unknown>,
 		pageNumber: number
@@ -46,6 +60,10 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		// setPage(pageNumber);
 		push(`/?page=${pageNumber}`);
 	};
+
+	useEffect(() => {
+		setPage(parsed.page ? Number(parsed.page) : 1);
+	}, [parsed]);
 
 	// Fetch leads
 	const fetchLeads = useCallback(async () => {
@@ -84,9 +102,6 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	useEffect(() => {
 		fetchLeads();
 	}, [fetchLeads]);
-	useEffect(() => {
-		setPage(parsed.page ? Number(parsed.page) : 1);
-	}, [parsed]);
 
 	return (
 		<Box mt="1rem">
@@ -95,11 +110,11 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 			</Box>
 			<Box mb="1rem">
 				<FilterLeads
-					setTimeInterval={setTimeInterval}
+					setTimeInterval={manageTimeInterval}
 					city={city}
-					setCity={setCity}
+					setCity={manageCityChange}
 					number={number}
-					setNumber={setNumber}
+					setNumber={manageNumberChange}
 				/>
 			</Box>
 			<p>

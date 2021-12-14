@@ -30,8 +30,10 @@ const ClientSupportHome = () => {
 	const manageUserCategory = (category: any) => {
 		if (userCategory) {
 			setUserCategory(null);
+			history.push('/?page=1');
 		} else {
 			setUserCategory(category);
+			history.push('/?page=1');
 		}
 	};
 
