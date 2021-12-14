@@ -704,6 +704,9 @@ exports.searchAll = catchAsync(async (req, res, next) => {
 		leadsFilter.city = req.body.city;
 		salesFilter.city = req.body.city;
 	}
+	if (req.body.liveData) {
+		salesFilter.isPosted = true;
+	}
 	if (req.body.number) {
 		leadsFilter.number = {
 			$regex: req.body.number,

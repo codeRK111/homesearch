@@ -88,6 +88,17 @@ export const renderLeadStage = (lead?: ILead): string => {
 			return 'Not Found';
 	}
 };
+export const renderPType = (t: string): string => {
+	switch (t) {
+		case 'flat':
+			return 'Flat';
+		case 'independenthouse':
+			return `Duplex`;
+
+		default:
+			return 'Flat';
+	}
+};
 export const renderStaffRole = (type: StaffType): string => {
 	switch (type) {
 		case StaffType.AssistantSalesManager:

@@ -26,6 +26,7 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 	// State
 	const [loading, setLoading] = useState(false);
 	const [myData, setMyData] = useState(false);
+	const [liveData, setLiveData] = useState(false);
 	const [tab, setTab] = useState(0);
 	const [city, setCity] = useState<City | null>(null);
 	const [leadsPage, setLeadsPage] = useState(1);
@@ -80,6 +81,11 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setMyData(event.target.checked);
 	};
+	const handleChangeLiveData = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setLiveData(event.target.checked);
+	};
 
 	const fetchProperties = useCallback(async () => {
 		const filter: any = {
@@ -88,6 +94,7 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 			salesPage,
 			salesLimit,
 			myData,
+			liveData,
 		};
 		if (city) {
 			filter.city = city.id;
@@ -137,6 +144,7 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 		myData,
 		createdBy,
 		number,
+		liveData,
 	]);
 
 	useEffect(() => {
@@ -163,6 +171,7 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 		myData,
 		createdBy,
 		number,
+		liveData,
 	]);
 
 	const sidebarProps = {
@@ -205,6 +214,17 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 									/>
 								}
 								label="My Posted Data"
+							/>
+						</Box>
+						<Box>
+							<FormControlLabel
+								control={
+									<Switch
+										checked={liveData}
+										onChange={handleChangeLiveData}
+									/>
+								}
+								label="Live Properties"
 							/>
 						</Box>
 

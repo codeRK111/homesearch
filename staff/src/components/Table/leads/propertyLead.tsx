@@ -1,7 +1,8 @@
-import { Box, CircularProgress, IconButton } from '@material-ui/core';
+import { Box, Chip, CircularProgress, IconButton } from '@material-ui/core';
 import { MyTableCell, MyTableRow } from '../../UI/Table';
 import React, { useEffect, useState } from 'react';
 
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { City } from '../../../model/city.interface';
 import Paper from '@material-ui/core/Paper';
 import PostAddIcon from '@material-ui/icons/PostAdd';
@@ -73,6 +74,7 @@ const PropertyLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 							<MyTableCell>City</MyTableCell>
 							<MyTableCell>Location</MyTableCell>
 							<MyTableCell>Price Range</MyTableCell>
+							<MyTableCell>Details</MyTableCell>
 							<MyTableCell>Posted On</MyTableCell>
 							<MyTableCell>Posted By</MyTableCell>
 							<MyTableCell>Is Possesed</MyTableCell>
@@ -125,6 +127,13 @@ const PropertyLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 											maxPrice={row.maxPrice as number}
 										/>
 										<MyTableCell>
+											{row.propertyRequirements.map(
+												(c) => (
+													<Chip label={c} key={c} />
+												)
+											)}
+										</MyTableCell>
+										<MyTableCell>
 											{parseAndShowOnlyDate(
 												row.createdAt as Date
 											)}
@@ -148,13 +157,19 @@ const PropertyLeadsTable: React.FC<IMyPostedLeadsTable> = ({
 											</IconButton>
 										</MyTableCell>
 										<MyTableCell>
-											<IconButton
-												onClick={onRedirect(
-													`/post-from-leads/${row.id}`
-												)}
-											>
-												<PostAddIcon color="primary" />
-											</IconButton>
+											{row.isPosted ? (
+												<IconButton>
+													<CheckCircleIcon color="primary" />
+												</IconButton>
+											) : (
+												<IconButton
+													onClick={onRedirect(
+														`/post-from-leads/${row.id}`
+													)}
+												>
+													<PostAddIcon color="primary" />
+												</IconButton>
+											)}
 										</MyTableCell>
 									</MyTableRow>
 							  ))}

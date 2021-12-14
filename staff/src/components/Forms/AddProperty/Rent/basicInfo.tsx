@@ -1,15 +1,22 @@
 import {
+	AddPropertyPageResponse,
+	asyncGetAddPropertyPageResources,
+} from '../../../../API/page';
+import {
 	Box,
 	Button,
+	CircularProgress,
 	Container,
 	Grid,
 	MenuItem,
 	Typography,
 } from '@material-ui/core';
 import { Form, Formik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ResourceType, useRepositoryAction } from '../../../../hooks/useAction';
 
 import { City } from '../../../../model/city.interface';
+import DateTimePickerComponent from '../../../Pickers/dateTime';
 import FCheckbox from '../../../Formik/checkbox';
 import FRadio from '../../../Formik/radio';
 import FSelect from '../../../Formik/select';
@@ -18,6 +25,8 @@ import { Location } from '../../../../model/location.interface';
 import { Ptype } from '../../../../model/property.interface';
 import SearchCity from '../../../Search/city';
 import SearchLocation from '../../../Search/location';
+import { asyncPostFromLead } from '../../../../API/property';
+import { renderPType } from '../../../../utils/render';
 
 export interface RentBasicInfoData {
 	type: Ptype | string;
@@ -46,6 +55,45 @@ export const getBedroomNumber = (requirement: Array<string> = []): number => {
 		return 0;
 	}
 };
+export const getFurnishingStatus = (
+	requirement: Array<string> = []
+): string => {
+	if (requirement.includes('Fully Furnished')) {
+		return 'furnished';
+	} else if (requirement.includes('Semi Furnished')) {
+		return 'semifurnished';
+	} else if (requirement.includes('Unfurnished')) {
+		return 'unfurnished';
+	} else {
+		return 'unfurnished';
+	}
+};
+export const getPType = (requirement: Array<string> = []): string => {
+	if (requirement.includes('Flat')) {
+		return 'flat';
+	} else if (requirement.includes('Duplex')) {
+		return 'independenthouse';
+	} else {
+		return 'independenthouse';
+	}
+};
+export const getPrice = (minPrice: any, maxPrice: any) => {
+	if (maxPrice) {
+		return maxPrice;
+	} else if (minPrice) {
+		return minPrice;
+	} else {
+		return;
+	}
+};
+export const getTitle = (
+	bedroom: number,
+	pType: string,
+	location: string,
+	city: string
+): string => {
+	return `${bedroom}BHK ${renderPType(pType)} in ${location},${city}`;
+};
 
 const validateForm = (values: RentBasicInfoData) => {
 	const errors: any = {};
@@ -71,6 +119,12 @@ const validateForm = (values: RentBasicInfoData) => {
 };
 
 const RentBasicInfo = ({ onSubmit, initialData }: IRentBasicInfo) => {
+	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
+	const [fetchLoading, setFetchLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [fetchData, setFetchData] = useState<AddPropertyPageResponse | null>(
+		null
+	);
 	const [pData, setPdata] = useState<RentBasicInfoData>({
 		city: null,
 		for: 'rent',
@@ -104,20 +158,65 @@ const RentBasicInfo = ({ onSubmit, initialData }: IRentBasicInfo) => {
 		restrictions: '',
 		description: '',
 		carParking: 'open',
+		usp: '',
+		negotiable: 0,
 	});
 
-	const onSubmitForm = (values: RentBasicInfoData) => {
-		onSubmit(values);
+	const fetchResources = useCallback(async () => {
+		try {
+			setFetchLoading(true);
+			const data = await asyncGetAddPropertyPageResources();
+			setFetchData(data);
+		} catch (error: any) {
+			setSnackbar({
+				open: true,
+				message: error.message,
+				severity: 'error',
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	useEffect(() => {
+		fetchResources();
+	}, [fetchResources]);
+
+	const onSubmitForm = async (values: any) => {
+		try {
+			setLoading(true);
+			await asyncPostFromLead({
+				...values,
+				negotiable: !!values.negotiable,
+			});
+			setLoading(false);
+		} catch (error: any) {
+			setLoading(false);
+			setSnackbar({
+				open: true,
+				message: error.message,
+				severity: 'error',
+			});
+		}
 	};
 
 	useEffect(() => {
-		console.log({ initialData });
+		const bedrooms = getBedroomNumber(initialData.propertyRequirements);
+		const furnished = getFurnishingStatus(initialData.propertyRequirements);
+		const type = getPType(initialData.propertyRequirements);
+		const rent = getPrice(initialData.minPrice, initialData.maxPrice);
 		setPdata({
 			...pData,
 			...initialData,
-			numberOfBedRooms: getBedroomNumber(
-				initialData.propertyRequirements
+			numberOfBedRooms: bedrooms,
+			furnished,
+			type,
+			title: getTitle(
+				bedrooms,
+				type,
+				initialData.location.name,
+				initialData.city.name
 			),
+			rent,
 		});
 	}, []);
 	return (
@@ -138,8 +237,11 @@ const RentBasicInfo = ({ onSubmit, initialData }: IRentBasicInfo) => {
 						touched,
 					}) => (
 						<Form>
-							<pre>{JSON.stringify(values, null, 4)}</pre>
+							{/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
 							<Grid container spacing={3}>
+								<Grid item xs={12}>
+									<FTextField name="usp" label="USP" />
+								</Grid>
 								<Grid item xs={12}>
 									<FRadio
 										row
@@ -336,6 +438,15 @@ const RentBasicInfo = ({ onSubmit, initialData }: IRentBasicInfo) => {
 								</Grid>
 								<Grid item xs={12} md={6}>
 									<FSelect
+										name={'negotiable'}
+										label="Negotiavle"
+									>
+										<MenuItem value={1}>Yes</MenuItem>
+										<MenuItem value={0}>No</MenuItem>
+									</FSelect>
+								</Grid>
+								<Grid item xs={12} md={6}>
+									<FSelect
 										name={'carParking'}
 										label="Car Parking"
 									>
@@ -361,6 +472,62 @@ const RentBasicInfo = ({ onSubmit, initialData }: IRentBasicInfo) => {
 										</MenuItem>
 									</FSelect>
 								</Grid>
+								{fetchData && (
+									<>
+										<Grid item xs={12}>
+											<Typography variant="caption">
+												Amenities
+											</Typography>
+											<Grid container spacing={1}>
+												{fetchData.amenities.map(
+													(c) => (
+														<Grid
+															item
+															xs={6}
+															md={2}
+															key={c.id}
+														>
+															<FCheckbox
+																type="checkbox"
+																name="amenities"
+																value={c.id}
+																label={c.name}
+															/>
+														</Grid>
+													)
+												)}
+											</Grid>
+										</Grid>
+										{values.furnished !== 'unfurnished' && (
+											<Grid item xs={12}>
+												<Typography variant="caption">
+													Furnishes
+												</Typography>
+												<Grid container spacing={1}>
+													{fetchData.furnishes.map(
+														(c) => (
+															<Grid
+																item
+																xs={6}
+																md={2}
+																key={c.id}
+															>
+																<FCheckbox
+																	type="checkbox"
+																	name="furnishes"
+																	value={c.id}
+																	label={
+																		c.name
+																	}
+																/>
+															</Grid>
+														)
+													)}
+												</Grid>
+											</Grid>
+										)}
+									</>
+								)}
 								<Grid item xs={12}>
 									<FTextField
 										name="restrictions"
@@ -382,6 +549,22 @@ const RentBasicInfo = ({ onSubmit, initialData }: IRentBasicInfo) => {
 										</MenuItem>
 									</FSelect>
 								</Grid>
+								{values.availability === 'specificdate' && (
+									<Grid item xs={12}>
+										<DateTimePickerComponent
+											label="Choose possession Date"
+											handleDateChange={(
+												date: Date | null
+											) => {
+												setFieldValue(
+													'availableDate',
+													date
+												);
+											}}
+											date={values.availableDate}
+										/>
+									</Grid>
+								)}
 								<Grid item xs={12}>
 									<Box
 										display="flex"
@@ -392,6 +575,17 @@ const RentBasicInfo = ({ onSubmit, initialData }: IRentBasicInfo) => {
 											variant="contained"
 											color="primary"
 											size="large"
+											disabled={loading}
+											endIcon={
+												loading ? (
+													<CircularProgress
+														color="inherit"
+														size={20}
+													/>
+												) : (
+													<></>
+												)
+											}
 										>
 											Submit
 										</Button>

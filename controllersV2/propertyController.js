@@ -1,4 +1,5 @@
 const Property = require('./../models/propertyModel');
+const User = require('./../models/userModel');
 const PropertyLead = require('./../models/propertyLeadModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
@@ -411,6 +412,225 @@ exports.addPropertyHomesearchForRent = catchAsync(async (req, res, next) => {
 			console.log(propertyFlat);
 
 			const docFlat = await Property.create(propertyFlat);
+			res.status(201).json({
+				status: 'success',
+				data: {
+					property: docFlat,
+				},
+			});
+			break;
+
+		case 'hostel':
+		case 'pg':
+			const propertyHostel = {
+				for: req.body.for,
+				title: req.body.title,
+				usp: req.body.usp,
+				toiletIndian: req.body.toiletIndian,
+				toiletWestern: req.body.toiletWestern,
+				description: req.body.description,
+				city: req.body.city,
+				location: req.body.location,
+				type: req.body.type,
+				amenities: req.body.amenities,
+				furnishes: req.body.furnishes,
+				rent: req.body.rent,
+				securityDeposit: req.body.securityDeposit,
+				noticePeriod: req.body.noticePeriod,
+				availableFor: req.body.availableFor,
+				fooding: req.body.fooding,
+				foodSchedule: req.body.foodSchedule,
+				furnished: req.body.furnished,
+				availability: req.body.availability,
+				roomType: req.body.roomType,
+				typeOfToilets: req.body.typeOfToilets,
+				negotiable: req.body.negotiable ? req.body.negotiable : false,
+			};
+			console.log(Object.keys(propertyHostel));
+			for (let i = 0; i < Object.keys(propertyHostel).length; i++) {
+				const element = Object.keys(propertyHostel)[i];
+				if (
+					req.body[element] === null ||
+					req.body[element] === undefined
+				) {
+					return next(new AppError(`Parameter ${element} required`));
+				}
+			}
+
+			// Check for availability
+			if (req.body.availability === 'specificdate') {
+				if (!req.body.availableDate)
+					return next(
+						new AppError('Parameter availableDate required')
+					);
+				propertyHostel['availableDate'] = req.body.availableDate;
+			}
+
+			// Check for room type
+			if (req.body.roomType === 'shared') {
+				if (!req.body.numberOfRoomMates)
+					return next(
+						new AppError('Parameter numberOfRoomMates required')
+					);
+				propertyHostel['numberOfRoomMates'] =
+					req.body.numberOfRoomMates;
+			}
+
+			//manage toilets
+			propertyHostel['toiletTypes'] = [
+				{ toiletType: 'indian', number: req.body.toiletIndian },
+				{ toiletType: 'western', number: req.body.toiletWestern },
+			];
+			delete propertyHostel['toiletIndian'];
+			delete propertyHostel['toiletWestern'];
+
+			// manage furnished
+			if (req.body.furnished === 'unfurnished') {
+				propertyHostel['furnishes'] = [];
+			}
+
+			propertyHostel['createdBy'] = 'user';
+			propertyHostel['status'] = 'underScreening';
+			propertyHostel['userId'] = req.body.userId;
+			propertyHostel['restrictions'] = req.body.restrictions
+				? req.body.restrictions
+				: '';
+
+			console.log(propertyHostel);
+
+			const docLand = await Property.create(propertyHostel);
+			res.status(201).json({
+				status: 'success',
+				data: {
+					property: docLand,
+				},
+			});
+			break;
+
+		default:
+			break;
+	}
+});
+
+exports.addPropertyFromLeadForRent = catchAsync(async (req, res, next) => {
+	const type = req.body.type;
+	const number = req.body.number;
+	const propertyLeadId = req.body.id;
+	let userId = '';
+	if (!type) return next(new AppError('Parameter type required'));
+	if (!number) return next(new AppError('Parameter number required'));
+	if (!propertyLeadId) return next(new AppError('Invalid lead'));
+	const lead = await PropertyLead.findById(propertyLeadId);
+	if (lead.isPosted) {
+		return next(new AppError('Already posted'));
+	}
+
+	const user = await User.findOne({ number });
+	if (user) {
+		userId = user.id;
+	} else {
+		const userData = {
+			name: req.body.name ? req.body.name : '',
+			email: req.body.email ? req.body.email : '',
+			number,
+			numberVerified: true,
+			registerThrough: 'staff',
+			registerVia: 'web',
+			mobileStatus: 'semi-private',
+			role: 'owner',
+		};
+
+		const newUser = await User.create(userData);
+		userId = newUser.id;
+	}
+	switch (type) {
+		case 'flat':
+		case 'independenthouse':
+			const propertyFlat = {
+				for: req.body.for,
+				title: req.body.title,
+				usp: req.body.usp,
+				numberOfBedRooms: req.body.numberOfBedRooms,
+				superBuiltupArea: req.body.superBuiltupArea,
+				carpetArea: req.body.carpetArea,
+				availability: req.body.availability,
+				carParking: req.body.carParking,
+				furnished: req.body.furnished,
+				toiletIndian: req.body.toiletIndian,
+				toiletWestern: req.body.toiletWestern,
+				noOfFloors: req.body.noOfFloors,
+				floor: req.body.floor,
+				description: req.body.description,
+				city: req.body.city,
+				location: req.body.location,
+				type: req.body.type,
+				amenities: req.body.amenities,
+				furnishes: req.body.furnishes,
+				availableFor: req.body.availableFor,
+				numberOfBalconies: req.body.numberOfBalconies,
+				rent: req.body.rent,
+				securityDeposit: req.body.securityDeposit,
+				noticePeriod: req.body.noticePeriod,
+				negotiable: req.body.negotiable ? req.body.negotiable : false,
+				photos: req.body.photos
+					? req.body.photos.map((c, i) => ({
+							image: c,
+							default: i === 0,
+					  }))
+					: [],
+			};
+			console.log(Object.keys(propertyFlat));
+			for (let i = 0; i < Object.keys(propertyFlat).length; i++) {
+				const element = Object.keys(propertyFlat)[i];
+				if (req.body[element] === undefined) {
+					return next(new AppError(`Parameter ${element} required`));
+				}
+			}
+
+			// Check for availability
+			if (req.body.availability === 'specificdate') {
+				if (!req.body.availableDate)
+					return next(
+						new AppError('Parameter availableDate required')
+					);
+				propertyFlat['availableDate'] = req.body.availableDate;
+			}
+
+			//manage toilets
+			propertyFlat['toiletTypes'] = [
+				{ toiletType: 'indian', number: req.body.toiletIndian },
+				{ toiletType: 'western', number: req.body.toiletWestern },
+			];
+			delete propertyFlat['toiletIndian'];
+			delete propertyFlat['toiletWestern'];
+
+			// manage furnished
+			if (req.body.furnished === 'unfurnished') {
+				propertyFlat['furnishes'] = [];
+			}
+			if (req.body.maintainanceFee) {
+				propertyFlat['maintainanceFee'] = req.body.maintainanceFee;
+			}
+
+			propertyFlat['createdBy'] = 'admin';
+			propertyFlat['status'] = 'active';
+			propertyFlat['userId'] = userId;
+			propertyFlat['otherAmenties'] = req.body.otherAmenties
+				? req.body.otherAmenties
+				: [];
+			propertyFlat['externalAmenities'] = req.body.externalAmenities
+				? req.body.externalAmenities
+				: [];
+			propertyFlat['restrictions'] = req.body.restrictions
+				? req.body.restrictions
+				: '';
+
+			console.log(propertyFlat);
+
+			const docFlat = await Property.create(propertyFlat);
+			await PropertyLead.findByIdAndUpdate(propertyLeadId, {
+				isPosted: true,
+			});
 			res.status(201).json({
 				status: 'success',
 				data: {

@@ -83,7 +83,7 @@ const PostFromLead: React.FC<RouteComponentProps<IParam>> = ({
 						Post from lead
 					</Typography>
 					<Box>
-						<pre>{JSON.stringify(data, null, 4)}</pre>
+						{/* <pre>{JSON.stringify(data, null, 4)}</pre> */}
 					</Box>
 					{data && <Box>{renderByFor(data['for'])}</Box>}
 				</Box>

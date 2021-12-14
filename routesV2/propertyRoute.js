@@ -23,6 +23,11 @@ router.post(
 	propertyController.searchByName
 );
 router.post(
+	'/admin/post-from-lead',
+	adminController.protect,
+	propertyController.addPropertyFromLeadForRent
+);
+router.post(
 	'/user/post-property-rent',
 	authController.protect,
 	propertyController.addPropertyByUserForRent

@@ -11,13 +11,22 @@ import LeadStatusSwitch from '../../components/Switch';
 import LeadsTable from '../../components/Table/leads/leads';
 import TablePagination from '../../components/Table/pagination';
 import { asyncFetchMyLeads } from '../../API/lead';
+import queryString from 'query-string';
+import { useHistory } from 'react-router-dom';
 
 interface IClientSupportLeadsList {
 	userCategory: any;
 }
 const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	// State
-	const [page, setPage] = useState(1);
+	const {
+		push,
+		location: { search },
+	} = useHistory();
+	const parsed: any = queryString.parse(search, {
+		arrayFormat: 'comma',
+	});
+	const [page, setPage] = useState(parsed.page ? Number(parsed.page) : 1);
 	const [timeInterval, setTimeInterval] = useState('all');
 	const [showHolds, setShowHolds] = useState(false);
 	const [limit, setLimit] = useState(10);
@@ -34,7 +43,8 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		event: React.ChangeEvent<unknown>,
 		pageNumber: number
 	) => {
-		setPage(pageNumber);
+		// setPage(pageNumber);
+		push(`/?page=${pageNumber}`);
 	};
 
 	// Fetch leads
@@ -74,6 +84,9 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	useEffect(() => {
 		fetchLeads();
 	}, [fetchLeads]);
+	useEffect(() => {
+		setPage(parsed.page ? Number(parsed.page) : 1);
+	}, [parsed]);
 
 	return (
 		<Box mt="1rem">

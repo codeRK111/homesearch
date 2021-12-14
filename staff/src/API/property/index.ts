@@ -134,6 +134,28 @@ export const asyncAddPropertyLead = async (
 		throw new Error(asyncError(e));
 	}
 };
+export const asyncPostFromLead = async (
+	propertyData: any
+): Promise<PropertyLead> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.post<any, AxiosResponse<ServerResponse<any>>>(
+			`${V2EndPoint.Property}/admin/post-from-lead`,
+			propertyData,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		const leadData = resp.data.data;
+
+		return leadData.property;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
 export interface AddPropertyLeadResponse {
 	propertyLead: PropertyLead;
 }

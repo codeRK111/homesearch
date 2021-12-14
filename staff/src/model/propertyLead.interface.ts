@@ -59,4 +59,5 @@ export interface PropertyLead {
 	createdAt: Date;
 	updatedAt: Date;
 	isPossessed: boolean;
+	isPosted: boolean;
 }

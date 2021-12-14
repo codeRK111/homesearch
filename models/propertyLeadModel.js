@@ -115,6 +115,10 @@ const propertyLeadSchema = new Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: 'City',
 		},
+		isPosted: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{
 		toJSON: { virtuals: true },
