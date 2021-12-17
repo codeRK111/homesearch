@@ -128,7 +128,8 @@ export default function LeadsComments({
 														variant="caption"
 														color="textPrimary"
 													>
-														{parseDate(c.date)}
+														{/* {parseDate(c.date)} */}
+														Loading Time ...
 													</Typography>{' '}
 													<br />
 													{user &&

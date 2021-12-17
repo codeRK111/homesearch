@@ -5,6 +5,7 @@ import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import HomeIcon from '@material-ui/icons/Home';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import ListDropDown from '../ListCollapse';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import RenderByMultipleRole from '../RenderByRole/multiple';
 import RenderByRole from '../RenderByRole';
@@ -215,6 +216,23 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 							/>
 						</ListItemIcon>
 						<ListItemText primary={'Verify Payment'} />
+					</ListItem>
+				</RenderByMultipleRole>
+				<RenderByMultipleRole types={[StaffType.Accountant]}>
+					<ListItem
+						button
+						onClick={changeRoute('/manage-target')}
+						className={clsx(manageSelectedStyle('/manage-target'))}
+					>
+						<ListItemIcon>
+							<MonetizationOnIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon('/manage-target')
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Manage Target'} />
 					</ListItem>
 				</RenderByMultipleRole>
 			</List>

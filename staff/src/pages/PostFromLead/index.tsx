@@ -9,6 +9,7 @@ import { PropertyLead } from '../../model/propertyLead.interface';
 import { Ptype } from '../../model/property.interface';
 import RentBasicInfo from '../../components/Forms/AddProperty/Rent/basicInfo';
 import { RouteComponentProps } from 'react-router';
+import SaleBasicInfo from '../../components/Forms/AddProperty/Sale/index';
 import { getPropertyLeadDetails } from '../../API/lead';
 
 const PostFromLead: React.FC<RouteComponentProps<IParam>> = ({
@@ -62,6 +63,13 @@ const PostFromLead: React.FC<RouteComponentProps<IParam>> = ({
 			case 'rent':
 				return (
 					<RentBasicInfo
+						onSubmit={onBasicSubmit}
+						initialData={data}
+					/>
+				);
+			case 'sale':
+				return (
+					<SaleBasicInfo
 						onSubmit={onBasicSubmit}
 						initialData={data}
 					/>

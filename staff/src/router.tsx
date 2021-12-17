@@ -49,6 +49,7 @@ const UpdateBlogPage = lazy(() => import('./pages/UpdateBlog'));
 const UpdateLeadPage = lazy(() => import('./pages/updateLead'));
 const PostFromLeadPage = lazy(() => import('./pages/PostFromLead'));
 const VerifyPaymentPage = lazy(() => import('./pages/VerifyPayment'));
+const ManageTragetPage = lazy(() => import('./pages/MnageTraget'));
 
 const Router = () => {
 	const { setUser } = useRepositoryAction(ResourceType.Auth);
@@ -149,6 +150,11 @@ const Router = () => {
 						path={'/manage-lead/:id'}
 						exact
 						component={ManageLeadPage}
+					/>
+					<PrivateRoute
+						path={'/manage-target'}
+						exact
+						component={ManageTragetPage}
 					/>
 					<PrivateRoute
 						path={'/browse-properties'}

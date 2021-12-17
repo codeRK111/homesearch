@@ -53,9 +53,9 @@ const PackageFeedbackPage = ({
 				token.current,
 				setFetchLoading
 			);
-			if (user.id !== resp.user.id) {
-				throw new Error('Not authorized');
-			}
+			// if (user.id !== resp.user.id) {
+			// 	throw new Error('Not authorized');
+			// }
 			if (resp.paymentReviewStatus === 'received') {
 				throw new Error('Feedback already recorded');
 			}

@@ -95,7 +95,9 @@ const ClientSupportHome = () => {
 							<ButtonCard
 								onClick={() => history.push('/posted-leads')}
 							>
-								<Typography variant="h5">My Leads</Typography>
+								<Typography variant="h5">
+									Not My Leads
+								</Typography>
 							</ButtonCard>
 						</Grid>
 						<Grid item xs={12} md={3}>
@@ -110,12 +112,9 @@ const ClientSupportHome = () => {
 						</Grid>
 						<Grid item xs={12} md={3}>
 							<TargetCard
-								label="Deals Target"
-								total={myTarget.dealTarget}
-								available={
-									myTarget.dealTarget -
-									myTarget.completeDealTarget
-								}
+								label="Deals Target (Under Testing)"
+								total={54000}
+								available={0}
 							/>
 						</Grid>
 					</Grid>
