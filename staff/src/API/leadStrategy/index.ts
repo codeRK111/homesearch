@@ -46,6 +46,7 @@ export interface fetchStrategiesFilter {
 	page: number;
 	limit: number;
 	status: null | ILeadStrategy['status'];
+	date?: string;
 }
 
 export const asyncFetchMyStrategies = async (
@@ -54,17 +55,22 @@ export const asyncFetchMyStrategies = async (
 	try {
 		const token = localStorage.getItem('JWT_STAFF');
 		let url = `${V2EndPoint.LeadStrategy}`;
-		for (const key in filters) {
-			if (Object.prototype.hasOwnProperty.call(filters, key)) {
-				const val = filters[key as keyof fetchStrategiesFilter];
-				url += `?${key}=${val}`;
+		let a = Object.keys(filters);
+		let b = '';
+		a.forEach((c: any, i) => {
+			if (i === 0) {
+				b += '?';
 			}
-		}
+			b += `${c}=${filters[c as keyof fetchStrategiesFilter]}`;
+			if (i !== a.length - 1) {
+				b += '&';
+			}
+		});
 		const resp = await APIV2.get<
 			any,
 			AxiosResponse<ServerResponse<FetchMyLeadStrategiesResponseData>>
 		>(
-			url,
+			`${url}${b}`,
 
 			{
 				headers: {

@@ -55,7 +55,9 @@ const UpdateLeadStrategyForm: React.FC<IAddLeadStrategyForm> = ({
 		if (typeof img === 'string') {
 			return `/assets/lead-strategies/${img}`;
 		} else {
-			return URL.createObjectURL(img);
+			if (img) {
+				return URL.createObjectURL(img);
+			}
 		}
 	};
 

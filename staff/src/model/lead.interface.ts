@@ -20,6 +20,13 @@ export enum LeadUserCategory {
 	Unknown = 'unknown',
 }
 
+export enum LeadProposalStatus {
+	Sent = 'sent',
+	NotSent = 'not-sent',
+	Accepted = 'accepted',
+	Declined = 'declined',
+}
+
 export interface ILead {
 	id?: string;
 	city?: null | City | string;
@@ -56,6 +63,7 @@ export interface ILead {
 	saleStaffType?: StaffType;
 	notInterested?: boolean;
 	postProperty?: boolean;
+	proposalStatus?: LeadProposalStatus;
 }
 
 export type FetchLeadsInputType = {

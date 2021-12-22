@@ -318,7 +318,7 @@ exports.getSubscriptions = catchAsync(async (req, res, next) => {
 	const page = req.query.page * 1 || 1;
 	const limit = req.query.limit * 1 || 10;
 	const skip = (page - 1) * limit;
-	// filter.packageType = 'consultantFee';
+	// filter.package = 'b';
 	let year = new Date().getFullYear();
 	let yearEnd = new Date().getFullYear();
 	if (req.query.dealBy) {
@@ -326,6 +326,9 @@ exports.getSubscriptions = catchAsync(async (req, res, next) => {
 	}
 	if (req.query.paymentMode) {
 		filter.paymentMode = req.query.paymentMode;
+	}
+	if (req.query.packageType) {
+		filter.package = req.query.packageType;
 	}
 	if (req.query.year) {
 		year = req.query.year;
@@ -374,6 +377,13 @@ exports.getRevenue = catchAsync(async (req, res, next) => {
 	}
 	if (req.query.paymentMode) {
 		filter.paymentMode = req.query.paymentMode;
+	}
+	if (req.query.packageType) {
+		if (req.query.packageType === 'consultantFee') {
+			filter.packageType = req.query.packageType;
+		} else {
+			filter.package = req.query.packageType;
+		}
 	}
 	if (req.query.year) {
 		year = req.query.year;

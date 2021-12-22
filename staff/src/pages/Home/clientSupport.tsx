@@ -95,9 +95,7 @@ const ClientSupportHome = () => {
 							<ButtonCard
 								onClick={() => history.push('/posted-leads')}
 							>
-								<Typography variant="h5">
-									Not My Leads
-								</Typography>
+								<Typography variant="h5">My Leads</Typography>
 							</ButtonCard>
 						</Grid>
 						<Grid item xs={12} md={3}>

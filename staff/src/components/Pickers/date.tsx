@@ -9,18 +9,20 @@ interface IDateTimePickerComponent {
 	label: string;
 	date?: Date | null;
 	handleDateChange: (date: Date | null) => void;
+	disablePast?: boolean;
 }
 
 function DatePickerComponent({
 	label,
 	handleDateChange,
 	date = new Date(),
+	disablePast = false,
 }: IDateTimePickerComponent) {
 	return (
 		<MuiPickersUtilsProvider utils={DateFnsUtils}>
 			<DatePicker
 				fullWidth
-				disablePast
+				disablePast={disablePast}
 				label={label}
 				value={date}
 				onChange={handleDateChange}

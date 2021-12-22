@@ -20,6 +20,7 @@ import {
 	months,
 	paymentModes,
 	toHumanReadable,
+	typeOfPackages,
 	years,
 } from '../../utils/render';
 
@@ -36,6 +37,7 @@ const AccountantList = () => {
 	const [limit, setLimit] = useState(10);
 	const [year, setYear] = useState('');
 	const [paymentMode, setPaymentMode] = useState('');
+	const [packageType, setPackageType] = useState('');
 	const [month, setMonth] = useState<string | number>('');
 	const [revenue, setRevenue] = useState<number>(0);
 	const [data, setData] = useState<FetchSubscriptionResponse>({
@@ -59,6 +61,11 @@ const AccountantList = () => {
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
 		setCreatedBy((event.target as HTMLInputElement).value);
+	};
+	const handleChangePackageType = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setPackageType((event.target as HTMLInputElement).value);
 	};
 	const handleChangeYear = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = (event.target as HTMLInputElement).value;
@@ -99,6 +106,7 @@ const AccountantList = () => {
 				year,
 				month,
 				paymentMode,
+				packageType,
 			};
 
 			const resp = await asyncFetchSubscriptions(filter);
@@ -118,12 +126,18 @@ const AccountantList = () => {
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [page, limit, createdBy, year, month, paymentMode]);
+	}, [page, limit, createdBy, year, month, paymentMode, packageType]);
 
 	const fetchRevenue = useCallback(async () => {
 		try {
 			setRevenueLoading(true);
-			const filter: any = { dealBy: createdBy, year, month, paymentMode };
+			const filter: any = {
+				dealBy: createdBy,
+				year,
+				month,
+				paymentMode,
+				packageType,
+			};
 
 			const { totalAmount: resp } = await asyncFetchSubscriptionRevenue(
 				filter
@@ -146,7 +160,7 @@ const AccountantList = () => {
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [createdBy, year, month, paymentMode]);
+	}, [createdBy, year, month, paymentMode, packageType]);
 
 	const fetchAdmins = useCallback(async () => {
 		try {
@@ -286,6 +300,33 @@ const AccountantList = () => {
 								key={i}
 								control={<Radio />}
 								label={c}
+							/>
+						))}
+					</RadioGroup>
+				</FormControl>
+			</Box>
+			<Box>
+				<FormControl component="fieldset">
+					<FormLabel component="legend">Package Types</FormLabel>
+					<RadioGroup
+						aria-label="gender"
+						name="gender1"
+						value={packageType}
+						onChange={handleChangePackageType}
+						row
+					>
+						<FormControlLabel
+							value=""
+							control={<Radio />}
+							label="All"
+						/>
+
+						{typeOfPackages.map((c, i) => (
+							<FormControlLabel
+								value={c.value}
+								key={i}
+								control={<Radio />}
+								label={c.label}
 							/>
 						))}
 					</RadioGroup>

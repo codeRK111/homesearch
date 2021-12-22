@@ -6,6 +6,7 @@ import {
 
 import AddLeadStrategyDialog from '../../components/Dialogs/addStrategy';
 import { Button } from '../../components/UI/Button';
+import DatePickerComponent from '../../components/Pickers/date';
 import { FetchMyLeadStrategiesResponseData } from '../../model/leadStrategy';
 import LeadsStrategiesTable from '../../components/Table/leadStrategies';
 import { PageWrapper } from '../../components/UI/Container';
@@ -16,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 const StaffLeadStrategyPage = () => {
 	// State
 	const [addDialogStatus, setAddDialogStatus] = useState(false);
+	const [date, setDate] = useState<Date | null>(new Date());
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 	const [loading, setLoading] = useState(false);
@@ -38,6 +40,10 @@ const StaffLeadStrategyPage = () => {
 		setPage(pageNumber);
 	};
 
+	const manageDateChange = (d: Date | null) => {
+		setDate(d);
+	};
+
 	// Fetch lead strategies
 	const fetchLeadStrategies = useCallback(async () => {
 		try {
@@ -46,6 +52,7 @@ const StaffLeadStrategyPage = () => {
 				page,
 				limit,
 				status: 'active',
+				date: date ? date.toISOString() : '',
 			};
 
 			const resp = await asyncFetchMyStrategies(filter);
@@ -59,10 +66,10 @@ const StaffLeadStrategyPage = () => {
 			});
 			setLoading(false);
 		}
-	}, [page, limit]);
+	}, [page, limit, date]);
 	useEffect(() => {
 		setPage(1);
-	}, [limit]);
+	}, [limit, date]);
 	useEffect(() => {
 		fetchLeadStrategies();
 	}, [fetchLeadStrategies]);
@@ -80,6 +87,11 @@ const StaffLeadStrategyPage = () => {
 					Add Strategy
 				</Button>
 			</SpaceBetween>
+			<DatePickerComponent
+				label={'Choose date'}
+				date={date}
+				handleDateChange={manageDateChange}
+			/>
 			<LeadsStrategiesTable
 				leads={data.leads}
 				loading={loading}

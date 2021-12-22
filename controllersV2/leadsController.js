@@ -217,7 +217,10 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	const totalDocs = await Leads.countDocuments(filter);
 
 	const leads = await Leads.find(filter)
-		.sort('-createdAt')
+		.sort({
+			createdAt: -1,
+			'comments.reschedule': -1,
+		})
 		.skip(skip)
 		.limit(limit);
 	res.status(200).json({

@@ -3,6 +3,7 @@ const Leads = require('./../models/leadStrategyModel');
 const catchAsync = require('./../utils/catchAsync');
 const fs = require('fs');
 const path = require('path');
+const moment = require('moment');
 
 function deleteFile(file, callback) {
 	const imagePath =
@@ -53,8 +54,16 @@ exports.getMyStrategies = catchAsync(async (req, res, next) => {
 	}
 
 	if (req.query.status) {
-		filter.status = req.body.status;
+		filter.status = req.query.status;
 	}
+	if (req.query.date) {
+		filter.createdAt = {
+			$gte: moment(req.query.date).startOf('day').toDate(),
+			$lt: moment(req.query.date).endOf('day').toDate(),
+		};
+	}
+
+	console.log(filter);
 
 	const totalDocs = await Leads.countDocuments(filter);
 

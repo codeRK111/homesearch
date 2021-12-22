@@ -172,3 +172,18 @@ export const months = [
 	'Dec',
 ];
 export const paymentModes = ['cash', 'online', 'gateway'];
+
+export const typeOfPackages = [
+	{
+		label: 'Bhubaneswar (2999)',
+		value: 'b',
+	},
+	{
+		label: 'Other City (999)',
+		value: 'oc',
+	},
+	{
+		label: 'Brokerage / Consultant Fee',
+		value: 'consultantFee',
+	},
+];
