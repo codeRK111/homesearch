@@ -1,5 +1,6 @@
 import {
 	Box,
+	Button,
 	CircularProgress,
 	FormControl,
 	FormControlLabel,
@@ -8,14 +9,17 @@ import {
 	RadioGroup,
 	Typography,
 } from '@material-ui/core';
-import { FetchAdminResponse, StaffType } from '../../model/staff.interface';
+import React, { useCallback, useEffect, useState } from 'react';
+import { asyncFetchAdmins } from '../../API/auth';
 import {
-	FetchSubscriptionResponse,
 	asyncFetchSubscriptionRevenue,
 	asyncFetchSubscriptions,
+	FetchSubscriptionResponse,
 } from '../../API/payment';
-import React, { useCallback, useEffect, useState } from 'react';
+import TablePagination from '../../components/Table/pagination';
+import TenantSubscriptionTable from '../../components/Table/payment/subscription';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
+import { FetchAdminResponse, StaffType } from '../../model/staff.interface';
 import {
 	months,
 	paymentModes,
@@ -23,10 +27,6 @@ import {
 	typeOfPackages,
 	years,
 } from '../../utils/render';
-
-import TablePagination from '../../components/Table/pagination';
-import TenantSubscriptionTable from '../../components/Table/payment/subscription';
-import { asyncFetchAdmins } from '../../API/auth';
 
 const AccountantList = () => {
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
@@ -342,10 +342,20 @@ const AccountantList = () => {
 					</Typography>
 				)}
 			</Box>
-			<p>
-				{' '}
-				<b>{data.totalDocs}</b> documents found{' '}
-			</p>
+			<Box
+				display="flex"
+				width={'100%'}
+				justifyContent={'space-between'}
+				alignItems={'center'}
+			>
+				<p>
+					{' '}
+					<b>{data.totalDocs}</b> documents found{' '}
+				</p>
+				<Button variant="contained" color="primary">
+					Export Table
+				</Button>
+			</Box>
 			<TenantSubscriptionTable
 				loading={loading}
 				subscriptions={data.subscriptions}

@@ -127,3 +127,25 @@ export const asyncUpdateLeadStrategy = async (
 		throw new Error(asyncError(e));
 	}
 };
+
+export const asyncDeleteLeadStrategy = async (
+	leadId: string
+): Promise<null> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		await APIV2.delete<any, AxiosResponse<ServerResponse<null>>>(
+			`${V2EndPoint.LeadStrategy}/${leadId}`,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+
+		return null;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};

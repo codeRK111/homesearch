@@ -10,7 +10,6 @@ interface IFSelect {
 const FCheckbox: React.FC<IFSelect & CheckboxProps & FieldHookConfig<string>> =
 	(props) => {
 		const [field] = useField(props);
-
 		return (
 			<FormControlLabel
 				control={

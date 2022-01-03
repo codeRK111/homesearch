@@ -107,3 +107,16 @@ exports.updateLeadStrategy = catchAsync(async (req, res, next) => {
 		data: strategy,
 	});
 });
+exports.deleteStrategy = catchAsync(async (req, res, next) => {
+	const strategy = await Leads.findById(req.params.id);
+	if (!strategy) {
+		return next(new AppError('Strategy not found'));
+	}
+
+	await Leads.findByIdAndRemove(req.params.id);
+
+	res.status(200).json({
+		status: 'success',
+		data: null,
+	});
+});

@@ -9,26 +9,25 @@ import {
 	ListItemIcon,
 	ListItemText,
 } from '@material-ui/core';
-import { apiUrl, capitalizeFirstLetter } from '../../../utils/render.utils';
-
 import CreateIcon from '@material-ui/icons/Create';
-import LikedProperties from '../../../components/v2/likeProperties';
 import MailIcon from '@material-ui/icons/Mail';
-import MyProperties from '../../../components/v2/myProperties';
-import Nav from '../../../components/v2/pageNav/nav.component';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
-import React from 'react';
-import SavedProperties from '../../../components/v2/savedProperties';
-import UpdateProfile from './updateProfile.component';
 import axios from 'axios';
-import badgeIcon from '../../../assets/icons/badge.svg';
 import clsx from 'clsx';
+import React from 'react';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { selectUser } from '../../../redux/auth/auth.selectors';
-import useGlobalStyles from '../../../common.style';
 import { useHistory } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import badgeIcon from '../../../assets/icons/badge.svg';
+import useGlobalStyles from '../../../common.style';
+import LikedProperties from '../../../components/v2/likeProperties';
+import MyProperties from '../../../components/v2/myProperties';
+import Nav from '../../../components/v2/pageNav/nav.component';
+import SavedProperties from '../../../components/v2/savedProperties';
+import { selectUser } from '../../../redux/auth/auth.selectors';
+import { apiUrl, capitalizeFirstLetter } from '../../../utils/render.utils';
+import UpdateProfile from './updateProfile.component';
 import useStyles from './userProfile.style';
 
 const defaultImage =
@@ -147,6 +146,13 @@ const AgentPage = ({ user }) => {
 										startIcon={<CreateIcon />}
 									>
 										Update Profile
+									</Button>
+									<Button
+										onClick={handleUpdateProfileClickOpen}
+										size="small"
+										startIcon={<CreateIcon />}
+									>
+										Manage Plan
 									</Button>
 								</div>
 								<Box

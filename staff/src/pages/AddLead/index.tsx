@@ -50,7 +50,7 @@ const AddLeadPage = () => {
 			.matches(/^\d{10}$/, 'Invalid Number')
 			.required('Phone number required'),
 		minPrice: Yup.string().matches(
-			/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g,
+			/^(\(?\+?[0-9]*\)?)?[0-9_\- ()]*$/g,
 			'Invalid Number'
 		),
 		maxPrice: Yup.string().matches(
@@ -213,6 +213,16 @@ const AddLeadPage = () => {
 										<FTextField
 											name={'number'}
 											label="Phone Number"
+											onChange={(v: any) => {
+												if (
+													v.target.value.length <= 10
+												) {
+													setFieldValue(
+														'number',
+														v.target.value
+													);
+												}
+											}}
 										/>
 									</Grid>
 									<Grid item xs={12}>

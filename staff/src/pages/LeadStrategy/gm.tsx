@@ -6,6 +6,7 @@ import {
 
 import AddLeadStrategyDialog from '../../components/Dialogs/addStrategy';
 import { Button } from '../../components/UI/Button';
+import DatePickerComponent from '../../components/Pickers/date';
 import { FetchMyLeadStrategiesResponseData } from '../../model/leadStrategy';
 import LeadsStrategiesTable from '../../components/Table/leadStrategies/gm';
 import { PageWrapper } from '../../components/UI/Container';
@@ -16,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 const GMLeadStrategyPage = () => {
 	// State
 	const [addDialogStatus, setAddDialogStatus] = useState(false);
+	const [date, setDate] = useState<Date | null>(new Date());
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 	const [loading, setLoading] = useState(false);
@@ -37,6 +39,9 @@ const GMLeadStrategyPage = () => {
 	) => {
 		setPage(pageNumber);
 	};
+	const manageDateChange = (d: Date | null) => {
+		setDate(d);
+	};
 
 	// Fetch lead strategies
 	const fetchLeadStrategies = useCallback(async () => {
@@ -46,6 +51,7 @@ const GMLeadStrategyPage = () => {
 				page,
 				limit,
 				status: 'active',
+				date: date ? date.toISOString() : '',
 			};
 
 			const resp = await asyncFetchMyStrategies(filter);
@@ -59,10 +65,10 @@ const GMLeadStrategyPage = () => {
 			});
 			setLoading(false);
 		}
-	}, [page, limit]);
+	}, [page, limit, date]);
 	useEffect(() => {
 		setPage(1);
-	}, [limit]);
+	}, [limit, date]);
 	useEffect(() => {
 		fetchLeadStrategies();
 	}, [fetchLeadStrategies]);
@@ -73,6 +79,11 @@ const GMLeadStrategyPage = () => {
 				open={addDialogStatus}
 				handleClose={manageAddDialog(false)}
 				fetchLeads={fetchLeadStrategies}
+			/>
+			<DatePickerComponent
+				label={'Choose date'}
+				date={date}
+				handleDateChange={manageDateChange}
 			/>
 			<SpaceBetween mb="1rem">
 				<Typography variant="h5">Lead Strategies</Typography>

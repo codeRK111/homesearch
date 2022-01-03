@@ -112,14 +112,14 @@ exports.signIn = catchAsync(async (req, res, next) => {
 	);
 
 	const otpResponse = await sendOtpMessage(req.body.number, randomNumber);
-	if (user.email) {
-		const resp = await sendEmailOTP(
-			user.email,
-			'OTP for homesearch',
-			randomNumber
-		);
-		console.log(resp);
-	}
+	// if (user.email) {
+	// 	const resp = await sendEmailOTP(
+	// 		user.email,
+	// 		'OTP for homesearch',
+	// 		randomNumber
+	// 	);
+	// 	console.log(resp);
+	// }
 	if (otpResponse.data.startsWith('OK')) {
 		res.status(200).json({
 			status: 'success',

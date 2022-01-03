@@ -1,17 +1,16 @@
 import { AppBar, Avatar, Box, CircularProgress } from '@material-ui/core';
+import clsx from 'clsx';
 import React, { useState } from 'react';
-import { badge, call, comment, whatsapp } from '../../../utils/statc';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import useGlobalStyles from '../../../common.style';
 import {
 	selectAuthenticated,
 	selectUser,
 } from '../../../redux/auth/auth.selectors';
 import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
-
 import { addQueryV2 } from '../../../utils/asyncQuery';
-import clsx from 'clsx';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import useGlobalStyles from '../../../common.style';
+import { badge, call, comment, whatsapp } from '../../../utils/statc';
 import useStyles from './ownerCard.style';
 
 const renderKey = {
@@ -262,10 +261,6 @@ const OwnerCard = ({
 											color="primary"
 											size={15}
 										/>
-									) : numberInfo.display ? (
-										<span className={globalClasses.xsText}>
-											{numberInfo.number}
-										</span>
 									) : (
 										<img
 											src={call}

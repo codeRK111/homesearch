@@ -11,7 +11,8 @@ router
 		authController.protect,
 		uploadController.uploadLeadStrategy,
 		leadController.updateLeadStrategy
-	);
+	)
+	.delete(authController.protect, leadController.deleteStrategy);
 router
 	.route('/')
 	.get(authController.protect, leadController.getMyStrategies)

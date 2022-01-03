@@ -11,6 +11,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 import { ILeadStrategy } from '../../../model/leadStrategy';
 import Paper from '@material-ui/core/Paper';
+import RemoveStrategyButton from '../utility/removeStrategyButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -77,6 +78,10 @@ const LeadsStrategiesTable: React.FC<ILeadsTable> = ({
 		setData(leads);
 	}, [leads]);
 
+	const onSuccess = (id: string) => {
+		setData((prevState) => prevState.filter((c) => c.id !== id));
+	};
+
 	const Loader = (
 		<StyledTableRow>
 			{Array.from({ length: 7 }, (_, i) => i + 1).map((c) => (
@@ -108,6 +113,7 @@ const LeadsStrategiesTable: React.FC<ILeadsTable> = ({
 							<StyledTableCell>Created At</StyledTableCell>
 							<StyledTableCell>UpdatedAt</StyledTableCell>
 							<StyledTableCell>Update</StyledTableCell>
+							<StyledTableCell>Delete</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -170,6 +176,12 @@ const LeadsStrategiesTable: React.FC<ILeadsTable> = ({
 											>
 												<EditIcon color="primary" />
 											</IconButton>
+										</StyledTableCell>
+										<StyledTableCell>
+											<RemoveStrategyButton
+												id={row.id}
+												onSuccess={onSuccess}
+											/>
 										</StyledTableCell>
 									</StyledTableRow>
 							  ))}

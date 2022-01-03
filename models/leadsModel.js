@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
+const { Schema, model } = mongoose;
 const validator = require('validator');
 const moment = require('moment');
-const { Schema, model } = mongoose;
 const AppError = require('./../utils/appError');
 const Admin = require('./adminModel');
 const leadsSchema = new Schema(
