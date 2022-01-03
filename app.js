@@ -1,6 +1,4 @@
 const express = require('express');
-const { createServer } = require('http');
-const { Server } = require('socket.io');
 const hpp = require('hpp');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -238,9 +236,5 @@ app.get('/*', function (req, res) {
 
 // GLOBAL ERROR HANDLING MIDDLEWARE
 app.use(globalErrorHandler);
-const server = createServer(app);
-const io = new Server(server);
-io.on('connection', function (socket) {
-	console.log('Made socket connection');
-});
-module.exports = server;
+
+module.exports = app;
