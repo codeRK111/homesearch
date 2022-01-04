@@ -23,7 +23,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import dayjs from 'dayjs';
 import { useHistory } from 'react-router';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
@@ -176,10 +175,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							: data.map((row, i) => (
 									<StyledTableRow key={row.id}>
 										<StyledTableCell>
-											{i + 1} <br />
-											{dayjs(row.createdAt).month()}{' '}
-											<br />
-											{new Date().getMonth()}
+											{i + 1}
 										</StyledTableCell>
 										<StyledTableCell>
 											{user &&
