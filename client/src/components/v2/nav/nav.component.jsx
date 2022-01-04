@@ -45,9 +45,6 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 		setTopDrawer(!topDrawer);
 	};
 
-	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
 	const handleClickOpenDrawer = (event) => {
 		setOpenDrawer(true);
 	};

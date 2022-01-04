@@ -7,7 +7,7 @@ module.exports = {
 				NODE_ENV: 'production',
 				PORT: 8080,
 			},
-			watch: true,
+			watch: '.',
 			watch_options: {
 				usePolling: true,
 			},

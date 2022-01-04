@@ -85,6 +85,9 @@ const NavBar = ({
 	const [noResults, setNoResults] = React.useState(false);
 	const [openDrawer, setOpenDrawer] = React.useState(false);
 
+	const goToTenantPackages = () => {
+		history.push('/tenant-packages');
+	};
 	const handleClickOpenDrawer = (event) => {
 		setOpenDrawer(true);
 	};
@@ -337,6 +340,16 @@ const NavBar = ({
 					)}
 				</div>
 				<div className={clsx(classes.rightSide)}>
+					<Box
+						mr="1rem"
+						className={clsx(
+							classes.listButton,
+							globalClasses.smHide
+						)}
+						onClick={goToTenantPackages}
+					>
+						Packages
+					</Box>
 					<div
 						className={clsx(
 							classes.listButton,

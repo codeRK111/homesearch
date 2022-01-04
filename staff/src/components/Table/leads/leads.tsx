@@ -23,6 +23,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import dayjs from 'dayjs';
 import { useHistory } from 'react-router';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
@@ -89,7 +90,20 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 	// Effects
 	useEffect(() => {
-		setData(leads);
+		const idForExclude = '615ac4fa03177c2788a318e2';
+		const idToExcude = '615ac4b203177c2788a318e1';
+		const exFunc = (lead: ILead): boolean => {
+			if (user?.id === idForExclude) {
+				if (lead.createdBy?.id === idToExcude) {
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				return true;
+			}
+		};
+		setData(leads.filter(exFunc));
 	}, [leads]);
 
 	const Loader = (
@@ -114,6 +128,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 				number={selectedLead ? selectedLead.number : ''}
 				fetchLeads={fetchLeads}
 			/>
+
 			<TableContainer component={Paper}>
 				<Table className={classes.table} aria-label="customized table">
 					<TableHead>
@@ -161,7 +176,10 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							: data.map((row, i) => (
 									<StyledTableRow key={row.id}>
 										<StyledTableCell>
-											{i + 1}
+											{i + 1} <br />
+											{dayjs(row.createdAt).month()}{' '}
+											<br />
+											{new Date().getMonth()}
 										</StyledTableCell>
 										<StyledTableCell>
 											{user &&
