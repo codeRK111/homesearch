@@ -254,7 +254,7 @@ const SearchProperty: React.FC<RouteComponentProps> = ({
 								<TablePagination
 									limit={salesLimit}
 									setLimit={setSalesLimit}
-									page={leadsPage}
+									page={salesPage}
 									setPage={handleSalesPage}
 									totalDocs={data.totalSalesDocs}
 								/>

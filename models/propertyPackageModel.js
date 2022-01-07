@@ -8,6 +8,10 @@ const propertyPackageSchema = new Schema(
 			unique: true,
 			required: [true, 'Package name required'],
 		},
+		actualPrice: {
+			type: Number,
+			required: [true, 'actualPrice required'],
+		},
 		price: {
 			type: Number,
 			required: [true, 'Price required'],
@@ -17,14 +21,14 @@ const propertyPackageSchema = new Schema(
 				detail: {
 					type: String,
 				},
+				detailType: {
+					type: String,
+					enum: ['present', 'absent'],
+					default: 'present',
+				},
 			},
 		],
-		expiresAt: {
-			type: Date,
-			default: null,
-			select: false,
-			required: [true, 'expiry date required'],
-		},
+
 		status: {
 			type: String,
 			enum: ['active', 'inactive'],

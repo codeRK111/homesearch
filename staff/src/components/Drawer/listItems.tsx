@@ -6,6 +6,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import ListDropDown from '../ListCollapse';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import PaymentIcon from '@material-ui/icons/Payment';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import RenderByMultipleRole from '../RenderByRole/multiple';
 import RenderByRole from '../RenderByRole';
@@ -233,6 +234,25 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 							/>
 						</ListItemIcon>
 						<ListItemText primary={'Manage Target'} />
+					</ListItem>
+				</RenderByMultipleRole>
+				<RenderByMultipleRole types={[StaffType.Accountant]}>
+					<ListItem
+						button
+						onClick={changeRoute('/manage-packages')}
+						className={clsx(
+							manageSelectedStyle('/manage-packages')
+						)}
+					>
+						<ListItemIcon>
+							<PaymentIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon('/manage-packages')
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Manage Packages'} />
 					</ListItem>
 				</RenderByMultipleRole>
 			</List>

@@ -19,6 +19,7 @@ export enum V2EndPoint {
 	LeadStrategy = '/lead-strategy',
 	Staff = '/staff',
 	Blog = '/blog',
+	Package = '/package',
 }
 export enum V1EndPoint {
 	City = '/cities',

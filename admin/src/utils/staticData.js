@@ -12,6 +12,7 @@ export const ADMIN_ROLE = {
     salesExecutive: "salesExecutive",
     assistantSalesManager: "assistantSalesManager",
     accountant: "accountant",
+    ownerAssistant: "ownerAssistant",
 };
 
 export const furnishMenuItems = [

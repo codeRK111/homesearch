@@ -142,3 +142,62 @@ exports.updatePropertyPackage = catchAsync(async (req, res, next) => {
 		return next(new AppError(error.message, 500));
 	}
 });
+
+exports.createPackage = catchAsync(async (req, res, next) => {
+	try {
+		const package = await PropertyPackage.create(req.body);
+		res.status(201).json({
+			status: 'success',
+			data: {
+				package,
+			},
+		});
+	} catch (error) {
+		return next(new AppError(error.message, 500));
+	}
+});
+exports.getPackages = catchAsync(async (req, res, next) => {
+	try {
+		const packages = await PropertyPackage.find();
+		res.status(201).json({
+			status: 'success',
+			data: {
+				packages,
+			},
+		});
+	} catch (error) {
+		return next(new AppError(error.message, 500));
+	}
+});
+
+exports.getPackageDetails = catchAsync(async (req, res, next) => {
+	try {
+		const package = await PropertyPackage.findById(req.params.id);
+		res.status(201).json({
+			status: 'success',
+			data: {
+				package,
+			},
+		});
+	} catch (error) {
+		return next(new AppError(error.message, 500));
+	}
+});
+
+exports.updatePackageDetails = catchAsync(async (req, res, next) => {
+	try {
+		const package = await PropertyPackage.findByIdAndUpdate(
+			req.params.id,
+			req.body,
+			{ runValidators: true, new: true }
+		);
+		res.status(201).json({
+			status: 'success',
+			data: {
+				package,
+			},
+		});
+	} catch (error) {
+		return next(new AppError(error.message, 500));
+	}
+});

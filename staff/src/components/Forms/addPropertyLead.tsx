@@ -72,17 +72,17 @@ const AddPropertyLeadForm: React.FC<IAddPropertyLeadForm> = ({
 			.matches(/^\d{10}$/, 'Invalid Number')
 			.required('Phone number required'),
 		minPrice: Yup.string()
-			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g, 'Invalid Number')
+			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- ()]*$/g, 'Invalid Number')
 			.required('Min price required'),
 		maxPrice: Yup.string()
-			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g, 'Invalid Number')
+			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- ()]*$/g, 'Invalid Number')
 			.required('Max price required'),
 		maintainanceFee: Yup.string().matches(
-			/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g,
+			/^(\(?\+?[0-9]*\)?)?[0-9_\- ()]*$/g,
 			'Invalid Number'
 		),
 		superBuiltupArea: Yup.string().matches(
-			/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g,
+			/^(\(?\+?[0-9]*\)?)?[0-9_\- ()]*$/g,
 			'Invalid Number'
 		),
 		carpetArea: Yup.string().matches(
@@ -265,7 +265,7 @@ const AddPropertyLeadForm: React.FC<IAddPropertyLeadForm> = ({
 										value={'Duplex'}
 										label="Duplex"
 									/>
-								</Grid> 
+								</Grid>
 								<Grid item>
 									<FCheckbox
 										type="checkbox"

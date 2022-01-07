@@ -16,10 +16,9 @@ const useStyles = makeStyles((theme) => ({
 		backgroundImage: `url("${props.img}")`,
 		backgroundRepeat: 'no-repeat',
 		backgroundColor:
-			theme.palette.type === 'light'
-				? theme.palette.grey[50]
-				: theme.palette.grey[900],
-		backgroundSize: 'cover',
+			'#758283' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
+
+		backgroundSize: 'contain',
 		backgroundPosition: 'center',
 		// minHeight: '30rem',
 		height: '90%',

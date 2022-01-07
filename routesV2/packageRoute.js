@@ -25,5 +25,13 @@ router
 		UtilityController.addPropertyPackages
 	)
 	.get(UtilityController.getPropertyPackages);
+router.route('/create-package').post(UtilityController.createPackage);
+router.route('/get-packages').get(UtilityController.getPackages);
+router
+	.route('/get-package-details/:id')
+	.get(UtilityController.getPackageDetails);
+router
+	.route('/update-package-details/:id')
+	.patch(UtilityController.updatePackageDetails);
 
 module.exports = router;

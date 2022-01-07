@@ -531,7 +531,7 @@ exports.addPropertyFromLeadForRent = catchAsync(async (req, res, next) => {
 	} else {
 		const userData = {
 			name: req.body.name ? req.body.name : '',
-			email: req.body.email ? req.body.email : '',
+			email: req.body.email ? req.body.email : null,
 			number,
 			numberVerified: true,
 			registerThrough: 'staff',

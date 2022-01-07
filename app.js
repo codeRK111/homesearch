@@ -34,6 +34,7 @@ const basicAuth = require('express-basic-auth');
 // V2 Routes
 const builderRouteV2 = require('./routesV2/builderRoute');
 const utilityRouteV2 = require('./routesV2/packageRoute');
+const packageRouteV2 = require('./routesV2/packageRoute');
 const queryRouteV2 = require('./routesV2/queryRoute');
 const v2PropertyRoute = require('./routesV2/propertyRoute');
 const v2SavePropertyRoute = require('./routesV2/savePropertyRoute');
@@ -215,6 +216,7 @@ app.use('/api/v2/lead-strategy', leadStrategyRoute);
 app.use('/api/v2/staff', staffRoute);
 app.use('/api/v2/blog', blogRoute);
 app.use('/api/v2/payment', paymentRoute);
+app.use('/api/v2/package', packageRouteV2);
 app.use('/api/v2/test', testRoutev2);
 
 app.all('/api/*', (req, res, next) => {

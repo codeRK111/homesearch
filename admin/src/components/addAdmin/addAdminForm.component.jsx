@@ -182,6 +182,10 @@ const AddAdminForm = ({ loading, onSubmit }) => {
                                             value: ADMIN_ROLE.accountant,
                                             label: "Accountant",
                                         },
+                                        {
+                                            value: ADMIN_ROLE.ownerAssistant,
+                                            label: "Owner Assistant",
+                                        },
                                     ]}
                                 />
                             </Grid>

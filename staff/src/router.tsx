@@ -32,6 +32,10 @@ const PropertyLeadsDetailsPage = lazy(
 	() => import('./pages/PropertyLeadDetails')
 );
 const PaymentLinksPage = lazy(() => import('./pages/PaymentLinks'));
+const ManagePackagesPage = lazy(() => import('./pages/ManagePackage/index'));
+const UpdatePackagePage = lazy(
+	() => import('./pages/ManagePackage/updatePackage')
+);
 const AddSubscriptionPage = lazy(() => import('./pages/AddSubscription'));
 const AddPropertyLeadPage = lazy(() => import('./pages/AddPropertyLead'));
 const PaymentLinkPage = lazy(() => import('./pages/PaymentLink'));
@@ -175,6 +179,16 @@ const Router = () => {
 						path={'/verify-payment'}
 						exact
 						component={VerifyPaymentPage}
+					/>
+					<PrivateRoute
+						path={'/manage-packages'}
+						exact
+						component={ManagePackagesPage}
+					/>
+					<PrivateRoute
+						path={'/update-package/:id'}
+						exact
+						component={UpdatePackagePage}
 					/>
 				</Switch>
 			</Suspense>
