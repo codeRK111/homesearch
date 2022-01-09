@@ -7,4 +7,5 @@ export interface PackageDetails {
 	status: 'active' | 'inactive';
 	createdAt: string;
 	updatedAt: string;
+	mostPopular: boolean;
 }

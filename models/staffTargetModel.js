@@ -10,13 +10,17 @@ const targetSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		incentivePercentage: {
+			type: Number,
+			default: 20,
+		},
 		year: {
 			type: Number,
 			required: [true, 'year required'],
 		},
 		month: {
 			type: Number,
-			required: [true, 'year required'],
+			required: [true, 'month required'],
 		},
 		staff: {
 			type: Schema.ObjectId,

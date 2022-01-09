@@ -11,6 +11,7 @@ import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
 import AddPackageForm from '../../components/Forms/addPackage';
 import EditIcon from '@material-ui/icons/Edit';
+import MostPopularSwitch from './popularPackage';
 import { PackageDetails } from '../../model/package.interface';
 import { StaffType } from '../../model/staff.interface';
 import { asyncGetPackages } from '../../API/package';
@@ -53,6 +54,11 @@ const ManagePackagesPage: React.FC = () => {
 							<Grid key={c.id} item xs={12} md={4}>
 								<Paper>
 									<Box p="1rem">
+										<MostPopularSwitch
+											mostPopular={!!c.mostPopular}
+											id={c.id}
+											onSuccess={getPackages}
+										/>
 										<Typography gutterBottom>
 											Status -{' '}
 											<b

@@ -29,6 +29,10 @@ const propertyPackageSchema = new Schema(
 			},
 		],
 
+		mostPopular: {
+			type: Boolean,
+			default: false,
+		},
 		status: {
 			type: String,
 			enum: ['active', 'inactive'],

@@ -76,3 +76,41 @@ export const asyncProposalResponse = async (id, data) => {
 		throw new Error(asyncError(error));
 	}
 };
+
+export const asyncFetchPackages = async () => {
+	try {
+		const token = localStorage.getItem('JWT_CLIENT');
+		const resp = await axios.get(
+			apiUrl(`/package/get-active-packages`, 2),
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data.packages;
+	} catch (error) {
+		throw new Error(asyncError(error));
+	}
+};
+
+export const asyncFetchPackageDetails = async (id) => {
+	try {
+		const token = localStorage.getItem('JWT_CLIENT');
+		const resp = await axios.get(
+			apiUrl(`/package/get-active-package-details/${id}`, 2),
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data.package;
+	} catch (error) {
+		throw new Error(asyncError(error));
+	}
+};

@@ -14,6 +14,7 @@ const { nanoid } = require('nanoid');
 const AppError = require('../utils/appError');
 const moment = require('moment');
 const mongoose = require('mongoose');
+const PropertyPackage = require('./../models/propertyPackageModel');
 
 exports.createOrder = catchAsync(async (req, res, next) => {
 	try {
@@ -101,13 +102,13 @@ exports.createOrderTenantPackage = catchAsync(async (req, res, next) => {
 		});
 
 		let amount = 0;
-		if (req.body.packageName === 'b') {
-			amount = 2999 * 100;
-		} else if (req.body.packageName === 'oc') {
-			amount = 999 * 100;
-		} else {
+		const packageData = await PropertyPackage.findById(
+			req.body.packageName
+		);
+		if (!packageData) {
 			return res.status(500).send('Invalid Package');
 		}
+		amount = packageData.price * 100;
 
 		const options = {
 			amount, // amount in smallest currency unit
@@ -209,31 +210,6 @@ exports.success = catchAsync(async (req, res, next) => {
 		const subscription = await Subscription.create(options);
 		const newDoc = await Subscription.findById(subscription.id);
 
-		const invoiceName = await createInvoice(
-			{
-				name: newDoc.user.name,
-				email: newDoc.user.email,
-				number: newDoc.user.number,
-			},
-			{
-				paymentID: razorpayPaymentId,
-				id: subscription.subscriptionNumber,
-				package: 'Tenant Package',
-				totalAmount: req.body.mainAmount,
-				amountPaid: req.body.paidAmount,
-				discount: 500,
-				tax: 0,
-			}
-		);
-
-		console.log(invoiceName);
-		const respEmail = await sendEmailInvoice(
-			newDoc.user.email,
-			'Homesearch package invoice',
-			invoiceName.fileName,
-			`${invoiceName.docName}.pdf`
-		);
-		console.log(respEmail);
 		// THE PAYMENT IS LEGIT & VERIFIED
 		// YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
 

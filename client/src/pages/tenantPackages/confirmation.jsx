@@ -7,7 +7,8 @@ import {
 	Paper,
 	Typography,
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { parseDate, toCurrency } from '../../utils/render.utils';
 import {
 	selectAuthenticated,
 	selectUser,
@@ -15,18 +16,19 @@ import {
 
 import AbsentIcon from '@material-ui/icons/Cancel';
 import Alert from '@material-ui/lab/Alert';
+import BackdropLoader from '../../components/v2/backdrop/loader';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { Link } from 'react-router-dom';
 import Nav from '../../components/v2/pageNav/nav.component';
 import PaymentSuccess from './successPage';
 import PresentIcon from '@material-ui/icons/CheckCircle';
 import RoomIcon from '@material-ui/icons/Room';
+import { asyncFetchPackageDetails } from '../../utils/asyncPackage';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import logo from '../../assets/icons/logo.svg';
 import { makeStyles } from '@material-ui/core/styles';
-import { parseDate } from '../../utils/render.utils';
 import { toggleLoginPopup } from '../../redux/ui/ui.actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -90,6 +92,8 @@ const TenantPackageConfirmationPage = ({
 	},
 	...props
 }) => {
+	const [loading, setLoading] = useState(false);
+	const [packageData, setPackageData] = useState(null);
 	const [initialLoading, setInitialLoading] = useState(false);
 	const [paymentId, setPaymentId] = useState(null);
 	const [successLoading, setSuccessLoading] = useState(false);
@@ -106,6 +110,17 @@ const TenantPackageConfirmationPage = ({
 		const query = new URLSearchParams(props.location.search);
 		return query.get('hs');
 	};
+
+	const fetchPackages = useCallback(async () => {
+		try {
+			setLoading(true);
+			const resp = await asyncFetchPackageDetails(packageName);
+			setPackageData(resp);
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
+		}
+	}, [packageName]);
 
 	const onPayment = () => {
 		if (!isAuthenticated) {
@@ -183,10 +198,11 @@ const TenantPackageConfirmationPage = ({
 			image: logo,
 			handler: async function (response) {
 				try {
+					if (!packageData) return;
 					setSuccessLoading(true);
 					setPaymentId(response.razorpay_payment_id);
-					const mainAmount = packageName === 'b' ? 3499 : 1499;
-					const paidAmount = packageName === 'b' ? 2999 : 999;
+					const mainAmount = packageData.actualPrice;
+					const paidAmount = packageData.price;
 					const data = {
 						orderCreationId: order_id,
 						razorpayPaymentId: response.razorpay_payment_id,
@@ -239,9 +255,14 @@ const TenantPackageConfirmationPage = ({
 		const paymentObject = new window.Razorpay(options);
 		paymentObject.open();
 	}
+
+	useEffect(() => {
+		fetchPackages();
+	}, [fetchPackages]);
 	return (
 		<div>
 			<Nav />
+			<BackdropLoader open={loading} text="Fetching Details..." />
 			<Box mt="2rem" mb="2rem">
 				{success ? (
 					<PaymentSuccess
@@ -258,84 +279,81 @@ const TenantPackageConfirmationPage = ({
 						>
 							Confirm Package
 						</Typography>
-						<Box mt="3rem">
-							<Grid container spacing={3} justify="center">
-								<Grid item xs={12} md={4}>
-									<Typography
-										variant="h6"
-										component="h1"
-										gutterBottom
-										className={bold}
-									>
-										Package Details
-									</Typography>
-									<Box mt="2rem">
-										<div className={specificationWrapper}>
-											<PresentIcon color="primary" />
-											<span>
-												Get Information Of Upto 5
-												Properties
-											</span>
-										</div>
-										<div className={specificationWrapper}>
-											<PresentIcon color="primary" />
-											<span>Verfifed Properties</span>
-										</div>
-										<div className={specificationWrapper}>
-											<PresentIcon color="primary" />
-											<span>Properties From Owner</span>
-										</div>
-										<div className={specificationWrapper}>
-											{packageName === 'b' ? (
-												<PresentIcon color="primary" />
-											) : (
-												<AbsentIcon color="secondary" />
-											)}
-
-											<span>Site Visit</span>
-										</div>
-										<div className={specificationWrapper}>
-											<PresentIcon color="primary" />
-											<span>No Brokerage</span>
-										</div>
-									</Box>
-									<Box mt="2rem">
-										<div className={specificationWrapper}>
-											<RoomIcon color="primary" />
-											<span>
-												{packageName === 'b'
-													? 'Bhubaneswar'
-													: 'Other City'}
-											</span>
-										</div>
-										<div className={specificationWrapper}>
-											<CalendarTodayIcon color="primary" />
-											<span>{parseDate(Date.now())}</span>
-										</div>
-									</Box>
-								</Grid>
-
-								<Grid item xs={12} md={3}>
-									<Alert color="success" variant="filled">
-										Congrats, you saved &#x20B9; 500
-									</Alert>
-									<Paper
-										className={orderWrapper}
-										elevation={5}
-									>
+						{packageData && (
+							<Box mt="3rem">
+								<Grid container spacing={3} justify="center">
+									<Grid item xs={12} md={4}>
 										<Typography
 											variant="h6"
 											component="h1"
 											gutterBottom
 											className={bold}
 										>
-											Order Details
+											Package Details
 										</Typography>
 										<Box mt="2rem">
-											<div className={summeryItem}>
-												<span>Price</span>
-												<span className={bold}>
-													{packageName === 'b' ? (
+											{packageData.packageDetails.map(
+												(b) => (
+													<div
+														className={
+															specificationWrapper
+														}
+														key={b._id}
+													>
+														{b.detailType ===
+														'present' ? (
+															<PresentIcon color="primary" />
+														) : (
+															<AbsentIcon color="secondary" />
+														)}
+
+														<span>{b.detail}</span>
+													</div>
+												)
+											)}
+										</Box>
+										<Box mt="2rem">
+											<div
+												className={specificationWrapper}
+											>
+												<RoomIcon color="primary" />
+												<span>{packageData.name}</span>
+											</div>
+											<div
+												className={specificationWrapper}
+											>
+												<CalendarTodayIcon color="primary" />
+												<span>
+													{parseDate(Date.now())}
+												</span>
+											</div>
+										</Box>
+									</Grid>
+
+									<Grid item xs={12} md={3}>
+										<Alert color="success" variant="filled">
+											Congrats, you saved &#x20B9;{' '}
+											{toCurrency(
+												packageData.actualPrice -
+													packageData.price
+											)}
+										</Alert>
+										<Paper
+											className={orderWrapper}
+											elevation={5}
+										>
+											<Typography
+												variant="h6"
+												component="h1"
+												gutterBottom
+												className={bold}
+											>
+												Order Details
+											</Typography>
+											<Box mt="2rem">
+												<div className={summeryItem}>
+													<span>Price</span>
+													<span className={bold}>
 														<Box>
 															<Typography
 																variant="caption"
@@ -343,90 +361,74 @@ const TenantPackageConfirmationPage = ({
 																	lineThrough
 																}
 															>
-																&#x20B9; 3499
+																&#x20B9;
+																{toCurrency(
+																	packageData.actualPrice
+																)}
 															</Typography>
 															<Box>
 																<b>
 																	&#x20B9;
-																	2999
+																	{toCurrency(
+																		packageData.price
+																	)}
 																</b>
 															</Box>
 														</Box>
-													) : (
-														<Box>
-															<Typography
-																variant="caption"
-																className={
-																	lineThrough
-																}
-															>
-																&#x20B9; 1499
-															</Typography>
-															<Box>
-																<b>
-																	&#x20B9; 999
-																</b>
-															</Box>
-														</Box>
-													)}
-												</span>
-											</div>
-											<Divider />
-											<div className={summeryItem}>
-												<span>Total</span>
-												<span className={bold}>
-													{packageName === 'b' ? (
-														<React.Fragment>
-															&#x20B9; 2999
-														</React.Fragment>
-													) : (
-														<React.Fragment>
-															&#x20B9; 999
-														</React.Fragment>
-													)}
-												</span>
-											</div>
-											<button
-												className={button}
-												onClick={onPayment}
-												disabled={
-													initialLoading ||
-													successLoading
-												}
-											>
-												{successLoading
-													? 'Processing your payment'
-													: 'Confirm & Pay'}
+													</span>
+												</div>
+												<Divider />
+												<div className={summeryItem}>
+													<span>Total</span>
+													<span className={bold}>
+														&#x20B9;
+														{toCurrency(
+															packageData.price
+														)}
+													</span>
+												</div>
+												<button
+													className={button}
+													onClick={onPayment}
+													disabled={
+														initialLoading ||
+														successLoading
+													}
+												>
+													{successLoading
+														? 'Processing your payment'
+														: 'Confirm & Pay'}
 
-												{(initialLoading ||
-													successLoading) && (
-													<Box ml="0.5rem">
-														<CircularProgress
-															size={15}
-															color="inherit"
-														/>
-													</Box>
-												)}
-											</button>
-											<Box mt="1rem">
-												<Typography variant="caption">
-													* By confirming you will
-													agree to our{' '}
-													<Link to="/terms">
-														terms and conditions
-													</Link>{' '}
-													{/* &{' '}
+													{(initialLoading ||
+														successLoading) && (
+														<Box ml="0.5rem">
+															<CircularProgress
+																size={15}
+																color="inherit"
+															/>
+														</Box>
+													)}
+												</button>
+												<Box mt="1rem">
+													<Typography variant="caption">
+														* By confirming you will
+														agree to our{' '}
+														<Link to="/terms">
+															terms and conditions
+														</Link>{' '}
+														{/* &{' '}
 													<Link to="/refund">
 														refund & canceltaion
 														policy
 													</Link> */}
-												</Typography>
+													</Typography>
+												</Box>
 											</Box>
-										</Box>
-									</Paper>
+										</Paper>
+									</Grid>
 								</Grid>
-							</Grid>
-						</Box>
+							</Box>
+						)}
 					</Container>
 				)}
 			</Box>

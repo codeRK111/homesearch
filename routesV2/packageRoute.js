@@ -27,11 +27,16 @@ router
 	.get(UtilityController.getPropertyPackages);
 router.route('/create-package').post(UtilityController.createPackage);
 router.route('/get-packages').get(UtilityController.getPackages);
+router.route('/get-active-packages').get(UtilityController.getActivePackages);
 router
 	.route('/get-package-details/:id')
 	.get(UtilityController.getPackageDetails);
 router
+	.route('/get-active-package-details/:id')
+	.get(UtilityController.getActivePackageDetails);
+router
 	.route('/update-package-details/:id')
 	.patch(UtilityController.updatePackageDetails);
+router.route('/set-popular/:id').patch(UtilityController.setMostPopularPackage);
 
 module.exports = router;

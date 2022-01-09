@@ -6,12 +6,16 @@ import {
 	Paper,
 	Typography,
 } from '@material-ui/core';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import AbsentIcon from '@material-ui/icons/Cancel';
+import BackdropLoader from '../../components/v2/backdrop/loader';
 import Nav from '../../components/v2/pageNav/nav.component';
 import PresentIcon from '@material-ui/icons/CheckCircle';
-import React from 'react';
+import { asyncFetchPackages } from '../../utils/asyncPackage';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
+import { toCurrency } from '../../utils/render.utils';
 import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,6 +23,13 @@ const useStyles = makeStyles((theme) => ({
 		padding: '1rem',
 		backgroundColor: 'transparent',
 		borderRadius: 20,
+		height: '100%',
+		boxSizing: 'border-box',
+
+		position: 'relative',
+	},
+	popularPackageWrapper: {
+		border: `3px solid ${theme.palette.primary.main}`,
 	},
 	line: {
 		flex: 1,
@@ -61,6 +72,17 @@ const useStyles = makeStyles((theme) => ({
 	lineThrough: {
 		textDecoration: 'line-through',
 	},
+	mostPopular: {
+		position: 'absolute',
+		padding: '0.5rem 1rem',
+		backgroundColor: theme.palette.primary.main,
+		color: '#ffffff',
+		fontSize: '0.8rem',
+		borderRadius: 5,
+		left: '50%',
+		top: 0,
+		transform: 'translate(-50%, -50%)',
+	},
 }));
 
 const TenantPackagePage = (props) => {
@@ -72,8 +94,12 @@ const TenantPackagePage = (props) => {
 		button,
 		bold,
 		lineThrough,
+		mostPopular,
+		popularPackageWrapper,
 	} = useStyles();
 	const history = useHistory();
+	const [loading, setLoading] = useState(false);
+	const [packages, setPackages] = useState([]);
 	const getQueryString = () => {
 		const query = new URLSearchParams(props.location.search);
 		return query.get('hs');
@@ -86,11 +112,25 @@ const TenantPackagePage = (props) => {
 		history.push(redirectURL);
 	};
 
-	console.log(getQueryString());
+	const fetchPackages = useCallback(async () => {
+		try {
+			setLoading(true);
+			const resp = await asyncFetchPackages();
+			setPackages(resp);
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		fetchPackages();
+	}, [fetchPackages]);
 
 	return (
 		<div>
 			<Nav />
+			<BackdropLoader open={loading} text="Loading Packages ..." />
 			<Box mt="2rem" mb="2rem">
 				<Container>
 					<Typography
@@ -103,245 +143,126 @@ const TenantPackagePage = (props) => {
 					</Typography>
 					<Box mt="2rem">
 						<Grid container spacing={3} justify="center">
-							<Grid item xs={12} md={4}>
-								<Paper className={packageWrapper} elevation={5}>
-									<Typography
-										variant="h6"
-										align="center"
-										gutterBottom
-										className={bold}
+							{packages.map((c) => (
+								<Grid item xs={12} md={4}>
+									<Paper
+										className={clsx(packageWrapper, {
+											[popularPackageWrapper]:
+												c.mostPopular,
+										})}
+										elevation={5}
 									>
-										Bhubaneswar
-									</Typography>
-									<Typography
-										variant="caption"
-										align="center"
-										gutterBottom
-										display="block"
-									>
-										Starting at
-									</Typography>
-									<Box
-										display="flex"
-										justifyContent="center"
-										alignItems="center"
-										mt="1rem"
-									>
-										<div className={line}></div>
-										<Chip
-											style={{ width: 150 }}
-											label={
-												<Box
-													display="flex"
-													alignItems="center"
-												>
-													<Typography
-														variant="caption"
-														className={lineThrough}
-													>
-														&#x20B9; 3499
-													</Typography>
-													<Box ml="0.3rem">
-														<b className={price}>
-															&#x20B9; 2999
-														</b>
-													</Box>
-												</Box>
-											}
-											variant="outlined"
-										/>
-										<div className={line}></div>
-									</Box>
-									<Box mt="1rem">
-										<Grid
-											container
-											spacing={0}
-											justify="center"
+										{c.mostPopular && (
+											<Box className={mostPopular}>
+												Most Popular
+											</Box>
+										)}
+										<Box mt="2rem"></Box>
+										<Typography
+											variant="h6"
+											align="center"
+											gutterBottom
+											className={bold}
 										>
-											<Grid item xs={12} md={8}>
-												<div
-													className={
-														specificationWrapper
-													}
-												>
-													<PresentIcon color="primary" />
-													<span>
-														Get Information Of Upto
-														5 Properties
-													</span>
-												</div>
-												<div
-													className={
-														specificationWrapper
-													}
-												>
-													<PresentIcon color="primary" />
-													<span>
-														Verfifed Properties
-													</span>
-												</div>
-												<div
-													className={
-														specificationWrapper
-													}
-												>
-													<PresentIcon color="primary" />
-													<span>
-														Properties From Owner
-													</span>
-												</div>
-												<div
-													className={
-														specificationWrapper
-													}
-												>
-													<PresentIcon color="primary" />
-													<span>Site Visit</span>
-												</div>
-												<div
-													className={
-														specificationWrapper
-													}
-												>
-													<PresentIcon color="primary" />
-													<span>No Brokerage</span>
-												</div>
-											</Grid>
-										</Grid>
+											{c.name}
+										</Typography>
+										<Typography
+											variant="caption"
+											align="center"
+											gutterBottom
+											display="block"
+										>
+											Starting at
+										</Typography>
 										<Box
-											mt="1rem"
 											display="flex"
 											justifyContent="center"
-										>
-											<button
-												className={button}
-												onClick={onBuy('b')}
-											>
-												Buy Now
-											</button>
-										</Box>
-									</Box>
-								</Paper>
-							</Grid>
-							<Grid item xs={12} md={4}>
-								<Paper className={packageWrapper} elevation={5}>
-									<Typography
-										variant="h6"
-										align="center"
-										gutterBottom
-										className={bold}
-									>
-										Other Cities
-									</Typography>
-									<Typography
-										variant="caption"
-										align="center"
-										gutterBottom
-										display="block"
-									>
-										Starting at
-									</Typography>
-									<Box
-										display="flex"
-										justifyContent="center"
-										alignItems="center"
-										mt="1rem"
-									>
-										<div className={line}></div>
-										<Chip
-											label={
-												<Box
-													display="flex"
-													alignItems="center"
-												>
-													<Typography
-														variant="caption"
-														className={lineThrough}
-													>
-														&#x20B9; 1499
-													</Typography>
-													<Box ml="0.3rem">
-														<b className={price}>
-															&#x20B9; 999
-														</b>
-													</Box>
-												</Box>
-											}
-											variant="outlined"
-										/>
-										<div className={line}></div>
-									</Box>
-									<Box mt="1rem">
-										<Grid
-											container
-											spacing={0}
-											justify="center"
-										>
-											<Grid item xs={12} md={8}>
-												<div
-													className={
-														specificationWrapper
-													}
-												>
-													<PresentIcon color="primary" />
-													<span>
-														Get Information Of Upto
-														5 Properties
-													</span>
-												</div>
-												<div
-													className={
-														specificationWrapper
-													}
-												>
-													<PresentIcon color="primary" />
-													<span>
-														Verfifed Properties
-													</span>
-												</div>
-												<div
-													className={
-														specificationWrapper
-													}
-												>
-													<PresentIcon color="primary" />
-													<span>
-														Properties From Owner
-													</span>
-												</div>
-												<div
-													className={
-														specificationWrapper
-													}
-												>
-													<AbsentIcon color="secondary" />
-													<span>Site Visit</span>
-												</div>
-												<div
-													className={
-														specificationWrapper
-													}
-												>
-													<PresentIcon color="primary" />
-													<span>No Brokerage</span>
-												</div>
-											</Grid>
-										</Grid>
-										<Box
+											alignItems="center"
 											mt="1rem"
-											display="flex"
-											justifyContent="center"
 										>
-											<button
-												className={button}
-												onClick={onBuy('oc')}
-											>
-												Buy Now
-											</button>
+											<div className={line}></div>
+											<Chip
+												style={{ width: 150 }}
+												label={
+													<Box
+														display="flex"
+														alignItems="center"
+													>
+														<Typography
+															variant="caption"
+															className={
+																lineThrough
+															}
+														>
+															&#x20B9;{' '}
+															{toCurrency(
+																c.actualPrice
+															)}
+														</Typography>
+														<Box ml="0.3rem">
+															<b
+																className={
+																	price
+																}
+															>
+																&#x20B9;{' '}
+																{toCurrency(
+																	c.price
+																)}
+															</b>
+														</Box>
+													</Box>
+												}
+												variant="outlined"
+											/>
+											<div className={line}></div>
 										</Box>
-									</Box>
-								</Paper>
-							</Grid>
+										<Box mt="1rem">
+											<Grid
+												container
+												spacing={0}
+												justify="center"
+											>
+												<Grid item xs={12} md={10}>
+													{c.packageDetails.map(
+														(b) => (
+															<div
+																className={
+																	specificationWrapper
+																}
+																key={b._id}
+															>
+																{b.detailType ===
+																'present' ? (
+																	<PresentIcon color="primary" />
+																) : (
+																	<AbsentIcon color="secondary" />
+																)}
+
+																<span>
+																	{b.detail}
+																</span>
+															</div>
+														)
+													)}
+												</Grid>
+											</Grid>
+											<Box
+												mt="1rem"
+												display="flex"
+												justifyContent="center"
+											>
+												<button
+													className={button}
+													onClick={onBuy(c.id)}
+												>
+													Buy Now
+												</button>
+											</Box>
+										</Box>
+									</Paper>
+								</Grid>
+							))}
 						</Grid>
 					</Box>
 				</Container>

@@ -169,10 +169,39 @@ exports.getPackages = catchAsync(async (req, res, next) => {
 		return next(new AppError(error.message, 500));
 	}
 });
+exports.getActivePackages = catchAsync(async (req, res, next) => {
+	try {
+		const packages = await PropertyPackage.find({ status: 'active' });
+		res.status(200).json({
+			status: 'success',
+			data: {
+				packages,
+			},
+		});
+	} catch (error) {
+		return next(new AppError(error.message, 500));
+	}
+});
 
 exports.getPackageDetails = catchAsync(async (req, res, next) => {
 	try {
 		const package = await PropertyPackage.findById(req.params.id);
+		res.status(201).json({
+			status: 'success',
+			data: {
+				package,
+			},
+		});
+	} catch (error) {
+		return next(new AppError(error.message, 500));
+	}
+});
+exports.getActivePackageDetails = catchAsync(async (req, res, next) => {
+	try {
+		const package = await PropertyPackage.findOne({
+			_id: req.params.id,
+			status: 'active',
+		});
 		res.status(201).json({
 			status: 'success',
 			data: {
@@ -196,6 +225,27 @@ exports.updatePackageDetails = catchAsync(async (req, res, next) => {
 			data: {
 				package,
 			},
+		});
+	} catch (error) {
+		return next(new AppError(error.message, 500));
+	}
+});
+exports.setMostPopularPackage = catchAsync(async (req, res, next) => {
+	try {
+		const package = await PropertyPackage.findByIdAndUpdate(
+			req.params.id,
+			{ mostPopular: req.body.mostPopular },
+			{ runValidators: true, new: true }
+		);
+		await PropertyPackage.updateMany(
+			{
+				_id: { $ne: req.params.id },
+			},
+			{ mostPopular: false }
+		);
+		res.status(201).json({
+			status: 'success',
+			data: package,
 		});
 	} catch (error) {
 		return next(new AppError(error.message, 500));

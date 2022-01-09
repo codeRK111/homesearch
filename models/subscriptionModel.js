@@ -49,6 +49,10 @@ const subscriptionSchema = new Schema(
 		package: {
 			type: String,
 		},
+		packageId: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'PropertyPackage',
+		},
 		totalPropertyAllowed: {
 			type: Number,
 		},
@@ -99,10 +103,15 @@ subscriptionSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'user',
 		select: 'id name email number',
-	}).populate({
-		path: 'dealBy',
-		select: 'id name',
-	});
+	})
+		.populate({
+			path: 'dealBy',
+			select: 'id name',
+		})
+		.populate({
+			path: 'packageId',
+			select: 'id name',
+		});
 
 	next();
 });

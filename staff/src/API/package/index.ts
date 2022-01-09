@@ -97,3 +97,30 @@ export const asyncUpdatePackageDetails = async (
 		throw new Error(asyncError(e));
 	}
 };
+
+export const asyncSetPopularPackage = async (
+	id: string,
+	mostPopular: boolean
+): Promise<PackageDetails> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.patch<
+			PackageDetails,
+			AxiosResponse<ServerResponse<PackageDetails>>
+		>(
+			`${V2EndPoint.Package}/set-popular/${id}`,
+			{ mostPopular },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+
+		return resp.data.data;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
