@@ -37,6 +37,7 @@ const UpdatePackagePage = lazy(
 	() => import('./pages/ManagePackage/updatePackage')
 );
 const AddSubscriptionPage = lazy(() => import('./pages/AddSubscription'));
+const SharePackageLinkPage = lazy(() => import('./pages/SharePackageLink'));
 const AddPropertyLeadPage = lazy(() => import('./pages/AddPropertyLead'));
 const PaymentLinkPage = lazy(() => import('./pages/PaymentLink'));
 const AddLeadPage = lazy(() => import('./pages/AddLead'));
@@ -54,6 +55,7 @@ const UpdateLeadPage = lazy(() => import('./pages/updateLead'));
 const PostFromLeadPage = lazy(() => import('./pages/PostFromLead'));
 const VerifyPaymentPage = lazy(() => import('./pages/VerifyPayment'));
 const ManageTragetPage = lazy(() => import('./pages/MnageTraget'));
+const MyDealsPage = lazy(() => import('./pages/MyDeals'));
 
 const Router = () => {
 	const { setUser } = useRepositoryAction(ResourceType.Auth);
@@ -189,6 +191,16 @@ const Router = () => {
 						path={'/update-package/:id'}
 						exact
 						component={UpdatePackagePage}
+					/>
+					<PrivateRoute
+						path={'/share-package-link'}
+						exact
+						component={SharePackageLinkPage}
+					/>
+					<PrivateRoute
+						path={'/my-deals'}
+						exact
+						component={MyDealsPage}
 					/>
 				</Switch>
 			</Suspense>

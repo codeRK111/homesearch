@@ -49,6 +49,27 @@ export const asyncGetPackages = async (): Promise<PackageDetails[]> => {
 	}
 };
 
+export const asyncGetActivePackages = async (): Promise<PackageDetails[]> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.get<
+			any,
+			AxiosResponse<ServerResponse<{ packages: PackageDetails[] }>>
+		>(`${V2EndPoint.Package}/get-active-packages`, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const packageData = resp.data.data;
+
+		return packageData.packages;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+
 export const asyncGetPackageDetails = async (
 	id: string
 ): Promise<PackageDetails> => {

@@ -1,6 +1,7 @@
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
 
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import HomeIcon from '@material-ui/icons/Home';
 import ListAltIcon from '@material-ui/icons/ListAlt';
@@ -11,6 +12,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import RenderByMultipleRole from '../RenderByRole/multiple';
 import RenderByRole from '../RenderByRole';
 import SearchIcon from '@material-ui/icons/Search';
+import ShareIcon from '@material-ui/icons/Share';
 import { StaffType } from '../../model/staff.interface';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import clsx from 'clsx';
@@ -253,6 +255,53 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 							/>
 						</ListItemIcon>
 						<ListItemText primary={'Manage Packages'} />
+					</ListItem>
+				</RenderByMultipleRole>
+				<RenderByMultipleRole
+					types={[StaffType.ClientSupport, StaffType.Accountant]}
+				>
+					<ListItem
+						button
+						onClick={changeRoute('/share-package-link')}
+						className={clsx(
+							manageSelectedStyle('/share-package-link')
+						)}
+					>
+						<ListItemIcon>
+							<ShareIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon(
+										'/share-package-link'
+									)
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Share Package Link'} />
+					</ListItem>
+				</RenderByMultipleRole>
+				<RenderByMultipleRole
+					types={[
+						StaffType.ClientSupport,
+						StaffType.Accountant,
+						StaffType.AssistantSalesManager,
+						StaffType.SalesExecutive,
+					]}
+				>
+					<ListItem
+						button
+						onClick={changeRoute('/my-deals')}
+						className={clsx(manageSelectedStyle('/my-deals'))}
+					>
+						<ListItemIcon>
+							<CheckCircleIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon('/my-deals')
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'My Deals'} />
 					</ListItem>
 				</RenderByMultipleRole>
 			</List>
