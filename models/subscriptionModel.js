@@ -87,6 +87,9 @@ const subscriptionSchema = new Schema(
 		feedbackAt: {
 			type: Date,
 		},
+		invoice: {
+			type: String,
+		},
 	},
 	{
 		toJSON: { virtuals: true },
