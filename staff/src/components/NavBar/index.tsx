@@ -9,7 +9,6 @@ import { CircularProgress } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
-import SharePackageLinkModal from '../Dialogs/sharePackage';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { asyncLogout } from '../../API/auth';
@@ -67,10 +66,7 @@ const NavBar = () => {
 					open={openDrawer}
 					onClose={manageDrawerState(false)}
 				/>
-				<SharePackageLinkModal
-					open={sharePackage}
-					handleClose={manageSharePackage(false)}
-				/>
+
 				<Toolbar>
 					{user && (
 						<IconButton
@@ -100,16 +96,6 @@ const NavBar = () => {
 						<Typography variant="h6" className={classes.title}>
 							Homesearch18
 						</Typography>
-					)}
-
-					{!smallScreen && (
-						<Button
-							color="inherit"
-							onClick={manageSharePackage(true)}
-							disabled={loading}
-						>
-							Share Package Link
-						</Button>
 					)}
 
 					{user && (

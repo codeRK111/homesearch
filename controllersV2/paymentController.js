@@ -190,6 +190,7 @@ exports.success = catchAsync(async (req, res, next) => {
 			mainAmount: req.body.mainAmount,
 			paidAmount: req.body.paidAmount,
 			package: req.body.package,
+			packageId: req.body.package,
 			totalPropertyAllowed: 5,
 			orderId: razorpayOrderId,
 			paymentId: razorpayPaymentId,
@@ -606,6 +607,7 @@ exports.createSubscription = catchAsync(async (req, res, next) => {
 		data: subscription,
 	});
 });
+
 exports.sendProposal = catchAsync(async (req, res, next) => {
 	const requireFields = [
 		'proposalPackage',

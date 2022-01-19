@@ -1,5 +1,6 @@
 const BuilderPackage = require('./../models/builderPackageModel');
 const PropertyPackage = require('./../models/propertyPackageModel');
+const Subscription = require('./../models/subscriptionModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const { validationResult } = require('express-validator');
@@ -250,4 +251,14 @@ exports.setMostPopularPackage = catchAsync(async (req, res, next) => {
 	} catch (error) {
 		return next(new AppError(error.message, 500));
 	}
+});
+
+exports.getMySubscriptions = catchAsync(async (req, res, next) => {
+	const myPackages = await Subscription.find({ user: req.user.id });
+	res.json({
+		status: 'success',
+		data: {
+			packages: myPackages,
+		},
+	});
 });

@@ -1,6 +1,7 @@
 import { IStaff, StaffType } from './../model/staff.interface';
 
 import { ILead } from '../model/lead.interface';
+import { PackageDetails } from '../model/package.interface';
 import { SubscriptionPackageType } from '../model/subscription.interface';
 import dayjs from 'dayjs';
 
@@ -57,10 +58,10 @@ export const isExpired = (date?: Date): boolean => {
 
 export const renderPackageName = (
 	packageType: SubscriptionPackageType,
-	packageName: string
+	packageName?: PackageDetails
 ) => {
 	if (packageType === SubscriptionPackageType.TenantPackage) {
-		return packageName === 'b' ? 'Bhubaneswar' : 'Other City';
+		return packageName ? packageName.name : 'Other City';
 	} else if (packageType === SubscriptionPackageType.ConsultantFee) {
 		return 'Consultant Fee';
 	} else {

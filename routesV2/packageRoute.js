@@ -4,6 +4,7 @@ const UtilityController = require('../controllersV2/packageController');
 const UtilityValidator = require('../validators/packageValidator');
 const uploadController = require('../controllersV2/fileUploadController');
 const authController = require('../controllers/adminController');
+const userAuthController = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -27,6 +28,11 @@ router
 	.get(UtilityController.getPropertyPackages);
 router.route('/create-package').post(UtilityController.createPackage);
 router.route('/get-packages').get(UtilityController.getPackages);
+router.get(
+	'/my-packages',
+	userAuthController.protect,
+	UtilityController.getMySubscriptions
+);
 router.route('/get-active-packages').get(UtilityController.getActivePackages);
 router
 	.route('/get-package-details/:id')

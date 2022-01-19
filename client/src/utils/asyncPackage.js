@@ -114,3 +114,21 @@ export const asyncFetchPackageDetails = async (id) => {
 		throw new Error(asyncError(error));
 	}
 };
+export const asyncGetMyPackages = async () => {
+	try {
+		const token = localStorage.getItem('JWT_CLIENT');
+		const resp = await axios.get(
+			apiUrl(`/package/my-packages`, 2),
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data.packages;
+	} catch (error) {
+		throw new Error(asyncError(error));
+	}
+};

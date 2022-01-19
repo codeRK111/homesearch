@@ -113,7 +113,6 @@ subscriptionSchema.pre(/^find/, function (next) {
 		})
 		.populate({
 			path: 'packageId',
-			select: 'id name',
 		});
 
 	next();

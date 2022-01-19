@@ -1,3 +1,4 @@
+import { PackageDetails } from './package.interface';
 import { IStaff } from './staff.interface';
 import { User } from './user.interface';
 
@@ -40,6 +41,7 @@ export interface Subscription {
 	user: User;
 	packageType: SubscriptionPackageType;
 	package: string;
+	packageId: PackageDetails;
 	orderId: string;
 	paymentId: string;
 	createdAt: Date;

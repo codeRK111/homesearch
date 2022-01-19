@@ -125,7 +125,7 @@ const MySubscriptionsTable: React.FC<IMyPostedLeadsTable> = ({
 								<StyledTableCell>
 									{renderPackageName(
 										row.packageType,
-										row.package
+										row.packageId
 									)}
 								</StyledTableCell>
 								<StyledTableCell>

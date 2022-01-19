@@ -247,18 +247,19 @@ const TenantPackagePage = (props) => {
 													)}
 												</Grid>
 											</Grid>
-											<Box
-												mt="1rem"
-												display="flex"
-												justifyContent="center"
+										</Box>
+										<Box
+											mt="1rem"
+											display="flex"
+											justifyContent="center"
+											style={{ position: 'relative' }}
+										>
+											<button
+												className={button}
+												onClick={onBuy(c.id)}
 											>
-												<button
-													className={button}
-													onClick={onBuy(c.id)}
-												>
-													Buy Now
-												</button>
-											</Box>
+												Buy Now
+											</button>
 										</Box>
 									</Paper>
 								</Grid>
