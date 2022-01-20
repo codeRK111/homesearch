@@ -1,12 +1,6 @@
-import {
-	Box,
-	Chip,
-	Container,
-	Grid,
-	Paper,
-	Typography,
-} from '@material-ui/core';
+import { Box, Chip, Grid, Paper, Typography } from '@material-ui/core';
 import React, { useCallback, useEffect, useState } from 'react';
+import { capitalizeFirstLetter, toCurrency } from '../../utils/render.utils';
 
 import AbsentIcon from '@material-ui/icons/Cancel';
 import BackdropLoader from '../../components/v2/backdrop/loader';
@@ -14,76 +8,10 @@ import Nav from '../../components/v2/pageNav/nav.component';
 import PresentIcon from '@material-ui/icons/CheckCircle';
 import { asyncFetchPackages } from '../../utils/asyncPackage';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import { toCurrency } from '../../utils/render.utils';
 import { useHistory } from 'react-router';
+import { useStyles } from './package.style';
 
-const useStyles = makeStyles((theme) => ({
-	packageWrapper: {
-		padding: '1rem',
-		backgroundColor: 'transparent',
-		borderRadius: 20,
-		height: '100%',
-		boxSizing: 'border-box',
-
-		position: 'relative',
-	},
-	popularPackageWrapper: {
-		border: `3px solid ${theme.palette.primary.main}`,
-	},
-	line: {
-		flex: 1,
-		width: '100%',
-		height: 1,
-		background: '#cccccc',
-	},
-	price: {
-		fontSize: '1.3rem',
-	},
-	specificationWrapper: {
-		display: 'flex',
-		alignItems: 'center',
-		marginBottom: '1rem',
-		'& > span': {
-			marginLeft: '1rem',
-			fontSize: '1rem',
-			fontWeight: 600,
-			letterSpacing: 1,
-			lineHeight: 1.5,
-		},
-	},
-	button: {
-		border: `2px solid ${theme.palette.primary.main}`,
-		backgroundColor: 'transparent',
-		padding: '1rem 2rem',
-		fontSize: '1rem',
-		textTransform: 'uppercase',
-		letterSpacing: 1,
-		cursor: 'pointer',
-		'&:hover': {
-			backgroundColor: theme.palette.primary.main,
-			color: '#ffffff',
-		},
-	},
-	bold: {
-		fontWeight: 700,
-		letterSpacing: 1,
-	},
-	lineThrough: {
-		textDecoration: 'line-through',
-	},
-	mostPopular: {
-		position: 'absolute',
-		padding: '0.5rem 1rem',
-		backgroundColor: theme.palette.primary.main,
-		color: '#ffffff',
-		fontSize: '0.8rem',
-		borderRadius: 5,
-		left: '50%',
-		top: 0,
-		transform: 'translate(-50%, -50%)',
-	},
-}));
+const packageCategories = ['tenant', 'builder', 'realtor', 'owner', 'buyer'];
 
 const TenantPackagePage = (props) => {
 	const {
@@ -96,10 +24,14 @@ const TenantPackagePage = (props) => {
 		lineThrough,
 		mostPopular,
 		popularPackageWrapper,
+		ribbonWrapper,
+		ribbon,
 	} = useStyles();
 	const history = useHistory();
 	const [loading, setLoading] = useState(false);
 	const [packages, setPackages] = useState([]);
+	const [displayPackages, setDisplayPackages] = useState([]);
+	const [category, setCategory] = useState('');
 	const getQueryString = () => {
 		const query = new URLSearchParams(props.location.search);
 		return query.get('hs');
@@ -117,11 +49,24 @@ const TenantPackagePage = (props) => {
 			setLoading(true);
 			const resp = await asyncFetchPackages();
 			setPackages(resp);
+			setDisplayPackages(resp);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (category) {
+			const filteredPackages = packages.filter(
+				(c) => c.category === category
+			);
+			setDisplayPackages(filteredPackages);
+		} else {
+			setDisplayPackages(packages);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [category]);
 
 	useEffect(() => {
 		fetchPackages();
@@ -132,7 +77,7 @@ const TenantPackagePage = (props) => {
 			<Nav />
 			<BackdropLoader open={loading} text="Loading Packages ..." />
 			<Box mt="2rem" mb="2rem">
-				<Container>
+				<>
 					<Typography
 						variant="h4"
 						align="center"
@@ -141,10 +86,37 @@ const TenantPackagePage = (props) => {
 					>
 						Packages
 					</Typography>
-					<Box mt="2rem">
+
+					<Box mt="1rem" display={'flex'} justifyContent={'center'}>
+						<Chip
+							label={'All'}
+							onClick={() => setCategory('')}
+							variant={category === '' ? 'default' : 'outlined'}
+							color={category === '' ? 'primary' : 'default'}
+						/>
+						{packageCategories.map((c, i) => (
+							<Chip
+								key={i}
+								label={capitalizeFirstLetter(c)}
+								onClick={() => setCategory(c)}
+								variant={
+									category === c ? 'default' : 'outlined'
+								}
+								color={category === c ? 'primary' : 'default'}
+							/>
+						))}
+					</Box>
+					{displayPackages.length === 0 && !loading && (
+						<Box mt="1rem">
+							<Typography align="center" component="h1">
+								No Package Found
+							</Typography>
+						</Box>
+					)}
+					<Box mt="2rem" p="1rem">
 						<Grid container spacing={3} justify="center">
-							{packages.map((c) => (
-								<Grid item xs={12} md={4}>
+							{displayPackages.map((c) => (
+								<Grid item xs={12} md={3}>
 									<Paper
 										className={clsx(packageWrapper, {
 											[popularPackageWrapper]:
@@ -152,6 +124,15 @@ const TenantPackagePage = (props) => {
 										})}
 										elevation={5}
 									>
+										{c.category && (
+											<div className={ribbonWrapper}>
+												<div className={ribbon}>
+													{capitalizeFirstLetter(
+														c.category
+													)}
+												</div>
+											</div>
+										)}
 										{c.mostPopular && (
 											<Box className={mostPopular}>
 												Most Popular
@@ -252,21 +233,27 @@ const TenantPackagePage = (props) => {
 											mt="1rem"
 											display="flex"
 											justifyContent="center"
-											style={{ position: 'relative' }}
+											flex={1}
 										>
-											<button
-												className={button}
-												onClick={onBuy(c.id)}
+											<Box
+												display={'flex'}
+												flexDirection={'column'}
+												justifyContent={'flex-end'}
 											>
-												Buy Now
-											</button>
+												<button
+													className={button}
+													onClick={onBuy(c.id)}
+												>
+													Buy Now
+												</button>
+											</Box>
 										</Box>
 									</Paper>
 								</Grid>
 							))}
 						</Grid>
 					</Box>
-				</Container>
+				</>
 			</Box>
 		</div>
 	);

@@ -66,6 +66,23 @@ const UpdatePackageForm: React.FC<Props> = ({ onSuccess, data }) => {
 								</FSelect>
 							</Grid>
 							<Grid item xs={12}>
+								<FSelect
+									name={'category'}
+									label="Package Category"
+									showNone={false}
+								>
+									<MenuItem value={'tenant'}>Tenant</MenuItem>
+									<MenuItem value={'builder'}>
+										Builder
+									</MenuItem>
+									<MenuItem value={'realtor'}>
+										Realtor
+									</MenuItem>
+									<MenuItem value={'owner'}>Owner</MenuItem>
+									<MenuItem value={'buyer'}>Buyer</MenuItem>
+								</FSelect>
+							</Grid>
+							<Grid item xs={12}>
 								<FTextField
 									variant="filled"
 									name="name"

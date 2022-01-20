@@ -8,6 +8,10 @@ const propertyPackageSchema = new Schema(
 			unique: true,
 			required: [true, 'Package name required'],
 		},
+		category: {
+			type: String,
+			enum: ['tenant', 'builder', 'realtor', 'owner', 'buyer'],
+		},
 		actualPrice: {
 			type: Number,
 			required: [true, 'actualPrice required'],

@@ -241,6 +241,7 @@ exports.setMostPopularPackage = catchAsync(async (req, res, next) => {
 		await PropertyPackage.updateMany(
 			{
 				_id: { $ne: req.params.id },
+				category: package.category,
 			},
 			{ mostPopular: false }
 		);

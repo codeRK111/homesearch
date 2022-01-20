@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
+import { capitalizeFirstLetter, toHumanReadable } from '../../utils/render';
 
 import AddPackageForm from '../../components/Forms/addPackage';
 import EditIcon from '@material-ui/icons/Edit';
@@ -15,7 +16,6 @@ import MostPopularSwitch from './popularPackage';
 import { PackageDetails } from '../../model/package.interface';
 import { StaffType } from '../../model/staff.interface';
 import { asyncGetPackages } from '../../API/package';
-import { toHumanReadable } from '../../utils/render';
 import { useHistory } from 'react-router-dom';
 import { withAccess } from '../../components/HOC/withRole';
 
@@ -70,6 +70,16 @@ const ManagePackagesPage: React.FC = () => {
 												}}
 											>
 												{c.status}
+											</b>
+										</Typography>
+										<Typography gutterBottom>
+											Category Name -{' '}
+											<b>
+												{c.category
+													? capitalizeFirstLetter(
+															c.category
+													  )
+													: '-'}
 											</b>
 										</Typography>
 										<Typography gutterBottom>

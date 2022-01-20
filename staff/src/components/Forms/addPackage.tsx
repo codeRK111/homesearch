@@ -19,6 +19,7 @@ export type AddPackageFormState = {
 	actualPrice: number;
 	price: number;
 	packageDetails: Array<{ detail: string; detailType: 'present' | 'absent' }>;
+	category: string;
 };
 
 interface Props {
@@ -32,6 +33,7 @@ const AddPackageForm: React.FC<Props> = ({ onSuccess }) => {
 		actualPrice: 0,
 		price: 0,
 		packageDetails: [],
+		category: '',
 	};
 
 	const onSubmit = async (
@@ -62,6 +64,23 @@ const AddPackageForm: React.FC<Props> = ({ onSuccess }) => {
 				{({ values, isSubmitting }) => (
 					<Form>
 						<Grid container spacing={3}>
+							<Grid item xs={12}>
+								<FSelect
+									name={'category'}
+									label="Package Category"
+									showNone={false}
+								>
+									<MenuItem value={'tenant'}>Tenant</MenuItem>
+									<MenuItem value={'builder'}>
+										Builder
+									</MenuItem>
+									<MenuItem value={'realtor'}>
+										Realtor
+									</MenuItem>
+									<MenuItem value={'owner'}>Owner</MenuItem>
+									<MenuItem value={'buyer'}>Buyer</MenuItem>
+								</FSelect>
+							</Grid>
 							<Grid item xs={12}>
 								<FTextField
 									variant="filled"

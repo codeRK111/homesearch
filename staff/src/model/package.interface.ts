@@ -8,4 +8,5 @@ export interface PackageDetails {
 	createdAt: string;
 	updatedAt: string;
 	mostPopular: boolean;
+	category: 'tenant' | 'builder' | 'realtor' | 'owner' | 'buyer';
 }
