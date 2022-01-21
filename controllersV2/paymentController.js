@@ -563,7 +563,11 @@ exports.createSubscription = catchAsync(async (req, res, next) => {
 			delete req.body[c];
 		}
 	});
-	const subscription = await Subscription.create(req.body);
+	const subData = req.body;
+	if (req.body.package) {
+		subData.packageId = req.body.package;
+	}
+	const subscription = await Subscription.create(subData);
 	let package;
 	if (req.body.packageType === 'tenantPackage') {
 		package = 'Tenant Package';

@@ -1,21 +1,21 @@
-import * as Yup from 'yup';
-
 import { CircularProgress, Grid, MenuItem } from '@material-ui/core';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { IStaff, StaffType } from '../../model/staff.interface';
 import React, { useCallback, useEffect, useState } from 'react';
+import * as Yup from 'yup';
+import { asyncFetchAdmins } from '../../API/auth';
+import { asyncGetPackages } from '../../API/package';
+import { asyncCreateSubscription } from '../../API/payment';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
+import { PackageDetails } from '../../model/package.interface';
+import { IStaff, StaffType } from '../../model/staff.interface';
 import {
 	SubscriptionPackageType,
 	SubscriptionPaymentMode,
 } from '../../model/subscription.interface';
-
-import { Button } from '../UI/Button';
-import DateTimePickerComponent from '../Pickers/dateTime';
-import FSelect from '../Formik/select';
 import FTextField from '../Formik/input';
-import { asyncCreateSubscription } from '../../API/payment';
-import { asyncFetchAdmins } from '../../API/auth';
+import FSelect from '../Formik/select';
+import DateTimePickerComponent from '../Pickers/dateTime';
+import { Button } from '../UI/Button';
 
 export interface IcreateSubscriptionData {
 	mainAmount: number;
@@ -67,6 +67,7 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 	const [loading, setLoading] = useState(false);
 	const [staffLoading, setStaffLoading] = useState(false);
 	const [staffs, setStaffs] = useState<IStaff[]>([]);
+	const [packages, setPackages] = useState<PackageDetails[]>([]);
 
 	const fetchStaffs = useCallback(async () => {
 		try {
@@ -87,6 +88,15 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 		} catch (error) {
 			setStaffLoading(false);
 			setStaffs([]);
+		}
+	}, []);
+
+	const fetchPackages = useCallback(async () => {
+		try {
+			const resp = await asyncGetPackages();
+			setPackages(resp);
+		} catch (error) {
+			setPackages([]);
 		}
 	}, []);
 
@@ -130,6 +140,10 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 	useEffect(() => {
 		fetchStaffs();
 	}, [fetchStaffs]);
+
+	useEffect(() => {
+		fetchPackages();
+	}, [fetchPackages]);
 
 	return (
 		<div>
@@ -197,12 +211,11 @@ const CreateSubscriptionForm: React.FC<IAddLeadStrategyForm> = ({
 										label="Package"
 										showNone={false}
 									>
-										<MenuItem value={'b'}>
-											Bhubaneswar
-										</MenuItem>
-										<MenuItem value={'oc'}>
-											Other City
-										</MenuItem>
+										{packages.map((c) => (
+											<MenuItem value={c.id}>
+												{c.name}
+											</MenuItem>
+										))}
 									</FSelect>
 								</Grid>
 							)}
