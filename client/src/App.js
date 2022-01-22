@@ -2,6 +2,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy, useEffect, useRef } from 'react';
 import { selectAuthenticated, selectUser } from './redux/auth/auth.selectors';
 
+import BackToTop from './components/backToTop';
+import { Box } from '@material-ui/core';
 import CreateQuery from './components/createQuery';
 import Footer from './components/footer/footer.component';
 import HomePageNew from './pages/v2/homePage/home.page';
@@ -115,7 +117,9 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 				</Alert>
 			</Snackbar>
 			<LogIn />
+
 			<BrowserRouter>
+				<Box id="back-to-top-anchor" />
 				<CreateQuery />
 				<ScrollToTop>
 					<Switch>
@@ -303,6 +307,7 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 					</Switch>
 				</ScrollToTop>
 				<Footer />
+				<BackToTop />
 			</BrowserRouter>
 		</Suspense>
 	);

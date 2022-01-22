@@ -4,9 +4,11 @@ import {
 	setSelectedCity,
 } from '../../../redux/actionTab/actionTab.actions';
 
+import BackToTop from '../../../components/backToTop';
 import ErrorCard from '../../../components/errorCard/errorCard.component';
 import Filter from './filter.component';
 import Nav from '../../../components/v2/pageNav/nav.component';
+import Pagination from '@material-ui/lab/Pagination';
 import React from 'react';
 import SearchCardProjectFlat from '../../../components/v2/searchCard2/project/flat.component';
 import SearchCardProjectLand from '../../../components/v2/searchCard2/project/land.component';
@@ -41,6 +43,7 @@ const SearchPage = ({
 	const [page, setPage] = React.useState(1);
 	const [initial, setInitial] = React.useState(1);
 	const [data, setData] = React.useState([]);
+	const [propertyCount, setPropertyCount] = React.useState(0);
 	const [showNoResults, setShowNoResults] = React.useState(false);
 	const [propertyItems, setPropertyItems] = React.useState([]);
 	const parsed = queryString.parse(props.location.search, {
@@ -84,9 +87,16 @@ const SearchPage = ({
 
 	const handleChangePage = (event, value) => {
 		setPage(value);
+		const anchor = (event.target.ownerDocument || document).querySelector(
+			'#back-to-top-anchor'
+		);
+
+		if (anchor) {
+			anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		}
 		// onSearch();
 	};
-	const handleFetchCities = (status, data = null) => {
+	const fetchPropertyCallback = (status, data = null) => {
 		if (status === 'success') {
 			setAsyncError(null);
 			console.log(data.properties);
@@ -96,10 +106,12 @@ const SearchPage = ({
 				setShowNoResults(false);
 			}
 			setData(data.properties);
+			setPropertyCount(data.count);
 			// setTotalDocs(data.count);
 			setPropertyItems(data.propertyItems);
 		} else {
 			setAsyncError(data);
+			setPropertyCount(0);
 		}
 	};
 
@@ -183,6 +195,17 @@ const SearchPage = ({
 	};
 
 	React.useEffect(() => {
+		setPage(1);
+	}, [
+		searchProperties,
+		props.location.search,
+		locations,
+		type.length,
+		rentItems,
+		otherItems,
+	]);
+
+	React.useEffect(() => {
 		setPFor(parsed.f);
 		setCurrentTab(parsed.f);
 		setSelectedCity({
@@ -231,7 +254,7 @@ const SearchPage = ({
 			body.budgetList = budgetList;
 		}
 
-		searchProperties(handleFetchCities, body);
+		searchProperties(fetchPropertyCallback, body);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		searchProperties,
@@ -242,12 +265,13 @@ const SearchPage = ({
 		rentItems,
 		otherItems,
 	]);
+
 	return (
 		<div>
 			<Nav />
 
 			<div className={classes.wrapper}>
-				<Box mb="1rem">
+				<Box mb="1rem" id="back-to-top-anchor">
 					<Box
 						p="1rem"
 						className={clsx(
@@ -305,6 +329,18 @@ const SearchPage = ({
 									</Box>
 								))
 							)}
+							<Box
+								mt="2rem"
+								display={'flex'}
+								justifyContent={'center'}
+							>
+								<Pagination
+									count={Math.ceil(propertyCount / 10)}
+									color="primary"
+									page={page}
+									onChange={handleChangePage}
+								/>
+							</Box>
 						</Box>
 
 						{/* {Array.from({ length: 3 }, (_, idx) => `${++idx}`).map(
@@ -318,6 +354,7 @@ const SearchPage = ({
 					<Grid items xs={12} md={4}></Grid>
 				</Grid>
 			</div>
+			<BackToTop />
 		</div>
 	);
 };
