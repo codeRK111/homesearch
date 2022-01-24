@@ -43,6 +43,7 @@ const SearchPage = ({
 	const [page, setPage] = React.useState(1);
 	const [initial, setInitial] = React.useState(1);
 	const [data, setData] = React.useState([]);
+	const [availableFor, setAvailableFor] = React.useState([]);
 	const [propertyCount, setPropertyCount] = React.useState(0);
 	const [showNoResults, setShowNoResults] = React.useState(false);
 	const [propertyItems, setPropertyItems] = React.useState([]);
@@ -203,6 +204,7 @@ const SearchPage = ({
 		type.length,
 		rentItems,
 		otherItems,
+		availableFor,
 	]);
 
 	React.useEffect(() => {
@@ -254,6 +256,10 @@ const SearchPage = ({
 			body.budgetList = budgetList;
 		}
 
+		if (availableFor.length > 0) {
+			body.availableFor = availableFor;
+		}
+
 		searchProperties(fetchPropertyCallback, body);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
@@ -264,6 +270,7 @@ const SearchPage = ({
 		type.length,
 		rentItems,
 		otherItems,
+		availableFor,
 	]);
 
 	return (
@@ -301,6 +308,8 @@ const SearchPage = ({
 						setRentItems={setRentItems}
 						otherItems={otherItems}
 						setOtherItems={setOtherItems}
+						availableFor={availableFor}
+						setAvailableFor={setAvailableFor}
 					/>
 				</Box>
 				<Grid container spacing={0}>

@@ -1,13 +1,13 @@
-import { AppBar, Box, Grid, IconButton, Menu } from '@material-ui/core';
+import { AppBar, Box, IconButton, Menu } from '@material-ui/core';
+import { useTheme, withStyles } from '@material-ui/core/styles';
 
 import Budget from './budget.component';
 import Button from '@material-ui/core/Button';
 import ChipHeader from '../../../components/v2/chipHeader/chipHeader.component';
 import CloseIcon from '@material-ui/icons/Close';
 import Drawer from '@material-ui/core/Drawer';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Locations from './locations.component';
+import PropertyFilterMedium from './Filter/md';
 import PropertyTypes from './propertyTypes.component';
 import React from 'react';
 import SortIcon from '@material-ui/icons/Sort';
@@ -15,8 +15,6 @@ import clsx from 'clsx';
 import useGlobalStyles from '../../../common.style';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './searchPage.style';
-import { useTheme } from '@material-ui/core/styles';
-import { withStyles } from '@material-ui/core/styles';
 
 const StyledMenu = withStyles({
 	paper: {
@@ -52,6 +50,8 @@ const Filter = ({
 	setRentItems,
 	otherItems,
 	setOtherItems,
+	availableFor,
+	setAvailableFor,
 }) => {
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
@@ -161,125 +161,22 @@ const Filter = ({
 				</Box>
 			) : (
 				<div>
-					<Grid container spacing={1}>
-						<Grid item xs={2}>
-							<Box
-								onClick={handleLocationClick}
-								className={clsx(
-									globalClasses.flexCenter,
-									globalClasses.colorPrimary,
-									globalClasses.bold,
-									classes.filter,
-									globalClasses.pointer,
-									classes.filterWrapper
-								)}
-							>
-								<span>Locations </span>
-								<ExpandMoreIcon />
-							</Box>
-							<StyledMenu
-								id="customized-menu"
-								anchorEl={locationAnchorEl}
-								keepMounted
-								open={Boolean(locationAnchorEl)}
-								onClose={handleLocationClose}
-								elevation={5}
-							>
-								<Box className={globalClasses.justifyCenter}>
-									<IconButton
-										onClick={handleLocationClose}
-										size="small"
-									>
-										<HighlightOffIcon />
-									</IconButton>
-								</Box>
-								<Locations
-									city={city}
-									existingLocations={existingLocations}
-									handleLocations={handleLocations}
-									setLocationData={setLocationData}
-								/>
-							</StyledMenu>
-						</Grid>
-						<Grid item xs={2}>
-							<Box
-								onClick={handleTypesClick}
-								className={clsx(
-									globalClasses.flexCenter,
-									globalClasses.colorPrimary,
-									globalClasses.bold,
-									classes.filter,
-									globalClasses.pointer,
-									classes.filterWrapper
-								)}
-							>
-								<span>Property Type</span>
-								<ExpandMoreIcon />
-							</Box>
-							<StyledMenu
-								id="customized-menu"
-								anchorEl={typesAnchorEl}
-								keepMounted
-								open={Boolean(typesAnchorEl)}
-								onClose={handleTypesClick}
-								elevation={5}
-							>
-								<Box className={globalClasses.justifyCenter}>
-									<IconButton
-										onClick={handleTypesClose}
-										size="small"
-									>
-										<HighlightOffIcon />
-									</IconButton>
-								</Box>
-								<PropertyTypes
-									pFor={pFor}
-									types={types}
-									setTypes={setTypes}
-								/>
-							</StyledMenu>
-						</Grid>
-						<Grid item xs={2}>
-							<Box
-								onClick={handleBudgetClick}
-								className={clsx(
-									globalClasses.flexCenter,
-									globalClasses.colorPrimary,
-									globalClasses.bold,
-									classes.filter,
-									globalClasses.pointer,
-									classes.filterWrapper
-								)}
-							>
-								<span>Budget Type</span>
-								<ExpandMoreIcon />
-							</Box>
-							<StyledMenu
-								id="customized-menu"
-								anchorEl={budgetAnchorEl}
-								keepMounted
-								open={Boolean(budgetAnchorEl)}
-								onClose={handleBudgetClose}
-								elevation={5}
-							>
-								<Box className={globalClasses.justifyCenter}>
-									<IconButton
-										onClick={handleBudgetClose}
-										size="small"
-									>
-										<HighlightOffIcon />
-									</IconButton>
-								</Box>
-								<Budget
-									pFor={pFor}
-									rentItems={rentItems}
-									setRentItems={setRentItems}
-									otherItems={otherItems}
-									setOtherItems={setOtherItems}
-								/>
-							</StyledMenu>
-						</Grid>
-					</Grid>
+					<Box mb="1rem">
+						<PropertyFilterMedium
+							city={city}
+							existingLocations={existingLocations}
+							handleLocations={handleLocations}
+							pFor={pFor}
+							types={types}
+							setTypes={setTypes}
+							rentItems={rentItems}
+							setRentItems={setRentItems}
+							otherItems={otherItems}
+							setOtherItems={setOtherItems}
+							availableFor={availableFor}
+							setAvailableFor={setAvailableFor}
+						/>
+					</Box>
 				</div>
 			)}
 		</>

@@ -1002,6 +1002,9 @@ exports.searchProperties = catchAsync(async (req, res, next) => {
 		if (req.body.locations) {
 			filter['location'] = { $in: req.body.locations };
 		}
+		if (req.body.availableFor) {
+			filter['availableFor'] = { $in: req.body.availableFor };
+		}
 		if (req.body.city) {
 			filter['city'] = req.body.city;
 		}

@@ -37,3 +37,23 @@ export const searchPlace = (data, cancelToken, setLoading, type = 'city') => {
 			});
 	});
 };
+
+export const asyncSearchLocation = async (name, cityId) => {
+	try {
+		const resp = await axios.post(
+			apiUrl(`/cities/searchLocation`),
+			{
+				name,
+				city: cityId,
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+		return resp.data.data.locations;
+	} catch (error) {
+		throw new Error(asyncError(error));
+	}
+};
