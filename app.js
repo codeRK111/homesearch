@@ -235,6 +235,7 @@ app.get('/*', function (req, res) {
 });
 
 // require('./task');
+// require('./send-invoice-task');
 
 // GLOBAL ERROR HANDLING MIDDLEWARE
 app.use(globalErrorHandler);

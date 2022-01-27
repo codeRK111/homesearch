@@ -1,4 +1,3 @@
-import { Box, Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import {
 	Subscription,
@@ -7,7 +6,9 @@ import {
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { parseDate, renderPackageName } from '../../../utils/render';
 
+import { Box } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
+import SendInvoiceButton from '../sendInvoice';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -138,13 +139,7 @@ const MySubscriptionsTable: React.FC<IMyPostedLeadsTable> = ({
 									{row.paymentMode}
 								</StyledTableCell>
 								<StyledTableCell>
-									<Button
-										variant="contained"
-										color="primary"
-										size="small"
-									>
-										Send
-									</Button>
+									<SendInvoiceButton id={row.id} />
 								</StyledTableCell>
 							</StyledTableRow>
 						))}

@@ -746,3 +746,91 @@ exports.proposalResponse = catchAsync(async (req, res, next) => {
 		data: lead.id,
 	});
 });
+
+exports.sendInvoice = catchAsync(async (req, res, next) => {
+	const subscription = await Subscription.findById(req.params.id);
+	if (!subscription) {
+		return next(new AppError('Invalid Subscription'));
+	}
+	let name,
+		email,
+		number,
+		amountPaid,
+		totalAmount,
+		discount,
+		id,
+		package,
+		tax;
+
+	if (subscription.user) {
+		name = subscription.user.name;
+		email = subscription.user.email;
+		number = subscription.user.number;
+	} else {
+		if (!subscription.email) {
+			return next(new AppError('Email not found'));
+		}
+		if (!subscription.number) {
+			return next(new AppError('Phone Number  not found'));
+		}
+		name = subscription.name ? subscription.name : 'Homesearch User';
+		email = subscription.email;
+		number = subscription.number;
+	}
+	if (!subscription.paidAmount) {
+		return next(new AppError('Amount  not found'));
+	}
+	amountPaid = subscription.paidAmount;
+	totalAmount = subscription.mainAmount
+		? subscription.mainAmount
+		: subscription.paidAmount;
+	discount = totalAmount - amountPaid;
+	id = subscription.subscriptionNumber;
+	if (subscription.packageId) {
+		package = subscription.packageId.name;
+	} else if (subscription.packageType === 'paymentLink') {
+		package = 'Custom requirement';
+	} else {
+		package = 'Homesearch18 Package';
+	}
+	tax = 0;
+	console.log({
+		name,
+		email,
+		number,
+		amountPaid,
+		totalAmount,
+		discount,
+		id,
+		package,
+		tax,
+	});
+
+	const invoiceName = await createInvoice(
+		{
+			name,
+			email,
+			number,
+		},
+		{
+			id,
+			package,
+			totalAmount,
+			amountPaid,
+			discount,
+			tax,
+		}
+	);
+	console.log(`${invoiceName.docName}.pdf`);
+	await sendEmailInvoice(
+		email,
+		'Homesearch package invoice',
+		invoiceName.fileName,
+		`${invoiceName.docName}.pdf`
+	);
+
+	res.status(200).json({
+		status: 'success',
+		data: invoiceName.fileName,
+	});
+});

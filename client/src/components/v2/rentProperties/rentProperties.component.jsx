@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from '@material-ui/core';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import Card from '../propertyCard/propertyCard.component';
-import Carousel from '../../carousel';
+import Carousel from '../../carousel/slick';
 import Chip from '../chip/chip.component';
 import SimilarPropertiesSkeleton from '../../skeleton/similarProperties.component';
 import axios from 'axios';

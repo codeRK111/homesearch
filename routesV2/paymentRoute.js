@@ -30,6 +30,11 @@ router.get(
 	adminController.protect,
 	paymentController.getSubscriptions
 );
+router.get(
+	'/send-invoice/:id',
+	adminController.protect,
+	paymentController.sendInvoice
+);
 
 router.get(
 	'/verify-payment/:paymentId',

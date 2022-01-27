@@ -261,3 +261,23 @@ export const asyncsendProposal = async (
 		throw new Error(asyncError(e));
 	}
 };
+export const asyncsendInvoice = async (id: string): Promise<any> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		await APIV2.get<SendProposalData, AxiosResponse<ServerResponse<any>>>(
+			`${V2EndPoint.Payment}/send-invoice/${id}`,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				responseType: 'blob',
+			}
+		);
+		return { status: 'success' };
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
