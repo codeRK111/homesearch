@@ -806,31 +806,37 @@ exports.sendInvoice = catchAsync(async (req, res, next) => {
 		tax,
 	});
 
-	const invoiceName = await createInvoice(
-		{
-			name,
+	try {
+		const invoiceName = await createInvoice(
+			{
+				name,
+				email,
+				number,
+			},
+			{
+				id,
+				package,
+				totalAmount,
+				amountPaid,
+				discount,
+				tax,
+			}
+		);
+		await sendEmailInvoice(
 			email,
-			number,
-		},
-		{
-			id,
-			package,
-			totalAmount,
-			amountPaid,
-			discount,
-			tax,
-		}
-	);
-	console.log(`${invoiceName.docName}.pdf`);
-	await sendEmailInvoice(
-		email,
-		'Homesearch package invoice',
-		invoiceName.fileName,
-		`${invoiceName.docName}.pdf`
-	);
+			'Homesearch package invoice',
+			invoiceName.fileName,
+			`${invoiceName.docName}.pdf`
+		);
 
-	res.status(200).json({
-		status: 'success',
-		data: invoiceName.fileName,
-	});
+		res.status(200).json({
+			status: 'success',
+			data: invoiceName.fileName,
+		});
+	} catch (error) {
+		res.status(500).json({
+			status: 'success',
+			error,
+		});
+	}
 });
