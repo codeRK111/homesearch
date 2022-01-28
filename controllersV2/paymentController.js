@@ -834,9 +834,10 @@ exports.sendInvoice = catchAsync(async (req, res, next) => {
 			data: invoiceName.fileName,
 		});
 	} catch (error) {
+		console.log(error);
 		res.status(500).json({
 			status: 'success',
-			error,
+			error: error.message,
 		});
 	}
 });
