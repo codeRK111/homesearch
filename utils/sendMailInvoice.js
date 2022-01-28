@@ -13,6 +13,7 @@ const transporter = nodemailer.createTransport({
 		user: 'payment@homesearchindia.com',
 		pass: 'hdf@876R',
 	},
+	tls: { rejectUnauthorized: false },
 });
 
 const readHTMLFile = async (path) => {
