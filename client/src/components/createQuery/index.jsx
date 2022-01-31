@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import ChatIcon from '@material-ui/icons/Chat';
 import Fab from '@material-ui/core/Fab';
 import QueryForm from './form';
-import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
 	exampleWrapper: {
 		position: 'fixed',
 		zIndex: 1000,
 		marginTop: theme.spacing(3),
-		bottom: theme.spacing(2),
+		bottom: theme.spacing(8),
 		right: theme.spacing(2),
 	},
 
@@ -23,6 +24,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SpeedDials() {
+	const theme = useTheme();
+	const matches = useMediaQuery(theme.breakpoints.up('sm'));
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 
@@ -41,8 +44,9 @@ export default function SpeedDials() {
 					secondary: classes.secondary,
 				}}
 				onClick={toggleOpen(true)}
+				size={matches ? 'large' : 'small'}
 			>
-				<ChatIcon />
+				<ChatIcon fontSize={matches ? 'large' : 'small'} />
 			</Fab>
 		</React.Fragment>
 	);

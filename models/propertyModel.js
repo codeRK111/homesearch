@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const { Schema, model } = mongoose;
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const propertySchema = new Schema(
 	{
 		for: {
@@ -413,6 +414,9 @@ const propertySchema = new Schema(
 				},
 			},
 		],
+		propertyNumber: {
+			type: Number,
+		},
 
 		status: {
 			type: String,
@@ -429,6 +433,10 @@ propertySchema.index({
 	status: 1,
 	city: 1,
 	type: 1,
+});
+
+propertySchema.plugin(AutoIncrement, {
+	inc_field: 'propertyNumber',
 });
 
 propertySchema.pre(/^find/, function (next) {

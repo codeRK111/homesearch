@@ -31,7 +31,7 @@ const TenantPackagePage = (props) => {
 	const [loading, setLoading] = useState(false);
 	const [packages, setPackages] = useState([]);
 	const [displayPackages, setDisplayPackages] = useState([]);
-	const [category, setCategory] = useState('');
+	const [category, setCategory] = useState('tenant');
 	const getQueryString = () => {
 		const query = new URLSearchParams(props.location.search);
 		return query.get('hs');
@@ -88,12 +88,6 @@ const TenantPackagePage = (props) => {
 					</Typography>
 
 					<Box mt="1rem" display={'flex'} justifyContent={'center'}>
-						<Chip
-							label={'All'}
-							onClick={() => setCategory('')}
-							variant={category === '' ? 'default' : 'outlined'}
-							color={category === '' ? 'primary' : 'default'}
-						/>
 						{packageCategories.map((c, i) => (
 							<Chip
 								key={i}

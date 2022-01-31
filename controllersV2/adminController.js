@@ -4,6 +4,7 @@ const AppError = require('./../utils/appError');
 const fs = require('fs');
 const path = require('path');
 const jwt = require('jsonwebtoken');
+const StaffTargetModel = require('./../models/staffTargetModel');
 
 const signToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -151,13 +152,33 @@ exports.getMyTargets = catchAsync(async (req, res, next) => {
 		return next(new AppError('Staff not found', 404));
 	}
 
+	const d = new Date();
+	const year = d.getFullYear();
+	const month = d.getMonth();
+
+	let dealTarget = 0;
+	let completeDealTarget = 0;
+
+	const target = await StaffTargetModel.findOne({
+		year,
+		month,
+		staff: req.admin.id,
+	});
+
+	if (target && target.targetAmount) {
+		dealTarget = target.targetAmount;
+	}
+	if (target && target.completedAmount) {
+		completeDealTarget = target.completedAmount;
+	}
+
 	res.status(200).json({
 		status: 'success',
 		data: {
 			leadTarget: existingAdmin.leadTarget,
 			completeLeadTarget: existingAdmin.completeLeadTarget,
-			dealTarget: existingAdmin.dealTarget,
-			completeDealTarget: existingAdmin.completeDealTarget,
+			dealTarget,
+			completeDealTarget,
 		},
 	});
 });

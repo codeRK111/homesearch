@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 const targetSchema = new Schema(
@@ -43,3 +44,6 @@ targetSchema.pre(/^find/, function (next) {
 
 	next();
 });
+
+const staffTraget = model('StaffTraget', targetSchema);
+module.exports = staffTraget;

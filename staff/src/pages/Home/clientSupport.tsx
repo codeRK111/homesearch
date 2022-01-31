@@ -110,9 +110,12 @@ const ClientSupportHome = () => {
 						</Grid>
 						<Grid item xs={12} md={3}>
 							<TargetCard
-								label="Deals Target (Under Testing)"
-								total={54000}
-								available={0}
+								label="Deals"
+								total={myTarget.dealTarget}
+								available={
+									myTarget.dealTarget -
+									myTarget.completeDealTarget
+								}
 							/>
 						</Grid>
 					</Grid>

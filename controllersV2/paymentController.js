@@ -9,6 +9,7 @@ const Subscription = require('./../models/subscriptionModel');
 const Lead = require('./../models/leadsModel');
 const Link = require('./../models/paymentLinkModel');
 const Admin = require('./../models/adminModel');
+const StaffTargetModel = require('./../models/staffTargetModel');
 const crypto = require('crypto');
 const { nanoid } = require('nanoid');
 const AppError = require('../utils/appError');
@@ -838,6 +839,29 @@ exports.sendInvoice = catchAsync(async (req, res, next) => {
 		res.status(500).json({
 			status: 'success',
 			error: error.message,
+		});
+	}
+});
+
+exports.assignTarget = catchAsync(async (req, res, next) => {
+	const isExisting = await StaffTargetModel.findOne({
+		year: req.body.year,
+		month: req.body.month,
+		staff: req.body.staff,
+	});
+	if (isExisting) {
+		isExisting.targetAmount = req.body.targetAmount;
+		isExisting.incentivePercentage = req.body.incentivePercentage;
+		await isExisting.save();
+		res.status(200).json({
+			status: 'success',
+			data: isExisting,
+		});
+	} else {
+		const target = await StaffTargetModel.create(req.body);
+		res.status(200).json({
+			status: 'success',
+			data: target,
 		});
 	}
 });

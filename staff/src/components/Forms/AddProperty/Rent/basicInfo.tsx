@@ -217,6 +217,9 @@ const RentBasicInfo = ({ onSubmit, initialData }: IRentBasicInfo) => {
 				initialData.city.name
 			),
 			rent,
+			name: initialData.name ? initialData.name : '',
+			email: initialData.email ? initialData.email : '',
+			number: initialData.number ? initialData.number : '',
 		});
 	}, []);
 	return (
@@ -239,6 +242,24 @@ const RentBasicInfo = ({ onSubmit, initialData }: IRentBasicInfo) => {
 						<Form>
 							{/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
 							<Grid container spacing={3}>
+								<Grid item xs={12}>
+									<FTextField
+										name="name"
+										label="Owner Name"
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<FTextField
+										name="email"
+										label="Owner Email"
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<FTextField
+										name="number"
+										label="Owner Number"
+									/>
+								</Grid>
 								<Grid item xs={12}>
 									<FTextField name="usp" label="USP" />
 								</Grid>

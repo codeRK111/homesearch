@@ -9,6 +9,11 @@ router.post(
 	authController.protect,
 	paymentController.createOrderTenantPackage
 );
+router.post(
+	'/assign-target',
+	adminController.protect,
+	paymentController.assignTarget
+);
 router.get(
 	'/pay-by-link/:id',
 	authController.protect,

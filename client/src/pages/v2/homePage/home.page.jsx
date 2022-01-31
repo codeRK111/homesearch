@@ -1,7 +1,6 @@
 import About from '../../../components/v2/about/about.component';
 import { Box } from '@material-ui/core';
 import Carousel from '../../../components/carousel';
-import CustomSwiper from '../../../components/swiper';
 import Enquiry from '../../../components/v2/enquiryComponent/enquiry.component';
 import EnquiryAgent from '../../../components/v2/enquiryComponent/enquiryAgent.component';
 import HeroArea from '../../../components/v2/heroArea/v2';
@@ -130,9 +129,6 @@ const HomePage = () => {
 				<h1 className={classes.secondaryHeading}>About Us</h1>
 				<Box mt="3rem">
 					<About />
-				</Box>
-				<Box mt="3rem">
-					<CustomSwiper />
 				</Box>
 			</Box>
 		</Box>

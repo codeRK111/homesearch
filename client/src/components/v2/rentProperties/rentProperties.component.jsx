@@ -104,7 +104,7 @@ const RentProperties = ({ cities, loading, setLoading, error, setError }) => {
 			<Box mt="3rem">
 				{loading ? (
 					<SimilarPropertiesSkeleton />
-				) : noResults ? (
+				) : noResults && data.properties.length === 0 ? (
 					<Typography variant="h6" align="center">
 						No results found
 					</Typography>

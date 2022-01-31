@@ -1,15 +1,17 @@
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Zoom from '@material-ui/core/Zoom';
-import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		position: 'fixed',
-		bottom: theme.spacing(2),
+		bottom: theme.spacing(8),
 		left: theme.spacing(2),
 	},
 }));
@@ -59,10 +61,16 @@ ScrollTop.propTypes = {
 };
 
 export default function BackToTop(props) {
+	const theme = useTheme();
+	const matches = useMediaQuery(theme.breakpoints.up('sm'));
 	return (
 		<ScrollTop {...props}>
-			<Fab color="primary" size="large" aria-label="scroll back to top">
-				<KeyboardArrowUpIcon fontSize="large" />
+			<Fab
+				color="primary"
+				size={matches ? 'large' : 'small'}
+				aria-label="scroll back to top"
+			>
+				<KeyboardArrowUpIcon fontSize={matches ? 'large' : 'small'} />
 			</Fab>
 		</ScrollTop>
 	);

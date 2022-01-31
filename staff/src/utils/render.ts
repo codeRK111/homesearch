@@ -1,9 +1,8 @@
-import { IStaff, StaffType } from './../model/staff.interface';
-
+import dayjs from 'dayjs';
 import { ILead } from '../model/lead.interface';
 import { PackageDetails } from '../model/package.interface';
 import { SubscriptionPackageType } from '../model/subscription.interface';
-import dayjs from 'dayjs';
+import { IStaff, StaffType } from './../model/staff.interface';
 
 export const renderCellData = (value: any) => {
 	return !!value ? value : '-';
@@ -158,6 +157,7 @@ export const capitalizeFirstLetter = (input: string): string =>
 	input.charAt(0).toUpperCase() + input.slice(1);
 
 export const years = ['2021', '2022'];
+export const futureYears = [2022, 2023, 2024, 2025, 2026, 2027, 2028];
 export const months = [
 	'Jan',
 	'Feb',

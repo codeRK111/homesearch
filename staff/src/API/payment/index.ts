@@ -261,6 +261,40 @@ export const asyncsendProposal = async (
 		throw new Error(asyncError(e));
 	}
 };
+
+export interface AssignTargetData {
+	targetAmount: number | string;
+	incentivePercentage: number;
+	year: number;
+	month: number;
+	staff: string;
+}
+
+export const asyncAssignTarget = async (
+	data: AssignTargetData
+): Promise<any> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.post<
+			SendProposalData,
+			AxiosResponse<ServerResponse<any>>
+		>(
+			`${V2EndPoint.Payment}/assign-target`,
+			data,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
 export const asyncsendInvoice = async (id: string): Promise<any> => {
 	try {
 		const token = localStorage.getItem('JWT_STAFF');

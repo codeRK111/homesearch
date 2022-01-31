@@ -4,15 +4,24 @@ import 'slick-carousel/slick/slick.css';
 import React from 'react';
 import Slider from 'react-slick';
 
-const Carousel = ({ docs = [], Card }) => {
-	// Style
+const test = [1, 2, 3, 4, 5, 6];
 
+const CustomSlider = ({ docs = [], Card }) => {
+	const [state, setState] = React.useState([]);
+
+	React.useEffect(() => {
+		if (docs && docs.length > 0) {
+			console.log({ docs });
+
+			setState(docs);
+		}
+	}, [docs]);
 	const settings = {
 		dots: false,
 		infinite: true,
 		speed: 500,
 		slidesToShow: 4,
-		slidesToScroll: 3,
+		slidesToScroll: 1,
 		responsive: [
 			{
 				breakpoint: 1024,
@@ -41,26 +50,29 @@ const Carousel = ({ docs = [], Card }) => {
 			},
 		],
 	};
+
 	return (
 		<div>
-			<Slider {...settings}>
-				{docs.map((c) => (
-					<div>
-						<div
-							key={c.id}
-							style={{
-								padding: '0.5rem',
-								height: '100%',
-								boxSizing: 'border-box',
-							}}
-						>
-							<Card data={c} />
+			{docs.length && (
+				<Slider {...settings}>
+					{docs.map((c, i) => (
+						<div>
+							<div
+								key={c.id}
+								style={{
+									padding: '0.5rem',
+									height: '100%',
+									boxSizing: 'border-box',
+								}}
+							>
+								<Card data={c} />
+							</div>
 						</div>
-					</div>
-				))}
-			</Slider>
+					))}
+				</Slider>
+			)}
 		</div>
 	);
 };
 
-export default Carousel;
+export default CustomSlider;
