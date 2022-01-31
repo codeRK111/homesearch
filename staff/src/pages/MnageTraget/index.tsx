@@ -30,7 +30,6 @@ const ManageTraget = () => {
 	const [year, setYear] = useState(2022);
 	const [incentivePercentage, setIncentivePercentage] = useState(20);
 	const [targetAmount, setTargetAmount] = useState<string | number>(0);
-	const [completedAmount, setCompletedAmount] = useState<string | number>(0);
 	const [month, setMonth] = useState(d.getMonth());
 	const [adminsData, setAdminsData] = useState<FetchAdminResponse>({
 		admins: [],
@@ -82,7 +81,6 @@ const ManageTraget = () => {
 				year,
 				month,
 				staff: selectedAdmin,
-				completedAmount,
 			};
 			await asyncAssignTarget(input);
 			setAssignLoading(false);
@@ -191,18 +189,7 @@ const ManageTraget = () => {
 								label="Target Amount"
 							/>
 						</Grid>
-						<Grid item xs={12} md={4}>
-							<TextField
-								type="number"
-								value={completedAmount}
-								onChange={(e) =>
-									setCompletedAmount(e.target.value)
-								}
-								variant="filled"
-								fullWidth
-								label="C Amount"
-							/>
-						</Grid>
+
 						<Grid item xs={12} md={4}>
 							<Button
 								variant="contained"
