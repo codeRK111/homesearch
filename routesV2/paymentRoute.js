@@ -14,6 +14,11 @@ router.post(
 	adminController.protect,
 	paymentController.assignTarget
 );
+router.post(
+	'/fetch-target-details',
+	adminController.protect,
+	paymentController.fetchTargetDeails
+);
 router.get(
 	'/pay-by-link/:id',
 	authController.protect,

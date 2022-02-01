@@ -4,6 +4,7 @@ import { PaymentLink, RazorpayPayment } from '../../model/payment.interface';
 import { AxiosResponse } from 'axios';
 import { IcreateSubscriptionData } from '../../components/Forms/createSubscription';
 import { ServerResponse } from '../../model/apiResponse.interface';
+import { StaffTarget } from '../../model/staffTarget.interface';
 import { Subscription } from '../../model/subscription.interface';
 
 export type FetchBasicInput = {
@@ -281,6 +282,38 @@ export const asyncAssignTarget = async (
 			AxiosResponse<ServerResponse<any>>
 		>(
 			`${V2EndPoint.Payment}/assign-target`,
+			data,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+
+export interface FetchTargetDetailsData {
+	year: number;
+	month: number;
+	staff: string;
+}
+
+export const asyncFetchTargetDetails = async (
+	data: FetchTargetDetailsData
+): Promise<StaffTarget> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.post<
+			SendProposalData,
+			AxiosResponse<ServerResponse<StaffTarget>>
+		>(
+			`${V2EndPoint.Payment}/fetch-target-details`,
 			data,
 
 			{

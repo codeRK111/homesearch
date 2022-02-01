@@ -15,6 +15,7 @@ import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 import { futureYears, months } from '../../utils/render';
 
 import { FetchAdminResponse } from '../../model/staff.interface';
+import FetchTarget from './fetchTarget';
 import Loader from '../../components/Loader';
 import { asyncAssignTarget } from '../../API/payment';
 import { asyncFetchAdmins } from '../../API/auth';
@@ -214,6 +215,9 @@ const ManageTraget = () => {
 						</Grid>
 					</Grid>
 				</Box>
+			</Box>
+			<Box mt="2rem">
+				<FetchTarget admins={adminsData.admins} />
 			</Box>
 		</Container>
 	);

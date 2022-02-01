@@ -897,3 +897,15 @@ exports.assignTarget = catchAsync(async (req, res, next) => {
 		});
 	}
 });
+
+exports.fetchTargetDeails = catchAsync(async (req, res, next) => {
+	const target = await StaffTargetModel.findOne({
+		year: req.body.year,
+		month: req.body.month,
+		staff: req.body.staff,
+	});
+	res.status(200).json({
+		status: 'success',
+		data: target,
+	});
+});
