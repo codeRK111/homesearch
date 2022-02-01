@@ -1,9 +1,11 @@
 import { Box, Paper, Typography } from '@material-ui/core';
 
-import AssessmentIcon from '@material-ui/icons/Assessment';
 import CountUp from 'react-countup';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import React from 'react';
 import { SpaceBetween } from '../UI/Flex/index';
+import clsx from 'clsx';
+import { toHumanReadable } from '../../utils/render';
 import useStyles from './targetCard.style';
 
 interface ITargetCard {
@@ -15,14 +17,19 @@ interface ITargetCard {
 const TargetCard: React.FC<ITargetCard> = ({ label, total, available }) => {
 	const style = useStyles();
 	return (
-		<Paper className={style.wrapper}>
+		<Paper
+			className={clsx(style.wrapper, {
+				[style.borderRed]: available > 0,
+				[style.borderGreen]: available < 0,
+			})}
+		>
 			<SpaceBetween>
 				<Box className={style.iconWrapper}>
-					<AssessmentIcon className={style.icon} />
+					<MonetizationOnIcon className={style.icon} />
 				</Box>
 				<Box ml="1rem">
 					<Typography color="textPrimary" gutterBottom align="center">
-						{label} - <b>{total}</b>
+						{label} - <b>{toHumanReadable(total)}</b>
 					</Typography>
 					<Typography
 						color="primary"
@@ -32,7 +39,9 @@ const TargetCard: React.FC<ITargetCard> = ({ label, total, available }) => {
 					>
 						<CountUp
 							start={0}
-							end={available}
+							end={
+								available < 0 ? Math.abs(available) : available
+							}
 							duration={2}
 							onEnd={() => console.log('Ended! 👏')}
 							onStart={() => console.log('Started! 💨')}
@@ -48,7 +57,7 @@ const TargetCard: React.FC<ITargetCard> = ({ label, total, available }) => {
 						display="block"
 						align="center"
 					>
-						Remaining
+						{available < 0 ? 'Ahead' : 'Remaining'}
 					</Typography>
 				</Box>
 			</SpaceBetween>

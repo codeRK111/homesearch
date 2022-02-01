@@ -98,19 +98,10 @@ const ClientSupportHome = () => {
 								<Typography variant="h5">My Leads</Typography>
 							</ButtonCard>
 						</Grid>
+
 						<Grid item xs={12} md={3}>
 							<TargetCard
-								label="Leads Target"
-								total={myTarget.leadTarget}
-								available={
-									myTarget.leadTarget -
-									myTarget.completeLeadTarget
-								}
-							/>
-						</Grid>
-						<Grid item xs={12} md={3}>
-							<TargetCard
-								label="Deals"
+								label="Target Amount"
 								total={myTarget.dealTarget}
 								available={
 									myTarget.dealTarget -

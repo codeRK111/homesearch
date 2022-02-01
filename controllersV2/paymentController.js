@@ -200,12 +200,26 @@ exports.success = catchAsync(async (req, res, next) => {
 		};
 
 		if (req.body.homeSearchStaff) {
-			const staff = await Admin.findById(req.body.homeSearchStaff);
-			console.log(staff);
-			if (staff) {
-				options.dealBy = req.body.homeSearchStaff;
-				staff.completeDealTarget = staff.completeDealTarget + 1;
-				await staff.save();
+			options.dealBy = req.body.homeSearchStaff;
+			const d = new Date();
+			const year = d.getFullYear();
+			const month = d.getMonth();
+			const target = await StaffTargetModel.findOne({
+				year,
+				month,
+				staff: req.body.homeSearchStaff,
+			});
+			if (target) {
+				target.completedAmount = req.body.paidAmount;
+				await target.save();
+			} else {
+				await StaffTargetModel.create({
+					year,
+					month,
+					completedAmount: req.body.paidAmount,
+					staff: req.body.homeSearchStaff,
+					targetAmount: 0,
+				});
 			}
 		}
 
@@ -265,8 +279,26 @@ exports.paymentLinkSuccess = catchAsync(async (req, res, next) => {
 			console.log(staff);
 			if (staff) {
 				options.dealBy = req.body.homeSearchStaff;
-				staff.completeDealTarget = staff.completeDealTarget + 1;
-				await staff.save();
+				const d = new Date();
+				const year = d.getFullYear();
+				const month = d.getMonth();
+				const target = await StaffTargetModel.findOne({
+					year,
+					month,
+					staff: req.body.homeSearchStaff,
+				});
+				if (target) {
+					target.completedAmount = req.body.paidAmount;
+					await target.save();
+				} else {
+					await StaffTargetModel.create({
+						year,
+						month,
+						completedAmount: req.body.paidAmount,
+						staff: req.body.homeSearchStaff,
+						targetAmount: 0,
+					});
+				}
 			}
 		}
 

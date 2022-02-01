@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme) => ({
 		width: 100,
 		height: 100,
 		background: theme.palette.warning.main,
-		marginTop: -48,
 		borderRadius: 10,
 		display: 'flex',
 		justifyContent: 'center',
@@ -18,6 +17,12 @@ const useStyles = makeStyles((theme) => ({
 	icon: {
 		fontSize: '4rem',
 		color: '#ffffff',
+	},
+	borderRed: {
+		border: '3px solid red',
+	},
+	borderGreen: {
+		border: '3px solid green',
 	},
 }));
 export default useStyles;
