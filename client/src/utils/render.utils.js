@@ -442,6 +442,7 @@ export const StaticPaths = {
 	property: (image) => `/assets/properties/${image}`,
 	blog: (image) => `/assets/blogs/${image}`,
 	profile: (image) => `/assets/profile/${image}`,
+	builder: (image) => `/assets/builders/${image}`,
 };
 
 export const toCurrency = (value) => {
