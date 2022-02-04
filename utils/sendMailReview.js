@@ -4,17 +4,40 @@ var path = require('path');
 const util = require('util');
 
 const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
+const OAuth2 = google.auth.OAuth2;
 const readFile = util.promisify(fs.readFile);
+
+const oauth2Client = new OAuth2(
+	process.env.OAUTH_CLIENT_ID,
+	process.env.OAUTH_CLIENT_SECRET, // Client Secret
+	'https://developers.google.com/oauthplayground' // Redirect URL
+);
+
+oauth2Client.setCredentials({
+	refresh_token: process.env.OAUTH_REFRESH_TOKEN,
+});
+const accessToken = oauth2Client.getAccessToken();
+
 const transporter = nodemailer.createTransport({
-	host: 'smtp.gmail.com',
-	port: 465,
-	secure: true, // use TLS
+	// host: 'smtp.gmail.com',
+	// port: 465,
+	// secure: true, // use TLS
+	// auth: {
+	// 	// user: 'payment@homesearchindia.com',
+	// 	// pass: 'hdf@876R',
+	// 	user: 'rakeshchandra.offcl@gmail.com',
+	// 	// pass: 'igtkjswmuwozrizk',
+	// 	pass: 'SfR2$3!#',
+	// },
+	service: 'gmail',
 	auth: {
-		// user: 'payment@homesearchindia.com',
-		// pass: 'hdf@876R',
+		type: 'OAuth2',
 		user: 'rakeshchandra.offcl@gmail.com',
-		// pass: 'igtkjswmuwozrizk',
-		pass: 'SfR2$3!#',
+		clientId: process.env.OAUTH_CLIENT_ID,
+		clientSecret: process.env.OAUTH_CLIENT_SECRET,
+		refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+		accessToken: accessToken,
 	},
 	tls: {
 		rejectUnauthorized: false,
