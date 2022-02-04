@@ -13,8 +13,8 @@ const transporter = nodemailer.createTransport({
 		// user: 'payment@homesearchindia.com',
 		// pass: 'hdf@876R',
 		user: 'rakeshchandra.offcl@gmail.com',
-		pass: 'igtkjswmuwozrizk',
-		// pass: 'obrein@25956',
+		// pass: 'igtkjswmuwozrizk',
+		pass: 'SfR2$3!#',
 	},
 	tls: {
 		rejectUnauthorized: false,
