@@ -210,7 +210,11 @@ exports.success = catchAsync(async (req, res, next) => {
 				staff: req.body.homeSearchStaff,
 			});
 			if (target) {
-				target.completedAmount = req.body.paidAmount;
+				let existingAmount = 0;
+				if (target.completedAmount) {
+					existingAmount = target.completedAmount;
+				}
+				target.completedAmount = existingAmount + req.body.paidAmount;
 				await target.save();
 			} else {
 				await StaffTargetModel.create({
@@ -288,7 +292,12 @@ exports.paymentLinkSuccess = catchAsync(async (req, res, next) => {
 					staff: req.body.homeSearchStaff,
 				});
 				if (target) {
-					target.completedAmount = req.body.paidAmount;
+					let existingAmount = 0;
+					if (target.completedAmount) {
+						existingAmount = target.completedAmount;
+					}
+					target.completedAmount =
+						existingAmount + req.body.paidAmount;
 					await target.save();
 				} else {
 					await StaffTargetModel.create({
