@@ -7,8 +7,8 @@ const nodemailer = require('nodemailer');
 const readFile = util.promisify(fs.readFile);
 const transporter = nodemailer.createTransport({
 	host: 'smtp.gmail.com',
-	port: 587,
-	secure: false, // use TLS
+	port: 465,
+	secure: true, // use TLS
 	auth: {
 		// user: 'payment@homesearchindia.com',
 		// pass: 'hdf@876R',

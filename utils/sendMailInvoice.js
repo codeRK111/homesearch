@@ -10,10 +10,11 @@ const transporter = nodemailer.createTransport({
 	port: 465,
 	secure: true, // use TLS
 	auth: {
-		user: 'rakeshchandra.offcl@gmail.com',
-		pass: 'SfR2$3!#',
-		// pass: 'igtkjswmuwozrizk',
+		// user: 'payment@homesearchindia.com',
 		// pass: 'hdf@876R',
+		user: 'rakeshchandra.offcl@gmail.com',
+		// pass: 'igtkjswmuwozrizk',
+		pass: 'SfR2$3!#',
 	},
 	tls: {
 		rejectUnauthorized: false,
