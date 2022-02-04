@@ -7,11 +7,12 @@ const nodemailer = require('nodemailer');
 const readFile = util.promisify(fs.readFile);
 const transporter = nodemailer.createTransport({
 	host: 'smtp.gmail.com',
-	port: 587,
-	secure: false, // use TLS
+	port: 465,
+	secure: true, // use TLS
 	auth: {
-		user: 'payment@homesearchindia.com',
-		pass: 'hdf@876R',
+		user: 'rakeshchandra.offcl@gmail.com',
+		pass: 'obrein@25956',
+		// pass: 'hdf@876R',
 	},
 	tls: {
 		rejectUnauthorized: false,
@@ -38,7 +39,7 @@ const sendEmailOTP = async (to, subject, invoicePath, invoiceName) => {
 		};
 		var htmlToSend = template(replacements);
 		var mailOptions = {
-			from: 'payment@homesearchindia.com',
+			from: 'rakeshchandra.offcl@gmail.com',
 			to,
 			subject,
 			html: htmlToSend,

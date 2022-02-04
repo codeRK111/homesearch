@@ -10,8 +10,10 @@ const transporter = nodemailer.createTransport({
 	port: 587,
 	secure: false, // use TLS
 	auth: {
-		user: 'payment@homesearchindia.com',
-		pass: 'hdf@876R',
+		// user: 'payment@homesearchindia.com',
+		// pass: 'hdf@876R',
+		user: 'rakeshchandra.offcl@gmail.com',
+		pass: 'obrein@25956',
 	},
 	tls: {
 		rejectUnauthorized: false,
@@ -39,7 +41,7 @@ const sendEmailInvoice = async (to, subject, url) => {
 		};
 		var htmlToSend = template(replacements);
 		var mailOptions = {
-			from: 'payment@homesearchindia.com',
+			from: 'rakeshchandra.offcl@gmail.com',
 			to,
 			subject,
 			html: htmlToSend,
