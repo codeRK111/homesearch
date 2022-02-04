@@ -39,7 +39,7 @@ const sendEmailInvoice = async (to, subject, url) => {
 		};
 		var htmlToSend = template(replacements);
 		var mailOptions = {
-			from: 'support@homesearchindia.com',
+			from: 'payment@homesearchindia.com',
 			to,
 			subject,
 			html: htmlToSend,
