@@ -10,8 +10,11 @@ const transporter = nodemailer.createTransport({
 	port: 587,
 	secure: false, // use TLS
 	auth: {
-		user: 'support@homesearchindia.com',
-		pass: 'hsi@319KIIT',
+		user: 'payment@homesearchindia.com',
+		pass: 'hdf@876R    ',
+	},
+	tls: {
+		rejectUnauthorized: false,
 	},
 });
 

@@ -7,13 +7,12 @@ const nodemailer = require('nodemailer');
 const readFile = util.promisify(fs.readFile);
 const transporter = nodemailer.createTransport({
 	host: 'smtp.gmail.com',
-	port: 465,
+	port: 587,
 	secure: true, // use TLS
 	auth: {
 		user: 'payment@homesearchindia.com',
 		pass: 'hdf@876R',
 	},
-	tls: { rejectUnauthorized: false },
 });
 
 const readHTMLFile = async (path) => {
