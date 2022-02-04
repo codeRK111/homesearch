@@ -30,7 +30,9 @@ const transporter = nodemailer.createTransport({
 	// 	// pass: 'igtkjswmuwozrizk',
 	// 	pass: 'SfR2$3!#',
 	// },
-	service: 'gmail',
+	host: 'smtp.gmail.com',
+	port: 465,
+	secure: true,
 	auth: {
 		type: 'OAuth2',
 		user: 'rakeshchandra.offcl@gmail.com',
