@@ -56,7 +56,7 @@ const NewsPage = ({ loading, setLoading, error, setError }) => {
 				<ErrorBackdrop open={!!error} message={error} />
 				{data.length > 0 && (
 					<Box>
-						<Grid container spacing={1}>
+						<Grid container spacing={3}>
 							<Grid item xs={12} md={8}>
 								<CardMedia
 									image={renderBlogImage(data[0].photo)}

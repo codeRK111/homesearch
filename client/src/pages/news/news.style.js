@@ -6,8 +6,13 @@ const useStyles = makeStyles((theme) => ({
 		boxSizing: 'border-box',
 	},
 	mainNewsWrapper: {
-		height: 500,
 		width: '100%',
+		height: 200,
+		[theme.breakpoints.up('sm')]: {
+			height: '100%',
+			width: '100%',
+		},
+
 		display: 'flex',
 		alignItems: 'flex-end',
 	},
@@ -27,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
 		color: '#ffffff',
 	},
 	fullHeight: {
-		height: '100%',
+		height: 200,
+		[theme.breakpoints.up('sm')]: {
+			height: '100%',
+		},
 	},
 	headingWrapper: {
 		display: 'flex',
@@ -35,6 +43,14 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		[theme.breakpoints.down('sm')]: {},
+	},
+	miniCardMedia: {
+		width: '100%',
+		height: 200,
+		[theme.breakpoints.up('sm')]: {
+			width: '100%',
+			height: '100%',
+		},
 	},
 }));
 export default useStyles;

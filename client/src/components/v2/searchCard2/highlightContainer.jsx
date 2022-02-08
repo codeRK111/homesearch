@@ -21,7 +21,10 @@ const useStyles = makeStyles((theme) => ({
 		},
 		'& span': {
 			fontWeight: 'bold',
-			fontSize: '1.5vw',
+			fontSize: '1.4rem',
+			[theme.breakpoints.up('sm')]: {
+				fontSize: '1.5vw',
+			},
 		},
 	},
 

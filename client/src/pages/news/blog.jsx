@@ -15,18 +15,14 @@ export const BlogCardMini = ({ blog }) => {
 	const style = useStyles();
 	const { bold, link } = useGlobalStyles();
 	return (
-		<Grid container spacing={1}>
-			<Grid item xs={3}>
+		<Grid container spacing={3}>
+			<Grid item xs={12} md={3}>
 				<CardMedia
 					image={renderBlogImage(blog.photo)}
 					className={style.mainNewsWrapper}
-					style={{
-						height: '100%',
-						width: '100%',
-					}}
 				/>
 			</Grid>
-			<Grid item xs={9}>
+			<Grid item xs={12} md={9}>
 				<Link to={`/news/${blog.slug}`} className={link}>
 					<Typography variant="h6" className={bold}>
 						{blog.title}
@@ -68,7 +64,7 @@ const BlogCard = ({ blog }) => {
 	const style = useStyles();
 	const { bold, link, colorGray } = useGlobalStyles();
 	return (
-		<Grid container spacing={3} component={Box} height={300}>
+		<Grid container spacing={3} component={Box}>
 			<Grid item xs={12} md={6}>
 				<CardMedia
 					image={renderBlogImage(blog.photo)}
