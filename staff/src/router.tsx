@@ -45,6 +45,7 @@ const AddPropertyPage = lazy(() => import('./pages/AddProperty'));
 const BlogsPage = lazy(() => import('./pages/BlogList'));
 const BrowsePropertiesPage = lazy(() => import('./pages/BrowseProperties/v2'));
 const LeadStrategyPage = lazy(() => import('./pages/LeadStrategy'));
+const TestimonialPage = lazy(() => import('./pages/Testimonial'));
 const LoginPage = lazy(() => import('./pages/Login'));
 const ManageLeadPage = lazy(() => import('./pages/ManageLead'));
 const ManageLeadsPage = lazy(() => import('./pages/ManageProperty'));
@@ -146,6 +147,11 @@ const Router = () => {
 						path={'/lead-strategies'}
 						exact
 						component={LeadStrategyPage}
+					/>
+					<PrivateRoute
+						path={'/testimonials'}
+						exact
+						component={TestimonialPage}
 					/>
 					<PrivateRoute
 						path={'/posted-leads'}

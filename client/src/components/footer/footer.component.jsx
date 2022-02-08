@@ -1,5 +1,6 @@
 import { Avatar, Box, Grid, Typography } from '@material-ui/core';
 import { FacebookShareButton, TwitterShareButton } from 'react-share';
+import { Link, useHistory } from 'react-router-dom';
 import {
 	capitalizeFirstLetter,
 	facbookLink,
@@ -8,7 +9,6 @@ import {
 } from '../../utils/render.utils';
 
 import FacebookIcon from '@material-ui/icons/Facebook';
-import { Link } from 'react-router-dom';
 import React from 'react';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 		color: '#ffffff',
 		textDecoration: 'none',
 		lineHeight: 1.5,
+		cursor: 'pointer',
 		'&:hover': {
 			textDecoration: 'underline',
 			color: theme.utilColor,
@@ -58,6 +59,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Footer = () => {
 	const classes = useStyles();
+	const history = useHistory();
+	const handleTestimonials = (event, value) => {
+		history.push('/');
+		const anchor = (event.target.ownerDocument || document).querySelector(
+			'#testimonials'
+		);
+
+		if (anchor) {
+			anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		}
+		// onSearch();
+	};
 	return (
 		<Box className={classes.wrapper} p="2rem">
 			<Grid container spacing={3}>
@@ -105,9 +118,12 @@ const Footer = () => {
 					</Box>
 
 					<Box>
-						<Link className={classes.link} to="/">
+						<span
+							className={classes.link}
+							onClick={handleTestimonials}
+						>
 							Testimonials
-						</Link>
+						</span>
 					</Box>
 				</Grid>
 

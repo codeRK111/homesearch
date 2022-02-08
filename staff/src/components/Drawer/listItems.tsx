@@ -8,6 +8,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import ListDropDown from '../ListCollapse';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PaymentIcon from '@material-ui/icons/Payment';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import RenderByMultipleRole from '../RenderByRole/multiple';
 import RenderByRole from '../RenderByRole';
@@ -153,6 +154,21 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 						<ListItemText primary={'My Strategies'} />
 					</ListItem>
 				</RenderByMultipleRole>
+				<ListItem
+					button
+					onClick={changeRoute('/testimonials')}
+					className={clsx(manageSelectedStyle('/testimonials'))}
+				>
+					<ListItemIcon>
+						<PeopleAltIcon
+							color="primary"
+							className={clsx(
+								manageSelectedStyleIcon('/testimonials')
+							)}
+						/>
+					</ListItemIcon>
+					<ListItemText primary={'Manage Testimonials'} />
+				</ListItem>
 				<RenderByRole type={StaffType.GM}>
 					<ListDropDown
 						open={blogOpen}

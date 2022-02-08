@@ -17,6 +17,7 @@ export enum V2EndPoint {
 	Join = '/join',
 	Lead = '/lead',
 	LeadStrategy = '/lead-strategy',
+	Testimonial = '/testimonial',
 	Staff = '/staff',
 	Blog = '/blog',
 	Package = '/package',

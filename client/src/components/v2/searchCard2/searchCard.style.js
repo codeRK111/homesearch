@@ -268,6 +268,7 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: 'none',
 		'&:hover': {
 			textDecoration: 'underline',
+			color: theme.utilColor,
 		},
 	},
 }));

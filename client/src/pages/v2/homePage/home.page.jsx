@@ -8,6 +8,7 @@ import React from 'react';
 import RecentBlogs from '../../../components/v2/recentBlogs/recentBlogs.component';
 import RentProperties from '../../../components/v2/rentProperties/rentProperties.component';
 import SaleProperties from '../../../components/v2/saleProperties/saleProperties.component';
+import Testimonials from '../../../components/v2/testimonials';
 import TopBuilders from '../../../components/v2/topBuilders/topBuilders.component';
 import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
@@ -112,8 +113,22 @@ const HomePage = () => {
 				)}
 			>
 				<h1 className={classes.primaryHeading}>Recent Blog</h1>
-				<Box mt="3rem">
+				<Box mt="3rem" mb="3rem">
 					<RecentBlogs />
+				</Box>
+			</Box>
+			<Box
+				className={clsx(
+					classes.componentSpacer,
+					classes.componentPadding
+				)}
+				id="testimonials"
+			>
+				<h1 className={classes.secondaryHeading}>
+					What our users says about us
+				</h1>
+				<Box mt="3rem">
+					<Testimonials />
 				</Box>
 			</Box>
 			<Box

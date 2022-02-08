@@ -48,6 +48,7 @@ const v2ReviewRoute = require('./routesV2/reviewRoute');
 const v2JoinRequestRoute = require('./routesV2/joinRequestRoute');
 const leadRoute = require('./routesV2/leadRoute');
 const leadStrategyRoute = require('./routesV2/leadStrategyRoute');
+const testimonialRoute = require('./routesV2/testimonialRoute');
 const staffRoute = require('./routesV2/staffRoute');
 const blogRoute = require('./routesV2/blogRoute');
 const paymentRoute = require('./routesV2/paymentRoute');
@@ -142,6 +143,10 @@ app.use(
 	express.static(path.join(__dirname, 'images', 'lead_strategy_images'))
 );
 app.use(
+	'/assets/testimonial',
+	express.static(path.join(__dirname, 'images', 'testimonial_images'))
+);
+app.use(
 	'/assets/blogs',
 	express.static(path.join(__dirname, 'images', 'blog_images'))
 );
@@ -213,6 +218,7 @@ app.use('/api/v2/review', v2ReviewRoute);
 app.use('/api/v2/join', v2JoinRequestRoute);
 app.use('/api/v2/lead', leadRoute);
 app.use('/api/v2/lead-strategy', leadStrategyRoute);
+app.use('/api/v2/testimonial', testimonialRoute);
 app.use('/api/v2/staff', staffRoute);
 app.use('/api/v2/blog', blogRoute);
 app.use('/api/v2/payment', paymentRoute);

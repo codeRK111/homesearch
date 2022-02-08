@@ -443,6 +443,7 @@ export const StaticPaths = {
 	blog: (image) => `/assets/blogs/${image}`,
 	profile: (image) => `/assets/profile/${image}`,
 	builder: (image) => `/assets/builders/${image}`,
+	testimonial: (image) => `/assets/testimonial/${image}`,
 };
 
 export const toCurrency = (value) => {
