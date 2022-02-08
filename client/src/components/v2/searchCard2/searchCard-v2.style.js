@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 		left: 0,
 		right: 0,
 		bottom: 0,
-		backgroundColor: 'rgba(0,0,0,0.2)',
+		// backgroundColor: 'rgba(0,0,0,0.2)',
 		zIndex: 2,
 		display: 'flex',
 		justifyContent: 'flex-end',
