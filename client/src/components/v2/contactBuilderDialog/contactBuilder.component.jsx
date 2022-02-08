@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { getHostName } from '../../../utils/render.utils';
 import { selectUser } from '../../../redux/auth/auth.selectors';
 import useStyles from './contactBuilder.style';
 import { withAsync } from '../../../hoc/withAsync';
@@ -151,6 +152,11 @@ const JoinHomesearch = ({
 				aria-labelledby="customized-dialog-title"
 				open={open}
 				TransitionComponent={Transition}
+				fullWidth={true}
+				maxWidth={'sm'}
+				classes={{
+					paperFullWidth: style.dialogWrapper,
+				}}
 			>
 				<DialogTitle id="customized-dialog-title" onClose={handleClose}>
 					Please share your details
@@ -170,8 +176,8 @@ const JoinHomesearch = ({
 									fontSize: '1.1rem',
 								}}
 							>
-								Thank you, for showing interest in homesearch18.
-								We will reach out to you soon
+								Thank you, for showing interest in{' '}
+								{getHostName()}. We will reach out to you soon
 							</Typography>
 							<Box
 								mt="1rem"

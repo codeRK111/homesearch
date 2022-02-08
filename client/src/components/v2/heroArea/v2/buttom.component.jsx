@@ -34,7 +34,10 @@ const BottomLinkComponent = () => {
 	return (
 		<Grid container spacing={smallScreen ? 3 : 7} justify="center">
 			<Grid item {...gridProps}>
-				<div className={style.iconWraper}>
+				<div
+					className={style.iconWraper}
+					onClick={redirectTo('/browse-builders')}
+				>
 					<div className={classes.iconShadow}>
 						<img
 							src={builderLogo}

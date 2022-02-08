@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
-		padding: '4rem 1rem 1rem 1rem',
+		padding: '2rem 1rem 1rem 1rem',
 		boxSizing: 'border-box',
 
 		[theme.breakpoints.down('sm')]: {
@@ -14,8 +14,7 @@ const useStyles = makeStyles((theme) => ({
 			height: '90vh',
 			backgroundImage: `url(${img})`,
 			backgroundRepeat: 'no-repeat',
-
-			backgroundSize: 'contain',
+			backgroundSize: '100% 50vh',
 			backgroundPosition: 'bottom',
 		},
 	},
@@ -34,8 +33,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	categoryButton: {
 		border: 'none',
+		paddingBottom: '0.5rem',
 		background: 'transparent',
-		fontSize: '1.3rem',
+		fontSize: '1.2rem',
 		fontWeight: 'bolder',
 		color: theme.primaryHeadingColor,
 		cursor: 'pointer',
@@ -45,10 +45,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 	categorySelectedButton: {
 		color: theme.utilColor,
+		borderBottom: `5px solid ${theme.utilColor}`,
 	},
 	menuParent: {
 		position: 'relative',
-		marginTop: '2rem',
+		marginTop: '1rem',
 		[theme.breakpoints.down('sm')]: {
 			marginTop: '1rem',
 			width: '100%',
@@ -109,6 +110,8 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 15,
 		fontWeight: 'bold',
 		cursor: 'pointer',
+		display: 'flex',
+		alignItems: 'center',
 	},
 	citiesWrapper: {
 		maxHeight: 200,
@@ -123,10 +126,14 @@ const useStyles = makeStyles((theme) => ({
 	iconText: {
 		color: theme.primaryHeadingColor,
 		fontWeight: 'bold',
-		fontSize: '0.8rem',
+		fontSize: '0.7rem',
+		lineHeight: 1.5,
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '0.7rem',
 		},
+	},
+	citySelected: {
+		background: theme.utilColor,
 	},
 }));
 export default useStyles;

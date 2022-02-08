@@ -16,6 +16,12 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: '1.4rem',
 		margin: 0,
 		padding: 0,
+		color: '#000000',
+		textDecoration: 'none',
+		'&:hover': {
+			textDecoration: 'underline',
+			color: theme.palette.primary.main,
+		},
 	},
 	imageWrapper: (props) => ({
 		position: 'relative',
@@ -72,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
 		letterSpacing: 1,
 	},
 	description: {
-		fontSize: '0.9rem',
+		fontSize: '0.8rem',
 		lineHeight: 1.4,
 		height: 100,
 		overflow: 'auto',

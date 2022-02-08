@@ -599,7 +599,7 @@ exports.createSubscription = catchAsync(async (req, res, next) => {
 			new AppError(`Missing fields - ${excludedFields.join(',')}`)
 		);
 	}
-	const keys = Object.keys(req.body);
+	const keys = Object.keys(req.body); 
 	keys.forEach((c) => {
 		if (!validFields.includes(c)) {
 			delete req.body[c];
@@ -619,6 +619,32 @@ exports.createSubscription = catchAsync(async (req, res, next) => {
 		package = 'Consultant Fee';
 	}
 
+	if (req.body.dealBy) {
+		const d = new Date();
+		const year = d.getFullYear();
+		const month = d.getMonth();
+		const target = await StaffTargetModel.findOne({
+			year,
+			month,
+			staff: req.body.dealBy,
+		});
+		if (target) {
+			let existingAmount = 0;
+			if (target.completedAmount) {
+				existingAmount = target.completedAmount;
+			}
+			target.completedAmount = existingAmount + req.body.paidAmount;
+			await target.save();
+		} else {
+			await StaffTargetModel.create({
+				year,
+				month,
+				completedAmount: req.body.paidAmount,
+				staff: req.body.dealBy,
+				targetAmount: 0,
+			});
+		}
+	}
 	const discount = req.body.mainAmount - req.body.paidAmount;
 
 	const invoiceName = await createInvoice(

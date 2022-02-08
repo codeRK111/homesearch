@@ -1,4 +1,5 @@
 import { Box, Container, Typography } from '@material-ui/core';
+import { capitalizeFirstLetter, getHostName } from '../../utils/render.utils';
 
 import Nav from '../../components/v2/pageNav/nav.component';
 import React from 'react';
@@ -31,17 +32,18 @@ const Refund = () => {
 							browsing purpose that is free of cost.
 						</p>
 						<p>
-							Homesearch18.com offers a multiple plans of Services
-							which the User may subscribe.
+							{capitalizeFirstLetter(getHostName())} offers a
+							multiple plans of Services which the User may
+							subscribe.
 						</p>
 						<p>
 							The plan subscription fee paid by the User is
 							non-refundable at any circumstances.
 						</p>
 						<p>
-							Homesearch18.com reserves the right to revise the
-							fee of any subscription plan without notice to the
-							User at any time.
+							{capitalizeFirstLetter(getHostName())} reserves the
+							right to revise the fee of any subscription plan
+							without notice to the User at any time.
 						</p>
 						<p>
 							Once you subscribe our Plan, a relationship

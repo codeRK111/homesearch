@@ -8,10 +8,15 @@ const Chip = ({ title, selected = false, ...otherProps }) => {
 	const classes = useStyles();
 	const globalClasses = useGlobalStyles();
 	return (
-		<div className={classes.wrapper} {...otherProps}>
+		<div
+			className={clsx(classes.wrapper, {
+				[classes.selected]: selected,
+			})}
+			{...otherProps}
+		>
 			<span
 				className={clsx(classes.chipText, {
-					[globalClasses.colorSecondary]: selected,
+					[classes.selected]: selected,
 				})}
 			>
 				{title}

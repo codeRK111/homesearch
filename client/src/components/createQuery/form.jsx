@@ -26,6 +26,7 @@ import WithIcon from '../inputs/withIcon';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { getHostName } from '../../utils/render.utils';
 import { toggleLoginPopup } from '../../redux/ui/ui.actions';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from './query.style';
@@ -208,8 +209,8 @@ function QueryForm({
 								fontSize: '1.1rem',
 							}}
 						>
-							Thank you, for showing interest in homesearch18. We
-							will reach out to you soon
+							Thank you, for showing interest in {getHostName()}.
+							We will reach out to you soon
 						</Typography>
 						<Box mt="1rem" display="flex" justifyContent="center">
 							<button

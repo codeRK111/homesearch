@@ -1,3 +1,8 @@
+import {
+	capitalizeFirstLetter,
+	getHostName,
+} from '../../../utils/render.utils';
+
 import ContactBuilder from '../contactBuilderDialog/contactBuilder.component';
 import { Grid } from '@material-ui/core';
 import React from 'react';
@@ -30,7 +35,8 @@ const Enquiry = () => {
 				<Grid item xs={12} md={9}>
 					<div className={classes.flexWrapper}>
 						<h1>
-							HomesearchIndia Business Assist Plan For Builders
+							{capitalizeFirstLetter(getHostName())} Business
+							Assist Plan For Builders
 						</h1>
 						<h3>Get in touch with us to promote your projects.</h3>
 						<button onClick={handleClickOpen}>ENQUIRY NOW</button>

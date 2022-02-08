@@ -298,28 +298,37 @@ const SearchPage = ({
 										>
 											Amenities
 										</h2>
-										<Grid container spacing={3}>
-											{asyncState.property.allAmenities
-												.filter((c) =>
-													asyncState.property.amenities.includes(
-														c.id
+
+										{asyncState.property.amenities.length >
+										0 ? (
+											<Grid container spacing={3}>
+												{' '}
+												{asyncState.property.allAmenities
+													.filter((c) =>
+														asyncState.property.amenities.includes(
+															c.id
+														)
 													)
-												)
-												.map((b) => {
-													return (
-														<Grid
-															item
-															xs={6}
-															md={3}
-															key={b.id}
-														>
-															<Amenity
-																text={b.name}
-															/>
-														</Grid>
-													);
-												})}
-										</Grid>
+													.map((b) => {
+														return (
+															<Grid
+																item
+																xs={6}
+																md={3}
+																key={b.id}
+															>
+																<Amenity
+																	text={
+																		b.name
+																	}
+																/>
+															</Grid>
+														);
+													})}{' '}
+											</Grid>
+										) : (
+											<p>No Amenities</p>
+										)}
 									</>
 								)}
 
@@ -491,10 +500,11 @@ const SearchPage = ({
 											</h2>
 											<p>
 												<i>
-													{
-														asyncState.property
-															.restrictions
-													}
+													{asyncState.property
+														.restrictions
+														? asyncState.property
+																.restrictions
+														: 'No restrictions'}
 												</i>
 											</p>
 										</Box>
@@ -559,6 +569,7 @@ const SearchPage = ({
 									}
 									city={asyncState.property.city.id}
 									location={asyncState.property.location.id}
+									excludeId={asyncState.property.id}
 								/>
 							</>
 						)}

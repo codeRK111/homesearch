@@ -453,3 +453,16 @@ export const toCurrency = (value) => {
 		  })
 		: '-';
 };
+
+export const getHostName = () => `${window.location.hostname}`;
+
+export const facbookLink = {
+	'homesearch18.com': 'https://www.facebook.com/Homesearch18',
+	localhost: 'https://www.facebook.com/Homesearch18',
+	'homesearchindia.com': 'https://www.facebook.com/homesearchindiacom/',
+};
+export const instagramLink = {
+	'homesearch18.com': 'https://www.instagram.com/homesearch18/',
+	localhost: 'https://www.instagram.com/homesearch18/',
+	'homesearchindia.com': 'https://www.instagram.com/homesearchindiacom/',
+};

@@ -9,6 +9,11 @@ import {
 	Typography,
 } from '@material-ui/core';
 import { Form, Formik } from 'formik';
+import {
+	apiUrl,
+	capitalizeFirstLetter,
+	getHostName,
+} from '../../utils/render.utils';
 import { getAuthOption, loginDialogStatus } from '../../redux/ui/ui.selectors';
 import {
 	selectSendOtpLoading,
@@ -26,7 +31,6 @@ import FormInput from '../formik/textFieldDefault.component';
 import OtpInput from 'react-otp-input';
 import React from 'react';
 import Slide from '@material-ui/core/Slide';
-import { apiUrl } from '../../utils/render.utils';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -301,7 +305,7 @@ function AlertDialogSlide({
 									id="customized-dialog-title"
 									onClose={handleClose}
 								>
-									Homesearch18
+									{capitalizeFirstLetter(getHostName())}
 								</CDialogTitle>
 
 								<Box className={classes.contentWrapper}>

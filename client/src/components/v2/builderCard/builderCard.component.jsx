@@ -1,5 +1,6 @@
 import { Avatar, Box, Grid } from '@material-ui/core';
 
+import { Link } from 'react-router-dom';
 import React from 'react';
 import city from '../../../assets/city.jpg';
 import { logo } from '../../../utils/statc';
@@ -42,9 +43,12 @@ const PropertyCard = ({ data }) => {
 					</Grid>
 					<Grid item xs={8}>
 						<Box mt="1rem">
-							<h4 className={classes.developerName}>
+							<Link
+								className={classes.developerName}
+								to={`/${data.slug}`}
+							>
 								{data.developerName}
-							</h4>
+							</Link>
 							<Box className={classes.numbersWrapper} mt="1rem">
 								<div>
 									<span className={classes.value}>

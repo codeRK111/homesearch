@@ -23,5 +23,8 @@ const useStyles = makeStyles((theme) => ({
 	chipText: {
 		fontSize: '0.8rem',
 	},
+	selected: {
+		background: theme.utilColor,
+	},
 }));
 export default useStyles;

@@ -2,6 +2,7 @@ import { Box, Container, Typography } from '@material-ui/core';
 
 import Nav from '../../components/v2/pageNav/nav.component';
 import React from 'react';
+import { getHostName } from '../../utils/render.utils';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +34,7 @@ const Terms = () => {
 						Terms & Conditions
 					</Typography>
 					<p>
-						Welcome to Homesearch18.com,The Website and Mobile
+						Welcome to {getHostName()},The Website and Mobile
 						Application,PWA Application is owned by GROVIS
 						TECHNOLOGIES PVT LTD, a company incorporated under the
 						Indian Companies Act, 1956(Company Registration No.
@@ -47,8 +48,8 @@ const Terms = () => {
 						to have read these terms and Conditions very carefully
 						and agreed to the following terms and conditions before
 						using the website and Mobile Application ({' '}
-						<a href="https://homesearch18.com">
-							www.homesearch18.com
+						<a href="https://{getHostName()}">
+							www.{getHostName()}
 						</a>{' '}
 						).
 					</p>
@@ -100,8 +101,8 @@ const Terms = () => {
 						</li>
 						<li>
 							First time Users can access the Site for preliminary
-							browsing without creating an Account
-							.Homesearch18.com reserves the right to conduct
+							browsing without creating an Account .
+							{getHostName()} reserves the right to conduct
 							verification and security procedures in respect of
 							all information provided by the user. The user
 							agrees that entered mobile number at the time of
@@ -116,7 +117,7 @@ const Terms = () => {
 							profiles.
 						</li>
 						<li>
-							Homesearch18.com website and mobile application
+							{getHostName()} website and mobile application
 							enables the user to connect with independent third
 							party Warehouses /Owners Warehouses/ Consultants
 							warehouse, warehouse designing consultants and
@@ -124,7 +125,7 @@ const Terms = () => {
 							listed on the Website and Mobile Application.
 						</li>
 						<li>
-							The Homesearch18.comw ebsite and mobile application
+							The {getHostName()}w ebsite and mobile application
 							allows registered users to perform below activities.{' '}
 							<br />
 							A- List His/Her residential property for Sale/Rent
@@ -155,7 +156,7 @@ const Terms = () => {
 						</li>
 						<li>
 							All property and projects listings for sale/Rent on
-							the Homesearch18.com are the sole responsibility of
+							the {getHostName()} are the sole responsibility of
 							the user&#39;s who may be the owner or a property
 							manager or duly authorized property manager or agent
 							of the owner, user are solely responsible for
@@ -180,13 +181,13 @@ const Terms = () => {
 						</li>
 						<li>
 							You agree that the Content that you posted or submit
-							to Homesearch18.com may be redistributed through the
+							to {getHostName()} may be redistributed through the
 							Internet and other media channels like
 							Facebook,Twitter,Google..etc, and may be viewed by
 							the general public.
 						</li>
 						<li>
-							Homesearch18.com is not liable for any losses or
+							{getHostName()} is not liable for any losses or
 							damages caused by: (i) the act, default or omission
 							of a user&#39;s, (ii) failure to observe any of the
 							rules relating to property under applicable
@@ -196,16 +197,16 @@ const Terms = () => {
 							majeure, mechanical delay or failure of equipment.
 						</li>
 						<li>
-							Homesearch18.com is only a platform for the
+							{getHostName()} is only a platform for the
 							advertising of different kinds of
 							Projects/Properties on Rent/Sale, Any contractual or
 							agreements / deals / transactions / negotiations are
-							agreed to between the users .Homesearch18.com is not
+							agreed to between the users .{getHostName()} is not
 							responsible for any breach of any contract concluded
 							by any of the user in any manner.
 						</li>
 						<li>
-							Homesearch18.com may from time to time add, modify,
+							{getHostName()} may from time to time add, modify,
 							suspend or cease (temporarily or permanently) the
 							provision of any element of the Services without any
 							notice to the user.
@@ -220,7 +221,7 @@ const Terms = () => {
 						</li>
 						<li>
 							You agree that You shall not abuse Verbal, physical,
-							written or any other of Homesearch18.com users,
+							written or any other of {getHostName()} users,
 							employees, members, or officers may result in
 							immediate account termination including legal action
 							against you.
@@ -234,13 +235,13 @@ const Terms = () => {
 							The Company may at its sole discretion and without
 							assigning any reason whatsoever at any time
 							deactivate or/and suspend the User’s access to
-							Homesearch18.com and/or the Services without notice
+							{getHostName()} and/or the Services without notice
 							to carry out system maintenance or/and upgrading
 							or/and testing or/and repairs or/and other related
 							work.
 						</li>
 						<li>
-							Homesearch18.com does not guarantee that any content
+							{getHostName()} does not guarantee that any content
 							postings, messages, text, files, photos, comments,
 							images, or any such material (&quot;Content&quot;)
 							on our Website and mobile Application will be free
@@ -260,21 +261,21 @@ const Terms = () => {
 							safety and reliability of the Content.
 						</li>
 						<li>
-							Homesearch18.com may make changes to the Website,
+							{getHostName()} may make changes to the Website,
 							Mobile Application and Services or modify these
 							Terms, including the Service Fees, without prior
-							notice, from time to time. Homesearch18.com will
+							notice, from time to time. {getHostName()} will
 							treat your use as acceptance of the amended terms.
 							If the modified Terms are not acceptable to you,
 							your only choice is to stop using the Website,
 							Mobile Application and Services.
 						</li>
 						<li>
-							Homesearch18.com offers a multiple plans of Services
+							{getHostName()} offers a multiple plans of Services
 							which the User may subscribe <br />
 							A. The plan subscription fee paid by the User is
 							non-refundable at any circumstances. <br />
-							B. Homesearch18.com reserves the right to revise the
+							B. {getHostName()} reserves the right to revise the
 							fee of any subscription plan without notice to the
 							User at any time.
 						</li>
@@ -288,7 +289,7 @@ const Terms = () => {
 							Competent Courts in Bangalore,Karnataka, India only.
 						</li>
 						<li>
-							Homesearch18.com is only a platform for the
+							{getHostName()} is only a platform for the
 							advertising of different kinds of
 							Projects/Properties on Rent/Sale. The Users are
 							aware about the rules and regulations in relation to
@@ -298,11 +299,11 @@ const Terms = () => {
 							website for updates and information in relation to
 							any property listed on the Site,The User are solely
 							responsible for prior to finalizing any deal or
-							transaction.Homesearch18.con not taking any
+							transaction.{getHostName()} not taking any
 							responsibity.
 						</li>
 						<li>
-							Homesearch18.com respects the privacy of its users
+							{getHostName()} respects the privacy of its users
 							and is committed to its protection. Read the Privacy
 							Policy.
 						</li>

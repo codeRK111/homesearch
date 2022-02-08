@@ -1,4 +1,5 @@
 import { Box, Container, Typography } from '@material-ui/core';
+import { capitalizeFirstLetter, getHostName } from '../../utils/render.utils';
 
 import Nav from '../../components/v2/pageNav/nav.component';
 import React from 'react';
@@ -26,35 +27,37 @@ const PrivacyPolicies = () => {
 						Privacy Policies
 					</Typography>
 					<p>
-						Welcome to Homesearch18.com,The Website and Mobile
-						Application,PWA Application is owned by GROVIS
-						TECHNOLOGIES PVT LTD, a company incorporated under the
-						Indian Companies Act, 1956(Company Registration No.
-						129880, CIN-(U74999KA2019PTC129880),and having its
-						registered Ofice at #363, 19th Main Road 1st Block
-						Rajajinagar,Bangalore-560010
+						Welcome to {capitalizeFirstLetter(getHostName())},The
+						Website and Mobile Application,PWA Application is owned
+						by GROVIS TECHNOLOGIES PVT LTD, a company incorporated
+						under the Indian Companies Act, 1956(Company
+						Registration No. 129880, CIN-(U74999KA2019PTC129880),and
+						having its registered Ofice at #363, 19th Main Road 1st
+						Block Rajajinagar,Bangalore-560010
 					</p>
 					<p>
-						Homesearch18.com is committed to protecting your
-						privacy. As according with the provisions of the
-						Information Technology Act, 2000 and the rules made
-						thereunder that require publishing the rules and
-						regulations, privacy policy and terms of use on an
-						online portal of the Homesearch18.com.
+						{capitalizeFirstLetter(getHostName())} is committed to
+						protecting your privacy. As according with the
+						provisions of the Information Technology Act, 2000 and
+						the rules made thereunder that require publishing the
+						rules and regulations, privacy policy and terms of use
+						on an online portal of the{' '}
+						{capitalizeFirstLetter(getHostName())}.
 					</p>
 					<p>
 						We have prepared this Privacy Policy to describe to you
 						detail about the Personal Data (as defined below) we
 						collect from users of our website or Mobile Apps,
-						located at Homesearch18.com (the “Website” and
-						&quot;Mobile Apps&quot;) and The Company is engaged in
-						the business of facilitating/Arranging tenants, buyers
-						,Owners and sellers to explore and identify many kinds
-						of properties including lands, buildings, houses, flats,
-						and other residential properties and enabling them to
-						carry on transaction of purchase, sale, renting or
-						otherwise relating to movable and immovable properties
-						and other related services (“Services”).
+						located at {capitalizeFirstLetter(getHostName())} (the
+						“Website” and &quot;Mobile Apps&quot;) and The Company
+						is engaged in the business of facilitating/Arranging
+						tenants, buyers ,Owners and sellers to explore and
+						identify many kinds of properties including lands,
+						buildings, houses, flats, and other residential
+						properties and enabling them to carry on transaction of
+						purchase, sale, renting or otherwise relating to movable
+						and immovable properties and other related services
+						(“Services”).
 					</p>
 					<p>
 						By submitting Personal Data through our website or
@@ -70,13 +73,13 @@ const PrivacyPolicies = () => {
 						choose to become a registered member of our Website OR
 						Mobile Apps, you must provide your name, e-mail address,
 						phone number, Company Name,City Name,Password
-						Additionally, Homesearch18.com collects your other
-						personal details including but not limited to your Login
-						by third party API, feedback, suggestions,Schedule an
-						Appointment..etc (“Personal Information&quot;) and Our
-						Website OR Mobile App does not collect information about
-						you except when you specifically and knowingly to
-						provide it.
+						Additionally, {capitalizeFirstLetter(getHostName())}{' '}
+						collects your other personal details including but not
+						limited to your Login by third party API, feedback,
+						suggestions,Schedule an Appointment..etc (“Personal
+						Information&quot;) and Our Website OR Mobile App does
+						not collect information about you except when you
+						specifically and knowingly to provide it.
 					</p>
 					<p>
 						We do not intentionally gather Personal Data from
@@ -139,16 +142,16 @@ const PrivacyPolicies = () => {
 						you to use certain services available on our Website.
 					</p>
 					<p>
-						Homesearch18.com makes every reasonable effort to
-						preserve the privacy and confidentiality of your
-						information shared with us. We implement standard
-						measures to protect against unauthorized access to and
-						unlawful interception of Personal Information. However,
-						in internet we cannot fully eliminate security risks.
-						The Company makes no representation that the Website is
-						appropriate to be used or accessed outside India and
-						from time to time, the Company may update this Privacy
-						Policy.
+						{capitalizeFirstLetter(getHostName())} makes every
+						reasonable effort to preserve the privacy and
+						confidentiality of your information shared with us. We
+						implement standard measures to protect against
+						unauthorized access to and unlawful interception of
+						Personal Information. However, in internet we cannot
+						fully eliminate security risks. The Company makes no
+						representation that the Website is appropriate to be
+						used or accessed outside India and from time to time,
+						the Company may update this Privacy Policy.
 					</p>
 					<p>
 						We use Google Analytics to help analyze how users using
@@ -187,15 +190,15 @@ const PrivacyPolicies = () => {
 						,Buyer, Seller and serving cities.
 					</p>
 					<p>
-						Homesearch18.com.com website and Mobile Application may
-						contain links to third party websites. When you click on
-						a link to any other website, We have no control over, do
-						not review, and cannot be responsible for, these outside
-						websites or their content. Please be aware that the
-						terms of this Privacy Policy do not apply to these
-						outside websites or content, or to any collection of
-						your Personal Data after you click on links to such
-						outside websites.
+						{capitalizeFirstLetter(getHostName())}.com website and
+						Mobile Application may contain links to third party
+						websites. When you click on a link to any other website,
+						We have no control over, do not review, and cannot be
+						responsible for, these outside websites or their
+						content. Please be aware that the terms of this Privacy
+						Policy do not apply to these outside websites or
+						content, or to any collection of your Personal Data
+						after you click on links to such outside websites.
 					</p>
 					<p>
 						You may change any of your Personal information in your
@@ -205,8 +208,8 @@ const PrivacyPolicies = () => {
 						efforts to honour your request.
 					</p>
 					<p>
-						Homesearch18.com.com respects the privacy of its users
-						and is committed to its protection.
+						{capitalizeFirstLetter(getHostName())}.com respects the
+						privacy of its users and is committed to its protection.
 					</p>
 					<p>
 						You may address any of complaint, grievances and queries

@@ -1,4 +1,5 @@
 import { Box, Container, Typography } from '@material-ui/core';
+import { capitalizeFirstLetter, getHostName } from '../../utils/render.utils';
 
 import Nav from '../../components/v2/pageNav/nav.component';
 import React from 'react';
@@ -26,18 +27,18 @@ const AboutUs = () => {
 						About Us
 					</Typography>
 					<p>
-						Homesearch18.com is the fastest growing India&#39;s most
-						innovative real estate advertising platform for
-						homebuyers, landlords, developers, and real estate
-						brokers with world extending services to all property
-						hunters. The webvsite offers listings for new homes,
-						resale homes, rentals, plots and residential projects in
-						pan India.But often he misses some critical pieces of
-						the puzzle. If you are fed up with the countless online
-						options and fake listings, your search for the perfect
-						property and a great success of real estate investing
-						lies in finding out the best property and tenants ends
-						here.
+						{capitalizeFirstLetter(getHostName())} is the fastest
+						growing India&#39;s most innovative real estate
+						advertising platform for homebuyers, landlords,
+						developers, and real estate brokers with world extending
+						services to all property hunters. The webvsite offers
+						listings for new homes, resale homes, rentals, plots and
+						residential projects in pan India.But often he misses
+						some critical pieces of the puzzle. If you are fed up
+						with the countless online options and fake listings,
+						your search for the perfect property and a great success
+						of real estate investing lies in finding out the best
+						property and tenants ends here.
 					</p>
 				</Box>
 			</Container>

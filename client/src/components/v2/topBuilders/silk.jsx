@@ -18,13 +18,13 @@ const CustomSlider = ({ docs = [], Card }) => {
 		dots: false,
 		infinite: true,
 		speed: 500,
-		slidesToShow: 4,
+		slidesToShow: 3,
 		slidesToScroll: 1,
 		responsive: [
 			{
 				breakpoint: 1024,
 				settings: {
-					slidesToShow: 3,
+					slidesToShow: 2,
 					slidesToScroll: 3,
 					infinite: true,
 					dots: true,
@@ -58,8 +58,8 @@ const CustomSlider = ({ docs = [], Card }) => {
 							<div
 								key={c.id}
 								style={{
-									padding: '1rem',
-									height: '500px',
+									padding: '1.5rem',
+									height: '530px',
 									boxSizing: 'border-box',
 								}}
 							>

@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	searchWrapper: {
 		width: '60rem',
-		padding: '0.7rem 1rem 0.7rem 1rem',
+		padding: '0.5rem 1rem 0.5rem 1rem',
 		background: theme.shadowColor,
 		borderRadius: '30px',
 		display: 'flex',

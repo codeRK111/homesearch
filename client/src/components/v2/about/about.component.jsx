@@ -2,6 +2,7 @@ import { Box, Grid } from '@material-ui/core';
 
 import React from 'react';
 import app from '../../../assets/app.png';
+import { getHostName } from '../../../utils/render.utils';
 import store from '../../../assets/store.png';
 import useStyles from './about.style';
 
@@ -12,7 +13,7 @@ const About = () => {
 			<Box>
 				<span className={classes.text}>
 					<i>
-						Homesearch18.com is the fastest growing India&#39;s most
+						{getHostName()} is the fastest growing India&#39;s most
 						innovative real estate advertising platform for
 						homebuyers, landlords, developers, and real estate
 						brokers with world extending services to all property

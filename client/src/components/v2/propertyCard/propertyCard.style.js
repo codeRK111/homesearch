@@ -5,6 +5,7 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
+		marginTop: '0.5rem',
 	},
 	flexWrapper: {
 		display: 'flex',
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: 'boldest',
 		padding: '0.5rem',
 		margin: 0,
-		fontSize: props.variant === 'medium' ? '1.7rem' : '1.2rem',
+		fontSize: props.variant === 'medium' ? '1.7rem' : '1rem',
 		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 		letterSpacing: 1,
 		[theme.breakpoints.down('sm')]: {
@@ -101,6 +102,7 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: 'none',
 		'&:hover': {
 			textDecoration: 'underline',
+			color: theme.utilColor,
 		},
 	},
 	contentWrapper: {

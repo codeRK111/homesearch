@@ -1,7 +1,13 @@
 import { Avatar, Box, Grid, Typography } from '@material-ui/core';
+import { FacebookShareButton, TwitterShareButton } from 'react-share';
+import {
+	capitalizeFirstLetter,
+	facbookLink,
+	getHostName,
+	instagramLink,
+} from '../../utils/render.utils';
 
 import FacebookIcon from '@material-ui/icons/Facebook';
-import InstagramIcon from '@material-ui/icons/Instagram';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import TwitterIcon from '@material-ui/icons/Twitter';
@@ -20,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
 		color: '#ffffff',
 		textDecoration: 'none',
 		lineHeight: 1.5,
+		'&:hover': {
+			textDecoration: 'underline',
+			color: theme.utilColor,
+		},
 	},
 	iconFb: {
 		color: '#445494',
@@ -110,52 +120,68 @@ const Footer = () => {
 					</Box>
 
 					<Box>
-						<Link className={classes.link} to="/">
+						<a
+							className={classes.link}
+							target="_blank"
+							href={facbookLink[getHostName()]}
+							rel="noopener noreferrer"
+						>
 							Facebook
-						</Link>
+						</a>
 					</Box>
+
 					<Box>
-						<Link className={classes.link} to="/">
-							LinkedIn
-						</Link>
-					</Box>
-					<Box>
-						<Link className={classes.link} to="/">
+						<a
+							className={classes.link}
+							target="_blank"
+							href={instagramLink[getHostName()]}
+							rel="noopener noreferrer"
+						>
 							Instagram
-						</Link>
+						</a>
 					</Box>
 				</Grid>
 				<Grid item xs={6} md={2}>
 					<h3>Follow Us</h3>
-					<Box display="flex" alignItems="center">
-						<Avatar className={classes.avatar}>
-							<FacebookIcon className={classes.iconFb} />
-						</Avatar>
-						<a
-							className={classes.link}
-							href="https://www.facebook.com/Homesearch18"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							Share on facebook
-						</a>
-					</Box>
-					<Box display="flex" alignItems="center" mt="1rem">
-						<Avatar className={classes.avatar}>
-							<TwitterIcon className={classes.iconTw} />
-						</Avatar>
-						<Link className={classes.link} to="/">
-							Share on twitter
-						</Link>
-					</Box>
-					<Box display="flex" alignItems="center" mt="1rem">
+					<FacebookShareButton
+						url={`https://${getHostName()}`}
+						quote={`${capitalizeFirstLetter(
+							getHostName()
+						)} is the fastest growing India's most innovative real estate advertising platform for homebuyers, landlords, developers, and real estate brokers with world extending services to all property hunters.`}
+					>
+						<Box display="flex" alignItems="center">
+							<Avatar className={classes.avatar}>
+								<FacebookIcon className={classes.iconFb} />
+							</Avatar>
+							<span className={classes.link}>
+								Share on facebook
+							</span>
+						</Box>
+					</FacebookShareButton>
+					<TwitterShareButton
+						url={`https://${getHostName()}`}
+						title={`${capitalizeFirstLetter(
+							getHostName()
+						)} is the fastest growing India's most innovative real estate advertising platform for homebuyers, landlords, developers, and real estate brokers with world extending services to all property hunters.`}
+					>
+						<Box display="flex" alignItems="center" mt="1rem">
+							<Avatar className={classes.avatar}>
+								<TwitterIcon className={classes.iconTw} />
+							</Avatar>
+							<Link className={classes.link} to="/">
+								Share on twitter
+							</Link>
+						</Box>
+					</TwitterShareButton>
+
+					{/* <Box display="flex" alignItems="center" mt="1rem">
 						<Avatar className={classes.avatar}>
 							<InstagramIcon className={classes.iconIn} />
 						</Avatar>
 						<Link className={classes.link} to="/">
 							Share on instagram
 						</Link>
-					</Box>
+					</Box> */}
 				</Grid>
 				<Grid item xs={12} md={4}>
 					<Box
@@ -163,7 +189,9 @@ const Footer = () => {
 						alignItems="center"
 						justifyContent="center"
 					>
-						<h3>Homesearch18 on mobile</h3>
+						<h3>
+							{capitalizeFirstLetter(getHostName())} on mobile
+						</h3>
 					</Box>
 
 					<Box
@@ -209,7 +237,7 @@ const Footer = () => {
 						<Box pr="1rem">
 							<h3>About Us</h3>
 							<Typography variant="caption">
-								Homesearch18.com is the fastest growing
+								{getHostName()} is the fastest growing
 								India&#39;s most innovative real estate
 								advertising platform for homebuyers, landlords,
 								developers, and real estate brokers with world

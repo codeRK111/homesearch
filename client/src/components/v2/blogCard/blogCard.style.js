@@ -90,6 +90,7 @@ const useStyles = makeStyles((theme) => ({
 		color: 'inherit',
 		'&:hover': {
 			textDecoration: 'underline',
+			color: theme.utilColor,
 		},
 	},
 }));

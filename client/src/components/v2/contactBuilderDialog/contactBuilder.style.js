@@ -27,5 +27,8 @@ const useStyles = makeStyles((theme) => ({
 		padding: '1rem 3rem',
 		border: 'none',
 	},
+	dialogWrapper: {
+		borderRadius: 20,
+	},
 }));
 export default useStyles;

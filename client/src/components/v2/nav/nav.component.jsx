@@ -24,6 +24,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { getHostName } from '../../../utils/render.utils';
 import logoIcon from '../../../assets/icons/logo.svg';
 import { profile } from '../../../utils/statc';
 import { signOut } from '../../../redux/auth/auth.actions';
@@ -74,6 +75,24 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 		handleClose();
 	};
 
+	const renderLogo = {
+		'homesearch18.com': (
+			<span className={classes.logoTitle}>
+				HOMESEARCH<span>18</span>.COM
+			</span>
+		),
+		'homesearchindia.com': (
+			<span className={classes.logoTitle}>
+				HOMESEARCH<span>INDIA</span>.COM
+			</span>
+		),
+		localhost: (
+			<span className={classes.logoTitle}>
+				HOMESEARCH<span>18</span>.COM
+			</span>
+		),
+	};
+
 	return (
 		<div style={{ marginBottom: '3rem' }}>
 			<AppBar color={'transparent'} elevation={0}>
@@ -109,9 +128,7 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 				<Box className={classes.wrapper}>
 					<div className={classes.logoWrapper}>
 						<img src={logoIcon} alt="" className={classes.logo} />
-						<span className={classes.logoTitle}>
-							HOMESEARCH<span>18</span>.COM
-						</span>
+						{renderLogo[getHostName()]}
 					</div>
 					<div className={classes.rightSide}>
 						<Box

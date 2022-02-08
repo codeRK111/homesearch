@@ -1,6 +1,10 @@
 import 'react-image-lightbox/style.css';
 
 import React, { useEffect, useState } from 'react';
+import {
+	capitalizeFirstLetter,
+	getHostName,
+} from '../../../utils/render.utils';
 
 import Lightbox from 'react-image-lightbox';
 
@@ -8,7 +12,7 @@ const ImageLightBoxCarousel = ({
 	photos,
 	open,
 	handleClose,
-	title = 'Homesearch18',
+	title = capitalizeFirstLetter(getHostName()),
 	index = 0,
 }) => {
 	const [images, setImages] = useState([]);

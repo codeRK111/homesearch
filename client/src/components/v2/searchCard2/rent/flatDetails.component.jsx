@@ -153,9 +153,9 @@ const PropertyCard = ({ property, edit = false }) => {
 								className={clsx(classes.icon)}
 							/>
 							<h4 className={classes.locationText}>
-								{renderTypes(property.type)}, &nbsp;&nbsp;
+								{renderTypes(property.type)},
 								{property.superBuiltupArea}
-								Sq.Ft, &nbsp;&nbsp;{property.usp}
+								Sq.Ft, {property.usp}
 							</h4>
 						</div>
 					</Box>
@@ -238,7 +238,14 @@ const PropertyCard = ({ property, edit = false }) => {
 										className={classes.keyValue}
 									>
 										<Box className="test">
-											<h1>1.5K</h1>
+											<h1>
+												{property.maintainanceFee
+													? `${
+															property.maintainanceFee /
+															1000
+													  }K`
+													: 0}
+											</h1>
 										</Box>
 									</Grid>
 									<Grid

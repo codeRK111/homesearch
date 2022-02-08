@@ -1,15 +1,13 @@
-import { Box, Grid } from '@material-ui/core';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import React from 'react';
 import RentApartment from '../../../components/v2/propertyCard/rent/flat.component';
 import RentHostel from '../../../components/v2/propertyCard/rent/hostel.component';
 import SaleApartment from '../../../components/v2/salePropertyCard/propertyCard.component';
 import SaleLand from '../../../components/v2/salePropertyCard/propertyCardLand.component';
-import SwipeableViews from 'react-swipeable-views';
+import Slider from 'react-slick';
 import axios from 'axios';
-import useStyles from './swipable.style';
 
 const SimilarProperties = ({
 	photos,
@@ -19,24 +17,54 @@ const SimilarProperties = ({
 	city,
 	location,
 	type,
+	excludeId = null,
 }) => {
-	const [index, setIndex] = React.useState(0);
+	const settings = {
+		dots: false,
+		infinite: false,
+		speed: 500,
+		slidesToShow: 4,
+		slidesToScroll: 1,
+		responsive: [
+			{
+				breakpoint: 1024,
+				settings: {
+					slidesToShow: 2,
+					slidesToScroll: 3,
+					infinite: true,
+					dots: true,
+				},
+			},
+			{
+				breakpoint: 600,
+				settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2,
+					initialSlide: 2,
+				},
+			},
+			{
+				breakpoint: 480,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+					arrows: false,
+				},
+			},
+		],
+	};
 	const [asyncState, setAsyncState] = React.useState({
 		loading: false,
 		data: [],
 		error: null,
 	});
 	let cancelToken = React.useRef();
-	const classes = useStyles();
-	const totalImages = asyncState.data.length;
-	const imagePerSlide = 4;
-	const maxIndex = Math.ceil(totalImages / imagePerSlide) - 1;
 
 	const renderTypeRent = (property) => {
 		switch (property.type) {
 			case 'flat':
 			case 'independenthouse':
-				return <RentApartment data={property} />;
+				return <RentApartment data={property} variant="small" />;
 			case 'hostel':
 			case 'pg':
 				return <RentHostel data={property} />;
@@ -118,79 +146,29 @@ const SimilarProperties = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const onNext = () => {
-		if (index === maxIndex) {
-			setIndex(0);
-		} else {
-			setIndex(index + 1);
-		}
-	};
-	const onPrevious = () => {
-		if (index === 0) {
-			setIndex(maxIndex);
-		} else {
-			setIndex(index - 1);
-		}
-	};
-
 	return (
-		<div className={classes.sliderWrapper}>
-			{index > 0 && totalImages > 4 && (
-				<div className={classes.scrollbar} onClick={onPrevious}>
-					<div className={classes.scrollWrapper}>
-						<ChevronLeftIcon style={{ fontSize: 40 }} />
-					</div>
-				</div>
+		<>
+			{asyncState.data.length && (
+				<Slider {...settings}>
+					{asyncState.data
+						.filter((b) => (excludeId ? excludeId !== b.id : true))
+						.map((c, i) => (
+							<div>
+								<div
+									key={c.id}
+									style={{
+										padding: '1.5rem',
+										height: '530px',
+										boxSizing: 'border-box',
+									}}
+								>
+									{renderFor(c)}
+								</div>
+							</div>
+						))}
+				</Slider>
 			)}
-
-			<Box style={{ flex: 1 }}>
-				<SwipeableViews index={index}>
-					{Array.from(Array(maxIndex + 1).keys()).map((c) => (
-						<Box p="1rem">
-							<Grid container spacing={3}>
-								{asyncState.data.map((c, i) => {
-									const fromImageIndex =
-										index === 0
-											? 0
-											: index * (imagePerSlide - 1) +
-											  index;
-									const tillImageIndex =
-										fromImageIndex + (imagePerSlide - 1);
-									if (
-										i >= fromImageIndex &&
-										i <= tillImageIndex
-									) {
-										return (
-											<Grid
-												item
-												key={i}
-												md={12 / imagePerSlide}
-											>
-												{renderFor(c)}
-											</Grid>
-										);
-									}
-								})}
-							</Grid>
-						</Box>
-					))}
-				</SwipeableViews>
-			</Box>
-			{index < maxIndex && totalImages > 4 && (
-				<div className={classes.scrollbarRight} onClick={onNext}>
-					<div className={classes.scrollWrapper}>
-						<ChevronRightIcon style={{ fontSize: 40 }} />
-					</div>
-				</div>
-			)}
-
-			{/*{totalImages > 4 && (*/}
-			{/*	<>*/}
-			{/*		<button >Prev</button>*/}
-			{/*		<button >Next</button>*/}
-			{/*	</>*/}
-			{/*)}*/}
-		</div>
+		</>
 	);
 };
 

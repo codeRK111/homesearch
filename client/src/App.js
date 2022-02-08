@@ -31,6 +31,7 @@ const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
 
 // const HomePageNew = lazy(() => import('./pages/v2/homePage/home.page'));
 const BuilderPage = lazy(() => import('./pages/v2/builderPage'));
+const BrowseBuilderPage = lazy(() => import('./pages/v2/browseBuildersPage'));
 const MySubscriptionsPage = lazy(() => import('./pages/v2/myPackages'));
 const ManageProposalPage = lazy(() => import('./pages/proposal'));
 const UpdateProfilePage = lazy(() => import('./pages/v2/updateProfile'));
@@ -128,6 +129,11 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 							exact
 							path="/"
 							render={(props) => <HomePageNew {...props} />}
+						/>
+						<Route
+							exact
+							path="/browse-builders"
+							render={(props) => <BrowseBuilderPage {...props} />}
 						/>
 
 						<Route

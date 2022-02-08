@@ -2,13 +2,13 @@ import * as Yup from 'yup';
 
 import { Box, Divider, Modal, Paper } from '@material-ui/core';
 import { Form, Formik } from 'formik';
+import { capitalizeFirstLetter, getHostName } from '../../utils/render.utils';
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from '../formik/textField.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
-import { capitalizeFirstLetter } from '../../utils/render.utils';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
@@ -167,7 +167,7 @@ const PropertyShare = ({
 									value={
 										url
 											? url
-											: `https://homesearch18.com/#/${
+											: `https://${getHostName()}/#/${
 													project
 														? 'project'
 														: 'property-details'

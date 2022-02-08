@@ -1,6 +1,5 @@
 import About from '../../../components/v2/about/about.component';
 import { Box } from '@material-ui/core';
-import Carousel from '../../../components/carousel';
 import Enquiry from '../../../components/v2/enquiryComponent/enquiry.component';
 import EnquiryAgent from '../../../components/v2/enquiryComponent/enquiryAgent.component';
 import HeroArea from '../../../components/v2/heroArea/v2';
@@ -10,7 +9,6 @@ import RecentBlogs from '../../../components/v2/recentBlogs/recentBlogs.componen
 import RentProperties from '../../../components/v2/rentProperties/rentProperties.component';
 import SaleProperties from '../../../components/v2/saleProperties/saleProperties.component';
 import TopBuilders from '../../../components/v2/topBuilders/topBuilders.component';
-import VirtualTour from '../../../components/v2/virtualTour/virtualTour.component';
 import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
 import clsx from 'clsx';
@@ -61,12 +59,10 @@ const HomePage = () => {
 				topCities={data ? data.cities : []}
 				initialLoading={loading}
 			/>
-			<Box className={classes.componentSpacer}>
+			{/* <Box className={classes.componentSpacer}>
 				<VirtualTour />
-			</Box>
-			<Box>
-				<Carousel />
-			</Box>
+			</Box> */}
+
 			<Box
 				className={clsx(
 					classes.componentSpacer,

@@ -13,6 +13,7 @@ import {
 } from '../../../../redux/actionTab/actionTab.selectors';
 
 import ApartmentIcon from '@material-ui/icons/Apartment';
+import SearchIcon from '@material-ui/icons/Search';
 import Skeleton from '@material-ui/lab/Skeleton';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
@@ -220,7 +221,14 @@ const SearchComponent = ({
 									cities.map((c) => (
 										<Grid item xs={6} md={3} key={c.id}>
 											<button
-												className={style.cityWrapper}
+												className={clsx(
+													style.cityWrapper,
+													{
+														[style.citySelected]:
+															selectedCity.id ===
+															c.id,
+													}
+												)}
 												onClick={handleSelectedCity(c)}
 											>
 												{c.name}
@@ -232,9 +240,14 @@ const SearchComponent = ({
 										{topCities.map((c) => (
 											<Grid item xs={6} md={3} key={c.id}>
 												<button
-													className={
-														style.cityWrapper
-													}
+													className={clsx(
+														style.cityWrapper,
+														{
+															[style.citySelected]:
+																selectedCity.id ===
+																c.id,
+														}
+													)}
 													onClick={handleSelectedCity(
 														c
 													)}
@@ -370,6 +383,7 @@ const SearchComponent = ({
 							className={style.searchButton}
 							onClick={onSearch}
 						>
+							<SearchIcon />
 							Search
 						</button>
 					</Box>

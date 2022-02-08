@@ -1,4 +1,8 @@
 import { Box, Grid } from '@material-ui/core';
+import {
+	capitalizeFirstLetter,
+	getHostName,
+} from '../../../utils/render.utils';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -13,7 +17,7 @@ const SwipableViews = ({
 	selected,
 	setSelected,
 	dir = 'properties',
-	title = 'Homesearch18',
+	title = capitalizeFirstLetter(getHostName()),
 }) => {
 	const [index, setIndex] = React.useState(0);
 	const classes = useStyles();
