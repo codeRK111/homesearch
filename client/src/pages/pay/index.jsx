@@ -79,6 +79,13 @@ const PayPage = ({ isAuthenticated, toggleLoginPopup, user, ...props }) => {
 		const query = new URLSearchParams(props.location.search);
 		return query.get('pl');
 	};
+
+	const { loading, error, response } = useAxios(
+		apiUrl(`/payment/payment-link/${getQueryString()}`, 2),
+		{
+			method: 'get',
+		}
+	);
 	const onPayment = () => {
 		if (!isAuthenticated) {
 			toggleLoginPopup(true);
@@ -163,6 +170,9 @@ const PayPage = ({ isAuthenticated, toggleLoginPopup, user, ...props }) => {
 								serverResponse.razorpay_signature,
 							paidAmount: response.data.link.amount,
 						};
+						if (response && response.data.link.dealBy) {
+							data.homeSearchStaff = response.data.link.dealBy;
+						}
 
 						await axios.post(
 							'/api/v2/payment/payment-link-success',
@@ -215,12 +225,6 @@ const PayPage = ({ isAuthenticated, toggleLoginPopup, user, ...props }) => {
 		}
 	}
 
-	const { loading, error, response } = useAxios(
-		apiUrl(`/payment/payment-link/${getQueryString()}`, 2),
-		{
-			method: 'get',
-		}
-	);
 	return (
 		<div>
 			<Nav />

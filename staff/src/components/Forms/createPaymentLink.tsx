@@ -1,14 +1,17 @@
 import * as Yup from 'yup';
 
-import { Box, CircularProgress, Grid } from '@material-ui/core';
+import { Box, CircularProgress, Grid, MenuItem } from '@material-ui/core';
 import { Form, Formik, FormikHelpers } from 'formik';
-import React, { useState } from 'react';
+import { IStaff, StaffType } from '../../model/staff.interface';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
 import { Button } from '../UI/Button';
 import DateTimePickerComponent from '../Pickers/dateTime';
+import FSelect from '../Formik/select';
 import FTextField from '../Formik/input';
 import { asyncCreatePaymentLink } from '../../API/payment';
+import { asyncFetchAdmins } from '../../API/auth';
 import dayjs from 'dayjs';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -32,6 +35,7 @@ export interface ICreatePaymentLinkData {
 	phone: string;
 	notes: string;
 	expiryDate: Date | null;
+	dealBy: string;
 }
 
 interface IAddLeadStrategyForm {
@@ -56,12 +60,41 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 		phone: '',
 		notes: '',
 		expiryDate: dayjs().add(1, 'h').toDate(),
+		dealBy: '',
 	};
 
 	// State
 	const [loading, setLoading] = useState(false);
 	const [isCopied, setIsCopied] = useState(false);
 	const [link, setLink] = useState('');
+	const [staffLoading, setStaffLoading] = useState(false);
+	const [staffs, setStaffs] = useState<IStaff[]>([]);
+
+	const fetchStaffs = useCallback(async () => {
+		try {
+			setStaffLoading(true);
+			const resp = await asyncFetchAdmins({
+				status: 'active',
+				types: [
+					StaffType.ClientSupport,
+					StaffType.AssistantSalesManager,
+					StaffType.SalesExecutive,
+					StaffType.SuperAdmin,
+				],
+				page: 1,
+				limit: 100,
+			});
+			setStaffLoading(false);
+			setStaffs(resp.admins);
+		} catch (error) {
+			setStaffLoading(false);
+			setStaffs([]);
+		}
+	}, []);
+
+	useEffect(() => {
+		fetchStaffs();
+	}, [fetchStaffs]);
 
 	// Callbacks
 	const onSubmit = async (
@@ -129,6 +162,22 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 									}}
 									date={values.expiryDate}
 								/>
+							</Grid>
+							<Grid item xs={12}>
+								<FSelect
+									name={'dealBy'}
+									label="Deal by"
+									showNone={false}
+								>
+									{staffs.map((c) => (
+										<MenuItem
+											key={c.id as string}
+											value={c.id as string}
+										>
+											{c.name}
+										</MenuItem>
+									))}
+								</FSelect>
 							</Grid>
 
 							<Grid item xs={12}>
