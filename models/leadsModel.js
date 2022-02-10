@@ -254,6 +254,11 @@ const leadsSchema = new Schema(
 		invoice: {
 			type: String,
 		},
+		tags: [
+			{
+				type: String,
+			},
+		],
 	},
 	{
 		toJSON: { virtuals: true },

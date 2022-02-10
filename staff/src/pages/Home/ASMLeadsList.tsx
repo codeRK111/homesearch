@@ -19,6 +19,7 @@ const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 
 	const [page, setPage] = useState(1);
 	const [timeInterval, setTimeInterval] = useState('all');
+	const [tags, setTags] = useState<string[]>([]);
 	const [limit, setLimit] = useState(10);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState<FetchMyLeadsResponseData>({
@@ -34,6 +35,13 @@ const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		pageNumber: number
 	) => {
 		setPage(pageNumber);
+	};
+
+	const addTags = (val: string) => {
+		setTags((prevState) => [...prevState, val]);
+	};
+	const removeTags = (index: number) => {
+		setTags((prevState) => prevState.filter((_, i) => i !== index));
 	};
 
 	// Fetch leads
@@ -80,6 +88,9 @@ const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 					setCity={setCity}
 					number={number}
 					setNumber={setNumber}
+					addTags={addTags}
+					removeTags={removeTags}
+					tags={tags}
 				/>
 			</Box>
 			<p>

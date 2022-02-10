@@ -1,4 +1,4 @@
-import { Box, CircularProgress, IconButton } from '@material-ui/core';
+import { Box, Chip, CircularProgress, IconButton } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { parseDate, renderCellData } from '../../../utils/render';
@@ -97,6 +97,7 @@ const LeadsBDMTable: React.FC<ILeadsTable> = ({
 					<TableHead>
 						<TableRow>
 							<StyledTableCell>SL Num.</StyledTableCell>
+							<StyledTableCell>Tags</StyledTableCell>
 							<StyledTableCell>Name</StyledTableCell>
 							<StyledTableCell>Contact Details</StyledTableCell>
 							<StyledTableCell>Requirement</StyledTableCell>
@@ -121,6 +122,18 @@ const LeadsBDMTable: React.FC<ILeadsTable> = ({
 									<StyledTableRow key={row.id}>
 										<StyledTableCell>
 											{i + 1}
+										</StyledTableCell>
+										<StyledTableCell>
+											{row.tags && (
+												<Box mt="0.3rem">
+													{row.tags.map((c, i) => (
+														<Chip
+															key={i}
+															label={c}
+														/>
+													))}
+												</Box>
+											)}
 										</StyledTableCell>
 
 										<StyledTableCell>

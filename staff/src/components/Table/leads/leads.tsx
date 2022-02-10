@@ -145,6 +145,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 									<option value={7}>7</option>
 								</select>
 							</StyledTableCell>
+							<StyledTableCell>Tags</StyledTableCell>
 							<StyledTableCell>Name</StyledTableCell>
 							<StyledTableCell>Contact Details</StyledTableCell>
 							<StyledTableCell>Category</StyledTableCell>
@@ -203,6 +204,18 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											)}
 										</StyledTableCell>
 
+										<StyledTableCell>
+											{row.tags && (
+												<Box mt="0.3rem">
+													{row.tags.map((c, i) => (
+														<Chip
+															key={i}
+															label={c}
+														/>
+													))}
+												</Box>
+											)}
+										</StyledTableCell>
 										<StyledTableCell>
 											{row.name ? row.name : '-'}
 										</StyledTableCell>

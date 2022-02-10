@@ -64,6 +64,7 @@ export interface ILead {
 	notInterested?: boolean;
 	postProperty?: boolean;
 	proposalStatus?: LeadProposalStatus;
+	tags?: string[];
 }
 
 export type FetchLeadsInputType = {
@@ -76,6 +77,7 @@ export type FetchLeadsInputType = {
 	stage?: number;
 	city?: string;
 	number?: string;
+	tags?: string[];
 };
 export type FetchMyLeadsResponseData = {
 	leads: ILead[];

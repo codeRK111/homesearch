@@ -1,8 +1,8 @@
-import { Box, Grid, TextField } from '@material-ui/core';
+import { Box, Chip, Grid, TextField } from '@material-ui/core';
+import React, { useState } from 'react';
 
 import { City } from '../../model/city.interface';
 import LeadsTab from '../../components/Tab/leadFilter';
-import React from 'react';
 import SearchCity from '../../components/Search/city';
 
 interface IFilterLeads {
@@ -11,6 +11,9 @@ interface IFilterLeads {
 	setCity: (val: City | null) => void;
 	number: string;
 	setNumber: (val: string) => void;
+	removeTags: (val: number) => void;
+	addTags: (val: string) => void;
+	tags: string[];
 }
 const FilterLeads = ({
 	setTimeInterval,
@@ -18,7 +21,11 @@ const FilterLeads = ({
 	setCity,
 	number,
 	setNumber,
+	addTags,
+	removeTags,
+	tags,
 }: IFilterLeads) => {
+	const [tagText, setTagText] = useState('');
 	return (
 		<Box width="100%">
 			<Box mb="1rem" mt="1rem">
@@ -43,6 +50,32 @@ const FilterLeads = ({
 								setNumber(e.target.value);
 							}}
 						/>
+					</Grid>
+					<Grid item xs={12} md={4}>
+						<TextField
+							label="Search by tag name"
+							variant="filled"
+							size="small"
+							fullWidth
+							value={tagText}
+							onChange={(e) => setTagText(e.target.value)}
+							onKeyUp={(e) => {
+								if (tagText && e.key === 'Enter') {
+									addTags(tagText);
+									setTagText('');
+								}
+							}}
+						/>
+						<Box>
+							{tags.map((c, i) => (
+								<Chip
+									label={c}
+									onDelete={() => removeTags(i)}
+									variant="outlined"
+									key={i}
+								/>
+							))}
+						</Box>
 					</Grid>
 				</Grid>
 			</Box>

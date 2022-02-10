@@ -156,6 +156,9 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	if (req.body.userCategory) {
 		filter.userCategory = req.body.userCategory;
 	}
+	if (req.body.tags && req.body.tags.length > 0) {
+		filter.tags = { $all: req.body.tags };
+	}
 	if (req.body.number) {
 		filter.number = {
 			$regex: req.body.number,
@@ -372,6 +375,9 @@ exports.closeDeal = catchAsync(async (req, res, next) => {
 
 exports.updateBySupport = catchAsync(async (req, res, next) => {
 	const data = {};
+	if (req.body.tags) {
+		data.tags = req.body.tags;
+	}
 	if (req.body.name) {
 		data.name = req.body.name;
 	}

@@ -1,13 +1,21 @@
 import * as Yup from 'yup';
 
-import { Button, CircularProgress, Grid, MenuItem } from '@material-ui/core';
+import {
+	Box,
+	Button,
+	Chip,
+	CircularProgress,
+	Grid,
+	MenuItem,
+	TextField,
+} from '@material-ui/core';
 import {
 	ClientRequirementCategory,
 	ClientRequirementType,
 	ILead,
 	LeadUserCategory,
 } from '../../model/lead.interface';
-import { Form, Formik, FormikHelpers } from 'formik';
+import { FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import React, { useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
@@ -25,7 +33,7 @@ import { asyncUpdateLead } from '../../API/lead';
 import { useHistory } from 'react-router';
 
 interface IUpdateLeadForm {
-	initialValues: ILead;
+	initialValues: ILead & { tags?: Array<string> };
 	id: string;
 }
 
@@ -44,6 +52,7 @@ export interface IClientRequirementState {
 	notInterested?: boolean;
 	postProperty?: boolean;
 	preferedLocation?: string;
+	tags?: Array<string>;
 }
 
 const renderAction = (lead: ILead): string => {
@@ -75,15 +84,16 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 			.matches(/^\d{10}$/, 'Invalid Number')
 			.required('Phone number required'),
 		minPrice: Yup.string()
-			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g, 'Invalid Number')
+			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- ()]*$/g, 'Invalid Number')
 			.nullable(),
 		maxPrice: Yup.string()
-			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g, 'Invalid Number')
+			.matches(/^(\(?\+?[0-9]*\)?)?[0-9_\- ()]*$/g, 'Invalid Number')
 			.nullable(),
 	});
 
 	// State
 	const [loading, setLoading] = useState(false);
+	const [tagText, setTagText] = useState('');
 	const [clientRequirement, setRequirement] =
 		useState<IClientRequirementState>({
 			requirement: initialValues.requirement
@@ -105,6 +115,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 					? initialValues.bdm
 					: (initialValues.bdm.id as string)
 				: '',
+			tags: initialValues.tags ? initialValues.tags : [],
 		});
 
 	const manageRequirement = (value: ClientRequirementType) => {
@@ -163,13 +174,17 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 		}));
 	};
 
-	const onSubmit = async (values: ILead, helpers: FormikHelpers<ILead>) => {
+	const onSubmit = async (
+		values: IUpdateLeadForm['initialValues'],
+		helpers: FormikHelpers<ILead>
+	) => {
 		try {
 			setLoading(true);
 			const input = { ...values, ...clientRequirement };
 			if (input.city) {
 				input.city = (input.city as City).id;
 			}
+			input.tags = values.tags;
 			console.log(input.action);
 			if (input.action === 'hold') {
 				if (clientRequirement.pickerDate) {
@@ -247,6 +262,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 				'staffType',
 				'staffId',
 				'preferedLocation',
+				'tags',
 			];
 			const keyss = Object.keys(input) as Array<
 				keyof ILead | keyof IClientRequirementState
@@ -256,6 +272,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 					delete input[c];
 				}
 			});
+			console.log(input);
 			await asyncUpdateLead(id, input);
 			setLoading(false);
 			helpers.resetForm();
@@ -430,6 +447,62 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 									</Grid>
 								</Grid>
 
+								<Grid item xs={12}>
+									<FieldArray
+										name="tags"
+										render={(arrayHelpers) => (
+											<>
+												<Box>
+													<TextField
+														value={tagText}
+														onChange={(e) =>
+															setTagText(
+																e.target.value
+															)
+														}
+														label={
+															'Enter a tag name'
+														}
+														variant="filled"
+														size="small"
+													/>
+													<Button
+														variant="contained"
+														type="button"
+														size="large"
+														onClick={() => {
+															if (tagText) {
+																arrayHelpers.push(
+																	tagText
+																);
+																setTagText('');
+															}
+														}}
+													>
+														Add
+													</Button>
+												</Box>
+												<Box mt="1rem">
+													{values.tags &&
+														values.tags.map(
+															(c, i) => (
+																<Chip
+																	label={c}
+																	onDelete={() =>
+																		arrayHelpers.remove(
+																			i
+																		)
+																	}
+																	variant="outlined"
+																	key={i}
+																/>
+															)
+														)}
+												</Box>
+											</>
+										)}
+									/>
+								</Grid>
 								<Grid item xs={12}>
 									<ClientRequirement
 										setBDM={manageBDM}

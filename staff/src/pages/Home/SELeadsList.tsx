@@ -26,8 +26,17 @@ const SELeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	});
 	const [city, setCity] = useState<City | null>(null);
 	const [number, setNumber] = useState('');
+	const [tags, setTags] = useState<string[]>([]);
 
 	// Callback
+
+	const addTags = (val: string) => {
+		setTags((prevState) => [...prevState, val]);
+	};
+	const removeTags = (index: number) => {
+		setTags((prevState) => prevState.filter((_, i) => i !== index));
+	};
+
 	const handlePage = (
 		event: React.ChangeEvent<unknown>,
 		pageNumber: number
@@ -65,7 +74,7 @@ const SELeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	}, [page, limit, userCategory, timeInterval, city, number]);
 	useEffect(() => {
 		setPage(1);
-	}, [limit, userCategory, timeInterval, city, number]);
+	}, [limit, userCategory, timeInterval, city, number, tags]);
 	useEffect(() => {
 		fetchLeads();
 	}, [fetchLeads]);
@@ -79,6 +88,9 @@ const SELeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 					setCity={setCity}
 					number={number}
 					setNumber={setNumber}
+					addTags={addTags}
+					removeTags={removeTags}
+					tags={tags}
 				/>
 			</Box>
 			<p>

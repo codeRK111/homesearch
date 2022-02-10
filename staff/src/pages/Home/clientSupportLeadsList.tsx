@@ -30,6 +30,8 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	const [timeInterval, setTimeInterval] = useState('all');
 	const [showHolds, setShowHolds] = useState(false);
 	const [limit, setLimit] = useState(10);
+	const [tags, setTags] = useState<string[]>([]);
+
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState<FetchMyLeadsResponseData>({
 		totalDocs: 0,
@@ -46,6 +48,14 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	};
 	const manageNumberChange = (val: string) => {
 		setNumber(val);
+		push(`?page=1`);
+	};
+	const addTags = (val: string) => {
+		setTags((prevState) => [...prevState, val]);
+		push(`?page=1`);
+	};
+	const removeTags = (index: number) => {
+		setTags((prevState) => prevState.filter((_, i) => i !== index));
 		push(`?page=1`);
 	};
 	const manageTimeInterval = (val: string) => {
@@ -73,6 +83,9 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 			if (showHolds) {
 				filter.stage = 2;
 			}
+			if (tags.length > 0) {
+				filter.tags = tags;
+			}
 			if (userCategory) {
 				filter.userCategory = userCategory;
 			}
@@ -95,10 +108,19 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 			});
 			setLoading(false);
 		}
-	}, [page, limit, showHolds, userCategory, timeInterval, city, number]);
+	}, [
+		page,
+		limit,
+		showHolds,
+		userCategory,
+		timeInterval,
+		city,
+		number,
+		tags,
+	]);
 	useEffect(() => {
 		setPage(1);
-	}, [limit, userCategory, timeInterval, city, number]);
+	}, [limit, userCategory, timeInterval, city, number, tags]);
 	useEffect(() => {
 		fetchLeads();
 	}, [fetchLeads]);
@@ -115,6 +137,9 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 					setCity={manageCityChange}
 					number={number}
 					setNumber={manageNumberChange}
+					addTags={addTags}
+					removeTags={removeTags}
+					tags={tags}
 				/>
 			</Box>
 			<p>

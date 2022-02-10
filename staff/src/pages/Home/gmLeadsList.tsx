@@ -58,8 +58,16 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 		totalDocs: 0,
 		leads: [],
 	});
+	const [tags, setTags] = useState<string[]>([]);
 
 	// Callback
+
+	const addTags = (val: string) => {
+		setTags((prevState) => [...prevState, val]);
+	};
+	const removeTags = (index: number) => {
+		setTags((prevState) => prevState.filter((_, i) => i !== index));
+	};
 
 	const onAssign = async () => {
 		try {
@@ -202,6 +210,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 		timeInterval,
 		city,
 		number,
+		tags,
 	]);
 	useEffect(() => {
 		fetchLeads();
@@ -294,6 +303,9 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 				setCity={setCity}
 				number={number}
 				setNumber={setNumber}
+				addTags={addTags}
+				removeTags={removeTags}
+				tags={tags}
 			/>
 			<p>
 				<b>{data.totalDocs}</b> leads found
