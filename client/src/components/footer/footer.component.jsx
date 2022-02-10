@@ -61,7 +61,7 @@ const Footer = () => {
 	const classes = useStyles();
 	const history = useHistory();
 	const handleTestimonials = (event, value) => {
-		history.push('/');
+		// history.push('/');
 		const anchor = (event.target.ownerDocument || document).querySelector(
 			'#testimonials'
 		);
