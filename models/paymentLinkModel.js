@@ -19,6 +19,11 @@ const paymentLinkSchema = new Schema(
 		paymentLinkNumber: {
 			type: Number,
 		},
+		dealBy: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Admin',
+			default: null,
+		},
 		status: {
 			type: String,
 			enum: {
