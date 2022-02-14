@@ -8,7 +8,8 @@ const readFile = util.promisify(fs.readFile);
 const transporter = nodemailer.createTransport({
 	host: 'smtp.gmail.com',
 	port: 587,
-	secure: true,
+	secure: false,
+	requireTLS: true,
 	auth: {
 		user: process.env.IND_EMAIL_PAYMENT,
 		pass: process.env.IND_EMAIL_PAYMENT_PASSWORD,
