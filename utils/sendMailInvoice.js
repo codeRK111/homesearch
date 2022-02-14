@@ -10,8 +10,10 @@ const transporter = nodemailer.createTransport({
 	port: 587,
 	secure: false,
 	auth: {
-		user: process.env.IND_EMAIL_PAYMENT,
-		pass: process.env.IND_EMAIL_PAYMENT_PASSWORD,
+		// user: process.env.IND_EMAIL_PAYMENT,
+		// pass: process.env.IND_EMAIL_PAYMENT_PASSWORD,
+		user: 'payment@homesearchindia.com',
+		pass: 'hdf@876R',
 	},
 });
 
