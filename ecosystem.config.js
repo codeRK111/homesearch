@@ -6,6 +6,7 @@ module.exports = {
 			env: {
 				NODE_ENV: 'production',
 				PORT: 8080,
+				NODE_TLS_REJECT_UNAUTHORIZED: 0,
 			},
 			watch: '.',
 			watch_options: {
