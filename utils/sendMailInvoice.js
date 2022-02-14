@@ -11,6 +11,9 @@ const transporter = nodemailer.createTransport({
 		user: process.env.IND_EMAIL_PAYMENT,
 		pass: process.env.IND_EMAIL_PAYMENT_PASSWORD,
 	},
+	tls: {
+		rejectUnauthorized: false,
+	},
 });
 
 const readHTMLFile = async (path) => {
