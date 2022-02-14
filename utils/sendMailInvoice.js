@@ -10,11 +10,8 @@ const transporter = nodemailer.createTransport({
 	port: 465,
 	secure: true, // use TLS
 	auth: {
-		// user: 'payment@homesearchindia.com',
-		// pass: 'hdf@876R',
-		user: 'rakeshchandra.offcl@gmail.com',
-		// pass: 'igtkjswmuwozrizk',
-		pass: 'SfR2$3!#',
+		user: process.env.IND_EMAIL_PAYMENT,
+		pass: process.env.IND_EMAIL_PAYMENT_PASSWORD,
 	},
 	tls: {
 		rejectUnauthorized: false,

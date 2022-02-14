@@ -1,7 +1,14 @@
 import { Box, Grid, Typography } from '@material-ui/core';
+
 import React from 'react';
 import { renderMinAndMax } from '../../../utils/render.utils';
 import useStyles from './searchResultCard.styles';
+
+export const minMaxPrice = (arr) => {
+	return arr.length > 1
+		? `${Math.min(...arr) / 100000} L-${Math.max(...arr) / 100000} L`
+		: `${arr[0] / 100000} L`;
+};
 
 const ResultCard = ({ property, propertyItems }) => {
 	const classes = useStyles();
@@ -50,18 +57,11 @@ const ResultCard = ({ property, propertyItems }) => {
 										<Box>
 											<b>
 												₹{' '}
-												{Math.min(
-													...propertyItems.map((c) =>
-														Number(c.price / 100000)
+												{minMaxPrice(
+													propertyItems.map(
+														(c) => c.price
 													)
-												)}{' '}
-												Lacs -{' '}
-												{Math.max(
-													...propertyItems.map((c) =>
-														Number(c.price / 100000)
-													)
-												)}{' '}
-												Lacs
+												)}
 											</b>
 										</Box>
 									</Box>

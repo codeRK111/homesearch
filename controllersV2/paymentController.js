@@ -599,7 +599,7 @@ exports.createSubscription = catchAsync(async (req, res, next) => {
 			new AppError(`Missing fields - ${excludedFields.join(',')}`)
 		);
 	}
-	const keys = Object.keys(req.body); 
+	const keys = Object.keys(req.body);
 	keys.forEach((c) => {
 		if (!validFields.includes(c)) {
 			delete req.body[c];
@@ -890,7 +890,7 @@ exports.sendInvoice = catchAsync(async (req, res, next) => {
 				tax,
 			}
 		);
-		await sendEmailInvoice(
+		const resp = await sendEmailInvoice(
 			email,
 			'Homesearch package invoice',
 			invoiceName.fileName,
@@ -900,6 +900,7 @@ exports.sendInvoice = catchAsync(async (req, res, next) => {
 		res.status(200).json({
 			status: 'success',
 			data: invoiceName.fileName,
+			resp,
 		});
 	} catch (error) {
 		console.log(error);
