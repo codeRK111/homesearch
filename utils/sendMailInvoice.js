@@ -6,15 +6,10 @@ const util = require('util');
 const nodemailer = require('nodemailer');
 const readFile = util.promisify(fs.readFile);
 const transporter = nodemailer.createTransport({
-	host: 'smtp.gmail.com',
-	port: 465,
-	secure: true, // use TLS
+	service: 'gmail',
 	auth: {
 		user: process.env.IND_EMAIL_PAYMENT,
 		pass: process.env.IND_EMAIL_PAYMENT_PASSWORD,
-	},
-	tls: {
-		rejectUnauthorized: false,
 	},
 });
 
