@@ -7,6 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { blue } from '@material-ui/core/colors';
+import { getEmbedId } from '../../../utils/render.utils';
 
 const CBackdrop = withStyles({
 	root: {
@@ -29,8 +30,9 @@ const useStyles = makeStyles({
 });
 
 function SimpleDialog(props) {
-	const { onClose, selectedValue, open } = props;
+	const { onClose, selectedValue, open, src } = props;
 	const classes = useStyles();
+	const [loading, setLoading] = React.useState(true);
 
 	const handleClose = () => {
 		onClose(selectedValue);
@@ -55,12 +57,17 @@ function SimpleDialog(props) {
 					</IconButton>
 				</Box>
 			</DialogTitle>
+			{loading ? (
+				<Typography variant="h6" align="center">
+					Loading...
+				</Typography>
+			) : null}
 			<Box className={classes.wrapper}>
 				{
 					<iframe
 						width="100%"
 						height="100%"
-						src="https://www.youtube.com/embed/6JYCAyaUIqQ"
+						src={`https://www.youtube.com/embed/${getEmbedId(src)}`}
 						title="YouTube video player"
 						frameborder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -68,6 +75,7 @@ function SimpleDialog(props) {
 						frameBorder="0"
 						marginHeight="0"
 						marginWidth="0"
+						onLoad={() => setLoading(false)}
 					></iframe>
 				}
 			</Box>
@@ -80,10 +88,14 @@ SimpleDialog.propTypes = {
 	open: PropTypes.bool.isRequired,
 };
 
-export default function VirtualModal({ open, handleClose }) {
+export default function VirtualModal({
+	open,
+	handleClose,
+	src = 'https://www.youtube.com/embed/6JYCAyaUIqQ',
+}) {
 	return (
 		<div>
-			<SimpleDialog open={open} onClose={handleClose} />
+			<SimpleDialog open={open} onClose={handleClose} src={src} />
 		</div>
 	);
 }
@@ -91,4 +103,5 @@ export default function VirtualModal({ open, handleClose }) {
 VirtualModal.propTypes = {
 	handleClose: PropTypes.func.isRequired,
 	open: PropTypes.bool.isRequired,
+	src: PropTypes.string,
 };

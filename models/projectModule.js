@@ -152,6 +152,11 @@ const projectSchema = new Schema(
 				},
 			},
 		],
+		virtualTours: [
+			{
+				type: String,
+			},
+		],
 		thumbnailImage: {
 			type: String,
 			default: null,

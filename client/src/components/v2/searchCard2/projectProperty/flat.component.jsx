@@ -9,6 +9,7 @@ import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
 import logoIcon from '../../../../assets/icons/logo.svg';
 import moment from 'dayjs';
+import { projectCompletionStatusLabel } from '../../../../utils/render.utils';
 import useGlobalStyles from '../../../../common.style';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useStyles from '../searchCard.style';
@@ -62,8 +63,14 @@ const PropertyCard = ({ property, edit = false }) => {
 									onClick={toggleFullImage(true)}
 								>
 									<div className={classes.dateWrapper}>
-										<span>{m.format('D')}</span>
-										<span>{m.format('MMM')}</span>
+										<span>
+											{
+												projectCompletionStatusLabel[
+													property.project
+														.complitionStatus
+												]
+											}
+										</span>
 									</div>
 								</div>
 							</div>

@@ -7,6 +7,7 @@ import BuilderCard from '../../../components/v2/ownerCard/builderCard.component'
 import FlatHeader from '../../../components/v2/searchCard2/project/flatDetails.component';
 import LandHeader from '../../../components/v2/searchCard2/project/landDetails.component';
 import LegalClearance from '../propertyDetails/legalClearance.component';
+import { Link } from 'react-router-dom';
 import LocalOpinion from './localOpinion.component';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import Properties from './properties.component';
@@ -15,6 +16,7 @@ import Reviews from '../../../components/v2/reviews';
 import SimilarProperties from '../../../components/v2/similarProperties/project.component';
 import Skeleton from '../../../components/v2/skeleton/propertyHeader.component';
 import TextSkeleton from '@material-ui/lab/Skeleton';
+import VirtualModal from '../../../components/v2/virtualModal';
 import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
 import clsx from 'clsx';
@@ -25,15 +27,6 @@ import { setSnackbar } from '../../../redux/ui/ui.actions';
 import threeSixty from '../../../assets/360.png';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './projectDetailsPage.style';
-
-const locals = [
-	'Parking is easy',
-	'Walkable distance from market',
-	"It's a student area",
-	"It's dog friendly",
-	"It's a family area",
-	"It's a safe area",
-];
 
 const initialState = {
 	project: null,
@@ -53,6 +46,10 @@ const ProjectDetailsPage = ({
 	// State
 	const [data, setData] = useState(initialState);
 	const [agents, setAgents] = useState([]);
+	const [mainVirtualTours, setMainVirtualTours] = useState([]);
+	const [otherVirtualTours, setOtherVirtualTours] = useState([]);
+	const [virtualSRC, setVirtualSRC] = useState('');
+	const [virtualOpen, setVirtualOpen] = useState(false);
 	// loading State
 	const [loading, setLoading] = useState(false);
 	const [agentLoading, setAgentLoading] = useState(false);
@@ -71,6 +68,18 @@ const ProjectDetailsPage = ({
 			}
 		};
 	}, []);
+
+	const closeVirtualDialog = () => {
+		setVirtualSRC('');
+	};
+
+	useEffect(() => {
+		if (virtualSRC) {
+			setVirtualOpen(true);
+		} else {
+			setVirtualOpen(false);
+		}
+	}, [virtualSRC]);
 
 	// Fetch Project Info
 	useEffect(() => {
@@ -92,6 +101,21 @@ const ProjectDetailsPage = ({
 					properties: responseData.data.properties,
 					projectInfo: responseData.data.projectInfo[0],
 				});
+				if (
+					responseData.data.project &&
+					responseData.data.project.virtualTours
+				) {
+					setMainVirtualTours(
+						responseData.data.project.virtualTours.filter(
+							(_, i) => i === 0
+						)
+					);
+					setOtherVirtualTours(
+						responseData.data.project.virtualTours.filter(
+							(_, i) => i !== 0
+						)
+					);
+				}
 				setLoading(false);
 				setError(null);
 			} catch (error) {
@@ -189,6 +213,11 @@ const ProjectDetailsPage = ({
 	return (
 		<div>
 			<Nav />
+			<VirtualModal
+				open={virtualOpen}
+				handleClose={closeVirtualDialog}
+				src={virtualSRC}
+			/>
 			<div className={classes.wrapper}>
 				<Box mb="1rem">
 					{loading ? (
@@ -196,8 +225,24 @@ const ProjectDetailsPage = ({
 					) : (
 						data.project && (
 							<span>
-								Home/ Project/ {data.project.city.name}/{' '}
-								{data.project.location.name}
+								<Link className={globalClasses.link} to="/">
+									Home
+								</Link>{' '}
+								/{' '}
+								<Link
+									className={globalClasses.link}
+									to={`/${data.project.builder.slug}`}
+								>
+									{data.project.builder.developerName}
+								</Link>{' '}
+								/{' '}
+								<Link
+									className={globalClasses.link}
+									to={`/v2/search?f=project&c=${data.project.city.id}&cn=${data.project.city.name}`}
+								>
+									{data.project.city.name}
+								</Link>
+								/ {data.project.title}
 							</span>
 						)
 					)}
@@ -277,94 +322,48 @@ const ProjectDetailsPage = ({
 												Comfort & Safety Of Your Home.
 											</Typography>
 											<Box>
-												<CardMedia
-													image={threeSixty}
-													className={
-														classes.cardMediaMediun
-													}
-												/>
+												{mainVirtualTours.map((c) => (
+													<CardMedia
+														key={c}
+														image={threeSixty}
+														className={
+															classes.cardMediaMediun
+														}
+														onClick={() => {
+															setVirtualSRC(c);
+														}}
+													/>
+												))}
 											</Box>
 										</Grid>
 										<Grid item xs={12} md={8}>
 											<Grid container spacing={3}>
-												<Grid item xs={6} md={4}>
-													<Box>
-														<CardMedia
-															image={threeSixty}
-															className={
-																classes.cardMedia
-															}
-														/>
-														<Typography align="center">
-															VT4464
-														</Typography>
-													</Box>
-												</Grid>
-												<Grid item xs={6} md={4}>
-													<Box>
-														<CardMedia
-															image={threeSixty}
-															className={
-																classes.cardMedia
-															}
-														/>
-														<Typography align="center">
-															VT4464
-														</Typography>
-													</Box>
-												</Grid>
-												<Grid item xs={6} md={4}>
-													<Box>
-														<CardMedia
-															image={threeSixty}
-															className={
-																classes.cardMedia
-															}
-														/>
-														<Typography align="center">
-															VT4464
-														</Typography>
-													</Box>
-												</Grid>
-												<Grid item xs={6} md={4}>
-													<Box>
-														<CardMedia
-															image={threeSixty}
-															className={
-																classes.cardMedia
-															}
-														/>
-														<Typography align="center">
-															VT4464
-														</Typography>
-													</Box>
-												</Grid>
-												<Grid item xs={6} md={4}>
-													<Box>
-														<CardMedia
-															image={threeSixty}
-															className={
-																classes.cardMedia
-															}
-														/>
-														<Typography align="center">
-															VT4464
-														</Typography>
-													</Box>
-												</Grid>
-												<Grid item xs={6} md={4}>
-													<Box>
-														<CardMedia
-															image={threeSixty}
-															className={
-																classes.cardMedia
-															}
-														/>
-														<Typography align="center">
-															VT4464
-														</Typography>
-													</Box>
-												</Grid>
+												{otherVirtualTours.map(
+													(c, i) => (
+														<Grid
+															item
+															xs={6}
+															md={4}
+															key={i}
+														>
+															<Box>
+																<CardMedia
+																	image={
+																		threeSixty
+																	}
+																	className={
+																		classes.cardMedia
+																	}
+																	onClick={() => {
+																		setVirtualSRC(
+																			c
+																		);
+																	}}
+																/>
+															</Box>
+														</Grid>
+													)
+												)}
 											</Grid>
 										</Grid>
 									</Grid>

@@ -184,10 +184,20 @@ const useStyles = makeStyles((theme) => ({
 	cardMediaMediun: {
 		height: 200,
 		borderRadius: 20,
+		cursor: 'pointer',
+		transition: 'transform .2s',
+		'&:hover': {
+			transform: 'scale(1.1)',
+		},
 	},
 	cardMedia: {
 		height: 120,
 		borderRadius: 20,
+		cursor: 'pointer',
+		transition: 'transform .2s',
+		'&:hover': {
+			transform: 'scale(1.1)',
+		},
 	},
 
 	floorPlanWrapper: {

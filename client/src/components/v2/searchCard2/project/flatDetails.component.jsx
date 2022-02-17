@@ -5,6 +5,7 @@ import { area, bed, location2, logo, tag, tub } from '../../../../utils/statc';
 import {
 	capitalizeFirstLetter,
 	isReraApproved,
+	projectCompletionStatusLabel,
 	renderReraId,
 	renderTypes,
 	toHumanReadble,
@@ -116,8 +117,13 @@ const PropertyCard = ({ project, info }) => {
 									onClick={toggleFullImage(true)}
 								>
 									<div className={classes.dateWrapper}>
-										<span>{m.format('D')}</span>
-										<span>{m.format('MMM')}</span>
+										<span>
+											{
+												projectCompletionStatusLabel[
+													project.complitionStatus
+												]
+											}
+										</span>
 									</div>
 								</div>
 							</div>

@@ -75,30 +75,32 @@ const useStyles = makeStyles((theme) => ({
 	},
 	dateWrapper: {
 		display: 'flex',
-		flexDirection: 'column',
 		alignItems: 'center',
+		justifyContent: 'center',
 		background: theme.utilColor,
 		padding: '1rem',
 		color: '#ffffff',
-		height: '80px',
+		height: '50px',
+		borderBottomLeftRadius: 10,
+		borderBottomRightRadius: 10,
 
 		'& >span': {
-			fontWeight: 'bolder',
-			fontSize: '2rem',
+			fontWeight: 'bold',
+			fontSize: '1.5rem',
 		},
 	},
 	dateWrapperCard: {
+		height: 50,
 		display: 'flex',
-		flexDirection: 'column',
+		justifyContent: 'center',
 		alignItems: 'center',
 		background: theme.utilColor,
 		padding: '0.7rem',
 		color: '#ffffff',
-		height: '70px',
 
 		'& >span': {
-			fontWeight: 'bolder',
-			fontSize: '1.7rem',
+			fontWeight: 'bold',
+			fontSize: '1.1rem',
 		},
 		[theme.breakpoints.down('sm')]: {
 			padding: '0.5rem',

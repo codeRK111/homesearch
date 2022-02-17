@@ -12,6 +12,7 @@ import BuilderCard from '../../../components/v2/ownerCard/builderCard.component'
 import FlatHeader from '../../../components/v2/searchCard2/projectProperty/flat.component';
 import Furnishes from '../../../components/furnishes/propertyFurnishes.component';
 import LandHeader from '../../../components/v2/searchCard2/projectProperty/land.component';
+import { Link } from 'react-router-dom';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import Skeleton from '../../../components/v2/skeleton/propertyHeader.component';
 import TextSkeleton from '@material-ui/lab/Skeleton';
@@ -124,7 +125,31 @@ const ProjectPropertyDetailsPage = ({
 					) : (
 						data && (
 							<span>
-								Home/ {data.project.title}/{data.title}
+								<Link className={globalClasses.link} to="/">
+									Home
+								</Link>{' '}
+								/{' '}
+								<Link
+									className={globalClasses.link}
+									to={`/${data.project.builder.slug}`}
+								>
+									{data.project.builder.developerName}
+								</Link>{' '}
+								/{' '}
+								<Link
+									className={globalClasses.link}
+									to={`/v2/search?f=project&c=${data.project.city.id}&cn=${data.project.city.name}`}
+								>
+									{data.project.city.name}
+								</Link>
+								/{' '}
+								<Link
+									className={globalClasses.link}
+									to={`/project-details/${data.project.id}`}
+								>
+									{data.project.title}
+								</Link>{' '}
+								/ {data.title}
 							</span>
 						)
 					)}

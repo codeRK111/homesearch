@@ -1,98 +1,106 @@
-import moment from 'moment';
+import moment from "moment";
 
-export const renderBoolean = (val) => (val ? 'Yes' : 'No');
+export const renderBoolean = (val) => (val ? "Yes" : "No");
 
 export const parseDate = (date) => {
-	const m = moment(date);
-	return m.format('Do MMM YYYY hh:mm a');
+    const m = moment(date);
+    return m.format("Do MMM YYYY hh:mm a");
 };
 export const parseDateWithTime = (date) => {
-	const m = moment(date);
-	return m.format('Do MMM YYYY hh:mm a');
+    const m = moment(date);
+    return m.format("Do MMM YYYY hh:mm a");
 };
 
 export const apiUrl = (url, version = null) => {
-	return `/api/${version ? version : 'v1'}${url}`;
-	// return `/api${url}`;
+    return `/api/${version ? version : "v1"}${url}`;
+    // return `/api${url}`;
 };
 
 export const capitalizeFirstLetter = (string) =>
-	string.charAt(0).toUpperCase() + string.slice(1);
+    string.charAt(0).toUpperCase() + string.slice(1);
 
 export const renderPropertyTypes = (type) => {
-	switch (type) {
-		case 'independenthouse':
-			return 'Villa';
-		case 'flat':
-			return 'Apartment';
-		case 'land':
-			return 'Land';
-		case 'hostel':
-			return 'Hostel';
-		case 'pg':
-			return 'PG';
+    switch (type) {
+        case "independenthouse":
+            return "Villa";
+        case "flat":
+            return "Apartment";
+        case "land":
+            return "Land";
+        case "hostel":
+            return "Hostel";
+        case "pg":
+            return "PG";
 
-		default:
-			return type;
-	}
+        default:
+            return type;
+    }
 };
 export const renderQueryTypes = (type) => {
-	switch (type) {
-		case 'number':
-			return 'Phone Number';
-		case 'whatsapp':
-			return 'Whatsapp';
-		case 'message':
-			return 'Enquiry';
+    switch (type) {
+        case "number":
+            return "Phone Number";
+        case "whatsapp":
+            return "Whatsapp";
+        case "message":
+            return "Enquiry";
 
-		default:
-			return type;
-	}
+        default:
+            return type;
+    }
 };
 export const renderPrice = (price) => {
-	const num = Number(price);
-	if (num < 10000000) {
-		if (num < 100000) {
-			return `${num / 1000} K`;
-		} else {
-			return `${num / 100000} L`;
-		}
-	} else {
-		return `${num / 10000000} Cr`;
-	}
+    const num = Number(price);
+    if (num < 10000000) {
+        if (num < 100000) {
+            return `${num / 1000} K`;
+        } else {
+            return `${num / 100000} L`;
+        }
+    } else {
+        return `${num / 10000000} Cr`;
+    }
 };
 
 export const renderImage = (image, path) => {
-	if (typeof image === 'string') {
-		return `${path}/${image}`;
-	} else {
-		return URL.createObjectURL(image);
-	}
+    if (typeof image === "string") {
+        return `${path}/${image}`;
+    } else {
+        return URL.createObjectURL(image);
+    }
 };
 
 export const renderLunchingDateLabel = (status) => {
-	switch (status) {
-		case 'upcoming':
-			return 'Lunching month and year';
-		case 'ongoing':
-			return 'Possesion month and year';
-		case 'completed':
-			return 'Completion monthn and year';
+    switch (status) {
+        case "upcoming":
+            return "Lunching month and year";
+        case "ongoing":
+            return "Possesion month and year";
+        case "completed":
+            return "Completion monthn and year";
 
-		default:
-			return 'Lunching month and year';
-	}
+        default:
+            return "Lunching month and year";
+    }
 };
 
 export const asyncError = (error) => {
-	let message = '';
-	if (!!error.response) {
-		message = error.response.data.message;
-	} else {
-		message = error.message;
-	}
-	return message;
+    let message = "";
+    if (!!error.response) {
+        message = error.response.data.message;
+    } else {
+        message = error.message;
+    }
+    return message;
 };
 export const hsiID = (id) => {
-	return id ? 'HSI' + id : null;
+    return id ? "HSI" + id : null;
+};
+
+export const getEmbedId = (url) => {
+    const regExp =
+        /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    return match && match[2].length === 11 ? match[2] : null;
 };

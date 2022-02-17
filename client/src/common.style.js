@@ -186,7 +186,8 @@ const globalStyle = makeStyles((theme) => ({
 		textDecoration: 'none',
 		color: '#000000',
 		'&:hover': {
-			color: theme.yellowColor,
+			color: theme.palette.primary.main,
+			textDecoration: 'underline',
 		},
 	},
 }));

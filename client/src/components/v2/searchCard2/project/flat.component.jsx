@@ -4,6 +4,7 @@ import { Box, Grid } from '@material-ui/core';
 import {
 	capitalizeFirstLetter,
 	isReraApproved,
+	projectCompletionStatusLabel,
 	renderTypes,
 	toHumanReadble,
 } from '../../../../utils/render.utils';
@@ -59,8 +60,13 @@ const PropertyCard = ({ property, propertyItems }) => {
 									</div>
 								)}
 								<div className={classes.dateWrapperCard}>
-									<span>{m.format('D')}</span>
-									<span>{m.format('MMM')}</span>
+									<span>
+										{
+											projectCompletionStatusLabel[
+												property.complitionStatus
+											]
+										}
+									</span>
 								</div>
 							</div>
 						</div>
