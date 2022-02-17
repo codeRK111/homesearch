@@ -194,6 +194,9 @@ const NewsDetailsPage = ({
 								style={{
 									maxWidth: '100%',
 									wordBreak: 'break-all',
+									fontFamily: 'CenturyGothic-Normal',
+									fontSize: 14,
+									lineHeight: 1.5,
 								}}
 								dangerouslySetInnerHTML={{
 									__html: data.description,

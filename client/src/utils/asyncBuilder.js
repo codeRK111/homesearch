@@ -50,3 +50,15 @@ export const searchBuilder = (data, cancelToken, setLoading) => {
 			});
 	});
 };
+export const getProjectsOfABuilder = async (id) => {
+	try {
+		const resp = await axios.get(apiUrl(`/builder/get-projects/${id}`, 2), {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		return resp.data.data.projects;
+	} catch (error) {
+		throw new Error(asyncError(error));
+	}
+};

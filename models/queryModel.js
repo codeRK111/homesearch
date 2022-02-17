@@ -38,12 +38,22 @@ const querySchema = new Schema(
 		queryOn: {
 			type: String,
 			enum: {
-				values: ['property', 'project'],
+				values: ['property', 'project', 'projectProperty'],
 			},
 		},
 		property: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Property',
+			default: null,
+		},
+		project: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Project',
+			default: null,
+		},
+		projectProperty: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'ProjectProperty',
 			default: null,
 		},
 		details: {
@@ -64,7 +74,7 @@ const querySchema = new Schema(
 			pFor: {
 				type: String,
 				enum: {
-					values: ['rent', 'sale'],
+					values: ['rent', 'sale', 'project'],
 				},
 			},
 		},

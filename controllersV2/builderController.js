@@ -1,4 +1,5 @@
 const Builder = require('./../models/builderModel');
+const Project = require('./../models/projectModule');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const Admin = require('../models/adminModel');
@@ -68,6 +69,15 @@ exports.addBuilder = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: {
 			builder,
+		},
+	});
+});
+exports.getProjects = catchAsync(async (req, res, next) => {
+	const projects = await Project.find({ builder: req.params.id });
+	res.status(200).json({
+		status: 'success',
+		data: {
+			projects,
 		},
 	});
 });

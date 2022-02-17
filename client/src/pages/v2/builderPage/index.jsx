@@ -1,9 +1,14 @@
 import { Avatar, Box, Chip, Grid, Typography } from '@material-ui/core';
 import React, { useCallback, useRef, useState } from 'react';
+import {
+	getBuilderDetails,
+	getProjectsOfABuilder,
+} from '../../../utils/asyncBuilder';
 
 import BackdropLoader from '../../../components/v2/backdrop/loader';
 import BuilderImages from './carousal';
 import Counter from './counter';
+import CustomSlider from './projects';
 import Directors from './directors';
 import EmailIcon from '@material-ui/icons/Email';
 import ErrorBackdrop from '../../../components/v2/backdropMessage';
@@ -11,7 +16,6 @@ import LocationCityIcon from '@material-ui/icons/LocationCity';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import PhoneIcon from '@material-ui/icons/Phone';
 import axios from 'axios';
-import { getBuilderDetails } from '../../../utils/asyncBuilder';
 import { parseDate } from '../../../utils/render.utils';
 import useStyles from './builder.style';
 import { withAsync } from '../../../hoc/withAsync';
@@ -33,6 +37,25 @@ const BuilderPage = ({
 
 	// Builder Data
 	const [builder, setBuilder] = useState(null);
+
+	// Project data
+	const [projectLoading, setProjectLoading] = useState(false);
+	const [projectError, setProjectError] = useState('');
+	const [projects, setProjects] = useState([]);
+
+	// Fetch Projects
+	const fetchProjects = useCallback(async (id) => {
+		try {
+			setProjectError('');
+			setProjectLoading(true);
+			const resp = await getProjectsOfABuilder(id);
+			setProjects(resp);
+			setProjectLoading(false);
+		} catch (error) {
+			setProjectLoading(false);
+			setProjectError(error.message);
+		}
+	}, []);
 
 	// Fetch Builder
 	const fetchBuilder = useCallback(async () => {
@@ -60,6 +83,11 @@ const BuilderPage = ({
 			}
 		};
 	}, [fetchBuilder]);
+	React.useEffect(() => {
+		if (builder && builder.id) {
+			fetchProjects(builder.id);
+		}
+	}, [fetchProjects, builder]);
 	return (
 		<div className={classes.wrapper}>
 			<BackdropLoader open={loading} text="Loading Details ..." />
@@ -155,6 +183,18 @@ const BuilderPage = ({
 								}
 								completedProjects={builder.completedProjects}
 							/>
+						</Grid>
+						<Grid item xs={12}>
+							<Box mt="1rem">
+								<Typography
+									variant="h4"
+									gutterBottom
+									align="center"
+								>
+									<b>Projects By {builder.developerName}</b>
+								</Typography>
+								<CustomSlider docs={projects} />
+							</Box>
 						</Grid>
 						<Grid item xs={12}>
 							<Box mt="1rem">

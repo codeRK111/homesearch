@@ -35,6 +35,7 @@ const OwnerCard = ({
 	pFor = null,
 	pType = null,
 	builderId = null,
+	queryOn = 'project',
 }) => {
 	const builderImage = owner.logo
 		? `/assets/builders/${owner.logo}`
@@ -58,22 +59,21 @@ const OwnerCard = ({
 	const onClick = (queryType) => {
 		return new Promise((resolve, reject) => {
 			const data = {
-				userName: user.name,
-				phoneNumber: user.number,
-				email: user.email,
-				type,
-				[renderKey[type]]: property._id,
-				user: user.id,
-				builder: builderId ? builderId : property.builder._id,
+				project: property._id,
+				queryForBuilder: builderId ? builderId : property.builder._id,
+				queryFor: 'builder',
+				queryOn,
 				queryType,
-				pFor,
-				pType,
+				details: {
+					pType,
+					pFor: type,
+				},
 			};
 
 			cancelToken.current = axios.CancelToken.source();
 			const token = localStorage.getItem('JWT_CLIENT');
 			axios
-				.post(apiUrl(`/query`, 2), data, {
+				.post(apiUrl(`/query/user/add-query`, 2), data, {
 					cancelToken: cancelToken.current.token,
 					headers: {
 						'Content-Type': 'application/json',
@@ -81,7 +81,6 @@ const OwnerCard = ({
 					},
 				})
 				.then((resp) => {
-					console.log(resp);
 					resolve(resp.data);
 				})
 				.catch((error) => {

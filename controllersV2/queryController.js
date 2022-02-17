@@ -327,6 +327,7 @@ exports.addQueryV2 = catchAsync(async (req, res, next) => {
 	if (body.queryFor === 'agent' || body.queryFor === 'owner') {
 		requiredFields.push('queryForUser');
 	}
+
 	if (
 		body.queryFor === 'owner' &&
 		(body.queryType === 'number' ||
@@ -335,6 +336,17 @@ exports.addQueryV2 = catchAsync(async (req, res, next) => {
 	) {
 		requiredFields.push('queryOn');
 		requiredFields.push('property');
+		requiredFields.push('details');
+	}
+	if (
+		body.queryFor === 'builder' &&
+		(body.queryType === 'number' ||
+			body.queryType === 'message' ||
+			body.queryType === 'whatsapp')
+	) {
+		requiredFields.push('queryOn');
+		requiredFields.push('queryForBuilder');
+		requiredFields.push('project');
 		requiredFields.push('details');
 	}
 

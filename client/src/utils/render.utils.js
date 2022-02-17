@@ -440,6 +440,7 @@ export const hideNumber = (number) => {
 
 export const StaticPaths = {
 	property: (image) => `/assets/properties/${image}`,
+	project: (image) => `/assets/projects/${image}`,
 	blog: (image) => `/assets/blogs/${image}`,
 	profile: (image) => `/assets/profile/${image}`,
 	builder: (image) => `/assets/builders/${image}`,
