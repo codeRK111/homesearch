@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 40,
 		background: theme.shadowColor,
 		minHeight: 41,
-		width: 500,
+		width: '30vw',
 		boxShadow: 'inset 5px 5px 8px #bababa, inset -5px -5px 8px #ffffff',
 		display: 'flex',
 		alignItems: 'center',
