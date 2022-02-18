@@ -1,4 +1,6 @@
 const express = require('express');
+const fs = require('fs');
+
 const hpp = require('hpp');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -18,6 +20,7 @@ const projectRoute = require('./routes/projectRoute');
 const kraRoute = require('./routes/kraRoute');
 const kpiRoute = require('./routes/kpiRoute');
 const pageRoute = require('./routes/pageRoute');
+const BlogModel = require('./models/blogModel');
 
 const queryRoute = require('./routes/propertyQueryRoute');
 const whatsappQueryRoute = require('./routes/whatsappQueryRoute');
@@ -232,6 +235,35 @@ app.all('/api/*', (req, res, next) => {
 app.get('/workspace/*', function (req, res) {
 	res.sendFile(
 		require('path').resolve(__dirname, 'client', 'staff', 'index.html')
+	);
+});
+app.get('/news/:slug', function (req, res) {
+	fs.readFile(
+		require('path').resolve(__dirname, 'client', 'build', 'index.html'),
+		'utf8',
+		(err, htmlData) => {
+			if (err) {
+				console.error('Error during file reading', err);
+				return res.status(404).end();
+			}
+			BlogModel.findOne({ slug: req.params.slug }).then((blog) => {
+				if (blog) {
+					htmlData = htmlData
+						.replace(
+							`<title>Villas, Houses, Apartments for Rent, Buy, Sale Without Brokerage in India</title>`,
+							`<title>${blog.title}</title>`
+						)
+						.replace('__META_OG_TITLE__', blog.title)
+						.replace('__META_OG_DESCRIPTION__', blog.shortDesc)
+						.replace('__META_DESCRIPTION__', blog.shortDesc)
+						.replace(
+							'__META_OG_IMAGE__',
+							`/assets/blogs/${blog.photo}`
+						);
+					return res.send(htmlData);
+				}
+			});
+		}
 	);
 });
 app.get('/*', function (req, res) {
