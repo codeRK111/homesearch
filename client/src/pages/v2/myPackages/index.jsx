@@ -1,20 +1,23 @@
 import {
 	Box,
+	Button,
 	Chip,
+	CircularProgress,
 	Container,
 	Grid,
 	Paper,
 	Typography,
 } from '@material-ui/core';
-import React, { useCallback, useEffect, useState } from 'react';
-import { capitalizeFirstLetter, toCurrency } from '../../../utils/render.utils';
-
 import AbsentIcon from '@material-ui/icons/Cancel';
+import PresentIcon from '@material-ui/icons/CheckCircle';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import clsx from 'clsx';
+import React, { useCallback, useEffect, useState } from 'react';
 import BackdropLoader from '../../../components/v2/backdrop/loader';
 import Nav from '../../../components/v2/pageNav/nav.component';
-import PresentIcon from '@material-ui/icons/CheckCircle';
 import { asyncGetMyPackages } from '../../../utils/asyncPackage';
-import clsx from 'clsx';
+import { downloadInvoice } from '../../../utils/asyncPayment';
+import { capitalizeFirstLetter, toCurrency } from '../../../utils/render.utils';
 import { useStyles } from '../../tenantPackages/package.style';
 
 const MySubscriptions = () => {
@@ -36,6 +39,22 @@ const MySubscriptions = () => {
 		data: [],
 		error: '',
 	});
+	const [invoiceLoading, setInvoiceLoading] = useState(false);
+	const [subId, setSubId] = useState(null);
+
+	const download = async (subscriptionId) => {
+		if (subscriptionId) {
+			try {
+				setSubId(subscriptionId);
+				setInvoiceLoading(true);
+				await downloadInvoice(subscriptionId);
+				setInvoiceLoading(false);
+			} catch (error) {
+				console.log(error);
+				setInvoiceLoading(false);
+			}
+		}
+	};
 
 	const fetchPackages = useCallback(async () => {
 		try {
@@ -80,7 +99,7 @@ const MySubscriptions = () => {
 					<Box mt="2rem">
 						<Grid container spacing={3}>
 							{packageState.data
-								.map((b) => b.packageId)
+								.map((b) => ({ ...b.packageId, subId: b.id }))
 								.map((c) => (
 									<Grid item xs={12} md={3}>
 										<Paper
@@ -196,6 +215,37 @@ const MySubscriptions = () => {
 														)}
 													</Grid>
 												</Grid>
+											</Box>
+											<Box
+												mt="1rem"
+												display="flex"
+												justifyContent={'center'}
+											>
+												<Button
+													color="primary"
+													variant="contained"
+													startIcon={<GetAppIcon />}
+													onClick={() =>
+														download(c.subId)
+													}
+													disabled={
+														invoiceLoading &&
+														subId === c.subId
+													}
+													endIcon={
+														invoiceLoading &&
+														subId === c.subId ? (
+															<CircularProgress
+																color="inherit"
+																size={15}
+															/>
+														) : (
+															<></>
+														)
+													}
+												>
+													Download Invoice
+												</Button>
 											</Box>
 										</Paper>
 									</Grid>

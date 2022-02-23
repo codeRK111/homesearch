@@ -1,14 +1,13 @@
 import { Box, Chip, Grid, Paper, Typography } from '@material-ui/core';
-import React, { useCallback, useEffect, useState } from 'react';
-import { capitalizeFirstLetter, toCurrency } from '../../utils/render.utils';
-
 import AbsentIcon from '@material-ui/icons/Cancel';
+import PresentIcon from '@material-ui/icons/CheckCircle';
+import clsx from 'clsx';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import BackdropLoader from '../../components/v2/backdrop/loader';
 import Nav from '../../components/v2/pageNav/nav.component';
-import PresentIcon from '@material-ui/icons/CheckCircle';
 import { asyncFetchPackages } from '../../utils/asyncPackage';
-import clsx from 'clsx';
-import { useHistory } from 'react-router';
+import { capitalizeFirstLetter, toCurrency } from '../../utils/render.utils';
 import { useStyles } from './package.style';
 
 const packageCategories = ['tenant', 'builder', 'realtor', 'owner', 'buyer'];

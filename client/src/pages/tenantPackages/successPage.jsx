@@ -1,8 +1,16 @@
-import { Box, Container, Paper, Typography } from '@material-ui/core';
-
-import PresentIcon from '@material-ui/icons/CheckCircle';
-import React from 'react';
+import {
+	Box,
+	Button,
+	CircularProgress,
+	Container,
+	Paper,
+	Typography,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import PresentIcon from '@material-ui/icons/CheckCircle';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import React, { useState } from 'react';
+import { downloadInvoice } from '../../utils/asyncPayment';
 
 const useStyles = makeStyles((theme) => ({
 	successWrapper: {
@@ -27,8 +35,23 @@ const PaymentSuccess = ({
 	heading = 'Payment Successful!',
 	text = 'Our executive will contact with you soon.',
 	data = null,
+	subscriptionId = null,
 }) => {
 	const { successWrapper, icon, bold } = useStyles();
+	const [loading, setLoading] = useState(false);
+
+	const download = async () => {
+		if (subscriptionId) {
+			try {
+				setLoading(true);
+				await downloadInvoice(subscriptionId);
+				setLoading(false);
+			} catch (error) {
+				console.log(error);
+				setLoading(false);
+			}
+		}
+	};
 
 	return (
 		<div>
@@ -52,6 +75,29 @@ const PaymentSuccess = ({
 							{text}
 						</Typography>
 					</Box>
+					{subscriptionId && (
+						<Box mt="1rem">
+							<Button
+								color="primary"
+								variant="contained"
+								startIcon={<GetAppIcon />}
+								onClick={download}
+								disabled={loading}
+								endIcon={
+									loading ? (
+										<CircularProgress
+											color="inherit"
+											size={15}
+										/>
+									) : (
+										<></>
+									)
+								}
+							>
+								Download Invoice
+							</Button>
+						</Box>
+					)}
 				</Paper>
 			</Container>
 		</div>

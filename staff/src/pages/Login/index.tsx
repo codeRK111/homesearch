@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
-import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
-
+import { Paper, TextField } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
 import Loader from '@material-ui/core/CircularProgress';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { TextField } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import React, { useState } from 'react';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { asyncLogIn } from '../../API/auth';
+import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { LoginTab } from './tab';
 
 // import TextField from '@material-ui/core/TextField';
 
@@ -65,52 +65,63 @@ const SignIn: React.FC<RouteComponentProps> = ({ location }) => {
 						alignItems: 'center',
 					}}
 				>
-					<Avatar>
-						<LockOutlinedIcon />
-					</Avatar>
-					<Typography component="h1" variant="h5">
-						Sign in
-					</Typography>
-					<Box component="form" onSubmit={handleSubmit}>
-						<TextField
-							margin="normal"
-							required
-							fullWidth
-							label="Username"
-							name="username"
-							autoComplete="username"
-							value={input.username}
-							onChange={handleChange}
-							autoFocus
-						/>
-						<TextField
-							margin="normal"
-							required
-							fullWidth
-							name="password"
-							label="Password"
-							type="password"
-							autoComplete="current-password"
-							value={input.password}
-							onChange={handleChange}
-						/>
-
-						<Button
-							type={'submit'}
-							fullWidth
-							variant="contained"
-							disabled={loading}
-							endIcon={
-								loading ? (
-									<Loader size={20} color={'inherit'} />
-								) : (
-									<></>
-								)
-							}
-						>
-							Sign In
-						</Button>
-					</Box>
+					<Paper
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+							padding: '1rem',
+							borderRadius: 10,
+						}}
+						elevation={5}
+					>
+						<Avatar>
+							<LockOutlinedIcon />
+						</Avatar>
+						<Typography component="h1" variant="h5">
+							Sign in
+						</Typography>
+						<LoginTab />
+						<Box component="form" onSubmit={handleSubmit}>
+							<TextField
+								margin="normal"
+								required
+								fullWidth
+								label="Username"
+								name="username"
+								autoComplete="username"
+								value={input.username}
+								onChange={handleChange}
+								autoFocus
+							/>
+							<TextField
+								margin="normal"
+								required
+								fullWidth
+								name="password"
+								label="Password"
+								type="password"
+								autoComplete="current-password"
+								value={input.password}
+								onChange={handleChange}
+							/>
+							<Button
+								type={'submit'}
+								fullWidth
+								variant="contained"
+								disabled={loading}
+								endIcon={
+									loading ? (
+										<Loader size={20} color={'inherit'} />
+									) : (
+										<></>
+									)
+								}
+							>
+								Sign In
+							</Button>
+						</Box>
+					</Paper>
 					{error && <Typography color={'error'}>{error}</Typography>}
 				</Box>
 			)}

@@ -17,11 +17,12 @@ function pad(num, size) {
 	return num;
 }
 
-function createInvoice(customerInfo, orderInfo) {
+const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 	try {
 		let pdfDoc = new PDFDocument({ autoFirstPage: false });
 		pdfDoc.addPage({ margin: 36 });
-		pdfDoc.pipe(fs.createWriteStream(fileName));
+		const writeStream = fs.createWriteStream(fileName);
+		pdfDoc.pipe(writeStream);
 		pdfDoc.image(companyLogo, { width: 100, height: 30 });
 
 		pdfDoc.font(fontBold).fontSize(16).text('Tax  Invoice', 200, 50);
@@ -297,10 +298,16 @@ function createInvoice(customerInfo, orderInfo) {
 		// );
 		pdfDoc.end();
 		console.log('pdf generate successfully');
-		return { fileName, docName };
+		if (callback) {
+			writeStream.on('finish', function () {
+				callback(fileName, docName);
+			});
+		} else {
+			return { fileName, docName };
+		}
 	} catch (error) {
 		throw new Error(error.message);
 	}
-}
+};
 
 module.exports = createInvoice;

@@ -16,6 +16,7 @@ const AppError = require('../utils/appError');
 const moment = require('moment');
 const mongoose = require('mongoose');
 const PropertyPackage = require('./../models/propertyPackageModel');
+const path = require('path');
 
 exports.createOrder = catchAsync(async (req, res, next) => {
 	try {
@@ -859,7 +860,7 @@ exports.sendInvoice = catchAsync(async (req, res, next) => {
 	} else if (subscription.packageType === 'paymentLink') {
 		package = 'Custom requirement';
 	} else {
-		package = 'Homesearch18 Package';
+		package = 'Homesearch Package';
 	}
 	tax = 0;
 	console.log({
@@ -902,6 +903,98 @@ exports.sendInvoice = catchAsync(async (req, res, next) => {
 			data: invoiceName.fileName,
 			resp,
 		});
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({
+			status: 'success',
+			error: error.message,
+		});
+	}
+});
+
+exports.downloadInvoice = catchAsync(async (req, res, next) => {
+	const subscription = await Subscription.findById(req.params.id);
+	if (!subscription) {
+		return next(new AppError('Invalid Subscription'));
+	}
+	let name,
+		email,
+		number,
+		amountPaid,
+		totalAmount,
+		discount,
+		id,
+		package,
+		tax;
+
+	if (subscription.user) {
+		name = subscription.user.name;
+		email = subscription.user.email;
+		number = subscription.user.number;
+	} else {
+		if (!subscription.email) {
+			return next(new AppError('Email not found'));
+		}
+		if (!subscription.number) {
+			return next(new AppError('Phone Number  not found'));
+		}
+		name = subscription.name ? subscription.name : 'Homesearch User';
+		email = subscription.email;
+		number = subscription.number;
+	}
+	if (!subscription.paidAmount) {
+		return next(new AppError('Amount  not found'));
+	}
+	amountPaid = subscription.paidAmount;
+	totalAmount = subscription.mainAmount
+		? subscription.mainAmount
+		: subscription.paidAmount;
+	discount = totalAmount - amountPaid;
+	id = subscription.subscriptionNumber;
+	if (subscription.packageId) {
+		package = subscription.packageId.name;
+	} else if (subscription.packageType === 'paymentLink') {
+		package = 'Custom requirement';
+	} else {
+		package = 'Homesearch Package';
+	}
+	tax = 0;
+	console.log({
+		name,
+		email,
+		number,
+		amountPaid,
+		totalAmount,
+		discount,
+		id,
+		package,
+		tax,
+	});
+
+	try {
+		const invoiceName = await createInvoice(
+			{
+				name,
+				email,
+				number,
+			},
+			{
+				id,
+				package,
+				totalAmount,
+				amountPaid,
+				discount,
+				tax,
+			},
+			(fileName, docName) => {
+				res.download(
+					__dirname + `/../static/invoices/${docName}.pdf`,
+					(err) => {
+						console.log(err);
+					}
+				);
+			}
+		);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({

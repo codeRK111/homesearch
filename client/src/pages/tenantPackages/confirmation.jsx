@@ -7,29 +7,28 @@ import {
 	Paper,
 	Typography,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import AbsentIcon from '@material-ui/icons/Cancel';
+import PresentIcon from '@material-ui/icons/CheckCircle';
+import RoomIcon from '@material-ui/icons/Room';
+import Alert from '@material-ui/lab/Alert';
+import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
-import { parseDate, toCurrency } from '../../utils/render.utils';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import logo from '../../assets/icons/logo.svg';
+import BackdropLoader from '../../components/v2/backdrop/loader';
+import Nav from '../../components/v2/pageNav/nav.component';
 import {
 	selectAuthenticated,
 	selectUser,
 } from '../../redux/auth/auth.selectors';
-
-import AbsentIcon from '@material-ui/icons/Cancel';
-import Alert from '@material-ui/lab/Alert';
-import BackdropLoader from '../../components/v2/backdrop/loader';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import { Link } from 'react-router-dom';
-import Nav from '../../components/v2/pageNav/nav.component';
-import PaymentSuccess from './successPage';
-import PresentIcon from '@material-ui/icons/CheckCircle';
-import RoomIcon from '@material-ui/icons/Room';
-import { asyncFetchPackageDetails } from '../../utils/asyncPackage';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import logo from '../../assets/icons/logo.svg';
-import { makeStyles } from '@material-ui/core/styles';
 import { toggleLoginPopup } from '../../redux/ui/ui.actions';
+import { asyncFetchPackageDetails } from '../../utils/asyncPackage';
+import { parseDate, toCurrency } from '../../utils/render.utils';
+import PaymentSuccess from './successPage';
 
 const useStyles = makeStyles((theme) => ({
 	orderWrapper: {
@@ -96,6 +95,7 @@ const TenantPackageConfirmationPage = ({
 	const [packageData, setPackageData] = useState(null);
 	const [initialLoading, setInitialLoading] = useState(false);
 	const [paymentId, setPaymentId] = useState(null);
+	const [subscriptionId, setSubscriptionId] = useState(null);
 	const [successLoading, setSuccessLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 	const {
@@ -216,7 +216,7 @@ const TenantPackageConfirmationPage = ({
 						data.homeSearchStaff = getQueryString();
 					}
 
-					await axios.post(
+					const successResponse = await axios.post(
 						'/api/v2/payment/buy-tenant-package-success',
 						data,
 						{
@@ -228,6 +228,14 @@ const TenantPackageConfirmationPage = ({
 							},
 						}
 					);
+					if (
+						successResponse.data.subscription &&
+						successResponse.data.subscription.id
+					) {
+						setSubscriptionId(successResponse.data.subscription.id);
+					} else {
+						setSubscriptionId(null);
+					}
 					setSuccessLoading(false);
 					setSuccess(true);
 				} catch (error) {
@@ -267,6 +275,7 @@ const TenantPackageConfirmationPage = ({
 				{success ? (
 					<PaymentSuccess
 						data={paymentId ? `Payment ID: ${paymentId}` : null}
+						subscriptionId={subscriptionId}
 					/>
 				) : (
 					<Container>

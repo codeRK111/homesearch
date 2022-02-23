@@ -7,25 +7,24 @@ import {
 	Paper,
 	Typography,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Skeleton from '@material-ui/lab/Skeleton';
+import axios from 'axios';
 import React, { useState } from 'react';
-import { apiUrl, asyncError } from '../../utils/render.utils';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import logo from '../../assets/icons/logo.svg';
+import ErrorMessage from '../../components/errorMessage/errorMessage.component';
+import Nav from '../../components/v2/pageNav/nav.component';
+import useAxios from '../../hooks/useAxiosv2';
 import {
 	selectAuthenticated,
 	selectUser,
 } from '../../redux/auth/auth.selectors';
-
-import ErrorMessage from '../../components/errorMessage/errorMessage.component';
-import { Link } from 'react-router-dom';
-import Nav from '../../components/v2/pageNav/nav.component';
-import PaymentSuccess from '../tenantPackages/successPage';
-import Skeleton from '@material-ui/lab/Skeleton';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import logo from '../../assets/icons/logo.svg';
-import { makeStyles } from '@material-ui/core/styles';
 import { toggleLoginPopup } from '../../redux/ui/ui.actions';
-import useAxios from '../../hooks/useAxiosv2';
+import { apiUrl, asyncError } from '../../utils/render.utils';
+import PaymentSuccess from '../tenantPackages/successPage';
 
 const useStyles = makeStyles((theme) => ({
 	packageWrapper: {
@@ -74,6 +73,7 @@ const PayPage = ({ isAuthenticated, toggleLoginPopup, user, ...props }) => {
 	const { packageWrapper, line, price, button, notes } = useStyles();
 	const [initialLoading, setInitialLoading] = useState(false);
 	const [afterPaymentLoading, setAfterPaymentLoading] = useState(false);
+	const [subscriptionId, setSubscriptionId] = useState(null);
 	const [success, setSuccess] = useState(false);
 	const getQueryString = () => {
 		const query = new URLSearchParams(props.location.search);
@@ -174,7 +174,7 @@ const PayPage = ({ isAuthenticated, toggleLoginPopup, user, ...props }) => {
 							data.homeSearchStaff = response.data.link.dealBy;
 						}
 
-						await axios.post(
+						const successResponse = await axios.post(
 							'/api/v2/payment/payment-link-success',
 							data,
 							{
@@ -186,6 +186,16 @@ const PayPage = ({ isAuthenticated, toggleLoginPopup, user, ...props }) => {
 								},
 							}
 						);
+						if (
+							successResponse.data.subscription &&
+							successResponse.data.subscription.id
+						) {
+							setSubscriptionId(
+								successResponse.data.subscription.id
+							);
+						} else {
+							setSubscriptionId(null);
+						}
 						setAfterPaymentLoading(false);
 						setSuccess(true);
 					} catch (error) {
@@ -234,7 +244,7 @@ const PayPage = ({ isAuthenticated, toggleLoginPopup, user, ...props }) => {
 
 					<Box mt="2rem">
 						{success ? (
-							<PaymentSuccess />
+							<PaymentSuccess subscriptionId={subscriptionId} />
 						) : (
 							<Grid container spacing={3} justify="center">
 								{loading || afterPaymentLoading ? (

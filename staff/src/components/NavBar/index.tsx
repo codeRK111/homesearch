@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
-import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-
-import AppBar from '@material-ui/core/AppBar';
-import AppDrawer from '../Drawer';
-import Button from '@material-ui/core/Button';
 import { CircularProgress } from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import { Link } from 'react-router-dom';
-import MenuIcon from '@material-ui/icons/Menu';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { asyncLogout } from '../../API/auth';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import MenuIcon from '@material-ui/icons/Menu';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { asyncLogout } from '../../API/auth';
+import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import AppDrawer from '../Drawer';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -61,7 +60,7 @@ const NavBar = () => {
 
 	return (
 		<div className={classes.root}>
-			<AppBar position="static">
+			<AppBar position="static" elevation={5}>
 				<AppDrawer
 					open={openDrawer}
 					onClose={manageDrawerState(false)}
