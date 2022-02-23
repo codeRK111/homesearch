@@ -35,12 +35,12 @@ const useStyles = makeStyles((theme) => ({
 		border: 'none',
 		padding: '0.5rem',
 		background: 'transparent',
-		fontSize: '1.2rem',
+		fontSize: '1.1rem',
 		fontWeight: 'bold',
 		color: theme.primaryHeadingColor,
 		cursor: 'pointer',
 		[theme.breakpoints.down('sm')]: {
-			fontSize: '1.2rem',
+			fontSize: '1.1rem',
 		},
 	},
 	categorySelectedButton: {
