@@ -1,5 +1,5 @@
-import img from '../../../../assets/hero.svg';
 import { makeStyles } from '@material-ui/core/styles';
+import img from '../../../../assets/hero.svg';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 			height: '90vh',
 			backgroundImage: `url(${img})`,
 			backgroundRepeat: 'no-repeat',
-			backgroundSize: '100% 50vh',
+			backgroundSize: '100% 40vh',
 			backgroundPosition: 'bottom',
 		},
 	},
@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 	categoryButton: {
 		border: 'none',
-		paddingBottom: '0.5rem',
+		padding: '0.5rem',
 		background: 'transparent',
 		fontSize: '1.2rem',
-		fontWeight: 'bolder',
+		fontWeight: 'bold',
 		color: theme.primaryHeadingColor,
 		cursor: 'pointer',
 		[theme.breakpoints.down('sm')]: {
@@ -45,7 +45,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	categorySelectedButton: {
 		color: theme.utilColor,
-		borderBottom: `5px solid ${theme.utilColor}`,
+		// borderBottom: `5px solid ${theme.utilColor}`,
+		boxShadow: '3px 3px 7px #a4a4a4,-3px -3px 7px #ffffff',
+		borderRadius: 10,
 	},
 	menuParent: {
 		position: 'relative',

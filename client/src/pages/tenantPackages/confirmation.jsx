@@ -61,12 +61,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	button: {
 		display: 'flex',
+		border: 'none',
 		justifyContent: 'center',
 		alignItems: 'center',
 		width: '100%',
-		border: `2px solid ${theme.palette.primary.main}`,
-		backgroundColor: theme.palette.primary.main,
-		color: '#ffffff',
+		background: theme.shadowColor,
+		boxShadow: '3px 3px 7px #a4a4a4,-3px -3px 7px #ffffff',
+		borderRadius: 10,
 		padding: '1rem 2rem',
 		fontSize: '1rem',
 		textTransform: 'uppercase',
@@ -75,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: 700,
 		'&:hover': {
 			backgroundColor: theme.palette.primary.dark,
+			color: '#ffffff',
 		},
 	},
 	lineThrough: {

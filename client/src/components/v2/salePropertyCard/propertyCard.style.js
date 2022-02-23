@@ -86,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
 	link: {
 		color: '#000000',
 		textDecoration: 'none',
+		wordBreak: 'break-all',
 		'&:hover': {
 			textDecoration: 'underline',
 		},

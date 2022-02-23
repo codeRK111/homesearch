@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 40,
 		background: theme.shadowColor,
 		minHeight: 41,
-		width: '30vw',
+		width: '20vw',
 		boxShadow: 'inset 5px 5px 8px #bababa, inset -5px -5px 8px #ffffff',
 		display: 'flex',
 		alignItems: 'center',
@@ -78,7 +78,9 @@ const useStyles = makeStyles((theme) => ({
 			},
 			'&::placeholder': {
 				color: theme.primaryHeadingColor,
-				fontWeight: 700,
+				fontWeight: 600,
+				fontSize: '0.7rem',
+				letterSpacing: 1,
 				[theme.breakpoints.down('sm')]: {
 					fontSize: '0.6rem',
 				},
@@ -112,10 +114,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 
 	selected: {
-		backgroundColor: theme.utilColor,
+		color: theme.utilColor,
 		padding: '0.3rem 0.8rem',
-		color: '#ffffff',
-		borderRadius: 20,
+		boxShadow: '3px 3px 7px #a4a4a4,-3px -3px 7px #ffffff',
+		borderRadius: 10,
 	},
 	cityWrapper: {
 		display: 'flex',

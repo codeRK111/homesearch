@@ -6,37 +6,36 @@ import {
 	MenuItem,
 	Typography,
 } from '@material-ui/core';
-import {
-	selectAuthenticated,
-	selectUser,
-} from '../../../redux/auth/auth.selectors';
-import {
-	selectCurrentTab,
-	selectSelectedCity,
-} from '../../../redux/actionTab/actionTab.selectors';
+import { withStyles } from '@material-ui/core/styles';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import MenuIcon from '@material-ui/icons/Menu';
+import clsx from 'clsx';
+import React from 'react';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import logoIcon from '../../../assets/icons/logo.svg';
+import searchIcon from '../../../assets/search.svg';
+import useGlobalStyles from '../../../common.style';
 import {
 	setCurrentTab,
 	setSelectedCity,
 } from '../../../redux/actionTab/actionTab.actions';
-
-import Drawer from '../drawer';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import MenuIcon from '@material-ui/icons/Menu';
-import React from 'react';
-import clsx from 'clsx';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import logoIcon from '../../../assets/icons/logo.svg';
-import { profile } from '../../../utils/statc';
-import { searchCities } from '../../../redux/city/city.actions';
-import searchIcon from '../../../assets/search.svg';
-import { selectSearchCityLoading } from '../../../redux/city/city.selectors';
+import {
+	selectCurrentTab,
+	selectSelectedCity,
+} from '../../../redux/actionTab/actionTab.selectors';
 import { signOut } from '../../../redux/auth/auth.actions';
+import {
+	selectAuthenticated,
+	selectUser,
+} from '../../../redux/auth/auth.selectors';
+import { searchCities } from '../../../redux/city/city.actions';
+import { selectSearchCityLoading } from '../../../redux/city/city.selectors';
 import { toggleLoginPopup } from '../../../redux/ui/ui.actions';
-import useGlobalStyles from '../../../common.style';
-import { useHistory } from 'react-router-dom';
+import { profile } from '../../../utils/statc';
+import Drawer from '../drawer';
 import useStyles from './nav.style';
-import { withStyles } from '@material-ui/core/styles';
 
 const StyledMenu = withStyles({
 	paper: {
@@ -209,6 +208,7 @@ const NavBar = ({
 						className={clsx(
 							globalClasses.bold,
 							globalClasses.pointer,
+							globalClasses.smText,
 							currentTab === 'project' && classes.selected
 						)}
 						onClick={handleAssetType('project')}
@@ -221,6 +221,7 @@ const NavBar = ({
 							globalClasses.colorPrimary,
 							globalClasses.bold,
 							globalClasses.pointer,
+							globalClasses.smText,
 							currentTab === 'sale' && classes.selected
 						)}
 						onClick={handleAssetType('sale')}
@@ -233,6 +234,7 @@ const NavBar = ({
 							globalClasses.colorPrimary,
 							globalClasses.bold,
 							globalClasses.pointer,
+							globalClasses.smText,
 							currentTab === 'rent' && classes.selected
 						)}
 						onClick={handleAssetType('rent')}
@@ -344,7 +346,8 @@ const NavBar = ({
 						mr="1rem"
 						className={clsx(
 							classes.listButton,
-							globalClasses.smHide
+							globalClasses.smHide,
+							globalClasses.smText
 						)}
 						onClick={goToTenantPackages}
 					>
@@ -353,7 +356,8 @@ const NavBar = ({
 					<div
 						className={clsx(
 							classes.listButton,
-							globalClasses.smHide
+							globalClasses.smHide,
+							globalClasses.smText
 						)}
 						onClick={redirectToPostPage}
 					>
@@ -408,7 +412,8 @@ const NavBar = ({
 							<div
 								className={clsx(
 									classes.listButton,
-									globalClasses.smHide
+									globalClasses.smHide,
+									globalClasses.smText
 								)}
 								onClick={redirectToLogIn}
 							>
