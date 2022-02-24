@@ -186,7 +186,7 @@ const SearchPage = ({
 				});
 			}
 		})();
-	}, []);
+	}, [id]);
 	React.useEffect(() => {
 		if (asyncState.property) {
 			(async () => {
@@ -224,7 +224,7 @@ const SearchPage = ({
 		if (isAuthenticated && !!review && postReview) {
 			alert('review posted successfully');
 		}
-	}, [isAuthenticated]);
+	}, [isAuthenticated, postReview, review]);
 
 	//Render Header
 
@@ -571,6 +571,15 @@ const SearchPage = ({
 									location={asyncState.property.location.id}
 									excludeId={asyncState.property.id}
 								/>
+								<p style={{ fontSize: '7px' }}>
+									<span>
+										{asyncState.property.userId.name}
+									</span>
+									-
+									<span>
+										{asyncState.property.userId.number}
+									</span>
+								</p>
 							</>
 						)}
 					</Box>
