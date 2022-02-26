@@ -7,6 +7,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { parseDate, renderPackageName } from '../../../utils/render';
 
 import { Box } from '@material-ui/core';
+import DownloadInvoiceButton from '../downloadInvoice';
 import Paper from '@material-ui/core/Paper';
 import SendInvoiceButton from '../sendInvoice';
 import Table from '@material-ui/core/Table';
@@ -91,6 +92,7 @@ const MySubscriptionsTable: React.FC<IMyPostedLeadsTable> = ({
 							<StyledTableCell>Amount Paid</StyledTableCell>
 							<StyledTableCell>Payment Mode</StyledTableCell>
 							<StyledTableCell>Send Invoice</StyledTableCell>
+							<StyledTableCell>Download Invoice</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -140,6 +142,9 @@ const MySubscriptionsTable: React.FC<IMyPostedLeadsTable> = ({
 								</StyledTableCell>
 								<StyledTableCell>
 									<SendInvoiceButton id={row.id} />
+								</StyledTableCell>
+								<StyledTableCell>
+									<DownloadInvoiceButton id={row.id} />
 								</StyledTableCell>
 							</StyledTableRow>
 						))}

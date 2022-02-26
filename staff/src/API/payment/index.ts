@@ -2,6 +2,7 @@ import { APIV2, V2EndPoint, asyncError } from '../instance';
 import { PaymentLink, RazorpayPayment } from '../../model/payment.interface';
 
 import { AxiosResponse } from 'axios';
+import FileDownload from 'js-file-download';
 import { IcreateSubscriptionData } from '../../components/Forms/createSubscription';
 import { ServerResponse } from '../../model/apiResponse.interface';
 import { StaffTarget } from '../../model/staffTarget.interface';
@@ -343,6 +344,30 @@ export const asyncsendInvoice = async (id: string): Promise<any> => {
 				responseType: 'blob',
 			}
 		);
+		return { status: 'success' };
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+export const asyncDownloadInvoice = async (id: string): Promise<any> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.get<
+			SendProposalData,
+			AxiosResponse<ServerResponse<any>>
+		>(
+			`${V2EndPoint.Payment}/admin/download-invoice/${id}`,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				responseType: 'blob',
+			}
+		);
+		FileDownload(resp.data as any, 'invoice.pdf');
 		return { status: 'success' };
 	} catch (e: any) {
 		throw new Error(asyncError(e));

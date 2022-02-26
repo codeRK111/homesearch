@@ -50,6 +50,11 @@ router.get(
 	authController.protect,
 	paymentController.downloadInvoice
 );
+router.get(
+	'/admin/download-invoice/:id',
+	adminController.protect,
+	paymentController.downloadInvoice
+);
 
 router.get(
 	'/verify-payment/:paymentId',

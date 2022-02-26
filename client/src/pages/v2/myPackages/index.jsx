@@ -226,7 +226,9 @@ const MySubscriptions = () => {
 													variant="contained"
 													startIcon={<GetAppIcon />}
 													onClick={() =>
-														download(c.subId)
+														download(
+															'6218aba49dfd9254ed8e53ca'
+														)
 													}
 													disabled={
 														invoiceLoading &&
