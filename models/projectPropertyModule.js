@@ -45,6 +45,11 @@ const projectPropertySchema = new Schema(
 		numberOfUnits: {
 			type: Number,
 		},
+		unitIds: [
+			{
+				type: String,
+			},
+		],
 		type: {
 			type: String,
 			enum: {
