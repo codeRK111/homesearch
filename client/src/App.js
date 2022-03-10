@@ -8,7 +8,7 @@ import { Box } from '@material-ui/core';
 import CreateQuery from './components/createQuery';
 import Footer from './components/footer/footer.component';
 import HomePageNew from './pages/v2/homePage/home.page';
-import { LoadingAnimationNormal } from './components/v2/loadingAnimation';
+import LoadingAnimationNormal from './components/v2/loadingAnimation/gif';
 import LogIn from './components/logInDialog/logInDialog.component';
 import MuiAlert from '@material-ui/lab/Alert';
 import PayPage from './pages/pay';
