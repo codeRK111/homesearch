@@ -4,6 +4,7 @@ const Query = require('./../models/queryModel');
 const AgentQuery = require('./../models/agentQueryModel');
 const UserQuery = require('./../models/userQueryModel');
 const Project = require('./../models/projectModule');
+const Property = require('./../models/propertyModel');
 const User = require('./../models/userModel');
 const ProjectProperty = require('./../models/projectPropertyModule');
 const catchAsync = require('./../utils/catchAsync');
@@ -11,6 +12,7 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const sendOtpMessage = require('../utils/sendOtp');
 const moment = require('moment');
+const sendQuerySms = require('./../utils/sendQueryMessage');
 
 exports.addQuery = catchAsync(async (req, res, next) => {
 	const body = req.body;
@@ -357,6 +359,26 @@ exports.addQueryV2 = catchAsync(async (req, res, next) => {
 		}
 	});
 	body.queryByUser = req.user.id;
+
+	if (
+		body.queryFor === 'owner' &&
+		body.queryType === 'message' &&
+		body.property
+	) {
+		const property = await Property.findById(body.property);
+		if (property) {
+			const res = await sendQuerySms(property.userId.number, {
+				userName: req.user.name,
+				userNumber: req.user.number,
+				propertyId: property.propertyNumber,
+				propertyPrice:
+					property['for'] === 'rent'
+						? property.rent
+						: property.salePrice,
+				propertyCity: property.city.name,
+			});
+		}
+	}
 
 	const query = await Query.create(body);
 	res.status(200).json({

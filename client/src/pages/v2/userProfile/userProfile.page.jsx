@@ -18,6 +18,7 @@ import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import MyProperties from '../../../components/v2/myProperties';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import React from 'react';
 import SavedProperties from '../../../components/v2/savedProperties';
@@ -53,6 +54,9 @@ const AgentPage = ({ user }) => {
 	};
 	const goToManagePackages = (event) => {
 		history.push('/my-packages');
+	};
+	const goToChanelPartner = (event) => {
+		history.push('/chanel-partner');
 	};
 
 	const handleUpdateProfileClickOpen = () => {
@@ -158,6 +162,13 @@ const AgentPage = ({ user }) => {
 										startIcon={<MonetizationOnIcon />}
 									>
 										My Packages
+									</Button>
+									<Button
+										onClick={goToChanelPartner}
+										size="small"
+										startIcon={<PersonAddIcon />}
+									>
+										Become a CP
 									</Button>
 								</div>
 								<Box

@@ -1,16 +1,14 @@
-import "./index.css";
-
-import App from "./App";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { HashRouter } from "react-router-dom";
-import { Provider } from "react-redux";
 import React from "react";
 import ReactDOM from "react-dom";
-
+import { Provider } from "react-redux";
+import { HashRouter } from "react-router-dom";
+import App from "./App";
+import "./index.css";
 // Setup store here
-// import { store } from "./redux/store";
+import { store } from "./redux/store";
 
-const store = "redux/store";
+// const store = "redux/store";
 
 // import { PersistGate } from 'redux-persist/integration/react';
 

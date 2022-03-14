@@ -55,6 +55,7 @@ const testimonialRoute = require('./routesV2/testimonialRoute');
 const staffRoute = require('./routesV2/staffRoute');
 const blogRoute = require('./routesV2/blogRoute');
 const paymentRoute = require('./routesV2/paymentRoute');
+const cpRoute = require('./routesV2/cpRoute');
 const testRoutev2 = require('./routesV2/testRoute');
 
 const app = express();
@@ -226,6 +227,7 @@ app.use('/api/v2/staff', staffRoute);
 app.use('/api/v2/blog', blogRoute);
 app.use('/api/v2/payment', paymentRoute);
 app.use('/api/v2/package', packageRouteV2);
+app.use('/api/v2/chanel-partner', cpRoute);
 app.use('/api/v2/test', testRoutev2);
 
 app.all('/api/*', (req, res, next) => {

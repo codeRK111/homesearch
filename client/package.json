@@ -1,6 +1,6 @@
 {
 	"name": "client",
-	"version": "0.8.4",
+	"version": "0.8.5",
 	"private": true,
 	"dependencies": {
 		"@date-io/dayjs": "1.x",
@@ -44,6 +44,7 @@
 		"reselect": "^4.0.0",
 		"slick-carousel": "^1.8.1",
 		"source-map-explorer": "^2.5.2",
+		"styled-components": "^5.3.3",
 		"swiper": "^7.4.1",
 		"yup": "^0.29.3"
 	},

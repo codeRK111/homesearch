@@ -446,6 +446,12 @@ export const StaticPaths = {
 	builder: (image) => `/assets/builders/${image}`,
 	testimonial: (image) => `/assets/testimonial/${image}`,
 };
+export const USER_ROLE = {
+	Builder: 'builder',
+	Agent: 'agent',
+	Owner: 'owner',
+	Tenant: 'tenant',
+};
 
 export const toCurrency = (value) => {
 	return !!value

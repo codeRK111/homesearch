@@ -875,6 +875,7 @@ exports.getPropertyResources = catchAsync(async (req, res, next) => {
 
 exports.getPropertyDetails = catchAsync(async (req, res, next) => {
 	const property = await Property.findById(req.params.id);
+	console.log(property.proppertyNumber);
 
 	if (!property) return next(new AppError('property not found', 404));
 	const allAmenities = await Amenity.find();

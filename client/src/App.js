@@ -8,7 +8,7 @@ import { Box } from '@material-ui/core';
 import CreateQuery from './components/createQuery';
 import Footer from './components/footer/footer.component';
 import HomePageNew from './pages/v2/homePage/home.page';
-import LoadingAnimationNormal from './components/v2/loadingAnimation/gif';
+import LoadingAnimationNormal from './components/v2/loadingAnimation/index';
 import LogIn from './components/logInDialog/logInDialog.component';
 import MuiAlert from '@material-ui/lab/Alert';
 import PayPage from './pages/pay';
@@ -31,6 +31,7 @@ const NotFound = lazy(() => import('./pages/notFoundPage/notFound.page'));
 
 // const HomePageNew = lazy(() => import('./pages/v2/homePage/home.page'));
 const BuilderPage = lazy(() => import('./pages/v2/builderPage'));
+const ChanelPartnerPage = lazy(() => import('./pages/v2/chanelPartner'));
 const BrowseBuilderPage = lazy(() => import('./pages/v2/browseBuildersPage'));
 const MySubscriptionsPage = lazy(() => import('./pages/v2/myPackages'));
 const ManageProposalPage = lazy(() => import('./pages/proposal'));
@@ -208,6 +209,16 @@ function App({ authenticated, setSnackbar, snackbarDetails, fetchUser, user }) {
 							render={(props) => (
 								<Protected
 									component={MySubscriptionsPage}
+									{...props}
+								/>
+							)}
+						/>
+						<Route
+							exact
+							path="/chanel-partner"
+							render={(props) => (
+								<Protected
+									component={ChanelPartnerPage}
 									{...props}
 								/>
 							)}
