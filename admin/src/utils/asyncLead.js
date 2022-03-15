@@ -1,8 +1,9 @@
 import { apiUrl, asyncError } from "./render.utils";
+
 import axios from "axios";
-const token = localStorage.getItem("JWT");
 
 export const addLead = (data, cancelToken, setLoading) => {
+    const token = localStorage.getItem("JWT");
     return new Promise((resolve, reject) => {
         setLoading(true);
         axios
@@ -25,6 +26,7 @@ export const addLead = (data, cancelToken, setLoading) => {
 };
 
 export const getAllLeads = (data, cancelToken, setLoading) => {
+    const token = localStorage.getItem("JWT");
     return new Promise((resolve, reject) => {
         setLoading(true);
         axios
@@ -47,6 +49,7 @@ export const getAllLeads = (data, cancelToken, setLoading) => {
 };
 
 export const updateLead = (id, data, cancelToken, setLoading) => {
+    const token = localStorage.getItem("JWT");
     return new Promise((resolve, reject) => {
         setLoading(true);
         axios
@@ -74,6 +77,7 @@ export const assignClientSupport = (
     cancelToken,
     setLoading
 ) => {
+    const token = localStorage.getItem("JWT");
     return new Promise((resolve, reject) => {
         setLoading(true);
         axios
