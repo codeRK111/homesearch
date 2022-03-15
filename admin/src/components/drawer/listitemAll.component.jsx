@@ -1,39 +1,3 @@
-import Collapse from "@material-ui/core/Collapse";
-import { green } from "@material-ui/core/colors";
-import Divider from "@material-ui/core/Divider";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import { makeStyles } from "@material-ui/core/styles";
-import AddBoxIcon from "@material-ui/icons/AddBox";
-import ApartmentIcon from "@material-ui/icons/Apartment";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import LocationCityIcon from "@material-ui/icons/LocationCity";
-import LockIcon from "@material-ui/icons/Lock";
-import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
-import PhoneIcon from "@material-ui/icons/Phone";
-import WorkIcon from "@material-ui/icons/Work";
-import React from "react";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { createStructuredSelector } from "reselect";
-import {
-    toggleBuilder,
-    toggleJoinRequest,
-    toggleKPI,
-    toggleKRA,
-    toggleLeads,
-    toggleLocation,
-    togglePackage,
-    toggleProject,
-    togglePropertyRent,
-    togglePropertySale,
-    toggleReview,
-} from "../../redux/sidebar/sidebar.actions";
 import {
     selectBuilder,
     selectJoinRequest,
@@ -47,9 +11,45 @@ import {
     selectPropertySale,
     selectReview,
 } from "../../redux/sidebar/sidebar.selector";
-import { selectCurrentUser } from "../../redux/user/user.selector";
+import {
+    toggleBuilder,
+    toggleJoinRequest,
+    toggleKPI,
+    toggleKRA,
+    toggleLeads,
+    toggleLocation,
+    togglePackage,
+    toggleProject,
+    togglePropertyRent,
+    togglePropertySale,
+    toggleReview,
+} from "../../redux/sidebar/sidebar.actions";
+
+import AddBoxIcon from "@material-ui/icons/AddBox";
+import ApartmentIcon from "@material-ui/icons/Apartment";
+import Collapse from "@material-ui/core/Collapse";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import Divider from "@material-ui/core/Divider";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import LocationCityIcon from "@material-ui/icons/LocationCity";
+import LockIcon from "@material-ui/icons/Lock";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
+import React from "react";
 import RenderByAdminType from "../roleRender/renderByRole.component";
 import RenderByRole from "../roleRender/roleRender.component";
+import WorkIcon from "@material-ui/icons/Work";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { green } from "@material-ui/core/colors";
+import { makeStyles } from "@material-ui/core/styles";
+import { selectCurrentUser } from "../../redux/user/user.selector";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     nested: {
@@ -458,123 +458,6 @@ const MainListItems = ({
         },
     ]);
 
-    const KRA = RenderByAdminType({
-        "super-admin": (
-            <div>
-                <ListItem button onClick={toggleKRA}>
-                    <ListItemIcon>
-                        <WorkIcon color="secondary" />
-                    </ListItemIcon>
-                    <ListItemText primary="KRA" />
-                    {selectKRA ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={selectKRA} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        <ListItem
-                            button
-                            className={classes.nested}
-                            onClick={onUsersClick("/project-advertisement")}
-                        >
-                            <ListItemIcon>
-                                <PhoneIcon style={{ color: green[500] }} />
-                            </ListItemIcon>
-                            <ListItemText primary="Project Advertisement" />
-                        </ListItem>
-                        <ListItem
-                            button
-                            className={classes.nested}
-                            onClick={onUsersClick("/property-advertisement")}
-                        >
-                            <ListItemIcon>
-                                <PhoneIcon style={{ color: green[500] }} />
-                            </ListItemIcon>
-                            <ListItemText primary="Property Advertisement" />
-                        </ListItem>
-                    </List>
-                </Collapse>
-            </div>
-        ),
-        admin: (
-            <div>
-                <ListItem button onClick={toggleKRA}>
-                    <ListItemIcon>
-                        <WorkIcon color="secondary" />
-                    </ListItemIcon>
-                    <ListItemText primary="KRA" />
-                    {selectKRA ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={selectKRA} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        <ListItem
-                            button
-                            className={classes.nested}
-                            onClick={onUsersClick("/project-advertisement")}
-                        >
-                            <ListItemIcon>
-                                <PhoneIcon style={{ color: green[500] }} />
-                            </ListItemIcon>
-                            <ListItemText primary="Project Advertisement" />
-                        </ListItem>
-                    </List>
-                </Collapse>
-            </div>
-        ),
-    });
-    const KPI = RenderByAdminType({
-        "super-admin": (
-            <div>
-                <ListItem button onClick={toggleKPI}>
-                    <ListItemIcon>
-                        <WorkIcon color="secondary" />
-                    </ListItemIcon>
-                    <ListItemText primary="KPI" />
-                    {selectKPI ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={selectKPI} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        <ListItem
-                            button
-                            className={classes.nested}
-                            onClick={onUsersClick(
-                                "/kpi/project-advertisement/overview"
-                            )}
-                        >
-                            <ListItemIcon>
-                                <PhoneIcon style={{ color: green[500] }} />
-                            </ListItemIcon>
-                            <ListItemText primary="Project Advertisement" />
-                        </ListItem>
-                    </List>
-                </Collapse>
-            </div>
-        ),
-        admin: (
-            <div>
-                <ListItem button onClick={toggleKPI}>
-                    <ListItemIcon>
-                        <WorkIcon color="secondary" />
-                    </ListItemIcon>
-                    <ListItemText primary="KPI" />
-                    {selectKPI ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={selectKPI} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        <ListItem
-                            button
-                            className={classes.nested}
-                            onClick={onUsersClick("/kpi/project-advertisement")}
-                        >
-                            <ListItemIcon>
-                                <PhoneIcon style={{ color: green[500] }} />
-                            </ListItemIcon>
-                            <ListItemText primary="Project Advertisement" />
-                        </ListItem>
-                    </List>
-                </Collapse>
-            </div>
-        ),
-    });
-
     const Workspace = RenderByAdminType({
         staff: (
             <ListItem button onClick={onUsersClick("/workspace")}>
@@ -607,6 +490,13 @@ const MainListItems = ({
                     <ListItemText primary="Admin / Staffs" />
                 </ListItem>
             )}
+            <Divider color="#fff" />
+            <ListItem button onClick={onUsersClick("/chanel-partners")}>
+                <ListItemIcon>
+                    <PeopleOutlineIcon color="secondary" />
+                </ListItemIcon>
+                <ListItemText primary="Chanel Partners" />
+            </ListItem>
             <Divider color="#fff" />
             <ListItem button onClick={onUsersClick("/authentication")}>
                 <ListItemIcon>

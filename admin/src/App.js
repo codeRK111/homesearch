@@ -1,87 +1,93 @@
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
-import React from "react";
-import { connect } from "react-redux";
-import { Route, Switch } from "react-router-dom";
-import { createStructuredSelector } from "reselect";
 import "./App.css";
+
+import { Route, Switch } from "react-router-dom";
+
+import ActiveProperties from "./pages/properties/properties.component";
 import AddAdmin from "./components/addAdmin/addAdmin.component";
-import AddUser from "./components/addUser/addUser.component";
-import Drawer from "./components/drawer/drawer.component";
-import EditAdmin from "./components/editAdmin/editAdmin.component";
-import EditUser from "./components/editUser/editUser.component";
-import HOC from "./components/hoc/hoc.component";
-import TypeHOC from "./components/hoc/hocForAdminTYpe.component";
-import Protected from "./components/protected/protected.component";
-import TypeProtected from "./components/typeProtected/typeProtected.component";
-import { withLoader } from "./hoc/withLoader";
 import AddAgentPage from "./pages/addAgent";
 import AddBuilderPage from "./pages/addBuilder/addBuilder.component";
 import AddCityPage from "./pages/addCity/addCity.component";
+import AddLeadsPage from "./pages/leads/addLeads.component";
 import AddLocationPage from "./pages/addLocation/addLocation.component";
+import AddProjectAdvertisementLeads from "./pages/addProjectAdvertisementLeads/addLeads.page";
 import AddProjectPage from "./pages/addProject/addProject.component";
 import AddProjectv2Page from "./pages/addProject/v2";
-import AddProjectAdvertisementLeads from "./pages/addProjectAdvertisementLeads/addLeads.page";
 import AddProperty from "./pages/addProperty/addProperty.component";
+import AddPropertyAdvertisement from "./pages/propertyAdvertisement/AddStaff.page";
 import AddPropertyForSale from "./pages/addPropertyForSale/addPropertyWrapper.component";
+import AddStaff from "./pages/projectAdvertisement/AddStaff.page";
+import AddUser from "./components/addUser/addUser.component";
 import AdminPage from "./pages/adminsPage";
 import AgentQueryPage from "./pages/agentQueries";
 import Authentication from "./pages/authpage/authentication.component";
 import BuilderPackage from "./pages/builderPackage/builderPackage.page";
 import BuilderPage from "./pages/builders";
+import ChanelPartnersPage from "./pages/chanelPartners";
 import DashboardPage from "./pages/dashboard/dashboatd.component";
 import DeleteCityPage from "./pages/deleteCity/deleteCity.component";
 import DeleteLocationPage from "./pages/deleteLocation/deleteLocation.component";
 import DigitalMarketingPage from "./pages/digitalMarketingWorkspace";
+import Drawer from "./components/drawer/drawer.component";
+import EditAdmin from "./components/editAdmin/editAdmin.component";
 import EditBuilderPage from "./pages/editBuilder/v2";
 import EditCityPage from "./pages/editCity/editCity.component";
+import EditExpertQuery from "./pages/queries/expertQueriesEdit.component";
 import EditLocationPage from "./pages/editLocation/editLocation.component";
-import EditProjectPage from "./pages/editProject/v2/";
-import UpdateProjectProperty from "./pages/editProject/v2/projectProperty";
+import EditProjectAdvertisement from "./pages/projectAdvertisement/editProjectAdvertisement.page";
 import EditProjectAdvertisementLeads from "./pages/editProjectAdvertisementLead/editLeads.page";
+import EditProjectPage from "./pages/editProject/v2/";
+import EditPropertyAdvertisement from "./pages/propertyAdvertisement/editPropertyAdvertisement.page";
 import EditPropertyPage from "./pages/editProperty/editProperty.component";
 import EditPropertySalePage from "./pages/editProperty/editPropertySale.component";
+import EditUser from "./components/editUser/editUser.component";
+import ExpertQuery from "./pages/queries/expertQueries.component";
 import Feedback from "./pages/feedback/feedback.component";
-import ViewCitiesPage from "./pages/getCities/getCities.componet";
-import LocationsPage from "./pages/getLocations/getLocations.componet";
+import HOC from "./components/hoc/hoc.component";
 import KPIPage from "./pages/kpi/index.page";
 import LeadsPage from "./pages/leads";
-import AddLeadsPage from "./pages/leads/addLeads.component";
+import LocationsPage from "./pages/getLocations/getLocations.componet";
 import LogIn from "./pages/login/login.component";
 import ManageTask from "./pages/manageTask/manageTask.page";
 import ManageTaskProperty from "./pages/manageTaskProperty/manageTask.page";
-import AddStaff from "./pages/projectAdvertisement/AddStaff.page";
-import EditProjectAdvertisement from "./pages/projectAdvertisement/editProjectAdvertisement.page";
+import MuiAlert from "@material-ui/lab/Alert";
 import ProjectAdvertisement from "./pages/projectAdvertisement/projectAdvertisement.page";
 import ProjectPage from "./pages/projects/projects.component";
 import ProjectSpecialitiesPage from "./pages/projectSpeciality";
 import ProjectSurvayPage from "./pages/projectSurvey";
-import ActiveProperties from "./pages/properties/properties.component";
-import PropertySale from "./pages/properties/propertiesSale.component";
-import AddPropertyAdvertisement from "./pages/propertyAdvertisement/AddStaff.page";
-import EditPropertyAdvertisement from "./pages/propertyAdvertisement/editPropertyAdvertisement.page";
 import PropertyAdvertisement from "./pages/propertyAdvertisement/propertyAdvertisement.page";
 import PropertyPackage from "./pages/propertyPackage/propertyPackage.page";
-import QueryConversation from "./pages/queries/conversationPage";
-import ExpertQuery from "./pages/queries/expertQueries.component";
-import EditExpertQuery from "./pages/queries/expertQueriesEdit.component";
+import PropertySale from "./pages/properties/propertiesSale.component";
+import Protected from "./components/protected/protected.component";
 import Query from "./pages/queries/queries.component";
+import QueryConversation from "./pages/queries/conversationPage";
 import QueryDetailsPage from "./pages/queries/queryDetails.component";
+import React from "react";
 import RequestPage from "./pages/requestPage";
 import RequestsPage from "./pages/requestPhotosPage/requestPhotos.page";
 import ReviewsPage from "./pages/reviewsPage";
+import Snackbar from "@material-ui/core/Snackbar";
+import TypeHOC from "./components/hoc/hocForAdminTYpe.component";
+import TypeProtected from "./components/typeProtected/typeProtected.component";
+import UpdateChanelPartnerPage from "./pages/chanelPartners/updateChanelPartner.jsx";
+import UpdateProjectProperty from "./pages/editProject/v2/projectProperty";
 import UserQueryPage from "./pages/userQueries";
 import Users from "./pages/usersPage";
+import ViewCitiesPage from "./pages/getCities/getCities.componet";
 import WhQueries from "./pages/whQueries/whQueries.component";
 import Workspace from "./pages/workspace/workspace.page";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import { setSnackbar } from "./redux/ui/ui.actions";
 import { snackbarDetails } from "./redux/ui/ui.selectors";
+import { withLoader } from "./hoc/withLoader";
 
 // components
 
 // import Authenticated from './components/protected/protected.component';
 // const HomePageWithDrawer = Drawer(HomePage);
 const AgentQueryPageWithDrawer = Drawer(AgentQueryPage);
+const UpdateChanelPartnerPageWithDrawer = Drawer(UpdateChanelPartnerPage);
+const ChanelPartnersPageWithDrawer = Drawer(ChanelPartnersPage);
 const LeadsPageWithDrawer = Drawer(LeadsPage);
 const AddLeadsPageWithDrawer = Drawer(AddLeadsPage);
 const UserQueryPageWithDrawer = Drawer(UserQueryPage);
@@ -194,6 +200,26 @@ function App({ setSnackbar, snackbarDetails, ...props }) {
                     path="/leads"
                     render={() => (
                         <Protected component={LeadsPageWithDrawer} {...props} />
+                    )}
+                />
+                <Route
+                    exact
+                    path="/chanel-partners"
+                    render={() => (
+                        <Protected
+                            component={ChanelPartnersPageWithDrawer}
+                            {...props}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path="/chanel-partners/:action/:id?"
+                    render={() => (
+                        <Protected
+                            component={UpdateChanelPartnerPageWithDrawer}
+                            {...props}
+                        />
                     )}
                 />
                 <Route

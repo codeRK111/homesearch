@@ -1,6 +1,6 @@
 {
 	"name": "client",
-	"version": "0.8.5",
+	"version": "0.8.6",
 	"private": true,
 	"dependencies": {
 		"@date-io/dayjs": "1.x",

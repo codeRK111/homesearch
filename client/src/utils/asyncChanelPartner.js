@@ -6,7 +6,7 @@ export const asyncCreateCP = async (data) => {
 	try {
 		const token = localStorage.getItem('JWT_CLIENT');
 		const resp = await axios.post(
-			apiUrl(`/chanel-partner`, 2),
+			apiUrl(`/chanel-partner/user`, 2),
 			data,
 
 			{
