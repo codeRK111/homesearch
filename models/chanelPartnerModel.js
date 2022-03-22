@@ -32,6 +32,10 @@ const chanelPartnerSchema = new Schema(
 		photo: {
 			type: String,
 		},
+		city: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'City',
+		},
 	},
 	{
 		toJSON: { virtuals: true },

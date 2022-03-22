@@ -1,27 +1,26 @@
+import { Box } from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
+import React, { lazy, Suspense, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import React, { Suspense, lazy, useEffect, useRef } from 'react';
-import { selectAuthenticated, selectUser } from './redux/auth/auth.selectors';
-
+import { createStructuredSelector } from 'reselect';
 import BackToTop from './components/backToTop';
 import BottomNavigationComponent from './components/bottomNavigation';
-import { Box } from '@material-ui/core';
 import CreateQuery from './components/createQuery';
 import Footer from './components/footer/footer.component';
-import HomePageNew from './pages/v2/homePage/home.page';
-import LoadingAnimationNormal from './components/v2/loadingAnimation/index';
 import LogIn from './components/logInDialog/logInDialog.component';
-import MuiAlert from '@material-ui/lab/Alert';
-import PayPage from './pages/pay';
 import Protected from './components/protected/protected.component';
 import ScrollToTop from './components/scrollToTop';
-import Snackbar from '@material-ui/core/Snackbar';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { LoadingAnimationNormal } from './components/v2/loadingAnimation/index';
+import PayPage from './pages/pay';
+import HomePageNew from './pages/v2/homePage/home.page';
 import { fetchUserProfile } from './redux/auth/auth.actions';
-import { setLastActive } from './utils/asyncUser';
+import { selectAuthenticated, selectUser } from './redux/auth/auth.selectors';
 import { setSnackbar } from './redux/ui/ui.actions';
 import { snackbarDetails } from './redux/ui/ui.selectors';
+import { setLastActive } from './utils/asyncUser';
 
 const PaymentPage = lazy(() =>
 	import('./pages/testPayment/testPayment.component')
