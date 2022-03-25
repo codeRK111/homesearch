@@ -367,6 +367,13 @@ exports.addQueryV2 = catchAsync(async (req, res, next) => {
 	) {
 		const property = await Property.findById(body.property);
 		if (property) {
+			const getTypeName = {
+				flat: 'apartment',
+				independenthouse: 'villa',
+				land: 'land',
+				hostel: 'hostel',
+				pg: 'PG',
+			};
 			const res = await sendQuerySms(property.userId.number, {
 				userName: req.user.name,
 				userNumber: req.user.number,
@@ -376,6 +383,11 @@ exports.addQueryV2 = catchAsync(async (req, res, next) => {
 						? property.rent
 						: property.salePrice,
 				propertyCity: property.city.name,
+				propertyLocation: property.location.name,
+				type:
+					property['for'] === 'rent'
+						? getTypeName[property.type]
+						: getTypeName[property.sale_type],
 			});
 		}
 	}
