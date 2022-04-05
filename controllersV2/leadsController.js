@@ -557,6 +557,10 @@ exports.countLeads = catchAsync(async (req, res, next) => {
 					{ $match: { userCategory: 'tenant', ...filterByRole } },
 					{ $count: 'Tenant' },
 				],
+				Associate: [
+					{ $match: { userCategory: 'associate', ...filterByRole } },
+					{ $count: 'Associate' },
+				],
 				Buyer: [
 					{ $match: { userCategory: 'buyer', ...filterByRole } },
 					{ $count: 'Buyer' },
@@ -603,6 +607,7 @@ exports.countLeads = catchAsync(async (req, res, next) => {
 		{
 			$project: {
 				Tenant: { $arrayElemAt: ['$Tenant.Tenant', 0] },
+				Associate: { $arrayElemAt: ['$Associate.Associate', 0] },
 				Buyer: { $arrayElemAt: ['$Buyer.Buyer', 0] },
 				Owner: { $arrayElemAt: ['$Owner.Owner', 0] },
 				Realtor: { $arrayElemAt: ['$Realtor.Realtor', 0] },

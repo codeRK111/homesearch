@@ -341,6 +341,11 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 										>
 											Builder
 										</MenuItem>
+										<MenuItem
+											value={LeadUserCategory.Associate}
+										>
+											Associate
+										</MenuItem>
 
 										<MenuItem
 											value={LeadUserCategory.Unknown}

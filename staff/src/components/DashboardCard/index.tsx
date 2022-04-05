@@ -12,9 +12,6 @@ const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		fullHeight: {
 			height: '100%',
-			'&:hover': {
-				background: '#c1c1c1',
-			},
 		},
 		icon: {
 			fontSize: '3rem',
@@ -22,6 +19,9 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		cursor: {
 			cursor: 'pointer',
+		},
+		selected: {
+			border: `4px solid ${theme.palette.primary.main}`,
 		},
 	})
 );
@@ -46,14 +46,20 @@ export default function DashboardCard({
 
 	return (
 		<Card
-			className={clsx(classes.fullHeight, classes.cursor)}
-			elevation={selected ? 10 : 0}
+			className={clsx(classes.fullHeight, classes.cursor, {
+				[classes.selected]: selected,
+			})}
+			elevation={1}
 			onClick={() => onClick(clickValue)}
 		>
 			<Grid container className={classes.fullHeight}>
 				<Grid item xs={12}>
 					<CardContent>
-						<Typography variant="h6" align="center">
+						<Typography
+							variant="h6"
+							align="center"
+							style={{ fontSize: '1.1rem' }}
+						>
 							{label}
 						</Typography>
 					</CardContent>
@@ -61,7 +67,7 @@ export default function DashboardCard({
 						<Divider />
 					</Box>
 
-					<Typography variant="h4" align="center" color="primary">
+					<Typography variant="h5" align="center" color="primary">
 						<CountUp
 							start={0}
 							end={value}

@@ -279,6 +279,7 @@ export const asyncAssignSupport = async (
 
 export type GMLeadCounts = {
 	Tenant: number;
+	Associate: number;
 	Buyer: number;
 	Owner: number;
 	Realtor: number;

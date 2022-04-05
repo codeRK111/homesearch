@@ -115,7 +115,7 @@ const ClientSupportHome = () => {
 			{countLoading && <FetchCountLoader count={5} />}
 			{counts && (
 				<Grid container spacing={3} justifyContent="center">
-					<Grid item xs={12} md={2}>
+					<Grid item xs={12} md={1}>
 						<DashboardCard
 							label="Tenant"
 							value={counts.Tenant}
@@ -125,7 +125,7 @@ const ClientSupportHome = () => {
 							selected={userCategory === 'tenant'}
 						/>
 					</Grid>
-					<Grid item xs={12} md={2}>
+					<Grid item xs={12} md={1}>
 						<DashboardCard
 							label="Buyer"
 							value={counts.Buyer}
@@ -135,7 +135,7 @@ const ClientSupportHome = () => {
 							selected={userCategory === 'buyer'}
 						/>
 					</Grid>
-					<Grid item xs={12} md={2}>
+					<Grid item xs={12} md={1}>
 						<DashboardCard
 							label="Owner"
 							value={counts.Owner}
@@ -145,7 +145,7 @@ const ClientSupportHome = () => {
 							selected={userCategory === 'owner'}
 						/>
 					</Grid>
-					<Grid item xs={12} md={2}>
+					<Grid item xs={12} md={1}>
 						<DashboardCard
 							label="Realtor"
 							value={counts.Realtor}
@@ -155,7 +155,7 @@ const ClientSupportHome = () => {
 							selected={userCategory === 'realtor'}
 						/>
 					</Grid>
-					<Grid item xs={12} md={2}>
+					<Grid item xs={12} md={1}>
 						<DashboardCard
 							label="Builder"
 							value={counts.Builder}
@@ -165,7 +165,17 @@ const ClientSupportHome = () => {
 							selected={userCategory === 'builder'}
 						/>
 					</Grid>
-					<Grid item xs={12} md={2}>
+					<Grid item xs={12} md={1}>
+						<DashboardCard
+							label="Associate"
+							value={counts.Associate}
+							Icon={AssignmentIcon}
+							clickValue={'associate'}
+							onClick={manageUserCategory}
+							selected={userCategory === 'associate'}
+						/>
+					</Grid>
+					<Grid item xs={12} md={1}>
 						<DashboardCard
 							label="Unknown"
 							value={counts.Unknown}

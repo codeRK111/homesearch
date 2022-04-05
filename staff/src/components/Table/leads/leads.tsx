@@ -32,7 +32,7 @@ const StyledTableCell = withStyles((theme) => ({
 	head: {
 		backgroundColor: theme.palette.common.black,
 		color: theme.palette.common.white,
-		fontSize: 13,
+		fontSize: 12,
 	},
 	body: {
 		fontSize: 13,
@@ -146,12 +146,14 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 								</select>
 							</StyledTableCell>
 							<StyledTableCell>Tags</StyledTableCell>
-							<StyledTableCell>Name</StyledTableCell>
 							<StyledTableCell>Contact Details</StyledTableCell>
 							<StyledTableCell>Category</StyledTableCell>
-							<StyledTableCell>Requirement</StyledTableCell>
+							{/* <StyledTableCell>Requirement</StyledTableCell>
 							<StyledTableCell>Requirement Type</StyledTableCell>
-							<StyledTableCell>Property Type</StyledTableCell>
+							<StyledTableCell>Property Type</StyledTableCell> */}
+							<StyledTableCell>
+								Requirement Details
+							</StyledTableCell>
 							<StyledTableCell>Budget</StyledTableCell>
 							<StyledTableCell>Created On</StyledTableCell>
 							<StyledTableCell>Posted By</StyledTableCell>
@@ -160,8 +162,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 								<StyledTableCell>Reconnect on</StyledTableCell>
 							)}
 
-							<StyledTableCell>Update</StyledTableCell>
-							<StyledTableCell>Comments</StyledTableCell>
+							<StyledTableCell>Action</StyledTableCell>
 							<StyledTableCell>Send Query</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
@@ -216,10 +217,10 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 												</Box>
 											)}
 										</StyledTableCell>
+
 										<StyledTableCell>
-											{row.name ? row.name : '-'}
-										</StyledTableCell>
-										<StyledTableCell>
+											<b>Name: </b>
+											{row.name ? row.name : '-'} <br />
 											<b>Email: </b>
 											{row.email ? row.email : '-'} <br />
 											<b>Phone: </b> {row.number}
@@ -232,20 +233,27 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											<b>Location: </b>{' '}
 											{row.preferedLocation}
 										</StyledTableCell>
+
 										<StyledTableCell>
 											{renderCellData(row.userCategory)}
 										</StyledTableCell>
-										<StyledTableCell>
-											{renderCellData(row.requirement)}
-										</StyledTableCell>
-										<StyledTableCell>
+										<StyledTableCell
+											style={{ width: '10%' }}
+										>
+											<b>
+												{renderCellData(
+													row.requirement
+												)}
+											</b>
+											<br />
+											<b>Req. Type</b>:
 											{renderCellData(row.category)}
-										</StyledTableCell>
-										<StyledTableCell>
-											{renderCellData(row.pType)}
-											{row.propertyRequirements && (
-												<Box mt="0.3rem">
-													{row.propertyRequirements.map(
+											<br />
+											<b>Property. Type</b>:
+											{renderCellData(row.pType)} <br />
+											<Box mt="0.3rem">
+												{row.propertyRequirements &&
+													row.propertyRequirements.map(
 														(c, i) => (
 															<Chip
 																key={i}
@@ -253,9 +261,9 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 															/>
 														)
 													)}
-												</Box>
-											)}
+											</Box>
 										</StyledTableCell>
+
 										{
 											<PriceRangeCell
 												minPrice={
@@ -287,14 +295,13 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											>
 												<EditIcon color="primary" />
 											</IconButton>
-										</StyledTableCell>
-										<StyledTableCell>
 											<IconButton
 												onClick={openModal(row)}
 											>
 												<QuestionAnswerIcon color="primary" />
 											</IconButton>
 										</StyledTableCell>
+
 										<StyledTableCell>
 											<SendProposal lead={row} />
 										</StyledTableCell>
