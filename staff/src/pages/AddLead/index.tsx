@@ -1,15 +1,18 @@
 import * as Yup from 'yup';
 
 import {
+	Box,
 	Button,
+	Chip,
 	CircularProgress,
 	Container,
 	Grid,
 	IconButton,
 	MenuItem,
+	TextField,
 	Typography,
 } from '@material-ui/core';
-import { Form, Formik, FormikHelpers } from 'formik';
+import { FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import {
 	ILead,
 	LeadSource,
@@ -70,11 +73,13 @@ const AddLeadPage = () => {
 		maxPrice: 0,
 		propertyRequirements: [],
 		city: null,
+		tags: [],
 	};
 
 	// State
 	const [loading, setLoading] = useState(false);
 	const [images, setImages] = useState<any>(null);
+	const [tagText, setTagText] = useState('');
 
 	// Callbacks
 	const fileSelectedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -188,6 +193,13 @@ const AddLeadPage = () => {
 												value={LeadUserCategory.Builder}
 											>
 												Builder
+											</MenuItem>
+											<MenuItem
+												value={
+													LeadUserCategory.Associate
+												}
+											>
+												Associate
 											</MenuItem>
 
 											<MenuItem
@@ -328,6 +340,67 @@ const AddLeadPage = () => {
 											multiline={true}
 											rows={5}
 											label="Message"
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<FieldArray
+											name="tags"
+											render={(arrayHelpers) => (
+												<>
+													<Box>
+														<TextField
+															value={tagText}
+															onChange={(e) =>
+																setTagText(
+																	e.target
+																		.value
+																)
+															}
+															label={
+																'Enter a tag name'
+															}
+															variant="filled"
+															size="small"
+														/>
+														<Button
+															variant="contained"
+															type="button"
+															size="large"
+															onClick={() => {
+																if (tagText) {
+																	arrayHelpers.push(
+																		tagText
+																	);
+																	setTagText(
+																		''
+																	);
+																}
+															}}
+														>
+															Add
+														</Button>
+													</Box>
+													<Box mt="1rem">
+														{values.tags &&
+															values.tags.map(
+																(c, i) => (
+																	<Chip
+																		label={
+																			c
+																		}
+																		onDelete={() =>
+																			arrayHelpers.remove(
+																				i
+																			)
+																		}
+																		variant="outlined"
+																		key={i}
+																	/>
+																)
+															)}
+													</Box>
+												</>
+											)}
 										/>
 									</Grid>
 									<Grid item xs={12}>

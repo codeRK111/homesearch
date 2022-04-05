@@ -25,6 +25,7 @@ import ActiveIcon from "@material-ui/icons/CheckCircle";
 import ChipHeading from "../../../components/chipHeading";
 import EditIcon from "@material-ui/icons/Edit";
 import EditTextField from "../../addProject/v2/editTextField";
+import { IdConfiguration } from "./id-conf";
 import InactiveIcon from "@material-ui/icons/Cancel";
 import RemoveTowerButton from "./removeButton";
 import StatusSwitch from "./switch.component";
@@ -46,6 +47,8 @@ const Tower = ({
     const editClasses = useEditStyles();
     const [floorPlan, setFloorPlan] = useState(null);
     const [noOfFloors, setNoOfFloors] = useState(1);
+    const [unitsPerFlor, setUnitsPerFlorr] = useState(4);
+    const [ids, setIds] = useState([]);
 
     // UI
     const [error, setError] = useState(null);
@@ -69,6 +72,10 @@ const Tower = ({
         setShowEdit(!showEdit);
     };
     const onAddUnit = () => {
+        const type = prompt("Enter the unit type");
+        if (!Number(type) || Number(type) > unitsPerFlor) {
+            return;
+        }
         onAddClick(tower)();
     };
 
@@ -159,8 +166,28 @@ const Tower = ({
                         }
                     />
                     <Box p="0.5rem">
-                        <TextField placeholder="Number of floors" />
-                        <pre>{JSON.stringify(tower, null, 2)}</pre>
+                        <TextField
+                            placeholder="Number of floors"
+                            label="Number of floors"
+                            value={noOfFloors}
+                            onChange={(e) => setNoOfFloors(e.target.value)}
+                        />
+                    </Box>
+                    <Box p="0.5rem">
+                        <TextField
+                            placeholder="Types of unit per floor"
+                            label="Types of unit per floor"
+                            value={unitsPerFlor}
+                            onChange={(e) => setUnitsPerFlorr(e.target.value)}
+                        />
+                        {/* <pre>{JSON.stringify(tower, null, 2)}</pre> */}
+                    </Box>
+                    <Box p="0.5rem">
+                        <IdConfiguration
+                            floor={noOfFloors}
+                            type={unitsPerFlor}
+                            setIds={setIds}
+                        />
                     </Box>
                     <Box p="0.5rem">
                         {error && (

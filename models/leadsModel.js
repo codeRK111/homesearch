@@ -84,6 +84,7 @@ const leadsSchema = new Schema(
 			enum: {
 				values: [
 					'tenant',
+					'associate',
 					'buyer',
 					'owner',
 					'realtor',

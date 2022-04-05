@@ -13,6 +13,7 @@ export type LeadComment = {
 
 export enum LeadUserCategory {
 	Tenant = 'tenant',
+	Associate = 'associate',
 	Buyer = 'buyer',
 	Owner = 'owner',
 	Realtor = 'realtor',

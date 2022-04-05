@@ -20,7 +20,7 @@ export const asyncAddLead = async (
 		for (const key in lead) {
 			if (Object.prototype.hasOwnProperty.call(lead, key)) {
 				const element = lead[key as keyof ILead];
-				if (key === 'propertyRequirements') {
+				if (key === 'propertyRequirements' || key === 'tags') {
 					const c = element as string[];
 					c.forEach((b) => {
 						formData.append(key, `${b}`);
