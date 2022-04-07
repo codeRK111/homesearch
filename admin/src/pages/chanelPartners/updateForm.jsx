@@ -12,7 +12,6 @@ import { useHistory } from "react-router-dom";
 const UpdateForm = ({ user, action = "add" }) => {
     const history = useHistory();
     const validationSchema = Yup.object({
-        name: Yup.string().required("name required"),
         email: Yup.string().required("email required"),
         password: Yup.string().required("password required"),
         confirmPassword: Yup.string()

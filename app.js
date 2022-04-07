@@ -180,6 +180,10 @@ app.use(
 app.use('/admin', express.static(path.join(__dirname, 'admin', 'build')));
 app.use('/workspace', express.static(path.join(__dirname, 'staff', 'build')));
 app.use(
+	'/chanel-partner',
+	express.static(path.join(__dirname, 'chanel-partner', 'build'))
+);
+app.use(
 	'/homesearchIndia',
 	express.static(path.join(__dirname, 'homesearchIndia', 'build'))
 );
