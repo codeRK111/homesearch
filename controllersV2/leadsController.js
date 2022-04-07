@@ -179,8 +179,8 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 				};
 				break;
 			case 'yesterday':
-				var start = moment().add(-1, 'days'); // set to 12:00 am yesterday
-				var end = moment().startOf('day');
+				var start = moment().subtract(1, 'days').startOf('day'); // set to 12:00 am yesterday
+				var end = moment().subtract(1, 'days').endOf('day');
 				filter.createdAt = {
 					$gte: start,
 					$lt: end,
