@@ -48,6 +48,15 @@ chanelPartnerSchema.plugin(AutoIncrement, {
 	inc_field: 'chanelNumber',
 });
 
+chanelPartnerSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'city',
+		select: 'id name ',
+	});
+
+	next();
+});
+
 chanelPartnerSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) return next();
 	this.password = await bcrypt.hash(this.password, 12);

@@ -33,7 +33,12 @@ export const LoginForm: React.FC = () => {
 		helpers: FormikHelpers<ILoginData>
 	) => {
 		try {
-			navigation(RoutePath.Home);
+			if (
+				values.email === 'test@gmail.com' &&
+				values.password === 'homesearch123'
+			) {
+				navigation(RoutePath.Home);
+			}
 		} catch (err: any) {}
 	};
 

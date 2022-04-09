@@ -5,7 +5,7 @@ import { Router } from './router';
 
 function App() {
 	return (
-		<BrowserRouter>
+		<BrowserRouter basename="/chanel-partner">
 			<CssBaseline />
 			<Router />
 		</BrowserRouter>

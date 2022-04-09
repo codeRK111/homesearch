@@ -5,6 +5,7 @@ const adminController = require('../controllers/adminController');
 const router = express.Router();
 
 router.route('/user').post(authController.protect, cpController.createCPUser);
+router.route('/login').post(cpController.cpLogin);
 
 router
 	.route('/:id')

@@ -429,10 +429,10 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 		data.pType = req.body.pType;
 	}
 
-	if (req.body.minPrice !== null || req.body.minPrice !== undefined) {
+	if (req.body.minPrice !== null && req.body.minPrice !== undefined) {
 		data.minPrice = req.body.minPrice;
 	}
-	if (req.body.maxPrice !== null || req.body.maxPrice !== undefined) {
+	if (req.body.maxPrice !== null && req.body.maxPrice !== undefined) {
 		data.maxPrice = req.body.maxPrice;
 	}
 	if (
