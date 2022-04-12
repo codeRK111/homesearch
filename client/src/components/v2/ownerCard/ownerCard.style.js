@@ -14,10 +14,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 	avatarWrapper: {
 		position: 'relative',
-		height: '50px',
-		width: '65px',
+		height: '60px',
+		width: '60px',
 		display: 'inline-block',
 		marginRight: '1rem',
+	},
+	avatarRoot: {
+		width: '100%',
+		height: '100%',
 	},
 	commentIcon: {
 		position: 'absolute',
@@ -40,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: '0.7rem',
 		padding: '0.5rem 1rem',
 		borderRadius: 15,
+	},
+	ownerName: {
+		textAlign: 'center',
 	},
 	ownerInfo: {
 		display: 'flex',
@@ -65,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 		color: '#a7a6a6',
 		fontWeight: 'bold',
 		fontSize: '0.8rem',
-		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		// textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 		letterSpacing: 1,
 	},
 }));

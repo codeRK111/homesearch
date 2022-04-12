@@ -6,9 +6,6 @@ let theme = createMuiTheme({
 			main: '#2AAAAC',
 		},
 	},
-	typography: {
-		fontFamily: ['CenturyGothic'],
-	},
 });
 theme = responsiveFontSizes(theme);
 const customTheme = {

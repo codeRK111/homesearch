@@ -1,5 +1,6 @@
 import {
 	AppBar,
+	Avatar,
 	Box,
 	Grid,
 	IconButton,
@@ -128,7 +129,7 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 				<Box className={classes.wrapper}>
 					<div className={classes.logoWrapper}>
 						<img src={logoIcon} alt="" className={classes.logo} />
-						{renderLogo[getHostName()]}
+						<Box ml="0.5rem">{renderLogo[getHostName()]}</Box>
 					</div>
 					<div className={classes.rightSide}>
 						<Box
@@ -178,7 +179,16 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 										aria-haspopup="true"
 										onClick={toggleTopDrawer}
 									>
-										<img
+										<Avatar
+											src={
+												user.photo
+													? `/profile/${user.photo}`
+													: profile
+											}
+										>
+											{user.name[0].toUpperCase()}
+										</Avatar>
+										{/* <img
 											src={
 												user.photo
 													? `/profile/${user.photo}`
@@ -186,7 +196,7 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 											}
 											alt="Profile"
 											className={gClasses.smHide}
-										/>
+										/> */}
 									</Box>
 								)}
 								<Menu

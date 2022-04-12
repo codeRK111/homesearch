@@ -72,13 +72,13 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		margin: 0,
 		padding: 0,
-		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		// textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 		letterSpacing: 1,
 	},
 	description: {
 		fontSize: '0.7rem',
 		lineHeight: 1.5,
-		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		// textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 		letterSpacing: 1,
 		fontWeight: 'bold',
 	},

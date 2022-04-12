@@ -332,12 +332,7 @@ const PropertyCard = ({ project, info }) => {
 						</Grid>
 					</Box>
 					<Box mt="1rem">
-						<h4
-							className={clsx(
-								classes.colorSecondary,
-								globalClasses.textShadow
-							)}
-						>
+						<h4 className={clsx(classes.colorSecondary)}>
 							Overview
 						</h4>
 					</Box>

@@ -162,7 +162,7 @@ const useStyles = makeStyles((theme) => ({
 	locationText: {
 		margin: '0 0 0 0.5rem',
 		padding: '0.3rem',
-		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		// textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 		letterSpacing: 1,
 		fontWeight: 'bolder',
 		[theme.breakpoints.down('sm')]: {
@@ -249,7 +249,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	propertyName: {
 		fontSize: '2rem',
-		textShadow: '0px 0.2px, 0.2px 0px, 0.2px 0.2px',
+		// textShadow: '0px 0.2px, 0.2px 0px, 0.2px 0.2px',
 		letterSpacing: 1,
 		fontWeight: 'bolder',
 		[theme.breakpoints.down('sm')]: {
@@ -258,7 +258,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	propertyNameSearch: {
 		fontSize: '1.6rem',
-		textShadow: '0px 0.2px, 0.2px 0px, 0.2px 0.2px',
+		// textShadow: '0px 0.2px, 0.2px 0px, 0.2px 0.2px',
 		letterSpacing: 1,
 		fontWeight: 'bolder',
 		[theme.breakpoints.down('sm')]: {

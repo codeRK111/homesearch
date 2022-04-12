@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
 		boxSizing: 'border-box',
 		borderRadius: '40px',
 		backgroundColor: theme.shadowColor,
-		boxShadow: '30px 10px 30px 0 #a6a6a6, -30px -30px 30px 0 #ffffff',
+		boxShadow: '6px 6px 12px #bebebe,-6px -6px 12px #ffffff',
 		display: 'flex',
 		justifyContent: 'space-between',
 	},
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.shadowColor,
 		display: 'flex',
 		boxShadow: '5px 5px 9px #a8a8a8, -5px -5px 9px #ffffff',
-		borderRadius: '10px',
+		borderRadius: '50%',
 		marginLeft: '1rem',
 		padding: '0.2rem',
 		'&>img': {

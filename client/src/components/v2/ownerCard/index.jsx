@@ -1,16 +1,17 @@
 import { AppBar, Avatar, Box, CircularProgress } from '@material-ui/core';
-import clsx from 'clsx';
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import useGlobalStyles from '../../../common.style';
+import { badge, call, comment, whatsapp } from '../../../utils/statc';
 import {
 	selectAuthenticated,
 	selectUser,
 } from '../../../redux/auth/auth.selectors';
 import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
+
 import { addQueryV2 } from '../../../utils/asyncQuery';
-import { badge, call, comment, whatsapp } from '../../../utils/statc';
+import clsx from 'clsx';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import useGlobalStyles from '../../../common.style';
 import useStyles from './ownerCard.style';
 
 const renderKey = {
@@ -207,9 +208,11 @@ const OwnerCard = ({
 					<div className={classes.avatarWrapper}>
 						<Avatar
 							alt="Remy Sharp"
-							src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=100&w=100"
 							className={classes.avatar}
-						/>
+							classes={{ root: classes.avatarRoot }}
+						>
+							{owner.name[0].toUpperCase()}
+						</Avatar>
 						<img
 							src={badge}
 							alt="Badge"
@@ -221,35 +224,11 @@ const OwnerCard = ({
 							<div className={classes.ownerType}>
 								Property Owner
 							</div>
-							<h2>{owner.name.toUpperCase()}</h2>
-							{/* <Box
-                                className={clsx(
-                                    globalClasses.justifySpaceBetween,
-                                    globalClasses.alignCenter
-                                )}
-                            >
-                                <span
-                                    className={clsx(
-                                        classes.ownerId,
-                                        globalClasses.xsText,
-                                        globalClasses.bold
-                                    )}
-                                >
-                                    ID : R04913231c
-                                </span>
-                                <Link
-                                    className={clsx(
-                                        globalClasses.colorWarning,
-                                        globalClasses.xsText,
-                                        globalClasses.bold
-                                    )}
-                                >
-                                    {' '}
-                                    View Listing
-                                </Link>
-                            </Box> */}
+							<h3 className={classes.ownerName}>
+								{owner.name.toUpperCase()}
+							</h3>
+
 							<Box
-								p="0.4rem"
 								className={clsx(
 									globalClasses.alignCenter,
 									globalClasses.justifyCenter

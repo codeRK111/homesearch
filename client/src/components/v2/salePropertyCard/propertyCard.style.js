@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: '700',
 		fontSize: '0.7rem',
 		marginLeft: '0.4rem',
-		textShadow: '0px 0.05px, 0.05px 0px, 0.05px 0.05px',
+		// textShadow: '0px 0.05px, 0.05px 0px, 0.05px 0.05px',
 		letterSpacing: 1,
 	},
 	wrapper: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: '0.5rem',
 		margin: 0,
 		fontSize: '1.5rem',
-		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		// textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 		letterSpacing: 1,
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '1rem',
@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: '0.5rem',
 		margin: 0,
 		fontSize: '1rem',
-		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		// textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 		letterSpacing: 1,
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '1rem',

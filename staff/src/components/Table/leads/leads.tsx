@@ -89,20 +89,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 	// Effects
 	useEffect(() => {
-		const idForExclude = '615ac4fa03177c2788a318e2';
-		const idToExcude = '615ac4b203177c2788a318e1';
-		const exFunc = (lead: ILead): boolean => {
-			if (user?.id === idForExclude) {
-				if (lead.createdBy?.id === idToExcude) {
-					return false;
-				} else {
-					return true;
-				}
-			} else {
-				return true;
-			}
-		};
-		setData(leads.filter(exFunc));
+		setData(leads);
 	}, [leads]);
 
 	const Loader = (

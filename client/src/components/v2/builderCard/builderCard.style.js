@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
 		height: '100%',
 	},
 	developerName: {
-		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		// textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 		letterSpacing: 1,
 		textAlign: 'center',
 		fontSize: '1.4rem',
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 	value: {
 		fontSize: '0.8rem',
 		fontWeight: 'bold',
-		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		// textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 		letterSpacing: 1,
 	},
 	description: {

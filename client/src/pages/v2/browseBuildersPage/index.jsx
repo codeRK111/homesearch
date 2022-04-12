@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Typography } from '@material-ui/core';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import Card from '../../../components/v2/builderCard/builderCard.component';
@@ -83,41 +83,43 @@ const BrowseBuilderPage = () => {
 	return (
 		<>
 			<Nav />
-			<Box className={style.wrapper}>
-				<Box mb="2rem">
-					<SearchComponent
-						selectedCity={selectedCity}
-						setSelectedCity={setSelectedCity}
-						placeholder="Search By City Name"
-					/>
-				</Box>
-				{loading && <SimilarPropertiesSkeleton />}
-				{error && <ErrorCard message={error} />}
-				{noResults && (
-					<Typography align="center" variant="h6" gutterBottom>
-						No results found
-					</Typography>
-				)}
-				{!loading && (
-					<Grid container spacing={3} justify="center">
-						{data.builders.map((c) => (
-							<Grid item xs={12} md={4} key={c.id}>
-								<Card data={c} />
-							</Grid>
-						))}
-					</Grid>
-				)}
-				{data.builders.length > 0 && (
-					<Box mt="2rem" display="flex" justifyContent={'center'}>
-						<Pagination
-							count={Math.ceil(data.totalDocs / 10)}
-							color="primary"
-							page={page}
-							onChange={handleChangePage}
+			<Container>
+				<Box className={style.wrapper}>
+					<Box mb="2rem">
+						<SearchComponent
+							selectedCity={selectedCity}
+							setSelectedCity={setSelectedCity}
+							placeholder="Search By City Name"
 						/>
 					</Box>
-				)}
-			</Box>
+					{loading && <SimilarPropertiesSkeleton />}
+					{error && <ErrorCard message={error} />}
+					{noResults && (
+						<Typography align="center" variant="h6" gutterBottom>
+							No results found
+						</Typography>
+					)}
+					{!loading && (
+						<Grid container spacing={3} justify="center">
+							{data.builders.map((c) => (
+								<Grid item xs={12} md={4} key={c.id}>
+									<Card data={c} />
+								</Grid>
+							))}
+						</Grid>
+					)}
+					{data.builders.length > 0 && (
+						<Box mt="2rem" display="flex" justifyContent={'center'}>
+							<Pagination
+								count={Math.ceil(data.totalDocs / 10)}
+								color="primary"
+								page={page}
+								onChange={handleChangePage}
+							/>
+						</Box>
+					)}
+				</Box>
+			</Container>
 		</>
 	);
 };

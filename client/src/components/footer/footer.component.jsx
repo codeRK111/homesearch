@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		backgroundColor: 'rgba(0,0,0,0.9)',
 		color: '#ffffff',
-		fontFamily: 'CenturyGothic',
 	},
 	link: {
 		color: '#ffffff',

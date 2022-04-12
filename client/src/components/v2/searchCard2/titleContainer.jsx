@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		fontSize: '1.5rem',
 		fontWeight: 'bolder',
-		textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+		// textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 	},
 	desc: {
 		fontSize: '0.8rem',

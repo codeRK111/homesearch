@@ -1,4 +1,4 @@
-import { Box, Grid } from '@material-ui/core';
+import { Box, Container, Grid } from '@material-ui/core';
 import {
 	capitalizeFirstLetter,
 	renderByPropertyFor,
@@ -286,69 +286,31 @@ const SearchPage = ({
 					</Box>
 					{/* <SearchCard /> */}
 					{renderFor(asyncState.property)}
-					<Box mt="2rem">
-						<Grid container spacing={3}>
-							<Grid item xs={12} md={9}>
-								{asyncState.property.sale_type !== 'land' && (
-									<>
-										<h2
-											className={
-												globalClasses.colorPrimary
-											}
-										>
-											Amenities
-										</h2>
-
-										{asyncState.property.amenities.length >
-										0 ? (
-											<Grid container spacing={3}>
-												{' '}
-												{asyncState.property.allAmenities
-													.filter((c) =>
-														asyncState.property.amenities.includes(
-															c.id
-														)
-													)
-													.map((b) => {
-														return (
-															<Grid
-																item
-																xs={6}
-																md={3}
-																key={b.id}
-															>
-																<Amenity
-																	text={
-																		b.name
-																	}
-																/>
-															</Grid>
-														);
-													})}{' '}
-											</Grid>
-										) : (
-											<p>No Amenities</p>
-										)}
-									</>
-								)}
-
-								{asyncState.property.sale_type !== 'land' && (
-									<Box mt="1rem">
-										<h2
-											className={
-												globalClasses.colorPrimary
-											}
-										>
-											Furnishes
-										</h2>
-										{asyncState.property.furnished ===
-											'furnished' ||
-										asyncState.property.furnished ===
-											'semifurnished' ? (
-											<>
+					<Container>
+						<Box mt="2rem">
+							<Grid container spacing={3}>
+								<Grid item xs={12} md={9}>
+									{asyncState.property.sale_type !==
+										'land' && (
+										<>
+											<h2
+												className={
+													globalClasses.colorPrimary
+												}
+											>
+												Amenities
+											</h2>
+											{asyncState.property.amenities
+												.length > 0 ? (
 												<Grid container spacing={3}>
-													{asyncState.property.furnishes.map(
-														(b) => {
+													{' '}
+													{asyncState.property.allAmenities
+														.filter((c) =>
+															asyncState.property.amenities.includes(
+																c.id
+															)
+														)
+														.map((b) => {
 															return (
 																<Grid
 																	item
@@ -363,59 +325,59 @@ const SearchPage = ({
 																	/>
 																</Grid>
 															);
-														}
-													)}
+														})}{' '}
 												</Grid>
-											</>
-										) : (
-											<p>Unfurnished</p>
-										)}
-									</Box>
-								)}
-
-								{renderByPropertyFor(
-									asyncState.property,
-									'rent',
-									<>
-										<Box mt="3rem">
+											) : (
+												<p>No Amenities</p>
+											)}
+										</>
+									)}
+									{asyncState.property.sale_type !==
+										'land' && (
+										<Box mt="1rem">
 											<h2
 												className={
 													globalClasses.colorPrimary
 												}
 											>
-												Available For
+												Furnishes
 											</h2>
-											<Grid container spacing={3}>
-												{asyncState.property.availableFor.map(
-													(b, i) => {
-														return (
-															<Grid
-																item
-																xs={6}
-																md={3}
-																key={i}
-															>
-																<Amenity
-																	text={b}
-																/>
-															</Grid>
-														);
-													}
-												)}
-											</Grid>
+											{asyncState.property.furnished ===
+												'furnished' ||
+											asyncState.property.furnished ===
+												'semifurnished' ? (
+												<>
+													<Grid container spacing={3}>
+														{asyncState.property.furnishes.map(
+															(b) => {
+																return (
+																	<Grid
+																		item
+																		xs={6}
+																		md={3}
+																		key={
+																			b.id
+																		}
+																	>
+																		<Amenity
+																			text={
+																				b.name
+																			}
+																		/>
+																	</Grid>
+																);
+															}
+														)}
+													</Grid>
+												</>
+											) : (
+												<p>Unfurnished</p>
+											)}
 										</Box>
-									</>
-								)}
-								<LegalClearance
-									property={asyncState.property}
-								/>
-								{renderByPropertyFor(
-									asyncState.property,
-									'rent',
-
-									renderByPropertyType(
+									)}
+									{renderByPropertyFor(
 										asyncState.property,
-										['hostel', 'pg'],
+										'rent',
 										<>
 											<Box mt="3rem">
 												<h2
@@ -423,166 +385,224 @@ const SearchPage = ({
 														globalClasses.colorPrimary
 													}
 												>
-													Fooding
+													Available For
 												</h2>
-												{asyncState.property.fooding
-													.length > 0 ? (
-													<Grid container spacing={3}>
-														{asyncState.property.fooding.map(
-															(b, i) => {
-																return (
-																	<Grid
-																		item
-																		xs={6}
-																		md={3}
-																		key={i}
-																	>
-																		<Amenity
-																			text={capitalizeFirstLetter(
-																				b
-																			)}
-																		/>
-																	</Grid>
-																);
-															}
-														)}
-													</Grid>
-												) : (
-													<p>Not Available</p>
-												)}
+												<Grid container spacing={3}>
+													{asyncState.property.availableFor.map(
+														(b, i) => {
+															return (
+																<Grid
+																	item
+																	xs={6}
+																	md={3}
+																	key={i}
+																>
+																	<Amenity
+																		text={b}
+																	/>
+																</Grid>
+															);
+														}
+													)}
+												</Grid>
 											</Box>
-											{asyncState.property.foodSchedule
-												.length > 0 && (
+										</>
+									)}
+									<LegalClearance
+										property={asyncState.property}
+									/>
+									{renderByPropertyFor(
+										asyncState.property,
+										'rent',
+										renderByPropertyType(
+											asyncState.property,
+											['hostel', 'pg'],
+											<>
 												<Box mt="3rem">
 													<h2
 														className={
 															globalClasses.colorPrimary
 														}
 													>
-														Food Schedule
+														Fooding
 													</h2>
-													<Grid container spacing={3}>
-														{asyncState.property.foodSchedule.map(
-															(b, i) => {
-																return (
-																	<Grid
-																		item
-																		xs={6}
-																		md={3}
-																		key={i}
-																	>
-																		<Amenity
-																			text={capitalizeFirstLetter(
-																				b
-																			)}
-																		/>
-																	</Grid>
-																);
-															}
-														)}
-													</Grid>
+													{asyncState.property.fooding
+														.length > 0 ? (
+														<Grid
+															container
+															spacing={3}
+														>
+															{asyncState.property.fooding.map(
+																(b, i) => {
+																	return (
+																		<Grid
+																			item
+																			xs={
+																				6
+																			}
+																			md={
+																				3
+																			}
+																			key={
+																				i
+																			}
+																		>
+																			<Amenity
+																				text={capitalizeFirstLetter(
+																					b
+																				)}
+																			/>
+																		</Grid>
+																	);
+																}
+															)}
+														</Grid>
+													) : (
+														<p>Not Available</p>
+													)}
 												</Box>
-											)}
+												{asyncState.property
+													.foodSchedule.length >
+													0 && (
+													<Box mt="3rem">
+														<h2
+															className={
+																globalClasses.colorPrimary
+															}
+														>
+															Food Schedule
+														</h2>
+														<Grid
+															container
+															spacing={3}
+														>
+															{asyncState.property.foodSchedule.map(
+																(b, i) => {
+																	return (
+																		<Grid
+																			item
+																			xs={
+																				6
+																			}
+																			md={
+																				3
+																			}
+																			key={
+																				i
+																			}
+																		>
+																			<Amenity
+																				text={capitalizeFirstLetter(
+																					b
+																				)}
+																			/>
+																		</Grid>
+																	);
+																}
+															)}
+														</Grid>
+													</Box>
+												)}
+											</>
+										)
+									)}
+									{renderByPropertyFor(
+										asyncState.property,
+										'rent',
+										<>
+											<Box mt="3rem">
+												<h2
+													className={
+														globalClasses.colorPrimary
+													}
+												>
+													Restrictions
+												</h2>
+												<p>
+													<i>
+														{asyncState.property
+															.restrictions
+															? asyncState
+																	.property
+																	.restrictions
+															: 'No restrictions'}
+													</i>
+												</p>
+											</Box>
 										</>
-									)
-								)}
-								{renderByPropertyFor(
-									asyncState.property,
-									'rent',
-									<>
-										<Box mt="3rem">
-											<h2
-												className={
-													globalClasses.colorPrimary
-												}
-											>
-												Restrictions
-											</h2>
-											<p>
-												<i>
-													{asyncState.property
-														.restrictions
-														? asyncState.property
-																.restrictions
-														: 'No restrictions'}
-												</i>
-											</p>
-										</Box>
-									</>
-								)}
-								<Box mt="3rem">
-									<h2 className={globalClasses.colorPrimary}>
-										About The Property
-									</h2>
-								</Box>
-								<p>
-									<i>{asyncState.property.description}</i>
-								</p>
-
-								<div className={classes.divider}></div>
+									)}
+									<Box mt="3rem">
+										<h2
+											className={
+												globalClasses.colorPrimary
+											}
+										>
+											About The Property
+										</h2>
+									</Box>
+									<p>{asyncState.property.description}</p>
+									<div className={classes.divider}></div>
+								</Grid>
+								<Grid item xs={12} md={3}>
+									<Box mb="2rem">
+										<OwnerCard
+											owner={asyncState.property.userId}
+											property={asyncState.property}
+											type="property"
+											pFor={asyncState.property.for}
+											pType={
+												asyncState.property.for ===
+												'rent'
+													? asyncState.property.type
+													: asyncState.property
+															.sale_type
+											}
+										/>
+									</Box>
+								</Grid>
 							</Grid>
-							<Grid item xs={12} md={3}>
-								<Box mb="2rem">
-									<OwnerCard
-										owner={asyncState.property.userId}
-										property={asyncState.property}
-										type="property"
-										pFor={asyncState.property.for}
-										pType={
-											asyncState.property.for === 'rent'
+							{asyncState.property && (
+								<>
+									<PropertyAction id={id} />
+									<PropertyComment
+										type={'property'}
+										id={asyncState.property.id}
+										propertyItemType={
+											asyncState.property.type
 												? asyncState.property.type
 												: asyncState.property.sale_type
 										}
+										pFor={asyncState.property['for']}
 									/>
-								</Box>
-							</Grid>
-						</Grid>
-						{asyncState.property && (
-							<>
-								<PropertyAction id={id} />
-								<PropertyComment
-									type={'property'}
-									id={asyncState.property.id}
-									propertyItemType={
-										asyncState.property.type
-											? asyncState.property.type
-											: asyncState.property.sale_type
-									}
-									pFor={asyncState.property['for']}
-								/>
-								<Reviews propertyType={'property'} id={id} />
-
-								<Box mt="2rem">
-									<h2>
-										Similar Properties For{' '}
-										{capitalizeFirstLetter(
-											asyncState.property.for
-										)}
-									</h2>
-								</Box>
-								<SimilarProperties
-									pFor={asyncState.property.for}
-									type={
-										asyncState.property.type
-											? asyncState.property.type
-											: asyncState.property.sale_type
-									}
-									city={asyncState.property.city.id}
-									location={asyncState.property.location.id}
-									excludeId={asyncState.property.id}
-								/>
-								<p style={{ fontSize: '7px' }}>
-									<span>
-										{asyncState.property.userId.name}
-									</span>
-									-
-									<span>
-										{asyncState.property.userId.number}
-									</span>
-								</p>
-							</>
-						)}
-					</Box>
+									<Reviews
+										propertyType={'property'}
+										id={id}
+									/>
+									<Box mt="2rem">
+										<h2>
+											Similar Properties For{' '}
+											{capitalizeFirstLetter(
+												asyncState.property.for
+											)}
+										</h2>
+									</Box>
+									<SimilarProperties
+										pFor={asyncState.property.for}
+										type={
+											asyncState.property.type
+												? asyncState.property.type
+												: asyncState.property.sale_type
+										}
+										city={asyncState.property.city.id}
+										location={
+											asyncState.property.location.id
+										}
+										excludeId={asyncState.property.id}
+									/>
+								</>
+							)}
+						</Box>
+					</Container>
 				</div>
 			)}
 		</div>

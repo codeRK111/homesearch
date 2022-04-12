@@ -10,13 +10,13 @@ const useStyles = makeStyles((theme) => ({
 		'& > p': {
 			lineHeight: 1.5,
 			fontWeight: 500,
-			textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+			// textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 			letterSpacing: 0.5,
 		},
 		'& > ol > li': {
 			lineHeight: 1.5,
 			fontWeight: 500,
-			textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
+			// textShadow: '0px 0.1px, 0.1px 0px, 0.1px 0.1px',
 			letterSpacing: 0.5,
 			padding: '0.5rem',
 		},
