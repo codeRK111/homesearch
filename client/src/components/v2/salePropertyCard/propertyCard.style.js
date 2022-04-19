@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: '0.7rem',
 		marginLeft: '0.4rem',
 		// textShadow: '0px 0.05px, 0.05px 0px, 0.05px 0.05px',
-		letterSpacing: 1,
 	},
 	wrapper: {
 		height: '100%',
@@ -86,7 +85,6 @@ const useStyles = makeStyles((theme) => ({
 	link: {
 		color: '#000000',
 		textDecoration: 'none',
-		wordBreak: 'break-all',
 		'&:hover': {
 			textDecoration: 'underline',
 		},

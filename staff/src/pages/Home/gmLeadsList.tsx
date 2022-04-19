@@ -9,28 +9,27 @@ import {
 	MenuItem,
 	Select,
 } from '@material-ui/core';
-import {
-	FetchLeadsInputType,
-	FetchMyLeadsResponseData,
-} from '../../model/lead.interface';
-import { IStaff, StaffType } from '../../model/staff.interface';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
+import { asyncFetchAdmins } from '../../API/auth';
 import {
 	asyncAssignSupport,
 	asyncDeleteLead,
 	asyncFetchMyLeads,
 } from '../../API/lead';
-
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { City } from '../../model/city.interface';
-import FilterLeads from './filterLeads';
-import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import LeadStatusSwitch from '../../components/Switch';
 import LeadsTable from '../../components/Table/leads/gm';
 import TablePagination from '../../components/Table/pagination';
-import { asyncFetchAdmins } from '../../API/auth';
+import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
+import { City } from '../../model/city.interface';
+import {
+	FetchLeadsInputType,
+	FetchMyLeadsResponseData,
+} from '../../model/lead.interface';
+import { IStaff, StaffType } from '../../model/staff.interface';
 import { renderStaffRole } from '../../utils/render';
+import FilterLeads from './filterLeads';
 
 interface IGMLeadsList {
 	userCategory: any;
@@ -159,6 +158,9 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			if (showHolds) {
 				filter.stage = 2;
 			}
+			if (tags.length > 0) {
+				filter.tags = tags;
+			}
 			if (number) {
 				filter.number = number;
 			}
@@ -198,6 +200,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 		timeInterval,
 		city,
 		number,
+		tags,
 	]);
 	useEffect(() => {
 		setPage(1);
