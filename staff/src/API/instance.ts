@@ -59,6 +59,7 @@ APIV2.interceptors.response.use(
 		if (error.response.status === 401) {
 			localStorage.removeItem('JWT_STAFF');
 			window.location.href = 'https://homesearch18.com/workspace/#/login';
+			return Promise.reject(error);
 		} else {
 			return Promise.reject(error);
 		}
