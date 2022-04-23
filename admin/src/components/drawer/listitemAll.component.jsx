@@ -1,16 +1,26 @@
-import {
-    selectBuilder,
-    selectJoinRequest,
-    selectKPI,
-    selectKRA,
-    selectLeads,
-    selectLocation,
-    selectPackage,
-    selectProject,
-    selectPropertyRent,
-    selectPropertySale,
-    selectReview,
-} from "../../redux/sidebar/sidebar.selector";
+import Collapse from "@material-ui/core/Collapse";
+import { green } from "@material-ui/core/colors";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import { makeStyles } from "@material-ui/core/styles";
+import AddBoxIcon from "@material-ui/icons/AddBox";
+import ApartmentIcon from "@material-ui/icons/Apartment";
+import ChatIcon from "@material-ui/icons/ChatBubble";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import LocationCityIcon from "@material-ui/icons/LocationCity";
+import LockIcon from "@material-ui/icons/Lock";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
+import WorkIcon from "@material-ui/icons/Work";
+import React from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { createStructuredSelector } from "reselect";
 import {
     toggleBuilder,
     toggleJoinRequest,
@@ -24,32 +34,22 @@ import {
     togglePropertySale,
     toggleReview,
 } from "../../redux/sidebar/sidebar.actions";
-
-import AddBoxIcon from "@material-ui/icons/AddBox";
-import ApartmentIcon from "@material-ui/icons/Apartment";
-import Collapse from "@material-ui/core/Collapse";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import Divider from "@material-ui/core/Divider";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import LocationCityIcon from "@material-ui/icons/LocationCity";
-import LockIcon from "@material-ui/icons/Lock";
-import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
-import React from "react";
+import {
+    selectBuilder,
+    selectJoinRequest,
+    selectKPI,
+    selectKRA,
+    selectLeads,
+    selectLocation,
+    selectPackage,
+    selectProject,
+    selectPropertyRent,
+    selectPropertySale,
+    selectReview,
+} from "../../redux/sidebar/sidebar.selector";
+import { selectCurrentUser } from "../../redux/user/user.selector";
 import RenderByAdminType from "../roleRender/renderByRole.component";
 import RenderByRole from "../roleRender/roleRender.component";
-import WorkIcon from "@material-ui/icons/Work";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import { green } from "@material-ui/core/colors";
-import { makeStyles } from "@material-ui/core/styles";
-import { selectCurrentUser } from "../../redux/user/user.selector";
-import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     nested: {
@@ -700,13 +700,13 @@ const MainListItems = ({
                     <ViewLocationNode />
                 </List>
             </Collapse>
-            {/* <ListItem button onClick={onUsersClick('/queries')}>
-				<ListItemIcon>
-					<ChatIcon color="secondary"/>
-				</ListItemIcon>
-				<ListItemText primary="Property queries"/>
-			</ListItem>
-			<ListItem button onClick={onUsersClick('/agent-queries')}>
+            <ListItem button onClick={onUsersClick("/queries")}>
+                <ListItemIcon>
+                    <ChatIcon color="secondary" />
+                </ListItemIcon>
+                <ListItemText primary="Property queries" />
+            </ListItem>
+            {/*	<ListItem button onClick={onUsersClick('/agent-queries')}>
 				<ListItemIcon>
 					<ChatIcon color="secondary"/>
 				</ListItemIcon>

@@ -168,6 +168,9 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	if (req.body.city) {
 		filter.city = req.body.city;
 	}
+	if (req.body.postedBy) {
+		filter.createdBy = req.body.postedBy;
+	}
 	if (req.body.timeInterval) {
 		switch (req.body.timeInterval) {
 			case 'today':

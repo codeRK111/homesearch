@@ -79,6 +79,7 @@ export type FetchLeadsInputType = {
 	city?: string;
 	number?: string;
 	tags?: string[];
+	postedBy?: string;
 };
 export type FetchMyLeadsResponseData = {
 	leads: ILead[];

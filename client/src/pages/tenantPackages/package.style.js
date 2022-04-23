@@ -32,7 +32,6 @@ export const useStyles = makeStyles((theme) => ({
 			marginLeft: '1rem',
 			fontSize: '1rem',
 			fontWeight: 600,
-			letterSpacing: 1,
 			lineHeight: 1.5,
 		},
 	},

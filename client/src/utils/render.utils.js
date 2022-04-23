@@ -486,3 +486,7 @@ export const projectCompletionStatusLabel = {
 	ongoing: 'Under construction',
 	completed: 'Completed',
 };
+
+export const transformID = (id) => {
+	return `HSI-${id + 1000000}`;
+};

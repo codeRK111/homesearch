@@ -1,4 +1,4 @@
-<Box mt="3rem">
+								<Box mt="3rem">
 									<h2 className={globalClasses.colorPrimary}>
 										Explore Nearby Area
 									</h2>

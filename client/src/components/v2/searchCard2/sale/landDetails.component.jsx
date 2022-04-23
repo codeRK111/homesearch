@@ -13,6 +13,7 @@ import {
 import {
 	capitalizeFirstLetter,
 	renderBool,
+	transformID,
 } from '../../../../utils/render.utils';
 
 import ImageCarousel from '../../imageCarousel';
@@ -127,6 +128,14 @@ const PropertyCard = ({ property, edit = false }) => {
 								)}
 							>
 								{`${property.plotArea} Sq. Ft Land For Sale`}
+							</span>
+							<span
+								className={clsx(
+									classes.smallText,
+									classes.colorGray
+								)}
+							>
+								{`${transformID(property.propertyNumber)}`}
 							</span>
 						</div>
 					</div>

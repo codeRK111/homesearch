@@ -14,6 +14,7 @@ import {
 	renderBool,
 	renderToilets,
 	renderTypes,
+	transformID,
 } from '../../../../utils/render.utils';
 
 import ImageCarousel from '../../imageCarousel';
@@ -130,6 +131,14 @@ const PropertyCard = ({ property, edit = false }) => {
 								{`${property.numberOfBedRooms}BHK ${renderTypes(
 									property.type
 								)} For Rent`}
+							</span>
+							<span
+								className={clsx(
+									classes.smallText,
+									classes.colorGray
+								)}
+							>
+								{`${transformID(property.propertyNumber)}`}
 							</span>
 						</div>
 					</div>

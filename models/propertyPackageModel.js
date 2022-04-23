@@ -37,6 +37,14 @@ const propertyPackageSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		cgst: {
+			type: Number,
+			default: null,
+		},
+		sgst: {
+			type: Number,
+			default: null,
+		},
 		status: {
 			type: String,
 			enum: ['active', 'inactive'],

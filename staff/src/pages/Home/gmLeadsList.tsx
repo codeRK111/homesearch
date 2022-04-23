@@ -9,27 +9,28 @@ import {
 	MenuItem,
 	Select,
 } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
-import React, { useCallback, useEffect, useState } from 'react';
-import { asyncFetchAdmins } from '../../API/auth';
-import {
-	asyncAssignSupport,
-	asyncDeleteLead,
-	asyncFetchMyLeads,
-} from '../../API/lead';
-import LeadStatusSwitch from '../../components/Switch';
-import LeadsTable from '../../components/Table/leads/gm';
-import TablePagination from '../../components/Table/pagination';
-import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
-import { City } from '../../model/city.interface';
 import {
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
 } from '../../model/lead.interface';
 import { IStaff, StaffType } from '../../model/staff.interface';
-import { renderStaffRole } from '../../utils/render';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
+import {
+	asyncAssignSupport,
+	asyncDeleteLead,
+	asyncFetchMyLeads,
+} from '../../API/lead';
+
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import { City } from '../../model/city.interface';
 import FilterLeads from './filterLeads';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import LeadStatusSwitch from '../../components/Switch';
+import LeadsTable from '../../components/Table/leads/gm';
+import TablePagination from '../../components/Table/pagination';
+import { asyncFetchAdmins } from '../../API/auth';
+import { renderStaffRole } from '../../utils/render';
 
 interface IGMLeadsList {
 	userCategory: any;
@@ -52,6 +53,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 	const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
 	const [staffs, setStaffs] = useState<IStaff[]>([]);
 	const [staff, setStaff] = useState('');
+	const [postedBy, setPostedBy] = useState('');
 	const [number, setNumber] = useState('');
 	const [data, setData] = useState<FetchMyLeadsResponseData>({
 		totalDocs: 0,
@@ -164,6 +166,9 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			if (number) {
 				filter.number = number;
 			}
+			if (postedBy) {
+				filter.postedBy = postedBy;
+			}
 			if (showNewLeads) {
 				filter.stage = 0;
 			}
@@ -201,6 +206,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 		city,
 		number,
 		tags,
+		postedBy,
 	]);
 	useEffect(() => {
 		setPage(1);
@@ -239,6 +245,40 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 								setValue={setShowNewLeads}
 								label="New Leads"
 							/>
+						</Grid>
+						<Grid item xs={12} md={4}>
+							<Box display={'flex'}>
+								<FormControl variant="filled" fullWidth>
+									<InputLabel id="demo-simple-select-filled-label">
+										PostedBy
+									</InputLabel>
+									<Select
+										value={postedBy}
+										onChange={(e) =>
+											setPostedBy(
+												e.target.value as string
+											)
+										}
+										labelId="demo-simple-select-filled-label"
+										id="demo-simple-select-filled"
+										IconComponent={
+											staffLoading
+												? HourglassEmptyIcon
+												: ArrowDropDownIcon
+										}
+									>
+										<MenuItem value={''}>
+											<b>All</b>
+										</MenuItem>
+										{staffs.map((c) => (
+											<MenuItem key={c.id} value={c.id}>
+												{c.name} -{' '}
+												<b>{renderStaffRole(c.type)}</b>
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
+							</Box>
 						</Grid>
 						{selectedLeads.length > 0 && (
 							<Grid item xs={12} md={4}>
