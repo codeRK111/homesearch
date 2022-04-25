@@ -6,13 +6,12 @@ import {
 	IconButton,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {
-	isReschedule,
 	parseDate,
 	renderCellData,
 	renderLeadStage,
 } from '../../../utils/render';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { City } from '../../../model/city.interface';
@@ -64,6 +63,8 @@ interface ILeadsTable {
 	manageSelectedLeads: (id: string) => void;
 	hold: boolean;
 	selectedLeads: string[];
+	days: any;
+	setDays: (days: any) => void;
 }
 
 const LeadsTable: React.FC<ILeadsTable> = ({
@@ -74,13 +75,14 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 	manageSelectedLeads,
 	selectedLeads,
 	onDelete,
+	setDays,
+	days,
 }) => {
 	const classes = useStyles();
 	const { user } = useTypedSelector((state) => state.auth);
 	// State
 
 	const [data, setData] = useState<Array<ILead>>([]);
-	const [days, setDays] = useState<any>(2);
 	const [open, setOpen] = useState(false);
 	const [selectedLead, setSelectedLead] = useState<ILead | null>(null);
 
@@ -105,13 +107,11 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: hold ? 11 : 10 }, (_, i) => i + 1).map(
-				(c) => (
-					<StyledTableCell key={c}>
-						<CircularProgress size={15} color="inherit" />
-					</StyledTableCell>
-				)
-			)}
+			{Array.from({ length: 6 }, (_, i) => i + 1).map((c) => (
+				<StyledTableCell key={c}>
+					<CircularProgress size={15} color="inherit" />
+				</StyledTableCell>
+			))}
 		</StyledTableRow>
 	);
 
@@ -129,33 +129,27 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 				<Table className={classes.table} aria-label="customized table">
 					<TableHead>
 						<TableRow>
-							<StyledTableCell>SL Num.</StyledTableCell>
-							<StyledTableCell>
+							<StyledTableCell width={'10%'}>
 								Reschedule <br />
 								<select
 									value={days}
 									onChange={(e) => setDays(e.target.value)}
 								>
+									<option value={'off'}>Off</option>
 									<option value={2}>2</option>
 									<option value={3}>3</option>
 									<option value={5}>5</option>
 									<option value={7}>7</option>
+									<option value={10}>10</option>
+									<option value={15}>15</option>
+									<option value={30}>30</option>
 								</select>
 							</StyledTableCell>
 							<StyledTableCell>Tags</StyledTableCell>
-							<StyledTableCell>Name</StyledTableCell>
-							<StyledTableCell>Contact Details</StyledTableCell>
-							<StyledTableCell>Category</StyledTableCell>
-							<StyledTableCell>Requirement</StyledTableCell>
-							<StyledTableCell>Requirement Type</StyledTableCell>
-							<StyledTableCell>Property Type</StyledTableCell>
-							<StyledTableCell>Budget</StyledTableCell>
-							<StyledTableCell>Created At</StyledTableCell>
-							<StyledTableCell>Posted By</StyledTableCell>
-							{hold && (
-								<StyledTableCell>Reconnect on</StyledTableCell>
-							)}
-							<StyledTableCell>Stage</StyledTableCell>
+							<StyledTableCell>Details</StyledTableCell>
+
+							<StyledTableCell>Staff Details</StyledTableCell>
+
 							<StyledTableCell>Comments</StyledTableCell>
 							<StyledTableCell>Assign</StyledTableCell>
 							{/* <StyledTableCell>Delete</StyledTableCell> */}
@@ -172,32 +166,18 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							: data.map((row, i) => (
 									<StyledTableRow key={row.id}>
 										<StyledTableCell>
-											{i + 1}
-										</StyledTableCell>
-										<StyledTableCell>
-											{user &&
-											isReschedule(
-												row.comments?.find(
-													(c) =>
-														c.from.id === user.id &&
-														c.reschedule
-												)?.reschedule,
-												days
-											) ? (
-												<Chip
-													icon={<AccessTimeIcon />}
-													label={parseDate(
-														row.comments?.find(
-															(c) =>
-																c.from.id ===
-																	user.id &&
-																c.reschedule
-														)?.reschedule as Date
-													)}
-												/>
-											) : (
-												'-'
-											)}
+											{row.comments
+												?.filter((b) => b.reschedule)
+												.map((c) => (
+													<Chip
+														icon={
+															<AccessTimeIcon />
+														}
+														label={`${parseDate(
+															c.reschedule as Date
+														)}-${c.from.name}`}
+													/>
+												))}
 										</StyledTableCell>
 										<StyledTableCell>
 											{row.tags && (
@@ -211,10 +191,10 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 												</Box>
 											)}
 										</StyledTableCell>
+
 										<StyledTableCell>
-											{row.name ? row.name : '-'}
-										</StyledTableCell>
-										<StyledTableCell>
+											<b>Name: </b>
+											{row.name ? row.name : '-'} <br />
 											<b>Email: </b>
 											{row.email ? row.email : '-'} <br />
 											<b>Phone: </b> {row.number} <br />
@@ -225,18 +205,19 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											<br />
 											<b>Location: </b>{' '}
 											{row.preferedLocation}
-										</StyledTableCell>
-										<StyledTableCell>
+											<br />
+											<b>Category: </b>{' '}
 											{renderCellData(row.userCategory)}
-										</StyledTableCell>
-										<StyledTableCell>
+											<br />
+											<b>Requirement: </b>{' '}
 											{renderCellData(row.requirement)}
-										</StyledTableCell>
-										<StyledTableCell>
+											<br />
+											<b>Requirement Type: </b>{' '}
 											{renderCellData(row.category)}
-										</StyledTableCell>
-										<StyledTableCell>
+											<br />
+											<b>Property Type: </b>{' '}
 											{renderCellData(row.pType)}
+											<br />
 											{row.propertyRequirements && (
 												<Box>
 													{row.propertyRequirements.map(
@@ -249,25 +230,20 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 													)}
 												</Box>
 											)}
-										</StyledTableCell>
-										<StyledTableCell>
 											{renderCellData(row.minPrice)} to{' '}
 											{renderCellData(row.maxPrice)}
 										</StyledTableCell>
-										<StyledTableCell>
-											{parseDate(row.createdAt as Date)}
-										</StyledTableCell>
-										<StyledTableCell>
-											{row.createdBy?.name}
-										</StyledTableCell>
-										{hold && (
-											<StyledTableCell>
-												{parseDate(row.holdDate)}
-											</StyledTableCell>
-										)}
 
 										<StyledTableCell>
-											{renderLeadStage(row)}
+											<b>Created At: </b>
+											{parseDate(
+												row.createdAt as Date
+											)}{' '}
+											<br />
+											<b>Posted By: </b>
+											{row.createdBy?.name} <br />
+											<b>Stage: </b>
+											{renderLeadStage(row)} <br />
 										</StyledTableCell>
 										<StyledTableCell>
 											<IconButton

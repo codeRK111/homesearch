@@ -42,6 +42,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 	// State
 	const [page, setPage] = useState(1);
 	const [timeInterval, setTimeInterval] = useState('all');
+	const [days, setDays] = useState<any>('off');
 	const [city, setCity] = useState<City | null>(null);
 	const [showHolds, setShowHolds] = useState(false);
 	const [showNewLeads, setShowNewLeads] = useState(false);
@@ -160,6 +161,9 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			if (showHolds) {
 				filter.stage = 2;
 			}
+			if (days) {
+				filter.reschedule = days;
+			}
 			if (tags.length > 0) {
 				filter.tags = tags;
 			}
@@ -196,6 +200,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			setLoading(false);
 		}
 	}, [
+		days,
 		page,
 		limit,
 		showHolds,
@@ -372,6 +377,8 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 				fetchLeads={fetchLeads}
 				hold={showHolds}
 				onDelete={onDelete}
+				days={days}
+				setDays={setDays}
 			/>
 			<TablePagination
 				limit={limit}

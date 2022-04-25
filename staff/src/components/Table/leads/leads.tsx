@@ -1,12 +1,11 @@
 import { Box, Chip, CircularProgress, IconButton } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {
-	isReschedule,
 	parseDate,
 	renderCellData,
 	renderLeadStage,
 } from '../../../utils/render';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { City } from '../../../model/city.interface';
@@ -14,9 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { ILead } from '../../../model/lead.interface';
 import LeadsComments from '../../LeadComments';
 import Paper from '@material-ui/core/Paper';
-import PriceRangeCell from '../priceRangeCell';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import SendProposal from '../sendProposal';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -49,7 +46,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useStyles = makeStyles({
 	table: {
-		minWidth: 700,
+		minWidth: 500,
 	},
 });
 
@@ -58,6 +55,8 @@ interface ILeadsTable {
 	leads: ILead[];
 	fetchLeads: () => void;
 	hold: boolean;
+	days: any;
+	setDays: (days: any) => void;
 }
 
 const LeadsTable: React.FC<ILeadsTable> = ({
@@ -65,6 +64,8 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 	leads,
 	fetchLeads,
 	hold,
+	setDays,
+	days,
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
@@ -73,7 +74,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 	const [data, setData] = useState<Array<ILead>>([]);
 	const [open, setOpen] = useState(false);
-	const [days, setDays] = useState<any>(2);
+
 	const [selectedLead, setSelectedLead] = useState<ILead | null>(null);
 
 	const onEdit = (id: string | undefined) => () =>
@@ -119,38 +120,28 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 				<Table className={classes.table} aria-label="customized table">
 					<TableHead>
 						<TableRow>
-							<StyledTableCell>SL Num.</StyledTableCell>
 							<StyledTableCell>
 								Reschedule <br />
 								<select
 									value={days}
 									onChange={(e) => setDays(e.target.value)}
 								>
+									<option value={'off'}>Off</option>
 									<option value={2}>2</option>
 									<option value={3}>3</option>
 									<option value={5}>5</option>
 									<option value={7}>7</option>
+									<option value={10}>10</option>
+									<option value={15}>15</option>
+									<option value={30}>30</option>
 								</select>
 							</StyledTableCell>
 							<StyledTableCell>Tags</StyledTableCell>
-							<StyledTableCell>Contact Details</StyledTableCell>
-							<StyledTableCell>Category</StyledTableCell>
-							{/* <StyledTableCell>Requirement</StyledTableCell>
-							<StyledTableCell>Requirement Type</StyledTableCell>
-							<StyledTableCell>Property Type</StyledTableCell> */}
-							<StyledTableCell>
-								Requirement Details
-							</StyledTableCell>
-							<StyledTableCell>Budget</StyledTableCell>
-							<StyledTableCell>Created On</StyledTableCell>
-							<StyledTableCell>Posted By</StyledTableCell>
-							<StyledTableCell>Stage</StyledTableCell>
-							{hold && (
-								<StyledTableCell>Reconnect on</StyledTableCell>
-							)}
+							<StyledTableCell>Details</StyledTableCell>
+							<StyledTableCell>Staff Details</StyledTableCell>
 
 							<StyledTableCell>Action</StyledTableCell>
-							<StyledTableCell>Send Query</StyledTableCell>
+							{/* <StyledTableCell>Send Query</StyledTableCell> */}
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -164,32 +155,18 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 							: data.map((row, i) => (
 									<StyledTableRow key={row.id}>
 										<StyledTableCell>
-											{i + 1}
-										</StyledTableCell>
-										<StyledTableCell>
-											{user &&
-											isReschedule(
-												row.comments?.find(
-													(c) =>
-														c.from.id === user.id &&
-														c.reschedule
-												)?.reschedule,
-												days
-											) ? (
-												<Chip
-													icon={<AccessTimeIcon />}
-													label={parseDate(
-														row.comments?.find(
-															(c) =>
-																c.from.id ===
-																	user.id &&
-																c.reschedule
-														)?.reschedule as Date
-													)}
-												/>
-											) : (
-												'-'
-											)}
+											{row.comments
+												?.filter((b) => b.reschedule)
+												.map((c) => (
+													<Chip
+														icon={
+															<AccessTimeIcon />
+														}
+														label={`${parseDate(
+															c.reschedule as Date
+														)}-${c.from.name}`}
+													/>
+												))}
 										</StyledTableCell>
 
 										<StyledTableCell>
@@ -210,8 +187,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											{row.name ? row.name : '-'} <br />
 											<b>Email: </b>
 											{row.email ? row.email : '-'} <br />
-											<b>Phone: </b> {row.number}
-											<br />
+											<b>Phone: </b> {row.number} <br />
 											<b>City: </b>{' '}
 											{row.city
 												? (row.city as City).name
@@ -219,28 +195,22 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											<br />
 											<b>Location: </b>{' '}
 											{row.preferedLocation}
-										</StyledTableCell>
-
-										<StyledTableCell>
-											{renderCellData(row.userCategory)}
-										</StyledTableCell>
-										<StyledTableCell
-											style={{ width: '10%' }}
-										>
-											<b>
-												{renderCellData(
-													row.requirement
-												)}
-											</b>
 											<br />
-											<b>Req. Type</b>:
+											<b>Category: </b>{' '}
+											{renderCellData(row.userCategory)}
+											<br />
+											<b>Requirement: </b>{' '}
+											{renderCellData(row.requirement)}
+											<br />
+											<b>Requirement Type: </b>{' '}
 											{renderCellData(row.category)}
 											<br />
-											<b>Property. Type</b>:
-											{renderCellData(row.pType)} <br />
-											<Box mt="0.3rem">
-												{row.propertyRequirements &&
-													row.propertyRequirements.map(
+											<b>Property Type: </b>{' '}
+											{renderCellData(row.pType)}
+											<br />
+											{row.propertyRequirements && (
+												<Box>
+													{row.propertyRequirements.map(
 														(c, i) => (
 															<Chip
 																key={i}
@@ -248,33 +218,23 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 															/>
 														)
 													)}
-											</Box>
+												</Box>
+											)}
+											{renderCellData(row.minPrice)} to{' '}
+											{renderCellData(row.maxPrice)}
 										</StyledTableCell>
 
-										{
-											<PriceRangeCell
-												minPrice={
-													row.minPrice as number
-												}
-												maxPrice={
-													row.maxPrice as number
-												}
-											/>
-										}
 										<StyledTableCell>
-											{parseDate(row.createdAt as Date)}
+											<b>Created At: </b>
+											{parseDate(
+												row.createdAt as Date
+											)}{' '}
+											<br />
+											<b>Posted By: </b>
+											{row.createdBy?.name} <br />
+											<b>Stage: </b>
+											{renderLeadStage(row)} <br />
 										</StyledTableCell>
-										<StyledTableCell>
-											{row.createdBy?.name}
-										</StyledTableCell>
-										<StyledTableCell>
-											{renderLeadStage(row)}
-										</StyledTableCell>
-										{hold && (
-											<StyledTableCell>
-												{parseDate(row.holdDate)}
-											</StyledTableCell>
-										)}
 
 										<StyledTableCell>
 											<IconButton
@@ -289,9 +249,9 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											</IconButton>
 										</StyledTableCell>
 
-										<StyledTableCell>
+										{/* <StyledTableCell>
 											<SendProposal lead={row} />
-										</StyledTableCell>
+										</StyledTableCell> */}
 									</StyledTableRow>
 							  ))}
 					</TableBody>

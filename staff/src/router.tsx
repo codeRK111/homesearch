@@ -37,6 +37,7 @@ const UpdatePackagePage = lazy(
 	() => import('./pages/ManagePackage/updatePackage')
 );
 const AddSubscriptionPage = lazy(() => import('./pages/AddSubscription'));
+const AddProjectPage = lazy(() => import('./pages/AddProject'));
 const SharePackageLinkPage = lazy(() => import('./pages/SharePackageLink'));
 const AddPropertyLeadPage = lazy(() => import('./pages/AddPropertyLead'));
 const PaymentLinkPage = lazy(() => import('./pages/PaymentLink'));
@@ -100,6 +101,11 @@ const Router = () => {
 						path={'/'}
 						exact={true}
 						component={HomePage}
+					/>
+					<PrivateRoute
+						path={'/add-project'}
+						exact={true}
+						component={AddProjectPage}
 					/>
 					<Route path={'/login'} component={LoginPage} />
 					<Route

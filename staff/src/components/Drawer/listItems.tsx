@@ -88,6 +88,25 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 						<ListItemText primary={'Add Property'} />
 					</ListItem>
 				</RenderByMultipleRole>
+				<RenderByMultipleRole
+					types={[StaffType.GM, StaffType.ClientSupport]}
+				>
+					<ListItem
+						button
+						onClick={changeRoute('/add-project')}
+						className={clsx(manageSelectedStyle('/add-project'))}
+					>
+						<ListItemIcon>
+							<PostAddIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon('/add-project')
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Add Project'} />
+					</ListItem>
+				</RenderByMultipleRole>
 				<ListItem
 					button
 					onClick={changeRoute('/add-lead')}

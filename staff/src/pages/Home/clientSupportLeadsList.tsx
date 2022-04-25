@@ -27,6 +27,7 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		arrayFormat: 'comma',
 	});
 	const [page, setPage] = useState(1);
+	const [days, setDays] = useState<any>('off');
 	const [timeInterval, setTimeInterval] = useState('all');
 	const [showHolds, setShowHolds] = useState(false);
 	const [limit, setLimit] = useState(10);
@@ -80,6 +81,9 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		try {
 			setLoading(true);
 			const filter: FetchLeadsInputType = { page, limit };
+			if (days) {
+				filter.reschedule = days;
+			}
 			if (showHolds) {
 				filter.stage = 2;
 			}
@@ -92,7 +96,6 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 			if (timeInterval) {
 				filter.timeInterval = timeInterval;
 			}
-
 			filter.city = city?.id;
 			if (number) {
 				filter.number = number;
@@ -117,6 +120,7 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		city,
 		number,
 		tags,
+		days,
 	]);
 	useEffect(() => {
 		setPage(1);
@@ -150,6 +154,8 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 				leads={data.leads}
 				fetchLeads={fetchLeads}
 				hold={showHolds}
+				days={days}
+				setDays={setDays}
 			/>
 
 			<TablePagination

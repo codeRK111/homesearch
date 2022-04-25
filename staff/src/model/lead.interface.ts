@@ -80,6 +80,7 @@ export type FetchLeadsInputType = {
 	number?: string;
 	tags?: string[];
 	postedBy?: string;
+	reschedule?: any;
 };
 export type FetchMyLeadsResponseData = {
 	leads: ILead[];

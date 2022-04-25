@@ -14,6 +14,7 @@ import { asyncFetchMyLeads } from '../../API/lead';
 const StaffLeadsPage = () => {
 	// State
 	const [page, setPage] = useState(1);
+	const [days, setDays] = useState(2);
 	const [showHolds, setShowHolds] = useState(false);
 	const [limit, setLimit] = useState(10);
 	const [loading, setLoading] = useState(false);
@@ -73,6 +74,8 @@ const StaffLeadsPage = () => {
 				leads={data.leads}
 				fetchLeads={fetchLeads}
 				hold={showHolds}
+				days={days}
+				setDays={setDays}
 			/>
 			<TablePagination
 				limit={limit}

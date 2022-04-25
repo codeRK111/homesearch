@@ -157,7 +157,8 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 		filter.userCategory = req.body.userCategory;
 	}
 	if (req.body.tags && req.body.tags.length > 0) {
-		filter.tags = { $all: req.body.tags };
+		const regexTags = req.body.tags.map((c) => new RegExp(c, 'i'));
+		filter.tags = { $all: regexTags };
 	}
 	if (req.body.number) {
 		filter.number = {
@@ -170,6 +171,26 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	}
 	if (req.body.postedBy) {
 		filter.createdBy = req.body.postedBy;
+	}
+	if (req.body.reschedule) {
+		console.log({ schedule: req.body.reschedule });
+		if (req.body.reschedule !== 'off') {
+			var start = moment().startOf('day'); // set to 12:00 am today
+			var end = moment().add(Number(req.body.reschedule), 'days');
+			// filter['comments.reschedule'] = {
+			// 	$gte: start,
+			// 	$lt: end,
+			// };
+			filter.comments = {
+				$elemMatch: {
+					reschedule: {
+						$gte: start,
+						$lt: end,
+					},
+				},
+			};
+		}
+		console.log(JSON.stringify(filter));
 	}
 	if (req.body.timeInterval) {
 		switch (req.body.timeInterval) {
