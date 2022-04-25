@@ -95,13 +95,11 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 	const Loader = (
 		<StyledTableRow>
-			{Array.from({ length: hold ? 14 : 13 }, (_, i) => i + 1).map(
-				(c) => (
-					<StyledTableCell key={c}>
-						<CircularProgress size={15} color="inherit" />
-					</StyledTableCell>
-				)
-			)}
+			{Array.from({ length: 5 }, (_, i) => i + 1).map((c) => (
+				<StyledTableCell key={c}>
+					<CircularProgress size={15} color="inherit" />
+				</StyledTableCell>
+			))}
 		</StyledTableRow>
 	);
 
