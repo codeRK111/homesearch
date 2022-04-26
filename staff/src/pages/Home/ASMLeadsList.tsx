@@ -1,4 +1,5 @@
 import {
+	CommentStatus,
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
 } from '../../model/lead.interface';
@@ -19,6 +20,7 @@ const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 
 	const [page, setPage] = useState(1);
 	const [timeInterval, setTimeInterval] = useState('all');
+	const [status, setStatus] = useState<string | CommentStatus>('');
 	const [tags, setTags] = useState<string[]>([]);
 	const [limit, setLimit] = useState(10);
 	const [loading, setLoading] = useState(false);
@@ -48,7 +50,11 @@ const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	const fetchLeads = useCallback(async () => {
 		try {
 			setLoading(true);
-			const filter: FetchLeadsInputType = { page, limit };
+			const filter: FetchLeadsInputType = {
+				page,
+				limit,
+				commentStatus: status,
+			};
 
 			if (userCategory) {
 				filter.userCategory = userCategory;
@@ -71,7 +77,7 @@ const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 			});
 			setLoading(false);
 		}
-	}, [page, limit, userCategory, timeInterval, city, number]);
+	}, [status, page, limit, userCategory, timeInterval, city, number]);
 	useEffect(() => {
 		setPage(1);
 	}, [limit, userCategory, timeInterval, city, number]);
@@ -91,6 +97,8 @@ const ASMLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 					addTags={addTags}
 					removeTags={removeTags}
 					tags={tags}
+					status={status}
+					setStatus={setStatus}
 				/>
 			</Box>
 			<p>

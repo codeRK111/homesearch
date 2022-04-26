@@ -1,4 +1,5 @@
 import {
+	CommentStatus,
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
 } from '../../model/lead.interface';
@@ -16,6 +17,7 @@ interface IClientSupportLeadsList {
 }
 const SELeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	// State
+	const [status, setStatus] = useState<string | CommentStatus>('');
 	const [page, setPage] = useState(1);
 	const [timeInterval, setTimeInterval] = useState('all');
 	const [limit, setLimit] = useState(10);
@@ -48,7 +50,11 @@ const SELeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	const fetchLeads = useCallback(async () => {
 		try {
 			setLoading(true);
-			const filter: FetchLeadsInputType = { page, limit };
+			const filter: FetchLeadsInputType = {
+				page,
+				limit,
+				commentStatus: status,
+			};
 
 			if (userCategory) {
 				filter.userCategory = userCategory;
@@ -71,7 +77,7 @@ const SELeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 			});
 			setLoading(false);
 		}
-	}, [page, limit, userCategory, timeInterval, city, number]);
+	}, [status, page, limit, userCategory, timeInterval, city, number]);
 	useEffect(() => {
 		setPage(1);
 	}, [limit, userCategory, timeInterval, city, number, tags]);
@@ -91,6 +97,8 @@ const SELeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 					addTags={addTags}
 					removeTags={removeTags}
 					tags={tags}
+					status={status}
+					setStatus={setStatus}
 				/>
 			</Box>
 			<p>

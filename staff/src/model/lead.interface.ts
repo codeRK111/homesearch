@@ -58,6 +58,7 @@ export interface ILead {
 	minPrice?: number | string;
 	maxPrice?: number | string;
 	comments?: Array<LeadComment>;
+	commentStatus?: CommentStatus;
 	hold?: boolean;
 	holdDate?: Date;
 	saleAssignedAt?: Date;
@@ -90,6 +91,7 @@ export type FetchLeadsInputType = {
 	tags?: string[];
 	postedBy?: string;
 	reschedule?: any;
+	commentStatus?: string | CommentStatus;
 };
 export type FetchMyLeadsResponseData = {
 	leads: ILead[];

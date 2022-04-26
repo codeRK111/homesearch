@@ -1,5 +1,6 @@
 import { Box, Button } from '@material-ui/core';
 import {
+	CommentStatus,
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
 	ILead,
@@ -30,6 +31,7 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		arrayFormat: 'comma',
 	});
 	const [page, setPage] = useState(1);
+	const [status, setStatus] = useState<string | CommentStatus>('');
 	const [open, setOpen] = React.useState(false);
 	const [days, setDays] = useState<any>('off');
 	const [timeInterval, setTimeInterval] = useState('all');
@@ -91,7 +93,11 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	const fetchLeads = useCallback(async () => {
 		try {
 			setLoading(true);
-			const filter: FetchLeadsInputType = { page, limit };
+			const filter: FetchLeadsInputType = {
+				page,
+				limit,
+				commentStatus: status,
+			};
 			if (days) {
 				filter.reschedule = days;
 			}
@@ -123,6 +129,7 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 			setLoading(false);
 		}
 	}, [
+		status,
 		page,
 		limit,
 		showHolds,
@@ -160,6 +167,8 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 					addTags={addTags}
 					removeTags={removeTags}
 					tags={tags}
+					status={status}
+					setStatus={setStatus}
 				/>
 			</Box>
 			<Box display={'flex'} justifyContent={'space-between'} p="1rem">

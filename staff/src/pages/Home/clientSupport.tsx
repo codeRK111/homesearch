@@ -87,6 +87,13 @@ const ClientSupportHome = () => {
 					<Grid container spacing={1} justifyContent="space-between">
 						<Grid item xs={12} md={2}>
 							<ButtonCard
+								onClick={() => history.push('/add-lead')}
+							>
+								<Typography variant="h5">Add Lead</Typography>
+							</ButtonCard>
+						</Grid>
+						<Grid item xs={12} md={2}>
+							<ButtonCard
 								onClick={() => history.push('/posted-leads')}
 							>
 								<Typography variant="h5">My Leads</Typography>

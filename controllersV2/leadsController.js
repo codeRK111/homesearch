@@ -70,6 +70,7 @@ exports.addLead = catchAsync(async (req, res, next) => {
 				from: req.admin.id,
 				message: req.body.message,
 				date: Date.now(),
+				status: req.body.commentStatus,
 			},
 		];
 	}
@@ -172,15 +173,19 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	if (req.body.postedBy) {
 		filter.createdBy = req.body.postedBy;
 	}
+	if (req.body.commentStatus) {
+		filter.comments = {
+			$elemMatch: {
+				status: {
+					$eq: req.body.commentStatus,
+				},
+			},
+		};
+	}
 	if (req.body.reschedule) {
-		console.log({ schedule: req.body.reschedule });
 		if (req.body.reschedule !== 'off') {
 			var start = moment().startOf('day'); // set to 12:00 am today
 			var end = moment().add(Number(req.body.reschedule), 'days');
-			// filter['comments.reschedule'] = {
-			// 	$gte: start,
-			// 	$lt: end,
-			// };
 			filter.comments = {
 				$elemMatch: {
 					reschedule: {
@@ -190,7 +195,6 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 				},
 			};
 		}
-		console.log(JSON.stringify(filter));
 	}
 	if (req.body.timeInterval) {
 		switch (req.body.timeInterval) {

@@ -12,12 +12,13 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core';
-import { FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import {
+	CommentStatus,
 	ILead,
 	LeadSource,
 	LeadUserCategory,
 } from '../../model/lead.interface';
+import { FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import React, { useRef, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
@@ -74,6 +75,7 @@ const AddLeadPage = () => {
 		propertyRequirements: [],
 		city: null,
 		tags: [],
+		commentStatus: CommentStatus.CallNotReceived,
 	};
 
 	// State
@@ -341,6 +343,49 @@ const AddLeadPage = () => {
 											rows={5}
 											label="Message"
 										/>
+									</Grid>
+									<Grid item xs={12}>
+										<FSelect
+											name={'commentStatus'}
+											label="Comment Status"
+										>
+											<MenuItem
+												value={CommentStatus.Busy}
+											>
+												Busy
+											</MenuItem>
+											<MenuItem
+												value={
+													CommentStatus.CallNotReceived
+												}
+											>
+												Call Not Received
+											</MenuItem>
+											<MenuItem
+												value={CommentStatus.Inerested}
+											>
+												Inerested
+											</MenuItem>
+											<MenuItem
+												value={
+													CommentStatus.NotInService
+												}
+											>
+												Not In Service
+											</MenuItem>
+											<MenuItem
+												value={
+													CommentStatus.NotInterested
+												}
+											>
+												Not Interested
+											</MenuItem>
+											<MenuItem
+												value={CommentStatus.SwitchOff}
+											>
+												Switch Off
+											</MenuItem>
+										</FSelect>
 									</Grid>
 									<Grid item xs={12}>
 										<FieldArray

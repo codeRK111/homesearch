@@ -10,6 +10,7 @@ import {
 	Select,
 } from '@material-ui/core';
 import {
+	CommentStatus,
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
 } from '../../model/lead.interface';
@@ -41,6 +42,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	// State
 	const [page, setPage] = useState(1);
+	const [status, setStatus] = useState<string | CommentStatus>('');
 	const [timeInterval, setTimeInterval] = useState('all');
 	const [days, setDays] = useState<any>('off');
 	const [city, setCity] = useState<City | null>(null);
@@ -157,7 +159,11 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 	const fetchLeads = useCallback(async () => {
 		try {
 			setLoading(true);
-			const filter: FetchLeadsInputType = { page, limit };
+			const filter: FetchLeadsInputType = {
+				page,
+				limit,
+				commentStatus: status,
+			};
 			if (showHolds) {
 				filter.stage = 2;
 			}
@@ -201,6 +207,7 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 		}
 	}, [
 		days,
+		status,
 		page,
 		limit,
 		showHolds,
@@ -354,6 +361,8 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 				addTags={addTags}
 				removeTags={removeTags}
 				tags={tags}
+				status={status}
+				setStatus={setStatus}
 			/>
 			<p>
 				<b>{data.totalDocs}</b> leads found
