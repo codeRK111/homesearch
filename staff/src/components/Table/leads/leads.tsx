@@ -156,14 +156,16 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											{row.comments
 												?.filter((b) => b.reschedule)
 												.map((c) => (
-													<Chip
-														icon={
-															<AccessTimeIcon />
-														}
-														label={`${parseDate(
-															c.reschedule as Date
-														)}-${c.from.name}`}
-													/>
+													<div key={c._id}>
+														<Chip
+															icon={
+																<AccessTimeIcon />
+															}
+															label={`${parseDate(
+																c.reschedule as Date
+															)}-${c.from.name}`}
+														/>
+													</div>
 												))}
 										</StyledTableCell>
 

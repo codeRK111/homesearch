@@ -1,18 +1,19 @@
-import { CircularProgress } from '@material-ui/core';
+import React, { useState } from 'react';
+import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
+
 import AppBar from '@material-ui/core/AppBar';
+import AppDrawer from '../Drawer';
 import Button from '@material-ui/core/Button';
+import { CircularProgress } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
+import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import MenuIcon from '@material-ui/icons/Menu';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { asyncLogout } from '../../API/auth';
-import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import AppDrawer from '../Drawer';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -82,7 +83,10 @@ const NavBar = () => {
 						<Link
 							to="/"
 							className={classes.title}
-							style={{ color: '#ffffff', textDecoration: 'none' }}
+							style={{
+								color: '#ffffff',
+								textDecoration: 'none',
+							}}
 						>
 							<Typography variant="h6">Homesearch18</Typography>
 							<Typography>
@@ -96,7 +100,6 @@ const NavBar = () => {
 							Homesearch18
 						</Typography>
 					)}
-
 					{user && (
 						<Button
 							color="inherit"

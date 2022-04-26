@@ -151,6 +151,19 @@ const leadsSchema = new Schema(
 					type: Boolean,
 					default: false,
 				},
+				status: {
+					type: String,
+					enum: {
+						values: [
+							'interested',
+							'not-interested',
+							'call-not-received',
+							'busy',
+							'not-in-service',
+							'switch-off',
+						],
+					},
+				},
 			},
 		],
 		images: [

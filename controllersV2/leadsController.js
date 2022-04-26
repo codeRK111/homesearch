@@ -434,6 +434,7 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 						reschedule: req.body.reschedule
 							? req.body.reschedule
 							: undefined,
+						status: req.body.commentStatus,
 					},
 				],
 				$sort: { date: -1 },

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { Container } from '@material-ui/core';
 import { ILead } from '../../model/lead.interface';
 import Loader from '../../components/Loader';
-import { PageWrapper } from '../../components/UI/Container';
 import { RouteComponentProps } from 'react-router';
 import Typography from '@material-ui/core/Typography';
 import UpdateLeadForm from './form';
@@ -41,12 +41,12 @@ const UpdateLeadPage: React.FC<RouteComponentProps<IParam>> = ({
 		fetchLeadDetails();
 	}, [fetchLeadDetails]);
 	return (
-		<PageWrapper>
+		<Container>
 			<Loader open={loading} />
 
 			{error && <Typography color="error">{error}</Typography>}
 			{data && <UpdateLeadForm initialValues={data} id={id} />}
-		</PageWrapper>
+		</Container>
 	);
 };
 

@@ -20,6 +20,7 @@ const ClientSupportHome = () => {
 	// Token
 	const targetSource = useRef<CancelTokenSource | null>(null);
 	const countSource = useRef<CancelTokenSource | null>(null);
+
 	// State
 	const [userCategory, setUserCategory] = useState(null);
 	const [targetLoading, setTargetLoading] = useState(false);
@@ -84,13 +85,6 @@ const ClientSupportHome = () => {
 			{myTarget && (
 				<Box mt="2rem" mb="2rem">
 					<Grid container spacing={1} justifyContent="space-between">
-						<Grid item xs={12} md={2}>
-							<ButtonCard
-								onClick={() => history.push('/add-lead')}
-							>
-								<Typography variant="h5">Add Lead</Typography>
-							</ButtonCard>
-						</Grid>
 						<Grid item xs={12} md={2}>
 							<ButtonCard
 								onClick={() => history.push('/posted-leads')}

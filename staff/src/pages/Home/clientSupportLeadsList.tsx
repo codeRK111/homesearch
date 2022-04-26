@@ -1,10 +1,13 @@
+import { Box, Button } from '@material-ui/core';
 import {
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
+	ILead,
 } from '../../model/lead.interface';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Box } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import { AddLeadDialog } from '../../components/Dialogs/addLead';
 import { City } from '../../model/city.interface';
 import FilterLeads from './filterLeads';
 import LeadStatusSwitch from '../../components/Switch';
@@ -27,6 +30,7 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		arrayFormat: 'comma',
 	});
 	const [page, setPage] = useState(1);
+	const [open, setOpen] = React.useState(false);
 	const [days, setDays] = useState<any>('off');
 	const [timeInterval, setTimeInterval] = useState('all');
 	const [showHolds, setShowHolds] = useState(false);
@@ -42,6 +46,13 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	const [number, setNumber] = useState('');
 
 	// Callback
+
+	const onSuccess = (leadInfo: ILead) => {
+		setData((prevState) => ({
+			leads: [leadInfo, ...prevState.leads],
+			totalDocs: prevState.totalDocs + 1,
+		}));
+	};
 
 	const manageCityChange = (val: City | null) => {
 		setCity(val);
@@ -131,6 +142,11 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 
 	return (
 		<Box mt="1rem">
+			<AddLeadDialog
+				open={open}
+				setOpen={setOpen}
+				onSuccess={onSuccess}
+			/>
 			<Box mb="1rem">
 				<LeadStatusSwitch value={showHolds} setValue={setShowHolds} />
 			</Box>
@@ -146,9 +162,19 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 					tags={tags}
 				/>
 			</Box>
-			<p>
-				<b>{data.totalDocs}</b> leads found
-			</p>
+			<Box display={'flex'} justifyContent={'space-between'} p="1rem">
+				<p>
+					<b>{data.totalDocs}</b> leads found
+				</p>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={() => setOpen(true)}
+					startIcon={<AddIcon />}
+				>
+					Add Lead
+				</Button>
+			</Box>
 			<LeadsTable
 				loading={loading}
 				leads={data.leads}

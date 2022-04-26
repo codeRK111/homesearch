@@ -1,22 +1,31 @@
 import {
 	Avatar,
 	Box,
+	Chip,
 	CircularProgress,
 	Divider,
+	FormControl,
 	FormControlLabel,
 	IconButton,
+	InputLabel,
 	List,
 	ListItem,
 	ListItemAvatar,
 	ListItemText,
+	MenuItem,
+	Select,
 	Switch,
 	TextField,
 	Typography,
 } from '@material-ui/core';
-import { ILead, LeadComment } from '../../model/lead.interface';
+import { CommentStatus, ILead, LeadComment } from '../../model/lead.interface';
 import React, { useState } from 'react';
 import { UpdateLeadData, asyncUpdateLead } from '../../API/lead';
-import { parseDate, renderStaffRole } from '../../utils/render';
+import {
+	capitalizeFirstLetter,
+	parseDate,
+	renderStaffRole,
+} from '../../utils/render';
 
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
@@ -25,7 +34,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import { StaffType } from '../../model/staff.interface';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 interface ILeadsComments {
@@ -50,9 +58,18 @@ export default function LeadsComments({
 	const descriptionElementRef = React.useRef<HTMLElement>(null);
 	const { user } = useTypedSelector((state) => state.auth);
 	const [message, setMessage] = useState('');
+	const [status, setStatus] = useState<CommentStatus>(
+		CommentStatus.NotInterested
+	);
 	const [date, setDate] = useState<null | Date>(new Date());
 	const [reschdule, setReschdule] = useState(false);
 	const [loading, setLoading] = useState(false);
+
+	const handleChangeStatus = (
+		event: React.ChangeEvent<{ value: unknown }>
+	) => {
+		setStatus(event.target.value as CommentStatus);
+	};
 
 	const manageReschdule = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setReschdule(event.target.checked);
@@ -73,7 +90,7 @@ export default function LeadsComments({
 	const onSubmit = async () => {
 		if (!id) return;
 		if (!message) return;
-		const info: UpdateLeadData = { message, number };
+		const info: UpdateLeadData = { message, number, commentStatus: status };
 		if (reschdule) {
 			info['reschedule'] = date;
 		} else {
@@ -131,21 +148,23 @@ export default function LeadsComments({
 														{parseDate(c.date)}
 													</Typography>{' '}
 													<br />
-													{user &&
-														(user.id ===
-															c.from.id ||
-															user.type ===
-																StaffType.GM) &&
-														c.reschedule && (
-															<Typography variant="caption">
-																Reschedule on{' '}
-																<b>
-																	{parseDate(
-																		c.reschedule
-																	)}
-																</b>{' '}
-															</Typography>
-														)}
+													{c.status && (
+														<Chip
+															label={capitalizeFirstLetter(
+																c.status
+															)}
+														/>
+													)}
+													{user && c.reschedule && (
+														<Typography variant="caption">
+															Reschedule on{' '}
+															<b>
+																{parseDate(
+																	c.reschedule
+																)}
+															</b>{' '}
+														</Typography>
+													)}
 													<Box p="0.3rem">
 														<Divider />
 													</Box>
@@ -217,6 +236,37 @@ export default function LeadsComments({
 						/>
 					</Box>
 				)}
+
+				<Box ml="1rem" mr="1rem">
+					<FormControl fullWidth>
+						<InputLabel id="demo-simple-select-label">
+							Select Status
+						</InputLabel>
+						<Select
+							labelId="demo-simple-select-label"
+							id="demo-simple-select"
+							value={status}
+							onChange={handleChangeStatus}
+						>
+							<MenuItem value={CommentStatus.Busy}>Busy</MenuItem>
+							<MenuItem value={CommentStatus.CallNotReceived}>
+								Call Not Received
+							</MenuItem>
+							<MenuItem value={CommentStatus.Inerested}>
+								Inerested
+							</MenuItem>
+							<MenuItem value={CommentStatus.NotInService}>
+								Not In Service
+							</MenuItem>
+							<MenuItem value={CommentStatus.NotInterested}>
+								Not Interested
+							</MenuItem>
+							<MenuItem value={CommentStatus.SwitchOff}>
+								Switch Off
+							</MenuItem>
+						</Select>
+					</FormControl>
+				</Box>
 
 				<Box p="1rem" display="flex">
 					<Box width="100%">

@@ -309,7 +309,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 							{/* <p>
 								<pre>{JSON.stringify(errors, null, 2)}</pre>
 							</p> */}
-							<Grid container spacing={1}>
+							<Grid container spacing={3} justifyContent="center">
 								<Grid item xs={12} md={6}>
 									<FSelect
 										name={'userCategory'}
@@ -381,10 +381,18 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 									/>
 								</Grid>
 								<Grid item xs={12}>
-									<Typography variant="caption">
+									<Typography
+										variant="caption"
+										display="block"
+										align="center"
+									>
 										Property Types
 									</Typography>
-									<Grid container spacing={1}>
+									<Grid
+										container
+										spacing={1}
+										justifyContent="center"
+									>
 										<Grid item>
 											<FCheckbox
 												type="checkbox"
@@ -457,7 +465,11 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 										name="tags"
 										render={(arrayHelpers) => (
 											<>
-												<Box>
+												<Box
+													display={'flex'}
+													justifyContent="center"
+													alignItems={'center'}
+												>
 													<TextField
 														value={tagText}
 														onChange={(e) =>
@@ -487,7 +499,12 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 														Add
 													</Button>
 												</Box>
-												<Box mt="1rem">
+												<Box
+													mt="1rem"
+													display={'flex'}
+													justifyContent="center"
+													alignItems={'center'}
+												>
 													{values.tags &&
 														values.tags.map(
 															(c, i) => (
@@ -508,7 +525,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 										)}
 									/>
 								</Grid>
-								<Grid item xs={12}>
+								<Grid item xs={12} md={6}>
 									<ClientRequirement
 										setBDM={manageBDM}
 										setMax={manageMaxPrice}
@@ -525,6 +542,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 
 								<Grid item xs={12}>
 									<Button
+										fullWidth
 										variant={'contained'}
 										color={'primary'}
 										size={'large'}

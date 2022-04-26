@@ -9,6 +9,7 @@ export type LeadComment = {
 	message: string;
 	date: Date;
 	reschedule: Date | null;
+	status?: CommentStatus;
 };
 
 export enum LeadUserCategory {
@@ -19,6 +20,14 @@ export enum LeadUserCategory {
 	Realtor = 'realtor',
 	Builder = 'builder',
 	Unknown = 'unknown',
+}
+export enum CommentStatus {
+	Inerested = 'interested',
+	NotInterested = 'not-interested',
+	CallNotReceived = 'call-not-received',
+	Busy = 'busy',
+	NotInService = 'not-in-service',
+	SwitchOff = 'switch-off',
 }
 
 export enum LeadProposalStatus {

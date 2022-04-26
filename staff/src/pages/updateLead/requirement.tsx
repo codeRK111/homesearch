@@ -105,10 +105,17 @@ export default function ClientRequirement({
 	}, [fetchAdmins]);
 
 	return (
-		<Box mt="1rem">
+		<Box
+			mt="1rem"
+			display="flex"
+			flexDirection={'column'}
+			alignItems="center"
+		>
 			<Box>
 				<FormControl component="fieldset">
-					<FormLabel component="legend">Client Type</FormLabel>
+					<FormLabel component={Typography} align="center">
+						Client Type
+					</FormLabel>
 					<RadioGroup
 						row
 						aria-label="requirement"
@@ -131,7 +138,9 @@ export default function ClientRequirement({
 			</Box>
 			<Box mt="1rem">
 				<FormControl component="fieldset">
-					<FormLabel component="legend">Requirement Type</FormLabel>
+					<FormLabel component={Typography} align="center">
+						Requirement Type
+					</FormLabel>
 					<RadioGroup
 						row
 						aria-label="category"
@@ -161,7 +170,9 @@ export default function ClientRequirement({
 			</Box>
 			<Box mt="1rem">
 				<FormControl component="fieldset">
-					<FormLabel component="legend">Property Type</FormLabel>
+					<FormLabel component={Typography} align="center">
+						Property Type
+					</FormLabel>
 					<RadioGroup
 						row
 						aria-label="pType"
@@ -209,8 +220,10 @@ export default function ClientRequirement({
 				</FormControl>
 			</Box>
 			<Box mt="1rem" mb="1rem">
-				<FormControl component="fieldset">
-					<FormLabel component="legend">Budget</FormLabel>
+				<FormControl component={Typography} align="center">
+					<FormLabel component={Typography} align="center">
+						Budget
+					</FormLabel>
 				</FormControl>
 				<Box display="flex" alignItems="center">
 					<TextField
@@ -234,7 +247,9 @@ export default function ClientRequirement({
 			</Box>
 
 			<FormControl component="fieldset">
-				<FormLabel component="legend">Choose Action</FormLabel>
+				<FormLabel component={Typography} align="center">
+					Choose Action
+				</FormLabel>
 				<RadioGroup
 					row
 					aria-label="action"

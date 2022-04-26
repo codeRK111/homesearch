@@ -1,6 +1,7 @@
 import { APIV2, V2EndPoint, asyncError } from '../instance';
 import { AxiosResponse, CancelTokenSource } from 'axios';
 import {
+	CommentStatus,
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
 	ILead,
@@ -176,6 +177,7 @@ export const asyncGetLeadDetails = async (id: string): Promise<ILead> => {
 
 export interface UpdateLeadData extends ILead {
 	reschedule?: null | Date;
+	commentStatus?: CommentStatus;
 }
 
 export const asyncUpdateLead = async (
