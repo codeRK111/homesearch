@@ -1,0 +1,129 @@
+import { Box, Grid, Typography } from '@material-ui/core';
+
+import AddIcon from '@material-ui/icons/Add';
+import CloseIcon from '@material-ui/icons/Close';
+import EditIcon from '@material-ui/icons/Edit';
+import React from 'react';
+import useStyles from './uploadPhotos.style';
+
+interface IUploadPhoto {
+	photos: Array<File>;
+	setPhotos: (photo: Array<File>) => void;
+}
+
+export const UploadBulkPhoto: React.FC<IUploadPhoto> = ({
+	photos,
+	setPhotos,
+}) => {
+	const classes = useStyles();
+
+	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { files } = e.target;
+		const temp = [...photos, ...Array.from(files as Iterable<File>)];
+		if (temp.length < 7) {
+			setPhotos(temp);
+		} else {
+			console.log({ temp });
+			temp.splice(7, temp.length - 7);
+			setPhotos(temp);
+		}
+	};
+
+	const handleUpdateImage =
+		(i: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+			const { files } = e.target;
+			if (files) {
+				let temp = [...photos];
+				temp[i] = files[0];
+				setPhotos(temp);
+			}
+		};
+	const deletePhoto = (i: number) => () => {
+		let temp = [...photos];
+		temp.splice(i, 1);
+		setPhotos(temp);
+	};
+	return (
+		<React.Fragment>
+			<Box className={classes.rowWrapper2}>
+				<Box className={classes.columnWrapper2}>
+					<Box mb="1rem">
+						<input
+							type="file"
+							id={`upload-photo`}
+							className={classes.uploadButton}
+							onChange={handleImage}
+							multiple
+						/>
+						<label className={classes.label} htmlFor="upload-photo">
+							<Box className={classes.contentWrapper}>
+								<AddIcon />
+								<Typography variant="body2">
+									Add Photos
+								</Typography>
+							</Box>
+						</label>
+					</Box>
+				</Box>
+			</Box>
+			<Box mt="2rem">
+				<Grid container justify="center" spacing={3}>
+					{photos.map((c, i) => (
+						<Grid key={i} item xs={6} md={3}>
+							<Box className={classes.imageWrapper}>
+								<img
+									src={URL.createObjectURL(c)}
+									alt="project"
+									className={classes.image}
+								/>
+								<Box className={classes.overlay}>
+									<input
+										type="file"
+										id={`update-photo-${i}`}
+										className={classes.uploadButton}
+										onChange={handleUpdateImage(i)}
+										multiple
+									/>
+									<label
+										htmlFor={`update-photo-${i}`}
+										className={classes.pointer}
+									>
+										<EditIcon
+											style={{ color: '#ffffff' }}
+										/>
+									</label>
+
+									<label
+										onClick={deletePhoto(i)}
+										className={classes.pointer}
+									>
+										<CloseIcon
+											style={{ color: '#ffffff' }}
+										/>
+									</label>
+								</Box>
+							</Box>
+						</Grid>
+					))}
+					{photos.length > 0 && (
+						<Grid item xs={6} md={3}>
+							<input
+								type="file"
+								id={`add-photo`}
+								className={classes.uploadButton}
+								onChange={handleImage}
+								multiple
+							/>
+							<label
+								htmlFor="add-photo"
+								className={classes.uploadMore}
+							>
+								<AddIcon />
+							</label>
+						</Grid>
+					)}
+				</Grid>
+			</Box>
+		</React.Fragment>
+	);
+};
