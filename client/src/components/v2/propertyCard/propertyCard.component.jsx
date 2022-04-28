@@ -1,3 +1,4 @@
+import { StaticPaths, renderToilets } from '../../../utils/render.utils';
 import { area, bed, car, location2, tag, tub } from '../../../utils/statc';
 
 import { Box } from '@material-ui/core';
@@ -5,7 +6,6 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import city from '../../../assets/city.jpg';
 import clsx from 'clsx';
-import { renderToilets } from '../../../utils/render.utils';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './propertyCard.style';
 
@@ -18,8 +18,8 @@ const TYPES = {
 const PropertyCard = ({ data }) => {
 	const img = data.photos[0]
 		? data.photos.find((c) => c.default)
-			? `/assets/properties/${data.photos.find((c) => c.default).image}`
-			: `/assets/properties/${data.photos[0].image}`
+			? StaticPaths.property(data.photos.find((c) => c.default).image)
+			: StaticPaths.property(data.photos[0].image)
 		: city;
 	const classes = useStyles({ img });
 	const globalClasses = useGlobalStyles();

@@ -2,6 +2,7 @@ import '../extra.css';
 
 import { Box, Grid } from '@material-ui/core';
 import {
+	StaticPaths,
 	capitalizeFirstLetter,
 	renderTypes,
 	toHumanReadble,
@@ -26,7 +27,7 @@ import useStyles from '../searchCard.style';
 
 const PropertyCard = ({ property, propertyItems }) => {
 	const m = moment(property.createdAt);
-	const img = `/assets/projects/${property.thumbnailImage}`;
+	const img = StaticPaths.project(property.thumbnailImage);
 	const classes = useStyles({ img });
 	const globalClasses = useGlobalStyles({ img: city });
 

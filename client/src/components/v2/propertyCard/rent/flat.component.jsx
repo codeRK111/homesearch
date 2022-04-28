@@ -1,4 +1,5 @@
 import { Box, Chip } from '@material-ui/core';
+import { StaticPaths, renderToilets } from '../../../../utils/render.utils';
 
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { Link } from 'react-router-dom';
@@ -10,7 +11,6 @@ import car from '../../../../assets/icons/car.svg';
 import city from '../../../../assets/city.jpg';
 import clsx from 'clsx';
 import location from '../../../../assets/icons/location.svg';
-import { renderToilets } from '../../../../utils/render.utils';
 import tag from '../../../../assets/icons/tag2.svg';
 import tub from '../../../../assets/icons/tub.svg';
 import useGlobalStyles from '../../../../common.style';
@@ -25,8 +25,8 @@ const TYPES = {
 const PropertyCard = ({ data, showStatus = false, variant = 'medium' }) => {
 	const img = data.photos[0]
 		? data.photos.find((c) => c.default)
-			? `/assets/properties/${data.photos.find((c) => c.default).image}`
-			: `/assets/properties/${data.photos[0].image}`
+			? StaticPaths.property(data.photos.find((c) => c.default).image)
+			: StaticPaths.property(data.photos[0].image)
 		: city;
 	const classes = useStyles({ img, variant });
 	const globalClasses = useGlobalStyles();

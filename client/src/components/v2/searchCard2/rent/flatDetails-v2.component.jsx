@@ -2,6 +2,12 @@ import '../extra.css';
 
 import { Box, Grid } from '@material-ui/core';
 import {
+	StaticPaths,
+	renderBool,
+	renderToilets,
+	renderTypes,
+} from '../../../../utils/render.utils';
+import {
 	area,
 	bed,
 	car,
@@ -10,11 +16,6 @@ import {
 	tag,
 	tub,
 } from '../../../../utils/statc';
-import {
-	renderBool,
-	renderToilets,
-	renderTypes,
-} from '../../../../utils/render.utils';
 
 import ImageCarousel from '../../imageCarousel';
 import React from 'react';
@@ -43,7 +44,7 @@ const PropertyCard = ({ property, edit = false }) => {
 		  };
 	const [defaultImage, setDefaultImage] = React.useState(img);
 	const classes = useStyles({
-		img: `/assets/properties/${defaultImage.image}`,
+		img: StaticPaths.property(defaultImage.image),
 	});
 	const globalClasses = useGlobalStyles({ img: city });
 
@@ -56,7 +57,7 @@ const PropertyCard = ({ property, edit = false }) => {
 				open={fullImageOpen}
 				handleClose={toggleFullImage(false)}
 				title={property.title}
-				image={`/assets/properties/${defaultImage.image}`}
+				image={StaticPaths.property(defaultImage.image)}
 			/>
 			<Grid container spacing={5}>
 				<Grid item xs={12} md={8}>
@@ -64,9 +65,8 @@ const PropertyCard = ({ property, edit = false }) => {
 						<ImageCarousel
 							photos={
 								property.photos[0]
-									? property.photos.map(
-											(c) =>
-												`/assets/properties/${c.image}`
+									? property.photos.map((c) =>
+											StaticPaths.property(c.image)
 									  )
 									: [city]
 							}

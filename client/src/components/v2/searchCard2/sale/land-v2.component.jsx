@@ -2,6 +2,7 @@ import '../extra.css';
 
 import { Box, Grid } from '@material-ui/core';
 import {
+	StaticPaths,
 	capitalizeFirstLetter,
 	renderTransactionType,
 	renderTypes,
@@ -22,10 +23,8 @@ const PropertyCard = ({ property, edit = false }) => {
 	const m = moment(property.createdAt);
 	const img = property.photos[0]
 		? property.photos.find((c) => c.default)
-			? `/assets/properties/${
-					property.photos.find((c) => c.default).image
-			  }`
-			: `/assets/properties/${property.photos[0].image}`
+			? StaticPaths.property(property.photos.find((c) => c.default).image)
+			: StaticPaths.property(property.photos[0].image)
 		: city;
 	const classes = useStyles({ img });
 	const globalClasses = useGlobalStyles({ img: city });
