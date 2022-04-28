@@ -1,4 +1,5 @@
 import { Box, Grid, Typography } from '@material-ui/core';
+import React, { useCallback } from 'react';
 import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
 
 import ChoosePlan from '../../../components/v2/propertyPlans/choosePlan.component';
@@ -8,7 +9,6 @@ import Loading from '../../../components/v2/loadingAnimation';
 import LocationSearch from '../../../components/v2/locationDropDown';
 import Nav from '../../../components/v2/pageNav/nav.component';
 import PostSuccess from '../../../components/v2/postSuccessMessage';
-import React from 'react';
 import RentApartment from './rent/apartment.component';
 import RentHostel from './rent/hostel.component';
 import SaleApartment from './sale/apartment.component';
@@ -74,7 +74,9 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 			formData.append('default', defaultPhoto);
 			axios
 				.post(
-					apiUrl(`/properties/add-property-image/${id}`),
+					apiUrl(
+						`${process.env.REACT_APP_FILE_DOMAIN}/properties/add-property-image/${id}`
+					),
 					formData,
 					{
 						cancelToken: cancelToken.current.token,
@@ -99,7 +101,7 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 		});
 	};
 
-	const onPostProperty = (values, photos, type = 'sale') => {
+	const onPostProperty = useCallback((values, photos, type = 'sale') => {
 		return new Promise((resolve, reject) => {
 			if (!selectedCity.id) {
 				return reject('Please select a city');
@@ -178,7 +180,7 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 				}
 			}
 		});
-	};
+	});
 
 	React.useEffect(() => {
 		if (isAuthenticated && storedData.values && storedData.type) {
@@ -200,7 +202,14 @@ const PostProperty = ({ isAuthenticated, toggleLoginPopup, setSnackbar }) => {
 					}
 				});
 		}
-	}, [isAuthenticated]);
+	}, [
+		isAuthenticated,
+		onPostProperty,
+		setSnackbar,
+		storedData.photos,
+		storedData.type,
+		storedData.values,
+	]);
 
 	const renderTypes = () => {
 		let arr = [

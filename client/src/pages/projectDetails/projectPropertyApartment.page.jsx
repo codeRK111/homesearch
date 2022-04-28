@@ -70,7 +70,7 @@ const PropertyDetails = ({ property }) => {
 				title={property.title}
 				whatsAppNumber={property['project']['builder']['phoneNumber']}
 				role={null}
-				url={`https://homesearch18.com/#/project-property/${property.id}`}
+				url={`https://${window.location.hostname}/#/project-property/${property.id}`}
 				projectTitle={property['project']['title']}
 			/>
 			<ContactDialogueWithMessage

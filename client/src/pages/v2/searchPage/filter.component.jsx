@@ -1,4 +1,8 @@
 import { AppBar, Box, IconButton, Menu } from '@material-ui/core';
+import {
+	capitalizeFirstLetter,
+	getBrandName,
+} from '../../../utils/render.utils';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 
 import Budget from './budget.component';
@@ -124,7 +128,13 @@ const Filter = ({
 										globalClasses.smJustifyBetween
 									)}
 								>
-									<span>Homesearch18</span>
+									<span>
+										{capitalizeFirstLetter(
+											getBrandName[
+												window.location.hostname
+											]
+										)}
+									</span>
 									<IconButton
 										size="small"
 										onClick={toggleDrawer(false)}

@@ -20,6 +20,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { getBrandName } from '../../../utils/render.utils';
 import { makeStyles } from '@material-ui/core/styles';
 import { profile } from '../../../utils/statc';
 import { signOut } from '../../../redux/auth/auth.actions';
@@ -93,7 +94,7 @@ function TemporaryDrawer({
 						)}
 						mb="2rem"
 					>
-						<span>Homesearch18</span>
+						<span>{getBrandName[window.location.hostname]}</span>
 						<IconButton size="small" onClick={handleClose}>
 							<CloseIcon className={gClasses.colorUtil} />
 						</IconButton>

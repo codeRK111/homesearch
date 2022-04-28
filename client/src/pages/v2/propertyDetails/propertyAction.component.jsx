@@ -7,6 +7,11 @@ import {
 } from 'react-share';
 import { LinkedinIcon, WhatsappIcon } from '../../../components/v2/createIcon';
 import {
+	apiUrl,
+	capitalizeFirstLetter,
+	getBrandName,
+} from '../../../utils/render.utils';
+import {
 	selectAuthenticated,
 	selectUser,
 } from '../../../redux/auth/auth.selectors';
@@ -18,7 +23,6 @@ import React from 'react';
 import ShareIcon from '@material-ui/icons/Share';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import { apiUrl } from '../../../utils/render.utils';
 import axios from 'axios';
 import bookmarkIcon from '../../../assets/icons/bookmark.svg';
 import clsx from 'clsx';
@@ -71,7 +75,7 @@ const PropertyAction = ({
 				});
 			}
 		})();
-	}, [isAuthenticated]);
+	}, [id, isAuthenticated, selectUser._id]);
 
 	const saveProperty = async () => {
 		try {
@@ -181,31 +185,39 @@ const PropertyAction = ({
 					title={
 						<Box className={globalClasses.alignCenter}>
 							<FacebookShareButton
-								url="https://homesearch18.com/#/"
-								quote="Homesearch18"
+								url={window.location.origin}
+								quote={`${capitalizeFirstLetter(
+									getBrandName[window.location.hostname]
+								)}`}
 							>
 								<FacebookIcon color="primary" />
 							</FacebookShareButton>
 							<Box ml="1rem">
 								<TwitterShareButton
-									url="https://homesearch18.com/#/"
-									title="Homesearch18"
+									url={window.location.origin}
+									title={`${capitalizeFirstLetter(
+										getBrandName[window.location.hostname]
+									)}`}
 								>
 									<TwitterIcon color="primary" />
 								</TwitterShareButton>
 							</Box>
 							<Box ml="1rem">
 								<LinkedinShareButton
-									url="https://homesearch18.com/#/"
-									title="Homesearch18"
+									url={window.location.origin}
+									title={`${capitalizeFirstLetter(
+										getBrandName[window.location.hostname]
+									)}`}
 								>
 									<LinkedinIcon size={32} round />
 								</LinkedinShareButton>
 							</Box>
 							<Box ml="1rem">
 								<WhatsappShareButton
-									url="https://homesearch18.com/#/"
-									title="Homesearch18"
+									url={window.location.origin}
+									title={`${capitalizeFirstLetter(
+										getBrandName[window.location.hostname]
+									)}`}
 									separator=":: "
 								>
 									<WhatsappIcon size={32} round />
@@ -225,8 +237,10 @@ const PropertyAction = ({
 			<Tooltip title="Share on whatsapp">
 				<div className={globalClasses.justifyCenter}>
 					<WhatsappShareButton
-						url="https://homesearch18.com/#/"
-						title="Homesearch18"
+						url={window.location.origin}
+						title={capitalizeFirstLetter(
+							getBrandName[window.location.hostname]
+						)}
 						separator=":: "
 					>
 						<img

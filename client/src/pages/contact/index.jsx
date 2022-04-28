@@ -2,6 +2,7 @@ import { Box, Container, Typography } from '@material-ui/core';
 
 import Nav from '../../components/v2/pageNav/nav.component';
 import React from 'react';
+import { getBrandName } from '../../utils/render.utils';
 
 const ContactUs = () => {
 	return (
@@ -67,14 +68,17 @@ const ContactUs = () => {
 								component="h1"
 								gutterBottom
 							>
-								<b>+91 9090-91-7676</b>
+								<b>+91 8260-123-123</b>
 							</Typography>
 							<Typography
 								variant="h6"
 								component="h1"
 								gutterBottom
 							>
-								Mail Us: <b>info@homesearch18.com</b>
+								Mail Us:{' '}
+								<b>{`info@${
+									getBrandName[window.location.hostname]
+								}`}</b>
 							</Typography>
 						</Box>
 					</Box>

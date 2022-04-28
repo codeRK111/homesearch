@@ -14,7 +14,7 @@ export const renderOnDom = (data) => {
 };
 export const renderBlogImage = (image) => {
 	if (image) {
-		return `/assets/blogs/${image}`;
+		return `https://homesearch18.com/assets/blogs/${image}`;
 	} else {
 		return noUser;
 	}
@@ -439,12 +439,18 @@ export const hideNumber = (number) => {
 };
 
 export const StaticPaths = {
-	property: (image) => `/assets/properties/${image}`,
-	project: (image) => `/assets/projects/${image}`,
-	blog: (image) => `/assets/blogs/${image}`,
-	profile: (image) => `/assets/profile/${image}`,
-	builder: (image) => `/assets/builders/${image}`,
-	testimonial: (image) => `/assets/testimonial/${image}`,
+	property: (image) =>
+		`${process.env.REACT_APP_FILE_DOMAIN}/assets/properties/${image}`,
+	project: (image) =>
+		`${process.env.REACT_APP_FILE_DOMAIN}/assets/projects/${image}`,
+	blog: (image) =>
+		`${process.env.REACT_APP_FILE_DOMAIN}/assets/blogs/${image}`,
+	profile: (image) =>
+		`${process.env.REACT_APP_FILE_DOMAIN}/assets/profile/${image}`,
+	builder: (image) =>
+		`${process.env.REACT_APP_FILE_DOMAIN}/assets/builders/${image}`,
+	testimonial: (image) =>
+		`${process.env.REACT_APP_FILE_DOMAIN}/assets/testimonial/${image}`,
 };
 export const USER_ROLE = {
 	Builder: 'builder',
@@ -473,6 +479,11 @@ export const instagramLink = {
 	'homesearch18.com': 'https://www.instagram.com/homesearch18/',
 	localhost: 'https://www.instagram.com/homesearch18/',
 	'homesearchindia.com': 'https://www.instagram.com/homesearchindiacom/',
+};
+export const getBrandName = {
+	'homesearch18.com': 'homesearch18',
+	localhost: 'homesearchindia',
+	'homesearchindia.com': 'homesearchindia',
 };
 export const getEmbedId = (url) => {
 	const regExp =

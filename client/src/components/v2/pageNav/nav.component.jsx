@@ -183,6 +183,24 @@ const NavBar = ({
 		}&cn=${encodeURIComponent(data.cityName)}`;
 		history.push(link);
 	};
+
+	const renderLogo = {
+		'homesearch18.com': (
+			<span className={classes.logoTitle}>
+				HOMESEARCH<span>18</span>.COM
+			</span>
+		),
+		'homesearchindia.com': (
+			<span className={classes.logoTitle}>
+				HOMESEARCH<span>INDIA</span>.COM
+			</span>
+		),
+		localhost: (
+			<span className={classes.logoTitle}>
+				HOMESEARCH<span>INDIA</span>.COM
+			</span>
+		),
+	};
 	return (
 		<>
 			<Drawer open={openDrawer} handleClose={handleCloseDrawer} />
@@ -193,9 +211,7 @@ const NavBar = ({
 				>
 					<img src={logoIcon} alt="" className={classes.logo} />
 					<Box ml="0.5rem">
-						<span className={classes.logoTitle}>
-							HOMESEARCH<span>18</span>.COM
-						</span>
+						{renderLogo[window.location.hostname]}
 					</Box>
 				</div>
 				<IconButton

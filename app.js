@@ -62,7 +62,13 @@ const app = express();
 
 require('./utils/createInvoice');
 
-app.use(cors());
+var whitelist = ['https://homesearchindia.com', 'https://homesearch18.com'];
+var corsOptions = {
+	origin: whitelist,
+	optionsSuccessStatus: 200,
+};
+
+app.options(cors(corsOptions));
 
 // app.use(expressValidator());
 const options = {

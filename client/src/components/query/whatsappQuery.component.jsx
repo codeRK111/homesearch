@@ -9,6 +9,7 @@ import {
 	Typography,
 } from '@material-ui/core';
 import { Form, Formik } from 'formik';
+import { apiUrl, capitalizeFirstLetter } from '../../utils/render.utils';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 
 import { Button } from '../customMaterialComponents/button.component';
@@ -21,9 +22,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from '../../components/formik/textField.component';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
-import { apiUrl } from '../../utils/render.utils';
 import axios from 'axios';
-import { capitalizeFirstLetter } from '../../utils/render.utils';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectUser } from '../../redux/auth/auth.selectors';
@@ -154,7 +153,7 @@ function AlertDialogSlide({
 				cancelToken.cancel('Operation canceled due to new request');
 			}
 		}
-	}, [open]);
+	}, [cancelToken, open]);
 
 	const renderPostedBy = () => {
 		if (type === 'project' || type === 'projectProperty') {
@@ -288,7 +287,7 @@ function AlertDialogSlide({
 
 	const shareUrl = url
 		? url
-		: `https://homesearch18.com/#/${
+		: `https://${window.location.hostname}/#/${
 				type === 'project' ? 'project' : 'property-details'
 		  }/${id}`;
 

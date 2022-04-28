@@ -1,6 +1,11 @@
 import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import { badge, call, comment, logo, whatsapp } from '../../../utils/statc';
+import {
+	capitalizeFirstLetter,
+	getBrandName,
+	hsiID,
+} from '../../../utils/render.utils';
 import { setSnackbar, toggleLoginPopup } from '../../../redux/ui/ui.actions';
 
 import { addAgentQuery } from '../../../utils/asyncQuery';
@@ -8,7 +13,6 @@ import axios from 'axios';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { hsiID } from '../../../utils/render.utils';
 import { selectAuthenticated } from '../../../redux/auth/auth.selectors';
 import useGlobalStyles from '../../../common.style';
 import useStyles from './ownerCard.style';
@@ -186,7 +190,11 @@ const OwnerCard = ({
 				</div>
 				<div>
 					<div className={classes.ownerInfo}>
-						<div className={classes.ownerType}>Homesearch18</div>
+						<div className={classes.ownerType}>
+							{capitalizeFirstLetter(
+								getBrandName[window.location.hostname]
+							)}
+						</div>
 						<h2>{owner.name}</h2>
 						{hsiID(owner.docNumber) && (
 							<Typography

@@ -17,7 +17,7 @@ import {
 	asyncGetProposalDetails,
 	asyncProposalResponse,
 } from '../../utils/asyncPackage';
-import { parseDate, toCurrency } from '../../utils/render.utils';
+import { getBrandName, parseDate, toCurrency } from '../../utils/render.utils';
 
 import DatePicker from '../../components/formik/datePickerCustom.component';
 import ErrorCard from '../../components/v2/backdropMessage';
@@ -248,7 +248,8 @@ const ManageProposal = ({
 									<Typography gutterBottom align="center">
 										This is digital authentication required
 										for digital acceptance of privacy policy
-										of homesearch18
+										of{' '}
+										{getBrandName[window.location.hostname]}
 									</Typography>
 								</Box>
 								<Box mt="1rem">

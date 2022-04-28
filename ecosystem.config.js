@@ -1,11 +1,11 @@
 module.exports = {
 	apps: [
 		{
-			name: 'homesearch18',
+			name: 'homesearchindia',
 			script: './server.js',
 			env: {
 				NODE_ENV: 'production',
-				PORT: 8080,
+				PORT: 3000,
 				NODE_TLS_REJECT_UNAUTHORIZED: 0,
 			},
 			watch: '.',
