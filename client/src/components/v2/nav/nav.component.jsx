@@ -11,6 +11,7 @@ import {
 	Menu,
 	MenuItem,
 } from '@material-ui/core';
+import { StaticPaths, getHostName } from '../../../utils/render.utils';
 import {
 	selectAuthenticated,
 	selectUser,
@@ -25,7 +26,6 @@ import React from 'react';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { getHostName } from '../../../utils/render.utils';
 import logoIcon from '../../../assets/icons/logo.svg';
 import { profile } from '../../../utils/statc';
 import { signOut } from '../../../redux/auth/auth.actions';
@@ -182,7 +182,9 @@ const NavBar = ({ isAuthenticated, toggleLoginPopup, signOut, user }) => {
 										<Avatar
 											src={
 												user.photo
-													? `/profile/${user.photo}`
+													? StaticPaths.profile(
+															user.photo
+													  )
 													: profile
 											}
 										>

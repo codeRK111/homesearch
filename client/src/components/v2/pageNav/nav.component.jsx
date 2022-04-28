@@ -24,6 +24,7 @@ import Drawer from '../drawer';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import MenuIcon from '@material-ui/icons/Menu';
 import React from 'react';
+import { StaticPaths } from '../../../utils/render.utils';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -397,7 +398,7 @@ const NavBar = ({
 								<Avatar
 									src={
 										user.photo
-											? `/profile/${user.photo}`
+											? StaticPaths.profile(user.photo)
 											: profile
 									}
 								>

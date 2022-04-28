@@ -1,4 +1,5 @@
 import { Avatar, Box, IconButton } from '@material-ui/core';
+import { StaticPaths, getBrandName } from '../../../utils/render.utils';
 import {
 	selectAuthenticated,
 	selectUser,
@@ -20,7 +21,6 @@ import React from 'react';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { getBrandName } from '../../../utils/render.utils';
 import { makeStyles } from '@material-ui/core/styles';
 import { profile } from '../../../utils/statc';
 import { signOut } from '../../../redux/auth/auth.actions';
@@ -106,7 +106,7 @@ function TemporaryDrawer({
 									alt="Remy Sharp"
 									src={
 										user.photo
-											? `/profile/${user.photo}`
+											? StaticPaths.profile(user.photo)
 											: profile
 									}
 									className={classes.large}

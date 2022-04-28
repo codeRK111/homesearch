@@ -9,7 +9,11 @@ import {
 	ListItemIcon,
 	ListItemText,
 } from '@material-ui/core';
-import { apiUrl, capitalizeFirstLetter } from '../../../utils/render.utils';
+import {
+	StaticPaths,
+	apiUrl,
+	capitalizeFirstLetter,
+} from '../../../utils/render.utils';
 
 import CreateIcon from '@material-ui/icons/Create';
 import LikedProperties from '../../../components/v2/likeProperties';
@@ -126,7 +130,9 @@ const AgentPage = ({ user }) => {
 											alt="Remy Sharp"
 											src={
 												user.photo
-													? `/profile/${user.photo}`
+													? StaticPaths.profile(
+															user.photo
+													  )
 													: defaultImage
 											}
 											className={classes.avatar}
