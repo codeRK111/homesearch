@@ -160,19 +160,13 @@ function ScrollDialog({ open, handleClose, user, setSnackbar, fetchUser }) {
 			const formData = new FormData();
 			formData.append('photo', photo);
 			setUpdatePhotoLoading(true);
-			await axios.patch(
-				apiUrl(
-					`${process.env.REACT_APP_FILE_DOMAIN}/users/handle-profile-image`
-				),
-				formData,
-				{
-					cancelToken: cancelToken.current.token,
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			);
+			await axios.patch(apiUrl(`/users/handle-profile-image`), formData, {
+				cancelToken: cancelToken.current.token,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			setUpdatePhotoLoading(false);
 			setSnackbar({
 				open: true,
