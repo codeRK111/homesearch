@@ -143,6 +143,21 @@ const AgentPage = ({ user }) => {
 											className={classes.commentIcon}
 										/>
 									</div>
+									{/* <h1>
+										{user.photo
+											? StaticPaths.profile(user.photo)
+											: defaultImage}
+									</h1> */}
+									<img
+										src={
+											user.photo
+												? StaticPaths.profile(
+														user.photo
+												  )
+												: defaultImage
+										}
+										alt="Badge"
+									/>
 								</Box>
 							</Grid>
 							<Grid item xs={12} md={5}>

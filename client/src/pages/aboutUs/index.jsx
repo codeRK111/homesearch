@@ -31,7 +31,7 @@ const AboutUs = () => {
 						growing India&#39;s most innovative real estate
 						advertising platform for homebuyers, landlords,
 						developers, and real estate brokers with world extending
-						services to all property hunters. The webvsite offers
+						services to all property hunters. The website offers
 						listings for new homes, resale homes, rentals, plots and
 						residential projects in pan India.But often he misses
 						some critical pieces of the puzzle. If you are fed up

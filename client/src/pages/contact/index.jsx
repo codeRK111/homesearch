@@ -1,7 +1,6 @@
 import { Box, Container, Typography } from '@material-ui/core';
-
-import Nav from '../../components/v2/pageNav/nav.component';
 import React from 'react';
+import Nav from '../../components/v2/pageNav/nav.component';
 import { getBrandName } from '../../utils/render.utils';
 
 const ContactUs = () => {
@@ -78,7 +77,7 @@ const ContactUs = () => {
 								Mail Us:{' '}
 								<b>{`info@${
 									getBrandName[window.location.hostname]
-								}`}</b>
+								}.com`}</b>
 							</Typography>
 						</Box>
 					</Box>
