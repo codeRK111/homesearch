@@ -7,11 +7,12 @@ import {
 	Typography,
 } from '@material-ui/core';
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik';
+import { GetAllGSTSResponseType, asyncGetAllGSTs } from '../../API/gst';
+import React, { useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
 import FSelect from '../Formik/select';
 import FTextField from '../Formik/input';
-import React from 'react';
 import { asyncAddPackage } from '../../API/package';
 
 export type AddPackageFormState = {
@@ -20,6 +21,7 @@ export type AddPackageFormState = {
 	price: number;
 	packageDetails: Array<{ detail: string; detailType: 'present' | 'absent' }>;
 	category: string;
+	gst: string;
 };
 
 interface Props {
@@ -28,13 +30,27 @@ interface Props {
 
 const AddPackageForm: React.FC<Props> = ({ onSuccess }) => {
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
+	const [gstsList, setGsts] = useState<GetAllGSTSResponseType>({
+		gsts: [],
+		totalDocs: 0,
+	});
 	const initialData: AddPackageFormState = {
 		name: '',
 		actualPrice: 0,
 		price: 0,
 		packageDetails: [],
 		category: '',
+		gst: '',
 	};
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const resp = await asyncGetAllGSTs({ page: 1, limit: 100 });
+				setGsts(resp);
+			} catch (error) {}
+		})();
+	}, []);
 
 	const onSubmit = async (
 		values: AddPackageFormState,
@@ -64,6 +80,19 @@ const AddPackageForm: React.FC<Props> = ({ onSuccess }) => {
 				{({ values, isSubmitting }) => (
 					<Form>
 						<Grid container spacing={3}>
+							<Grid item xs={12}>
+								<FSelect
+									name={'gst'}
+									label="Choose GST Number"
+									showNone={false}
+								>
+									{gstsList.gsts.map((c) => (
+										<MenuItem key={c.id} value={c.id}>
+											{c.number}
+										</MenuItem>
+									))}
+								</FSelect>
+							</Grid>
 							<Grid item xs={12}>
 								<FSelect
 									name={'category'}

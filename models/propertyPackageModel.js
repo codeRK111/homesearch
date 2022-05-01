@@ -37,14 +37,12 @@ const propertyPackageSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
-		cgst: {
-			type: Number,
+		gst: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'gst',
 			default: null,
 		},
-		sgst: {
-			type: Number,
-			default: null,
-		},
+
 		status: {
 			type: String,
 			enum: ['active', 'inactive'],
@@ -58,6 +56,14 @@ const propertyPackageSchema = new Schema(
 		timestamps: true,
 	}
 );
+
+propertyPackageSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'gst',
+	});
+
+	next();
+});
 
 const PropertyPackageModel = model('PropertyPackage', propertyPackageSchema);
 module.exports = PropertyPackageModel;

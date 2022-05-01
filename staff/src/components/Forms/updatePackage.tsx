@@ -8,25 +8,39 @@ import {
 	Typography,
 } from '@material-ui/core';
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik';
+import { GetAllGSTSResponseType, asyncGetAllGSTs } from '../../API/gst';
+import { PackageBenifit, PackageDetails } from '../../model/package.interface';
+import React, { useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import FSelect from '../Formik/select';
 import FTextField from '../Formik/input';
-import { PackageDetails } from '../../model/package.interface';
-import React from 'react';
 import { asyncUpdatePackageDetails } from '../../API/package';
 
 interface Props {
 	onSuccess: () => void;
-	data: PackageDetails;
+	data: any;
 }
 
 const UpdatePackageForm: React.FC<Props> = ({ onSuccess, data }) => {
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
+	const [gstsList, setGsts] = useState<GetAllGSTSResponseType>({
+		gsts: [],
+		totalDocs: 0,
+	});
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const resp = await asyncGetAllGSTs({ page: 1, limit: 100 });
+				setGsts(resp);
+			} catch (error) {}
+		})();
+	}, []);
 
 	const onSubmit = async (
-		values: PackageDetails,
+		values: any,
 		helpers: FormikHelpers<PackageDetails>
 	) => {
 		try {
@@ -49,10 +63,30 @@ const UpdatePackageForm: React.FC<Props> = ({ onSuccess, data }) => {
 
 	return (
 		<div>
-			<Formik initialValues={data} onSubmit={onSubmit} enableReinitialize>
+			<Formik
+				initialValues={{
+					...data,
+					gst: data.gst ? data.gst.id : '',
+				}}
+				onSubmit={onSubmit}
+				enableReinitialize
+			>
 				{({ values, isSubmitting }) => (
 					<Form>
 						<Grid container spacing={3}>
+							<Grid item xs={12}>
+								<FSelect
+									name={'gst'}
+									label="Choose GST Number"
+									showNone={false}
+								>
+									{gstsList.gsts.map((c) => (
+										<MenuItem key={c.id} value={c.id}>
+											{c.number}
+										</MenuItem>
+									))}
+								</FSelect>
+							</Grid>
 							<Grid item xs={12}>
 								<FSelect
 									name={'status'}
@@ -112,7 +146,10 @@ const UpdatePackageForm: React.FC<Props> = ({ onSuccess, data }) => {
 									render={(arrayHelpers) => (
 										<Grid container spacing={3}>
 											{values.packageDetails.map(
-												(c, i) => (
+												(
+													c: PackageBenifit,
+													i: number
+												) => (
 													<Grid
 														item
 														key={i}

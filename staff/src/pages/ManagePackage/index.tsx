@@ -83,6 +83,10 @@ const ManagePackagesPage: React.FC = () => {
 											</b>
 										</Typography>
 										<Typography gutterBottom>
+											GST Number -{' '}
+											<b>{c.gst ? c.gst.number : '-'}</b>
+										</Typography>
+										<Typography gutterBottom>
 											Package Name - <b>{c.name}</b>
 										</Typography>
 										<Typography gutterBottom>

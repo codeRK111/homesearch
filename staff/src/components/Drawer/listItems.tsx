@@ -276,6 +276,23 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 				<RenderByMultipleRole types={[StaffType.Accountant]}>
 					<ListItem
 						button
+						onClick={changeRoute('/manage-gst')}
+						className={clsx(manageSelectedStyle('/manage-gst'))}
+					>
+						<ListItemIcon>
+							<MonetizationOnIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon('/manage-gst')
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Manage GST'} />
+					</ListItem>
+				</RenderByMultipleRole>
+				<RenderByMultipleRole types={[StaffType.Accountant]}>
+					<ListItem
+						button
 						onClick={changeRoute('/manage-packages')}
 						className={clsx(
 							manageSelectedStyle('/manage-packages')

@@ -9,6 +9,7 @@ const Subscription = require('./../models/subscriptionModel');
 const Lead = require('./../models/leadsModel');
 const Link = require('./../models/paymentLinkModel');
 const Admin = require('./../models/adminModel');
+const Package = require('./../models/propertyPackageModel');
 const StaffTargetModel = require('./../models/staffTargetModel');
 const crypto = require('crypto');
 const { nanoid } = require('nanoid');
@@ -17,6 +18,7 @@ const moment = require('moment');
 const mongoose = require('mongoose');
 const PropertyPackage = require('./../models/propertyPackageModel');
 const path = require('path');
+const calculatePrice = require('../utils/calculate-price');
 
 exports.createOrder = catchAsync(async (req, res, next) => {
 	try {
@@ -110,7 +112,7 @@ exports.createOrderTenantPackage = catchAsync(async (req, res, next) => {
 		if (!packageData) {
 			return res.status(500).send('Invalid Package');
 		}
-		amount = packageData.price * 100;
+		amount = calculatePrice(packageData.gst, packageData.price) * 100;
 
 		const options = {
 			amount, // amount in smallest currency unit
@@ -925,7 +927,10 @@ exports.downloadInvoice = catchAsync(async (req, res, next) => {
 		discount,
 		id,
 		package,
-		tax;
+		igst = 0,
+		cgst = 0,
+		sgst = 0,
+		gst = null;
 
 	if (subscription.user) {
 		name = subscription.user.name;
@@ -953,17 +958,36 @@ exports.downloadInvoice = catchAsync(async (req, res, next) => {
 	id = subscription.subscriptionNumber;
 	if (subscription.packageId) {
 		package = subscription.packageId.name;
+		const packageDetails = await Package.findById(
+			subscription.packageId.id
+		);
+		if (packageDetails && packageDetails.gst) {
+			gst = packageDetails.gst;
+			if (packageDetails.gst.igst) {
+				igst = packageDetails.price * (packageDetails.gst.igst / 100);
+			}
+			if (packageDetails.gst.cgst) {
+				cgst = packageDetails.price * (packageDetails.gst.cgst / 100);
+			}
+			if (packageDetails.gst.sgst) {
+				sgst = packageDetails.price * (packageDetails.gst.sgst / 100);
+			}
+		}
 	} else if (subscription.packageType === 'paymentLink') {
 		package = 'Custom requirement';
 	} else {
 		package = 'Homesearch Package';
 	}
-	tax = 0;
+	tax = {
+		igst,
+		cgst,
+		sgst,
+	};
 	console.log({
 		name,
 		email,
 		number,
-		amountPaid,
+		amountPaid: calculatePrice(gst, amountPaid),
 		totalAmount,
 		discount,
 		id,
@@ -982,7 +1006,7 @@ exports.downloadInvoice = catchAsync(async (req, res, next) => {
 				id,
 				package,
 				totalAmount,
-				amountPaid,
+				amountPaid: calculatePrice(gst, amountPaid),
 				discount,
 				tax,
 			},

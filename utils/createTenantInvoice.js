@@ -235,22 +235,31 @@ const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 			.text(orderInfo.discount, 540, 440, { width: 100 });
 		pdfDoc.font(fontNormal).text('SGST (9%)', 400, 460, { width: 100 });
 		pdfDoc.rect(470, 463, 30, 0.5).fill('#000').stroke('#FC427B');
-		pdfDoc.font(fontBold).text('0', 540, 460, { width: 100 });
-		pdfDoc.font(fontNormal).text('CGST (9%)', 400, 480, { width: 100 });
-		pdfDoc.rect(470, 483, 30, 0.5).fill('#000').stroke('#FC427B');
-		pdfDoc.font(fontBold).text('0', 540, 480, { width: 100 });
-		pdfDoc.font(fontNormal).text('IGST (18%)', 400, 500, { width: 100 });
-		pdfDoc.rect(470, 503, 30, 0.5).fill('#000').stroke('#FC427B');
-		pdfDoc.font(fontBold).text('0', 540, 500, { width: 100 });
-		pdfDoc.rect(400, 520, 170, 1).fill('#000').stroke('#FC427B');
-		pdfDoc.font(fontBold).text('Total', 400, 530, { width: 100 });
-		const totalAmount =
-			Number(orderInfo.totalAmount) - Number(orderInfo.discount);
 		pdfDoc
 			.font(fontBold)
-			.text(`${Number(totalAmount).toLocaleString('en-IN')}`, 540, 530, {
-				width: 100,
-			});
+			.text(`${orderInfo.tax.sgst}`, 540, 460, { width: 100 });
+		pdfDoc.font(fontNormal).text('CGST (9%)', 400, 480, { width: 100 });
+		pdfDoc.rect(470, 483, 30, 0.5).fill('#000').stroke('#FC427B');
+		pdfDoc
+			.font(fontBold)
+			.text(`${orderInfo.tax.cgst}`, 540, 480, { width: 100 });
+		pdfDoc.font(fontNormal).text('IGST (18%)', 400, 500, { width: 100 });
+		pdfDoc.rect(470, 503, 30, 0.5).fill('#000').stroke('#FC427B');
+		pdfDoc
+			.font(fontBold)
+			.text(`${orderInfo.tax.igst}`, 540, 500, { width: 100 });
+		pdfDoc.rect(400, 520, 170, 1).fill('#000').stroke('#FC427B');
+		pdfDoc.font(fontBold).text('Total', 400, 530, { width: 100 });
+		pdfDoc
+			.font(fontBold)
+			.text(
+				`${Number(orderInfo.amountPaid).toLocaleString('en-IN')}`,
+				540,
+				530,
+				{
+					width: 100,
+				}
+			);
 		pdfDoc.image(stamp, 500, 560, { width: 60, height: 60 });
 
 		pdfDoc

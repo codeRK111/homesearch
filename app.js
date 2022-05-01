@@ -56,6 +56,7 @@ const staffRoute = require('./routesV2/staffRoute');
 const blogRoute = require('./routesV2/blogRoute');
 const paymentRoute = require('./routesV2/paymentRoute');
 const cpRoute = require('./routesV2/cpRoute');
+const gstRoute = require('./routesV2/gstRoute');
 const testRoutev2 = require('./routesV2/testRoute');
 
 const app = express();
@@ -239,6 +240,7 @@ app.use('/api/v2/payment', paymentRoute);
 app.use('/api/v2/package', packageRouteV2);
 app.use('/api/v2/chanel-partner', cpRoute);
 app.use('/api/v2/test', testRoutev2);
+app.use('/api/v2/gst', gstRoute);
 
 app.all('/api/*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));

@@ -58,6 +58,7 @@ const PostFromLeadPage = lazy(() => import('./pages/PostFromLead'));
 const VerifyPaymentPage = lazy(() => import('./pages/VerifyPayment'));
 const ManageTragetPage = lazy(() => import('./pages/MnageTraget'));
 const MyDealsPage = lazy(() => import('./pages/MyDeals'));
+const ManageGSTPage = lazy(() => import('./pages/ManageGST'));
 
 const Router = () => {
 	const { setUser } = useRepositoryAction(ResourceType.Auth);
@@ -101,6 +102,11 @@ const Router = () => {
 						path={'/'}
 						exact={true}
 						component={HomePage}
+					/>
+					<PrivateRoute
+						path={'/manage-gst'}
+						exact={true}
+						component={ManageGSTPage}
 					/>
 					<PrivateRoute
 						path={'/add-project'}

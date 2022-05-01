@@ -41,7 +41,8 @@ export const renderByPropertyType = (property, type, component) => {
 };
 
 export const apiUrl = (url, version = 1) => {
-	return `${process.env.REACT_APP_FILE_DOMAIN}/api/v${version}${url}`;
+	// return `${process.env.REACT_APP_FILE_DOMAIN}/api/v${version}${url}`;
+	return `/api/v${version}${url}`;
 	// return `/api${url}`;
 };
 export const parseDateOnlyMonth = (date) => {

@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 20,
 		marginTop: '1rem',
 	},
+	gstTitle: {
+		fontSize: '0.7rem',
+	},
 	bold: {
 		fontWeight: 700,
 		letterSpacing: 1,
@@ -107,6 +110,7 @@ const TenantPackageConfirmationPage = ({
 		button,
 		orderWrapper,
 		lineThrough,
+		gstTitle,
 	} = useStyles();
 	const getQueryString = () => {
 		const query = new URLSearchParams(props.location.search);
@@ -123,6 +127,24 @@ const TenantPackageConfirmationPage = ({
 			setLoading(false);
 		}
 	}, [packageName]);
+
+	const calculatePrice = (gst, price) => {
+		if (!gst) return price;
+		let igst = 0;
+		let cgst = 0;
+		let sgst = 0;
+		if (gst.igst) {
+			igst = price * (gst.igst / 100);
+		}
+		if (gst.cgst) {
+			cgst = price * (gst.cgst / 100);
+		}
+		if (gst.sgst) {
+			sgst = price * (gst.sgst / 100);
+		}
+
+		return Math.round(price + igst + cgst + sgst);
+	};
 
 	const onPayment = () => {
 		if (!isAuthenticated) {
@@ -269,6 +291,53 @@ const TenantPackageConfirmationPage = ({
 	useEffect(() => {
 		fetchPackages();
 	}, [fetchPackages]);
+
+	const renderTax = (gst, price) => {
+		if (!gst) return <></>;
+		return (
+			<>
+				{gst.igst && (
+					<div className={summeryItem}>
+						<span className={gstTitle}>IGST@{gst.igst}%</span>
+						<span className={bold}>
+							<Box>
+								<Typography variant="caption">
+									&#x20B9;
+									{toCurrency(price * (gst.igst / 100))}
+								</Typography>
+							</Box>
+						</span>
+					</div>
+				)}
+				{gst.cgst && (
+					<div className={summeryItem}>
+						<span className={gstTitle}>CGST@{gst.cgst}%</span>
+						<span className={bold}>
+							<Box>
+								<Typography variant="caption">
+									&#x20B9;
+									{toCurrency(price * (gst.cgst / 100))}
+								</Typography>
+							</Box>
+						</span>
+					</div>
+				)}
+				{gst.sgst && (
+					<div className={summeryItem}>
+						<span className={gstTitle}>SGST@{gst.sgst}%</span>
+						<span className={bold}>
+							<Box>
+								<Typography variant="caption">
+									&#x20B9;
+									{toCurrency(price * (gst.sgst / 100))}
+								</Typography>
+							</Box>
+						</span>
+					</div>
+				)}
+			</>
+		);
+	};
 	return (
 		<div>
 			<Nav />
@@ -388,13 +457,20 @@ const TenantPackageConfirmationPage = ({
 														</Box>
 													</span>
 												</div>
+												{renderTax(
+													packageData.gst,
+													packageData.price
+												)}
 												<Divider />
 												<div className={summeryItem}>
 													<span>Total</span>
 													<span className={bold}>
 														&#x20B9;
 														{toCurrency(
-															packageData.price
+															calculatePrice(
+																packageData.gst,
+																packageData.price
+															)
 														)}
 													</span>
 												</div>

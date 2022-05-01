@@ -203,10 +203,11 @@ exports.getActivePackageDetails = catchAsync(async (req, res, next) => {
 			_id: req.params.id,
 			status: 'active',
 		});
-		res.status(201).json({
+		const t = await package.populate('gst');
+		res.status(200).json({
 			status: 'success',
 			data: {
-				package,
+				package: t,
 			},
 		});
 	} catch (error) {
