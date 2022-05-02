@@ -108,6 +108,16 @@ exports.getAllLeads = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.checkNumber = catchAsync(async (req, res, next) => {
+	// console.log(filter);
+	const totalDocs = await Leads.countDocuments({ number: req.params.number });
+
+	res.status(200).json({
+		status: 'success',
+		data: { exists: !!totalDocs },
+	});
+});
+
 exports.getMyLeads = catchAsync(async (req, res, next) => {
 	const filter = {};
 	const page = req.body.page * 1 || 1;
