@@ -6,6 +6,7 @@ import {
 import ContactBuilder from '../contactBuilderDialog/contactBuilder.component';
 import { Grid } from '@material-ui/core';
 import React from 'react';
+import ShowPhoneNumber from '../phoneNumber';
 import image from '../../../assets/icons/builder2.svg';
 import useStyles from './enquiery.style';
 
@@ -39,6 +40,7 @@ const Enquiry = () => {
 							Assist Plan For Builders
 						</h1>
 						<h3>Get in touch with us to promote your projects.</h3>
+						<ShowPhoneNumber />
 						<button onClick={handleClickOpen}>ENQUIRY NOW</button>
 					</div>
 				</Grid>
