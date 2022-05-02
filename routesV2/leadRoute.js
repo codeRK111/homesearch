@@ -10,6 +10,9 @@ router
 	.route('/assign-support')
 	.post(authController.protect, leadController.assignSupport);
 router
+	.route('/check-number/:number')
+	.get(authController.protect, leadController.checkNumber);
+router
 	.route('/gm-lead-count')
 	.get(authController.protect, leadController.countLeads);
 router
