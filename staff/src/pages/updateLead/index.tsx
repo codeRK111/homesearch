@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Container } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { ILead } from '../../model/lead.interface';
 import Loader from '../../components/Loader';
-import { RouteComponentProps } from 'react-router';
 import Typography from '@material-ui/core/Typography';
 import UpdateLeadForm from './form';
 import { asyncGetLeadDetails } from '../../API/lead';
@@ -11,11 +10,10 @@ import { asyncGetLeadDetails } from '../../API/lead';
 export interface IParam {
 	id: string;
 }
-const UpdateLeadPage: React.FC<RouteComponentProps<IParam>> = ({
-	match: {
-		params: { id },
-	},
-}) => {
+interface IUpdateLeadPage extends IParam {
+	onSuccess?: () => void;
+}
+const UpdateLeadPage: React.FC<IUpdateLeadPage> = ({ id, onSuccess }) => {
 	// State
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
@@ -41,12 +39,18 @@ const UpdateLeadPage: React.FC<RouteComponentProps<IParam>> = ({
 		fetchLeadDetails();
 	}, [fetchLeadDetails]);
 	return (
-		<Container>
+		<Box>
 			<Loader open={loading} />
 
 			{error && <Typography color="error">{error}</Typography>}
-			{data && <UpdateLeadForm initialValues={data} id={id} />}
-		</Container>
+			{data && (
+				<UpdateLeadForm
+					initialValues={data}
+					id={id}
+					onSuccess={onSuccess}
+				/>
+			)}
+		</Box>
 	);
 };
 

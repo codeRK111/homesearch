@@ -35,6 +35,7 @@ import { useHistory } from 'react-router';
 interface IUpdateLeadForm {
 	initialValues: ILead & { tags?: Array<string> };
 	id: string;
+	onSuccess?: () => void;
 }
 
 export interface IClientRequirementState {
@@ -73,7 +74,11 @@ const renderAction = (lead: ILead): string => {
 	}
 };
 
-const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
+const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({
+	initialValues,
+	id,
+	onSuccess,
+}) => {
 	const history = useHistory();
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	const validationSchema = Yup.object({
@@ -276,12 +281,15 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 			await asyncUpdateLead(id, input);
 			setLoading(false);
 			helpers.resetForm();
+
 			setSnackbar({
 				open: true,
 				message: 'Lead Updated successfully',
 				severity: 'success',
 			});
-			history.goBack();
+			if (onSuccess) {
+				onSuccess();
+			}
 		} catch (err: any) {
 			console.log(err);
 			setLoading(false);
@@ -295,9 +303,6 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({ initialValues, id }) => {
 	return (
 		<div>
 			<PageWrapper>
-				<Typography variant="h5" gutterBottom>
-					Update Lead
-				</Typography>
 				<Formik
 					initialValues={initialValues}
 					onSubmit={onSubmit}

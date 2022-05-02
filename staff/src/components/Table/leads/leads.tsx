@@ -20,6 +20,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { UpdateLeadDialog } from '../../Dialogs/updateLead';
 import { useHistory } from 'react-router';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
@@ -74,8 +75,12 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 	const [data, setData] = useState<Array<ILead>>([]);
 	const [open, setOpen] = useState(false);
+	const [editOpen, setEditOpen] = useState(false);
 
 	const [selectedLead, setSelectedLead] = useState<ILead | null>(null);
+	const [selectedUpdateLead, setSelectedUpdateLead] = useState<ILead | null>(
+		null
+	);
 
 	const onEdit = (id: string | undefined) => () =>
 		history.push(`/lead/${id}`);
@@ -83,9 +88,14 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 	const handleCloseModal = () => {
 		setOpen(false);
 	};
+
 	const openModal = (lead: ILead) => () => {
 		setSelectedLead(lead);
 		setOpen(true);
+	};
+	const openEditModal = (lead: ILead) => () => {
+		setSelectedUpdateLead(lead);
+		setEditOpen(true);
 	};
 
 	// Effects
@@ -112,6 +122,12 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 				comments={selectedLead?.comments}
 				number={selectedLead ? selectedLead.number : ''}
 				fetchLeads={fetchLeads}
+			/>
+			<UpdateLeadDialog
+				open={editOpen}
+				setOpen={setEditOpen}
+				id={selectedUpdateLead ? (selectedUpdateLead.id as string) : ''}
+				onSuccess={fetchLeads}
 			/>
 
 			<TableContainer component={Paper}>
@@ -238,7 +254,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 										<StyledTableCell>
 											<IconButton
-												onClick={onEdit(row.id)}
+												onClick={openEditModal(row)}
 											>
 												<EditIcon color="primary" />
 											</IconButton>

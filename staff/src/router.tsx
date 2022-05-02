@@ -1,13 +1,12 @@
+import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
-import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
-import { ResourceType, useRepositoryAction } from './hooks/useAction';
-
-import HomePage from './pages/Home';
+import { asyncFetchAdminInfo } from './API/auth';
 import Loader from './components/Loader';
 import { LoadingAnimationNormal } from './components/LoadingAnimation';
 import NavBar from './components/NavBar';
 import PrivateRoute from './components/ProtectedRoute';
-import { asyncFetchAdminInfo } from './API/auth';
+import { ResourceType, useRepositoryAction } from './hooks/useAction';
+import HomePage from './pages/Home';
 
 // import UpdateBlogPage from './pages/UpdateBlog';
 // import UpdateLeadPage from './pages/updateLead';
@@ -131,10 +130,10 @@ const Router = () => {
 						path={'/payment-link'}
 						component={PaymentLinkPage}
 					/>
-					<PrivateRoute
+					{/* <PrivateRoute
 						path={'/lead/:id'}
 						component={UpdateLeadPage}
-					/>
+					/> */}
 					<PrivateRoute
 						path={'/add-property/:pType'}
 						component={AddPropertyPage}
