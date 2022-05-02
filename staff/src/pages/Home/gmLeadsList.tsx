@@ -27,7 +27,6 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { City } from '../../model/city.interface';
 import FilterLeads from './filterLeads';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
-import LeadStatusSwitch from '../../components/Switch';
 import LeadsTable from '../../components/Table/leads/gm';
 import TablePagination from '../../components/Table/pagination';
 import { asyncFetchAdmins } from '../../API/auth';
@@ -245,19 +244,6 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 			<AppBar position="sticky" color="inherit" elevation={0}>
 				<Box mb="1rem">
 					<Grid container spacing={3} justify="center">
-						<Grid item xs={6} md={3}>
-							<LeadStatusSwitch
-								value={showHolds}
-								setValue={setShowHolds}
-							/>
-						</Grid>
-						<Grid item xs={6} md={3}>
-							<LeadStatusSwitch
-								value={showNewLeads}
-								setValue={setShowNewLeads}
-								label="New Leads"
-							/>
-						</Grid>
 						<Grid item xs={12} md={4}>
 							<Box display={'flex'}>
 								<FormControl variant="filled" fullWidth>

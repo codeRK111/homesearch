@@ -21,7 +21,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { UpdateLeadDialog } from '../../Dialogs/updateLead';
-import { useHistory } from 'react-router';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
 // import EditIcon from '@material-ui/icons/Edit';
@@ -69,7 +68,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 	days,
 }) => {
 	const classes = useStyles();
-	const history = useHistory();
+
 	const { user } = useTypedSelector((state) => state.auth);
 	// State
 
@@ -81,9 +80,6 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 	const [selectedUpdateLead, setSelectedUpdateLead] = useState<ILead | null>(
 		null
 	);
-
-	const onEdit = (id: string | undefined) => () =>
-		history.push(`/lead/${id}`);
 
 	const handleCloseModal = () => {
 		setOpen(false);

@@ -6,9 +6,11 @@ import {
 } from '../../../redux/auth/auth.selectors';
 
 import CloseIcon from '@material-ui/icons/Close';
+import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -16,6 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import LockOpen from '@material-ui/icons/LockOpen';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PersonIcon from '@material-ui/icons/Person';
+import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import React from 'react';
 import clsx from 'clsx';
@@ -62,6 +65,12 @@ function TemporaryDrawer({
 	const goToProfile = () => {
 		history.push('/profile');
 	};
+	const goToAboutUs = () => {
+		history.push('/about-us');
+	};
+	const goToContactUs = () => {
+		history.push('/contact-us');
+	};
 
 	const onLogOut = () => {
 		signOut();
@@ -70,6 +79,10 @@ function TemporaryDrawer({
 
 	const goToTenantPackages = () => {
 		history.push('/tenant-packages');
+	};
+
+	const callToNumber = () => {
+		window.location.href = 'tel:8260123123';
 	};
 
 	const toggleDrawer = (event) => {
@@ -167,6 +180,28 @@ function TemporaryDrawer({
 								<ListItemText primary={'Sign In'} />
 							</ListItem>
 						)}
+						<ListItem button onClick={goToAboutUs}>
+							<ListItemIcon>
+								<HomeWorkIcon className={gClasses.colorUtil} />
+							</ListItemIcon>
+							<ListItemText primary={'About Us'} />
+						</ListItem>
+						<ListItem button onClick={goToContactUs}>
+							<ListItemIcon>
+								<ContactPhoneIcon
+									className={gClasses.colorUtil}
+								/>
+							</ListItemIcon>
+							<ListItemText primary={'Contact Us'} />
+						</ListItem>
+						<ListItem button onClick={callToNumber}>
+							<ListItemIcon>
+								<PhoneInTalkIcon
+									className={gClasses.colorUtil}
+								/>
+							</ListItemIcon>
+							<ListItemText primary={'+91 8260-123-123'} />
+						</ListItem>
 					</List>
 				</div>
 			</Drawer>

@@ -15,6 +15,7 @@ import {
 
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { City } from '../../../model/city.interface';
+import EditIcon from '@material-ui/icons/Edit';
 import { ILead } from '../../../model/lead.interface';
 import LeadsComments from '../../LeadComments';
 import Paper from '@material-ui/core/Paper';
@@ -25,6 +26,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { UpdateLeadDialog } from '../../Dialogs/updateLead';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
 // import EditIcon from '@material-ui/icons/Edit';
@@ -80,11 +82,15 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 }) => {
 	const classes = useStyles();
 	const { user } = useTypedSelector((state) => state.auth);
+	const [editOpen, setEditOpen] = useState(false);
 	// State
 
 	const [data, setData] = useState<Array<ILead>>([]);
 	const [open, setOpen] = useState(false);
 	const [selectedLead, setSelectedLead] = useState<ILead | null>(null);
+	const [selectedUpdateLead, setSelectedUpdateLead] = useState<ILead | null>(
+		null
+	);
 
 	const handleChangeCheckbox = (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -98,6 +104,10 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 	const openModal = (lead: ILead) => () => {
 		setSelectedLead(lead);
 		setOpen(true);
+	};
+	const openEditModal = (lead: ILead) => () => {
+		setSelectedUpdateLead(lead);
+		setEditOpen(true);
 	};
 
 	// Effects
@@ -125,6 +135,12 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 				number={selectedLead ? selectedLead.number : ''}
 				fetchLeads={fetchLeads}
 			/>
+			<UpdateLeadDialog
+				open={editOpen}
+				setOpen={setEditOpen}
+				id={selectedUpdateLead ? (selectedUpdateLead.id as string) : ''}
+				onSuccess={fetchLeads}
+			/>
 			<TableContainer component={Paper}>
 				<Table className={classes.table} aria-label="customized table">
 					<TableHead>
@@ -150,7 +166,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 
 							<StyledTableCell>Staff Details</StyledTableCell>
 
-							<StyledTableCell>Comments</StyledTableCell>
+							<StyledTableCell>Action</StyledTableCell>
 							<StyledTableCell>Assign</StyledTableCell>
 							{/* <StyledTableCell>Delete</StyledTableCell> */}
 
@@ -251,6 +267,11 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 											>
 												<QuestionAnswerIcon color="primary" />
 											</IconButton>
+											<IconButton
+												onClick={openEditModal(row)}
+											>
+												<EditIcon color="primary" />
+											</IconButton>
 										</StyledTableCell>
 										<StyledTableCell>
 											<Checkbox
@@ -262,6 +283,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({
 												)}
 											/>
 										</StyledTableCell>
+
 										{/* <StyledTableCell>
 											<IconButton
 												onClick={() =>
