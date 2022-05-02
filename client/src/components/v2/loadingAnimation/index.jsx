@@ -4,7 +4,6 @@ import { Box, Paper } from '@material-ui/core';
 
 import Backdrop from '@material-ui/core/Backdrop';
 import React from 'react';
-import { getBrandName } from '../../../utils/render.utils';
 import { logo } from '../../../utils/statc';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -35,9 +34,7 @@ export function LoadingAnimationNormal({ open }) {
 			<Box className={classes.wrapper}>
 				<Paper className={classes.paper} elevation={0}>
 					<div id="loading">
-						<div id="image-wrapper">
-							{getBrandName(window.location.hostname)}
-						</div>
+						<div id="image-wrapper">homesearch</div>
 						<div id="animate"></div>
 					</div>
 				</Paper>
