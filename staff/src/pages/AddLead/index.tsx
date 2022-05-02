@@ -21,6 +21,7 @@ import {
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import React, { useRef, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
+import { asyncAddLead, asyncCheckNumber } from '../../API/lead';
 
 import { City } from '../../model/city.interface';
 import CloseIcon from '@material-ui/icons/Close';
@@ -30,7 +31,6 @@ import FTextField from '../../components/Formik/input';
 import { PageWrapper } from '../../components/UI/Container';
 import SearchCity from '../../components/Search/city';
 import { SpaceBetween } from '../../components/UI/Flex';
-import { asyncAddLead } from '../../API/lead';
 
 const AddLeadPage = () => {
 	const inputEl = useRef<null | HTMLInputElement>(null);
@@ -118,6 +118,24 @@ const AddLeadPage = () => {
 			});
 		}
 	};
+
+	const checkNumber = async (
+		number: string,
+		callback: (msg: string) => void,
+		setStatus: (msg: string) => void
+	) => {
+		try {
+			setStatus('loading');
+			const resp = await asyncCheckNumber(number);
+
+			if (resp.exists) {
+				callback('Number already exists');
+			}
+			setStatus('finished');
+		} catch (error) {
+			setStatus('finished');
+		}
+	};
 	return (
 		<div>
 			<PageWrapper>
@@ -130,9 +148,66 @@ const AddLeadPage = () => {
 						onSubmit={onSubmit}
 						validationSchema={validationSchema}
 					>
-						{({ values, setFieldValue }) => (
+						{({
+							values,
+							setFieldValue,
+							setFieldError,
+							status,
+							setStatus,
+						}) => (
 							<Form>
 								<Grid container spacing={1}>
+									<Grid item xs={12}>
+										<Box
+											display={'flex'}
+											alignItems="center"
+										>
+											<FTextField
+												name={'number'}
+												label="Phone Number"
+												onChange={(v: any) => {
+													if (
+														v.target.value.length <
+														11
+													) {
+														setFieldValue(
+															'number',
+															v.target.value
+														);
+													}
+													if (
+														v.target.value
+															.length === 10
+													) {
+														checkNumber(
+															v.target.value,
+															(
+																errorMessage: any
+															) => {
+																setFieldError(
+																	'number',
+																	errorMessage
+																);
+															},
+															(
+																statusValue: any
+															) => {
+																setStatus(
+																	statusValue
+																);
+															}
+														);
+													}
+												}}
+											/>
+											{status === 'loading' && (
+												<CircularProgress
+													size={20}
+													color="inherit"
+												/>
+											)}
+										</Box>
+									</Grid>
 									<Grid item xs={12} md={6}>
 										<FSelect name={'source'} label="Source">
 											<MenuItem
@@ -223,22 +298,7 @@ const AddLeadPage = () => {
 											label="Email"
 										/>
 									</Grid>
-									<Grid item xs={12}>
-										<FTextField
-											name={'number'}
-											label="Phone Number"
-											onChange={(v: any) => {
-												if (
-													v.target.value.length <= 10
-												) {
-													setFieldValue(
-														'number',
-														v.target.value
-													);
-												}
-											}}
-										/>
-									</Grid>
+
 									<Grid item xs={12}>
 										<SearchCity
 											value={values.city as null | City}

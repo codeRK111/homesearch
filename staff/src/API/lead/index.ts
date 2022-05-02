@@ -391,3 +391,28 @@ export const updatePropertyLeadDetails = async (
 		throw new Error(asyncError(error));
 	}
 };
+
+type CheckNumberResponse = {
+	exists: boolean;
+};
+export const asyncCheckNumber = async (
+	number: string
+): Promise<CheckNumberResponse> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.get<
+			unknown,
+			AxiosResponse<ServerResponse<CheckNumberResponse>>
+		>(`${V2EndPoint.Lead}/check-number/${number}`, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const staffData = resp.data.data;
+
+		return staffData;
+	} catch (error: any) {
+		throw new Error(asyncError(error));
+	}
+};
