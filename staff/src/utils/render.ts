@@ -1,8 +1,9 @@
-import dayjs from 'dayjs';
+import { IStaff, StaffType } from './../model/staff.interface';
+
 import { ILead } from '../model/lead.interface';
 import { PackageDetails } from '../model/package.interface';
 import { SubscriptionPackageType } from '../model/subscription.interface';
-import { IStaff, StaffType } from './../model/staff.interface';
+import dayjs from 'dayjs';
 
 export const renderCellData = (value: any) => {
 	return !!value ? value : '-';
@@ -188,3 +189,11 @@ export const typeOfPackages = [
 		value: 'consultantFee',
 	},
 ];
+
+export const getEmbedId = (url: string): string | null => {
+	const regExp =
+		/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+	const match = url.match(regExp);
+
+	return match && match[2].length === 11 ? match[2] : null;
+};
