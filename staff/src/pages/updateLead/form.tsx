@@ -369,6 +369,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({
 									<FTextField
 										name={'number'}
 										label="Phone Number"
+										disabled={true}
 									/>
 								</Grid>
 								<Grid item xs={12} md={6}>

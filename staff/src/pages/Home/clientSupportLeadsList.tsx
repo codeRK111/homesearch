@@ -184,6 +184,7 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 					Add Lead
 				</Button>
 			</Box>
+			{/* <CollapsibleTable /> */}
 			<LeadsTable
 				loading={loading}
 				leads={data.leads}
