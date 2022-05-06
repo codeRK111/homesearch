@@ -36,6 +36,7 @@ export const sanitizeToSubmit = (values: BasicUnitInfo) => {
 	data.thumbnailImage = null;
 	data.masterFloorPlan = null;
 	data.geogrophicalImage = null;
+	data.photos = [];
 
 	return data;
 };

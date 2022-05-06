@@ -14,19 +14,23 @@ import {
 	Typography,
 } from '@material-ui/core';
 import { Field, FieldArray, Form, Formik, FormikHelpers } from 'formik';
+import {
+	HandleProjectImageInput,
+	asyncAddProjectBasicInfo,
+	asyncUpdateProjectPhoto,
+} from '../../../API/project';
 import React, { useEffect, useState } from 'react';
 
 import { City } from '../../../model/city.interface';
 import FSelect from '../../Formik/select';
 import FTextField from '../../Formik/input';
-import { FetchBuildersResponseType } from '../../../API/builder';
 import { Location } from '../../../model/location.interface';
 import { MonthYearPicker } from '../../Pickers/monthYear';
 import { PLegalClearance } from '../../../model/property.interface';
+import { ProjectFormState } from '../../../pages/AddProject';
 import SearchCity from '../../Search/city';
 import SearchLocation from '../../Search/location';
 import { UploadBulkPhoto } from '../../uploadPhotos';
-import { asyncAddProjectBasicInfo } from '../../../API/project';
 import { getEmbedId } from '../../../utils/render';
 import { sanitizeToSubmit } from './data.sanitize';
 import useStyles from './project.style';
@@ -110,14 +114,17 @@ const validationSchema = Yup.object({
 	}),
 });
 
-export const AddBasicProjectInfoForm = () => {
+interface IAddBasicProjectInfoForm {
+	setProject: (project: null | string) => void;
+	setFormState: (state: ProjectFormState) => void;
+}
+
+export const AddBasicProjectInfoForm: React.FC<IAddBasicProjectInfoForm> = ({
+	setProject,
+	setFormState,
+}) => {
 	const style = useStyles();
-	const [buildersData, setBuildersData] = useState<FetchBuildersResponseType>(
-		{
-			builders: [],
-			totalDocs: 0,
-		}
-	);
+
 	const [pageData, setPageData] = useState<AddProjectPageResponse>({
 		amenities: [],
 		furnishes: [],
@@ -148,7 +155,21 @@ export const AddBasicProjectInfoForm = () => {
 			helpers.setSubmitting(true);
 			const resp = await asyncAddProjectBasicInfo(data);
 			console.log({ resp });
+			const filter: HandleProjectImageInput = {
+				thumbnailImage: values.thumbnailImage as File,
+				masterFloorPlan: values.masterFloorPlan as File,
+				geogrophicalImage: values.geogrophicalImage as File,
+				photos: values.photos,
+			};
 
+			const uploadPhotoResponse = await asyncUpdateProjectPhoto(
+				filter,
+				resp.id
+			);
+			console.log({ uploadPhotoResponse });
+
+			setProject(resp.id);
+			setFormState(ProjectFormState.UnitConfig);
 			helpers.setSubmitting(false);
 		} catch (error) {
 			helpers.setSubmitting(false);
