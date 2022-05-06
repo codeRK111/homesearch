@@ -1,21 +1,33 @@
-import { Box, Button } from '@material-ui/core';
+import {
+	Box,
+	Button,
+	FormControl,
+	Grid,
+	InputLabel,
+	MenuItem,
+	Select,
+} from '@material-ui/core';
 import {
 	CommentStatus,
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
 	ILead,
 } from '../../model/lead.interface';
+import { IStaff, StaffType } from '../../model/staff.interface';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import AddIcon from '@material-ui/icons/Add';
 import { AddLeadDialog } from '../../components/Dialogs/addLead';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { City } from '../../model/city.interface';
 import FilterLeads from './filterLeads';
-import LeadStatusSwitch from '../../components/Switch';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import LeadsTable from '../../components/Table/leads/leads';
 import TablePagination from '../../components/Table/pagination';
+import { asyncFetchAdmins } from '../../API/auth';
 import { asyncFetchMyLeads } from '../../API/lead';
 import queryString from 'query-string';
+import { renderStaffRole } from '../../utils/render';
 import { useHistory } from 'react-router-dom';
 
 interface IClientSupportLeadsList {
@@ -38,6 +50,9 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 	const [showHolds, setShowHolds] = useState(false);
 	const [limit, setLimit] = useState(10);
 	const [tags, setTags] = useState<string[]>([]);
+	const [postedBy, setPostedBy] = useState('');
+	const [staffs, setStaffs] = useState<IStaff[]>([]);
+	const [staffLoading, setStaffLoading] = useState(false);
 
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState<FetchMyLeadsResponseData>({
@@ -85,6 +100,25 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		push(`/?page=${pageNumber}`);
 	};
 
+	const fetchStaffs = useCallback(async () => {
+		try {
+			setStaffLoading(true);
+			const resp = await asyncFetchAdmins({
+				status: 'active',
+				types: [
+					StaffType.ClientSupport,
+					StaffType.AssistantSalesManager,
+					StaffType.SalesExecutive,
+				],
+			});
+			setStaffLoading(false);
+			setStaffs(resp.admins);
+		} catch (error) {
+			setStaffLoading(false);
+			setStaffs([]);
+		}
+	}, []);
+
 	useEffect(() => {
 		setPage(parsed.page ? Number(parsed.page) : 1);
 	}, [parsed]);
@@ -106,6 +140,9 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 			}
 			if (tags.length > 0) {
 				filter.tags = tags;
+			}
+			if (postedBy) {
+				filter.postedBy = postedBy;
 			}
 			if (userCategory) {
 				filter.userCategory = userCategory;
@@ -139,13 +176,17 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 		number,
 		tags,
 		days,
+		postedBy,
 	]);
 	useEffect(() => {
 		setPage(1);
-	}, [limit, userCategory, timeInterval, city, number, tags]);
+	}, [limit, userCategory, timeInterval, city, number, tags, postedBy]);
 	useEffect(() => {
 		fetchLeads();
 	}, [fetchLeads]);
+	useEffect(() => {
+		fetchStaffs();
+	}, [fetchStaffs]);
 
 	return (
 		<Box mt="1rem">
@@ -155,7 +196,40 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 				onSuccess={onSuccess}
 			/>
 			<Box mb="1rem">
-				<LeadStatusSwitch value={showHolds} setValue={setShowHolds} />
+				<Grid container justifyContent="center">
+					<Grid item xs={12} md={3}>
+						<Box display={'flex'}>
+							<FormControl variant="filled" fullWidth>
+								<InputLabel id="demo-simple-select-filled-label">
+									PostedBy
+								</InputLabel>
+								<Select
+									value={postedBy}
+									onChange={(e) =>
+										setPostedBy(e.target.value as string)
+									}
+									labelId="demo-simple-select-filled-label"
+									id="demo-simple-select-filled"
+									IconComponent={
+										staffLoading
+											? HourglassEmptyIcon
+											: ArrowDropDownIcon
+									}
+								>
+									<MenuItem value={''}>
+										<b>All</b>
+									</MenuItem>
+									{staffs.map((c) => (
+										<MenuItem key={c.id} value={c.id}>
+											{c.name} -{' '}
+											<b>{renderStaffRole(c.type)}</b>
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						</Box>
+					</Grid>
+				</Grid>
 			</Box>
 			<Box mb="1rem">
 				<FilterLeads
