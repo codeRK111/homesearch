@@ -1,6 +1,16 @@
 import * as Yup from 'yup';
 
-import { Box, CircularProgress, Grid, MenuItem } from '@material-ui/core';
+import {
+	Box,
+	CircularProgress,
+	FormControl,
+	FormControlLabel,
+	FormLabel,
+	Grid,
+	MenuItem,
+	Radio,
+	RadioGroup,
+} from '@material-ui/core';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { GetAllGSTSResponseType, asyncGetAllGSTs } from '../../API/gst';
 import { IStaff, StaffType } from '../../model/staff.interface';
@@ -9,6 +19,7 @@ import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 
 import { Button } from '../UI/Button';
 import DateTimePickerComponent from '../Pickers/dateTime';
+import { Domains } from '../../model/util';
 import FSelect from '../Formik/select';
 import FTextField from '../Formik/input';
 import { asyncCreatePaymentLink } from '../../API/payment';
@@ -71,12 +82,21 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 	const [loading, setLoading] = useState(false);
 	const [isCopied, setIsCopied] = useState(false);
 	const [link, setLink] = useState('');
+	const [paymentRoute, setPaymentRoute] = useState('');
 	const [staffLoading, setStaffLoading] = useState(false);
 	const [staffs, setStaffs] = useState<IStaff[]>([]);
+	const [domainType, setDomainType] = useState<Domains>(Domains.H18);
+
 	const [gstsList, setGsts] = useState<GetAllGSTSResponseType>({
 		gsts: [],
 		totalDocs: 0,
 	});
+
+	const handleChangeDomainType = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setDomainType((event.target as HTMLInputElement).value as Domains);
+	};
 
 	const fetchStaffs = useCallback(async () => {
 		try {
@@ -112,7 +132,7 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 		try {
 			setLoading(true);
 			const response = await asyncCreatePaymentLink(values);
-			setLink(response);
+			setPaymentRoute(response);
 			setLoading(false);
 			setSnackbar({
 				open: true,
@@ -122,6 +142,7 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 			helpers.resetForm();
 			setIsCopied(false);
 		} catch (err: any) {
+			setPaymentRoute('');
 			setLoading(false);
 			setIsCopied(false);
 			setSnackbar({
@@ -140,6 +161,7 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 			} catch (error) {}
 		})();
 	}, []);
+	useEffect(() => {}, [domainType]);
 
 	return (
 		<div>
@@ -235,19 +257,68 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 					</Form>
 				)}
 			</Formik>
-			{link && (
-				<Box display="flex" mt="1rem">
-					<Box className={linkWrapper}>{link}</Box>
-					<button
-						className={copyButton}
-						onClick={() => {
-							navigator.clipboard.writeText(link);
-							setIsCopied(true);
-						}}
+			<Box display="flex" mt="1rem">
+				<FormControl component="fieldset">
+					<FormLabel component="legend">Choose Domain</FormLabel>
+					<RadioGroup
+						aria-label="gender"
+						name="gender1"
+						value={domainType}
+						onChange={handleChangeDomainType}
 					>
-						{isCopied ? 'Copied!' : 'Copy'}
-					</button>
-				</Box>
+						<FormControlLabel
+							value={Domains.H18}
+							control={<Radio />}
+							label="Homesearch18"
+						/>
+						<FormControlLabel
+							value={Domains.HIndia}
+							control={<Radio />}
+							label="Homesearchindia"
+						/>
+					</RadioGroup>
+				</FormControl>
+			</Box>
+			<h1>{domainType}</h1>
+			{link && (
+				<>
+					<Box display="flex" mt="1rem">
+						<FormControl component="fieldset">
+							<FormLabel component="legend">
+								Choose Domain
+							</FormLabel>
+							<RadioGroup
+								aria-label="gender"
+								name="gender1"
+								value={domainType}
+								onChange={handleChangeDomainType}
+							>
+								<FormControlLabel
+									value={Domains.H18}
+									control={<Radio />}
+									label="Homesearch18"
+								/>
+								<FormControlLabel
+									value={Domains.HIndia}
+									control={<Radio />}
+									label="Homesearchindia"
+								/>
+							</RadioGroup>
+						</FormControl>
+					</Box>
+					<Box display="flex" mt="1rem">
+						<Box className={linkWrapper}>{link}</Box>
+						<button
+							className={copyButton}
+							onClick={() => {
+								navigator.clipboard.writeText(link);
+								setIsCopied(true);
+							}}
+						>
+							{isCopied ? 'Copied!' : 'Copy'}
+						</button>
+					</Box>
+				</>
 			)}
 		</div>
 	);

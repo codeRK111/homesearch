@@ -471,7 +471,7 @@ exports.createPaymentLink = catchAsync(async (req, res, next) => {
 
 	res.status(200).json({
 		status: 'success',
-		data: { link: `https://homesearch18.com/pay?pl=${link.id}` },
+		data: { link: `pay?pl=${link.id}` },
 	});
 });
 
