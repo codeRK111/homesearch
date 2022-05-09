@@ -48,13 +48,18 @@ const TenantPackagePage = (props) => {
 		try {
 			setLoading(true);
 			const resp = await asyncFetchPackages();
-			setPackages(resp);
+			if (category) {
+				console.log(category);
+				setPackages(resp.filter((c) => c.category === category));
+			} else {
+				setPackages(resp);
+			}
 			setDisplayPackages(resp);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
 		}
-	}, []);
+	}, [category]);
 
 	useEffect(() => {
 		if (category) {
@@ -109,7 +114,7 @@ const TenantPackagePage = (props) => {
 					)}
 					<Box mt="2rem" p="1rem">
 						<Grid container spacing={3} justify="center">
-							{displayPackages.map((c) => (
+							{packages.map((c) => (
 								<Grid item xs={12} md={3}>
 									<Paper
 										className={clsx(packageWrapper, {

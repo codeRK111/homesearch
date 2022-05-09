@@ -110,6 +110,8 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 					StaffType.AssistantSalesManager,
 					StaffType.SalesExecutive,
 				],
+				page: 1,
+				limit: 200,
 			});
 			setStaffLoading(false);
 			setStaffs(resp.admins);

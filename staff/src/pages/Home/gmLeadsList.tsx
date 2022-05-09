@@ -145,6 +145,8 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 					StaffType.AssistantSalesManager,
 					StaffType.SalesExecutive,
 				],
+				page: 1,
+				limit: 200,
 			});
 			setStaffLoading(false);
 			setStaffs(resp.admins);

@@ -6,6 +6,7 @@ import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import HomeIcon from '@material-ui/icons/Home';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import ListDropDown from '../ListCollapse';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PaymentIcon from '@material-ui/icons/Payment';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
@@ -288,6 +289,23 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 							/>
 						</ListItemIcon>
 						<ListItemText primary={'Manage GST'} />
+					</ListItem>
+				</RenderByMultipleRole>
+				<RenderByMultipleRole types={[StaffType.GM]}>
+					<ListItem
+						button
+						onClick={changeRoute('/manage-city')}
+						className={clsx(manageSelectedStyle('/manage-city'))}
+					>
+						<ListItemIcon>
+							<LocationCityIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon('/manage-city')
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Manage City'} />
 					</ListItem>
 				</RenderByMultipleRole>
 				<RenderByMultipleRole types={[StaffType.Accountant]}>

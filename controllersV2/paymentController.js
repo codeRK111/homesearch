@@ -75,7 +75,7 @@ exports.paymentLinkCreateOrder = catchAsync(async (req, res, next) => {
 		}
 
 		const options = {
-			amount: link.amount * 100, // amount in smallest currency unit
+			amount: calculatePrice(link.gst, link.amount) * 100, // amount in smallest currency unit
 			currency: 'INR',
 			receipt: nanoid(),
 		};
@@ -462,6 +462,9 @@ exports.getRevenue = catchAsync(async (req, res, next) => {
 exports.createPaymentLink = catchAsync(async (req, res, next) => {
 	if (!req.body.amount) {
 		return next(new AppError('amount required'));
+	}
+	if (!req.body.gst) {
+		return next(new AppError('gst required'));
 	}
 
 	const link = await Link.create(req.body);
@@ -975,6 +978,24 @@ exports.downloadInvoice = catchAsync(async (req, res, next) => {
 		}
 	} else if (subscription.packageType === 'paymentLink') {
 		package = 'Custom requirement';
+		if (subscription.paymentLink && subscription.paymentLink.gst) {
+			gst = subscription.paymentLink.gst;
+			if (subscription.paymentLink.gst.igst) {
+				igst =
+					subscription.paymentLink.amount *
+					(subscription.paymentLink.gst.igst / 100);
+			}
+			if (subscription.paymentLink.gst.cgst) {
+				cgst =
+					subscription.paymentLink.amount *
+					(subscription.paymentLink.gst.cgst / 100);
+			}
+			if (subscription.paymentLink.gst.sgst) {
+				sgst =
+					subscription.paymentLink.amount *
+					(subscription.paymentLink.gst.sgst / 100);
+			}
+		}
 	} else {
 		package = 'Homesearch Package';
 	}

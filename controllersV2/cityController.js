@@ -33,6 +33,15 @@ exports.addCity = catchAsync(async (req, res, next) => {
 		removePhoto(req);
 		return next(new AppError('Please provide name and state'));
 	}
+
+	const existingCity = await City.find({
+		name: { $regex: `^${req.body.name}$`, $options: 'i' },
+	});
+
+	if (existingCity > 0) {
+		return next(new AppError('City already exists'));
+	}
+
 	const existingDoc = await City.findOne({
 		name: req.body.name.trim(),
 		state: req.body.state.trim(),

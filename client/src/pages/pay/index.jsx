@@ -7,24 +7,25 @@ import {
 	Paper,
 	Typography,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import Skeleton from '@material-ui/lab/Skeleton';
-import axios from 'axios';
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { createStructuredSelector } from 'reselect';
-import logo from '../../assets/icons/logo.svg';
-import ErrorMessage from '../../components/errorMessage/errorMessage.component';
-import Nav from '../../components/v2/pageNav/nav.component';
-import useAxios from '../../hooks/useAxiosv2';
+import { apiUrl, asyncError } from '../../utils/render.utils';
 import {
 	selectAuthenticated,
 	selectUser,
 } from '../../redux/auth/auth.selectors';
-import { toggleLoginPopup } from '../../redux/ui/ui.actions';
-import { apiUrl, asyncError } from '../../utils/render.utils';
+
+import ErrorMessage from '../../components/errorMessage/errorMessage.component';
+import { Link } from 'react-router-dom';
+import Nav from '../../components/v2/pageNav/nav.component';
 import PaymentSuccess from '../tenantPackages/successPage';
+import Skeleton from '@material-ui/lab/Skeleton';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import logo from '../../assets/icons/logo.svg';
+import { makeStyles } from '@material-ui/core/styles';
+import { toggleLoginPopup } from '../../redux/ui/ui.actions';
+import useAxios from '../../hooks/useAxiosv2';
 
 const useStyles = makeStyles((theme) => ({
 	packageWrapper: {
@@ -310,6 +311,15 @@ const PayPage = ({ isAuthenticated, toggleLoginPopup, user, ...props }) => {
 													/>
 													<div className={line}></div>
 												</Box>
+												{response.data.link.gst && (
+													<Typography
+														variant="caption"
+														align="center"
+														display="block"
+													>
+														*Tax Applicable
+													</Typography>
+												)}
 												<Box mt="1rem">
 													<Grid
 														container

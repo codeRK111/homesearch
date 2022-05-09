@@ -34,6 +34,11 @@ const paymentLinkSchema = new Schema(
 		expiryDate: {
 			type: Date,
 		},
+		gst: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'gst',
+			default: null,
+		},
 	},
 	{
 		toJSON: { virtuals: true },
@@ -44,6 +49,14 @@ const paymentLinkSchema = new Schema(
 
 paymentLinkSchema.plugin(AutoIncrement, {
 	inc_field: 'paymentLinkNumber',
+});
+
+paymentLinkSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'gst',
+	});
+
+	next();
 });
 
 const paymentLink = model('paymentlink', paymentLinkSchema);

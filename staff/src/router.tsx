@@ -1,12 +1,13 @@
-import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
-import { asyncFetchAdminInfo } from './API/auth';
+import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
+import { ResourceType, useRepositoryAction } from './hooks/useAction';
+
+import HomePage from './pages/Home';
 import Loader from './components/Loader';
 import { LoadingAnimationNormal } from './components/LoadingAnimation';
 import NavBar from './components/NavBar';
 import PrivateRoute from './components/ProtectedRoute';
-import { ResourceType, useRepositoryAction } from './hooks/useAction';
-import HomePage from './pages/Home';
+import { asyncFetchAdminInfo } from './API/auth';
 
 // import UpdateBlogPage from './pages/UpdateBlog';
 // import UpdateLeadPage from './pages/updateLead';
@@ -36,6 +37,7 @@ const UpdatePackagePage = lazy(
 	() => import('./pages/ManagePackage/updatePackage')
 );
 const AddSubscriptionPage = lazy(() => import('./pages/AddSubscription'));
+const ManageCityPage = lazy(() => import('./pages/ManageCity'));
 const AddProjectPage = lazy(() => import('./pages/AddProject'));
 const SharePackageLinkPage = lazy(() => import('./pages/SharePackageLink'));
 const AddPropertyLeadPage = lazy(() => import('./pages/AddPropertyLead'));
@@ -101,6 +103,11 @@ const Router = () => {
 						path={'/'}
 						exact={true}
 						component={HomePage}
+					/>
+					<PrivateRoute
+						path={'/manage-city'}
+						exact={true}
+						component={ManageCityPage}
 					/>
 					<PrivateRoute
 						path={'/manage-gst'}

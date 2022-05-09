@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 
 import { Box, CircularProgress, Grid, MenuItem } from '@material-ui/core';
 import { Form, Formik, FormikHelpers } from 'formik';
+import { GetAllGSTSResponseType, asyncGetAllGSTs } from '../../API/gst';
 import { IStaff, StaffType } from '../../model/staff.interface';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
@@ -36,6 +37,7 @@ export interface ICreatePaymentLinkData {
 	notes: string;
 	expiryDate: Date | null;
 	dealBy: string;
+	gst?: string;
 }
 
 interface IAddLeadStrategyForm {
@@ -49,6 +51,7 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	const validationSchema = Yup.object({
 		amount: Yup.string().required('amount required'),
+		gst: Yup.string().required('gst required'),
 		phone: Yup.string()
 			.length(10, '10 digits required')
 			.matches(/^\d{10}$/, 'Invalid Number'),
@@ -61,6 +64,7 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 		notes: '',
 		expiryDate: dayjs().add(1, 'h').toDate(),
 		dealBy: '',
+		gst: '',
 	};
 
 	// State
@@ -69,6 +73,10 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 	const [link, setLink] = useState('');
 	const [staffLoading, setStaffLoading] = useState(false);
 	const [staffs, setStaffs] = useState<IStaff[]>([]);
+	const [gstsList, setGsts] = useState<GetAllGSTSResponseType>({
+		gsts: [],
+		totalDocs: 0,
+	});
 
 	const fetchStaffs = useCallback(async () => {
 		try {
@@ -124,6 +132,15 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 		}
 	};
 
+	useEffect(() => {
+		(async () => {
+			try {
+				const resp = await asyncGetAllGSTs({ page: 1, limit: 100 });
+				setGsts(resp);
+			} catch (error) {}
+		})();
+	}, []);
+
 	return (
 		<div>
 			<Formik
@@ -134,6 +151,19 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 				{({ values, setFieldValue }) => (
 					<Form>
 						<Grid container spacing={1}>
+							<Grid item xs={12}>
+								<FSelect
+									name={'gst'}
+									label="Choose GST Number"
+									showNone={false}
+								>
+									{gstsList.gsts.map((c) => (
+										<MenuItem key={c.id} value={c.id}>
+											{c.number}
+										</MenuItem>
+									))}
+								</FSelect>
+							</Grid>
 							<Grid item xs={12}>
 								<FTextField name={'amount'} label="Amount *" />
 							</Grid>
