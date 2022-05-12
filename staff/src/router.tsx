@@ -1,8 +1,8 @@
+import { default as CPHomePage, default as HomePage } from './pages/Home';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { ResourceType, useRepositoryAction } from './hooks/useAction';
 
-import HomePage from './pages/Home';
 import Loader from './components/Loader';
 import { LoadingAnimationNormal } from './components/LoadingAnimation';
 import NavBar from './components/NavBar';
@@ -37,6 +37,7 @@ const UpdatePackagePage = lazy(
 	() => import('./pages/ManagePackage/updatePackage')
 );
 const AddSubscriptionPage = lazy(() => import('./pages/AddSubscription'));
+const CreateInvoicePage = lazy(() => import('./pages/CreateInvoicePage'));
 const ManageCityPage = lazy(() => import('./pages/ManageCity'));
 const AddProjectPage = lazy(() => import('./pages/AddProject'));
 const SharePackageLinkPage = lazy(() => import('./pages/SharePackageLink'));
@@ -105,9 +106,19 @@ const Router = () => {
 						component={HomePage}
 					/>
 					<PrivateRoute
+						path={'/cp'}
+						exact={true}
+						component={CPHomePage}
+					/>
+					<PrivateRoute
 						path={'/manage-city'}
 						exact={true}
 						component={ManageCityPage}
+					/>
+					<PrivateRoute
+						path={'/create-invoice'}
+						exact={true}
+						component={CreateInvoicePage}
 					/>
 					<PrivateRoute
 						path={'/manage-gst'}

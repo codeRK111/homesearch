@@ -373,3 +373,30 @@ export const asyncDownloadInvoice = async (id: string): Promise<any> => {
 		throw new Error(asyncError(e));
 	}
 };
+export const asyncCreateAndDownloadInvoice = async (
+	data: any
+): Promise<any> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.post<
+			SendProposalData,
+			AxiosResponse<ServerResponse<any>>
+		>(
+			`${V2EndPoint.Payment}/admin/create-invoice`,
+			data,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				responseType: 'blob',
+			}
+		);
+		FileDownload(resp.data as any, 'invoice.pdf');
+		return { status: 'success' };
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};

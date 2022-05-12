@@ -50,6 +50,11 @@ router.get(
 	authController.protect,
 	paymentController.downloadInvoice
 );
+router.post(
+	'/admin/create-invoice',
+	adminController.protect,
+	paymentController.createAndDownloadInvoice
+);
 router.get(
 	'/admin/download-invoice/:id',
 	adminController.protect,

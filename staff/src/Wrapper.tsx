@@ -1,10 +1,9 @@
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { ResourceType, useRepositoryAction } from './hooks/useAction';
-
-import React from 'react';
-import Router from './router';
 import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import React from 'react';
+import { ResourceType, useRepositoryAction } from './hooks/useAction';
 import { useTypedSelector } from './hooks/useTypedSelector';
+import Router from './router';
 
 function Alert(props: AlertProps) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import HomeIcon from '@material-ui/icons/Home';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import ListDropDown from '../ListCollapse';
@@ -372,6 +373,25 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 							/>
 						</ListItemIcon>
 						<ListItemText primary={'My Deals'} />
+					</ListItem>
+				</RenderByMultipleRole>
+				<RenderByMultipleRole
+					types={[StaffType.Accountant, StaffType.SuperAdmin]}
+				>
+					<ListItem
+						button
+						onClick={changeRoute('/create-invoice')}
+						className={clsx(manageSelectedStyle('/create-invoice'))}
+					>
+						<ListItemIcon>
+							<GetAppIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon('/create-invoice')
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Create Invoice'} />
 					</ListItem>
 				</RenderByMultipleRole>
 			</List>

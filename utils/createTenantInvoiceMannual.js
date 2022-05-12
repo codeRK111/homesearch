@@ -11,13 +11,16 @@ let fontNormal = 'Helvetica';
 let fontBold = 'Helvetica-Bold';
 
 const todayDate = moment().format('DD-MMM-YYYY');
+const parseDate = (date) => {
+	return moment(date).format('DD-MMM-YYYY');
+};
 function pad(num, size) {
 	num = num.toString();
 	while (num.length < size) num = '0' + num;
 	return num;
 }
 
-const createInvoice = async (customerInfo, orderInfo, callback = null) => {
+const createInvoiceMannual = async (info, callback = null) => {
 	try {
 		let pdfDoc = new PDFDocument({ autoFirstPage: false });
 		pdfDoc.addPage({ margin: 36 });
@@ -33,7 +36,7 @@ const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 				continued: true,
 			})
 			.font(fontBold)
-			.text(`GT-${pad(orderInfo.id, 6)}`);
+			.text(`GT-${pad(info.invoiceId, 6)}`);
 		pdfDoc
 			.font(fontNormal)
 			.fontSize(12)
@@ -41,7 +44,7 @@ const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 				continued: true,
 			})
 			.font(fontBold)
-			.text(todayDate);
+			.text(info.date ? parseDate(info.date) : todayDate);
 		pdfDoc.rect(32, 80, 560, 3).fill('#2AAAAC').stroke('#FC427B');
 		pdfDoc.font(fontBold).fontSize(10).text('To:', 32, 100, {
 			width: 300,
@@ -50,26 +53,21 @@ const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 			.fillColor('#000000')
 			.font(fontNormal)
 			.fontSize(10)
-			.text(`Name - ${customerInfo.name}`, 32, 115, {
+			.text(`Name - ${info.name}`, 32, 115, {
 				width: 200,
 			});
 		pdfDoc
 			.fillColor('#000000')
 			.font(fontNormal)
 			.fontSize(10)
-			.text(
-				`Email - ${customerInfo.email ? customerInfo.email : ''}`,
-				32,
-				140,
-				{
-					width: 200,
-				}
-			);
+			.text(`Email - ${info.email}`, 32, 140, {
+				width: 200,
+			});
 		pdfDoc
 			.fillColor('#000000')
 			.font(fontNormal)
 			.fontSize(10)
-			.text(`Phone - ${customerInfo.number}`, 32, 155, {
+			.text(`Phone - ${info.number}`, 32, 155, {
 				width: 200,
 			});
 
@@ -165,6 +163,16 @@ const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 			.text('BLRG25733B');
 		pdfDoc
 			.fillColor('#000000')
+			.font(fontBold)
+			.fontSize(10)
+			.text('GSTN - ', 220, 290, {
+				width: 150,
+				continued: true,
+			})
+			.font(fontNormal)
+			.text(info.gstNumber);
+		pdfDoc
+			.fillColor('#000000')
 			.font(fontNormal)
 			.fontSize(10)
 			.text('Status: ', 400, 100, {
@@ -186,7 +194,7 @@ const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 			.font(fontBold)
 			.fontSize(10)
 			.text(
-				`INR ${Number(orderInfo.amountPaid).toLocaleString('en-IN')}`,
+				`INR ${Number(info.amountAfterGst).toLocaleString('en-IN')}`,
 				400,
 				115,
 				{}
@@ -195,7 +203,7 @@ const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 		pdfDoc
 			.font(fontNormal)
 			.fontSize(10)
-			.text('Package Provided By:', 32, 330, {
+			.text('Service Provided By:', 32, 330, {
 				width: 300,
 				continued: true,
 			});
@@ -203,13 +211,20 @@ const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 			.fillColor('#000000')
 			.font(fontBold)
 			.fontSize(10)
-			.text('Homesearchindia', 32, 330, {
+			.text(info.serviceProvidedBy, 32, 330, {
 				width: 150,
 			});
 		pdfDoc.rect(32, 350, 560, 20).fill('#2AAAAC').stroke('#FC427B');
 		pdfDoc.fillColor('#fff').text('ID', 35, 356, { width: 90 });
-		pdfDoc.text('Package', 140, 356, { width: 190 });
-		pdfDoc.text('Amount', 300, 356, { width: 75 });
+		pdfDoc.text('Description', 140, 356, { width: 190 });
+		pdfDoc.text(
+			info.gstType === 'included'
+				? 'Amount(icl. GST)'
+				: 'Amount(exl. GST)',
+			240,
+			356,
+			{ width: 100 }
+		);
 		pdfDoc.text('Discount Amount', 380, 356, { width: 100 });
 		pdfDoc.text('Amount Paid', 500, 356, { width: 100 });
 
@@ -217,43 +232,33 @@ const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 		pdfDoc
 			.fillColor('#000')
 			.font(fontNormal)
-			.text(`HS-${pad(orderInfo.id, 6)}`, 35, 380, { width: 90 });
-		pdfDoc.text(orderInfo.package, 140, 380, { width: 190 });
-		pdfDoc.text(orderInfo.totalAmount, 300, 380, { width: 100 });
-		pdfDoc.text(orderInfo.discount, 400, 380, { width: 100 });
-		pdfDoc.text(orderInfo.amountPaid, 500, 380, { width: 100 });
+			.text(`HS-${pad(info.invoiceId, 6)}`, 35, 380, { width: 90 });
+		pdfDoc.text(info.description, 140, 380, { width: 190 });
+		pdfDoc.text(info.mainAmount, 300, 380, { width: 100 });
+		pdfDoc.text(info.discount, 400, 380, { width: 100 });
+		pdfDoc.text(info.amountPaid, 500, 380, { width: 100 });
 		pdfDoc.rect(32, 400, 560, 1).fill('#000').stroke('#FC427B');
 		pdfDoc.text('Total', 400, 420, { width: 100 });
 		pdfDoc.rect(470, 423, 30, 0.5).fill('#000').stroke('#FC427B');
-		pdfDoc
-			.font(fontBold)
-			.text(orderInfo.totalAmount, 540, 420, { width: 100 });
+		pdfDoc.font(fontBold).text(info.amountPaid, 540, 420, { width: 100 });
 		pdfDoc.font(fontNormal).text('Discount', 400, 440, { width: 100 });
 		pdfDoc.rect(470, 443, 30, 0.5).fill('#000').stroke('#FC427B');
-		pdfDoc
-			.font(fontBold)
-			.text(orderInfo.discount, 540, 440, { width: 100 });
+		pdfDoc.font(fontBold).text(info.discount, 540, 440, { width: 100 });
 		pdfDoc.font(fontNormal).text('SGST (9%)', 400, 460, { width: 100 });
 		pdfDoc.rect(470, 463, 30, 0.5).fill('#000').stroke('#FC427B');
-		pdfDoc
-			.font(fontBold)
-			.text(`${orderInfo.tax.sgst}`, 540, 460, { width: 100 });
+		pdfDoc.font(fontBold).text(`${info.sgst}`, 540, 460, { width: 100 });
 		pdfDoc.font(fontNormal).text('CGST (9%)', 400, 480, { width: 100 });
 		pdfDoc.rect(470, 483, 30, 0.5).fill('#000').stroke('#FC427B');
-		pdfDoc
-			.font(fontBold)
-			.text(`${orderInfo.tax.cgst}`, 540, 480, { width: 100 });
+		pdfDoc.font(fontBold).text(`${info.cgst}`, 540, 480, { width: 100 });
 		pdfDoc.font(fontNormal).text('IGST (18%)', 400, 500, { width: 100 });
 		pdfDoc.rect(470, 503, 30, 0.5).fill('#000').stroke('#FC427B');
-		pdfDoc
-			.font(fontBold)
-			.text(`${orderInfo.tax.igst}`, 540, 500, { width: 100 });
+		pdfDoc.font(fontBold).text(`${info.igst}`, 540, 500, { width: 100 });
 		pdfDoc.rect(400, 520, 170, 1).fill('#000').stroke('#FC427B');
 		pdfDoc.font(fontBold).text('Total', 400, 530, { width: 100 });
 		pdfDoc
 			.font(fontBold)
 			.text(
-				`${Number(orderInfo.amountPaid).toLocaleString('en-IN')}`,
+				`${Number(info.amountAfterGst).toLocaleString('en-IN')}`,
 				540,
 				530,
 				{
@@ -299,7 +304,7 @@ const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 			.fontSize(9)
 			.text(
 				`Bank: HDFC | Type: Current | Account: 50200046398570 | Branch : BENGALURU-560010 | IFSC : HDFC0001373 |  MICR : 560240044 | GST: ${
-					orderInfo.gstNum ? orderInfo.gstNum : '21AAICG0873C1Z3'
+					info.gstNumber ? info.gstNumber : '21AAICG0873C1Z3'
 				}`,
 				32,
 				670,
@@ -321,4 +326,4 @@ const createInvoice = async (customerInfo, orderInfo, callback = null) => {
 	}
 };
 
-module.exports = createInvoice;
+module.exports = createInvoiceMannual;

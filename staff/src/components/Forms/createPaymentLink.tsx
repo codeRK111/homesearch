@@ -161,7 +161,11 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 			} catch (error) {}
 		})();
 	}, []);
-	useEffect(() => {}, [domainType]);
+	useEffect(() => {
+		if (paymentRoute) {
+			setLink(`${domainType}/${paymentRoute}`);
+		}
+	}, [domainType, paymentRoute]);
 
 	return (
 		<div>
@@ -257,29 +261,7 @@ const CreatePaymentLinkForm: React.FC<IAddLeadStrategyForm> = ({
 					</Form>
 				)}
 			</Formik>
-			<Box display="flex" mt="1rem">
-				<FormControl component="fieldset">
-					<FormLabel component="legend">Choose Domain</FormLabel>
-					<RadioGroup
-						aria-label="gender"
-						name="gender1"
-						value={domainType}
-						onChange={handleChangeDomainType}
-					>
-						<FormControlLabel
-							value={Domains.H18}
-							control={<Radio />}
-							label="Homesearch18"
-						/>
-						<FormControlLabel
-							value={Domains.HIndia}
-							control={<Radio />}
-							label="Homesearchindia"
-						/>
-					</RadioGroup>
-				</FormControl>
-			</Box>
-			<h1>{domainType}</h1>
+
 			{link && (
 				<>
 					<Box display="flex" mt="1rem">

@@ -1,6 +1,7 @@
 import {
 	Avatar,
 	Box,
+	Chip,
 	Divider,
 	IconButton,
 	ListItem,
@@ -53,9 +54,7 @@ const DrawerItems: React.FC<IDrawerItems> = ({ closeDrawer }) => {
 						<ListItemText
 							primary={user.name}
 							secondary={
-								<Typography color="primary">
-									<b>{renderStaffRole(user.type)}</b> <br />
-								</Typography>
+								<Chip label={renderStaffRole(user.type)} />
 							}
 						/>
 					</ListItem>

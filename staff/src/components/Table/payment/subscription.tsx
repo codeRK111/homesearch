@@ -7,6 +7,7 @@ import {
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { parseDate, renderPackageName } from '../../../utils/render';
 
+import DownloadInvoiceButton from '../downloadInvoice';
 import Paper from '@material-ui/core/Paper';
 import SendSubscriptionFeedbackButton from '../utility/SendFeedbackButton';
 import Table from '@material-ui/core/Table';
@@ -109,6 +110,7 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 							<StyledTableCell>Feedback</StyledTableCell>
 							<StyledTableCell>Rating</StyledTableCell>
 							<StyledTableCell>Feedback Status</StyledTableCell>
+							<StyledTableCell>Download</StyledTableCell>
 
 							{/* <StyledTableCell align="center">
 									Actions
@@ -200,6 +202,11 @@ const TenantSubscriptionTable: React.FC<IMyPostedLeadsTable> = ({
 												initialStatus={
 													row.paymentReviewStatus
 												}
+											/>
+										</StyledTableCell>
+										<StyledTableCell>
+											<DownloadInvoiceButton
+												id={row.id}
 											/>
 										</StyledTableCell>
 									</StyledTableRow>

@@ -1,11 +1,13 @@
 const Razorpay = require('razorpay');
 const catchAsync = require('./../utils/catchAsync');
 const createInvoice = require('./../utils/createTenantInvoice');
+const createInvoiceMannual = require('./../utils/createTenantInvoiceMannual');
 const sendEmailProposal = require('./../utils/sendMailProposal');
 const sendMessageProposal = require('./../utils/sendProposal');
 const sendEmailSubscriptionFeedback = require('./../utils/sendMailReview');
 const sendEmailInvoice = require('./../utils/sendMailInvoice');
 const Subscription = require('./../models/subscriptionModel');
+const GSTModel = require('./../models/gstModel');
 const Lead = require('./../models/leadsModel');
 const Link = require('./../models/paymentLinkModel');
 const Admin = require('./../models/adminModel');
@@ -940,14 +942,11 @@ exports.downloadInvoice = catchAsync(async (req, res, next) => {
 		email = subscription.user.email;
 		number = subscription.user.number;
 	} else {
-		if (!subscription.email) {
-			return next(new AppError('Email not found'));
-		}
 		if (!subscription.number) {
 			return next(new AppError('Phone Number  not found'));
 		}
 		name = subscription.name ? subscription.name : 'Homesearch User';
-		email = subscription.email;
+		email = subscription.email ? subscription.email : 'x';
 		number = subscription.number;
 	}
 	if (!subscription.paidAmount) {
@@ -1000,9 +999,9 @@ exports.downloadInvoice = catchAsync(async (req, res, next) => {
 		package = 'Homesearch Package';
 	}
 	tax = {
-		igst,
-		cgst,
-		sgst,
+		igst: igst.toFixed(2),
+		cgst: cgst.toFixed(2),
+		sgst: sgst.toFixed(2),
 	};
 	console.log({
 		name,
@@ -1082,4 +1081,94 @@ exports.fetchTargetDeails = catchAsync(async (req, res, next) => {
 		status: 'success',
 		data: target,
 	});
+});
+
+exports.createAndDownloadInvoice = catchAsync(async (req, res, next) => {
+	const info = {
+		name: req.body.name,
+		email: req.body.email ? req.body.email : 'x',
+		number: req.body.number,
+		description: req.body.description,
+		serviceProvidedBy: req.body.serviceProvidedBy,
+		mainAmount: req.body.amount,
+		gstType: req.body.gstType,
+		date: req.body.date,
+		discount: req.body.discount,
+		amountPaid: req.body.amount - req.body.discount,
+		igst: 0,
+		cgst: 0,
+		sgst: 0,
+		amountAfterGst: 0,
+	};
+
+	const gstDetails = await GSTModel.findById(req.body.gst);
+	if (!gstDetails) {
+		return next(new AppError('Invalid GST'));
+	}
+	console.log(gstDetails);
+	info.gstNumber = gstDetails.number;
+	if (req.body.gstType === 'excluded') {
+		let igst, sgst, cgst;
+		if (gstDetails.igst) {
+			igst = info.amountPaid * (gstDetails.igst / 100);
+			info.igst = igst.toFixed(2);
+		}
+		if (gstDetails.cgst) {
+			cgst = info.amountPaid * (gstDetails.cgst / 100);
+			info.cgst = cgst.toFixed(2);
+		}
+		if (gstDetails.sgst) {
+			sgst = info.amountPaid * (gstDetails.sgst / 100);
+			info.sgst = sgst.toFixed(2);
+		}
+		info.amountAfterGst = calculatePrice(
+			{
+				igst: gstDetails.igst,
+				cgst: gstDetails.cgst,
+				sgst: gstDetails.sgst,
+			},
+			info.amountPaid
+		);
+	} else {
+		info.amountAfterGst = info.mainAmount - info.discount;
+		info.amountPaid = ((info.amountAfterGst / 118) * 100).toFixed(2);
+		let igst, sgst, cgst;
+		if (gstDetails.igst) {
+			igst = info.amountPaid * (gstDetails.igst / 100);
+			info.igst = igst.toFixed(2);
+		}
+		if (gstDetails.cgst) {
+			cgst = info.amountPaid * (gstDetails.cgst / 100);
+			info.cgst = cgst.toFixed(2);
+		}
+		if (gstDetails.sgst) {
+			sgst = info.amountPaid * (gstDetails.sgst / 100);
+			info.sgst = sgst.toFixed(2);
+		}
+	}
+
+	info.invoiceId = req.body.invoiceId
+		? req.body.invoiceId
+		: Math.floor(Math.random() * 10000);
+	console.log(info);
+
+	try {
+		const invoiceName = await createInvoiceMannual(
+			info,
+			(fileName, docName) => {
+				res.download(
+					__dirname + `/../static/invoices/${docName}.pdf`,
+					(err) => {
+						console.log(err);
+					}
+				);
+			}
+		);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({
+			status: 'success',
+			error: error.message,
+		});
+	}
 });
