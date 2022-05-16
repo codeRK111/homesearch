@@ -9,24 +9,6 @@ import NavBar from './components/NavBar';
 import PrivateRoute from './components/ProtectedRoute';
 import { asyncFetchAdminInfo } from './API/auth';
 
-// import UpdateBlogPage from './pages/UpdateBlog';
-// import UpdateLeadPage from './pages/updateLead';
-
-// import LeadStrategyPage from './pages/LeadStrategy';
-
-// import LoginPage from './pages/Login';
-// import ManageLeadPage from './pages/ManageLead';
-// import ManageLeadsPage from './pages/ManageProperty';
-// import ManagePaymentPage from './pages/ManagePayment';
-
-// import PostedLeadsPage from './pages/PostedLeads';
-
-// import AddBlogPage from './pages/AddBlog';
-// import AddLeadPage from './pages/AddLead';
-// import AddPropertyPage from './pages/AddProperty';
-// import BlogsPage from './pages/BlogList';
-// import BrowsePropertiesPage from './pages/BrowseProperties';
-
 const AddBlogPage = lazy(() => import('./pages/AddBlog'));
 const PropertyLeadsDetailsPage = lazy(
 	() => import('./pages/PropertyLeadDetails')
@@ -55,7 +37,6 @@ const ManageLeadsPage = lazy(() => import('./pages/ManageProperty'));
 const ManagePaymentPage = lazy(() => import('./pages/ManagePayment'));
 const PostedLeadsPage = lazy(() => import('./pages/PostedLeads'));
 const UpdateBlogPage = lazy(() => import('./pages/UpdateBlog'));
-const UpdateLeadPage = lazy(() => import('./pages/updateLead'));
 const PostFromLeadPage = lazy(() => import('./pages/PostFromLead'));
 const VerifyPaymentPage = lazy(() => import('./pages/VerifyPayment'));
 const ManageTragetPage = lazy(() => import('./pages/MnageTraget'));
@@ -148,10 +129,6 @@ const Router = () => {
 						path={'/payment-link'}
 						component={PaymentLinkPage}
 					/>
-					{/* <PrivateRoute
-						path={'/lead/:id'}
-						component={UpdateLeadPage}
-					/> */}
 					<PrivateRoute
 						path={'/add-property/:pType'}
 						component={AddPropertyPage}

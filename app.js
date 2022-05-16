@@ -286,7 +286,7 @@ app.get('/*', function (req, res) {
 	);
 });
 
-// require('./task');
+require('./task');
 // require('./send-invoice-task');
 // require('./property-lead-task');
 

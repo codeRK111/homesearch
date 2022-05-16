@@ -76,6 +76,9 @@ const AddLeadPage = () => {
 		city: null,
 		tags: [],
 		commentStatus: CommentStatus.CallNotReceived,
+		reschedules: [],
+		leadStatus: [],
+		assigns: [],
 	};
 
 	// State

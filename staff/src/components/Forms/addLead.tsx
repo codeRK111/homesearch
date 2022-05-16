@@ -75,6 +75,9 @@ export const AddLeadForm: React.FC<{
 		city: null,
 		tags: [],
 		commentStatus: CommentStatus.CallNotReceived,
+		reschedules: [],
+		leadStatus: [],
+		assigns: [],
 	};
 
 	// State

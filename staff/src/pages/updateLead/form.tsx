@@ -25,7 +25,6 @@ import FCheckbox from '../../components/Formik/checkbox';
 import FSelect from '../../components/Formik/select';
 import FTextField from '../../components/Formik/input';
 import { IStaff } from '../../model/staff.interface';
-import { PageWrapper } from '../../components/UI/Container';
 import { Ptype } from '../../model/property.interface';
 import SearchCity from '../../components/Search/city';
 import Typography from '@material-ui/core/Typography';
@@ -35,7 +34,7 @@ import { useHistory } from 'react-router';
 interface IUpdateLeadForm {
 	initialValues: ILead & { tags?: Array<string> };
 	id: string;
-	onSuccess?: () => void;
+	onSuccess?: (data?: any) => void;
 }
 
 export interface IClientRequirementState {
@@ -278,7 +277,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({
 				}
 			});
 			console.log(input);
-			await asyncUpdateLead(id, input);
+			const updatedLead = await asyncUpdateLead(id, input);
 			setLoading(false);
 			helpers.resetForm();
 
@@ -288,7 +287,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({
 				severity: 'success',
 			});
 			if (onSuccess) {
-				onSuccess();
+				onSuccess(updatedLead);
 			}
 		} catch (err: any) {
 			console.log(err);
@@ -302,7 +301,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({
 	};
 	return (
 		<div>
-			<PageWrapper>
+			<div>
 				<Formik
 					initialValues={initialValues}
 					onSubmit={onSubmit}
@@ -572,7 +571,7 @@ const UpdateLeadForm: React.FC<IUpdateLeadForm> = ({
 						</Form>
 					)}
 				</Formik>
-			</PageWrapper>
+			</div>
 		</div>
 	);
 };

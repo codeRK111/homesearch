@@ -11,6 +11,24 @@ export type LeadComment = {
 	reschedule: Date | null;
 	status?: CommentStatus;
 };
+export type LeadReschedule = {
+	_id: string;
+	from: IStaff;
+	date: Date;
+	reschedule: Date;
+};
+export type LeadStatuses = {
+	_id: string;
+	from: IStaff;
+	date: Date;
+	value: string;
+};
+export type LeadAssigns = {
+	_id: string;
+	from: IStaff;
+	to: IStaff;
+	date: Date;
+};
 
 export enum LeadUserCategory {
 	Tenant = 'tenant',
@@ -76,6 +94,9 @@ export interface ILead {
 	postProperty?: boolean;
 	proposalStatus?: LeadProposalStatus;
 	tags?: string[];
+	reschedules: LeadReschedule[];
+	leadStatus: LeadStatuses[];
+	assigns: LeadAssigns[];
 }
 
 export type FetchLeadsInputType = {

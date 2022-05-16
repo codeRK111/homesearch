@@ -260,7 +260,6 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	const leads = await Leads.find(filter)
 		.sort({
 			createdAt: -1,
-			'comments.reschedule': -1,
 		})
 		.skip(skip)
 		.limit(limit);
@@ -511,6 +510,96 @@ exports.updateBySupport = catchAsync(async (req, res, next) => {
 	if (req.body.postProperty) {
 		data.stage = 9;
 		data.notInterested = false;
+	}
+
+	const lead = await Leads.findByIdAndUpdate(req.params.id, data, {
+		new: true,
+		runValidators: true,
+	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			lead,
+		},
+	});
+});
+exports.manageReschedule = catchAsync(async (req, res, next) => {
+	const data = {};
+
+	if (req.body.reschedule) {
+		data['$push'] = {
+			reschedules: {
+				$each: [
+					{
+						from: req.admin.id,
+						date: Date.now(),
+						reschedule: req.body.reschedule
+							? req.body.reschedule
+							: undefined,
+					},
+				],
+				$sort: { reschedule: -1 },
+			},
+		};
+	}
+
+	const lead = await Leads.findByIdAndUpdate(req.params.id, data, {
+		new: true,
+		runValidators: true,
+	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			lead,
+		},
+	});
+});
+
+exports.manageStatus = catchAsync(async (req, res, next) => {
+	const data = {};
+
+	if (req.body.status) {
+		data['$push'] = {
+			leadStatus: {
+				$each: [
+					{
+						from: req.admin.id,
+						date: Date.now(),
+						value: req.body.status ? req.body.status : undefined,
+					},
+				],
+				$sort: { date: -1 },
+			},
+		};
+	}
+
+	const lead = await Leads.findByIdAndUpdate(req.params.id, data, {
+		new: true,
+		runValidators: true,
+	});
+	res.status(200).json({
+		status: 'success',
+		data: {
+			lead,
+		},
+	});
+});
+exports.manageAssignment = catchAsync(async (req, res, next) => {
+	const data = {};
+
+	if (req.body.staff) {
+		data['$push'] = {
+			assigns: {
+				$each: [
+					{
+						from: req.admin.id,
+						date: Date.now(),
+						to: req.body.staff ? req.body.staff : undefined,
+					},
+				],
+				$sort: { date: -1 },
+			},
+		};
 	}
 
 	const lead = await Leads.findByIdAndUpdate(req.params.id, data, {

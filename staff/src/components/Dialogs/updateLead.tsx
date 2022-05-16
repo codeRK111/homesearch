@@ -18,7 +18,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 interface IAddLeadDialog {
 	open: boolean;
 	setOpen: (open: boolean) => void;
-	onSuccess?: () => void;
+	onSuccess?: (data?: any) => void;
 	id: string;
 }
 
@@ -39,7 +39,7 @@ const styles = (theme: Theme) =>
 export interface DialogTitleProps extends WithStyles<typeof styles> {
 	id: string;
 	children: React.ReactNode;
-	onClose: () => void;
+	onClose: (data?: any) => void;
 }
 
 const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
@@ -73,9 +73,9 @@ export const UpdateLeadDialog: React.FC<IAddLeadDialog> = ({
 		setOpen(false);
 	};
 
-	const onPostSuccess = () => {
+	const onPostSuccess = (data: any) => {
 		if (onSuccess) {
-			onSuccess();
+			onSuccess(data);
 		}
 		handleClose();
 	};

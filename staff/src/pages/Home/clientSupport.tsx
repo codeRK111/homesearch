@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Typography } from '@material-ui/core';
 import {
 	FetchCountLoader,
 	FetchTargetLoader,
@@ -76,7 +76,7 @@ const ClientSupportHome = () => {
 	}, [fetchTarget]);
 
 	return (
-		<>
+		<Container>
 			{targetLoading && (
 				<Box mt="4rem">
 					<FetchTargetLoader count={4} />
@@ -205,7 +205,7 @@ const ClientSupportHome = () => {
 			)}
 
 			<ClientSupportLeadsList userCategory={userCategory} />
-		</>
+		</Container>
 	);
 };
 

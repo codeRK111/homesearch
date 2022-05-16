@@ -175,7 +175,8 @@ export const asyncGetLeadDetails = async (id: string): Promise<ILead> => {
 	}
 };
 
-export interface UpdateLeadData extends ILead {
+export interface UpdateLeadData
+	extends Omit<ILead, 'reschedules' | 'leadStatus' | 'assigns'> {
 	reschedule?: null | Date;
 	commentStatus?: CommentStatus;
 }
@@ -195,6 +196,111 @@ export const asyncUpdateLead = async (
 				Authorization: `Bearer ${token}`,
 			},
 		});
+		const leadData = resp.data.data;
+
+		return leadData.lead;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+export const asyncAddLeadMessage = async (
+	id: string,
+	message: string
+): Promise<ILead> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.patch<
+			ILead,
+			AxiosResponse<ServerResponse<{ lead: ILead }>>
+		>(
+			`${V2EndPoint.Lead}/support-update/${id}`,
+			{ message },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		const leadData = resp.data.data;
+
+		return leadData.lead;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+
+export const asyncRescheduleLead = async (
+	id: string,
+	reschedule: Date
+): Promise<ILead> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.patch<
+			ILead,
+			AxiosResponse<ServerResponse<{ lead: ILead }>>
+		>(
+			`${V2EndPoint.Lead}/manage-reschedule/${id}`,
+			{ reschedule },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		const leadData = resp.data.data;
+
+		return leadData.lead;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+export const asyncManageStatusLead = async (
+	id: string,
+	status: string
+): Promise<ILead> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.patch<
+			ILead,
+			AxiosResponse<ServerResponse<{ lead: ILead }>>
+		>(
+			`${V2EndPoint.Lead}/manage-status/${id}`,
+			{ status },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		const leadData = resp.data.data;
+
+		return leadData.lead;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+export const asyncManageAssignLead = async (
+	id: string,
+	staff: string
+): Promise<ILead> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+		const resp = await APIV2.patch<
+			ILead,
+			AxiosResponse<ServerResponse<{ lead: ILead }>>
+		>(
+			`${V2EndPoint.Lead}/manage-assign/${id}`,
+			{ staff },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		const leadData = resp.data.data;
 
 		return leadData.lead;

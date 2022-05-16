@@ -34,6 +34,30 @@ export const parseDate = (date: Date | undefined | number) => {
 	const m = dayjs(date);
 	return m.format('DD MMM YYYY hh:mm a');
 };
+
+export const dateFormat = {
+	day: (date: Date | undefined | null) => {
+		if (!date) {
+			return '-';
+		}
+		const m = dayjs(date);
+		return m.format('ddd');
+	},
+	time: (date: Date | undefined | null) => {
+		if (!date) {
+			return '-';
+		}
+		const m = dayjs(date);
+		return m.format('h:mm A');
+	},
+	fullDate: (date: Date | undefined | null) => {
+		if (!date) {
+			return '-';
+		}
+		const m = dayjs(date);
+		return m.format('DD/MM/YYYY');
+	},
+};
 export const parseDateUnixSecond = (date: number) => {
 	if (!date) {
 		return '-';

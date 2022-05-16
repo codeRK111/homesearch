@@ -51,6 +51,16 @@ router
 		leadController.deleteLead
 	);
 router
+	.route('/manage-reschedule/:id')
+	.patch(authController.protect, leadController.manageReschedule);
+router
+	.route('/manage-status/:id')
+	.patch(authController.protect, leadController.manageStatus);
+router
+	.route('/manage-assign/:id')
+	.patch(authController.protect, leadController.manageAssignment);
+
+router
 	.route('/')
 	.post(
 		authController.protect,

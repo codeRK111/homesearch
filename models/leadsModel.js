@@ -166,6 +166,77 @@ const leadsSchema = new Schema(
 				},
 			},
 		],
+		reschedules: [
+			{
+				from: {
+					type: mongoose.Schema.ObjectId,
+					ref: 'Admin',
+				},
+
+				date: {
+					type: Date,
+					default: Date.now(),
+				},
+				reschedule: {
+					type: Date,
+				},
+			},
+		],
+		assigns: [
+			{
+				from: {
+					type: mongoose.Schema.ObjectId,
+					ref: 'Admin',
+				},
+				to: {
+					type: mongoose.Schema.ObjectId,
+					ref: 'Admin',
+				},
+
+				date: {
+					type: Date,
+					default: Date.now(),
+				},
+			},
+		],
+		leadStatus: [
+			{
+				from: {
+					type: mongoose.Schema.ObjectId,
+					ref: 'Admin',
+				},
+
+				date: {
+					type: Date,
+					default: Date.now(),
+				},
+				value: {
+					type: String,
+					enum: {
+						values: [
+							'SWITCH OFF',
+							'Not IN SERVICE',
+							'NOT CONNECTED',
+							'BUSY',
+							'RESCHEDULE',
+							'NOT INTERESTED',
+							'INTERESTED',
+							'SITE VISIT',
+							'MEETING',
+							'ZOOM MEETING',
+							'INTERESTED FOR PACKAGE',
+							'BROKERAGE CONFIRMED',
+							'INTERESTED TO BUY',
+							'FOLLOWUP',
+							'READY TO BUY',
+							'BOOKING CONFIRMED',
+							'INTERESTED TO SALE',
+							'BROKERAGE PAID',
+						],
+					},
+				},
+			},
+		],
 		images: [
 			{
 				type: String,
@@ -344,6 +415,18 @@ leadsSchema.pre(/^find/, function (next) {
 		})
 		.populate({
 			path: 'comments.from',
+			select: 'id name type',
+		})
+		.populate({
+			path: 'assigns.from',
+			select: 'id name type',
+		})
+		.populate({
+			path: 'assigns.to',
+			select: 'id name type',
+		})
+		.populate({
+			path: 'leadStatus.from',
 			select: 'id name type',
 		})
 		.populate('city');
