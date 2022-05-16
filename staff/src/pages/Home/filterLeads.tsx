@@ -14,6 +14,7 @@ import { City } from '../../model/city.interface';
 import { CommentStatus } from '../../model/lead.interface';
 import LeadsTab from '../../components/Tab/leadFilter';
 import SearchCity from '../../components/Search/city';
+import { leadStatusData } from '../../utils/render';
 
 interface IFilterLeads {
 	setTimeInterval: (value: string) => void;
@@ -84,24 +85,12 @@ const FilterLeads = ({
 								variant="filled"
 							>
 								<MenuItem value={''}>All</MenuItem>
-								<MenuItem value={CommentStatus.Busy}>
-									Busy
-								</MenuItem>
-								<MenuItem value={CommentStatus.CallNotReceived}>
-									Call Not Received
-								</MenuItem>
-								<MenuItem value={CommentStatus.Inerested}>
-									Inerested
-								</MenuItem>
-								<MenuItem value={CommentStatus.NotInService}>
-									Not In Service
-								</MenuItem>
-								<MenuItem value={CommentStatus.NotInterested}>
-									Not Interested
-								</MenuItem>
-								<MenuItem value={CommentStatus.SwitchOff}>
-									Switch Off
-								</MenuItem>
+
+								{leadStatusData.map((c: string, i) => (
+									<MenuItem key={i} value={c}>
+										{c}
+									</MenuItem>
+								))}
 							</Select>
 						</FormControl>
 					</Grid>

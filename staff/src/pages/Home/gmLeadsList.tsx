@@ -27,7 +27,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { City } from '../../model/city.interface';
 import FilterLeads from './filterLeads';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
-import LeadsTable from '../../components/Table/leads/gm';
+import LeadsTable from '../../components/Table/leads/leads';
 import TablePagination from '../../components/Table/pagination';
 import { asyncFetchAdmins } from '../../API/auth';
 import { renderStaffRole } from '../../utils/render';
@@ -367,13 +367,10 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 				/>
 			</Box> */}
 			<LeadsTable
-				manageSelectedLeads={manageSelectedLeads}
-				selectedLeads={selectedLeads}
 				loading={loading}
 				leads={data.leads}
 				fetchLeads={fetchLeads}
 				hold={showHolds}
-				onDelete={onDelete}
 				days={days}
 				setDays={setDays}
 			/>

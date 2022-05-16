@@ -159,8 +159,7 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 		case 'bdm':
 		case 'assistantSalesManager':
 			filter.status = 'active';
-			filter.bdm = req.admin.id;
-			filter.stage = { $in: [3, 4] };
+			filter.assigns.to = req.admin.id;
 			break;
 		case 'salesExecutive':
 			filter.status = 'active';
@@ -192,9 +191,9 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 		filter.createdBy = req.body.postedBy;
 	}
 	if (req.body.commentStatus) {
-		filter.comments = {
+		filter.leadStatus = {
 			$elemMatch: {
-				status: {
+				value: {
 					$eq: req.body.commentStatus,
 				},
 			},

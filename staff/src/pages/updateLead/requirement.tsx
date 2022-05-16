@@ -1,10 +1,4 @@
 import {
-	CircularProgress,
-	InputLabel,
-	MenuItem,
-	Select,
-} from '@material-ui/core';
-import {
 	ClientRequirementCategory,
 	ClientRequirementType,
 } from '../../model/lead.interface';
@@ -12,7 +6,6 @@ import { FetchAdminResponse, StaffType } from '../../model/staff.interface';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import Box from '@material-ui/core/Box';
-import DateTimePickerComponent from '../../components/Pickers/dateTime';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -23,7 +16,6 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { asyncFetchAdmins } from '../../API/auth';
-import { renderStaffRole } from '../../utils/render';
 
 export interface IClientRequirement extends IClientRequirementState {
 	setRequirement: (type: ClientRequirementType) => void;
@@ -245,89 +237,6 @@ export default function ClientRequirement({
 					/>
 				</Box>
 			</Box>
-
-			<FormControl component="fieldset">
-				<FormLabel component={Typography} align="center">
-					Choose Action
-				</FormLabel>
-				<RadioGroup
-					row
-					aria-label="action"
-					name="action"
-					value={action}
-					onChange={handleChangeStatus}
-				>
-					<FormControlLabel
-						value="forward"
-						control={<Radio />}
-						label="Forward"
-					/>
-					<FormControlLabel
-						value="notInterested"
-						control={<Radio />}
-						label="Not Interested"
-					/>
-					{requirement === 'hvp' && (
-						<FormControlLabel
-							value="postProperty"
-							control={<Radio />}
-							label="Post Requirement"
-						/>
-					)}
-					<FormControlLabel
-						value="package"
-						control={<Radio />}
-						label="Package"
-					/>
-					<FormControlLabel
-						value="brokerage"
-						control={<Radio />}
-						label="Brokerage"
-					/>
-				</RadioGroup>
-			</FormControl>
-			{action === 'hold' && (
-				<Box mt="1rem" mb="1rem">
-					<DateTimePickerComponent
-						label="Choose date and time"
-						handleDateChange={setHoldDate}
-						date={pickerDate}
-					/>
-				</Box>
-			)}
-			{action === 'forward' && (
-				<Box mt="1rem" mb="1rem">
-					{bdmLoading ? (
-						<CircularProgress size={20} color="inherit" />
-					) : (
-						<FormControl style={{ width: 200 }}>
-							<InputLabel id="demo-simple-select-label">
-								Select Staff
-							</InputLabel>
-							<Select
-								label="Select Staff"
-								value={bdm}
-								onChange={(e) => {
-									setBDM(e.target.value as string);
-									manageStaffType(
-										data.admins.find(
-											(c) => c.id === e.target.value
-										)?.type as string
-									);
-								}}
-							>
-								<MenuItem value="">None</MenuItem>
-								{data.admins.map((c) => (
-									<MenuItem key={c.id} value={c.id}>
-										{c.name} -{' '}
-										<b>{renderStaffRole(c.type)}</b>
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-					)}
-				</Box>
-			)}
 		</Box>
 	);
 }
