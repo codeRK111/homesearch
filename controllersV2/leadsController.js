@@ -70,7 +70,6 @@ exports.addLead = catchAsync(async (req, res, next) => {
 				from: req.admin.id,
 				message: req.body.message,
 				date: Date.now(),
-				status: req.body.commentStatus,
 			},
 		];
 	}
