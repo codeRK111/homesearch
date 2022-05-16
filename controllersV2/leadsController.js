@@ -159,7 +159,11 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 		case 'bdm':
 		case 'assistantSalesManager':
 			filter.status = 'active';
-			filter.assigns.to = req.admin.id;
+			filter.assigns = {
+				$elemMatch: {
+					to: mongoose.Types.ObjectId(req.admin.id),
+				},
+			};
 			break;
 		case 'salesExecutive':
 			filter.status = 'active';
@@ -261,7 +265,7 @@ exports.getMyLeads = catchAsync(async (req, res, next) => {
 	}
 
 	// console.log(req.admin);
-	// console.log(filter);
+	console.log({ filter });
 	const totalDocs = await Leads.countDocuments(filter);
 
 	const leads = await Leads.find(filter)

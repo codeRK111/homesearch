@@ -265,9 +265,6 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 				loading={loading}
 				leads={data.leads}
 				fetchLeads={fetchLeads}
-				hold={showHolds}
-				days={days}
-				setDays={setDays}
 			/>
 
 			<TablePagination

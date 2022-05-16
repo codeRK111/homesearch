@@ -48,19 +48,9 @@ interface ILeadsTable {
 	loading: boolean;
 	leads: ILead[];
 	fetchLeads: () => void;
-	hold: boolean;
-	days: any;
-	setDays: (days: any) => void;
 }
 
-const LeadsTable: React.FC<ILeadsTable> = ({
-	loading,
-	leads,
-	fetchLeads,
-	hold,
-	setDays,
-	days,
-}) => {
+const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads, fetchLeads }) => {
 	const classes = useStyles();
 
 	const { user } = useTypedSelector((state) => state.auth);

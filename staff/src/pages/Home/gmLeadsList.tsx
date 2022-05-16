@@ -370,9 +370,6 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 				loading={loading}
 				leads={data.leads}
 				fetchLeads={fetchLeads}
-				hold={showHolds}
-				days={days}
-				setDays={setDays}
 			/>
 			<TablePagination
 				limit={limit}

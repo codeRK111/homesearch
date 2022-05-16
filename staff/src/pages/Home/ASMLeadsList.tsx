@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Box } from '@material-ui/core';
 import { City } from '../../model/city.interface';
 import FilterLeads from './filterLeads';
-import LeadsASMTable from '../../components/Table/leads/asm';
+import LeadsASMTable from '../../components/Table/leads/leads';
 import TablePagination from '../../components/Table/pagination';
 import { asyncFetchMyLeads } from '../../API/lead';
 
