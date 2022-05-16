@@ -10,25 +10,22 @@ import {
 	TableCell,
 	Typography,
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import EditIcon from '@material-ui/icons/Edit';
 import React, { useEffect, useState } from 'react';
-import { City } from '../../../model/city.interface';
-import { ILead } from '../../../model/lead.interface';
-import { IStaff } from '../../../model/staff.interface';
-import {
-	parseDate,
-	renderCellData,
-	renderLeadStage,
-} from '../../../utils/render';
-import { UpdateLeadDialog } from '../../Dialogs/updateLead';
+import { parseDate, renderCellData } from '../../../utils/render';
+
 import { AddLeadComment } from '../../Forms/add-lead-comment';
-import { CollapsableRow } from '../collapsable-row';
 import AssignStaff from './assign-lead';
 import ChangeLeadStatus from './change-lead-status';
+import { City } from '../../../model/city.interface';
+import { CollapsableRow } from '../collapsable-row';
+import EditIcon from '@material-ui/icons/Edit';
+import { ILead } from '../../../model/lead.interface';
+import { IStaff } from '../../../model/staff.interface';
 import { LeadAssignComponent } from './leads-assigns';
-import { LeadsReschedules } from './leads-reschedules';
 import { LeadStatus } from './leads-status';
+import { LeadsReschedules } from './leads-reschedules';
+import { UpdateLeadDialog } from '../../Dialogs/updateLead';
+import { withStyles } from '@material-ui/core/styles';
 
 const StyledTableCell = withStyles((theme) => ({
 	head: {
@@ -157,8 +154,6 @@ export const LeadRow: React.FC<ILeadRow> = ({
 								{parseDate(row.createdAt as Date)} <br />
 								<b>Posted By: </b>
 								{row.createdBy?.name} <br />
-								<b>Stage: </b>
-								{renderLeadStage(row)} <br />
 							</StyledTableCell>
 
 							<StyledTableCell>
