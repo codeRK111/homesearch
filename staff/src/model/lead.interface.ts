@@ -76,7 +76,7 @@ export interface ILead {
 	minPrice?: number | string;
 	maxPrice?: number | string;
 	comments?: Array<LeadComment>;
-	commentStatus?: CommentStatus;
+	commentStatus?: string;
 	hold?: boolean;
 	holdDate?: Date;
 	saleAssignedAt?: Date;

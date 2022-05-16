@@ -1,18 +1,18 @@
 import { APIV2, V2EndPoint, asyncError } from '../instance';
 import { AxiosResponse, CancelTokenSource } from 'axios';
 import {
-	CommentStatus,
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
 	ILead,
 } from './../../model/lead.interface';
 
+import { AddLeadData } from '../../components/Forms/addLead';
 import { PropertyLead } from '../../model/propertyLead.interface';
 import { ServerResponse } from '../../model/apiResponse.interface';
 import { StaffType } from '../../model/staff.interface';
 
 export const asyncAddLead = async (
-	lead: ILead,
+	lead: AddLeadData,
 	images?: any
 ): Promise<ILead> => {
 	try {
@@ -20,7 +20,7 @@ export const asyncAddLead = async (
 		const formData = new FormData();
 		for (const key in lead) {
 			if (Object.prototype.hasOwnProperty.call(lead, key)) {
-				const element = lead[key as keyof ILead];
+				const element = lead[key as keyof AddLeadData];
 				if (key === 'propertyRequirements' || key === 'tags') {
 					const c = element as string[];
 					c.forEach((b) => {
@@ -178,7 +178,7 @@ export const asyncGetLeadDetails = async (id: string): Promise<ILead> => {
 export interface UpdateLeadData
 	extends Omit<ILead, 'reschedules' | 'leadStatus' | 'assigns'> {
 	reschedule?: null | Date;
-	commentStatus?: CommentStatus;
+	commentStatus?: string;
 }
 
 export const asyncUpdateLead = async (

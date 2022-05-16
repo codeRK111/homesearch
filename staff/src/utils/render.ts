@@ -221,3 +221,24 @@ export const getEmbedId = (url: string): string | null => {
 
 	return match && match[2].length === 11 ? match[2] : null;
 };
+
+export const leadStatusData = [
+	'SWITCH OFF',
+	'Not IN SERVICE',
+	'NOT CONNECTED',
+	'BUSY',
+	'RESCHEDULE',
+	'NOT INTERESTED',
+	'INTERESTED',
+	'SITE VISIT',
+	'MEETING',
+	'ZOOM MEETING',
+	'INTERESTED FOR PACKAGE',
+	'BROKERAGE CONFIRMED',
+	'INTERESTED TO BUY',
+	'FOLLOWUP',
+	'READY TO BUY',
+	'BOOKING CONFIRMED',
+	'INTERESTED TO SALE',
+	'BROKERAGE PAID',
+];

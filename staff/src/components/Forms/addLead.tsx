@@ -11,13 +11,12 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core';
+import { FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import {
-	CommentStatus,
 	ILead,
 	LeadSource,
 	LeadUserCategory,
 } from '../../model/lead.interface';
-import { FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import React, { useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 import { asyncAddLead, asyncCheckNumber } from '../../API/lead';
@@ -28,6 +27,9 @@ import FCheckbox from '../../components/Formik/checkbox';
 import FSelect from '../../components/Formik/select';
 import FTextField from '../../components/Formik/input';
 import SearchCity from '../../components/Search/city';
+import { leadStatusData } from '../../utils/render';
+
+export type AddLeadData = Omit<ILead, 'reschedules' | 'leadStatus' | 'assigns'>;
 
 export const AddLeadForm: React.FC<{
 	onSuccess: (lead: ILead) => void;
@@ -61,7 +63,7 @@ export const AddLeadForm: React.FC<{
 			'Invalid Number'
 		),
 	});
-	const initialValues: ILead = {
+	const initialValues: AddLeadData = {
 		name: '',
 		source: LeadSource.Staff,
 		email: '',
@@ -74,10 +76,7 @@ export const AddLeadForm: React.FC<{
 		propertyRequirements: [],
 		city: null,
 		tags: [],
-		commentStatus: CommentStatus.CallNotReceived,
-		reschedules: [],
-		leadStatus: [],
-		assigns: [],
+		commentStatus: '',
 	};
 
 	// State
@@ -92,7 +91,10 @@ export const AddLeadForm: React.FC<{
 		}
 	};
 
-	const onSubmit = async (values: ILead, helpers: FormikHelpers<ILead>) => {
+	const onSubmit = async (
+		values: AddLeadData,
+		helpers: FormikHelpers<AddLeadData>
+	) => {
 		try {
 			setLoading(true);
 			const img = images ? Array.from(images) : undefined;
@@ -367,30 +369,11 @@ export const AddLeadForm: React.FC<{
 									name={'commentStatus'}
 									label="Comment Status"
 								>
-									<MenuItem value={CommentStatus.Busy}>
-										Busy
-									</MenuItem>
-									<MenuItem
-										value={CommentStatus.CallNotReceived}
-									>
-										Call Not Received
-									</MenuItem>
-									<MenuItem value={CommentStatus.Inerested}>
-										Inerested
-									</MenuItem>
-									<MenuItem
-										value={CommentStatus.NotInService}
-									>
-										Not In Service
-									</MenuItem>
-									<MenuItem
-										value={CommentStatus.NotInterested}
-									>
-										Not Interested
-									</MenuItem>
-									<MenuItem value={CommentStatus.SwitchOff}>
-										Switch Off
-									</MenuItem>
+									{leadStatusData.map((c: string, i) => (
+										<MenuItem key={i} value={c}>
+											{c}
+										</MenuItem>
+									))}
 								</FSelect>
 							</Grid>
 							<Grid item xs={12}>

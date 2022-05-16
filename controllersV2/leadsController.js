@@ -74,6 +74,15 @@ exports.addLead = catchAsync(async (req, res, next) => {
 			},
 		];
 	}
+	if (req.body.commentStatus) {
+		req.body.leadStatus = [
+			{
+				from: req.admin.id,
+				date: Date.now(),
+				value: req.body.commentStatus,
+			},
+		];
+	}
 	const lead = await Leads.create(req.body);
 
 	res.status(200).json({
