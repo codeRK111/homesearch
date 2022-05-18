@@ -1,25 +1,26 @@
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import React, { useState } from 'react';
+
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import HomeIcon from '@material-ui/icons/Home';
 import ListAltIcon from '@material-ui/icons/ListAlt';
+import ListDropDown from '../ListCollapse';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PaymentIcon from '@material-ui/icons/Payment';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import PostAddIcon from '@material-ui/icons/PostAdd';
+import RenderByMultipleRole from '../RenderByRole/multiple';
+import RenderByRole from '../RenderByRole';
 import SearchIcon from '@material-ui/icons/Search';
 import ShareIcon from '@material-ui/icons/Share';
 import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes';
+import { StaffType } from '../../model/staff.interface';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import clsx from 'clsx';
-import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { StaffType } from '../../model/staff.interface';
-import ListDropDown from '../ListCollapse';
-import RenderByRole from '../RenderByRole';
-import RenderByMultipleRole from '../RenderByRole/multiple';
 import useStyles from './drawer.style';
 
 interface IDrawerListItems {
@@ -175,7 +176,13 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 						<ListItemText primary={'My Strategies'} />
 					</ListItem>
 				</RenderByMultipleRole>
-				<RenderByMultipleRole types={[StaffType.GM]}>
+				<RenderByMultipleRole
+					types={[
+						StaffType.GM,
+						StaffType.ClientSupport,
+						StaffType.LeadStrategist,
+					]}
+				>
 					<ListItem
 						button
 						onClick={changeRoute('/user-contact')}
