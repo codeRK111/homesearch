@@ -7,16 +7,14 @@ const contactSchema = new Schema(
 		name: {
 			type: String,
 		},
+		message: {
+			type: String,
+		},
 
 		phoneNumber: {
 			type: String,
 			maxlength: [10, '10 chars allowed for phone_number'],
 			minlength: [10, '10 chars allowed for phone_number'],
-			index: {
-				unique: true,
-				partialFilterExpression: { number: { $type: 'string' } },
-			},
-			default: null,
 		},
 		email: {
 			type: String,
@@ -31,16 +29,19 @@ const contactSchema = new Schema(
 		},
 		verified: {
 			type: Boolean,
-
 			default: false,
 		},
 	},
-	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
+	{
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+		timestamps: true,
+	}
 );
 
-contactSchema.methods.correctOtp = async function (otp) {
-	return otp == this.otp;
+contactSchema.methods.correctOtp = function (otp) {
+	return String(otp) === this.otp;
 };
 
-const contactQuery = model('Contact', contactSchema);
+const contactQuery = model('UserContact', contactSchema);
 module.exports = contactQuery;

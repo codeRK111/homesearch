@@ -23,6 +23,7 @@ export enum V2EndPoint {
 	Package = '/package',
 	GST = '/gst',
 	CP = '/chanel-partner',
+	UserContact = '/user-contact',
 }
 export enum V1EndPoint {
 	City = '/cities',

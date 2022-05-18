@@ -4,7 +4,7 @@ import { useField, useFormikContext } from 'formik';
 
 import useStyles from './formik.styles';
 
-const RowSelect = ({ formLabel, spacing = true, ...otherProps }) => {
+const RowTextArea = ({ formLabel, spacing = true, ...otherProps }) => {
 	const classes = useStyles();
 	const [field, meta] = useField(otherProps);
 	const formikBag = useFormikContext();
@@ -54,4 +54,4 @@ const RowSelect = ({ formLabel, spacing = true, ...otherProps }) => {
 	);
 };
 
-export default RowSelect;
+export default RowTextArea;

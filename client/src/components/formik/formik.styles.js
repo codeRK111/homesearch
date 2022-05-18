@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.utilColor,
 	},
 	input: {
+		fontSize: '1.2rem',
+		letterSpacing: 1.2,
 		padding: '1rem',
 		width: '100%',
 		border: 'none',

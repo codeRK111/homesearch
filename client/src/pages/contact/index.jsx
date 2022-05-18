@@ -1,6 +1,8 @@
 import { Box, Container, Typography } from '@material-ui/core';
-import React from 'react';
+
+import ContactForm from '../../components/contact-form';
 import Nav from '../../components/v2/pageNav/nav.component';
+import React from 'react';
 import { getBrandName } from '../../utils/render.utils';
 
 const ContactUs = () => {
@@ -11,6 +13,9 @@ const ContactUs = () => {
 				<Box mt="2rem">
 					<Box mt="2rem" display="flex" justifyContent="center">
 						<Box>
+							<Box mb="1rem">
+								<ContactForm />
+							</Box>
 							<Typography
 								variant="h4"
 								component="h1"

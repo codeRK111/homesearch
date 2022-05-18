@@ -144,6 +144,8 @@ const GMLeadsList = ({ userCategory, leadStatus }: IGMLeadsList) => {
 					StaffType.ClientSupport,
 					StaffType.AssistantSalesManager,
 					StaffType.SalesExecutive,
+					StaffType.GM,
+					StaffType.LeadStrategist,
 				],
 				page: 1,
 				limit: 200,

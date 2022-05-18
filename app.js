@@ -58,6 +58,7 @@ const paymentRoute = require('./routesV2/paymentRoute');
 const cpRoute = require('./routesV2/cpRoute');
 const gstRoute = require('./routesV2/gstRoute');
 const testRoutev2 = require('./routesV2/testRoute');
+const userContactRoute = require('./routesV2/userContactRoute');
 
 const app = express();
 
@@ -241,6 +242,7 @@ app.use('/api/v2/package', packageRouteV2);
 app.use('/api/v2/chanel-partner', cpRoute);
 app.use('/api/v2/test', testRoutev2);
 app.use('/api/v2/gst', gstRoute);
+app.use('/api/v2/user-contact', userContactRoute);
 
 app.all('/api/*', (req, res, next) => {
 	next(new AppError(`cannot find ${req.originalUrl} on this server`, 404));
