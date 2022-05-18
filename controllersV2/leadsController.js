@@ -286,7 +286,13 @@ exports.getPostedLeads = catchAsync(async (req, res, next) => {
 	const skip = (page - 1) * limit;
 
 	filter.status = 'active';
-	filter.createdBy = req.admin.id;
+	let SORTBY = '-createdAt';
+	if (req.body.assigned) {
+		SORTBY = '-assigns.date';
+		filter['assigns.0.to'] = mongoose.Types.ObjectId(req.admin.id);
+	} else {
+		filter.createdBy = req.admin.id;
+	}
 
 	if (req.body.userCategory) {
 		filter.userCategory = req.body.userCategory;
@@ -348,10 +354,7 @@ exports.getPostedLeads = catchAsync(async (req, res, next) => {
 	// console.log(filter);
 	const totalDocs = await Leads.countDocuments(filter);
 
-	const leads = await Leads.find(filter)
-		.sort('-createdAt')
-		.skip(skip)
-		.limit(limit);
+	const leads = await Leads.find(filter).sort(SORTBY).skip(skip).limit(limit);
 	res.status(200).json({
 		status: 'success',
 		data: { leads, totalDocs },

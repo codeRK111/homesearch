@@ -113,6 +113,7 @@ export type FetchLeadsInputType = {
 	postedBy?: string;
 	reschedule?: any;
 	commentStatus?: string | CommentStatus;
+	assigned?: boolean;
 };
 export type FetchMyLeadsResponseData = {
 	leads: ILead[];

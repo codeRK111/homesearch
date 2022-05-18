@@ -109,6 +109,7 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 					StaffType.ClientSupport,
 					StaffType.AssistantSalesManager,
 					StaffType.SalesExecutive,
+					StaffType.GM,
 				],
 				page: 1,
 				limit: 200,
@@ -260,7 +261,7 @@ const ClientSupportLeadsList = ({ userCategory }: IClientSupportLeadsList) => {
 					Add Lead
 				</Button>
 			</Box>
-			{/* <CollapsibleTable /> */}
+
 			<LeadsTable
 				loading={loading}
 				leads={data.leads}

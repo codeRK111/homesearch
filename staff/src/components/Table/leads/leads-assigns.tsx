@@ -12,7 +12,7 @@ export const LeadAssignComponent: React.FC<ILeadAssigns> = ({ assigns }) => {
 	return (
 		<>
 			{assigns.map((c, i) => (
-				<Paper key={c._id}>
+				<Paper key={c._id} style={{ marginTop: '0.5rem' }}>
 					<Box p="0.5rem">
 						<Box display={'flex'} alignItems="center">
 							<Typography variant="caption">
@@ -23,6 +23,9 @@ export const LeadAssignComponent: React.FC<ILeadAssigns> = ({ assigns }) => {
 						</Box>
 						<Typography style={{ fontSize: '0.8rem' }}>
 							<b>{c.to.name}</b>
+						</Typography>
+						<Typography variant="caption">
+							By {c.from.name}
 						</Typography>
 					</Box>
 				</Paper>

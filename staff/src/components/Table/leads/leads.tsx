@@ -72,15 +72,6 @@ const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads, fetchLeads }) => {
 		setOpen(false);
 	};
 
-	const openModal = (lead: ILead) => () => {
-		setSelectedLead(lead);
-		setOpen(true);
-	};
-	const openEditModal = (lead: ILead) => () => {
-		setSelectedUpdateLead(lead);
-		setEditOpen(true);
-	};
-
 	const fetchStaffs = useCallback(async () => {
 		try {
 			setStaffLoading(true);
@@ -90,6 +81,7 @@ const LeadsTable: React.FC<ILeadsTable> = ({ loading, leads, fetchLeads }) => {
 					StaffType.ClientSupport,
 					StaffType.AssistantSalesManager,
 					StaffType.SalesExecutive,
+					StaffType.GM,
 				],
 				page: 1,
 				limit: 200,

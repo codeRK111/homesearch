@@ -91,9 +91,17 @@ export const LeadRow: React.FC<ILeadRow> = ({
 								>
 									<EditIcon />
 								</IconButton>
-								<LeadsReschedules
-									reschedules={row.reschedules}
-								/>
+								<Box
+									style={{
+										maxHeight: 300,
+										overflow: 'auto',
+										padding: '0.5rem',
+									}}
+								>
+									<LeadsReschedules
+										reschedules={row.reschedules}
+									/>
+								</Box>
 							</StyledTableCell>
 
 							<StyledTableCell>
@@ -162,7 +170,13 @@ export const LeadRow: React.FC<ILeadRow> = ({
 									staffs={staffs}
 									onSuccess={onSuccess}
 								/>
-								<Box>
+								<Box
+									style={{
+										maxHeight: 300,
+										overflow: 'auto',
+										padding: '0.5rem',
+									}}
+								>
 									<LeadAssignComponent
 										assigns={row.assigns}
 									/>

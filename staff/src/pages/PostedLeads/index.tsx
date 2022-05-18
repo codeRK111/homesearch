@@ -1,4 +1,12 @@
-import { Box, Container, Grid, TextField, Typography } from '@material-ui/core';
+import {
+	Box,
+	Container,
+	FormControlLabel,
+	Grid,
+	Switch,
+	TextField,
+	Typography,
+} from '@material-ui/core';
 import {
 	FetchLeadsInputType,
 	FetchMyLeadsResponseData,
@@ -7,7 +15,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ResourceType, useRepositoryAction } from '../../hooks/useAction';
 import axios, { CancelTokenSource } from 'axios';
 
-import MyPostedLeadsTable from '../../components/Table/leads/myLeads';
+import LeadsTable from '../../components/Table/leads/leads';
 import TablePagination from '../../components/Table/pagination';
 import { asyncFetchMyPostedLeads } from '../../API/lead';
 
@@ -17,6 +25,7 @@ const PostedLeadsPage = () => {
 	const source = useRef<CancelTokenSource | null>(null);
 	// State
 	const [error, setError] = useState('');
+	const [assigned, setAssigned] = useState(false);
 	const [number, setNumber] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [page, setPage] = useState(1);
@@ -32,6 +41,10 @@ const PostedLeadsPage = () => {
 		setPage(pageNumber);
 	};
 
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setAssigned(event.target.checked);
+	};
+
 	// Fetch leads
 	const fetchLeads = useCallback(async () => {
 		try {
@@ -41,6 +54,7 @@ const PostedLeadsPage = () => {
 			const filter: FetchLeadsInputType = {
 				page,
 				limit,
+				assigned,
 			};
 			if (number) {
 				filter.number = number;
@@ -63,11 +77,11 @@ const PostedLeadsPage = () => {
 				leads: [],
 			});
 		}
-	}, [page, limit, number]);
+	}, [page, limit, number, assigned]);
 
 	useEffect(() => {
 		setPage(1);
-	}, [limit, number]);
+	}, [limit, number, assigned]);
 	useEffect(() => {
 		fetchLeads();
 	}, [fetchLeads]);
@@ -101,7 +115,21 @@ const PostedLeadsPage = () => {
 					/>
 				</Grid>
 			</Grid>
-			<MyPostedLeadsTable loading={loading} leads={data.leads} />
+			<FormControlLabel
+				control={
+					<Switch
+						checked={assigned}
+						onChange={handleChange}
+						color="primary"
+					/>
+				}
+				label="Show Assigned leads"
+			/>
+			<LeadsTable
+				loading={loading}
+				leads={data.leads}
+				fetchLeads={fetchLeads}
+			/>
 			<TablePagination
 				limit={limit}
 				setLimit={setLimit}
