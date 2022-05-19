@@ -2,12 +2,14 @@ const Razorpay = require('razorpay');
 const catchAsync = require('./../utils/catchAsync');
 const createInvoice = require('./../utils/createTenantInvoice');
 const createInvoiceMannual = require('./../utils/createTenantInvoiceMannual');
+const createInvoiceMannualV2 = require('./../utils/createTenantInvoiceMannual-v2');
 const sendEmailProposal = require('./../utils/sendMailProposal');
 const sendMessageProposal = require('./../utils/sendProposal');
 const sendEmailSubscriptionFeedback = require('./../utils/sendMailReview');
 const sendEmailInvoice = require('./../utils/sendMailInvoice');
 const Subscription = require('./../models/subscriptionModel');
 const GSTModel = require('./../models/gstModel');
+const Invoice = require('./../models/invoiceModel');
 const Lead = require('./../models/leadsModel');
 const Link = require('./../models/paymentLinkModel');
 const Admin = require('./../models/adminModel');
@@ -1171,4 +1173,119 @@ exports.createAndDownloadInvoice = catchAsync(async (req, res, next) => {
 			error: error.message,
 		});
 	}
+});
+exports.createAndDownloadInvoiceManually = catchAsync(
+	async (req, res, next) => {
+		try {
+			const data = req.body;
+			const lastInvoice = await Invoice.find().sort({ _id: -1 }).limit(1);
+			if (lastInvoice.length > 0) {
+				data.invoiceNumber = lastInvoice[0].invoiceNumber + 1;
+			} else {
+				data.invoiceNumber = 1;
+			}
+
+			const inv = await Invoice.create(data);
+			console.log(inv);
+
+			const invoiceName = await createInvoiceMannualV2(
+				inv,
+				(fileName, docName) => {
+					res.download(
+						__dirname + `/../static/invoices/${docName}.pdf`,
+						(err) => {
+							console.log(err);
+						}
+					);
+				}
+			);
+		} catch (error) {
+			console.log(error);
+			res.status(500).json({
+				status: 'success',
+				error: error.message,
+			});
+		}
+	}
+);
+exports.downloadInvoiceFromDB = catchAsync(async (req, res, next) => {
+	try {
+		const invoice = await Invoice.findById(req.params.id);
+		if (!invoice) {
+			return next(AppError('Invoice Not found'));
+		}
+
+		const invoiceName = await createInvoiceMannualV2(
+			invoice,
+			(fileName, docName) => {
+				res.download(
+					__dirname + `/../static/invoices/${docName}.pdf`,
+					(err) => {
+						console.log(err);
+					}
+				);
+			}
+		);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({
+			status: 'success',
+			error: error.message,
+		});
+	}
+});
+
+exports.getAllInvoices = catchAsync(async (req, res, next) => {
+	const filter = {};
+	const page = req.query.page * 1 || 1;
+	const limit = req.query.limit * 1 || 10;
+	const skip = (page - 1) * limit;
+
+	if (req.query.status) {
+		filter.status = req.query.status;
+	}
+
+	const totalDocs = await Invoice.countDocuments(filter);
+
+	const invoices = await Invoice.find(filter)
+		.sort('-createdAt')
+		.skip(skip)
+		.limit(limit);
+	res.status(200).json({
+		status: 'success',
+		data: { invoices, totalDocs },
+	});
+});
+
+exports.updateInvoice = catchAsync(async (req, res, next) => {
+	const invoice = await Invoice.findById(req.params.id);
+	if (!invoice) {
+		if (req.file) {
+		}
+		return next(new AppError('Invoice not found'));
+	}
+
+	const inv = await Invoice.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+		runValidators: true,
+	});
+
+	res.status(200).json({
+		status: 'success',
+		data: { invoice: inv },
+	});
+});
+
+exports.deleteInvoice = catchAsync(async (req, res, next) => {
+	const invoice = await Invoice.findById(req.params.id);
+	if (!invoice) {
+		return next(new AppError('Invoice not found'));
+	}
+
+	await Invoice.findByIdAndRemove(req.params.id);
+
+	res.status(200).json({
+		status: 'success',
+		data: null,
+	});
 });

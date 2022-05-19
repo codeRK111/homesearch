@@ -7,6 +7,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import HomeIcon from '@material-ui/icons/Home';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import ListDropDown from '../ListCollapse';
+import ListIcon from '@material-ui/icons/List';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PaymentIcon from '@material-ui/icons/Payment';
@@ -416,6 +417,25 @@ const DrawerListItems: React.FC<IDrawerListItems> = ({ closeDrawer }) => {
 							/>
 						</ListItemIcon>
 						<ListItemText primary={'Create Invoice'} />
+					</ListItem>
+				</RenderByMultipleRole>
+				<RenderByMultipleRole
+					types={[StaffType.Accountant, StaffType.SuperAdmin]}
+				>
+					<ListItem
+						button
+						onClick={changeRoute('/manage-invoice')}
+						className={clsx(manageSelectedStyle('/manage-invoice'))}
+					>
+						<ListItemIcon>
+							<ListIcon
+								color="primary"
+								className={clsx(
+									manageSelectedStyleIcon('/manage-invoice')
+								)}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={'Manage Invoices'} />
 					</ListItem>
 				</RenderByMultipleRole>
 			</List>

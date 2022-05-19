@@ -55,10 +55,20 @@ router.post(
 	adminController.protect,
 	paymentController.createAndDownloadInvoice
 );
+router.post(
+	'/admin/create-invoice-manually',
+	adminController.protect,
+	paymentController.createAndDownloadInvoiceManually
+);
 router.get(
 	'/admin/download-invoice/:id',
 	adminController.protect,
 	paymentController.downloadInvoice
+);
+router.get(
+	'/admin/download-invoice-db/:id',
+	adminController.protect,
+	paymentController.downloadInvoiceFromDB
 );
 
 router.get(
@@ -97,6 +107,18 @@ router.post(
 	adminController.protect,
 	paymentController.createPaymentLink
 );
+router.get(
+	'/invoice',
+	adminController.protect,
+	paymentController.getAllInvoices
+);
+router
+	.patch(
+		'/invoice/:id',
+		adminController.protect,
+		paymentController.updateInvoice
+	)
+	.delete(adminController.protect, paymentController.deleteInvoice);
 router.get(
 	'/send-feedback-mail/:id',
 	adminController.protect,

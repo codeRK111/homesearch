@@ -4,6 +4,7 @@ import { PaymentLink, RazorpayPayment } from '../../model/payment.interface';
 import { AxiosResponse } from 'axios';
 import FileDownload from 'js-file-download';
 import { IcreateSubscriptionData } from '../../components/Forms/createSubscription';
+import { Invoice } from '../../model/invoice.interface';
 import { ServerResponse } from '../../model/apiResponse.interface';
 import { StaffTarget } from '../../model/staffTarget.interface';
 import { Subscription } from '../../model/subscription.interface';
@@ -383,7 +384,7 @@ export const asyncCreateAndDownloadInvoice = async (
 			SendProposalData,
 			AxiosResponse<ServerResponse<any>>
 		>(
-			`${V2EndPoint.Payment}/admin/create-invoice`,
+			`${V2EndPoint.Payment}/admin/create-invoice-manually`,
 			data,
 
 			{
@@ -396,6 +397,86 @@ export const asyncCreateAndDownloadInvoice = async (
 		);
 		FileDownload(resp.data as any, 'invoice.pdf');
 		return { status: 'success' };
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+export const asyncDownloadInvoiceFromDB = async (id: string): Promise<any> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.get<
+			SendProposalData,
+			AxiosResponse<ServerResponse<any>>
+		>(
+			`${V2EndPoint.Payment}/admin/download-invoice-db/${id}`,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				responseType: 'blob',
+			}
+		);
+		FileDownload(resp.data as any, 'invoice.pdf');
+		return { status: 'success' };
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+
+export type FetchAllInvoices = {
+	invoices: Invoice[];
+	totalDocs: number;
+};
+export const asyncGetAllInvoices = async (
+	data: any
+): Promise<FetchAllInvoices> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.get<
+			SendProposalData,
+			AxiosResponse<ServerResponse<FetchAllInvoices>>
+		>(
+			`${V2EndPoint.Payment}/invoice`,
+
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return resp.data.data;
+	} catch (e: any) {
+		throw new Error(asyncError(e));
+	}
+};
+
+export type UpdateInvoiceData = Omit<
+	Invoice,
+	'id' | 'invoiceNumber' | 'status' | 'createdAt'
+>;
+
+export const asyncupdateInvoice = async (
+	id: string,
+	data: UpdateInvoiceData
+): Promise<Invoice> => {
+	try {
+		const token = localStorage.getItem('JWT_STAFF');
+
+		const resp = await APIV2.patch<
+			SendProposalData,
+			AxiosResponse<ServerResponse<{ invoice: Invoice }>>
+		>(`${V2EndPoint.Payment}/invoice/${id}`, data, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return resp.data.data.invoice;
 	} catch (e: any) {
 		throw new Error(asyncError(e));
 	}

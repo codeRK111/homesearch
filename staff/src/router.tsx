@@ -10,6 +10,7 @@ import PrivateRoute from './components/ProtectedRoute';
 import { asyncFetchAdminInfo } from './API/auth';
 
 const AddBlogPage = lazy(() => import('./pages/AddBlog'));
+const ManageInvoicePage = lazy(() => import('./pages/manageInvoice'));
 const UserQueriesPage = lazy(() => import('./pages/ManageUserQueries'));
 const PropertyLeadsDetailsPage = lazy(
 	() => import('./pages/PropertyLeadDetails')
@@ -91,6 +92,11 @@ const Router = () => {
 						path={'/cp'}
 						exact={true}
 						component={CPHomePage}
+					/>
+					<PrivateRoute
+						path={'/manage-invoice'}
+						exact={true}
+						component={ManageInvoicePage}
 					/>
 					<PrivateRoute
 						path={'/user-contact'}
