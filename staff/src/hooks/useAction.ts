@@ -1,4 +1,8 @@
-import { authActionCreators, uiActionCreators } from '../redux';
+import {
+	authActionCreators,
+	cpActionCreators,
+	uiActionCreators,
+} from '../redux';
 
 import { bindActionCreators } from 'redux';
 import { useDispatch } from 'react-redux';
@@ -6,6 +10,7 @@ import { useDispatch } from 'react-redux';
 export enum ResourceType {
 	Auth = 'auth',
 	UI = 'ui',
+	CP = 'cp',
 }
 
 type IResource = {
@@ -15,6 +20,7 @@ type IResource = {
 const resource: IResource = {
 	auth: authActionCreators,
 	ui: uiActionCreators,
+	cp: cpActionCreators,
 };
 
 export const useRepositoryAction = (type: ResourceType) => {

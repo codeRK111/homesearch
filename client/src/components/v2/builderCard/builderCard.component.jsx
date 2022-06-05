@@ -27,10 +27,6 @@ const PropertyCard = ({ data }) => {
 	const builderLogo = data.logo ? `/assets/builders/${data.logo}` : logo;
 	return (
 		<div className={classes.wrapper}>
-			<div className={classes.featureWrapper}>
-				{/* <div className={classes.feature}>Feature</div> */}
-			</div>
-
 			<div className={classes.logoWrapper}>
 				<Grid container spacing={0}>
 					<Grid item xs={4}>

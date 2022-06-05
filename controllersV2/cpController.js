@@ -2,7 +2,8 @@ const CPModel = require('./../models/chanelPartnerModel');
 const AppError = require('./../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
 const jwt = require('jsonwebtoken');
-
+const { promisify } = require('util');
+const bcrypt = require('bcryptjs');
 const signToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
 		expiresIn: process.env.JWT_STAFF_EXPIRES_IN,
@@ -23,6 +24,59 @@ const createSendToken = (user, statusCode, res) => {
 		},
 	});
 };
+
+exports.protect = catchAsync(async (req, res, next) => {
+	// 1) Getting token and check of it's there
+	let token;
+	if (
+		req.headers.authorization &&
+		req.headers.authorization.startsWith('Bearer')
+	) {
+		token = req.headers.authorization.split(' ')[1];
+	}
+
+	if (!token) {
+		return next(
+			new AppError(
+				'You are not logged in! Please log in to get access.',
+				401
+			)
+		);
+	}
+
+	// 2) Verification token
+	const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+	// 3) Check if user still exists
+	const currentUser = await CPModel.findById(decoded.id);
+	if (!currentUser) {
+		return next(
+			new AppError(
+				'The user belonging to this token does no longer exist.',
+				401
+			)
+		);
+	}
+
+	console.log(token);
+	console.log(currentUser);
+
+	// GRANT ACCESS TO PROTECTED ROUTE
+	req.cp = currentUser;
+	next();
+});
+
+exports.getCPInfo = catchAsync(async (req, res, next) => {
+	if (!req.cp) {
+		return next(new AppError('cp not found', 401));
+	}
+	res.status(200).json({
+		status: 'success',
+		data: {
+			cp: req.cp,
+		},
+	});
+});
 
 exports.cpLogin = catchAsync(async (req, res, next) => {
 	const { email, password } = req.body;
@@ -104,6 +158,9 @@ exports.getCPs = catchAsync(async (req, res, next) => {
 
 // Update CP Details
 exports.updateCpDetails = catchAsync(async (req, res, next) => {
+	if (req.body.password) {
+		req.body.password = await bcrypt.hash(req.body.password, 12);
+	}
 	const chanelPartner = await CPModel.findByIdAndUpdate(
 		req.params.id,
 		req.body,

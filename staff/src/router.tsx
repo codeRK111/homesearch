@@ -8,6 +8,7 @@ import { LoadingAnimationNormal } from './components/LoadingAnimation';
 import NavBar from './components/NavBar';
 import PrivateRoute from './components/ProtectedRoute';
 import { asyncFetchAdminInfo } from './API/auth';
+import { asyncFetchCpInfo } from './API/chanel-partner';
 
 const AddBlogPage = lazy(() => import('./pages/AddBlog'));
 const ManageInvoicePage = lazy(() => import('./pages/manageInvoice'));
@@ -47,13 +48,22 @@ const ManageGSTPage = lazy(() => import('./pages/ManageGST'));
 
 const Router = () => {
 	const { setUser } = useRepositoryAction(ResourceType.Auth);
+	const { CpSetUser } = useRepositoryAction(ResourceType.CP);
 	const { setSnackbar } = useRepositoryAction(ResourceType.UI);
 	const [loading, setLoading] = useState(true);
 
 	const fetchInfo = useCallback(async () => {
 		try {
-			const info = await asyncFetchAdminInfo();
-			setUser(info);
+			const staffToken = localStorage.getItem('JWT_STAFF');
+			setLoading(true);
+
+			if (staffToken) {
+				const info = await asyncFetchAdminInfo();
+				setUser(info);
+			} else {
+				const cpInfo = await asyncFetchCpInfo();
+				CpSetUser(cpInfo);
+			}
 			setLoading(false);
 		} catch (error: any) {
 			setLoading(false);

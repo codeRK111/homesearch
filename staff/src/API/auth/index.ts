@@ -30,6 +30,7 @@ export const asyncLogIn = async (
 		if (resp.data.token) {
 			console.log({ token2: resp.data.token });
 			localStorage.setItem('JWT_STAFF', resp.data.token);
+			localStorage.removeItem('JWT_CP');
 		}
 		return staffData.admin;
 	} catch (e: any) {
@@ -83,7 +84,6 @@ export const asyncFetchAdminInfo = async (): Promise<IStaff> => {
 			},
 		});
 		const staffData = resp.data.data.admin;
-
 		return staffData;
 	} catch (e: any) {
 		throw new Error(asyncError(e));

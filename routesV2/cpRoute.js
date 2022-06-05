@@ -7,6 +7,8 @@ const router = express.Router();
 router.route('/user').post(authController.protect, cpController.createCPUser);
 router.route('/login').post(cpController.cpLogin);
 
+router.get('/getCpInfo', cpController.protect, cpController.getCPInfo);
+
 router
 	.route('/:id')
 	.get(adminController.protect, cpController.getCpDetails)
