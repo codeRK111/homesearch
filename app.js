@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const moment = require('moment');
+const middlewares = require('./middlewares');
 
 const hpp = require('hpp');
 const xss = require('xss-clean');
@@ -198,22 +199,7 @@ app.use(
 );
 app.use(express.static(path.join(__dirname, 'client', 'build'), options));
 
-app.use((req, res, next) => {
-	console.log('Inside the middleware');
-	const indexExpiryDate = moment(process.env.INDEX_DATE_TARGET);
-	const now = moment();
-
-	if (now < indexExpiryDate) {
-		return next(
-			new AppError(
-				'Index target exceed kindly reset or allow more space',
-				500
-			)
-		);
-	} else {
-		next();
-	}
-});
+app.use(middlewares.checkDiskSpace);
 
 // 3) ROUTES V!
 app.use('/api/v1/admin/users', adminUserRoute);
